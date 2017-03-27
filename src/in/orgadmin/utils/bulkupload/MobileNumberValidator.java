@@ -1,0 +1,38 @@
+/**
+ * 
+ */
+package in.orgadmin.utils.bulkupload;
+
+import org.apache.poi.ss.usermodel.Cell;
+
+/**
+ * @author ayrus
+ *
+ */
+public class MobileNumberValidator extends CellValidator {
+
+	/* (non-Javadoc)
+	 * @see in.orgadmin.utils.bulkupload.CellValidator#getValidatedCellContent(org.apache.poi.ss.usermodel.Cell)
+	 */
+	@Override
+	public String getValidatedCellContent(Cell cell, int rowId, String columnName)  {
+		
+StringBuffer out = new StringBuffer();
+		
+		out.append("<td id='row_" + rowId +"_"+ columnName + "' class='no-error, row_" + rowId + " ," + columnName + "'>");
+
+		
+		try {
+			
+			out.append((long)(cell.getNumericCellValue()) + "");
+			
+		} catch (Exception e) {
+			
+			out.append(cell.getStringCellValue().trim());
+			e.printStackTrace();
+		}
+		out.append("</td>");
+		return out.toString();
+	}
+
+}

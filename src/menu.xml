@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<menu>
+	<!-- <parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/" url="/" valid_role="content_creator" /> <parent_links display_name="Course" is_visible_in_menu="true" jsp_file="/view_courses" url="/view_courses" valid_role="content_creator" /> <parent_links display_name="Module" is_visible_in_menu="true" jsp_file="/view_modules" url="/view_modules" valid_role="content_creator" /> <parent_links display_name="Session" is_visible_in_menu="true" jsp_file="/view_sessions" url="/view_sessions" valid_role="content_creator" /> <parent_links display_name="LO-Skill" is_visible_in_menu="true" jsp_file="/view_lo_skill" url="/courses" valid_role="content_creator" /> <parent_links display_name="Edit Course" 
+		is_visible_in_menu="false" jsp_file="/edit_courses" url="/edit_course" valid_role="content_creator" /> <parent_links display_name="Edit Module" is_visible_in_menu="false" jsp_file="/edit_courses" url="/edit_module" valid_role="content_creator" /> <parent_links display_name="Edit Session" is_visible_in_menu="false" jsp_file="/edit_courses" url="/edit_session" valid_role="content_creator" /> Content Admin <parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/" url="/" valid_role="content_creator" /> <parent_links display_name="User Management" is_visible_in_menu="true" jsp_file="/view_courses" url="/view_courses" valid_role="content_admin" /> <parent_links display_name="Team Management" is_visible_in_menu="true" 
+		jsp_file="/view_teams" url="/view_teams" valid_role="content_admin" /> -->
+
+	<!-- Super Admin -->
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/super_admin/dashboard.jsp" url="/super_admin/dashboard.jsp" valid_role="super_admin" />
+	<parent_links display_name="Account Management" is_visible_in_menu="true" jsp_file="/super_admin/account_management.jsp" url="/super_admin/account_management.jsp" valid_role="super_admin" />
+	<parent_links display_name="User Management" is_visible_in_menu="true" jsp_file="/super_admin/user_management.jsp" url="/super_admin/user_management.jsp" valid_role="super_admin" />
+	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
+	<parent_links display_name="Analytics" is_visible_in_menu="true" jsp_file="/super_admin/analytics.jsp" url="/super_admin/analytics.jsp" valid_role="super_admin" />
+	<parent_links display_name="Billing" is_visible_in_menu="true"  jsp_file="/super_admin/billing.jsp" url="/super_admin/billing.jsp" valid_role="super_admin" />
+	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	
+	<parent_links display_name="Batch Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report1.jsp" url="/super_admin/ops_report1.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Assessment Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report_2.jsp" url="/super_admin/ops_report_2.jsp" valid_role="super_admin"/>
+	
+	
+	
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/orgadmin/dashboard.jsp" url="/orgadmin/dashboard.jsp" valid_role="org_admin" />
+	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/orgadmin/scheduler.jsp" url="/orgadmin/scheduler.jsp" valid_role="org_admin" />
+	<parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/orgadmin/report.jsp" url="/orgadmin/report.jsp" valid_role="org_admin" />
+	<parent_links display_name="Admin" is_visible_in_menu="true" jsp_file="/orgadmin/admin.jsp" url="/orgadmin/admin.jsp" valid_role="org_admin" />
+	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
+
+
+</menu>
