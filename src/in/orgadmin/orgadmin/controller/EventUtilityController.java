@@ -110,10 +110,23 @@ public class EventUtilityController extends HttpServlet {
 				&& !request.getParameter("deleteEventid").equalsIgnoreCase("")) {
 
 					deleteEventid = request.getParameter("deleteEventid") != "" ? request.getParameter("deleteEventid") : "";
-                     System.out.println("deleteEventid"+request.getParameter("deleteEventid"));
+                     System.out.println("deleteEventid "+request.getParameter("deleteEventid"));
+                     System.out.println("status "+request.getParameter("status"));
+                     if(request.getParameterMap().containsKey("status") && request.getParameter("status").equalsIgnoreCase("ASSESSMENT")){
+                    	 int assessmentEventID = Integer.parseInt(request.getParameter("deleteEventid"));
+             			AssessmentSchedulerService asservice = new AssessmentSchedulerService();
+             			
+             			 
+             			 asservice.deleteAssessment(null,assessmentEventID);
 
-			EventSchedulerService ess = new EventSchedulerService();
-			ess.deleteEvent(deleteEventid);
+                    	 
+                     }else{
+                    	 
+                    	 EventSchedulerService ess = new EventSchedulerService();
+             			ess.deleteEvent(deleteEventid);
+                     }
+
+			
 
 			//response.getWriter().print();
 		}
@@ -135,7 +148,7 @@ public class EventUtilityController extends HttpServlet {
 				 
 		      } 
 			 
-			 asservice.deleteAssessment(innerData);
+			 asservice.deleteAssessment(innerData,-01);
 
 			//response.getWriter().print();
 		}
