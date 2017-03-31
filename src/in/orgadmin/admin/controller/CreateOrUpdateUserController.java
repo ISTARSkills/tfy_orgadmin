@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.UserTypes;
-import com.istarindia.apps.dao.Address;
-import com.istarindia.apps.dao.AddressDAO;
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.CollegeDAO;
-import com.istarindia.apps.dao.Student;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.Address;
+import com.viksitpro.core.dao.entities.AddressDAO;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.utilities.IStarBaseServelet;
+import com.viksitpro.core.utilities.UserTypes;
 
 import in.orgadmin.admin.services.OrgAdminBatchGroupService;
 import in.orgadmin.admin.services.OrgAdminUserService;
@@ -44,6 +44,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		printParams(request);
+		int userID=0;
 
 		if (request.getParameterMap().containsKey("user_email")
 				&& !request.getParameter("user_email").equalsIgnoreCase("")) {
@@ -53,6 +54,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			String user_gender = request.getParameter("user_gender");
 			String user_email = request.getParameter("user_email");
 			Integer college_id = Integer.parseInt(request.getParameter("college_id"));
+			String user_type = request.getParameter("user_type");
 			String batch_groups;
 
 			List<Integer> bg_list = new ArrayList<Integer>();
@@ -68,23 +70,21 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 					}
 				}
 			}
-
-			Address add_id = new AddressDAO().findById(2);
-			College college = new CollegeDAO().findById(college_id);
-			Student student = null;
+			
 			if (request.getParameterMap().containsKey("user_id")) {
-				int student_id = Integer.parseInt(request.getParameter("user_id"));
-				student = new OrgAdminUserService().updateOnlyStudent(student_id, user_f_name, user_l_name, user_email,
-						"test123", "9999999999", user_gender, UserTypes.STUDENT, add_id, college);
+				int user_id = Integer.parseInt(request.getParameter("user_id"));
+				userID = new OrgAdminUserService().UpdateUsersForAdminPortal(user_id, user_f_name, user_l_name, user_email,
+						"test123", "9999999999", user_gender, user_type, college_id);
 
 			} else {
-				student = new OrgAdminUserService().CreateOnlyStudent(user_f_name, user_l_name, user_email, "test123",
-						"9999999999", user_gender, UserTypes.STUDENT, add_id, college);
+				
+				userID = new OrgAdminUserService().CreateUsersForAdminPortal(user_f_name, user_l_name, user_email, "test123",
+						"9999999999", user_gender, user_type, college_id);
 			}
 
-			if (student != null) {
+			if (userID != 0) {
 				if (bg_list.size() > 0) {
-						new OrgAdminBatchGroupService().createorUpdateBGStudents(bg_list, student.getId());
+						new OrgAdminBatchGroupService().createorUpdateBGStudents(bg_list, userID);
 				}
 			}
 

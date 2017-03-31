@@ -1,8 +1,8 @@
 
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="in.recruiter.services.RecruiterServices"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())

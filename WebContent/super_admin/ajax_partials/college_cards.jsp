@@ -1,7 +1,6 @@
 <%@page import="in.superadmin.services.AccountManagementServices"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
 
 <%
 	AccountManagementServices services = new AccountManagementServices();

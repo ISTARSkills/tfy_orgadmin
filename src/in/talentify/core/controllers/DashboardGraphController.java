@@ -9,13 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.CollegeDAO;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.OrgAdmin;
-import com.istarindia.apps.dao.OrgAdminDAO;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.utilities.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 /**
  * Servlet implementation class DashboardGraphController
@@ -191,10 +188,10 @@ public class DashboardGraphController extends IStarBaseServelet {
 			
 			collegeId = Integer.parseInt(request.getParameter("collegeId"));
 			
-			College college = new CollegeDAO().findById(collegeId);
+			Organization college = new OrganizationDAO().findById(collegeId);
 			String orgName = college.getName();
 			
-			String sql10 = "select DISTINCT c.parent_skill_id, c.course_name,CAST(AVG (sp.percentage) as INTEGER) from batch_group as bg, batch as b, course as c, skill_precentile sp, batch_students as bs where bg.college_id = "+collegeId+" and b.batch_group_id = bg. id and bs.batch_group_id = b.batch_group_id and b.course_id = c. id and c.parent_skill_id = sp.skill_id and bs.student_id = sp.student_id GROUP BY c.course_name,c.parent_skill_id ORDER BY avg";
+			String sql10 = "SELECT DISTINCT 	csobj .skill_objective_id, 	c.course_name, 	CAST ( 		AVG (sp.percentage) AS INTEGER 	) FROM 	batch_group AS bg, 	batch AS b, 	course_skill_objective AS csobj, course c, 	skill_precentile sp, 	batch_students AS bs WHERE 	bg.college_id = 3 AND b.batch_group_id = bg. ID AND bs.batch_group_id = b.batch_group_id AND b.course_id = csobj .course_id AND csobj .course_id = c.id AND csobj .skill_objective_id = sp.skill_id AND bs.student_id = sp.student_id GROUP BY 	c .course_name, 	csobj .skill_objective_id ORDER BY 	AVG";
 			
 		//	System.out.println("sql------->" + sql10);
 			

@@ -1,7 +1,7 @@
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.istarindia.apps.dao.Slide"%>
-<%@page import="com.istarindia.apps.dao.SlideDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Slide"%>
+<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page
@@ -224,8 +224,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 										<div class="panel-body white-bg">
 											<h1 class="forum-item-title">
 												<%
-													String sql5 = "SELECT title as title from learning_objective where id in (select DISTINCT learning_objectiveid from learning_objective_lesson where lessonid in (SELECT DISTINCT lesson_id as lesson_id FROM event_session_log WHERE event_session_log.event_id = '"
-																	+ eventId + "' ))";
+													String sql5 = "SELECT 	name AS title FROM 	skill_objective WHERE 	ID IN ( 		SELECT DISTINCT 			learning_objectiveid 		FROM 			lesson_skill_objective 		WHERE 			lessonid IN ( 				SELECT DISTINCT 					lesson_id AS lesson_id 				FROM 					event_log 				WHERE 					event_log.event_id = "+eventId+" 			) 	) AND type= 'LEARNING_BASED'";
 															List<HashMap<String, Object>> learningobjs = dbutils.executeQuery(sql5);
 												%>
 												<strong>Learning Objective Covered In Lesson</strong>

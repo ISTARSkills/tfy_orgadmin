@@ -1,22 +1,6 @@
 package in.orgadmin.admin.services;
 
-import com.istarindia.apps.UserTypes;
-import com.istarindia.apps.dao.Address;
-import com.istarindia.apps.dao.AddressDAO;
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.CollegeDAO;
-import com.istarindia.apps.dao.Company;
-import com.istarindia.apps.dao.CompanyDAO;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
-import com.istarindia.apps.dao.OrganizationDAO;
-import com.istarindia.apps.dao.PlacementOfficer;
-import com.istarindia.apps.dao.PlacementOfficerDAO;
-import com.istarindia.apps.dao.Student;
-import com.istarindia.apps.dao.StudentDAO;
-import com.istarindia.apps.dao.StudentProfileData;
-import com.istarindia.apps.dao.StudentProfileDataDAO;
+
 
 import in.recruiter.services.RecruiterServices;
 
@@ -26,9 +10,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.viksitpro.core.dao.entities.Address;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.UserTypes;
+
 public class OrgAdminUserService {
 
-	public ArrayList<String> getAllUserTypes() {
+/*	public ArrayList<String> getAllUserTypes() {
 
 		ArrayList<String> userTypesList = new ArrayList<String>();
 
@@ -47,9 +38,111 @@ public class OrgAdminUserService {
 		userTypesList.add(UserTypes.PRESENTOR);
 
 		return userTypesList;
-	}
+	}*/
 
-	public Student createStudent(String name, String email, String password, String mobileNumber, String gender,
+	
+	
+	public int CreateUsersForAdminPortal(String firstname, String lastname, String email, String password,
+			String mobileNumber, String gender, String userType, int college_id) {
+				
+		
+		List<IstarUser> istarUserList = (new IstarUserDAO()).findByEmail(email);
+		DBUTILS db = new DBUTILS();
+		int userID  = 0;
+		 int trainerUserID = 0;
+		 int presenterUserID = 0;
+		if (istarUserList.size() > 0) {
+			System.out.println("A user with this email address already exists of type "
+					+ istarUserList.get(0).getUserRoles() + "!");
+			return 0;
+			
+		}
+		
+		if(userType.equalsIgnoreCase("STUDENT")){
+			
+			
+			// Insert new Student
+			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+			
+			
+			 userID  = db.executeUpdateReturn(istarStudentSql);
+			 
+			//Student User Role Mapping
+				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", '12', (SELECT MAX(id)+1 FROM user_role), '1');";
+				db.executeUpdate(userRoleMappingSql);
+			
+			
+		}else if(userType.equalsIgnoreCase("TRAINER")){
+			
+			String[] presenterEmailaddress = email.split("@");
+			String presenterEmail = presenterEmailaddress[0]+"_presenter"+presenterEmailaddress[1];
+			
+			//Insert new Trainer
+			String istarTrainerSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+		
+			//Insert new Presenter 
+			String istarPresenterSql =  "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+presenterEmail+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+			
+			userID = db.executeUpdateReturn(istarTrainerSql);
+			  presenterUserID = db.executeUpdateReturn(istarPresenterSql);
+			  
+			//Trainer Presenter User Role Mapping
+			  String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", '14', (SELECT MAX(id)+1 FROM user_role), '1');"
+			  		+ "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+presenterUserID+", '10', (SELECT MAX(id)+1 FROM user_role), '1');";
+				db.executeUpdate(userRoleMappingSql);
+				
+				//Trainer Presenter Mapping
+				String trainerPresenterSql = "INSERT INTO trainer_presentor ( 	id, 	trainer_id, 	presentor_id ) VALUES 	((SELECT MAX(id)+1 FROM trainer_presentor), "+userID+", "+presenterUserID+");";
+				db.executeUpdate(trainerPresenterSql);
+			
+			
+		}
+			
+			
+			
+			
+		    //Trainer Student  User Profile
+			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	profile_image, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		NULL, 		'"+firstname+"', 		'"+lastname+"', 	NULL,	'"+gender+"', '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png',  "+userID+", 		NULL 	); ";
+			System.out.println(UserProfileSql);
+			db.executeUpdate(UserProfileSql);
+			
+			
+			//Trainer Student User Org Mapping
+			String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES 	("+userID+", "+college_id+", (SELECT MAX(id)+1 FROM user_org_mapping));";
+			db.executeUpdate(userOrgMappingSql);
+			
+			
+			
+			return userID;
+		
+	}
+	
+	
+	public int UpdateUsersForAdminPortal(int userID,String firstname, String lastname, String email, String password,
+			String mobileNumber, String gender, String userType, int college_id) {
+				
+		DBUTILS db = new DBUTILS();
+		
+		String updateIstarStudentSql = "UPDATE istar_user SET  'email' = '"+email+"',  'password' = '"+password+"',  'mobile' = '"+mobileNumber+"', WHERE 	('id' = "+userID+");";
+		
+		db.executeUpdate(updateIstarStudentSql);
+		
+		String updateUserProfileSql = "UPDATE user_profile SET  'first_name' = '"+firstname+"',  'last_name' = '"+lastname+"',  'gender' = '"+gender+"',  'profile_image' = '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png',  'user_id' = "+userID+",  'aadhar_no' = NULL WHERE 	('id' = '0');";
+		
+		db.executeUpdate(updateUserProfileSql);
+		
+		
+		return college_id;
+		
+		
+		
+	}
+	
+	
+}
+	
+	
+	/*public Student createStudent(String name, String email, String password, String mobileNumber, String gender,
 			String userType, Address address) {
 
 		List<IstarUser> istarUserList = (new IstarUserDAO()).findByEmail(email);
@@ -376,16 +469,15 @@ public class OrgAdminUserService {
 		IstarUserDAO dao = new IstarUserDAO();
 		DBUTILS dbUTILS = new DBUTILS();
 
-		/*
+		
 		 * ArrayList<Integer> trs = new ArrayList<>(); List<IstarUser> trainers
 		 * = dao.findAll(); for(IstarUser user : trainers) {
 		 * trs.add(user.getId()); } int pres_id = Collections.max(trs)+1;
-		 */
+		 
 
 		String update_TP_mapping_sql = "INSERT INTO trainer_presentor ( id, trainer_id, 	presentor_id ) VALUES 	"
 				+ "((SELECT max(id) +1 FROM trainer_presentor ), " + studentID + ", " + presentorId + ")";
 
 		dbUTILS.executeUpdate(update_TP_mapping_sql);
 		System.out.println(update_TP_mapping_sql);
-	}
-}
+	}*/

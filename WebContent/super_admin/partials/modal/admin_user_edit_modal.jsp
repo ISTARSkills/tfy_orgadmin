@@ -1,10 +1,10 @@
+<%@page import="com.viksitpro.core.dao.entities.UserProfile"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
-<%@page import="com.istarindia.apps.dao.StudentProfileData"%>
 <%@page import="in.orgadmin.admin.services.OrgAdminBatchGroupService"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.istarindia.apps.dao.Student"%>
-<%@page import="com.istarindia.apps.dao.StudentDAO"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -19,15 +19,15 @@
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 	}
 
-	Student user = new StudentDAO().findById(user_id);
+	IstarUser user = new IstarUserDAO().findById(user_id);
 
-	int colegeID = user.getCollege().getId();
+	int colegeID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
 
 	ArrayList<Integer> selectedBG = new OrgAdminBatchGroupService().getSelectedBatchBgoups(user_id);
-	StudentProfileData stuProfileData = user.getStudentProfileData();
+	UserProfile stuProfileData = user.getUserProfile();
 	String lastName = "";
 	if (stuProfileData != null) {
-		lastName = stuProfileData.getLastname();
+		lastName = stuProfileData.getLastName();
 	}
 	AdminUIServices ui = new AdminUIServices();
 %>
@@ -57,7 +57,7 @@
 
 							<label>First Name</label> <input type="text"
 								placeholder="First Name.." name="user_f_name"
-								class="form-control" value="<%=user.getName()%>">
+								class="form-control" value="<%=stuProfileData.getFirstName()%>">
 						</div>
 
 						<div class="col-lg-6">
@@ -72,9 +72,9 @@
 							<label class="control-label">Gender</label> <select
 								class="form-control m-b" name="user_gender">
 								<option value="MALE"
-									<%=user.getGender() == "MALE" ? "selected" : ""%>>Male</option>
+									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
 								<option value="FEMALE"
-									<%=user.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
+									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
 							</select>
 						</div>
 

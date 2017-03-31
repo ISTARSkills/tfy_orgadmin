@@ -1,10 +1,9 @@
 <%@page import="in.superadmin.services.ReportDetailService"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
-<%@page import="com.istarindia.apps.dao.CourseDAO"%>
-<%@page import="com.istarindia.apps.dao.Course"%>
+<%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="in.talentify.core.utils.*"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="java.util.*"%>
 
@@ -136,6 +135,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 								int b_id = Integer.parseInt(request.getParameter("batch_id")); 
 								jobData = uiUtil.getJobMasterLevelForBatch(b_id);
 							}	
+							if(jobData != null){
 							
 									for (HashMap<String, Object> row: jobData) {
 										
@@ -163,7 +163,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 							</div>
 							<%
 									//}
-								}
+								}}
 								%>
 						</div>
 
@@ -225,8 +225,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 			<div class="<%=flag ? "col-lg-12" : "col-lg-6"%>">
 				<div class="ibox-content profile-content">
-					<h3 class="font-bold">Students Enrolled in Data Analytics
-						Program</h3>
+					<h3 class="font-bold">Students Enrolled in Data Analytics Program</h3>
 					<div class="ibox-content student_content_holder">
 						<div id="student_list_container">
 							<%
@@ -236,14 +235,14 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 							<div class="col-lg-2">
 								<div
 									class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder">
-									<div data-target="#<%=item.get("student_id").toString()%>"
+									<div data-target="#<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>"
 										class='holder-data'>
 										<img alt="image" class="img-circle m-t-sm student_image"
 											src="<%=item.get("profile_image").toString()%>" />
-										<p class="m-r-sm m-t-sm"><%=item.get("name").toString()%></p>
+										<p class="m-r-sm m-t-sm"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></p>
 									</div>
 									<div class="modal inmodal"
-										id="<%=item.get("student_id").toString()%>" tabindex="-1"
+										id="<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>" tabindex="-1"
 										role="dialog" aria-hidden="true">
 										<div class="modal-dialog">
 											<div class="modal-content animated flipInY">
@@ -252,26 +251,26 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 														<span aria-hidden="true">&times;</span><span
 															class="sr-only">Close</span>
 													</button>
-													<h4 class="modal-title"><%=item.get("name").toString()%></h4>
+													<h4 class="modal-title"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></h4>
 												</div>
 												<div class="modal-body">
 													<p>
-														<strong>First Name: </strong><%=item.get("firstname").toString()%>
+														<strong>First Name: </strong><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%>
 													</p>
 													<p>
-														<strong>Last Name: </strong><%=item.get("lastname").toString()%>
+														<strong>Last Name: </strong><%=item.get("lastname").toString()!= null ?item.get("lastname").toString():""%>
 													</p>
 													<p>
-														<strong>Email: </strong><%=item.get("email").toString()%>
+														<strong>Email: </strong><%=item.get("email").toString()!= null ?item.get("email").toString():""%>
 													</p>
 													<p>
-														<strong>Mobile: </strong><%=item.get("mobileno").toString()%>
+														<strong>Mobile: </strong><%=item.get("mobile").toString()!= null ?item.get("mobile").toString():""%>
 													</p>
 													<p>
-														<strong>Gender: </strong><%=item.get("gender").toString().toUpperCase()%>
+														<strong>Gender: </strong><%=item.get("gender").toString().toUpperCase()!= null ?item.get("gender").toString():""%>
 													</p>
 													<p>
-														<strong>College Name: </strong><%=item.get("college_name").toString()%>
+														<strong>College Name: </strong><%=item.get("college_name").toString()!= null ?item.get("college_name").toString():""%>
 													</p>
 
 												</div>

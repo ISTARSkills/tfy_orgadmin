@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.Lesson;
-import com.istarindia.apps.dao.LessonDAO;
+import com.viksitpro.core.dao.entities.Lesson;
+import com.viksitpro.core.dao.entities.LessonDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 public class OrgAdminSkillService {
 
@@ -14,9 +14,9 @@ public class OrgAdminSkillService {
 
 	public List<HashMap<String, Object>> getAllSkills() {
 
-		String sql = "SELECT DISTINCT 	so. ID, 	so. NAME FROM 	skill_objective so, 	lesson_skill_objective lso WHERE 	so. NAME NOT LIKE '' AND so. TYPE = 'TASK_BASED' AND lso.skill_objective_id = so. ID ORDER BY 	NAME";
+		String sql = "SELECT DISTINCT 	so. ID, 	so. NAME FROM 	skill_objective so, 	lesson_skill_objective lso WHERE 	so. NAME NOT LIKE '' AND so. TYPE = 'TASK_BASED' AND lso.learning_objectiveid = so.id ORDER BY 	NAME";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -24,14 +24,14 @@ public class OrgAdminSkillService {
 
 	public List<HashMap<String, Object>> getAllLessonSkills(int orgId) {
 
-		String sql = "(select skill_objective.id , skill_objective.name , 'COURSE' as parent_type from skill_objective , course where course.parent_skill_objective_id = skill_objective.id and course.id in (select distinct course.id  from course, batch, batch_group where course.id = batch.course_id and batch.batch_group_id = batch_group.id and batch_group.college_id ="
+		String sql = "( 	SELECT 		skill_objective. ID, 		skill_objective. NAME, 		'COURSE' AS parent_type 	FROM 		skill_objective, 		course,    course_skill_objective 	WHERE course.id = course_skill_objective.course_id AND course_skill_objective.skill_objective_id = skill_objective.id 	AND course. ID IN ( 		SELECT DISTINCT 			course. ID 		FROM 			course, 			batch, 			batch_group 		WHERE 			course. ID = batch.course_id 		AND batch.batch_group_id = batch_group. ID 		AND batch_group.college_id = "
 				+ orgId
-				+ ")  )union   (select skill_objective.id , skill_objective.name , 'MODULE' as parent_ype from skill_objective , module where module.parent_skill_objective_id = skill_objective.id and module.id in (select distinct module_course.module_id from course, batch, batch_group, module_course where course.id = batch.course_id and batch.batch_group_id = batch_group.id and module_course.course_id = course.id and batch_group.college_id ="
+				+ " 	) ) UNION 	( 		SELECT 			skill_objective. ID, 			skill_objective. NAME, 			'MODULE' AS parent_ype 		FROM 			skill_objective, 			MODULE, module_skill_objective 		WHERE MODULE.id = module_skill_objective.module_id AND module_skill_objective.skill_objective_id = skill_objective.id 		AND MODULE . ID IN ( 			SELECT DISTINCT 				module_course.module_id 			FROM 				course, 				batch, 				batch_group, 				module_course 			WHERE 				course. ID = batch.course_id 			AND batch.batch_group_id = batch_group. ID 			AND module_course.course_id = course. ID 			AND batch_group.college_id = "
 				+ orgId
-				+ ") ) union   (select skill_objective.id , skill_objective.name , 'CMSESSION' as parent_ype from skill_objective , cmsession where cmsession.parent_skill_objective_id = skill_objective.id and cmsession.id in (select distinct cmsession_module.cmsession_id from course, batch, batch_group, module_course, cmsession_module where course.id = batch.course_id and batch.batch_group_id = batch_group.id and module_course.course_id = course.id and cmsession_module.module_id = module_course.module_id and batch_group.college_id ="
-				+ orgId + ") ) order by id";
+				+ " 		) 	) UNION 	( 		SELECT 			skill_objective. ID, 			skill_objective. NAME, 			'CMSESSION' AS parent_ype 		FROM 			skill_objective, 			cmsession, cmsession_skill_objective 		WHERE cmsession.id = cmsession_skill_objective.cmsession_id AND cmsession_skill_objective.skill_objective_id = skill_objective.id 		AND cmsession. ID IN ( 			SELECT DISTINCT 				cmsession_module.cmsession_id 			FROM 				course, 				batch, 				batch_group, 				module_course, 				cmsession_module 			WHERE 				course. ID = batch.course_id 			AND batch.batch_group_id = batch_group. ID 			AND module_course.course_id = course. ID 			AND cmsession_module.module_id = module_course.module_id 			AND batch_group.college_id = "
+				+ orgId + " 		) 	) ORDER BY 	ID";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -39,9 +39,10 @@ public class OrgAdminSkillService {
 
 	public List<HashMap<String, Object>> getAdminRoleList(int orgId) {
 
-		String sql = "SELECT distinct 	t1. ID, 	t1.role_name, 	COUNT (t1.sid) AS role_skill_count FROM 	( 		SELECT DISTINCT 			C . ID, 			C .course_name AS role_name, 			skill_objective. ID AS sid 		FROM 			course C 		LEFT JOIN module_course ON ( 			module_course.course_id = C . ID 		) 		LEFT JOIN cmsession_module ON ( 			module_course.module_id = cmsession_module.module_id 		) 		LEFT JOIN lesson_cmsession ON ( 			cmsession_module.cmsession_id = lesson_cmsession.cmsession_id 		) 		LEFT JOIN lesson_skill_objective ON ( 			lesson_cmsession.lesson_id = lesson_skill_objective.lesson_id 		) 		LEFT JOIN skill_objective ON ( 			skill_objective. ID = lesson_skill_objective.skill_objective_id 			AND skill_objective. TYPE = 'TASK_BASED' 		) 		LEFT JOIN batch ON ( 			batch.course_id = module_course.course_id 		) 		LEFT JOIN batch_group ON ( 			batch.batch_group_id = batch_group. ID 			AND batch_group.college_id = "+orgId+" 		) 	) t1 GROUP BY 	t1. ID, 	t1.role_name ORDER BY 	t1.role_name";
+		String sql = "SELECT DISTINCT 	t1. ID, 	t1.role_name, 	COUNT (t1.sid) AS role_skill_count FROM 	( 		SELECT DISTINCT 			C . ID, 			C .course_name AS role_name, 			skill_objective. ID AS sid 		FROM 			course C 		LEFT JOIN module_course ON ( 			module_course.course_id = C . ID 		) 		LEFT JOIN cmsession_module ON ( 			module_course.module_id = cmsession_module.module_id 		) 		LEFT JOIN lesson_cmsession ON ( 			cmsession_module.cmsession_id = lesson_cmsession.cmsession_id 		) 		LEFT JOIN lesson_skill_objective ON ( 			lesson_cmsession.lesson_id = lesson_skill_objective.lessonid 		) 		LEFT JOIN skill_objective ON ( 			skill_objective. ID = lesson_skill_objective.learning_objectiveid 			AND skill_objective. TYPE = 'TASK_BASED' 		) 		LEFT JOIN batch ON ( 			batch.course_id = module_course.course_id 		) 		LEFT JOIN batch_group ON ( 			batch.batch_group_id = batch_group. ID 			AND batch_group.college_id = "
+				+ orgId + " 		) 	) t1 GROUP BY 	t1. ID, 	t1.role_name ORDER BY 	t1.role_name";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -49,11 +50,11 @@ public class OrgAdminSkillService {
 
 	public List<HashMap<String, Object>> getSkillAssosicatedRoleList(int orgId, int roleId) {
 
-		String sql = "SELECT distinct skill_objective.name,skill_objective.id, module_course.course_id FROM 	module_course, 	cmsession_module, 	lesson_cmsession, 	batch, batch_group, lesson_skill_objective, skill_objective WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and batch.course_id = module_course.course_id and batch.batch_group_id = batch_group.id and lesson_cmsession.lesson_id = lesson_skill_objective.lesson_id and skill_objective.id  =  lesson_skill_objective.skill_objective_id and batch_group.college_id = "
-				+ orgId + " and batch.course_id = " + roleId
-				+ " and skill_objective.type ='TASK_BASED' order by skill_objective.name, module_course.course_id";
+		String sql = "SELECT DISTINCT 	skill_objective. NAME, 	skill_objective. ID, 	module_course.course_id FROM 	module_course, 	cmsession_module, 	lesson_cmsession, 	batch, 	batch_group, 	lesson_skill_objective, 	skill_objective WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND batch.course_id = module_course.course_id AND batch.batch_group_id = batch_group. ID AND lesson_cmsession.lesson_id = lesson_skill_objective.lessonid AND skill_objective. ID = lesson_skill_objective.learning_objectiveid AND batch_group.college_id = "
+				+ orgId + " AND batch.course_id = " + roleId
+				+ " AND skill_objective. TYPE = 'TASK_BASED' ORDER BY 	skill_objective. NAME, 	module_course.course_id";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -63,7 +64,7 @@ public class OrgAdminSkillService {
 	public void deleteSkillAssosicatedRole(int roleskillId, int roll_id) {
 		String sql = "DELETE FROM role_skill_mapping rs WHERE 	rs.role_id = " + roll_id + " AND rs. ID = "
 				+ roleskillId;
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		db.executeUpdate(sql);
 	}
@@ -74,40 +75,42 @@ public class OrgAdminSkillService {
 			DBUTILS db = new DBUTILS();
 
 			// create cmssession
-			String sql = "INSERT INTO cmsession ( id, 	title, 	uploader_admin_id, 	description, 	order_id, 	is_deleted ) VALUES 	( (select COALESCE(max(id),0)+1 from cmsession), 		'skill_session_"
-					+ skillId + rollId + "', 		'3', 		'skill_desc" + skillId + rollId
-					+ "', 		(select COALESCE(max(id),0)+1 from cmsession), 		'f' 	) returning id";
-			//System.err.println(sql);
+			String sql = "INSERT INTO cmsession ( 	ID, 	title,  description, 	order_id, 	is_deleted,   created_at ) VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				cmsession 		), 		'skill_session_" 					+ skillId + rollId + "', 	 		'skill_desc" + skillId + rollId 					+ "', 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				cmsession 		), 		'f',   now() 	) RETURNING ID";
+			// System.err.println(sql);
 			int cmssession = (int) db.executeUpdateReturn(sql);
 
 			// create module
 			sql = "INSERT INTO module (id, module_name, order_id) VALUES ((select COALESCE(max(id),0)+1 from module), 'skill_session"
 					+ skillId + rollId + "', (select COALESCE(max(id),0)+1 from module))returning id";
-			//System.err.println(sql);
+			// System.err.println(sql);
 			int module_id = (int) db.executeUpdateReturn(sql);
 
 			// create cmsession_module mapping
 			sql = "INSERT INTO cmsession_module (cmsession_id, module_id) VALUES ('" + cmssession + "', '" + module_id
 					+ "')";
-			//System.err.println(sql);
+			// System.err.println(sql);
+			System.out.println(sql);
 			db.executeUpdate(sql);
 
 			// create module_course mapping
 			sql = "INSERT INTO module_course (module_id, course_id) VALUES ('" + module_id + "', '" + rollId + "')";
-			//System.err.println(sql);
+			// System.err.println(sql);
+			System.out.println(sql);
 			db.executeUpdate(sql);
 
 			// get list of lessons
-			sql = "SELECT DISTINCT 	l_s_o.lesson_id FROM 	skill_objective sk_obj, 	lesson_skill_objective l_s_o WHERE 	sk_obj. ID = "
-					+ skillId + " AND l_s_o.skill_objective_id = sk_obj. ID";
-			//System.err.println(sql);
+			sql = "SELECT DISTINCT 	l_s_o.lessonid FROM 	skill_objective sk_obj, 	lesson_skill_objective l_s_o WHERE 	sk_obj. ID = " 					+ skillId + " AND l_s_o.learning_objectiveid = sk_obj. ID";
+			// System.err.println(sql);
+			System.out.println(sql);
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 			for (HashMap<String, Object> item : data) {
-				//System.out.println("lesson_id------->" + item.get("lesson_id"));
-				sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + item.get("lesson_id")
+				// System.out.println("lesson_id------->" +
+				// item.get("lesson_id"));
+				sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + item.get("lessonid")
 						+ "', '" + cmssession + "')";
-				//System.err.println(sql);
+				// System.err.println(sql);
+				System.out.println(sql);
 				db.executeUpdate(sql);
 			}
 
@@ -116,36 +119,36 @@ public class OrgAdminSkillService {
 		}
 
 	}
-	
-	public int getTotalUsers(int orgId){
-		int count=0;
-		String sql = "select CAST (COUNT(T . ID) AS INT) from (SELECT DISTINCT 	student. ID, 	student.email AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	student_playlist, 	student WHERE 	student. ID = student_playlist.student_id AND student.organization_id ="+orgId+" GROUP BY 	student.email, 	student. ID)t"; 
-		//System.out.println("sql---"+sql);
+
+	public int getTotalUsers(int orgId) {
+		int count = 0;
+		String sql = "SELECT 	CAST (COUNT(T . ID) AS INT) FROM 	( 		SELECT DISTINCT 			istar_user. ID, 			istar_user.email AS NAME, 			COUNT ( 				DISTINCT student_playlist.lesson_id 			) 		FROM 			student_playlist, 			istar_user, user_org_mapping 		WHERE 			istar_user. ID = student_playlist.student_id AND istar_user.id = user_org_mapping.user_id 		AND user_org_mapping.organization_id = "+orgId+" 		GROUP BY 			istar_user.email, 			istar_user. ID 	) T";
+		// System.out.println("sql---"+sql);
 		DBUTILS db = new DBUTILS();
-		try{
-		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		count=(int)data.get(0).get("count");
-		}catch (Exception e) {
+		try {
+			List<HashMap<String, Object>> data = db.executeQuery(sql);
+			count = (int) data.get(0).get("count");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return count;
-		
+
 	}
 
-	public List<HashMap<String, Object>> getAllContentUserList(int orgId, String type,int offset,String searchKey) {
+	public List<HashMap<String, Object>> getAllContentUserList(int orgId, String type, int offset, String searchKey) {
 		String sql = "";
 		if (type.equalsIgnoreCase("User")) {
-			
-			String searchquery=""; 
-			if(searchKey!=null && !searchKey.equalsIgnoreCase("")){
-				searchquery=" AND student.email like '%"+searchKey+"%'";
+
+			String searchquery = "";
+			if (searchKey != null && !searchKey.equalsIgnoreCase("")) {
+				searchquery = " AND istar_user.email like '%" + searchKey + "%'";
 			}
-			
-			sql = "SELECT DISTINCT student.id,student.email as name,count(distinct student_playlist.lesson_id) FROM 	student_playlist, student WHERE student.id = student_playlist.student_id and student.organization_id="
-					+ orgId + searchquery+" group by student.email, student.id order by student.email limit 10 offset "+offset;
-			
+
+			sql = "SELECT DISTINCT 	istar_user. ID, 	istar_user.email AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	student_playlist, 	istar_user, user_org_mapping WHERE 	istar_user. ID = student_playlist.student_id AND istar_user. ID = user_org_mapping.user_id AND user_org_mapping.organization_id = "+ orgId + searchquery + " GROUP BY 	istar_user.email, 	istar_user. ID ORDER BY 	istar_user.email LIMIT 10 OFFSET  " + offset ;
+
 		} else if (type.equalsIgnoreCase("Group")) {
-			sql = "SELECT 	batch_group. ID, 	batch_group. NAME AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	batch_group LEFT JOIN batch_students ON ( 	batch_students.batch_group_id = batch_group. ID ) LEFT JOIN student_playlist ON ( 	student_playlist.student_id = batch_students.student_id ) WHERE 	batch_group.college_id = "+orgId+" GROUP BY 	batch_group. ID, 	batch_group. NAME";
+			sql = "SELECT 	batch_group. ID, 	batch_group. NAME AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	batch_group LEFT JOIN batch_students ON ( 	batch_students.batch_group_id = batch_group. ID ) LEFT JOIN student_playlist ON ( 	student_playlist.student_id = batch_students.student_id ) WHERE 	batch_group.college_id = "
+					+ orgId + " GROUP BY 	batch_group. ID, 	batch_group. NAME";
 		} else if (type.equalsIgnoreCase("Role")) {
 			sql = "SELECT DISTINCT 	course. ID, 	course.course_name AS NAME, 	COUNT ( 		DISTINCT lesson_cmsession.lesson_id 	) FROM 	batch, 	batch_group, 	module_course, 	cmsession_module, 	lesson_cmsession, 	course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND course. ID = module_course.course_id AND batch.course_id = course. ID AND batch.batch_group_id = batch_group. ID AND batch_group.college_id = "
 					+ orgId + " GROUP BY 	course. ID, 	course.course_name ORDER BY course.course_name";
@@ -169,7 +172,7 @@ public class OrgAdminSkillService {
 			sql = "select distinct lesson.title AS lesson_title, 	lesson. ID AS lesson_id from lesson where id in ( SELECT DISTINCT 	lesson_cmsession.lesson_id FROM 	batch, 	batch_group, 	module_course, 	cmsession_module, 	lesson_cmsession, 	course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND course. ID = module_course.course_id AND batch.course_id = course. ID AND batch.batch_group_id = batch_group. ID AND batch_group.college_id = "
 					+ orgId + " and batch.course_id = " + typeId + " )";
 		}
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -337,25 +340,25 @@ public class OrgAdminSkillService {
 			}
 		}
 	}
-	
+
 	public List<HashMap<String, Object>> getAllCourseAvailable() {
 
 		String sql = "select id,course_name from course ORDER BY course_name";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
 	}
-	
+
 	public List<HashMap<String, Object>> getAllBatchesAvailable(int batchGP) {
 
-		String sql = "select id,name,course_id from batch b where b.batch_group_id="+batchGP;
+		String sql = "select id,name,course_id from batch b where b.batch_group_id=" + batchGP;
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
 	}
-	
+
 }

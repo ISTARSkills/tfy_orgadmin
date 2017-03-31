@@ -3,18 +3,19 @@ package in.superadmin.ops.service;
 import java.util.HashMap;
 import java.util.List;
 
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
 
 public class OpsReportSevices {
 
 	DBUTILS dbutils = new DBUTILS();
 
-	public StringBuffer getStudentReportDetailsForTable(int assessmentId,int batchId) {
-		String sql = "SELECT 	TFINAL. ID AS student_id, 	TFINAL. NAME AS student_name, 	TFINAL.score AS score, 	TFINAL.percentage AS percentage, 	( 		CASE 		WHEN TFINAL.percentage LIKE 'Absent' THEN 			'Absent' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 75 			AND CAST (TFINAL.percentage AS INTEGER) <= 100 		) THEN 			'A+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 60 			AND CAST (TFINAL.percentage AS INTEGER) < 75 		) THEN 			'A' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 40 			AND CAST (TFINAL.percentage AS INTEGER) < 60 		) THEN 			'B+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) < 40 		) THEN 			'B' 		END 	) AS grade "
-				+ "FROM 	( 		SELECT DISTINCT 			student. ID, 			student. NAME, 			( 				CASE 				WHEN report.score IS NOT NULL THEN 					CAST (report.score AS VARCHAR) 				ELSE 					'Absent' 				END 			) AS score, 			CAST ( 				( 					CASE 					WHEN report.score IS NULL THEN 						'Absent' 					ELSE 						CAST ( 							(report.score * 100) / ( 								SELECT 									COUNT (DISTINCT questionid) 								FROM 									assessment_question 								"
-				+ "WHERE 									assessmentid = "+assessmentId+" 							) AS VARCHAR 						) 					END 				) AS VARCHAR 			) AS percentage 		FROM 			student 		LEFT JOIN report ON ( 			student. ID = report.user_id 			"
-				+ "AND report.assessment_id = "+assessmentId+" 		) 		WHERE 			student. ID IN ( 				SELECT DISTINCT 					batch_students.student_id 				FROM 					batch_students, 					batch 				WHERE 					batch_students.batch_group_id = batch.batch_group_id 				"
-				+ "AND batch. ID = "+batchId+" 			) 	) TFINAL ORDER BY 	ID, 	NAME";
+	public StringBuffer getStudentReportDetailsForTable(int assessmentId, int batchId) {
+		String sql = "SELECT 	TFINAL.user_id AS student_id, 	TFINAL.first_name AS student_name, 	TFINAL.score AS score, 	TFINAL.percentage AS percentage, 	( 		CASE 		WHEN TFINAL.percentage LIKE 'Absent' THEN 			'Absent' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 75 			AND CAST (TFINAL.percentage AS INTEGER) <= 100 		) THEN 			'A+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 60 			AND CAST (TFINAL.percentage AS INTEGER) < 75 		) THEN 			'A' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 40 			AND CAST (TFINAL.percentage AS INTEGER) < 60 		) THEN 			'B+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) < 40 		) THEN 			'B' 		END 	) AS grade FROM 	( 		SELECT DISTINCT 			user_profile.user_id, 			user_profile.first_name, 			( 				CASE 				WHEN report.score IS NOT NULL THEN 					CAST (report.score AS VARCHAR) 				ELSE 					'Absent' 				END 			) AS score, 			CAST ( 				( 					CASE 					WHEN report.score IS NULL THEN 						'Absent' 					ELSE 						CAST ( 							(report.score * 100) / ( 								SELECT 									COUNT (DISTINCT questionid) 								FROM 									assessment_question 								WHERE 									assessmentid = "
+				+ assessmentId
+				+ " 							) AS VARCHAR 						) 					END 				) AS VARCHAR 			) AS percentage 		FROM 			user_profile 		LEFT JOIN report ON ( 			user_profile.user_id = report.user_id 			AND report.assessment_id = "
+				+ assessmentId
+				+ " 		) 		WHERE 			user_profile.user_id IN ( 				SELECT DISTINCT 					batch_students.student_id 				FROM 					batch_students, 					batch 				WHERE 					batch_students.batch_group_id = batch.batch_group_id 				AND batch. ID = "
+				+ batchId + " 			) 	) TFINAL ORDER BY 	user_id, 	first_name";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
@@ -33,12 +34,12 @@ public class OpsReportSevices {
 		return out;
 	}
 
-	public StringBuffer getStudentScoreDetailsForTable(int assessmentId,int batchId) {
-		String sql = "SELECT 	COUNT (*) FILTER (WHERE gt.grade = 'A+') AS aplus, 	COUNT (*) FILTER (WHERE gt.grade = 'A') AS A, 	COUNT (*) FILTER (WHERE gt.grade = 'B+') AS bplus, 	COUNT (*) FILTER (WHERE gt.grade = 'B') AS b,   COUNT (*) FILTER (WHERE gt.grade = 'C') AS c, 	COUNT (*) FILTER (WHERE gt.grade = 'Absent') AS ABSENT"
-				+ " FROM 	( 		SELECT 			TFINAL. ID AS student_id, 			TFINAL. NAME AS student_name, 			TFINAL.score AS score, 			( 				CASE 				WHEN TFINAL.score LIKE 'Absent'         THEN 					'Absent'         WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 25 					AND CAST (TFINAL.score AS INTEGER) <= 30 				) THEN 					'A+' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 20 					AND CAST (TFINAL.score AS INTEGER) < 25 				) THEN 					'A' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 10 					AND CAST (TFINAL.score AS INTEGER) < 15 				) THEN 					'B+' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 5 					AND CAST (TFINAL.score AS INTEGER) < 10 				) THEN 					'B' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) < 5 				) THEN 					'C' 				END 			) AS grade 		"
-				+ "FROM 			( 				SELECT DISTINCT 					student. ID, 					student. NAME, 					( 						CASE 						WHEN report.score IS NOT NULL THEN 							CAST (report.score AS VARCHAR) 						ELSE 							'Absent' 						END 					) AS score 					 				FROM 					student 				LEFT JOIN report ON ( 					student. ID = report.user_id 					"
-				+ "AND report.assessment_id = "+assessmentId+" 				) 				WHERE 					student. ID IN ( 						SELECT DISTINCT 							batch_students.student_id 						FROM 							batch_students, 							batch 						WHERE 							batch_students.batch_group_id = batch.batch_group_id 						"
-				+ "AND batch. ID = "+batchId+" 					) 			) TFINAL 		ORDER BY 			ID, 			NAME 	) gt";
+	public StringBuffer getStudentScoreDetailsForTable(int assessmentId, int batchId) {
+		String sql = "SELECT 	COUNT (*) FILTER (WHERE gt.grade = 'A+') AS aplus, 	COUNT (*) FILTER (WHERE gt.grade = 'A') AS A, 	COUNT (*) FILTER (WHERE gt.grade = 'B+') AS bplus, 	COUNT (*) FILTER (WHERE gt.grade = 'B') AS b, 	COUNT (*) FILTER (WHERE gt.grade = 'C') AS C, 	COUNT (*) FILTER (WHERE gt.grade = 'Absent') AS ABSENT FROM 	( 		SELECT 			TFINAL. user_id AS student_id, 			TFINAL. first_name AS student_name, 			TFINAL.score AS score, 			( 				CASE 				WHEN TFINAL.score LIKE 'Absent' THEN 					'Absent' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 25 					AND CAST (TFINAL.score AS INTEGER) <= 30 				) THEN 					'A+' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 20 					AND CAST (TFINAL.score AS INTEGER) < 25 				) THEN 					'A' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 10 					AND CAST (TFINAL.score AS INTEGER) < 15 				) THEN 					'B+' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) >= 5 					AND CAST (TFINAL.score AS INTEGER) < 10 				) THEN 					'B' 				WHEN ( 					CAST (TFINAL.score AS INTEGER) < 5 				) THEN 					'C' 				END 			) AS grade 		FROM 			( 				SELECT DISTINCT 					user_profile.user_id, 					user_profile.first_name, 					( 						CASE 						WHEN report.score IS NOT NULL THEN 							CAST (report.score AS VARCHAR) 						ELSE 							'Absent' 						END 					) AS score 				FROM 					user_profile 				LEFT JOIN report ON ( 					user_profile.user_id = report.user_id 					AND report.assessment_id = "
+				+ assessmentId
+				+ " 				) 				WHERE 					user_profile. user_id IN ( 						SELECT DISTINCT 							batch_students.student_id 						FROM 							batch_students, 							batch 						WHERE 							batch_students.batch_group_id = batch.batch_group_id 						AND batch. ID = "
+				+ batchId
+				+ " 					) 			) TFINAL 		ORDER BY 			user_id, 			first_name 	) gt";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
@@ -66,11 +67,14 @@ public class OpsReportSevices {
 		return out;
 	}
 
-	public StringBuffer getStudentPercentageDetailsForTable(int assessmentId,int batchId) {
-		String sql = "SELECT 	COUNT (*) FILTER (WHERE gt.grade = 'A+') AS aplus, 	COUNT (*) FILTER (WHERE gt.grade = 'A') AS A, 	COUNT (*) FILTER (WHERE gt.grade = 'B+') AS bplus, 	COUNT (*) FILTER (WHERE gt.grade = 'B') AS b, 	COUNT (*) FILTER (WHERE gt.grade = 'Absent') AS ABSENT FROM 	( 		SELECT 			TFINAL. ID AS student_id, 			TFINAL. NAME AS student_name, 			TFINAL.score AS score, 			TFINAL.percentage AS percentage, 			( 				CASE 				WHEN TFINAL.percentage LIKE 'Absent' THEN 					'Absent' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 75 					AND CAST (TFINAL.percentage AS INTEGER) <= 100 				) THEN 					'A+' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 60 					AND CAST (TFINAL.percentage AS INTEGER) < 75 				) THEN 					'A' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 40 					AND CAST (TFINAL.percentage AS INTEGER) < 60 				) THEN 					'B+' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) < 40 				) THEN 					'B' 				END 			) AS grade 		FROM 			( 				SELECT DISTINCT 					student. ID, 					student. NAME, 					( 						CASE 						WHEN report.score IS NOT NULL THEN 							CAST (report.score AS VARCHAR) 						ELSE 							'Absent' 						END 					) AS score, 					CAST ( 						( 							CASE 							WHEN report.score IS NULL THEN 								'Absent' 							ELSE 								CAST ( 									(report.score * 100) / ( 										SELECT 											COUNT (DISTINCT questionid) 										FROM 											assessment_question 										WHERE 											"
-				+ "assessmentid = "+assessmentId+" 									) AS VARCHAR 								) 							END 						) AS VARCHAR 					) AS percentage 				FROM 					student 				LEFT JOIN report ON ( 					student. ID = report.user_id 				"
-				+ "	AND report.assessment_id = "+assessmentId+" 				) 				WHERE 					student. ID IN ( 						SELECT DISTINCT 							batch_students.student_id 						FROM 							batch_students, 							batch 						WHERE 							batch_students.batch_group_id = batch.batch_group_id 					"
-				+ "	AND batch. ID = "+batchId+" 					) 			) TFINAL 		ORDER BY 			ID, 			NAME 	) gt";
+	public StringBuffer getStudentPercentageDetailsForTable(int assessmentId, int batchId) {
+		String sql = "SELECT 	COUNT (*) FILTER (WHERE gt.grade = 'A+') AS aplus, 	COUNT (*) FILTER (WHERE gt.grade = 'A') AS A, 	COUNT (*) FILTER (WHERE gt.grade = 'B+') AS bplus, 	COUNT (*) FILTER (WHERE gt.grade = 'B') AS b, 	COUNT (*) FILTER (WHERE gt.grade = 'Absent') AS ABSENT FROM 	( 		SELECT 			TFINAL.user_id AS student_id, 			TFINAL. first_name AS student_name, 			TFINAL.score AS score, 			TFINAL.percentage AS percentage, 			( 				CASE 				WHEN TFINAL.percentage LIKE 'Absent' THEN 					'Absent' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 75 					AND CAST (TFINAL.percentage AS INTEGER) <= 100 				) THEN 					'A+' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 60 					AND CAST (TFINAL.percentage AS INTEGER) < 75 				) THEN 					'A' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) >= 40 					AND CAST (TFINAL.percentage AS INTEGER) < 60 				) THEN 					'B+' 				WHEN ( 					CAST (TFINAL.percentage AS INTEGER) < 40 				) THEN 					'B' 				END 			) AS grade 		FROM 			( 				SELECT DISTINCT 					user_profile.user_id, 					user_profile.first_name, 					( 						CASE 						WHEN report.score IS NOT NULL THEN 							CAST (report.score AS VARCHAR) 						ELSE 							'Absent' 						END 					) AS score, 					CAST ( 						( 							CASE 							WHEN report.score IS NULL THEN 								'Absent' 							ELSE 								CAST ( 									(report.score * 100) / ( 										SELECT 											COUNT (DISTINCT questionid) 										FROM 											assessment_question 										WHERE 											 assessmentid = "
+				+ assessmentId
+				+ " 									) AS VARCHAR 								) 							END 						) AS VARCHAR 					) AS percentage 				FROM 					user_profile 				LEFT JOIN report ON ( 					user_profile.user_id = report.user_id 					AND report.assessment_id = "
+				+ assessmentId
+				+ " 				) 				WHERE 					user_profile.user_id IN ( 						SELECT DISTINCT 							batch_students.student_id 						FROM 							batch_students, 							batch 						WHERE 							batch_students.batch_group_id = batch.batch_group_id 						AND batch. ID = "
+				+ batchId
+				+ " 					) 			) TFINAL 		ORDER BY 			user_id, 			first_name 	) gt";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
@@ -94,7 +98,7 @@ public class OpsReportSevices {
 
 	public StringBuffer getOrganization() {
 		// System.err.println(orgId);
-		String sql = "SELECT id,name FROM college";
+		String sql = "SELECT id,name FROM organization";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 		for (HashMap<String, Object> item : data) {
@@ -117,14 +121,17 @@ public class OpsReportSevices {
 	public StringBuffer getAllOptions(int question_id) {
 		String sql = "select * from assessment_option where question_id=" + question_id;
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		List<HashMap<String, Object>> questionItem = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 		for (HashMap<String, Object> item : questionItem) {
 			if (item.get("marking_scheme").toString().equalsIgnoreCase("1")) {
-				out.append("<div class='alert alert-success' style='color: #000 !important'><b>"+item.get("text")+"</b></div>");
-			}else{
-				out.append("<div class='alert alert-success' style='background-color: #eef2f4 !important;border-color: #eef2f4 !important; '>"+item.get("text")+"</div>");	
+				out.append("<div class='alert alert-success' style='color: #000 !important'><b>" + item.get("text")
+						+ "</b></div>");
+			} else {
+				out.append(
+						"<div class='alert alert-success' style='background-color: #eef2f4 !important;border-color: #eef2f4 !important; '>"
+								+ item.get("text") + "</div>");
 			}
 		}
 		return out;

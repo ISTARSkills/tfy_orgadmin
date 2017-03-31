@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.dao.BatchGroup;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.admin.services.OrgAdminBatchGroupService;
 

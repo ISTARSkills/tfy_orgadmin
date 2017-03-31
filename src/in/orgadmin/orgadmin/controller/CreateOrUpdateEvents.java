@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.services.AssessmentSchedulerService;
 import in.orgadmin.services.EventSchedulerService;
@@ -129,7 +130,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 				
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = new IstarUser();
-				user = dao.findById(AdminUserID);
+				
 
 				EventSchedulerService ess = new EventSchedulerService();
 				
@@ -141,12 +142,49 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 						//System.out.println(request.getParameter("eventValue"));
 						//String eventValue = request.getParameter("eventValue");
 						
-						ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
-								 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
+						 JSONParser parser = new JSONParser();
+					      String eventDataDetails = request.getParameter("eventDataDetails");
+					     
+					      Object obj = null;
+							try {
+								obj = parser.parse(eventDataDetails);
+								JSONArray array = (JSONArray)obj;
+								
+								for (int i = 0; i < array.size(); i++) {
+								
+									JSONObject jsonObject = (JSONObject) array.get(i);
+									
+									
+									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+											hours = Integer.parseInt((String) jsonObject.get("hours"));
+											minute = Integer.parseInt((String) jsonObject.get("minute"));
+											batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+											eventType = (String) jsonObject.get("eventType");
+											eventDate = (String) jsonObject.get("eventDate");
+											startTime = (String) jsonObject.get("startTime");
+									        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+									        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+									      if(jsonObject.containsKey("sessionID")){
+									        sessionID = Integer.parseInt((String) jsonObject.get("sessionID"));
+									        }  
+									        eventID = (String) jsonObject.get("eventID");
+									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+									        
+									        ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
+									        
+									
+									
+								}
+								
+									
+							} catch (org.json.simple.parser.ParseException e) {
+								e.printStackTrace();
+							}
 						
 						
-						
-						if(user.getUserType().equalsIgnoreCase("SUPER_ADMIN")){
+							user = dao.findById(AdminUserID);
+						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
 							response.sendRedirect("super_admin/scheduler.jsp");
 						}else{
 							response.sendRedirect("orgadmin/scheduler.jsp");
@@ -170,9 +208,43 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 					AssessmentSchedulerService asservice = new AssessmentSchedulerService();
 					if (request.getParameterMap().containsKey("eventValue")) {
 						
-						asservice.insertDeleteData(trainerID,assessmentID, batchID, AdminUserID, eventDate, startTime,classroomID, associateTrainerID);
+						 JSONParser parser = new JSONParser();
+					      String eventDataDetails = request.getParameter("eventDataDetails");
+					     
+					      Object obj = null;
+							try {
+								obj = parser.parse(eventDataDetails);
+								JSONArray array = (JSONArray)obj;
+								
+								for (int i = 0; i < array.size(); i++) {
+								
+									JSONObject jsonObject = (JSONObject) array.get(i);
+									
+									
+									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+											
+											batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+											
+											eventDate = (String) jsonObject.get("eventDate");
+											startTime = (String) jsonObject.get("startTime");
+									        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+									        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+									        assessmentID = Integer.parseInt((String) jsonObject.get("assessmentID"));
+									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+									        
+									        asservice.insertDeleteData(trainerID,assessmentID, batchID, AdminUserID, eventDate, startTime,classroomID, associateTrainerID);
+									        
+									
+									
+								}
+								
+									
+							} catch (org.json.simple.parser.ParseException e) {
+								e.printStackTrace();
+							}
 						
-						if(user.getUserType().equalsIgnoreCase("SUPER_ADMIN")){
+							user = dao.findById(AdminUserID);
+						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
 							response.sendRedirect("super_admin/scheduler.jsp");
 						}else{
 							response.sendRedirect("orgadmin/scheduler.jsp");
@@ -198,17 +270,57 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = new IstarUser();
-				user = dao.findById(AdminUserID);
+				//user = dao.findById(AdminUserID);
 				EventSchedulerService ess = new EventSchedulerService();
 				
 				if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("session")){
 					
 					if (request.getParameterMap().containsKey("eventValue")) {
-
-						ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
-								 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
-
-						if(user.getUserType().equalsIgnoreCase("SUPER_ADMIN")){
+						
+						
+						 JSONParser parser = new JSONParser();
+					      String eventDataDetails = request.getParameter("eventDataDetails");
+					     
+					      Object obj = null;
+							try {
+								obj = parser.parse(eventDataDetails);
+								JSONArray array = (JSONArray)obj;
+								
+								for (int i = 0; i < array.size(); i++) {
+								
+									JSONObject jsonObject = (JSONObject) array.get(i);
+									
+									
+									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+											hours = Integer.parseInt((String) jsonObject.get("hours"));
+											minute = Integer.parseInt((String) jsonObject.get("minute"));
+											batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+											eventType = (String) jsonObject.get("eventType");
+											eventDate = (String) jsonObject.get("eventDate");
+											startTime = (String) jsonObject.get("startTime");
+									        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+									        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+									      if(jsonObject.containsKey("sessionID")){
+									        sessionID = Integer.parseInt((String) jsonObject.get("sessionID"));
+									        }  
+									        eventID = (String) jsonObject.get("eventID");
+									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+									        
+									        ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
+									        
+									
+									
+								}
+								
+									
+							} catch (org.json.simple.parser.ParseException e) {
+								e.printStackTrace();
+							}
+						
+						
+							user = dao.findById(AdminUserID);
+						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
 							response.sendRedirect("super_admin/scheduler.jsp");
 						}else{
 							response.sendRedirect("orgadmin/scheduler.jsp");
@@ -254,13 +366,57 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 								
 
 								if (request.getParameterMap().containsKey("eventValue")) {
+									
+									
+									
+									 JSONParser parser = new JSONParser();
+								      String eventDataDetails = request.getParameter("eventDataDetails");
+								     
+								      Object obj = null;
+										try {
+											obj = parser.parse(eventDataDetails);
+											JSONArray array = (JSONArray)obj;
+											
+											for (int i = 0; i < array.size(); i++) {
+											
+												JSONObject jsonObject = (JSONObject) array.get(i);
+												
+												
+												        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+														hours = Integer.parseInt((String) jsonObject.get("hours"));
+														minute = Integer.parseInt((String) jsonObject.get("minute"));
+														batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+														eventType = (String) jsonObject.get("eventType");
+														eventDate = (String) jsonObject.get("eventDate");
+														startTime = (String) jsonObject.get("startTime");
+												        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+												        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+												      if(jsonObject.containsKey("sessionID")){
+												        sessionID = Integer.parseInt((String) jsonObject.get("sessionID"));
+												        }  
+												        eventID = (String) jsonObject.get("eventID");
+												        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+												        
+												        ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+																 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
+												        
+												
+												
+											}
+											
+												
+										} catch (org.json.simple.parser.ParseException e) {
+											e.printStackTrace();
+										}
+									
+									
+										user = dao.findById(AdminUserID);
 
 					
 									
-									ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
-											 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
+									
 
-									if(user.getUserType().equalsIgnoreCase("SUPER_ADMIN")){
+									if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
 										response.sendRedirect("super_admin/scheduler.jsp");
 									}else{
 										response.sendRedirect("orgadmin/scheduler.jsp");
@@ -289,7 +445,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 		
 		// response.sendRedirect("orgadmin/scheduler.jsp");  
 			
-			if(request.getParameterMap().containsKey("eventDataDetails")){
+		else if(request.getParameterMap().containsKey("eventDataDetails")){
 				
 				EventSchedulerService ess = new EventSchedulerService();
 				 JSONParser parser = new JSONParser();

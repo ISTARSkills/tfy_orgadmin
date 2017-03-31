@@ -8,12 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.dao.IstarCoordinator;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
-import com.istarindia.apps.dao.OrgAdmin;
-import com.istarindia.apps.dao.PlacementOfficer;
-import com.istarindia.apps.dao.Recruiter;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+
 
 /**
  * Servlet implementation class LoginController
@@ -40,49 +37,38 @@ public class LoginController extends HttpServlet {
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 			System.out.println("Email -> " + request.getParameter("email"));
 			System.out.println("Password -> " + request.getParameter("password"));
+			
 			try {
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = dao.findByEmail(request.getParameter("email")).get(0);
 				if (user.getPassword().equalsIgnoreCase(request.getParameter("password"))) {
+					
+					System.out.println("-------------------Email -> " +	user.getEmail());
 					request.getSession().setMaxInactiveInterval(2000);
 					request.getSession().setAttribute("user", user);
 										
-					System.out.println("User logged in. ID -> " + user.getId());
-					System.out.println("User logged in. Type -> " + user.getUserType());
-					String url = "";
-					if (user.getUserType().equalsIgnoreCase("SUPER_ADMIN")) { 
-						url = "/super_admin/dashboard.jsp";
-					} 
 					
-					else if (user.getUserType().equalsIgnoreCase("TRAINER")) {
+					String url = "";
+					if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
 						
-						url = "/orgadmin/student/dashboard.jsp?trainer_id=" + user.getId();
-					}else if (user.getUserType().equalsIgnoreCase("STUDENT")) {
+						System.out.println("User logged in. ID -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
+						System.out.println("User logged in. ID -> " + user.getId());
+						System.out.println("User logged in. Type -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
+						url = "/super_admin/dashboard.jsp";
+					}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("STUDENT")) {
 						
 						url = "/orgadmin/student/dashboard.jsp?student_id=" + user.getId();
-					}
-					
-					
-					
-					else if (user.getUserType().equalsIgnoreCase("ORG_ADMIN")) {
-						OrgAdmin admin = (OrgAdmin) user;
+					} else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
 						
-						request.getSession().setAttribute("orgId", admin.getCollege().getId());
+						System.out.println("User logged in. ID -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
+						System.out.println("User logged in. ID -> " + user.getId());
+						System.out.println("User logged in. Type -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
+						
+						
+						request.getSession().setAttribute("orgId", user.getUserOrgMappings().iterator().next().getOrganization().getId());
 						
 						url = "/orgadmin/dashboard.jsp";
-						//url = "/orgadmin/organization/dashboard.jsp?org_id=" + admin.getCollege().getId();
-					} else if (user.getUserType().equalsIgnoreCase("ISTAR_COORDINATOR")) {
-						IstarCoordinator admin = (IstarCoordinator) user;
-						//url = "/orgadmin/organization/dashboard.jsp?org_id=" + admin.getCollege().getId();
-						url = "/orgadmin/dashboard.jsp";
-
-					} else if (user.getUserType().equalsIgnoreCase("RECRUITER")) {
-						Recruiter admin = (Recruiter) user;
-						url = "/recruiter/dashboard.jsp";
-					} else if (user.getUserType().equalsIgnoreCase("PLACEMENT_OFFICER")) {
-						PlacementOfficer admin = (PlacementOfficer) user;
-						url = "/PlacementOfficer/dashboard.jsp";
-					}
+					} 
 					System.out.println(url);
 					request.getRequestDispatcher(url).forward(request, response);
 				} else {

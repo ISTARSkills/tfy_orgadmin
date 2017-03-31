@@ -1,6 +1,5 @@
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
-<%@page import="com.istarindia.apps.dao.BatchGroup"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
@@ -84,7 +83,7 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateUser" method="post">
-
+<input type="hidden" value="STUDENT" name="user_type" />
 					<input type="hidden" value="<%=colegeID%>" name="college_id" />
 					<div class="form-group">
 

@@ -1,5 +1,4 @@
 
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <% /* OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
 int college_id = (int)request.getSession().getAttribute("orgId");

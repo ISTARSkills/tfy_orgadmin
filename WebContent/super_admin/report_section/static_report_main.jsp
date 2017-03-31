@@ -1,6 +1,4 @@
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
 <% 
 
 

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
+
+
 
 /**
  * @author mayank
@@ -70,7 +72,7 @@ public class AdminUIServices {
 
 	public StringBuffer getAllOrganizations() {
 		// <option value="">Data Analytics</option>
-		String sql = "select id,name from college";
+		String sql = "select id,name from organization";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);

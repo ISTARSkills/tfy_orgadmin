@@ -1,7 +1,5 @@
-
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Organization"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -20,8 +18,8 @@
 	if (request.getParameterMap().containsKey("orgID") && !request.getParameter("orgID").equalsIgnoreCase("0")) {
 		 colegeID = Integer.parseInt( request.getParameter("orgID"));
 		
-		 College college = new College();
-		 CollegeDAO collegeDAO = new CollegeDAO();
+		 Organization college = new Organization();
+		 OrganizationDAO collegeDAO = new OrganizationDAO();
 		 college = collegeDAO.findById(colegeID);
 		 orgName = college.getName();
 		 

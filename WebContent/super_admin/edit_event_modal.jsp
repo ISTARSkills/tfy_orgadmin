@@ -1,11 +1,10 @@
 <%@page import="java.util.Enumeration"%>
-<%@page import="com.istarindia.apps.dao.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.UUID"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEvent"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEventDAO"%>
+
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%
 				String url = request.getRequestURL().toString();
@@ -14,13 +13,11 @@
 				
 						
 					
-				boolean istrue = false;
-				BatchScheduleEventDAO dao = new BatchScheduleEventDAO();
-				BatchScheduleEvent be = new BatchScheduleEvent();
-				StudentDAO studentDAO = new StudentDAO();
-				Student student = new Student();
+				boolean istrue = false;				
+				IstarUserDAO studentDAO = new IstarUserDAO();
+				IstarUser student = new IstarUser();
 				ClassroomDetailsDAO classroomDetailsDAO = new ClassroomDetailsDAO();
-				 ClassroomDetails classroomDetails = new ClassroomDetails();
+				ClassroomDetails classroomDetails = new ClassroomDetails();
 				
 				UIUtils ui = new UIUtils();
 				Batch batch = new Batch();
@@ -54,8 +51,7 @@ if(request.getParameter("newEventID")!=null){
 					 eventDate = request.getParameter("eventDate");
 					 eventTime = request.getParameter("startTime");
 					 tabType = request.getParameter("tabType");	
-					 
-					
+
 					 student = studentDAO.findById(trainerID);
 					 student.getEmail();
 					

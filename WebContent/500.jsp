@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"	pageEncoding="ISO-8859-1"%><%@page import="com.istarindia.apps.dao.*"%><%@page import="com.istarindia.apps.dao.IstarUser"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"	pageEncoding="ISO-8859-1"%><%@page import="com.viksitpro.core.dao.entities.*"%><%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <!DOCTYPE html><html><head><title>Error Page | iStar CMS</title><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <% String url = request.getRequestURL().toString();
 String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
-String user_type = ((IstarUser)request.getSession().getAttribute("user")).getUserType().toLowerCase() ;
+String user_type = ((IstarUser)request.getSession().getAttribute("user")).getUserRoles().iterator().next().getRole().getRoleName().toLowerCase() ;
 String userUrl= baseURL + user_type ; 
 Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
 Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");

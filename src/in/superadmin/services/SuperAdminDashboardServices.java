@@ -6,7 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
+
 
 public class SuperAdminDashboardServices {
 	
@@ -64,7 +65,7 @@ public class SuperAdminDashboardServices {
 	
 	
 	public List<HashMap<String, Object>> getAllAccount(){
-		String sql="select id,name from college";
+		String sql="select id,name from organization";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> lists = dbutils.executeQuery(sql);
 		return lists;
@@ -73,7 +74,7 @@ public class SuperAdminDashboardServices {
 	
 	public List<HashMap<String, Object>> getSlideLogs(String EventId)
 	{
-		String sql2 = "SELECT 	slide_id as slide_id, 	created_at as created_at FROM 	event_session_log WHERE 	cast (event_id as varchar) like '"+EventId+"' ORDER BY 	created_at";
+		String sql2 = "SELECT 	slide_id AS slide_id, 	created_at AS created_at FROM 	event_log WHERE 	event_id = "+EventId+" ORDER BY 	created_at";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
@@ -82,7 +83,7 @@ public class SuperAdminDashboardServices {
 	
 	public 	List<HashMap<String, Object>> getSkillsForTrainer(int trainerId)
 	{
-		String sql2 = "select DISTINCT skill_objective.name from batch_schedule_event, course,batch, skill_objective where batch_schedule_event.actor_id = "+trainerId+" and batch_schedule_event.batch_id = batch.id and  batch.course_id = course.id and course.parent_skill_objective_id = skill_objective.id";
+		String sql2 = "SELECT DISTINCT 	skill_objective. NAME FROM 	batch_schedule_event, 	course, 	batch, 	skill_objective, course_skill_objective WHERE 	batch_schedule_event.actor_id = "+trainerId+" AND batch_schedule_event.batch_id = batch. ID AND batch.course_id = course. ID AND course.id = course_skill_objective.course_id AND course_skill_objective.skill_objective_id = skill_objective. ID";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
@@ -90,7 +91,7 @@ public class SuperAdminDashboardServices {
 	
 	public 	List<HashMap<String, Object>> getSessionsCompletedByTrainerInBatch(int trainerId, int batchId)
 	{
-		String sql2 = "select COALESCE(count(*),0) as sessions from event_session_log where trainer_id= "+trainerId+" and batch_id= "+batchId;
+		String sql2 = "select COALESCE(count(*),0) as sessions from event_log where trainer_id= "+trainerId+" and batch_id= "+batchId;
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
@@ -98,7 +99,7 @@ public class SuperAdminDashboardServices {
 	
 	public 	List<HashMap<String, Object>> getStudentAttendanceStatus(String eventId)
 	{
-		String sql2 = "select attendance.status, student.name, case when student_profile_data.profile_image like 'null' OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, (select count(*) from attendance where attendance.event_id = '"+eventId+"' and status ='ABSENT' ) as  absent , (select count(*) from attendance where attendance.event_id = '"+eventId+"' and status ='PRESENT' ) as  present from attendance, student,student_profile_data where attendance.event_id = '"+eventId+"' and attendance.user_id = student.id and student.id = student_profile_data.student_id ";
+		String sql2 = "SELECT 	attendance.status, 	user_profile.first_name, 	CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN 	'http://api.talentify.in/video/android_images/' || UPPER ( 		SUBSTRING (user_profile.first_name FROM 1 FOR 1) 	) || '.png' ELSE 	'http://api.talentify.in/' || user_profile.profile_image END AS profile_image,  ( 	SELECT 		COUNT (*) 	FROM 		attendance 	WHERE 		attendance.event_id = "+eventId+" 	AND status = 'ABSENT' ) AS ABSENT,  ( 	SELECT 		COUNT (*) 	FROM 		attendance 	WHERE 		attendance.event_id = "+eventId+" 	AND status = 'PRESENT' ) AS present FROM 	attendance, 	istar_user, 	user_profile WHERE 	attendance.event_id = "+eventId+" AND attendance.user_id = istar_user. ID AND istar_user. ID = user_profile.user_id";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
@@ -106,7 +107,7 @@ public class SuperAdminDashboardServices {
 	
 	public 	List<HashMap<String, Object>> getFeedbackDataForEvent(String eventId)
 	{
-		String sql2 = "SELECT rating,noise,attendance,sick, content ,  assignment , internals, internet, electricity,  time  FROM trainer_feedback where cast(event_id as varchar) = '"+eventId+"'";
+		String sql2 = "SELECT 	rating, 	noise, 	attendance, 	sick, 	CONTENT, 	ASSIGNMENT, 	internals, 	internet, 	electricity, 	TIME FROM 	trainer_feedback WHERE 	event_id  ="+eventId;
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;

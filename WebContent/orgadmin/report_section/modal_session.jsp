@@ -1,6 +1,6 @@
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
-<%@page import="com.istarindia.apps.dao.Slide"%>
-<%@page import="com.istarindia.apps.dao.SlideDAO"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
+<%@page import="com.viksitpro.core.dao.entities.Slide"%>
+<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.sql.Date"%>
 <%@page
 	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
@@ -117,7 +117,7 @@
 																					try {
 																						Slide slide = slideDAO.findById(Integer.parseInt(log.get("slide_id").toString()));
 																	%>
-																	<li class="info-element" id="">Slide Title : <%=slide.getTitle().toUpperCase()%>
+																	<li class="info-element" id="">Slide Title : <%=slide.getTitle()!= null ?slide.getTitle().toUpperCase():""%>
 																		<div class="agile-detail">
 																			Time Started: <i class="fa fa-clock-o"></i>
 																			<%=log.get("created_at").toString().substring(11)%>
@@ -205,8 +205,7 @@
 									<div class="panel-body white-bg">
 										<h1 class="forum-item-title">
 											<%
-												String sql5 = "SELECT title as title from learning_objective where id in (select DISTINCT learning_objectiveid from learning_objective_lesson where lessonid in (SELECT DISTINCT lesson_id as lesson_id FROM event_session_log WHERE event_session_log.event_id = '"
-															+ eventId + "' ))";
+												String sql5 = "SELECT 	name AS title FROM 	skill_objective WHERE 	ID IN ( 		SELECT DISTINCT 			learning_objectiveid 		FROM 			lesson_skill_objective 		WHERE 			lessonid IN ( 				SELECT DISTINCT 					lesson_id AS lesson_id 				FROM 					event_log 				WHERE 					event_log.event_id = "+eventId+" 			) 	) AND type= 'LEARNING_BASED'";
 													List<HashMap<String, Object>> learningobjs = dbutils.executeQuery(sql5);
 											%>
 											<strong>Learning Objective Covered In Lesson</strong>

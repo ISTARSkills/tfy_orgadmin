@@ -3,7 +3,7 @@
 	pageEncoding="ISO-8859-1"%><div class="row border-bottom white-bg">
 	<%@page import="in.talentify.core.utils.*"%>
 	<%@page import="in.talentify.core.xmlbeans.*"%>
-	<%@page import="com.istarindia.apps.dao.*"%>
+	<%@page import="com.viksitpro.core.dao.entities.*"%>
 
 	<%
 		String path = request.getContextPath();
@@ -17,16 +17,14 @@
 /* 		user = (IstarUser) request.getSession().getAttribute("user");
  */		
 		int colegeID = (int)request.getSession().getAttribute("orgId");
-		 
-		 user=(new OrgAdminDAO().findByEmail("principal_ep@istarindia.com").get(0));
-		 
-		 College college=new CollegeDAO().findById(colegeID);
-		 Object[] object= college.getOrgAdmins().toArray();
-		 for(OrgAdmin admin:college.getOrgAdmins()){
-			 user=admin;
-				break;
-			}
-		String userRole = user.getUserType();
+ 
+ IstarUser istarUser = new IstarUser();
+
+ int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+
+ Organization college = new OrganizationDAO().findById(colegeID);
+		
+		String userRole = "ORG_ADMIN";
 	%>
 	<nav class="navbar navbar-static-top" role="navigation">
 		<div class="navbar-header">
@@ -43,8 +41,10 @@
 					for (ParentLink link : (new UIUtils()).getMenuLinks(userRole.toLowerCase())) {
 						if (link.isIs_visible_in_menu()) {
 							if (link.getDisplayName().equalsIgnoreCase("Placement") && userRole.equalsIgnoreCase("ORG_ADMIN")) {
-								OrgAdmin admin = (OrgAdmin) user;
-								if (!admin.getCollege().getIsCompany()) {
+								Organization admin =new Organization();
+/* 								OrgAdmin admin = (OrgAdmin) user;
+
+ */								if (admin.getIsCompany() != null && !admin.getIsCompany()) {
 				%>
 				<li><a href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%

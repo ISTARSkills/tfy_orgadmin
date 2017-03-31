@@ -1,8 +1,6 @@
 <%@page import="in.orgadmin.admin.services.OrgAdminSkillService"%>
-<%@page import="com.istarindia.apps.dao.Skill"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%

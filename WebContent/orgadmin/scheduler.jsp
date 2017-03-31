@@ -2,7 +2,6 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.*"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
 
 <body class="top-navigation" id="orgadmin_scheduler">
@@ -60,7 +59,7 @@
 								</div>
 								<div class="col-lg-9 no-padding bg-muted">
 									<div class="ibox no-padding no-margins bg-muted p-xs">
-										<div class="ibox-content">
+										 <div class="ibox-content">
 											<%
 											CalenderUtils  calUtil = new CalenderUtils();
 											HashMap<String, String> input_params = new HashMap();
@@ -68,7 +67,7 @@
 											input_params.put("org_id",colegeID+"");
 											%>
 											<%=calUtil.getCalender(input_params).toString()%>
-										</div>
+										</div> 
 									</div>
 								</div>
 

@@ -11,15 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.dao.Batch;
-import com.istarindia.apps.dao.BatchDAO;
-import com.istarindia.apps.dao.BatchGroup;
-import com.istarindia.apps.dao.BatchGroupDAO;
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.CollegeDAO;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.Batch;
+import com.viksitpro.core.dao.entities.BatchDAO;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.utils.DatatableUtils;
 

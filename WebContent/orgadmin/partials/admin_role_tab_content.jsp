@@ -1,7 +1,6 @@
 <%@page import="in.orgadmin.admin.services.OrgAdminSkillService"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>

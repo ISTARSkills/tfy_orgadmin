@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.dao.ClassroomDetails;
-import com.istarindia.apps.dao.ClassroomDetailsDAO;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.ClassroomDetails;
+import com.viksitpro.core.dao.entities.ClassroomDetailsDAO;
+import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.IStarBaseServelet;
 
 
 /**

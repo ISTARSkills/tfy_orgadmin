@@ -1,14 +1,11 @@
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.istarindia.apps.dao.Slide"%>
-<%@page import="com.istarindia.apps.dao.SlideDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Slide"%>
+<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();

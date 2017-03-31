@@ -1,9 +1,8 @@
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%

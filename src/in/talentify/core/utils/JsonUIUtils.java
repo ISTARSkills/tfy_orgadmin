@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.JsonArray;
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
 
 public class JsonUIUtils {
 
@@ -21,13 +21,13 @@ public class JsonUIUtils {
 		ArrayList<JSONArray> arrayList = new ArrayList<>();
 
 		if (type.equalsIgnoreCase("Program")) {
-			sql = "select DISTINCT skill.skill_title, rookie, master, apprentice, wizard from mastery_level_per_course, skill where course_id = "
+			sql = "SELECT DISTINCT 	skill_objective.name, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective WHERE 	course_id = "
 					+ course_id + " AND college_id = " + college_id
-					+ " and skill.id=mastery_level_per_course.skill_id and (rookie !='0' and master !='0' and apprentice !='0' and wizard !='0')";
+					+ " AND skill_objective.id = mastery_level_per_course.skill_id AND ( 	rookie != '0' 	AND master != '0' 	AND apprentice != '0' 	AND wizard != '0' )";
 		} else {
-			sql = "SELECT DISTINCT 	skill.skill_title, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill,batch WHERE 	batch.batch_group_id = mastery_level_per_course.batch_group_id AND batch.id ="
+			sql = "SELECT DISTINCT 	skill_objective. NAME, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective, 	batch WHERE 	batch.batch_group_id = mastery_level_per_course.batch_group_id AND batch.course_id = "
 					+ course_id + " AND college_id = " + college_id
-					+ " AND skill. ID = mastery_level_per_course.skill_id AND ( 	rookie != '0' 	AND master != '0' 	AND apprentice != '0' 	AND wizard != '0' )";
+					+ " AND skill_objective. ID = mastery_level_per_course.skill_id AND ( 	rookie != '0' 	AND master != '0' 	AND apprentice != '0' 	AND wizard != '0' )";
 		}
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -36,10 +36,10 @@ public class JsonUIUtils {
 		HashMap<String, Float> master_map = new HashMap<>();
 		HashMap<String, Float> apprentice_map = new HashMap<>();
 		HashMap<String, Float> wizard_map = new HashMap<>();
-		
-		JSONArray titles=new JSONArray();
-		JSONArray contentArry=new JSONArray();
-		
+
+		JSONArray titles = new JSONArray();
+		JSONArray contentArry = new JSONArray();
+
 		for (HashMap<String, Object> hashMap : data) {
 			titles.put(hashMap.get("skill_title"));
 			float rookie_val = Float.parseFloat(hashMap.get("rookie").toString());
@@ -51,10 +51,10 @@ public class JsonUIUtils {
 			apprentice_map.put(hashMap.get("skill_title").toString(), apprentice_val);
 			wizard_map.put(hashMap.get("skill_title").toString(), wizard_val);
 		}
-		
+
 		JSONObject rookie = new JSONObject();
 		try {
-			JSONArray dataArry=new JSONArray();
+			JSONArray dataArry = new JSONArray();
 			for (String key : rookie_map.keySet()) {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((rookie_map.get(key) / total) * 100);
@@ -63,11 +63,10 @@ public class JsonUIUtils {
 			rookie.put("data", dataArry);
 		} catch (Exception e) {
 		}
-		
-		
+
 		JSONObject apprentice = new JSONObject();
 		try {
-			JSONArray dataArry=new JSONArray();
+			JSONArray dataArry = new JSONArray();
 			for (String key : apprentice_map.keySet()) {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((apprentice_map.get(key) / total) * 100);
@@ -76,11 +75,10 @@ public class JsonUIUtils {
 			apprentice.put("data", dataArry);
 		} catch (Exception e) {
 		}
-		
-		
+
 		JSONObject master = new JSONObject();
 		try {
-			JSONArray dataArry=new JSONArray();
+			JSONArray dataArry = new JSONArray();
 			for (String key : master_map.keySet()) {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((master_map.get(key) / total) * 100);
@@ -89,10 +87,10 @@ public class JsonUIUtils {
 			master.put("data", dataArry);
 		} catch (Exception e) {
 		}
-		
+
 		JSONObject wizard = new JSONObject();
 		try {
-			JSONArray dataArry=new JSONArray();
+			JSONArray dataArry = new JSONArray();
 			for (String key : wizard_map.keySet()) {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((wizard_map.get(key) / total) * 100);
@@ -101,13 +99,12 @@ public class JsonUIUtils {
 			wizard.put("data", dataArry);
 		} catch (Exception e) {
 		}
-		
+
 		contentArry.put(rookie);
 		contentArry.put(apprentice);
 		contentArry.put(master);
 		contentArry.put(wizard);
-		
-		
+
 		arrayList.add(titles);
 		arrayList.add(contentArry);
 
@@ -179,10 +176,9 @@ public class JsonUIUtils {
 
 		String sql = "";
 		if (type.equalsIgnoreCase("Program")) {
-			sql = "select   count(DISTINCT s.id) as count  from batch b , batch_students bs, batch_group bg,student s where  bs.student_id = s.id and bg.id = b.batch_group_id and bg.id = bs.batch_group_id and bg.college_id = "
-					+ college_id + " and b.course_id = " + course_id + "";
+			sql = "SELECT 	COUNT (DISTINCT s. ID) AS COUNT FROM 	batch b, 	batch_students bs, 	batch_group bg, 	istar_user s WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = " 					+ college_id + " AND b.course_id = " + course_id + "";
 		} else {
-			sql = "select   count(DISTINCT s.id) as count  from batch b , batch_students bs, batch_group bg,student s where  bs.student_id = s.id and bg.id = b.batch_group_id and bg.id = bs.batch_group_id and bg.college_id = "
+			sql = "select   count(DISTINCT s.id) as count  from batch b , batch_students bs, batch_group bg, istar_user s where  bs.student_id = s.id and bg.id = b.batch_group_id and bg.id = bs.batch_group_id and bg.college_id = "
 					+ college_id + " and b.id = " + course_id + "";
 		}
 		DBUTILS db = new DBUTILS();
@@ -194,17 +190,17 @@ public class JsonUIUtils {
 	public List<HashMap<String, Object>> getStudentlistfromCourse(int course_id, int college_id, String type) {
 		String sql = "";
 		DBUTILS db = new DBUTILS();
-		
+
 		if (type.equalsIgnoreCase("Program")) {
-			sql = "SELECT DISTINCT 	s. ID AS student_id, 	s. NAME AS NAME, sp.firstname, sp.mobileno, s.email, COALESCE(NULLIF(sp.lastname,''), 'Not Available') as lastname , COALESCE(NULLIF(cast (sp.dob as VARCHAR),''), 'Not Available') as dob, CASE WHEN (sp.gender IS NULL OR sp.gender like '%null%') THEN case when (s.gender is null ) then 'NA' else s.gender end ELSE sp.gender END  as gender, CASE 		WHEN sp.profile_image LIKE 'null' 		OR sp.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (s. NAME FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || sp.profile_image 		END AS profile_image, COALESCE(NULLIF(sp.company_name,' '), 'Not Available') as company_name, col.name as college_name FROM 	batch b, 	batch_students bs, 	batch_group bg, 	student s, student_profile_data sp, college col WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = "
+			sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name, 	s.mobile, 	s.email, 	COALESCE ( 		NULLIF (sp.last_name, ''), 		'Not Available' 	) AS lastname, 	COALESCE ( 		NULLIF (CAST(sp.dob AS VARCHAR), ''), 		'Not Available' 	) AS dob, 	CASE WHEN ( 	sp.gender IS NULL 	OR sp.gender LIKE '%null%' ) THEN 	CASE WHEN (sp.gender IS NULL) THEN 	'NA' ELSE 	sp.gender END ELSE 	sp.gender END AS gender,  CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	'http://api.talentify.in/video/android_images/' || UPPER (SUBSTRING(sp.first_name FROM 1 FOR 1)) || '.png' ELSE 	'http://api.talentify.in/' || sp.profile_image END AS profile_image,  COALESCE ( 	NULLIF (pf.company_name, ' '), 	'Not Available' ) AS company_name,  col. NAME AS college_name FROM 	batch b, 	batch_students bs, 	batch_group bg, 	 istar_user s, 	user_profile sp, professional_profile pf, 	organization col WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = "
 					+ college_id + " AND b.course_id = " + course_id
-					+ " and sp.student_id = s.id and col.id = bg.college_id ORDER BY 	s. name LIMIT 6";
+					+ " AND sp.user_id = s. ID AND pf.user_id = s. ID AND col. ID = bg.college_id ORDER BY 	sp.first_name LIMIT 6";
 		} else {
-			sql = "SELECT DISTINCT 	s. ID AS student_id, 	s. NAME AS NAME, sp.firstname, sp.mobileno, s.email, COALESCE(NULLIF(sp.lastname,''), 'Not Available') as lastname , COALESCE(NULLIF(cast (sp.dob as VARCHAR),''), 'Not Available') as dob, CASE WHEN (sp.gender IS NULL OR sp.gender like '%null%') THEN case when (s.gender is null ) then 'NA' else s.gender end ELSE sp.gender END  as gender, CASE 		WHEN sp.profile_image LIKE 'null' 		OR sp.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (s. NAME FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || sp.profile_image 		END AS profile_image, COALESCE(NULLIF(sp.company_name,' '), 'Not Available') as company_name, col.name as college_name FROM 	batch b, 	batch_students bs, 	batch_group bg, 	student s, student_profile_data sp, college col WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = "
+			sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name, 	s.mobile, 	s.email, 	COALESCE ( 		NULLIF (sp.last_name, ''), 		'Not Available' 	) AS lastname, 	COALESCE ( 		NULLIF (CAST(sp.dob AS VARCHAR), ''), 		'Not Available' 	) AS dob, 	CASE WHEN ( 	sp.gender IS NULL 	OR sp.gender LIKE '%null%' ) THEN 	CASE WHEN (sp.gender IS NULL) THEN 	'NA' ELSE 	sp.gender END ELSE 	sp.gender END AS gender,  CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	'http://api.talentify.in/video/android_images/' || UPPER (SUBSTRING(sp.first_name FROM 1 FOR 1)) || '.png' ELSE 	'http://api.talentify.in/' || sp.profile_image END AS profile_image,  COALESCE ( 	NULLIF (pf.company_name, ' '), 	'Not Available' ) AS company_name,  col. NAME AS college_name FROM 	batch b, 	batch_students bs, 	batch_group bg, 	 istar_user s, 	user_profile sp, professional_profile pf, 	organization col WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = "
 					+ college_id + " AND b.id = " + course_id
-					+ " and sp.student_id = s.id and col.id = bg.college_id ORDER BY 	s. name LIMIT 6 ";
+					+ " AND sp.user_id = s. ID AND pf.user_id = s. ID AND col. ID = bg.college_id ORDER BY 	sp.first_name LIMIT 6";
 		}
-		
+
 		System.out.println(sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		System.out.println("Hashmap size is " + data.size());

@@ -1,5 +1,5 @@
 <%@page import="java.util.HashMap"%>
-<%@page import="com.istarindia.apps.dao.IstarUser"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.talentify.core.utils.ReportUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%><div class="row">

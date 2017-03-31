@@ -1,8 +1,4 @@
-<%@page import="com.istarindia.apps.dao.PlacementOfficer"%>
-<%@page import="com.istarindia.apps.dao.Recruiter"%>
-<%@page import="com.istarindia.apps.dao.IstarCoordinator"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
-<%@page import="com.istarindia.apps.dao.IstarUser"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="ISO-8859-1"%>
 
@@ -18,32 +14,11 @@
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 		String url1 = baseURL + "dashboard.jsp";
-		if (user.getUserType().equalsIgnoreCase("SUPER_ADMIN")) { 
+		if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
 			url1 = "/super_admin/dashboard.jsp";
-		} 
-		
-		else if (user.getUserType().equalsIgnoreCase("TRAINER")) {
-			
-			url1 = "/orgadmin/student/dashboard.jsp?trainer_id=" + user.getId();
-		}else if (user.getUserType().equalsIgnoreCase("STUDENT")) {
-			
-			url1 = "/orgadmin/student/dashboard.jsp?student_id=" + user.getId();
-		}
-		
-		
-		
-		else if (user.getUserType().equalsIgnoreCase("ORG_ADMIN")) {
-			OrgAdmin admin = (OrgAdmin) user;
-			url1 = "/orgadmin/dashboard.jsp?org_id=" + admin.getCollege().getId();
-		} else if (user.getUserType().equalsIgnoreCase("ISTAR_COORDINATOR")) {
-			IstarCoordinator admin = (IstarCoordinator) user;
-			url1 = "/orgadmin/organization/dashboard.jsp?org_id=" + admin.getCollege().getId();
-		} else if (user.getUserType().equalsIgnoreCase("RECRUITER")) {
-			Recruiter admin = (Recruiter) user;
-			url1 = "/recruiter/dashboard.jsp";
-		} else if (user.getUserType().equalsIgnoreCase("PlacementOfficer")) {
-			PlacementOfficer admin = (PlacementOfficer) user;
-			url1 = "/PlacementOfficer/dashboard.jsp";
+		}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
+			System.out.println("------------------------------>"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
+			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
 		}
 		
 		response.sendRedirect(url1);

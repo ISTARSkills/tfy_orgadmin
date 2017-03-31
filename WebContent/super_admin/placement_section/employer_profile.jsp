@@ -1,9 +1,8 @@
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
+
 <% 
 String employer_name= request.getParameter("employee_name");
 

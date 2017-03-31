@@ -1,7 +1,8 @@
-<%@page import="com.istarindia.apps.dao.OrgAdminDAO"%>
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Organization"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -14,15 +15,15 @@
 /* 				OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user");
  */
  
- int colegeID =  (int)request.getSession().getAttribute("orgId");
+ int colegeID = (int) request.getSession().getAttribute("orgId");
  
- int user_id=(new OrgAdminDAO().findByEmail("principal_ep@istarindia.com").get(0)).getId();
+ IstarUser istarUser = new IstarUser();
 
- College college=new CollegeDAO().findById(colegeID);
-	for(OrgAdmin admin:college.getOrgAdmins()){
-		user_id=admin.getId();
-		break;
-	}
+int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+
+Organization college = new OrganizationDAO().findById(colegeID);
+
+user_id = ui.getOrgPrincipal(colegeID);
 			%>
 <div id="tab-2" class="tab-pane">
 	<div class="panel-body border-event">
@@ -92,7 +93,7 @@
 
 				</select>
 			</div>
-			<div class="form-group" id="data_2">
+			<!-- <div class="form-group" id="data_2">
 				<label class="font-bold">Start Event Date</label>
 				<div class="input-group date">
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
@@ -105,7 +106,17 @@
 						type="text" name="endEventDate" class="form-control date_holder"
 						value="03/03/2017">
 				</div>
-			</div>
+			</div> -->
+			
+			              <div class="form-group" id="data_5">
+                                <label class="font-bold">Event Date Range</label>
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control date_holder"  name="startEventDate" value="31/03/2017"/>
+                                    <span class="input-group-addon">to</span>
+                                    <input type="text" class="input-sm form-control date_holder"name="endEventDate" value="01/04/2017" />
+                                </div>
+                            </div>
+			
 
 			<div class="form-group">
 				<label class="font-bold">Start Time</label>

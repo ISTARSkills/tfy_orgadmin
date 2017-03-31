@@ -1,12 +1,17 @@
+<%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.ClassroomDetailsDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.ClassroomDetails"%>
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Organization"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="com.istarindia.apps.dao.*"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.UUID"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEvent"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEventDAO"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%
 	String url = request.getRequestURL().toString();
@@ -14,27 +19,28 @@
 			+ request.getContextPath() + "/";
 	/* OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
 
-	int colegeID = (int) request.getSession().getAttribute("orgId");
+int colegeID = (int) request.getSession().getAttribute("orgId");
+	 
+	 IstarUser istarUser = new IstarUser();
 
-	int user_id = new OrgAdminDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+	int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
 
-	College college = new CollegeDAO().findById(colegeID);
-	for (OrgAdmin admin : college.getOrgAdmins()) {
-		user_id = admin.getId();
-		break;
-	}
-
+	Organization college = new OrganizationDAO().findById(colegeID);
+	
 	boolean istrue = false;
-	BatchScheduleEventDAO dao = new BatchScheduleEventDAO();
-	BatchScheduleEvent be = new BatchScheduleEvent();
 	UIUtils ui = new UIUtils();
+	user_id = ui.getOrgPrincipal(colegeID);
+
+	
 	Batch batch = new Batch();
+	
 	String evntid = "";
 	String eventDate = "08/09/2014";
 	String eventTime = "09:30";
 	int eventHours = 0;
 	int eventminute = 0;
 	int trainerID = 0;
+	int batchID = 0;
 	String trainerEmail = "defalut@mail.com";
 	int classroomID = 0;
 	String classroomName = "";
@@ -43,24 +49,30 @@
 		istrue = true;
 		evntid = request.getParameter("eventid");
 		System.out.println("------------------------------------------->" + evntid);
-		be = dao.findById(UUID.fromString(evntid));
-
-		be.getEventdate();
-
+		
 		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
-
-		eventDate = sdf2.format(formatter1.parse(be.getEventdate().toString()));
-		eventTime = sdf1.format(formatter1.parse(be.getEventdate().toString()));
-		eventHours = be.getEventhour();
-		eventminute = be.getEventminute();
-		trainerID = be.getActor().getId();
-		trainerEmail = be.getActor().getEmail();
-		classroomID = be.getClassroom().getId();
-		classroomName = be.getClassroom().getClassroomIdentifier();
-		batch = be.getBatch();
-
+	
+		
+		for(HashMap<String, Object> dd : ui.getEventDetails(evntid)){
+			
+			eventDate = sdf2.format(formatter1.parse(dd.get("evedate").toString()));
+			eventTime = sdf1.format(formatter1.parse(dd.get("evedate").toString()));
+			eventHours = (int)dd.get("hours");
+			eventminute = (int)dd.get("min");
+			trainerID = (int)dd.get("userid");
+			classroomID =(int)dd.get("classroomid");
+			batchID =(int)dd.get("batch_id");
+			
+			
+			
+		}
+		istarUser = new IstarUserDAO().findById(trainerID);
+				trainerEmail = istarUser.getEmail();
+				ClassroomDetails classroomDetails = new ClassroomDetailsDAO().findById(classroomID);
+				classroomName = classroomDetails.getClassroomIdentifier();
+				batch = new BatchDAO().findById(batchID);
 	}
 %>
 
@@ -78,7 +90,7 @@
 		<input type="hidden" name="eventID" value="<%=evntid%>" /> <input
 			type="hidden" name="eventType" value="session" /> <input
 			type="hidden" name="orgAdminUserID" value="<%=user_id%>" /> <input
-			type="hidden" name="batchID" value="<%=be.getBatch().getId()%>" />
+			type="hidden" name="batchID" value="<%=batchID%>" />
 		<div class="form-group" id="data_2">
 			<div class="col-lg-12">
 				<label class="font-bold">Event Date</label>
@@ -141,7 +153,7 @@
 				<label class="control-label">Select Session</label> <select
 					class="form-control m-b" name=sessionID>
 
-					<%=ui.getLessons(be.getBatch().getId(), batch.getCourse().getId())%>
+					<%=ui.getLessons(batchID, batch.getCourse().getId())%>
 
 				</select>
 			</div>

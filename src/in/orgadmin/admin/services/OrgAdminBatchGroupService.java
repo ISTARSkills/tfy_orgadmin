@@ -12,12 +12,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.istarindia.apps.dao.BatchGroup;
-import com.istarindia.apps.dao.BatchGroupDAO;
-import com.istarindia.apps.dao.CollegeDAO;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.Student;
-import com.istarindia.apps.dao.StudentDAO;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.dao.entities.UserRole;
+import com.viksitpro.core.dao.entities.UserRoleDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.services.AssessmentSchedulerService;
 
@@ -76,13 +79,12 @@ public class OrgAdminBatchGroupService {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = new BatchGroup();
 		batchGroup.setName(groupName);
-		batchGroup.setMaxStudents(studentCount);
-		batchGroup.setCreatedat(new Timestamp(new Date().getTime()));
-		batchGroup.setUpdatedat(new Timestamp(new Date().getTime()));
+		batchGroup.setCreatedAt(new Timestamp(new Date().getTime()));
+		batchGroup.setUpdatedAt(new Timestamp(new Date().getTime()));
 		batchGroup.setBatchCode("" + getRandomInteger(100000, 999999));
 		batchGroup.setAssessmentId(assessmentId);
-		batchGroup.setBg_desc(bg_desc);
-		batchGroup.setCollege(new CollegeDAO().findById(org_id));
+		batchGroup.setBgDesc(bg_desc);
+		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;
 		try {
@@ -105,12 +107,11 @@ public class OrgAdminBatchGroupService {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = batchGroupDAO.findById(bg_id);
 		batchGroup.setName(groupName);
-		batchGroup.setMaxStudents(studentCount);
-		batchGroup.setCreatedat(new Timestamp(new Date().getTime()));
-		batchGroup.setUpdatedat(new Timestamp(new Date().getTime()));
+		batchGroup.setCreatedAt(new Timestamp(new Date().getTime()));
+		batchGroup.setUpdatedAt(new Timestamp(new Date().getTime()));
+		batchGroup.setBgDesc(bg_desc);
 		batchGroup.setAssessmentId(assessmentId);
-		batchGroup.setBg_desc(bg_desc);
-		batchGroup.setCollege(new CollegeDAO().findById(org_id));
+		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;
 		try {
@@ -136,17 +137,24 @@ public class OrgAdminBatchGroupService {
 		updateStudentPlayList(batchGrpId,studentList);
 		String sql1 = "delete from batch_students where batch_group_id = " + batchGrpId;
 		util.executeUpdate(sql1);
-		// BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
-		// BatchGroup batchGroup = batchGroupDAO.findById(batchGrpId);
-		// BatchStudentsDAO batchStudentsDAO = new BatchStudentsDAO();
+		
 		for (int x = 0; x < studentList.size(); x++) {
 			System.out.println("student-id " + studentList.get(x));
-			StudentDAO studentDAO = new StudentDAO();
-			Student student = new Student();
-			student = studentDAO.findById(studentList.get(x));
+			
+			
+			IstarUser istarUser = new IstarUser();
+			istarUser = new IstarUserDAO().findById(studentList.get(x));
+			UserRole userRole = new UserRole();
+			UserRoleDAO userRoleDAO = new UserRoleDAO();
+			String userType = "STUDENT";
+		
+			 userType = istarUser.getUserRoles().iterator().next().getRole().getRoleName()!= "" ? istarUser.getUserRoles().iterator().next().getRole().getRoleName():"";
+			 
+			 
+			 
 
 			String insert_into_bg = "insert into batch_students (id, batch_group_id, student_id, user_type) values(((select COALESCE(max(id),0) from batch_students)+1),"
-					+ batchGrpId + "," + student.getId() + ",'" + student.getUserType() + "')";
+					+ batchGrpId + "," + istarUser.getId() + ",'" + userType + "')";
 			util.executeUpdate(insert_into_bg);
 
 			Date eventdate = new Date();
@@ -252,12 +260,19 @@ public class OrgAdminBatchGroupService {
 		for (Integer bg_list : batch_groups) {
 
 			System.out.println("student-id " + student_id);
-			StudentDAO studentDAO = new StudentDAO();
-			Student student = new Student();
-			student = studentDAO.findById(student_id);
+			
+			
+			IstarUser istarUser = new IstarUser();
+			istarUser = new IstarUserDAO().findById(student_id);
+			UserRole userRole = new UserRole();
+			UserRoleDAO userRoleDAO = new UserRoleDAO();
+			String userType = "STUDENT";
+		
+			 userType = istarUser.getUserRoles().iterator().next().getRole().getRoleName()!= "" ? istarUser.getUserRoles().iterator().next().getRole().getRoleName():"";
+			
 
 			String insert_into_bg = "insert into batch_students (id, batch_group_id, student_id, user_type) values(((select COALESCE(max(id),0) from batch_students)+1),"
-					+ bg_list + "," + student.getId() + ",'" + student.getUserType() + "')";
+					+ bg_list + "," + istarUser.getId() + ",'" + userType + "')";
 			util.executeUpdate(insert_into_bg);
 			Date eventdate = new Date();
 			DateFormat formatter1 = new SimpleDateFormat("MMM");
@@ -288,6 +303,7 @@ public class OrgAdminBatchGroupService {
 			 * title_new + " \n" + details_new, "BATCH", "UPDATE_BATCHGROUP",
 			 * eventdate.toString());
 			 */
+			new AssessmentSchedulerService().createAssessmentNewEntryInBG(bg_list);
 		}
 	}
 

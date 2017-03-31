@@ -1,10 +1,7 @@
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.*"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
 
 <body class="top-navigation" id="super_admin_scheduler">

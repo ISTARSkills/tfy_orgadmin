@@ -64,9 +64,13 @@ function readyFn(jQuery) {
            var eventid =  $(this).attr('event_id');
    		if(key === 'delete'){
    			
+   			console.log('----------status------->'+$(this).data('status'));
+   			
+   			 
+   			
    			$.post(
    	   				"../event_utility_controller", 
-   	   				{deleteEventid : eventid}, 
+   	   				{deleteEventid : eventid,status:$(this).data('status')}, 
    	   				function(data) {location.reload();})
    		}
    		else if(key === 'edit'){
@@ -1414,7 +1418,7 @@ function scheduler_ClockDate() {
 		$('.clockpicker').clockpicker();
 		
 
-	$('#data_2 .input-group.date').datepicker({
+    $('#data_2 .input-group.date').datepicker({
 		startView : 1,
 		todayBtn : "linked",
 		keyboardNavigation : false,
@@ -1422,6 +1426,13 @@ function scheduler_ClockDate() {
 		autoclose : true,
 		format : "dd/mm/yyyy"
 	});
+		
+		$('#data_5 .input-daterange').datepicker({
+            keyboardNavigation: false,
+            forceParse: false,
+            autoclose: true,
+            format : "dd/mm/yyyy"
+        });
 	
 	$('.time_holder').val(d.getHours()+':'+d.getMinutes());
 	$('.date_holder').val($.date(d));
@@ -1499,6 +1510,9 @@ function scheduler_onChange_init(){
 //final-submit to create event or assessment 
 function scheduler_createNewEventAssessment() {
 	 var fID = null;
+	 var fullEventData = [];
+	 var tabType;
+	 var eventType;
 $(".final-submit-btn").unbind().click(function(event ){
 	    var $target  = $(event.target);
 	    if( $target.is('.disabled') ) {
@@ -1507,86 +1521,51 @@ $(".final-submit-btn").unbind().click(function(event ){
 	 var url = "../createorupdate_events"; // the script where you handle the form input.
 	 	 		 
 	 $(".new_schedule").each(function(index ){
-		 
-		
+		  
 		 //Assessment Event creation
 		 if($(this).data('trainer_data') === undefined ){
 			 
-			 var trainerID = $(this).data('assessment_data').trainerID;	
-			    var assessmentID = $(this).data('assessment_data').assessmentID;				
-				var batchID = $(this).data('assessment_data').batchID;
-				var eventDate = $(this).data('assessment_data').eventDate;
-				var AdminUserID = $(this).data('assessment_data').AdminUserID;
-				var startTime = $(this).data('assessment_data').startTime;	
-				var tabType = $(this).data('assessment_data').tabType;
-				var eventType = $(this).data('assessment_data').eventType;
-				var classroomID = $(this).data('assessment_data').classroomID;
-				var associateTrainerID = $(this).data('assessment_data').associateTrainerID;
-				
-				$.ajax({
-				       type: "POST",
-				       url: url,
-				       data: {assessmentID:assessmentID,
-				    	       batchID:batchID,
-				    	       trainerID:trainerID,
-				    	       AdminUserID:AdminUserID,
-				    	       eventType:eventType,
-				    	       eventDate:eventDate,
-				    	       startTime:startTime,
-				    	       tabType:tabType,
-				    	       classroomID:classroomID,
-				    	       associateTrainerID:associateTrainerID,
-				    	       eventValue:'createEvent'},  
-				       
-				
-				       success: function(data)
-				       
-				       {  toastr.success('Assessment Has Been Scheduled!')}
-				     }); 
+			 
+			 fullEventData.push($(this).data('assessment_data'));
+			     tabType = $(this).data('assessment_data').tabType;
+				 eventType = $(this).data('assessment_data').eventType;
 
 		 }
 		 //Event creation
 		 else if($(this).data('assessment_data') === undefined ){
 			 
-			    var trainerID = $(this).data('trainer_data').trainerID;				
-				var hours = $(this).data('trainer_data').hours;
-				var minute = $(this).data('trainer_data').minute;
-				var batchID = $(this).data('trainer_data').batchID;
-				var classroomID = $(this).data('trainer_data').classroomID;
-				var AdminUserID = $(this).data('trainer_data').AdminUserID;	
-				var eventDate = $(this).data('trainer_data').eventDate;
-				var startTime = $(this).data('trainer_data').startTime;
-				var tabType = $(this).data('trainer_data').tabType;
-				var eventType = $(this).data('trainer_data').eventType;
-				var associateTrainerID = $(this).data('trainer_data').associateTrainerID;
-			 $.ajax({
-			       type: "POST",
-			       url: url,
-			       data: {trainerID:trainerID,
-			    	    
-			    	       hours:hours,
-			    	       minute:minute,
-			    	       batchID:batchID,
-			    	       classroomID:classroomID,
-			    	       AdminUserID:AdminUserID,
-			    	       associateTrainerID:associateTrainerID,
-			    	       eventType:eventType,
-			    	       eventDate:eventDate,
-			    	       startTime:startTime,
-			    	       tabType:tabType,
-			    	       eventValue:'createEvent'},  
-		
-			       success: function(data)
-			       
-			       {  toastr.success('Event Has Been Scheduled!')}
-			     }); 
-		 
-		 
-		 }
-		
-	 
-	 
+			 fullEventData.push($(this).data('trainer_data'));
+			  
+			     eventType = $(this).data('trainer_data').eventType;
+			     tabType = $(this).data('trainer_data').tabType;
+			 
+		  }
+		 	
 	 });
+	 
+	 $.ajax({
+	       type: "POST",
+	       url: url,
+	       data: { tabType:tabType,
+	    	       eventDataDetails:JSON.stringify(fullEventData),
+	    	       eventType:eventType,
+	    	       eventValue:'createEvent'},  
+
+	       success: function(data)
+	       
+	       {  
+	    	   
+	    	   if(eventType === 'assessment'){
+	    		   
+	    		   toastr.success('Assessment Has Been Scheduled!');
+	    	   }else{
+	    		   
+	    		   
+	    		   toastr.success('Event Has Been Scheduled!');
+	    	   }
+	    		   
+	    }
+	     });
 	 
 	 toastr.options.onHidden = function() { location.reload(); }
       
@@ -2546,7 +2525,8 @@ function trainerRatingGraph() {
 }
 
 function trainerDataTable() {
-    $('.dataTables-example').DataTable({
+    $('.dataTables-example').each(function(){
+    	$(this).DataTable({
         pageLength: 15,
         responsive: true,
         dom: '<"html5buttons"B>lTfgitp',
@@ -2579,6 +2559,8 @@ function trainerDataTable() {
         ]
 
     });
+    	});
+    
 }
 
 
@@ -2598,7 +2580,7 @@ function studentFeedbackDetailsTable() {
     var urls = '../get_student_feedback?param=stuData';
     $.get(urls, function(data) {
         $("#student_feedback_body").html(data);
-        trainerDataTable();
+       // trainerDataTable();
     });
     
     

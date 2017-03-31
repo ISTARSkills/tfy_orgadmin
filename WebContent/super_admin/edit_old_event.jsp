@@ -1,22 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="com.istarindia.apps.dao.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.UUID"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEvent"%>
-<%@page import="com.istarindia.apps.dao.BatchScheduleEventDAO"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%
 				String url = request.getRequestURL().toString();
 				String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 						+ request.getContextPath() + "/";
 				boolean istrue = false;
-				BatchScheduleEventDAO dao = new BatchScheduleEventDAO();
-				BatchScheduleEvent be = new BatchScheduleEvent();
+				
 				
 				UIUtils ui = new UIUtils();
+				IstarUser istarUser = new IstarUser();
 				Batch batch = new Batch();
 				String evntid = "";
 				String eventDate = "08/09/2014";
@@ -29,7 +27,38 @@
 				String classroomName = "";
 				int orgAdminUserID =0;
 				int orgID=0;
-				if(request.getParameterMap().containsKey("eventid")){
+				int batchID = 0;
+				if (request.getParameterMap().containsKey("eventid")) {
+
+					istrue = true;
+					evntid = request.getParameter("eventid");
+					System.out.println("------------------------------------------->" + evntid);
+					
+					SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm");
+				
+					
+					for(HashMap<String, Object> dd : ui.getEventDetails(evntid)){
+						
+						eventDate = sdf2.format(formatter1.parse(dd.get("evedate").toString()));
+						eventTime = sdf1.format(formatter1.parse(dd.get("evedate").toString()));
+						eventHours = (int)dd.get("hours");
+						eventminute = (int)dd.get("min");
+						trainerID = (int)dd.get("userid");
+						classroomID =(int)dd.get("classroomid");
+						batchID =(int)dd.get("batch_id");
+						
+						
+						
+					}
+					istarUser = new IstarUserDAO().findById(trainerID);
+							trainerEmail = istarUser.getEmail();
+							ClassroomDetails classroomDetails = new ClassroomDetailsDAO().findById(classroomID);
+							classroomName = classroomDetails.getClassroomIdentifier();
+							batch = new BatchDAO().findById(batchID);
+				}
+			/* 	if(request.getParameterMap().containsKey("eventid")){
 					
 					istrue = true;
 					 evntid = request.getParameter("eventid");
@@ -56,7 +85,7 @@
 					orgID = batch.getBatchGroup().getCollege().getId();
 					
 					
-				}
+				} */
 			%>
 
 
@@ -73,7 +102,7 @@
 <input type="hidden" name="eventID" value="<%=evntid%>"/>
 <input type="hidden" name="eventType" value="session"/>
 <input type="hidden" name="orgAdminUserID" value="<%=orgAdminUserID%>"/>
-<input type="hidden" name="batchID" value="<%=be.getBatch().getId()%>"/>
+<input type="hidden" name="batchID" value="<%=batchID%>"/>
 		<div class="form-group" id="data_2">
 			<div class="col-lg-12">
 				<label class="font-bold">Event Date</label>
@@ -132,7 +161,7 @@
 				<label class="control-label">Select Session</label> <select
 					class="form-control m-b" name=sessionID>
 					
-					<%=ui.getLessons(be.getBatch().getId(),batch.getCourse().getId())%>
+					<%=ui.getLessons(batchID,batch.getCourse().getId())%>
 
 				</select>
 			</div>

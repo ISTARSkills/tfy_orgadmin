@@ -11,19 +11,20 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Map.Entry;
 
-import com.istarindia.apps.dao.Assessment;
-import com.istarindia.apps.dao.AssessmentDAO;
-import com.istarindia.apps.dao.Batch;
-import com.istarindia.apps.dao.BatchDAO;
-import com.istarindia.apps.dao.BatchGroup;
-import com.istarindia.apps.dao.BatchGroupDAO;
-import com.istarindia.apps.dao.BatchStudents;
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.Course;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
-import com.istarindia.apps.dao.OrgAdmin;
+import com.viksitpro.core.dao.entities.Assessment;
+import com.viksitpro.core.dao.entities.AssessmentDAO;
+import com.viksitpro.core.dao.entities.Batch;
+import com.viksitpro.core.dao.entities.BatchDAO;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.BatchStudents;
+import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.dao.entities.UserOrgMapping;
+import com.viksitpro.core.dao.entities.UserOrgMappingDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 public class AssessmentSchedulerService {
 
@@ -40,20 +41,20 @@ public class AssessmentSchedulerService {
 
 		System.out.println("inside Assessment");
 
-		DBUTILS util = new DBUTILS();
+		DBUTILS db = new DBUTILS();
 		StringBuffer out = new StringBuffer();
 		UUID parent_id = UUID.randomUUID();
 		Assessment assessment = new AssessmentDAO().findById(assessment_id);
 		Batch batch = new BatchDAO().findById(batch_id);
 		Course c = batch.getCourse();
 
-		String title_new = "Event: Assessment Scheduled on " + event_date + " " + time;
+		String title_new = "Event: Assessment Scheduled on " + event_date;
 		String details_new = "" + c.getCourseName() + ": at " + time;
 
 		String sql = "SELECT 	actor_id FROM 	istar_assessment_event   WHERE 	assessment_id = " + assessment_id
 				+ " AND cast (eventdate as varchar (50)) LIKE '%" + event_date + "%'";
 
-		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		System.out.println("--chk----------------------->" + sql);
 		ArrayList<Integer> alreadyAssigned = new ArrayList<>();
 		if (data.size() != 0) {
@@ -70,47 +71,25 @@ public class AssessmentSchedulerService {
 		}
 
 		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
-			System.out.println(bstudent.getStudent().getId());
-			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getStudent().getId())) {
+			System.out.println(bstudent.getIstarUser().getId());
+			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getIstarUser().getId())) {
 
-				String sql1 = "WITH ins2 AS ( 	INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	TYPE, 	updated_at, 	task_id, 	status, 	ACTION, 	assessment_id, 	parent_id, 	batch_id ) "
-						+ "VALUES 	( 		" + bstudent.getStudent().getId() + ", 		now(), 		" + AdminUserID
-						+ ", 		'" + event_date + "', 		'0', 		"
-						+ assessment.getAssessmentdurationminutes()
-						+ ", 		't', 		'ASSESSMENT_EVENT', 		now(), 		( 			SELECT 				ID 			FROM 				istar_task_type 			WHERE 				TYPE LIKE '%ASSESSMENT_TASK%' 		), 		'SCHEDULED', 		NULL, 		"
-						+ assessment_id + ", 		'" + parent_id + "', 		" + batch_id + " 	)RETURNING ID )	"
-						+ "INSERT INTO istar_notification ( 		event_id, 		sender_id, 		receiver_id, 		title, 		details, 		status, 		ACTION, 		TYPE, 		is_event_based, 		created_at 	) SELECT 		ins2. ID, 		"
-						+ bstudent.getStudent().getId() + ", 		" + bstudent.getStudent().getId() + ", 		'"
-						+ title_new + "', 		'" + details_new
-						+ "', 		'UNREAD', 		'NONE', 		'ASSESSMENT_EVENT', 		't', 		now() 	FROM 		ins2 ; ";
-
-				System.out.println(sql1);
-				util.executeUpdate(sql1);
-			} /*
-				 * else {
-				 * 
-				 * String sql1 =
-				 * "WITH ins2 AS ( 	INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	TYPE, 	updated_at, 	task_id, 	status, 	ACTION, 	assessment_id, 	parent_id, 	batch_id ) "
-				 * + "VALUES 	( 		" + bstudent.getStudent().getId() +
-				 * ", 		now(), 		" + AdminUserID + ", 		'" +
-				 * event_date + "', 		'0', 		" +
-				 * assessment.getAssessmentdurationminutes() +
-				 * ", 		't', 		'ASSESSMENT_EVENT', 		now(), 		( 			SELECT 				ID 			FROM 				istar_task_type 			WHERE 				TYPE LIKE '%ASSESSMENT_TASK%' 		), 		'SCHEDULED', 		NULL, 		"
-				 * + assessment_id + ", 		'" + parent_id + "', 		" +
-				 * batch_id + " 	)RETURNING ID )	" +
-				 * "INSERT INTO istar_notification ( 		event_id, 		sender_id, 		receiver_id, 		title, 		details, 		status, 		ACTION, 		TYPE, 		is_event_based, 		created_at 	) SELECT 		ins2. ID, 		"
-				 * + bstudent.getStudent().getId() + ", 		" +
-				 * bstudent.getStudent().getId() + ", 		'" + title_new +
-				 * "', 		'" + details_new +
-				 * "', 		'UNREAD', 		'NONE', 		'ASSESSMENT_EVENT', 		't', 		now() 	FROM 		ins2 ; "
-				 * ;
-				 * 
-				 * System.out.println(sql1); util.executeUpdate(sql1);
-				 * 
-				 * }
-				 */
-
-		}
+				String assessmentEventsql="INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	id, 	status, 	action, 	assessment_id, 	batch_id ) VALUES 	( 		'"+bstudent.getIstarUser().getId()+"', 		now(), 		"+AdminUserID+", 		'"+event_date+"', 		'"+assessment.getAssessmentdurationhours()+"', 		'"+assessment.getAssessmentdurationminutes()+"', 		't', 		'ASSESSMENT_EVENT', 		now(), 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_assessment_event), 		'SCHEDULED', 		NULL, 		"+assessment_id+", 		"+batch_id+" 	) RETURNING ID; ";
+				System.out.println("---->assessmentEventsql "+assessmentEventsql);
+				
+				int  istarAssessmentEventId  = db.executeUpdateReturn(assessmentEventsql);
+				
+				String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"+AdminUserID+"', 		'"+bstudent.getIstarUser().getId()+"', 		'SCHEDULED', 		 CAST ( 			'"+event_date+"' AS TIMESTAMP 		), 		CAST ( 			'("+event_date+")' AS TIMESTAMP )+ interval ' 1 ' minute * ("+assessment.getAssessmentdurationhours()+"*60+"+assessment.getAssessmentdurationminutes()+"), 		'f', 		't', 		now(), 		now(), 		"+istarAssessmentEventId+", 		'ASSESSMENT' 	)RETURNING ID;";
+				System.out.println("----->tasksql "+tasksql);
+				
+				int  taskID  = db.executeUpdateReturn(tasksql);
+				
+				String notificationsql="INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"+AdminUserID+", 		'"+bstudent.getIstarUser().getId()+"', 		'"+title_new+"', 		'"+details_new+"', 		'UNREAD', 		NULL, 		'ASSESSMENT_EVENT', 		't', 		now(), 		"+taskID+" 	);";
+				System.out.println("----->notificationsql "+notificationsql);
+				
+				db.executeUpdate(notificationsql);
+			  } 
+			}
 
 	}
 
@@ -119,11 +98,10 @@ public class AssessmentSchedulerService {
 		BatchGroup batchGroup = new BatchGroupDAO().findById(batchGrpId);
 		int batch_group_code = Integer.parseInt(batchGroup.getBatchCode());
 
-		System.out.println("---> createAssessmentNewEntryInBG");
+		//System.out.println("---> createAssessmentNewEntryInBG");
 
-		String sql = "SELECT cmsession_id,batch_id,creator_id,CAST(eventdate as VARCHAR)as event_date FROM batch_schedule_event WHERE batch_group_code ="
-				+ batch_group_code;
-
+		String sql = "SELECT cmsession_id,batch_id,creator_id,CAST(eventdate as VARCHAR)as event_date FROM batch_schedule_event WHERE batch_group_code ='"+ batch_group_code+"'";
+		System.out.println("---> createAssessmentNewEntryInBG "+ sql);
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		if (data.size() != 0) {
@@ -143,50 +121,10 @@ public class AssessmentSchedulerService {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				createAssessment(0, batch_id, assessment_id, event_date, time,AdminUserID, 0, "0");
 
-				UUID parent_id = UUID.randomUUID();
-				Assessment assessment = new AssessmentDAO().findById(assessment_id);
-				Batch batch = new BatchDAO().findById(batch_id);
-				Course c = batch.getCourse();
-
-				String title_new = "Event: Assessment Scheduled on " + eveDate + " " + time;
-				String details_new = "" + c.getCourseName() + ": at " + time;
-
-				String sql1 = "SELECT 	actor_id FROM 	istar_assessment_event   WHERE 	assessment_id = "
-						+ assessment_id + " AND  eventdate = '" + event_date.toString() + "'";
-
-				List<HashMap<String, Object>> data1 = util.executeQuery(sql1);
-				ArrayList<Integer> alreadyAssigned = new ArrayList<>();
-				if (data1.size() != 0) {
-					for (HashMap<String, Object> row : data1) {
-						int actor_id = (int) row.get("actor_id");
-						if (!alreadyAssigned.contains(actor_id)) {
-							alreadyAssigned.add(actor_id);
-						}
-					}
-				}
-
-				for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
-					System.out.println(bstudent.getStudent().getId());
-					if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getStudent().getId())) {
-
-						String sql2 = "WITH ins2 AS ( 	INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	TYPE, 	updated_at, 	task_id, 	status, 	ACTION, 	assessment_id, 	parent_id, 	batch_id ) "
-								+ "VALUES 	( 		" + bstudent.getStudent().getId() + ", 		now(), 		"
-								+ AdminUserID + ", 		'" + event_date + "', 		'0', 		"
-								+ assessment.getAssessmentdurationminutes()
-								+ ", 		't', 		'ASSESSMENT_EVENT', 		now(), 		( 			SELECT 				ID 			FROM 				istar_task_type 			WHERE 				TYPE LIKE '%ASSESSMENT_TASK%' 		), 		'SCHEDULED', 		NULL, 		"
-								+ assessment_id + ", 		'" + parent_id + "', 		" + batch_id
-								+ " 	)RETURNING ID )	"
-								+ "INSERT INTO istar_notification ( 		event_id, 		sender_id, 		receiver_id, 		title, 		details, 		status, 		ACTION, 		TYPE, 		is_event_based, 		created_at 	) SELECT 		ins2. ID, 		"
-								+ bstudent.getStudent().getId() + ", 		" + bstudent.getStudent().getId()
-								+ ", 		'" + title_new + "', 		'" + details_new
-								+ "', 		'UNREAD', 		'NONE', 		'ASSESSMENT_EVENT', 		't', 		now() 	FROM 		ins2 ; ";
-
-						System.out.println(sql2);
-						util.executeUpdate(sql2);
-					}
-
-				}
+		
 			}
 		}
 	}
@@ -195,34 +133,64 @@ public class AssessmentSchedulerService {
 			int AdminUserID, int classroomID, int assessment_id, String associateTrainerID) {
 
 		Batch b = new BatchDAO().findById(batchID);
-		College org = b.getBatchGroup().getCollege();
+		Organization org = b.getBatchGroup().getOrganization();
 		String batchCode = b.getBatchGroup().getBatchCode();
 		System.out.println("batchCode" + batchCode);
 		Course c = b.getCourse();
 		String evnetName = "ASSESSMENT EVENT FOR CLASS-" + org.getName() + "-Ilab-" + c.getCourseName();
+		String action = "assessment_id__" + assessment_id;
 
-		String sql = "INSERT INTO batch_schedule_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	 	task_id, 	status, 	action, 	cmsession_id, 	batch_id, 	event_name, 	classroom_id, 	associate_trainee, 	batch_group_code ) "
-				+ "VALUES 	( 		" + trainerID + ", 		now(), 		" + AdminUserID + ", 		'" + eventDate
-				+ "', 		'2', 		'0', 		't', 		'ASSESSMENT_EVENT_TRAINER', 		now(), 				NULL, 		'ASSESSMENT', 		'assessment_id__"
-				+ assessment_id + "', 		" + assessment_id + ", 		" + batchID + ", 		'" + evnetName
-				+ "', 		" + classroomID + ", 		'" + associateTrainerID + "', 		" + batchCode + " 	); ";
+		String sql = "INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		ID, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, 		associate_trainee, batch_group_code 	) 	VALUES 		( 			" 				+ trainerID + ", 			now(), 			" + AdminUserID + ", 			'" + eventDate + "', 			" + hours 				+ ", 			" + minute 				+ ", 			't', 			'ASSESSMENT_EVENT_TRAINER', 			'2017-03-28 00:55:13.671873', 			( 				SELECT 					COALESCE (MAX(ID) + 1, 1) 				FROM 					batch_schedule_event 			), 			'ASSESSMENT', 			'" 				+ action + "', 			" + assessment_id + ", 			" + batchID + ", 			'" + evnetName + "', 			" 				+ classroomID + ", 			'" + associateTrainerID + "', 	"+batchCode+"	)";
 		DBUTILS db = new DBUTILS();
 		db.executeUpdate(sql);
 		System.out.println("---------------sql----------->" + sql);
 	}
 
-	public void deleteAssessment(HashMap<String, String> assessmentData) {
-
-		int batchId = Integer.parseInt(assessmentData.get("batchId"));
-		int assessmentID = Integer.parseInt(assessmentData.get("assessmentID"));
-		String eventDate = assessmentData.get("eventDate");
-
-		eventDate = eventDate.substring(0, eventDate.length() - 2);
-
-		String deletesql1 = "DELETE FROM istar_assessment_event WHERE eventdate = '" + eventDate + "' AND batch_id = "
-				+ batchId + " AND assessment_id =" + assessmentID;
+	public void deleteAssessment(HashMap<String, String> assessmentData, int eventID) {
 		DBUTILS db = new DBUTILS();
+		int batchId = 0;
+		int assessmentID = 0;
+		String eventDate = null;
+		
+	if(eventID != -01){
+		
+		String sql = "SELECT cmsession_id,batch_id,CAST (eventdate AS VARCHAR) FROM batch_schedule_event WHERE id ="+eventID;	
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		for (HashMap<String, Object> item : data) {
+
+			 assessmentID = (int) item.get("cmsession_id");
+			 batchId = (int) item.get("batch_id");
+			 eventDate =  (String) item.get("eventdate");
+			
+		}
+		
+		
+		
+		
+	}else if(assessmentData != null){
+		
+		 batchId = Integer.parseInt(assessmentData.get("batchId"));
+		 assessmentID = Integer.parseInt(assessmentData.get("assessmentID"));
+		 eventDate = assessmentData.get("eventDate");
+
+		
+		
+	}
+	
+	eventDate = eventDate.substring(0, eventDate.length() - 2);
+
+		String deletesql1 = "DELETE FROM 	istar_notification WHERE 	task_id IN ( 	SELECT	ID 		FROM 			task 		WHERE 			item_id IN ( 				SELECT 					ID 				FROM 					istar_assessment_event 				WHERE 					CAST (eventdate AS VARCHAR) LIKE '%"+eventDate+"%' 				AND batch_id = "+batchId+" 				AND assessment_id = "+assessmentID+" 			) 	)";
+		String deletesql2 = "DELETE FROM 	task WHERE 	item_id IN ( 		SELECT 			ID 		FROM 			istar_assessment_event 		WHERE 			CAST (eventdate AS VARCHAR) LIKE '%"+eventDate+"%' 		AND batch_id = "+batchId+" 		AND assessment_id = "+assessmentID+" 	)";
+		String deletesql3 = "DELETE FROM 	istar_assessment_event WHERE 	CAST (eventdate AS VARCHAR) LIKE '%"+eventDate+"%' AND batch_id = "+batchId+" AND assessment_id ="+assessmentID;
+        String deletesql4 = "DELETE FROM 	batch_schedule_event WHERE 	CAST (eventdate AS VARCHAR) LIKE '%"+eventDate+"%' AND batch_id = "+batchId+" AND cmsession_id ="+assessmentID;
+		
 		db.executeUpdate(deletesql1);
+		db.executeUpdate(deletesql2);
+		db.executeUpdate(deletesql3);
+		db.executeUpdate(deletesql4);
+		//System.out.println("---------------sql----------->" + deletesql1);
+		//System.out.println("---------------sql----------->" + deletesql2);
+		//System.out.println("---------------sql----------->" + deletesql3);
 	}
 
 	public void insertDeleteData(int trainerID, int assessmentID, int batchID, int AdminUserID, String eventDate,
@@ -249,8 +217,10 @@ public class AssessmentSchedulerService {
 		if (AdminUserID != 0 && AdminUserID != 300) {
 
 			user = dao.findById(AdminUserID);
-			OrgAdmin admin = (OrgAdmin) user;
-			orgID = admin.getCollege().getId();
+			
+			UserOrgMapping orgMapping = new UserOrgMapping();
+			orgID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+			
 		}
 		boolean isCreated = false;
 		Batch batch = new BatchDAO().findById(batchId);

@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.IStarBaseServelet;
+
+
 
 /**
  * Servlet implementation class OpsReportController

@@ -10,6 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
+
+import com.viksitpro.core.dao.entities.Batch;
+import com.viksitpro.core.dao.entities.BatchDAO;
+import com.viksitpro.core.dao.entities.BatchStudents;
+import com.viksitpro.core.dao.entities.BatchStudentsDAO;
+import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.utilities.DBUTILS;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -17,16 +27,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.istarindia.apps.dao.Batch;
-import com.istarindia.apps.dao.BatchDAO;
-import com.istarindia.apps.dao.College;
-import com.istarindia.apps.dao.Course;
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
-import com.istarindia.apps.dao.OrgAdmin;
-import com.istarindia.apps.dao.Student;
-import com.istarindia.apps.dao.StudentDAO;
 
 public class EventSchedulerService {
 
@@ -39,11 +39,11 @@ public class EventSchedulerService {
 	Date FinaleventDate = null;
 
 	public void createEvent(int trainerID, int hours, int minute, int batchID, String eventDate, String startTime,
-			int AdminUserID, int classroomID, int cmsessionID,String associateTrainerID) {
-		//System.out.println("inside");
+			int AdminUserID, int classroomID, int cmsessionID, String associateTrainerID) {
+		// System.out.println("inside");
 		String action = "cmsession_id__" + cmsessionID;
 		Batch b = new BatchDAO().findById(batchID);
-		College org = b.getBatchGroup().getCollege();
+		Organization org = b.getBatchGroup().getOrganization();
 		Course c = b.getCourse();
 		if (cmsessionID == -1) {
 			cmsessionID = -1;
@@ -54,83 +54,140 @@ public class EventSchedulerService {
 
 		String title_new = "Event: Scheduled on " + eventDate;
 		String details_new = "" + c.getCourseName() + ": at " + eventDate;
-
-		String sql = "WITH ins1 AS ( 	INSERT INTO event_queue (event_name, batch_id) 	VALUES 		( 			'event_queue_' || "
-				+ batchID + ", 			" + batchID + " 		) RETURNING ID ),  "
-				+ " ins2 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		task_id, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id,     associate_trainee 	)"
-				+ " SELECT 		" + trainerID + ", 		now(), 		" + AdminUserID + ", 		'" + eventDate
-				+ "', 		" + hours + ", 		" + minute
-				+ ", 		't', 		'BATCH_SCHEDULE_EVENT_TRAINER', 		now(), 		ins1. ID, 		'SCHEDULED', 		'"
-				+ action + "', 		" + cmsessionID + ", 		" + batchID + ", 		'" + evnetName + "', 		"
-				+ classroomID + ",     '" + associateTrainerID + "' 	FROM 		ins1 RETURNING ID ),  "
-				+ " ins3 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		task_id, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, associate_trainee 	) "
-				+ "SELECT 		( 			SELECT 				presentor_id 			FROM 				trainer_presentor 			WHERE 				trainer_id = "
-				+ trainerID + " 		), 		now(), 		" + AdminUserID + ", 		'" + eventDate + "', 		"
-				+ hours + ", 		" + minute
-				+ ", 		't', 		'BATCH_SCHEDULE_EVENT_PRESENTOR', 		now(), 		ins1. ID, 		'SCHEDULED', 		'"
-				+ action + "', 		" + cmsessionID + ", 		" + batchID + ", 		'" + evnetName + "', 		"
-				+ classroomID + ", 0 	FROM 		ins1 RETURNING ID ),  "
-				+ " ins4 AS ( 	INSERT INTO event_queue_events ( 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		ins1. ID, 		'Trainer Event: "
-				+ evnetName + "', 		" + trainerID
-				+ ", 		ins2. ID, 		now(), 		now() 	FROM 		ins1, 		ins2 ),  "
-				+ " ins5 AS ( 	INSERT INTO event_queue_events ( 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		ins1. ID, 		'Presenter Event: "
-				+ evnetName + "', 		"
-				+ "( 			SELECT 				presentor_id 			FROM 				trainer_presentor 			WHERE 				trainer_id = "
-				+ trainerID + " 		), 		ins3. ID, 		now(), 		now() 	FROM 		ins1, 		ins3 ),  "
-				+ " ins6 AS ( 	INSERT INTO istar_notification ( 		event_id, 		sender_id, 		receiver_id, 		title, 		details, 		status, 		ACTION, 		TYPE, 		is_event_based, 		created_at 	) SELECT 		ins2. ID, 		"
-				+ AdminUserID + ", 		" + trainerID + ", 		'" + title_new + "', 		'" + details_new
-				+ "', 		'UNREAD', 		'NONE', 		'BATCH_SCHEDULE_EVENT_TRAINER', 		't', 		now() 	FROM 		ins2 ) "
-				+ "INSERT INTO event_workflow_status ( 	event_id, 	status, 	created_at, 	updated_at, 	user_id ) SELECT 	ins2. ID, 	'SCHEDULED', 	now(), 	now(), 	"
-				+ trainerID + " FROM 	ins2;";
-
+		
 		DBUTILS db = new DBUTILS();
-		db.executeUpdate(sql);
-		System.out.println("-------------query -------" + sql);
-
+		
+		String ssql = "SELECT count(*) as tcount FROM trainer_batch WHERE trainer_id= "+trainerID+" AND batch_id ="+batchID;
+		
+		List<HashMap<String, Object>> data = db.executeQuery(ssql);
+		
+		if(Integer.parseInt(data.get(0).get("tcount").toString()) == 0 ){
+			
+			String trainerBatchSql = "INSERT INTO trainer_batch ( 	id, 	batch_id, 	trainer_id ) VALUES 	((SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	trainer_batch ) , "+batchID+", "+trainerID+");";
+		
+			db.executeUpdate(trainerBatchSql);
+			
+			System.out.println("---xsxsxsxsxsxs-->" + trainerBatchSql);
+			
+		}
+		
+	String sql= "WITH ins1 AS ( 	INSERT INTO event_queue (ID, event_name, batch_id) 	VALUES 		( 			( 				SELECT 					COALESCE (MAX(ID) + 1, 1) 				FROM 					event_queue 			), 			'event_queue_' || "+ batchID + ", 			" + batchID + " 		) RETURNING ID ),  ins2 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		ID, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, 		associate_trainee, 		batch_group_code 	) 	VALUES 		( 			"+ trainerID + ", 			now(), 			" + AdminUserID + ", 			'" + eventDate + "', 			" + hours + ", 			" + minute + ", 			't', 			'BATCH_SCHEDULE_EVENT_TRAINER', 			'2017-03-28 00:55:13.671873', 			( 				SELECT 					COALESCE (MAX(ID) + 1, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'" + action + "', 			" + cmsessionID + ", 			" + batchID + ", 			'" + evnetName + "', 			" + classroomID + ", 			'" + associateTrainerID + "', 			NULL 		) RETURNING ID ),  ins3 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		ID, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, 		associate_trainee, 		batch_group_code 	) 	VALUES 		( 			( 				SELECT 					presentor_id 				FROM 					trainer_presentor 				WHERE 					trainer_id = "+ trainerID + " 			), 			now(), 			" + AdminUserID + ", 			'" + eventDate + "', 			" + hours 				+ ", 			" + minute 				+ ", 			't', 			'BATCH_SCHEDULE_EVENT_PRESENTOR', 			'2017-03-28 00:55:13.671873', 			( 				SELECT 					COALESCE (MAX(ID) + 2, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'" 				+ action + "', 			" + cmsessionID + ", 			" + batchID + ", 			'" + evnetName + "', 			"+ classroomID + ", 			'" + associateTrainerID + "', 			NULL 		) RETURNING ID ),  ins4 AS ( 	INSERT INTO event_queue_event_mapping ( 		ID, 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID) + 1, 1) 			FROM 				event_queue_event_mapping 		), 		ins1. ID, 		'Trainer Event: "+ evnetName + "', 		" + trainerID+ ", 		ins2. ID, 		now(), 		now() 	FROM 		ins2, 		ins1 ),  ins5 AS ( 	INSERT INTO event_queue_event_mapping ( 		ID, 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID) + 2, 1) 			FROM 				event_queue_event_mapping 		), 		ins1. ID, 		'Presenter Event: "+ evnetName + "', 		( 			SELECT 				presentor_id 			FROM 				trainer_presentor 			WHERE 				trainer_id = " + trainerID + " 		), 		ins3. ID, 		now(), 		now() 	FROM 		ins3, 		ins1 ),  ins6 AS ( 	INSERT INTO task ( 		ID, 		NAME, 		task_type, 		priority, 		OWNER, 		actor, 		STATE, 		start_date, 		end_date, 		is_repeatative, 		is_active, 		created_at, 		updated_at, 		item_id, 		item_type 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'CLASSROOM EVENT TASK', 		2, 		1, 		" + AdminUserID + ", 		"+trainerID+", 		'SCHEDULED', 		" 				+ " CAST ('"+eventDate+"' AS TIMESTAMP), 		CAST ( 			'("+eventDate+")' AS TIMESTAMP 		) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 		'f', 		't', 		now(), 		now(), 		ins2. ID, 		'CLASSROOM_SESSION' 	FROM 		ins2 RETURNING ID ),ins7 AS ( INSERT INTO istar_notification ( 	ID, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) SELECT 	( 		SELECT 			COALESCE (MAX(ID) + 1, 1) 		FROM 			istar_notification 	), 	"+AdminUserID+", 	'"+trainerID+"', 	'"+title_new+"', 	'"+details_new+"', 	'UNREAD', 	NULL, 	'BATCH_SCHEDULE_EVENT_TRAINER', 	't', 	now(), 	ins6. ID FROM 	ins6 ) SELECT 	ID FROM 	ins2";		
+		
+	System.out.println("----->notificationsql "+sql);
+	
+	int  bseTrainerID  = db.executeUpdateReturn(sql);
+			
+		    createTaskStudent(batchID,eventDate,hours,minute,bseTrainerID,title_new,details_new,AdminUserID);
+		    
+		
 	}
+	
+	public void createTaskStudent(int batchID,String eventDate,int hours,int minute,int eventID,String title_new,String details_new,int AdminUserID){
+		
+		String sql = "SELECT actor FROM task WHERE  item_id = "+eventID+" AND item_type = 'CLASSROOM_SESSION' ";
+		
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		
+		System.out.println("--chk----------------------->" + sql);
+		
+		ArrayList<Integer> alreadyAssigned = new ArrayList<>();
+		
+		if (data.size() != 0) {
+			for (HashMap<String, Object> row : data) {
+				int actor_id = (int) row.get("actor");
+				if (!alreadyAssigned.contains(actor_id)) {
+					alreadyAssigned.add(actor_id);
+				}
+			}
+		}
+		
+		Batch batch = new Batch();
+		BatchDAO batchDAO = new BatchDAO();		
+		
+		batch = batchDAO.findById(batchID);
+		
+		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
+			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getIstarUser().getId())) {
+				
+				String insertIntoTask="INSERT INTO task (id, name,  task_type, priority, owner, actor, state, start_date, end_date, "
+						+ "   is_repeatative,  is_active,  created_at, updated_at, item_id, item_type  "
+						+ ") VALUES "
+						+ "((select COALESCE(max(id),0)+1 from task), 'CLASSROOM EVENT TASK', 2, 1, 300, "+bstudent.getIstarUser().getId()+", 'SCHEDULED',"
+						+ " cast('"+eventDate+"' as timestamp), cast('("+eventDate+")'as timestamp) + interval '1' minute * ("+hours+"*60+"+minute+"),    'f',  't', now(), now(), "
+						+ ""+eventID+",'CLASSROOM_SESSION' ) RETURNING ID;"; 
+				
+				
+				int  taskID  = db.executeUpdateReturn(insertIntoTask);		
+				
+				    System.out.println("----->" + insertIntoTask);
+				    
+				    
+				    String notificationsql="INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"+AdminUserID+", 		'"+bstudent.getIstarUser().getId()+"', 		'"+title_new+"', 		'"+details_new+"', 		'UNREAD', 		NULL, 		'BATCH_SCHEDULE_EVENT_TRAINER', 		't', 		now(), 		"+taskID+" 	);";
+					System.out.println("----->notificationsql "+notificationsql);
+					
+					db.executeUpdate(notificationsql);
+					
+				
+			}
+			
+		}
+		
+		
+	}
+	
+	
 
 	public void deleteEvent(String eventID) {
 
-		//System.out.println("inside delete");
-
-		String deletesql1 = "DELETE FROM event_workflow_status WHERE cast (event_id as varchar) like '" + eventID + "'";
+		
+		
 		DBUTILS db = new DBUTILS();
-		db.executeUpdate(deletesql1);
-		//System.out.println(deletesql1);
-		String sql = "SELECT cast(event_queue_events.event_id as varchar(50)) as eventid  FROM event_queue_events WHERE event_queue_id in (SELECT event_queue_id FROM event_queue_events WHERE cast (event_id as varchar) like '"
-				+ eventID + "')";
-	//	System.out.println(sql);
-		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		for (HashMap<String, Object> item : data) {
+		
+		String delete_notification_sql = "DELETE FROM istar_notification WHERE  task_id in (select id FROM task WHERE  item_id = "+eventID+" AND item_type = 'CLASSROOM_SESSION' );";
+		db.executeUpdate(delete_notification_sql);
 
-			String deletesql2 = "DELETE FROM event_queue_events WHERE cast (event_id as varchar) like '"
-					+ item.get("eventid") + "'";
-			String deletesql3 = "DELETE FROM batch_schedule_event WHERE cast (id as varchar) like '"
-					+ item.get("eventid") + "'";
-			db.executeUpdate(deletesql2);
+		System.out.println(delete_notification_sql);
+		
+		String delete_task_sql = "DELETE FROM task WHERE  item_id = "+eventID+" AND item_type = 'CLASSROOM_SESSION' ";
+		db.executeUpdate(delete_task_sql);
+
+		System.out.println(delete_task_sql);
+		String sql = "SELECT 	event_queue_event_mapping.event_queue_id AS event_queue_id,event_queue_event_mapping.event_id AS eventid FROM 	event_queue_event_mapping WHERE 	event_queue_id IN ( 		SELECT 			event_queue_id 		FROM 			event_queue_event_mapping 		WHERE 			event_id = "+eventID+" 	)";
+		// System.out.println(sql);
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		
+		
+		String deletesql4 = "DELETE FROM event_queue WHERE id = '"+ data.get(0).get("event_queue_id") + "'";
+		db.executeUpdate(deletesql4);
+		
+		for (HashMap<String, Object> item : data) {
+			String deletesql3 = "DELETE FROM batch_schedule_event WHERE id = '"+ item.get("eventid") + "'";
+			String deletesql2 = "DELETE FROM event_queue_event_mapping WHERE event_id = '"+ item.get("eventid") + "'";
 			db.executeUpdate(deletesql3);
-			//System.out.println(deletesql2);
-			//System.out.println(deletesql3);
+			db.executeUpdate(deletesql2);
+			// System.out.println(deletesql3);
 
 		}
 
 	}
 
 	public void updateEvent(String eventID, int trainerID, int hours, int minute, int batchID, String eventDate,
-			String startTime, int AdminUserID, int classroomID, int sessionID,String associateTrainerID) {
+			String startTime, int AdminUserID, int classroomID, int sessionID, String associateTrainerID) {
 
-		//System.out.println("inside update");
+		// System.out.println("inside update");
 
 		deleteEvent(eventID);
 
-		createEvent(trainerID, hours, minute, batchID, eventDate, startTime, AdminUserID, classroomID, sessionID,associateTrainerID);
+		createEvent(trainerID, hours, minute, batchID, eventDate, startTime, AdminUserID, classroomID, sessionID,
+				associateTrainerID);
 
 	}
 
 	// for fullCalendar
 	public void editEvent(String eventID, String eventDate, String startTime) {
 
-		//System.out.println("inside editEvent");
+		// System.out.println("inside editEvent");
 
 		try {
 			FinaleventDate = formatter.parse(dateformatto.format(dateformatfrom.parse(eventDate)) + " " + startTime);
@@ -145,7 +202,7 @@ public class EventSchedulerService {
 		int AdminUserID = 0;
 		int classroomID = 0;
 		int cmsessionID = -1;
-        String associateTrainerID =null;
+		String associateTrainerID = null;
 		String editsql = "SELECT associate_trainee,actor_id,creator_id,eventhour,eventminute,cmsession_id,batch_id,classroom_id FROM batch_schedule_event WHERE id = '"
 				+ eventID + "'";
 
@@ -174,7 +231,7 @@ public class EventSchedulerService {
 			deleteEvent(eventID);
 
 			createEvent(trainerID, hours, minute, batchID, FinaleventDate.toString(), startTime, AdminUserID,
-					classroomID, cmsessionID,associateTrainerID);
+					classroomID, cmsessionID, associateTrainerID);
 		}
 
 	}
@@ -242,15 +299,14 @@ public class EventSchedulerService {
 
 	public StringBuffer getAssessment(int assessmentData) {
 
-		String sql = "SELECT   asm. ID AS ID, 	asm.assessmenttitle AS title FROM 	module_course mc, 	cmsession_module cm, 	lesson_cmsession lcms, 	assessment asm WHERE 	  mc.module_id = cm.module_id AND cm.cmsession_id  = lcms.cmsession_id AND  lcms.lesson_id = asm.lesson_id AND mc.course_id ="
-				+ assessmentData;
+		String sql = "SELECT DISTINCT id,assessmenttitle FROM assessment;";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 		out.append("<option value='0'> Select Assessment...</option>");
 		for (HashMap<String, Object> item : data) {
 
-			out.append("<option value='" + item.get("id") + "'>" + item.get("title") + "</option>");
+			out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle") + "</option>");
 		}
 		out.append("");
 
@@ -259,7 +315,8 @@ public class EventSchedulerService {
 	}
 
 	public void insertUpdateData(int trainerID, int hours, int minute, int batchID, String eventType, String eventDate,
-			String startTime, int classroomID, int AdminUserID, int sessionID, String eventID,String associateTrainerID) {
+			String startTime, int classroomID, int AdminUserID, int sessionID, String eventID,
+			String associateTrainerID) {
 
 		try {
 			FinaleventDate = formatter.parse(dateformatto.format(dateformatfrom.parse(eventDate)) + " " + startTime);
@@ -272,11 +329,17 @@ public class EventSchedulerService {
 		if (eventID != null) {
 
 			updateEvent(eventID, trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(),
-					startTime, AdminUserID, classroomID, sessionID,associateTrainerID);
+					startTime, AdminUserID, classroomID, sessionID, associateTrainerID);
 		} else {
 
 			createEvent(trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(), startTime,
-					AdminUserID, classroomID, -1,associateTrainerID);
+					AdminUserID, classroomID, -1, associateTrainerID);
+			
+			
+			
+			
+			
+			
 		}
 
 	}
@@ -297,7 +360,7 @@ public class EventSchedulerService {
 	}
 
 	public StringBuffer createDiv(HashMap<String, String> data, boolean isCreated) {
-		//System.out.println("creatediv");
+		// System.out.println("creatediv");
 		StringBuffer out = new StringBuffer();
 		String trainerData = "";
 
@@ -339,10 +402,12 @@ public class EventSchedulerService {
 
 	// create single event
 	public StringBuffer singleEvent(int trainerID, int hours, int minute, int batchID, String eventType,
-			String eventDate, String startTime, int classroomID, int AdminUserID, int orgID,String associateTrainerID) {
+			String eventDate, String startTime, int classroomID, int AdminUserID, int orgID,
+			String associateTrainerID) {
 
-		StudentDAO studentDAO = new StudentDAO();
-		Student student = new Student();
+		// StudentDAO studentDAO = new StudentDAO();
+		// Student student = new Student();
+
 		IstarUserDAO dao = new IstarUserDAO();
 		IstarUser user = new IstarUser();
 		String uType = "SUPER_ADMIN";
@@ -350,16 +415,15 @@ public class EventSchedulerService {
 		if (AdminUserID != 0 && AdminUserID != 300) {
 
 			user = dao.findById(AdminUserID);
-			OrgAdmin admin = (OrgAdmin) user;
-			orgID = admin.getCollege().getId();
-			uType = admin.getUserType();
+			orgID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+			uType = "ORG_ADMIN";
 		}
 
 		Batch batch = new BatchDAO().findById(batchID);
 		Course c = batch.getCourse();
 		String courseName = c.getCourseName();
-		student = studentDAO.findById(trainerID);
-		String trainerName = student.getName();
+		user = dao.findById(trainerID);
+		String trainerName = user.getUserProfile().getFirstName();
 
 		HashMap<String, String> hashMap = new HashMap<>();
 		hashMap.put("trainerID", trainerID + "");
@@ -377,7 +441,7 @@ public class EventSchedulerService {
 		hashMap.put("orgID", orgID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
 		hashMap.put("uType", uType);
-		
+
 		StringBuffer out = new StringBuffer();
 		String qdate = null;
 		boolean isCreated = false;
@@ -410,8 +474,6 @@ public class EventSchedulerService {
 	// editNewEvent
 	public StringBuffer editNewEvent(JSONArray array) {
 
-		StudentDAO studentDAO = new StudentDAO();
-		Student student = new Student();
 		ArrayList<String> list = new ArrayList<>();
 		ArrayList<String> qdatelist = new ArrayList<>();
 		StringBuffer out = new StringBuffer();
@@ -435,20 +497,21 @@ public class EventSchedulerService {
 			String eventDate = (String) jsonObject.get("eventDate");
 			String associateTrainerID = (String) jsonObject.get("associateTrainerID");
 
-			student = studentDAO.findById(trainerID);
-			String trainerName = student.getName();
+			IstarUserDAO dao = new IstarUserDAO();
+			IstarUser user = new IstarUser();
+
+			user = dao.findById(trainerID);
+			String trainerName = user.getUserProfile().getFirstName();
+
 			Batch batch = new BatchDAO().findById(batchID);
 			Course c = batch.getCourse();
 			String courseName = c.getCourseName();
 			String uType = "SUPER_ADMIN";
-			IstarUserDAO dao = new IstarUserDAO();
-			IstarUser user = new IstarUser();
 
 			if (AdminUserID != 0 && AdminUserID != 300) {
 				user = dao.findById(AdminUserID);
-				OrgAdmin admin = (OrgAdmin) user;
-				orgID = admin.getCollege().getId();
-				uType = admin.getUserType();
+				orgID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+				uType = "ORG_ADMIN";
 			}
 
 			hashMap.put("trainerID", trainerID + "");
@@ -500,24 +563,24 @@ public class EventSchedulerService {
 
 	// create daily events
 	public StringBuffer dailyEvent(int trainerID, int hours, int minute, int batchID, String eventType,
-			String startEventDate, String endEventDate, String startTime, int classroomID, int AdminUserID, int orgID,String associateTrainerID) {
-
-		StudentDAO studentDAO = new StudentDAO();
-		Student student = new Student();
+			String startEventDate, String endEventDate, String startTime, int classroomID, int AdminUserID, int orgID,
+			String associateTrainerID) {
 
 		Batch batch = new BatchDAO().findById(batchID);
 		Course c = batch.getCourse();
 		String courseName = c.getCourseName();
-		student = studentDAO.findById(trainerID);
-		String trainerName = student.getName();
+
 		IstarUserDAO dao = new IstarUserDAO();
 		IstarUser user = new IstarUser();
+
+		user = dao.findById(trainerID);
+		String trainerName = user.getUserProfile().getFirstName();
+
 		String uType = "SUPER_ADMIN";
 		if (AdminUserID != 0 && AdminUserID != 300) {
 			user = dao.findById(AdminUserID);
-			OrgAdmin admin = (OrgAdmin) user;
-			orgID = admin.getCollege().getId();
-			uType = admin.getUserType();
+			orgID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+			uType = "ORG_ADMIN";
 		}
 
 		HashMap<String, String> hashMap = new HashMap<>();
@@ -535,7 +598,7 @@ public class EventSchedulerService {
 		hashMap.put("orgID", orgID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
 		hashMap.put("uType", uType);
-		
+
 		StringBuffer out = new StringBuffer();
 		String qdate = null;
 		ArrayList<String> list = new ArrayList<>();
@@ -577,24 +640,23 @@ public class EventSchedulerService {
 	// create weekly events
 	public StringBuffer weeklyEvent(int trainerID, int hours, int minute, int batchID, String eventType,
 			String startEventDate, String endEventDate, String startTime, int classroomID, int AdminUserID, String days,
-			int orgID,String associateTrainerID) {
+			int orgID, String associateTrainerID) {
 
-		StudentDAO studentDAO = new StudentDAO();
-		Student student = new Student();
 		Batch batch = new BatchDAO().findById(batchID);
 		Course c = batch.getCourse();
-		String courseName = c.getCourseName();
-		student = studentDAO.findById(trainerID);
-		String trainerName = student.getName();
 
 		IstarUserDAO dao = new IstarUserDAO();
 		IstarUser user = new IstarUser();
+
+		String courseName = c.getCourseName();
+		user = dao.findById(trainerID);
+		String trainerName = user.getUserProfile().getFirstName();
+
 		String uType = "SUPER_ADMIN";
 		if (AdminUserID != 0 && AdminUserID != 300) {
 			user = dao.findById(AdminUserID);
-			OrgAdmin admin = (OrgAdmin) user;
-			orgID = admin.getCollege().getId();
-			uType = admin.getUserType();
+			orgID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+			uType = "ORG_ADMIN";
 
 		}
 
@@ -653,15 +715,16 @@ public class EventSchedulerService {
 
 	public StringBuffer getEventDetails(String qdate, ArrayList<String> datacheck, int orgID) {
 
-		//System.out.println("eventdetails");
-		//System.out.println("eventdetails");
+		// System.out.println("eventdetails");
+		// System.out.println("eventdetails");
 		StringBuffer out = new StringBuffer();
-		String sql = "SELECT  batch_schedule_event.batch_id as bid,batch_schedule_event.eventhour as eventhour,batch_schedule_event.eventminute as eventminute,batch_schedule_event.actor_id as userid,batch_schedule_event.classroom_id as classroomid,cast(batch_schedule_event. ID as varchar(50)) as eventid, batch_schedule_event.eventdate as eventdate,student.name as name  FROM 	batch_schedule_event,   student WHERE 	batch_id IN ( 		SELECT 			ID 		FROM 			batch 		WHERE 			batch.batch_group_id IN ( 				SELECT 					ID 				FROM 					batch_group 				WHERE 					college_id = "
-				+ orgID + " 			) 	) AND  cast (eventdate as varchar (50)) LIKE '%" + qdate
-				+ "%' AND student.id = batch_schedule_event.actor_id AND student.user_type != 'PRESENTOR' AND student.user_type != 'STUDENT'";
+		String sql = "SELECT 	batch_schedule_event.batch_id AS bid, 	batch_schedule_event.eventhour AS eventhour, 	batch_schedule_event.eventminute AS eventminute, 	batch_schedule_event.actor_id AS userid, 	batch_schedule_event.classroom_id AS classroomid, 	CAST ( 		batch_schedule_event. ID AS VARCHAR (50) 	) AS eventid, 	batch_schedule_event.eventdate AS eventdate, 	user_profile.first_name AS NAME FROM 	batch_schedule_event, user_profile, user_role WHERE 	batch_id IN ( 		SELECT 			ID 		FROM 			batch 		WHERE 			batch.batch_group_id IN ( 				SELECT 					ID 				FROM 					batch_group 				WHERE 					college_id = "
+				+ orgID + " 			) 	) " + "AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate
+				+ "%' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
+				+ "AND user_role.role_id = 14";
 
 		DBUTILS db = new DBUTILS();
-	//	System.out.println("eventdetails" + sql);
+		// System.out.println("eventdetails" + sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {
@@ -714,71 +777,65 @@ public class EventSchedulerService {
 		DateFormat dateformatfrom = new SimpleDateFormat("dd/MM/yyyy");
 
 		Date date = null;
-		
-		String newdate = null;	
+
+		String newdate = null;
 		try {
-			
-			newdate =	dateformatto.format(dateformatfrom.parse(id__event_date_holder));
-			
+
+			newdate = dateformatto.format(dateformatfrom.parse(id__event_date_holder));
+
 			date = formatter
 					.parse(dateformatto.format(dateformatfrom.parse(id__event_date_holder)) + " " + id__event_time);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	//	System.out.println(date);
-		//System.out.println("-----newdate------>"+newdate+"-"+id__event_time.substring(0,2));
-		
+		// System.out.println(date);
+		// System.out.println("-----newdate------>"+newdate+"-"+id__event_time.substring(0,2));
+
 		Date upper_limit = DateUtils.addMinutes(date, duration_hour * 60 + duration_min);
-		
-		String Validatesql = "SELECT cast(batch_schedule_event. ID as varchar(50)) as eventid, actor_id,eventdate,eventhour,eventminute,classroom_id,batch_id FROM batch_schedule_event WHERE cast (eventdate as varchar (50)) LIKE '%"+newdate+" "+id__event_time.substring(0,2)+"%' AND type = 'BATCH_SCHEDULE_EVENT_TRAINER'";
+
+		String Validatesql = "SELECT cast(batch_schedule_event. ID as varchar(50)) as eventid, actor_id,eventdate,eventhour,eventminute,classroom_id,batch_id FROM batch_schedule_event WHERE cast (eventdate as varchar (50)) LIKE '%"
+				+ newdate + " " + id__event_time.substring(0, 2) + "%' AND type = 'BATCH_SCHEDULE_EVENT_TRAINER'";
 		System.out.println(Validatesql);
-		  DBUTILS db = new DBUTILS();
-			List<HashMap<String, Object>> data = db.executeQuery(Validatesql);
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(Validatesql);
 
-			for (HashMap<String, Object> item : data) {
-				
-				/*item.get("eventid");
-				item.get("actor_id");
-				item.get("eventdate");
-				item.get("eventhour");
-				item.get("eventminute");
-				item.get("classroom_id");
-				item.get("batch_id");*/
-				
-				
-				
-				Date db_upper_limit = DateUtils.addMinutes((Date) item.get("eventdate"), Integer.parseInt(item.get("eventhour").toString()) * 60 + Integer.parseInt(item.get("eventminute").toString()));
-				
-				
-				 if(formatter1.format(date).compareTo(formatter1.format(item.get("eventdate")))>0 && (int)item.get("actor_id") == trainer_id || classroom_id == (int)item.get("classroom_id") || Integer.parseInt(hidden_batch_id) == (int)item.get("batch_id")){
-					 
-		                System.out.println(formatter1.format(date)+ " is after "+ formatter1.format(item.get("eventdate")));
-		                
-		                if (!arrayList.contains(item.get("eventid").toString())) {
+		for (HashMap<String, Object> item : data) {
 
-							arrayList.add(item.get("eventid").toString());
-						}
-		                
-		                
-		                
-		            } if(formatter1.format(db_upper_limit).compareTo(formatter1.format(upper_limit))<0 && (int)item.get("actor_id") == trainer_id || classroom_id == (int)item.get("classroom_id") || Integer.parseInt(hidden_batch_id) == (int)item.get("batch_id")){
-		                System.out.println(formatter1.format(db_upper_limit) +" is before "+formatter1.format(upper_limit));
-		                
-		                if (!arrayList.contains(item.get("eventid").toString())) {
+			/*
+			 * item.get("eventid"); item.get("actor_id"); item.get("eventdate");
+			 * item.get("eventhour"); item.get("eventminute");
+			 * item.get("classroom_id"); item.get("batch_id");
+			 */
 
-							arrayList.add(item.get("eventid").toString());
-						}
-		            }
-				
-				
-				
-				
-				
+			Date db_upper_limit = DateUtils.addMinutes((Date) item.get("eventdate"),
+					Integer.parseInt(item.get("eventhour").toString()) * 60
+							+ Integer.parseInt(item.get("eventminute").toString()));
+
+			if (formatter1.format(date).compareTo(formatter1.format(item.get("eventdate"))) > 0
+					&& (int) item.get("actor_id") == trainer_id || classroom_id == (int) item.get("classroom_id")
+					|| Integer.parseInt(hidden_batch_id) == (int) item.get("batch_id")) {
+
+				System.out.println(formatter1.format(date) + " is after " + formatter1.format(item.get("eventdate")));
+
+				if (!arrayList.contains(item.get("eventid").toString())) {
+
+					arrayList.add(item.get("eventid").toString());
+				}
+
 			}
-		
+			if (formatter1.format(db_upper_limit).compareTo(formatter1.format(upper_limit)) < 0
+					&& (int) item.get("actor_id") == trainer_id || classroom_id == (int) item.get("classroom_id")
+					|| Integer.parseInt(hidden_batch_id) == (int) item.get("batch_id")) {
+				System.out.println(formatter1.format(db_upper_limit) + " is before " + formatter1.format(upper_limit));
 
-		
+				if (!arrayList.contains(item.get("eventid").toString())) {
+
+					arrayList.add(item.get("eventid").toString());
+				}
+			}
+
+		}
 
 		String class_and_time_available = "SELECT cast(batch_schedule_event. ID as varchar(50)) as eventid, count(*) as countt FROM 	batch_schedule_event WHERE 	 eventdate  >= '"
 				+ formatter1.format(date) + "' AND eventdate  <= '" + formatter1.format(upper_limit)
@@ -794,11 +851,10 @@ public class EventSchedulerService {
 				+ formatter1.format(date) + "' AND eventdate <= '" + formatter1.format(upper_limit)
 				+ "'And type !='BATCH_SCHEDULE_EVENT_PRESENTOR' and batch_id =" + hidden_batch_id + " GROUP BY eventid";
 
-		//System.out.println(class_and_time_available);
-		//System.out.println(trainer_available);
-		//System.out.println(batch_available);
+		// System.out.println(class_and_time_available);
+		// System.out.println(trainer_available);
+		// System.out.println(batch_available);
 
-		
 		List<HashMap<String, Object>> classtime = db.executeQuery(class_and_time_available);
 		try {
 			if (classtime.size() > 0) {
@@ -877,7 +933,7 @@ public class EventSchedulerService {
 
 	public static List<String> getDaysBetweenDates(String startEventDate, String endEventDate, String selectedDays) {
 
-		DateTimeFormatter pattern = DateTimeFormat.forPattern("dd/MM/yyyy");
+		org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("dd/MM/yyyy");
 		DateTime startDate = pattern.parseDateTime(startEventDate);
 		DateTime endDate = pattern.parseDateTime(endEventDate);
 

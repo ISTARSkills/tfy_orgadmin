@@ -21,8 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.services.controllers.IStarBaseServelet;
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.utils.DatatableUtils;
 import in.orgadmin.utils.OrgAdminRegistry;

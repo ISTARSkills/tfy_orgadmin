@@ -1,8 +1,9 @@
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="in.orgadmin.utils.BatchGroupUtils"%>
 <%@page import="in.orgadmin.utils.OrgadminUtil"%>
 <%@page import="in.orgadmin.utils.DatatableUtils"%>
 <%@page import="java.sql.Timestamp"%>
-<%@page import="com.istarindia.apps.dao.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="in.orgadmin.services.OrgadminCourseService"%>
 <%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -66,7 +67,7 @@ System.out.println(sql);
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2><%=b.getName().toUpperCase()%></h2>
-					<p><%=b.getCollege().getName().toUpperCase()%></p>
+					<p><%=b.getOrganization().getName().toUpperCase()%></p>
 
 				</div>
 			</div>

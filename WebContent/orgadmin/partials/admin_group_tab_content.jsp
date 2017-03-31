@@ -1,7 +1,6 @@
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
-<%@page import="com.istarindia.apps.dao.BatchGroup"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Organization"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -14,7 +13,7 @@
 /* OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
 
 int colegeID = (int)request.getSession().getAttribute("orgId");
-College college=new CollegeDAO().findById(colegeID);
+Organization college=new OrganizationDAO().findById(colegeID);
 
 %>
 

@@ -2,12 +2,11 @@
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="com.istarindia.apps.dao.DBUTILS"%>
-<%@page import="com.istarindia.apps.dao.BatchStudents"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchStudents"%>
 <%@page import="java.util.List"%>
-<%@page import="com.istarindia.apps.dao.BatchStudentsDAO"%>
-<%@page import="com.istarindia.apps.dao.BatchGroupDAO"%>
-<%@page import="com.istarindia.apps.dao.BatchGroup"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchStudentsDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchGroupDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <% String url = request.getRequestURL().toString();
@@ -38,7 +37,7 @@
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateBatchGroup" method="post">
 
-					<input type="hidden" value="<%=bg.getCollege().getId()%>" name="college_id" />
+					<input type="hidden" value="<%=bg.getOrganization().getId()%>" name="college_id" />
 					<input type="hidden" value="<%=groupId%>" name="bg_id" />
 
 					<div class="form-group">
@@ -55,7 +54,7 @@
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
 							<label>Short Text about Batch Group</label> <input type="text"
-								placeholder="Group Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBg_desc()!=null ? bg.getBg_desc(): "" %>"
+								placeholder="Group Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
 								class="form-control">
 						</div>
 					</div>
@@ -67,7 +66,7 @@
 							
 							<div>
 								<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4">
-									<%=ui.getAllStudentsForBatch(bg.getCollege().getId(),selectedStudents)%>
+									<%=ui.getAllStudentsForBatch(bg.getOrganization().getId(),selectedStudents)%>
 								</select>
 							</div>
 						</div>

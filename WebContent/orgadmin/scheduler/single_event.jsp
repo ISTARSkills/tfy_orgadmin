@@ -1,10 +1,10 @@
-
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Organization"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Set"%>
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
-<%@page import="com.istarindia.apps.dao.OrgAdminDAO"%>
-<%@page import="com.istarindia.apps.dao.OrgAdmin"%>
+
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -19,15 +19,16 @@
 				UIUtils ui = new UIUtils();
 /* 			OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user");
  */     int colegeID = (int)request.getSession().getAttribute("orgId");
+                    System.out.println("------colegeID------->"+colegeID);
  
- int user_id=(new OrgAdminDAO().findByEmail("principal_ep@istarindia.com").get(0)).getId();
  
- College college=new CollegeDAO().findById(colegeID);
- Object[] object= college.getOrgAdmins().toArray();
- for(OrgAdmin admin:college.getOrgAdmins()){
-		user_id=admin.getId();
-		break;
-	}
+ IstarUser istarUser = new IstarUser();
+
+int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+
+Organization college = new OrganizationDAO().findById(colegeID);
+
+user_id = ui.getOrgPrincipal(colegeID);
  
 %>
 <div id="tab-1" class="tab-pane active">
