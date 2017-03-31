@@ -1,7 +1,6 @@
 
 package in.talentify.core.utils;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,30 +10,30 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.Organization;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.utilities.DBUTILS;
 
 import in.talentify.core.xmlbeans.MenuHolder;
 import in.talentify.core.xmlbeans.ParentLink;
 
 public class UIUtils {
 
-	public List<HashMap<String, Object>> getJobMasterLevelForCourse(int course_id)
-	{
+	public List<HashMap<String, Object>> getJobMasterLevelForCourse(int course_id) {
 		DBUTILS util = new DBUTILS();
-		String sql ="select vacancy.profile_title ||' at '||company.name as title, 'http://api.talentify.in'||company.image as company_image, cast (avg(job_role_skill_benchmark.wizard_level) as integer )as wizard_level, cast (avg(job_role_skill_benchmark.master_level)as integer ) as master_level, cast (avg(job_role_skill_benchmark.apprentice_level)as integer ) as apprentice_level, cast (avg(job_role_skill_benchmark.rookie_level)as integer )  as rookie_level  from module_course, cmsession_module, lesson_cmsession, lesson_skill_objective, job_role_skill_benchmark, vacancy, company where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and lesson_cmsession.lesson_id = lesson_skill_objective.lesson_id and job_role_skill_benchmark.vacancy_id = vacancy.id and vacancy.company_id = company.id and lesson_skill_objective.skill_objective_id = job_role_skill_benchmark.skill_id and module_course.course_id="+course_id+" group by vacancy.profile_title ||' at '||company.name, company_image limit 5";
+		String sql = "SELECT 	job.title || ' at ' || organization. NAME AS title, 	'http://api.talentify.in' || organization.image AS company_image, 	CAST ( 		AVG ( 			job_role_skill_benchmark.wizard_level 		) AS INTEGER 	) AS wizard_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.master_level 		) AS INTEGER 	) AS master_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.apprentice_level 		) AS INTEGER 	) AS apprentice_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.rookie_level 		) AS INTEGER 	) AS rookie_level FROM 	module_course, 	cmsession_module, 	lesson_cmsession, 	lesson_skill_objective, 	job_role_skill_benchmark, 	job, 	organization WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND lesson_cmsession.lesson_id = lesson_skill_objective.lessonid AND job_role_skill_benchmark.vacancy_id = job. ID AND job.organization = organization. ID AND lesson_skill_objective.learning_objectiveid = job_role_skill_benchmark.skill_id AND module_course.course_id = "
+				+ course_id + " GROUP BY 	job.title || ' at ' || organization. NAME, 	company_image LIMIT 5";
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		return data;
 	}
-	
-	public List<HashMap<String, Object>> getJobMasterLevelForBatch(int batch_id)
-	{
+
+	public List<HashMap<String, Object>> getJobMasterLevelForBatch(int batch_id) {
 		DBUTILS util = new DBUTILS();
-		String sql ="select vacancy.profile_title ||' at '||company.name as title, company.image as company_image, cast (avg(job_role_skill_benchmark.wizard_level) as integer )as wizard_level, cast (avg(job_role_skill_benchmark.master_level)as integer ) as master_level, cast (avg(job_role_skill_benchmark.apprentice_level)as integer ) as apprentice_level, cast (avg(job_role_skill_benchmark.rookie_level)as integer )  as rookie_level  from module_course, cmsession_module, lesson_cmsession, lesson_skill_objective, job_role_skill_benchmark, vacancy, company, batch where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and lesson_cmsession.lesson_id = lesson_skill_objective.lesson_id and job_role_skill_benchmark.vacancy_id = vacancy.id and vacancy.company_id = company.id and lesson_skill_objective.skill_objective_id = job_role_skill_benchmark.skill_id and module_course.course_id=batch.course_id and batch.id = "+batch_id+" group by vacancy.profile_title ||' at '||company.name, company_image limit 5";
+		String sql = "SELECT 	job.title || ' at ' || organization. NAME AS title, 	organization.image AS company_image, 	CAST ( 		AVG ( 			job_role_skill_benchmark.wizard_level 		) AS INTEGER 	) AS wizard_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.master_level 		) AS INTEGER 	) AS master_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.apprentice_level 		) AS INTEGER 	) AS apprentice_level, 	CAST ( 		AVG ( 			job_role_skill_benchmark.rookie_level 		) AS INTEGER 	) AS rookie_level FROM 	module_course, 	cmsession_module, 	lesson_cmsession, 	lesson_skill_objective, 	job_role_skill_benchmark, 	job, 	organization, 	batch WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND lesson_cmsession.lesson_id = lesson_skill_objective.lessonid AND job_role_skill_benchmark.vacancy_id = job. ID AND job.organization = organization. ID AND organization.org_type = 'COMPANY' AND lesson_skill_objective.learning_objectiveid = job_role_skill_benchmark.skill_id AND module_course.course_id = batch.course_id AND batch. ID = "
+				+ batch_id + " GROUP BY 	job.title || ' at ' || organization. NAME, 	company_image LIMIT 5";
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		return data;
 	}
-	
+
 	public ArrayList<ParentLink> getMenuLinks(String roleName) {
 		ArrayList<ParentLink> links = new ArrayList<>();
 
@@ -103,7 +102,22 @@ public class UIUtils {
 		out.append("");
 		return out;
 	}
-	
+
+	public int getOrgPrincipal(int orgId) {
+
+		String sql = "SELECT 	istar_user.id as uid FROM 	istar_user, 	ROLE, 	user_role, user_org_mapping WHERE 	istar_user. ID = user_role.user_id AND user_role.role_id = ROLE . ID AND ROLE .role_name = 'ORG_ADMIN' AND user_org_mapping.user_id = istar_user.id AND user_org_mapping.organization_id ="
+				+ orgId;
+		DBUTILS db = new DBUTILS();
+		int user_id = 0;
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		for (HashMap<String, Object> item : data) {
+
+			user_id = (int) item.get("uid");
+		}
+		return user_id;
+
+	}
+
 	public StringBuffer getAllSkillForTrainer() {
 		String sql = "SELECT DISTINCT id,name FROM skill_objective WHERE type = 'TASK_BASED'";
 		DBUTILS db = new DBUTILS();
@@ -115,20 +129,18 @@ public class UIUtils {
 		out.append("");
 		return out;
 	}
-	
-	
+
 	public List<HashMap<String, Object>> getProgramTabTable() {
-		String sql = "SELECT 	T1.cname, 	T1.sumapprentice  / countapprentice AS avgapp, 	T1.sumrookie  / countrookie AS avgrooki, 	T1.summaster / countmaster AS avgmaaster, 	T1.sumwizard  / countwizard AS avgwiz FROM 	( 		SELECT 			college. NAME AS cname, 			SUM ( 				mastery_level_per_course.apprentice 			) AS sumapprentice, 			SUM ( 				mastery_level_per_course.rookie 			) AS sumrookie, 			SUM ( 				mastery_level_per_course.master 			) AS summaster, 			SUM ( 				mastery_level_per_course.wizard 			) AS sumwizard, 			COUNT ( 				mastery_level_per_course.apprentice 			) AS countapprentice, 			COUNT ( 				mastery_level_per_course.rookie 			) AS countrookie, 			COUNT ( 				mastery_level_per_course.master 			) AS countmaster, 			COUNT ( 				mastery_level_per_course.wizard 			) AS countwizard 		FROM 			mastery_level_per_course, 			college 		WHERE 		 college. ID = mastery_level_per_course.college_id 		GROUP BY 			cname 	) T1";
+		String sql = "SELECT 	T1.cname, 	T1.sumapprentice / countapprentice AS avgapp, 	T1.sumrookie / countrookie AS avgrooki, 	T1.summaster / countmaster AS avgmaaster, 	T1.sumwizard / countwizard AS avgwiz FROM 	( 		SELECT 			organization. NAME AS cname, 			SUM ( 				mastery_level_per_course.apprentice 			) AS sumapprentice, 			SUM ( 				mastery_level_per_course.rookie 			) AS sumrookie, 			SUM ( 				mastery_level_per_course.master 			) AS summaster, 			SUM ( 				mastery_level_per_course.wizard 			) AS sumwizard, 			COUNT ( 				mastery_level_per_course.apprentice 			) AS countapprentice, 			COUNT ( 				mastery_level_per_course.rookie 			) AS countrookie, 			COUNT ( 				mastery_level_per_course.master 			) AS countmaster, 			COUNT ( 				mastery_level_per_course.wizard 			) AS countwizard 		FROM 			mastery_level_per_course, 			organization 		WHERE 			organization. ID = mastery_level_per_course.college_id 		GROUP BY 			cname 	) T1";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		
-	
+
 		return data;
 	}
-	
+
 	public StringBuffer getOrganization() {
-		//System.err.println(orgId);
-		String sql = "SELECT id,name FROM college";
+		// System.err.println(orgId);
+		String sql = "SELECT id,name FROM organization";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
@@ -138,33 +150,30 @@ public class UIUtils {
 		out.append("");
 		return out;
 	}
-	
+
 	public List<HashMap<String, Object>> getAllOrganization() {
-		//System.err.println(orgId);
-		String sql = "SELECT id,name FROM college limit 6";
+		// System.err.println(orgId);
+		String sql = "SELECT id,name FROM organization limit 6";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
-	
+
 		return data;
 	}
-	
-	
-
 
 	public StringBuffer getCourses(int orgId) {
-		//System.err.println(orgId);
-		String sql ="";
-		if(orgId == -3){
-			
-			 sql = "SELECT DISTINCT id,course_name FROM course";
-			
-		}else{
-			
-			 sql = "select DISTINCT course.id , course.course_name from batch_group , batch ,course where batch_group.college_id="
-						+ orgId + " and batch_group.id = batch.batch_group_id and batch.course_id = course.id";
-			
+		// System.err.println(orgId);
+		String sql = "";
+		if (orgId == -3) {
+
+			sql = "SELECT DISTINCT id,course_name FROM course";
+
+		} else {
+
+			sql = "select DISTINCT course.id , course.course_name from batch_group , batch ,course where batch_group.college_id="
+					+ orgId + " and batch_group.id = batch.batch_group_id and batch.course_id = course.id";
+
 		}
-		
+
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
@@ -182,7 +191,7 @@ public class UIUtils {
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
-		 out.append("<option value=''> Select Course...</option>");
+		out.append("<option value=''> Select Course...</option>");
 		for (HashMap<String, Object> item : data) {
 			out.append("<option data-course='" + item.get("cid") + "' value='" + item.get("bid") + "'>"
 					+ item.get("cname") + "</option>");
@@ -227,7 +236,7 @@ public class UIUtils {
 
 	public List<HashMap<String, Object>> getEventDetails(String eventID) {
 		DBUTILS util = new DBUTILS();
-		String sql = "SELECT 	batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid FROM 	batch_schedule_event, 	batch WHERE 	batch_schedule_event. ID = '"
+		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid FROM 	batch_schedule_event, 	batch WHERE 	batch_schedule_event. ID = '"
 				+ eventID + "' AND batch_schedule_event.batch_id = batch. ID";
 		// System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
@@ -236,7 +245,7 @@ public class UIUtils {
 
 	public StringBuffer getAllTrainer() {
 		// <option value="">Data Analytics</option>
-		String sql = "SELECT id,email,name FROM student WHERE student.user_type = 'TRAINER'";
+		String sql = "SELECT 	istar_user. ID, 	istar_user.email, 	user_profile.first_name FROM 	istar_user, 	user_role,   user_profile WHERE 	istar_user. ID = user_role.user_id AND user_role.role_id = 14 AND user_profile.user_id = istar_user. ID";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -267,8 +276,8 @@ public class UIUtils {
 
 		StringBuffer out = new StringBuffer();
 
-		String sql1 = "SELECT 		lesson.ID AS id, 	lesson.title AS title, 	task.status AS status 	FROM 		event_session_log,      lesson, 	 	   task 	WHERE event_session_log.lesson_id = lesson.id AND task.item_id = lesson. ID AND		batch_id = "
-				+ batch_id + " 	ORDER BY 		ID DESC 	LIMIT 1;";
+		String sql1 = "SELECT 	lesson. ID AS ID, 	lesson.title AS title, 	task.state AS status FROM 	event_log, 	lesson, 	task WHERE 	event_log.lesson_id = lesson. ID AND task.item_id = lesson. ID AND batch_id = "
+				+ batch_id + " ORDER BY 	ID DESC LIMIT 1;";
 		List<HashMap<String, Object>> res1 = util.executeQuery(sql1);
 		if (res1.size() > 0) {
 			for (HashMap<String, Object> item : res1) {
@@ -278,8 +287,8 @@ public class UIUtils {
 
 		} else {
 
-			String sql2 = "SELECT 	l.id as id,   l.title AS title,   tsk.status AS status FROM 	module_course mc, 	cmsession_module cm, 	lesson_cmsession lcms, 	task tsk, 	lesson l WHERE 	mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id AND lcms.lesson_id = l.id AND tsk.item_id = l.id AND "
-					+ "mc.course_id = " + course_id + " ORDER BY 	l.title";
+			String sql2 = "SELECT 	l. ID AS ID, 	l.title AS title, 	tsk.state AS status FROM 	module_course mc, 	cmsession_module cm, 	lesson_cmsession lcms, 	task tsk, 	lesson l WHERE 	mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id AND lcms.lesson_id = l. ID AND tsk.item_id = l. ID AND  mc.course_id = "
+					+ course_id + " ORDER BY 	l.title";
 
 			List<HashMap<String, Object>> res2 = util.executeQuery(sql2);
 			if (res2.size() > 0) {
@@ -323,14 +332,11 @@ public class UIUtils {
 	 * "</option>"); } out.append(""); return out; }
 	 */
 
-	
-
 	public StringBuffer getEventPerOrganization(Organization c) {
 
-		String sql = "SELECT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour,bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. NAME AS trainer_name, 	bse.batch_id AS batch_id, 	s. ID AS trainer_id, CD.classroom_identifier, CD.id as class_id, B.name as batch_name "
-				+ "FROM 	student s, 	batch_schedule_event bse, 	batch B, 	batch_group BG, classroom_details CD, 	college org WHERE CD.id = bse.classroom_id  and	BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND org.id="
+		String sql = "SELECT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s.first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND org. ID = "
 				+ c.getId()
-				+ " and  s.user_type = 'TRAINER' AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+				+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -370,21 +376,21 @@ public class UIUtils {
 		return out;
 	}
 
-	public JSONArray getCourseReportEvent(int org_id, int course_id,String type) {
+	public JSONArray getCourseReportEvent(int org_id, int course_id, String type) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		StringBuffer sb = new StringBuffer();
-		String sql ="";
-		if(type.equalsIgnoreCase("Program")){
+		String sql = "";
+		if (type.equalsIgnoreCase("Program")) {
 
-		 sql = "SELECT 	DISTINCT bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. NAME AS trainer_name, 	bse.batch_id AS batch_id, 	s. ID AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	student s, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	college org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
-				+ "org. ID =" + org_id + " AND B.course_id = " + course_id
-				+ " AND s.user_type = 'TRAINER' AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
-		}else{
-			sql = "SELECT DISTINCT	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. NAME AS trainer_name, 	bse.batch_id AS batch_id, 	s. ID AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	student s, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	college org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
-					+ "org. ID =" + org_id + " AND B.id = " + course_id
-					+ " AND s.user_type = 'TRAINER' AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND  org. ID = "
+					+ org_id + " AND B.course_id = " + course_id
+					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+		} else {
+			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
+					+ " org. ID = " + org_id + " AND B.course_id = " + course_id
+					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		}
-		//System.out.println("101 -> " + sql);
+		// System.out.println("101 -> " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		System.out.println("102 -> " + data.size());
@@ -415,13 +421,12 @@ public class UIUtils {
 
 	public StringBuffer getCourseEventCard(int college_id) {
 		StringBuffer out = new StringBuffer();
-		String sql ="";
+		String sql = "";
 
-			
-			sql = "select distinct course_name,course_description,attendance_perc,avg_feedback,completion_perc,stu_enrolled,course_id from course_stats where college_id="
-					+ college_id;
+		sql = "select distinct course_name,course_description,attendance_perc,avg_feedback,completion_perc,stu_enrolled,course_id from course_stats where college_id="
+				+ college_id;
 
-		//System.out.println("sql " + sql);
+		// System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -467,10 +472,12 @@ public class UIUtils {
 				// TODO: handle exception
 			}
 
-			out.append("<a href='programs_report_details.jsp?course_id=" + item.get("course_id")+"&headname="+item.get("course_name")+"&college_id="+college_id
+			out.append("<a href='programs_report_details.jsp?course_id=" + item.get("course_id") + "&headname="
+					+ item.get("course_name") + "&college_id=" + college_id
 					+ "' class='btn-link ' ><div class='col-lg-3' id='program_info_1'>"
 					+ "<div class='panel panel-default product-box course-card-height'><div class='panel-heading font-bold'>"
-					+ item.get("course_name").toString() + "</div><div class='panel-body' style='width: 315px'><p class='course-desc'>" + course_description
+					+ item.get("course_name").toString()
+					+ "</div><div class='panel-body' style='width: 315px'><p class='course-desc'>" + course_description
 					+ "</p><div class='row'><div class='col-lg-6'>Attendance</div><div class='col-lg-6 text-center'>"
 					+ attendance
 					+ "</div></div><div class='row m-t-sm'><div class='col-lg-6'>Feedback</div><div class='col-lg-6 text-center' style= 'float:right;'>"
@@ -489,25 +496,25 @@ public class UIUtils {
 
 	public StringBuffer getBatchCard(int college_id) {
 		StringBuffer out = new StringBuffer();
-		String sql="";
+		String sql = "";
 
-		 sql = "select distinct batch_name,stu_enrolled,completion_perc,avg_feedback,attendance_perc,batch_id from batch_stats where college_id ="
+		sql = "select distinct batch_name,stu_enrolled,completion_perc,avg_feedback,attendance_perc,batch_id from batch_stats where college_id ="
 				+ college_id;
-	
-		//System.out.println("sql " + sql);
+
+		// System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {
-			out.append("<a href='programs_report_details.jsp?batch_id=" + item.get("batch_id")+"&headname="+item.get("batch_name")+"&college_id="+college_id
+			out.append("<a href='programs_report_details.jsp?batch_id=" + item.get("batch_id") + "&headname="
+					+ item.get("batch_name") + "&college_id=" + college_id
 					+ "' class='btn-link '><div class='col-lg-3' id='program_info_1'><div class='panel panel-default product-box batch-card-height'><div class='panel-heading font-bold'>"
 					+ item.get("batch_name").toString()
 					+ "</div><div class='panel-body'><div class='row'><div class='col-lg-6'>Attendance</div><div class='col-lg-6 text-center'>"
 					+ item.get("attendance_perc").toString()
 					+ "</div></div><div class='row m-t-sm'><div class='col-lg-6'>Feedback</div><div class='col-lg-6 text-center'>"
 					+ "<div class='course_rating pull-right' data-report='" + item.get("avg_feedback").toString()
-					+ "'><div class='rateYo" + item.get("avg_feedback").toString()
-					+ "' ></div></div>"
+					+ "'><div class='rateYo" + item.get("avg_feedback").toString() + "' ></div></div>"
 					+ "</div></div><div class='row m-t-sm'><div class='col-lg-6'>Student Enrolled</div><div class='col-lg-6 text-center'>"
 					+ item.get("stu_enrolled").toString()
 					+ "</div></div><div class='progress progress-striped active m-t-sm'><div style='width: "
@@ -519,8 +526,6 @@ public class UIUtils {
 		}
 		return out;
 	}
-	
-	
 
 	public StringBuffer getAllGroups(int orgId) {
 		String sql = "select T1.bg_id, T1.bg_name,T1.bg_desc,T1.batch_code, COALESCE(T2.batches,0) as batches, COALESCE(T3.students,0) as students from (select batch_group.id as bg_id, batch_group.name as bg_name, batch_group.bg_desc as bg_desc,batch_group.batch_code from batch_group where  "
@@ -531,14 +536,14 @@ public class UIUtils {
 				+ "batch_group.college_id =" + orgId
 				+ ") GROUP BY batch_students.batch_group_id )T3 on (T3.batch_group_id = T1.bg_id)";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
 		for (HashMap<String, Object> item : data) {
-			out.append("<tr class='group_item'>" + "<td>" + item.get("batch_code") + "</td><td>" + item.get("bg_name") + "</td>" + "	<td>"
-					+ item.get("students") + "</td>" + "	<td>" + item.get("batches") + "</td>"
+			out.append("<tr class='group_item'>" + "<td>" + item.get("batch_code") + "</td><td>" + item.get("bg_name")
+					+ "</td>" + "	<td>" + item.get("students") + "</td>" + "	<td>" + item.get("batches") + "</td>"
 					+ "	<td><div class='btn-group'>"
 					+ "<button data-toggle='dropdown' class='btn btn-default btn-xs dropdown-toggle'> <span class='fa fa-ellipsis-v'></span> 	</button>"
 					+ " <ul class='dropdown-menu pull-right'> <li><a href='./partials/modal/admin_batch_group_modal.jsp?bg_id="
@@ -554,9 +559,10 @@ public class UIUtils {
 	}
 
 	public StringBuffer getAllStudentsForBatch(int orgId, ArrayList<Integer> selectedStudents) {
-		String sql = "select id,email from student where student.organization_id=" + orgId;
+		String sql = "SELECT 	istar_user. ID, email FROM 	user_org_mapping, 	istar_user, user_role WHERE 	istar_user. ID = user_org_mapping.user_id AND user_role.user_id = istar_user. ID AND user_org_mapping.organization_id = "
+				+ orgId + " AND user_role.role_id = 12";
 
-		//System.err.println(sql);
+		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();

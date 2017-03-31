@@ -11001,6 +11001,14 @@ border-width: 2px
 width: 150px;height: 150px;
 }
 
+#superadmin_dashboard .datepicker.dropdown-menu {
+	z-index: 2050 !important; /* has to be larger than 1050 */
+}
+
+#superadmin_dashboard .clockpicker-popover {
+	z-index: 2050 !important; /* has to be larger than 1050 */
+}
+
 /* dashboard.jsp  ends*/
 
 /* account_management.jsp  starts*/
