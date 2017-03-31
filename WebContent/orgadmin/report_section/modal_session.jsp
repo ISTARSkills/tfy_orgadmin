@@ -116,6 +116,7 @@
 																					SlideDAO slideDAO = new SlideDAO();
 																					try {
 																						Slide slide = slideDAO.findById(Integer.parseInt(log.get("slide_id").toString()));
+																						if(slide != null){
 																	%>
 																	<li class="info-element" id="">Slide Title : <%=slide.getTitle()!= null ?slide.getTitle().toUpperCase():""%>
 																		<div class="agile-detail">
@@ -124,7 +125,14 @@
 																		</div>
 																	</li>
 																	<%
-																		} catch (Exception e) {
+																		
+																				}else{
+																					%>		<ul>
+																						<li class="info-element">No Logs Found</li>
+																					</ul>	
+																				<%		
+																					break;}
+																				}catch (Exception e) {
 																						e.printStackTrace();
 																					}
 																				}

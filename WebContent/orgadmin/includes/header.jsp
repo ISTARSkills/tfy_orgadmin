@@ -1,5 +1,5 @@
 <%@page import="in.orgadmin.utils.OrgadminUtil"%>
-<%@page import="com.istarindia.apps.dao.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <% String url = request.getRequestURL().toString();
@@ -11,7 +11,7 @@ IstarUser user= (IstarUser)request.getSession().getAttribute("user");
 if (request.getSession().getAttribute("user") != null) {
 	String imageURL = "img/user_images/recruiter.png";
 }
-String imageURL = user.getImageUrl();
+String imageURL = user.getUserProfile().getProfileImage();
 if (imageURL == null) {
 	imageURL = "/img/user_images/recruiter.png";
 }
@@ -50,7 +50,7 @@ if (imageURL == null) {
 		<li>
 		<div class="dropdown profile-element">
 				<a data-toggle="dropdown" class="dropdown-toggle" href="#"> <img
-					style="width: 30px;padding-bottom:10px;" alt="<%=user.getName()%>" class="img-circle"
+					style="width: 30px;padding-bottom:10px;" alt="<%=user.getUserProfile().getFirstName()%>" class="img-circle"
 					src="<%=baseURL %><%=imageURL%>" />
 				</a>
 				<ul class="dropdown-menu animated fadeInRight m-t-xs">
