@@ -1866,6 +1866,27 @@ function init_super_admin_usermgmt(){
 	admin_choosen_init();
 	admin_edit_modal_create();
 	
+	
+	
+	$('.userType').on('change', function(){
+		var user_type = $(this).val();
+		if(user_type === 'TRAINER'){
+			$('#hide_college_holder').hide();
+			$('#hide_group_holder').hide();
+			$('#hide_role_holder').hide();
+			$('#user_type').val('TRAINER');
+			
+			
+		}else{
+			$('#hide_college_holder').show();
+			$('#hide_group_holder').show();
+			$('#hide_role_holder').show();
+			$('#user_type').val('STUDENT');
+		}
+		
+		
+	});
+	
 	$('#admin_page_orgs').on('change', function() {
 		var key = $('#admin_page_orgs').val();
 		var selectBox = $($('#admin_page_orgs >option'));

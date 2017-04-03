@@ -1,8 +1,7 @@
-<%@page import="com.istarindia.apps.dao.CourseDAO"%>
-<%@page import="com.istarindia.apps.dao.Course"%>
+<%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page import="com.istarindia.apps.dao.CollegeDAO"%>
-<%@page import="com.istarindia.apps.dao.College"%>
+
 <%@page import="java.util.*"%>
 
 <% 

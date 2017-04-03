@@ -97,7 +97,7 @@
 						action="<%=baseURL%>createOrUpdateUser" method="post">
 
 						<input type="hidden" value="super_admin" name="creation_type" />
-						<input type="hidden" value="STUDENT" name="user_type" />
+					<!-- 	<input type="hidden" value="STUDENT" name="user_type" /> -->
 
 						<div class="form-group">
 							<div class="col-lg-6">
@@ -130,7 +130,18 @@
 							</div>
 
 						</div>
+
 						<div class="form-group">
+						<input type="hidden" value="STUDENT" id="user_type" name="user_type"/>
+							<label>Select User Type</label> <select
+								class="form-control m-b userType" >
+								<option value="STUDENT">Student</option>
+								<option value="TRAINER">Trainer</option>
+
+							</select>
+						</div>
+
+						<div class="form-group" id="hide_group_holder">
 							<h3 class="m-b-n-md">Group</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
@@ -146,7 +157,7 @@
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" id="hide_college_holder">
 							<div class="col-lg-12">
 								<label class="font-noraml">Organization</label>
 								<div>
@@ -157,7 +168,7 @@
 							</div>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group" id="hide_role_holder">
 							<h3 class="m-b-n-md">Role(only for corporate)</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">

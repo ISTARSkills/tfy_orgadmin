@@ -14,6 +14,7 @@
 	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	
 	<parent_links display_name="Batch Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report1.jsp" url="/super_admin/ops_report1.jsp" valid_role="super_admin"/>
 	<parent_links display_name="Assessment Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report_2.jsp" url="/super_admin/ops_report_2.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Istar Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
 	
 	
 	

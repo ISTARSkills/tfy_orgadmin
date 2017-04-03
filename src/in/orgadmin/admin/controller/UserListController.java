@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.gson.JsonObject;
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
 
 /**
  * Servlet implementation class UserListController
@@ -48,37 +47,18 @@ public class UserListController extends HttpServlet {
 
 		DBUTILS db = new DBUTILS();
 
-		String sql = "SELECT profile_image, name, atten_perc, email, batch_groups, id, courses, course_ids, user_id FROM ( SELECT student. ID, student. NAME, student.email, case when student_profile_data.profile_image like 'null'"
-				+ " OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
-				+ "ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
-				+ " string_agg ( DISTINCT (course_name), ', ') AS courses, string_agg ( distinct (CAST ( batch_group. ID AS VARCHAR)), ', ' ) AS batch_group_ids,"
-				+ " string_agg ( distinct (CAST (course. ID AS VARCHAR)), ', ' ) AS course_ids FROM course, batch, batch_group, student, batch_students,"
-				+ " student_profile_data WHERE student.organization_id = " + collegeId
-				+ " AND student. ID = batch_students.student_id "
-				+ "AND batch_students.batch_group_id = batch_group. ID AND batch_group.college_id = " + collegeId
-				+ " AND student_profile_data.student_id = student. ID "
-				+ "AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID GROUP BY student. ID, student. NAME, student.email, "
-				+ "student_profile_data.profile_image ) T1 LEFT "
-				+ "JOIN ( SELECT user_id, 		 COALESCE(cast ((( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 			) 		) * 100 / ( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 				OR attendance.status = 'PRESENT' 			) 		)) as integer),0) AS atten_perc"
-				+ " FROM attendance WHERE user_id IN ( SELECT ID FROM 	student WHERE organization_id = " + collegeId
-				+ " ) GROUP BY user_id ) T2 ON (T1. ID = T2.user_id) ORDER BY "
+		String sql = "SELECT 	profile_image, 	first_name, 	atten_perc, 	email, 	batch_groups, 	ID, 	courses, 	course_ids FROM 	( 		SELECT 			istar_user. ID, 			user_profile.first_name, 			istar_user.email, 			CASE 		WHEN user_profile.profile_image LIKE 'null' 		OR user_profile.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (user_profile.first_name FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || user_profile.profile_image 		END AS profile_image, 		string_agg ( 			DISTINCT (batch_group. NAME), 			', ' 		) AS batch_groups, 		string_agg (DISTINCT(course_name), ', ') AS courses, 		string_agg ( 			DISTINCT ( 				CAST (batch_group. ID AS VARCHAR) 			), 			', ' 		) AS batch_group_ids, 		 string_agg ( 			DISTINCT (CAST(course. ID AS VARCHAR)), 			', ' 		) AS course_ids 	FROM 		course, 		batch, 		batch_group, 		istar_user, 		batch_students, 		user_profile,     user_org_mapping 	WHERE 		user_org_mapping.organization_id = "
+				+ collegeId
+				+ " AND istar_user.id = user_org_mapping.user_id 	AND istar_user. ID = batch_students.student_id 	AND batch_students.batch_group_id = batch_group. ID 	AND batch_group.college_id = "
+				+ collegeId
+				+ " 	AND user_profile.user_id = istar_user. ID 	AND batch_group. ID = batch.batch_group_id 	AND batch.course_id = course. ID 	GROUP BY 		istar_user. ID, 		user_profile.first_name, 		istar_user.email, 		user_profile.profile_image 	) T1 LEFT JOIN ( 	SELECT 		user_id, 		COALESCE ( 			CAST ( 				( 					( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 						) 					) * 100 / ( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 							OR attendance.status = 'PRESENT' 						) 					) 				) AS INTEGER 			), 			0 		) AS atten_perc 	FROM 		attendance 	WHERE 		user_id IN ( 			SELECT 				istar_user.ID 			FROM 				istar_user,         user_org_mapping 			WHERE 				user_org_mapping.organization_id = "
+				+ collegeId
+				+ " AND istar_user.id = user_org_mapping.organization_id 		) 	GROUP BY 		user_id ) T2 ON (T1. ID = T2.user_id) ORDER BY "
 				+ (Integer.parseInt(request.getParameter("order[0][column]")) + 1) + " "
 				+ request.getParameter("order[0][dir]") + limtQuery;
 
 		if (collegeId == -3) {
-			sql = "SELECT profile_image, name, atten_perc, email, batch_groups, id, courses, course_ids, user_id,organization_id,college_name FROM ( SELECT student. ID, student. NAME, student.email,college.name as college_name,student.organization_id, case when student_profile_data.profile_image like 'null'"
-					+ " OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
-					+ "ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
-					+ " string_agg ( DISTINCT (course_name), ', ') AS courses, string_agg ( distinct (CAST ( batch_group. ID AS VARCHAR)), ', ' ) AS batch_group_ids,"
-					+ " string_agg ( distinct (CAST (course. ID AS VARCHAR)), ', ' ) AS course_ids FROM course, batch, batch_group, student, batch_students,"
-					+ " student_profile_data,college WHERE  student. ID = batch_students.student_id AND college.id=student.organization_id "
-					+ "AND batch_students.batch_group_id = batch_group. ID "
-					+ " AND student_profile_data.student_id = student. ID "
-					+ "AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID GROUP BY student. ID, student. NAME, student.email, "
-					+ "student_profile_data.profile_image,college.name ) T1 LEFT "
-					+ "JOIN ( SELECT user_id, 		 COALESCE(cast ((( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 			) 		) * 100 / ( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 				OR attendance.status = 'PRESENT' 			) 		)) as integer),0) AS atten_perc"
-					+ " FROM attendance WHERE user_id IN ( SELECT ID FROM 	student "
-					+ " ) GROUP BY user_id ) T2 ON (T1. ID = T2.user_id) ORDER BY "
+			sql = "SELECT 	profile_image, 	first_name, 	atten_perc, 	email, 	batch_groups, 	ID, 	courses, 	course_ids, 	organization_id, 	college_name FROM 	( 		SELECT 			istar_user. ID, 			user_profile.first_name, 			istar_user.email, 			organization. NAME AS college_name, 			user_org_mapping.organization_id, 			CASE 		WHEN user_profile.profile_image LIKE 'null' 		OR user_profile.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (user_profile.first_name FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || user_profile.profile_image 		END AS profile_image, 		string_agg ( 			DISTINCT (batch_group. NAME), 			', ' 		) AS batch_groups, 		string_agg (DISTINCT(course_name), ', ') AS courses, 		string_agg ( 			DISTINCT ( 				CAST (batch_group. ID AS VARCHAR) 			), 			', ' 		) AS batch_group_ids, 		string_agg ( 			DISTINCT (CAST(course. ID AS VARCHAR)), 			', ' 		) AS course_ids 	FROM 		course, 		batch, 		batch_group, 		istar_user, 		batch_students, 		user_profile,     user_org_mapping, 		organization 	WHERE 		istar_user. ID = batch_students.student_id   AND istar_user.id = user_org_mapping.user_id 	AND organization. ID = user_org_mapping.organization_id 	AND batch_students.batch_group_id = batch_group. ID 	AND user_profile.user_id = istar_user. ID 	AND batch_group. ID = batch.batch_group_id 	AND batch.course_id = course. ID 	GROUP BY 		istar_user. ID, 		user_profile. first_name, 		istar_user.email, 		user_profile.profile_image, 		organization. NAME, user_org_mapping.organization_id 	) T1 LEFT JOIN ( 	SELECT 		user_id, 		COALESCE ( 			CAST ( 				( 					( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 						) 					) * 100 / ( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 							OR attendance.status = 'PRESENT' 						) 					) 				) AS INTEGER 			), 			0 		) AS atten_perc 	FROM 		attendance 	WHERE 		user_id IN (SELECT ID FROM istar_user) 	GROUP BY 		user_id ) T2 ON (T1. ID = T2.user_id) ORDER BY "
 					+ (Integer.parseInt(request.getParameter("order[0][column]")) + 1) + " "
 					+ request.getParameter("order[0][dir]") + limtQuery;
 		}
@@ -87,35 +67,15 @@ public class UserListController extends HttpServlet {
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
-		sql = "SELECT profile_image, name, atten_perc, email, batch_groups, id, courses, course_ids, user_id FROM ( SELECT student. ID, student. NAME, student.email, case when student_profile_data.profile_image like 'null'"
-				+ " OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
-				+ "ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
-				+ " string_agg ( DISTINCT (course_name), ', ') AS courses, string_agg ( distinct (CAST ( batch_group. ID AS VARCHAR)), ', ' ) AS batch_group_ids,"
-				+ " string_agg ( distinct (CAST (course. ID AS VARCHAR)), ', ' ) AS course_ids FROM course, batch, batch_group, student, batch_students,"
-				+ " student_profile_data WHERE student.organization_id = " + collegeId
-				+ " AND student. ID = batch_students.student_id "
-				+ "AND batch_students.batch_group_id = batch_group. ID AND batch_group.college_id = " + collegeId
-				+ " AND student_profile_data.student_id = student. ID "
-				+ "AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID GROUP BY student. ID, student. NAME, student.email, "
-				+ "student_profile_data.profile_image ) T1 LEFT "
-				+ "JOIN ( SELECT user_id, 		 COALESCE(cast ((( 	COUNT (*) FILTER (  	WHERE 		attendance.status = 'ABSENT' ) 	) * 100 / ( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 				OR attendance.status = 'PRESENT' 			) 		)) as integer),0) AS atten_perc"
-				+ " FROM attendance WHERE user_id IN ( SELECT ID FROM 	student WHERE organization_id = " + collegeId
-				+ " ) GROUP BY user_id ) T2 ON (T1. ID = T2.user_id)";
+		sql = "SELECT 	profile_image, 	first_name, 	atten_perc, 	email, 	batch_groups, 	ID, 	courses, 	course_ids FROM 	( 		SELECT 			istar_user. ID, 			user_profile.first_name, 			istar_user.email, 			CASE 		WHEN user_profile.profile_image LIKE 'null' 		OR user_profile.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (user_profile.first_name FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || user_profile.profile_image 		END AS profile_image, 		string_agg ( 			DISTINCT (batch_group. NAME), 			', ' 		) AS batch_groups, 		 string_agg (DISTINCT(course_name), ', ') AS courses, 		string_agg ( 			DISTINCT ( 				CAST (batch_group. ID AS VARCHAR) 			), 			', ' 		) AS batch_group_ids, 		 string_agg ( 			DISTINCT (CAST(course. ID AS VARCHAR)), 			', ' 		) AS course_ids 	FROM 		course, 		batch, 		batch_group, 		istar_user, 		batch_students, 		user_profile, user_org_mapping 	WHERE 		user_org_mapping.organization_id = "
+				+ collegeId
+				+ " AND user_org_mapping.user_id = istar_user.id 	AND istar_user. ID = batch_students.student_id 	AND batch_students.batch_group_id = batch_group. ID 	AND batch_group.college_id = "
+				+ collegeId
+				+ " 	AND user_profile.user_id = istar_user. ID 	AND batch_group. ID = batch.batch_group_id 	AND batch.course_id = course. ID 	GROUP BY 		istar_user. ID, 		user_profile.first_name, 		istar_user.email, 		user_profile.profile_image 	) T1 LEFT JOIN ( 	SELECT 		user_id, 		COALESCE ( 			CAST ( 				( 					( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 						) 					) * 100 / ( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 							OR attendance.status = 'PRESENT' 						) 					) 				) AS INTEGER 			), 			0 		) AS atten_perc 	FROM 		attendance 	WHERE 		user_id IN ( 			SELECT 				istar_user.ID 			FROM 				istar_user, user_org_mapping 			WHERE istar_user.id = user_org_mapping.user_id 				AND user_org_mapping.organization_id = "
+				+ collegeId + " 		) 	GROUP BY 		user_id ) T2 ON (T1. ID = T2.user_id)";
 
 		if (collegeId == -3) {
-			sql = "SELECT profile_image, name, atten_perc, email, batch_groups, id, courses, course_ids, user_id FROM ( SELECT student. ID, student. NAME, student.email, case when student_profile_data.profile_image like 'null'"
-					+ " OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
-					+ "ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
-					+ " string_agg ( DISTINCT (course_name), ', ') AS courses, string_agg ( distinct (CAST ( batch_group. ID AS VARCHAR)), ', ' ) AS batch_group_ids,"
-					+ " string_agg ( distinct (CAST (course. ID AS VARCHAR)), ', ' ) AS course_ids FROM course, batch, batch_group, student, batch_students,"
-					+ " student_profile_data WHERE " + " student. ID = batch_students.student_id "
-					+ "AND batch_students.batch_group_id = batch_group. ID"
-					+ " AND student_profile_data.student_id = student. ID "
-					+ "AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID GROUP BY student. ID, student. NAME, student.email, "
-					+ "student_profile_data.profile_image ) T1 LEFT "
-					+ "JOIN ( SELECT user_id, 		 COALESCE(cast ((( 	COUNT (*) FILTER (  	WHERE 		attendance.status = 'ABSENT' ) 	) * 100 / ( 			COUNT (*) FILTER (  				WHERE 					attendance.status = 'ABSENT' 				OR attendance.status = 'PRESENT' 			) 		)) as integer),0) AS atten_perc"
-					+ " FROM attendance WHERE user_id IN ( SELECT ID FROM 	student "
-					+ " ) GROUP BY user_id ) T2 ON (T1. ID = T2.user_id)";
+			sql = "SELECT 	profile_image, 	first_name, 	atten_perc, 	email, 	batch_groups, 	ID, 	courses, 	course_ids FROM 	( 		SELECT 			istar_user. ID, 			user_profile.first_name, 			istar_user.email, 			CASE 		WHEN user_profile.profile_image LIKE 'null' 		OR user_profile.profile_image IS NULL THEN 			'http://api.talentify.in/video/android_images/' || UPPER ( 				SUBSTRING (user_profile. first_name FROM 1 FOR 1) 			) || '.png' 		ELSE 			'http://api.talentify.in/' || user_profile.profile_image 		END AS profile_image, 		string_agg ( 			DISTINCT (batch_group. NAME), 			', ' 		) AS batch_groups, 		 string_agg (DISTINCT(course_name), ', ') AS courses, 		string_agg ( 			DISTINCT ( 				CAST (batch_group. ID AS VARCHAR) 			), 			', ' 		) AS batch_group_ids, 		 string_agg ( 			DISTINCT (CAST(course. ID AS VARCHAR)), 			', ' 		) AS course_ids 	FROM 		course, 		batch, 		batch_group, 		istar_user, 		batch_students, 		 user_profile 	WHERE 		 istar_user. ID = batch_students.student_id 	AND batch_students.batch_group_id = batch_group. ID 	AND user_profile.user_id = istar_user. ID 	AND batch_group. ID = batch.batch_group_id 	AND batch.course_id = course. ID 	GROUP BY 		istar_user. ID, 		user_profile.first_name, 		istar_user.email, 		user_profile.profile_image 	) T1 LEFT JOIN ( 	SELECT 		user_id, 		COALESCE ( 			CAST ( 				( 					( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 						) 					) * 100 / ( 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'ABSENT' 							OR attendance.status = 'PRESENT' 						) 					) 				) AS INTEGER 			), 			0 		) AS atten_perc 	FROM 		attendance 	WHERE 		user_id IN ( 			SELECT 				ID 			FROM 				istar_user 		) 	GROUP BY 		user_id ) T2 ON (T1. ID = T2.user_id)";
 		}
 
 		List<HashMap<String, Object>> resultSize = db.executeQuery(sql);
@@ -136,24 +96,25 @@ public class UserListController extends HttpServlet {
 					JSONArray tableRowsdata = new JSONArray();
 					tableRowsdata.put("<img style='width:27px' src='" + item.get("profile_image").toString()
 							+ "' class='img-sm img-circle'>");
-					tableRowsdata.put(item.get("name"));
+					tableRowsdata.put(item.get("first_name"));
 					if (item.get("atten_perc") != null) {
 						int attendance_perc = ((int) item.get("atten_perc"));
-						
+
 						if (attendance_perc < 20) {
 							tableRowsdata.put("<i class='fa fa-star'></i>");
 						} else if (attendance_perc >= 20 && attendance_perc < 40) {
 							tableRowsdata.put("<i class='fa fa-star'></i> <i class='fa fa-star'></i>");
 						} else if (attendance_perc >= 40 && attendance_perc < 60) {
-							tableRowsdata.put("<i class='fa fa-star'></i><i class='fa fa-star'></i> <i class='fa fa-star'></i>");
+							tableRowsdata.put(
+									"<i class='fa fa-star'></i><i class='fa fa-star'></i> <i class='fa fa-star'></i>");
 						} else if (attendance_perc >= 60 && attendance_perc < 80) {
-							tableRowsdata.put("<i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i> <i class='fa fa-star'></i>");
+							tableRowsdata.put(
+									"<i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i> <i class='fa fa-star'></i>");
 						} else if (attendance_perc >= 80 && attendance_perc <= 100) {
 							tableRowsdata.put(
 									"<i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i><i class='fa fa-star'></i> <i class='fa fa-star'></i>");
 						}
-						
-						
+
 					} else {
 						tableRowsdata.put("NA");
 					}
@@ -161,7 +122,8 @@ public class UserListController extends HttpServlet {
 					tableRowsdata.put(item.get("batch_groups"));
 
 					if (collegeId == -3) {
-						tableRowsdata.put(item.get("college_name").toString() + " (" + item.get("organization_id") + ")");
+						tableRowsdata
+								.put(item.get("college_name").toString() + " (" + item.get("organization_id") + ")");
 					}
 
 					tableRowsdata.put("<div class='btn-group'> "

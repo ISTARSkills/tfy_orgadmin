@@ -22,8 +22,6 @@ import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.entities.UserRoleDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
-import in.orgadmin.services.AssessmentSchedulerService;
-
 public class OrgAdminBatchGroupService {
 
 	public ArrayList<Integer> getSelectedStudents(int groupId) {

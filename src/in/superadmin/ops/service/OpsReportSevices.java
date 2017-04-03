@@ -101,6 +101,7 @@ public class OpsReportSevices {
 		String sql = "SELECT id,name FROM organization";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
+		out.append("<option value='null'>Select Organization</option>");
 		for (HashMap<String, Object> item : data) {
 			out.append("<option value='" + item.get("id") + "'>" + item.get("name") + "</option>");
 		}
