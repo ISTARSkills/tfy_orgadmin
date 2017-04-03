@@ -14,7 +14,6 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.utilities.DBUTILS;
-import com.viksitpro.core.utilities.UserTypes;
 
 public class OrgAdminUserService {
 

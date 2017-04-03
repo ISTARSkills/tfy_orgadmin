@@ -17,7 +17,6 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.utilities.IStarBaseServelet;
-import com.viksitpro.core.utilities.UserTypes;
 
 import in.orgadmin.admin.services.OrgAdminBatchGroupService;
 import in.orgadmin.admin.services.OrgAdminUserService;
