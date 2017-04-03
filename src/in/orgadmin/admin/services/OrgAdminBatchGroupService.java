@@ -38,7 +38,6 @@ public class OrgAdminBatchGroupService {
 		}
 
 		for (Integer integer : selectedStudents) {
-			System.out.println(integer);
 		}
 		return selectedStudents;
 	}
@@ -57,7 +56,6 @@ public class OrgAdminBatchGroupService {
 		}
 
 		for (Integer integer : selectedBG) {
-			System.out.println(integer);
 		}
 		return selectedBG;
 	}
@@ -137,7 +135,6 @@ public class OrgAdminBatchGroupService {
 		util.executeUpdate(sql1);
 		
 		for (int x = 0; x < studentList.size(); x++) {
-			System.out.println("student-id " + studentList.get(x));
 			
 			
 			IstarUser istarUser = new IstarUser();
@@ -165,25 +162,8 @@ public class OrgAdminBatchGroupService {
 			String n_time = formatter2.format(eventdate);
 
 			String title_new = "Batch: Added on " + n_date + " " + dayStr + "  " + n_time;
-			System.out.println("-------------------------------------------" + title_new);
 
-			// use for notification to app
-
-			/*
-			 * String details_new = "" + batchGroup.getName(); String title =
-			 * "Students in program " + batchGroup.getName() + " updated";
-			 * String details = "Students in program " + batchGroup.getName() +
-			 * " updated";
-			 * 
-			 * 
-			 * 
-			 * new NotificationService().createNONEventBasedNotification(
-			 * details_new, student.getId(), 300, title_new,
-			 * "UPDATE_BATCHGROUP", "NONE"); PublishDelegator pd = new
-			 * PublishDelegator(); pd.sendNotification(student.getId(),
-			 * title_new + " \n" + details_new, "BATCH", "UPDATE_BATCHGROUP",
-			 * eventdate.toString());
-			 */
+			
 
 		}
 		new AssessmentSchedulerService().createAssessmentNewEntryInBG(batchGrpId);
@@ -202,7 +182,6 @@ public class OrgAdminBatchGroupService {
 		}
 
 		String findStudentInBG = "select distinct student_id from batch_students  where batch_group_id=" + batchGrpId;
-		System.out.println("findStudentInBG>>>>" + findStudentInBG);
 		List<HashMap<String, Object>> data = util.executeQuery(findStudentInBG);
 		for (HashMap<String, Object> row : data) {
 			int old_stu_id = (int) row.get("student_id");
@@ -210,7 +189,6 @@ public class OrgAdminBatchGroupService {
 				studentsDeleted.add(old_stu_id);
 			}
 		}
-		System.out.println("studentsDeleted>>>>>>>>" + studentsDeleted.size());
 		for (int stu : studentsDeleted) {
 			for (int course_id : coursesInBG) {
 				String deletePlayList = "delete from student_playlist where student_id =" + stu + " and course_id = "
@@ -257,7 +235,6 @@ public class OrgAdminBatchGroupService {
 
 		for (Integer bg_list : batch_groups) {
 
-			System.out.println("student-id " + student_id);
 			
 			
 			IstarUser istarUser = new IstarUser();
@@ -282,25 +259,8 @@ public class OrgAdminBatchGroupService {
 			String n_time = formatter2.format(eventdate);
 
 			String title_new = "Batch: Added on " + n_date + " " + dayStr + "  " + n_time;
-			System.out.println("-------------------------------------------" + title_new);
 
-			// use for notification to app
-
-			/*
-			 * String details_new = "" + batchGroup.getName(); String title =
-			 * "Students in program " + batchGroup.getName() + " updated";
-			 * String details = "Students in program " + batchGroup.getName() +
-			 * " updated";
-			 * 
-			 * 
-			 * 
-			 * new NotificationService().createNONEventBasedNotification(
-			 * details_new, student.getId(), 300, title_new,
-			 * "UPDATE_BATCHGROUP", "NONE"); PublishDelegator pd = new
-			 * PublishDelegator(); pd.sendNotification(student.getId(),
-			 * title_new + " \n" + details_new, "BATCH", "UPDATE_BATCHGROUP",
-			 * eventdate.toString());
-			 */
+			
 			new AssessmentSchedulerService().createAssessmentNewEntryInBG(bg_list);
 		}
 	}

@@ -35,7 +35,7 @@ public class ProgramGraphs extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		System.out.println("-----program_graphs------>");
+		//System.out.println("-----program_graphs------>");
 		String sql = "";
 		int courseID = 0, orgID = 0;
 		StringBuffer out = new StringBuffer();
@@ -43,7 +43,6 @@ public class ProgramGraphs extends HttpServlet {
 		if (request.getParameterMap().containsKey("account_tab_orgID")) {
 			
 			orgID = Integer.parseInt(request.getParameter("account_tab_orgID"));
-		//	System.out.println("-----program_graphs---1--->");
 
 			UIUtils uiUtils = new UIUtils();
 
@@ -55,7 +54,6 @@ public class ProgramGraphs extends HttpServlet {
 			out.append(uiUtils.getBatchCard(orgID));
 			out.append("</div>");	
 			
-			System.out.println("-----out---1--->"+out);;
 			 response.getWriter().print(out);
 			
 		}
@@ -79,7 +77,6 @@ public class ProgramGraphs extends HttpServlet {
 			}
 
 			out.append("</tbody> </table>");
-			System.out.println(out);
 			response.getWriter().print(out);
 		} else if (request.getParameterMap().containsKey("trainerRating")) {
 
@@ -109,7 +106,6 @@ public class ProgramGraphs extends HttpServlet {
 
 		
 			response.getWriter().print(out);
-			System.out.println(out);
 
 		} else if (request.getParameterMap().containsKey("trainerLevel")) {
 
@@ -117,7 +113,6 @@ public class ProgramGraphs extends HttpServlet {
 			
 			
 			DBUTILS db = new DBUTILS();
-			System.out.println("trainerLevel"+sql);
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 			out.append(
@@ -140,7 +135,6 @@ public class ProgramGraphs extends HttpServlet {
 			out.append("</tbody> </table>");
 			
 			response.getWriter().print(out);
-			System.out.println(out);
 
 		} else if (request.getParameterMap().containsKey("courseID")) {
 
@@ -159,7 +153,6 @@ public class ProgramGraphs extends HttpServlet {
 				sql = "SELECT DISTINCT 	TFinal.cmname, 	TFinal.cmid, 	COALESCE (TFinal.avgduration, 0) AS avgduration, 	COALESCE (TFinal.avgfeedback, 0) AS avgfeedback, 	COALESCE (TFinal.avgattendance, 0) AS avgattendance FROM 	( ( 			SELECT 				batch_group.college_id AS colid, 				batch.course_id AS cid 			FROM 				batch, 				batch_group 			WHERE 				batch_group. ID = batch.batch_group_id 			AND batch.course_id = "+courseID+" 			AND batch_group.college_id = "+orgID+" 		)  T0 		LEFT JOIN ( 			SELECT 				T1. NAME AS cmname, 				T1.cmsid AS cmid, 				T1.cid AS cid, 				T1. HOUR * 100 / totcms AS avgduration 			FROM 				( 					SELECT 						cmsession.title AS NAME, 						event_log.cmsession_id AS cmsid, 						event_log.course_id AS cid, 						SUM ( 							batch_schedule_event.eventhour 						) AS HOUR, 						COUNT ( 							event_log.cmsession_id 						) AS totcms 					FROM 						event_log, 						cmsession, 						batch_schedule_event 					WHERE 						cmsession. ID = event_log.cmsession_id 					AND batch_schedule_event. ID = event_log.event_id 					GROUP BY 						cmsession.title, 						event_log.cmsession_id, 						event_log.course_id 					ORDER BY 						event_log.cmsession_id 				) T1 		) T1F ON (T0.cid = T1F.cid) 		LEFT JOIN ( 			SELECT 				T2. NAME, 				T2.cmsid, 				T2.feedback / T2.totfeedback * 5 AS avgfeedback 			FROM 				( 					SELECT DISTINCT 						cmsession.title AS NAME, 						event_log.cmsession_id AS cmsid, 						SUM (trainer_feedback.rating) AS feedback, 						COUNT ( 							event_log.cmsession_id 						) AS totfeedback 					FROM 						event_log, 						trainer_feedback, 						batch_schedule_event, 						cmsession 					WHERE 						cmsession. ID = event_log.cmsession_id 					AND batch_schedule_event. ID = event_log.event_id 					AND trainer_feedback.event_id = event_log.event_id 					GROUP BY 						NAME, 						cmsid 				) T2 		) T2F ON (T2F.cmsid = T1F.cmid) 		LEFT JOIN ( 			SELECT 				T3. NAME, 				T3.cmsid, 				T3.present * 100 / T3.totattendance AS avgattendance 			FROM 				( 					SELECT DISTINCT 						cmsession.title AS NAME, 						event_log.cmsession_id AS cmsid, 						COUNT (attendance.status) AS totattendance, 						COUNT (*) FILTER (  							WHERE 								attendance.status = 'PRESENT' 						) AS present 					FROM 						event_log, 						attendance, 						batch_schedule_event, 						cmsession 					WHERE 						cmsession. ID = event_log.cmsession_id 					AND batch_schedule_event. ID = event_log.event_id 					AND attendance.event_id = event_log.event_id 					GROUP BY 						NAME, 						cmsid 				) T3 		) T3F ON (T2F.cmsid = T3F.cmsid) 	) TFinal WHERE 	TFinal.cmname != 'null'";
 			}
 
-			System.out.println("----------->" + sql);
 			DBUTILS db = new DBUTILS();
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -174,7 +167,6 @@ public class ProgramGraphs extends HttpServlet {
 						+ "  </tr>");
 			}
 			out.append("</tbody></table>");
-			System.out.println("----------->" + out);
 			response.getWriter().print(out);
 
 		}
@@ -185,7 +177,6 @@ public class ProgramGraphs extends HttpServlet {
 		
 			DBUTILS db = new DBUTILS();
 			List<HashMap<String, Object>> data = db.executeQuery(tablesql);
-			System.out.println("----------->" + tablesql);	
 
 			for (HashMap<String, Object> item : data) {
 				out.append(""
@@ -202,7 +193,6 @@ public class ProgramGraphs extends HttpServlet {
 			}
 			
 			response.getWriter().print(out);
-			System.out.println("----------->" + out);
 		
 		}
 

@@ -100,13 +100,7 @@ public class CreateNotification extends HttpServlet {
 			
 			new PublishDelegator().publishAfterCreatingNotification(studentIDs, title, comment, hidden_id,courseName,lessonName);
 			
-			System.out.println(lessonID);
-			System.out.println(collegeID);
-			System.out.println(batchGroupID);
-			System.out.println(courseID);
-			System.out.println(studentlistID);
-			System.out.println(title);
-			System.out.println(comment);
+		
 
 		}
 
@@ -114,8 +108,7 @@ public class CreateNotification extends HttpServlet {
 				&& request.getParameter("orgId") != null) {
 
 			int orgId = Integer.parseInt(request.getParameter("orgId"));
-			System.out.println(orgId);
-
+			
 			String sql = "SELECT id,name FROM batch_group WHERE college_id in (SELECT id FROM organization where id = "
 					+ orgId + " )";
 
@@ -133,7 +126,6 @@ public class CreateNotification extends HttpServlet {
 				&& request.getParameter("batchGroup") != null) {
 
 			int batchGroup = Integer.parseInt(request.getParameter("batchGroup"));
-			System.out.println(batchGroup);
 			String sql = "SELECT id , course_name FROM course WHERE id in (SELECT course_id FROM batch WHERE batch_group_id in (SELECT id FROM batch_group WHERE id = "
 					+ batchGroup + "))";
 
@@ -167,7 +159,6 @@ public class CreateNotification extends HttpServlet {
 				&& request.getParameter("course") != null) {
 
 			int course = Integer.parseInt(request.getParameter("course"));
-			System.out.println(course);
 			String sql = "SELECT DISTINCT 	cmsession. ID, 	cmsession.title FROM 	course, 	MODULE, 	module_course, 	cmsession, 	cmsession_module WHERE 	course. ID = module_course.course_id AND module_course.module_id = MODULE . ID AND MODULE . ID = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession. ID AND course. ID ="
 					+ course + "";
 

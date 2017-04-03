@@ -82,7 +82,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 
 			if (userID != 0) {
 				if (bg_list.size() > 0) {
-					//	new OrgAdminBatchGroupService().createorUpdateBGStudents(bg_list, userID);
+						new OrgAdminBatchGroupService().createorUpdateBGStudents(bg_list, userID);
 				}
 			}
 

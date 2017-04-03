@@ -76,41 +76,31 @@ public class OrgAdminSkillService {
 
 			// create cmssession
 			String sql = "INSERT INTO cmsession ( 	ID, 	title,  description, 	order_id, 	is_deleted,   created_at ) VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				cmsession 		), 		'skill_session_" 					+ skillId + rollId + "', 	 		'skill_desc" + skillId + rollId 					+ "', 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				cmsession 		), 		'f',   now() 	) RETURNING ID";
-			// System.err.println(sql);
 			int cmssession = (int) db.executeUpdateReturn(sql);
 
 			// create module
 			sql = "INSERT INTO module (id, module_name, order_id) VALUES ((select COALESCE(max(id),0)+1 from module), 'skill_session"
 					+ skillId + rollId + "', (select COALESCE(max(id),0)+1 from module))returning id";
-			// System.err.println(sql);
 			int module_id = (int) db.executeUpdateReturn(sql);
 
 			// create cmsession_module mapping
 			sql = "INSERT INTO cmsession_module (cmsession_id, module_id) VALUES ('" + cmssession + "', '" + module_id
 					+ "')";
-			// System.err.println(sql);
-			System.out.println(sql);
 			db.executeUpdate(sql);
 
 			// create module_course mapping
 			sql = "INSERT INTO module_course (module_id, course_id) VALUES ('" + module_id + "', '" + rollId + "')";
-			// System.err.println(sql);
-			System.out.println(sql);
 			db.executeUpdate(sql);
 
 			// get list of lessons
 			sql = "SELECT DISTINCT 	l_s_o.lessonid FROM 	skill_objective sk_obj, 	lesson_skill_objective l_s_o WHERE 	sk_obj. ID = " 					+ skillId + " AND l_s_o.learning_objectiveid = sk_obj. ID";
-			// System.err.println(sql);
-			System.out.println(sql);
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 			for (HashMap<String, Object> item : data) {
-				// System.out.println("lesson_id------->" +
-				// item.get("lesson_id"));
+				
 				sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + item.get("lessonid")
 						+ "', '" + cmssession + "')";
 				// System.err.println(sql);
-				System.out.println(sql);
 				db.executeUpdate(sql);
 			}
 
@@ -123,7 +113,6 @@ public class OrgAdminSkillService {
 	public int getTotalUsers(int orgId) {
 		int count = 0;
 		String sql = "SELECT 	CAST (COUNT(T . ID) AS INT) FROM 	( 		SELECT DISTINCT 			istar_user. ID, 			istar_user.email AS NAME, 			COUNT ( 				DISTINCT student_playlist.lesson_id 			) 		FROM 			student_playlist, 			istar_user, user_org_mapping 		WHERE 			istar_user. ID = student_playlist.student_id AND istar_user.id = user_org_mapping.user_id 		AND user_org_mapping.organization_id = "+orgId+" 		GROUP BY 			istar_user.email, 			istar_user. ID 	) T";
-		// System.out.println("sql---"+sql);
 		DBUTILS db = new DBUTILS();
 		try {
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -345,7 +334,6 @@ public class OrgAdminSkillService {
 
 		String sql = "select id,course_name from course ORDER BY course_name";
 
-		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -355,7 +343,6 @@ public class OrgAdminSkillService {
 
 		String sql = "select id,name,course_id from batch b where b.batch_group_id=" + batchGP;
 
-		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;

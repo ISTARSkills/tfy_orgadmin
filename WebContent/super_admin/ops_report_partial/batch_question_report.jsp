@@ -70,7 +70,7 @@
 				data-question='<%=(int) item.get("question_id")%>'>
 				<thead>
 					<tr>
-						<th>student</th>
+						<th>students</th>
 						<th>corrected</th>
 						<th>incorrected</th>
 						<th>skipped</th>
@@ -84,7 +84,7 @@
 					%>
 					<tr>
 
-						<td>students</td>
+						<td>Attended</td>
 						<td><%=dataItem.get("correct")%></td>
 						<td><%=dataItem.get("incorrect")%></td>
 						<td><%=dataItem.get("skipped")%></td>

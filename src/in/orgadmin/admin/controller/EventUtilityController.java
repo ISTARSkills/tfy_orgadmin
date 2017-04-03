@@ -78,13 +78,6 @@ public class EventUtilityController extends HttpServlet {
 			
 			  String formattedDate = dateformatto.format(data);
 			  String formattedTime = timeto.format(data);
-			/*String sCertDate = formaterFrom.format(eventDateTime);
-			String sCertDate1 = dateformatto.format(eventDateTime);*/
-			  
-			  //System.out.println("---------editEventId----------->"+editEventId);
-			
-			//System.out.println("---------formattedTime----------->"+formattedTime);
-		//	System.out.println("--------------formattedDate----------------->"+formattedDate);
 			
 			ess.editEvent(editEventId, formattedDate, formattedTime);
 			
@@ -110,8 +103,7 @@ public class EventUtilityController extends HttpServlet {
 				&& !request.getParameter("deleteEventid").equalsIgnoreCase("")) {
 
 					deleteEventid = request.getParameter("deleteEventid") != "" ? request.getParameter("deleteEventid") : "";
-                     System.out.println("deleteEventid "+request.getParameter("deleteEventid"));
-                     System.out.println("status "+request.getParameter("status"));
+                    
                      if(request.getParameterMap().containsKey("status") && request.getParameter("status").equalsIgnoreCase("ASSESSMENT")){
                     	 int assessmentEventID = Integer.parseInt(request.getParameter("deleteEventid"));
              			AssessmentSchedulerService asservice = new AssessmentSchedulerService();
@@ -144,7 +136,6 @@ public class EventUtilityController extends HttpServlet {
 				 
 				 String[] data =assessmentSplitData.split("_");
 				 innerData.put(data[0], data[1]);
-				// System.out.println(data[0]+"----"+ data[1]); 
 				 
 		      } 
 			 

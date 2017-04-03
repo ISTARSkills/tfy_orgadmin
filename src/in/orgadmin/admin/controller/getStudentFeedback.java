@@ -58,7 +58,6 @@ public class getStudentFeedback extends HttpServlet {
 				limit =request.getParameter("limit");
 			}
 			String tablesql = "SELECT 	af. ID AS student_id, 	ups.first_name AS student_name, 	upt.first_name AS trainer_name, 	af.rating AS rating, 	af.internet, 	af.projector, 	af.trainer_knowledge, 	af.trainer_too_fast, 	af.too_tough_content, 	af.too_much_theoritic, 	af.no_fun_in_class, 	af.enough_examples, 	af.outside_disturbance FROM 	student_feedback af, 	user_profile ups,   user_profile upt, 	user_org_mapping uo WHERE  af.student_id = ups.user_id AND af.trainer_id = upt.user_id AND uo.organization_id IN ("+collegeQuery+") LIMIT "+limit;
-			System.out.println(tablesql);
 			
 			DBUTILS db = new DBUTILS();
 			List<HashMap<String, Object>> data = db.executeQuery(tablesql);
@@ -104,8 +103,7 @@ public class getStudentFeedback extends HttpServlet {
 			
 		}			
 		
-		System.out.println(sql);
-		System.out.println(out);
+	
 		response.getWriter().print(out);
 		
 	}

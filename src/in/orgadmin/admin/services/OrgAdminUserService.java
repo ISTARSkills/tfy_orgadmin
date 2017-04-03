@@ -64,18 +64,16 @@ public class OrgAdminUserService {
 			
 			userID = db.executeUpdateReturn(istarTrainerSql);
 		   presenterUserID = db.executeUpdateReturn(istarPresenterSql);
-		   System.out.println(istarTrainerSql);
-		   System.out.println(istarPresenterSql);
+		  
 			  
 			//Trainer Presenter User Role Mapping
 			  String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", '14', (SELECT MAX(id)+1 FROM user_role), '1');"
 			  		+ "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+presenterUserID+", '10', (SELECT MAX(id)+1 FROM user_role), '1');";
 				db.executeUpdate(userRoleMappingSql);
-				System.out.println(userRoleMappingSql);
+			
 				//Trainer Presenter Mapping
 				String trainerPresenterSql = "INSERT INTO trainer_presentor ( 	id, 	trainer_id, 	presentor_id ) VALUES 	((SELECT MAX(id)+1 FROM trainer_presentor), "+userID+", "+presenterUserID+");";
 				db.executeUpdate(trainerPresenterSql);
-				System.out.println(trainerPresenterSql);
 			
 		}
 			
@@ -86,12 +84,10 @@ public class OrgAdminUserService {
 			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	profile_image, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		NULL, 		'"+firstname+"', 		'"+lastname+"', 	NULL,	'"+gender+"', '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png',  "+userID+", 		NULL 	); ";
 		
 			db.executeUpdate(UserProfileSql);
-			System.out.println(UserProfileSql);
 			
 			//Trainer Student User Org Mapping
 			String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES 	("+userID+", "+college_id+", (SELECT MAX(id)+1 FROM user_org_mapping));";
 			db.executeUpdate(userOrgMappingSql);
-			System.out.println(userOrgMappingSql);
 			
 			//new EmailService().sendInviteMail(email, firstname,"test123");
 			
@@ -113,8 +109,11 @@ public class OrgAdminUserService {
 		
 		db.executeUpdate(updateUserProfileSql);
 		
+		String updateUserOrgMapping = "UPDATE user_org_mapping SET organization_id='7' WHERE (user_id='"+userID+"');";
+		  
+		db.executeUpdate(updateUserOrgMapping);
 		
-		return college_id;
+		return userID;
 		
 		
 		
