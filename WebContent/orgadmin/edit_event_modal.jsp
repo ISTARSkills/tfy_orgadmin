@@ -61,6 +61,8 @@
 		tabType = request.getParameter("tabType");
 		
 		 associateTrainerID = request.getParameter("associateTrainerID");
+			if(associateTrainerID != null && !associateTrainerID.equalsIgnoreCase("")){
+
 		 if (associateTrainerID.contains(",")) {
 			 for (String retval: associateTrainerID.split(",")) {
 				 setactedTrainer.add(Integer.parseInt(retval));
@@ -69,7 +71,9 @@
 		 }else{
 			 setactedTrainer.add(Integer.parseInt(associateTrainerID));
 		 }
-		
+	}else{
+		setactedTrainer = null;
+	}
 		istarUser = new IstarUserDAO().findById(trainerID);
 		istarUser.getEmail();
 
@@ -126,7 +130,7 @@
 		
 			<div class="form-group">
 				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="edit_associateTrainerID_holder" name="associateTrainerID" value=""/>
+				<input type="hidden" id="edit_associateTrainerID_holder" name="associateTrainerID" value="<%=setactedTrainer.toString()%>"/>
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
 						tabindex="4" name="" id="edit_associateTrainerID">
 						<option value="">Select Associate Trainers...</option>

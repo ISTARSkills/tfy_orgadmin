@@ -68,7 +68,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 			classroomID =(int)dd.get("classroomid");
 			batchID =(int)dd.get("batch_id");
 			associate_trainee =(String)dd.get("associate_trainee");
-			
+			if(associate_trainee != null && !associate_trainee.equalsIgnoreCase("")){
 			if (associate_trainee.contains(",")) {
 				 for (String retval: associate_trainee.split(",")) {
 					 setactedTrainer.add(Integer.parseInt(retval));
@@ -76,7 +76,9 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				 
 			 }else{
 				 setactedTrainer.add(Integer.parseInt(associate_trainee));
-			 }
+			 }}else{
+					setactedTrainer = null;
+				}
 						
 		}
 		istarUser = new IstarUserDAO().findById(trainerID);
@@ -131,16 +133,18 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				placeholder="Minute" class="form-control">
 		</div>
 
-               <div class="form-group">
-				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="edit_old_associateTrainerID_holder" name="associateTrainerID" value=""/>
-				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
-						tabindex="4" name="" id="edit_old_associateTrainerID">
-						<option value="">Select Associate Trainers...</option>
-					       <%=ui.getAllTrainer(setactedTrainer)%>
+		<div class="form-group">
+			<label>Choose Associate Trainee</label> <input type="hidden"
+				id="edit_old_associateTrainerID_holder" name="associateTrainerID"
+				value="<%=setactedTrainer.toString() %>" /> <select
+				data-placeholder="select Groups AssociateTrainerID" multiple
+				class="select2-dropdown" tabindex="4" name=""
+				id="edit_old_associateTrainerID">
+				<option value="">Select Associate Trainers...</option>
+				<%=ui.getAllTrainer(setactedTrainer)%>
 
-					</select>
-			</div>
+			</select>
+		</div>
 
 		<div class="form-group">
 
