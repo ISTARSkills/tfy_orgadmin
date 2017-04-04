@@ -98,10 +98,14 @@ public class OrgAdminSkillService {
 
 			for (HashMap<String, Object> item : data) {
 				
+				sql = "INSERT INTO lesson_skill_objective (lessonid, learning_objectiveid) VALUES ('" + item.get("lessonid")+"', "+skillId+");";
+				db.executeUpdate(sql);
+				System.err.println("----->"+sql);
 				sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + item.get("lessonid")
 						+ "', '" + cmssession + "')";
-				// System.err.println(sql);
+				///System.err.println(sql);
 				db.executeUpdate(sql);
+				System.out.println(sql);
 			}
 
 		} catch (Exception e) {
