@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.ClassroomDetailsDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.ClassroomDetails"%>
@@ -44,6 +45,8 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 	String trainerEmail = "defalut@mail.com";
 	int classroomID = 0;
 	String classroomName = "";
+	String associate_trainee = null;
+	ArrayList<Integer> setactedTrainer = new ArrayList();
 	if (request.getParameterMap().containsKey("eventid")) {
 
 		istrue = true;
@@ -64,9 +67,17 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 			trainerID = (int)dd.get("userid");
 			classroomID =(int)dd.get("classroomid");
 			batchID =(int)dd.get("batch_id");
+			associate_trainee =(String)dd.get("associate_trainee");
 			
-			
-			
+			if (associate_trainee.contains(",")) {
+				 for (String retval: associate_trainee.split(",")) {
+					 setactedTrainer.add(Integer.parseInt(retval));
+			      }
+				 
+			 }else{
+				 setactedTrainer.add(Integer.parseInt(associate_trainee));
+			 }
+						
 		}
 		istarUser = new IstarUserDAO().findById(trainerID);
 				trainerEmail = istarUser.getEmail();
@@ -126,7 +137,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
 						tabindex="4" name="" id="edit_old_associateTrainerID">
 						<option value="">Select Associate Trainers...</option>
-					       <%=ui.getAllTrainer()%>
+					       <%=ui.getAllTrainer(setactedTrainer)%>
 
 					</select>
 			</div>
@@ -137,7 +148,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				<label class="control-label">Select Trainer</label> <select
 					class="form-control m-b" name="trainerID">
 					<option value="<%=istrue ? trainerID : ""%>"><%=istrue ? trainerEmail : ""%></option>
-					<%=ui.getAllTrainer()%>
+					<%=ui.getAllTrainer(null)%>
 
 				</select>
 			</div>

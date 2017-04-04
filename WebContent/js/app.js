@@ -208,6 +208,7 @@ function loadTables(){
 $( document ).ready( readyFn );
 
 function init_orgadmin_none() {
+	init_session_time_out();
 	
 }
 
@@ -237,6 +238,7 @@ function init_orgadmin_admin() {
     
   //ajax requests
     admin_load_resources();
+    
     
     $.extend($.expr[":"], {
         "containsIN": function(elem, i,match, array) {
@@ -288,6 +290,8 @@ function init_orgadmin_scheduler() {
 }
 
 function init_orgadmin_report(){
+	
+	
 	$('.course_rating').each(function(){
 		var rating = $(this).data('report')	;
 		var rating_class = 'rateYo'+rating;
@@ -299,6 +303,7 @@ function init_orgadmin_report(){
 	  $('.scroll_content').slimscroll({
            height: '300px'
        });
+	  
 }
 
 function init_orgadmin_report_detail(){
@@ -475,6 +480,7 @@ function init_orgadmin_report_detail(){
     	var target=$(this).find('.holder-data').data('target');
     	$(target).modal().show();
     });	
+    
 }
 
 function bind_report_session_clicks() {
@@ -1587,7 +1593,7 @@ $(".edit-submit-btn").unbind().click(function(){
 		       url: url,
 		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
 		       success: function(data)
-		       { $('#myModal2').modal('toggle');}
+		       { $('#myModal2').modal('toggle');location.reload();}
 		     });
       
    });
@@ -1806,6 +1812,7 @@ function init_super_admin_dashboard(){
 		createCalender();
 				
 	});
+	//init_session_time_out();
 }
 
 function init_super_admin_account_mgmt(){
@@ -1836,6 +1843,7 @@ function init_super_admin_account_mgmt(){
 
 	    });
 	accountmanagment_card_init();
+	init_session_time_out();
 }
 
 
@@ -1913,6 +1921,7 @@ function init_super_admin_usermgmt(){
 		}
 		filter_user_table(searchKey);
 	});
+	init_session_time_out();
 }
 
 function init_super_admin_scheduler(){
@@ -1965,12 +1974,14 @@ function init_super_admin_scheduler(){
 function init_super_admin_comp_prof()
 {
 	company_profile();
+	init_session_time_out();
 	
 	}
 
 function init_super_admin_placemenet()
 {
 	company_profile();
+	init_session_time_out();
 	}
 
 //analytics js start
@@ -2732,6 +2743,8 @@ function company_profile() {
 		 
 		 
 		});
+	 
+
 	 
 }
 

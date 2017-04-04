@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="java.util.HashMap"%>
@@ -44,7 +45,7 @@
 	int courseID = 0;
 	String associateTrainerID = null;
 	String tabType = "";
-
+	ArrayList<Integer> setactedTrainer = new ArrayList();
 	if (request.getParameter("newEventID") != null) {
 		istrue = true;
 		evntid = request.getParameter("newEventID");
@@ -58,7 +59,17 @@
 		eventDate = request.getParameter("eventDate");
 		eventTime = request.getParameter("startTime");
 		tabType = request.getParameter("tabType");
-
+		
+		 associateTrainerID = request.getParameter("associateTrainerID");
+		 if (associateTrainerID.contains(",")) {
+			 for (String retval: associateTrainerID.split(",")) {
+				 setactedTrainer.add(Integer.parseInt(retval));
+		      }
+			 
+		 }else{
+			 setactedTrainer.add(Integer.parseInt(associateTrainerID));
+		 }
+		
 		istarUser = new IstarUserDAO().findById(trainerID);
 		istarUser.getEmail();
 
@@ -119,7 +130,7 @@
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
 						tabindex="4" name="" id="edit_associateTrainerID">
 						<option value="">Select Associate Trainers...</option>
-					       <%=ui.getAllTrainer()%>
+					       <%=ui.getAllTrainer(null)%>
 
 					</select>
 			</div>
@@ -135,7 +146,7 @@
 
 					<option value="<%=istrue ? trainerID : ""%>"><%=istrue ?istarUser.getEmail() : ""%></option>
 
-					<%=istrue ? ui.getAllTrainer() : ""%>
+					<%=istrue ? ui.getAllTrainer(null) : ""%>
 
 				</select>
 			</div>

@@ -236,14 +236,14 @@ public class UIUtils {
 
 	public List<HashMap<String, Object>> getEventDetails(String eventID) {
 		DBUTILS util = new DBUTILS();
-		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid FROM 	batch_schedule_event, 	batch WHERE 	batch_schedule_event. ID = '"
+		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch WHERE 	batch_schedule_event. ID = '"
 				+ eventID + "' AND batch_schedule_event.batch_id = batch. ID";
 		// System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		return res;
 	}
 
-	public StringBuffer getAllTrainer() {
+	public StringBuffer getAllTrainer(ArrayList<Integer> selectedTrainer) {
 		// <option value="">Data Analytics</option>
 		String sql = "SELECT 	istar_user. ID, 	istar_user.email, 	user_profile.first_name FROM 	istar_user, 	user_role,   user_profile WHERE 	istar_user. ID = user_role.user_id AND user_role.role_id = 14 AND user_profile.user_id = istar_user. ID";
 
@@ -252,7 +252,13 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 
 		for (HashMap<String, Object> item : data) {
-			out.append("<option value='" + item.get("id") + "'>" + item.get("email") + "</option>");
+
+			if (selectedTrainer != null) {
+				out.append("<option " + checkAlreadyExist(selectedTrainer, (int) item.get("id")) + "  value='"
+						+ item.get("id") + "'>" + item.get("email") + " (" + item.get("id") + ")</option>");
+			} else {
+				out.append("<option value='" + item.get("id") + "'>" + item.get("email") + "</option>");
+			}
 		}
 		out.append("");
 		return out;
