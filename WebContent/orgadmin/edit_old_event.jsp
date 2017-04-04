@@ -100,7 +100,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 	<form id="idForm4" class="form-horizontal">
 		<input type="hidden" name="eventID" value="<%=evntid%>" /> <input
 			type="hidden" name="eventType" value="session" /> <input
-			type="hidden" name="orgAdminUserID" value="<%=user_id%>" /> <input
+			type="hidden" name="AdminUserID" value="<%=user_id%>" /> <input
 			type="hidden" name="batchID" value="<%=batchID%>" />
 		<div class="form-group" id="data_2">
 			<div class="col-lg-12">

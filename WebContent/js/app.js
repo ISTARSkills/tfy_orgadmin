@@ -122,6 +122,8 @@ function readyFn(jQuery) {
 	
 }
 
+
+
 function init_session_logs(){
 	//console.log("called"+new Date());
 	$('.ajax-session-holder').each(function(e){
@@ -208,7 +210,6 @@ function loadTables(){
 $( document ).ready( readyFn );
 
 function init_orgadmin_none() {
-	init_session_time_out();
 	
 }
 
@@ -917,8 +918,10 @@ function admin_choosen_init() {
 }
 
 function admin_course_batch_init() {
+
 	$('.dataTables_info').hide();
-	
+  
+
     $('#admin_page_course').on('change', function() {
         var key = $('#admin_page_course').val();
         var searchKey = "";
@@ -932,8 +935,10 @@ function admin_course_batch_init() {
             });
         }
         filter_user_table(searchKey);
+
     });
     $('#admin_page_batchgroup').on('change', function() {
+
     	var key = $('#admin_page_batchgroup').val();
     	var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
@@ -958,6 +963,7 @@ function admin_course_batch_init() {
             });
         }
         filter_user_table(searchKey);
+
     });
 }
 
@@ -1812,7 +1818,6 @@ function init_super_admin_dashboard(){
 		createCalender();
 				
 	});
-	//init_session_time_out();
 }
 
 function init_super_admin_account_mgmt(){
@@ -1843,7 +1848,6 @@ function init_super_admin_account_mgmt(){
 
 	    });
 	accountmanagment_card_init();
-	init_session_time_out();
 }
 
 
@@ -1874,6 +1878,26 @@ function init_super_admin_usermgmt(){
 	admin_choosen_init();
 	admin_edit_modal_create();
 	
+	
+	
+	$('#college_id').on('change', function(){
+		
+		var college_id = $(this).val();
+		var url = '../event_utility_controller'
+		    $.post(url, {
+		    	college_id : college_id,
+		    	type : "userOrgfilter"
+		        },
+		        function(data) {
+
+		      $('#batch_group_holder').html(data);
+		      $('#main_batch_group_holder').select2();
+		      
+	
+		        });
+		
+		
+	});
 	
 	
 	$('.userType').on('change', function(){
@@ -1921,7 +1945,6 @@ function init_super_admin_usermgmt(){
 		}
 		filter_user_table(searchKey);
 	});
-	init_session_time_out();
 }
 
 function init_super_admin_scheduler(){
@@ -1974,14 +1997,12 @@ function init_super_admin_scheduler(){
 function init_super_admin_comp_prof()
 {
 	company_profile();
-	init_session_time_out();
 	
 	}
 
 function init_super_admin_placemenet()
 {
 	company_profile();
-	init_session_time_out();
 	}
 
 //analytics js start

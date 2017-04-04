@@ -200,7 +200,7 @@ public class UIUtils {
 		return out;
 	}
 
-	public StringBuffer getBatchGroups(int orgId, ArrayList<Integer> selectedOrgs) {
+	public StringBuffer getBatchGroups(int orgId, ArrayList<Integer> selectedBg) {
 		// <option value="">Data Analytics</option>
 		String sql = "select batch_group.id, batch_group.name from batch_group " + "where batch_group.college_id="
 				+ orgId;
@@ -209,8 +209,8 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 		for (HashMap<String, Object> item : data) {
 
-			if (selectedOrgs != null) {
-				out.append("<option " + checkAlreadyExist(selectedOrgs, (int) item.get("id")) + "  value='"
+			if (selectedBg != null) {
+				out.append("<option " + checkAlreadyExist(selectedBg, (int) item.get("id")) + "  value='"
 						+ item.get("id") + "'>" + item.get("name") + "</option>");
 			} else {
 				out.append("<option value='" + item.get("id") + "'>" + item.get("name") + "</option>");

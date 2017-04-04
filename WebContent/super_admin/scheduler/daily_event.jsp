@@ -30,7 +30,7 @@
 	<div class="panel-body border-event">
 
 		<form id="idForm2" class="form">
-			<input type="hidden" name="orgAdminUserID" value="300" />
+			<input type="hidden" name="AdminUserID" value="300" />
 			<input type="hidden" name="tabType" value="dailyEvent" />
 
 <div class="form-group">

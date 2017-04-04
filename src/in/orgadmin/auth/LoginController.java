@@ -76,7 +76,7 @@ public class LoginController extends HttpServlet {
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				request.setAttribute("msg", "Missing Username or password");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}

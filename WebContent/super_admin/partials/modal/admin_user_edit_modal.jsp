@@ -68,7 +68,7 @@
 
 						<br>
 
-						<div class="col-lg-12">
+						<div class="col-lg-6">
 							<label class="control-label">Gender</label> <select
 								class="form-control m-b" name="user_gender">
 								<option value="MALE"
@@ -77,7 +77,12 @@
 									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
 							</select>
 						</div>
+                          <div class="col-lg-6">
+								<label class="control-label">Mobile No</label> <input type="number"
+									name="user_mobile" class="form-control" value="<%=user.getMobile() %>"
+									placeholder="Mobile Number">
 
+							</div>
 						<br>
 
 						<div class="col-lg-12">
@@ -96,7 +101,7 @@
 							<div>
 								<select data-placeholder="group..." class="select2-dropdown"
 									multiple tabindex="4">
-									<%=ui.getBatchGroups(-3, selectedBG)%>
+									<%=ui.getBatchGroups(colegeID, selectedBG)%>
 								</select>
 							</div>
 							<input type="hidden" value="" name="batch_groups" />

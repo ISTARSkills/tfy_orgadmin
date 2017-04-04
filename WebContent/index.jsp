@@ -5,12 +5,18 @@
 <!DOCTYPE html>
 <html>
 
+    <!-- Toastr style -->
+    <link href="../css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
 <head>
 <% 
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
 	System.out.println(request.getSession().getAttribute("user"));
 
+	
+	
+	
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 		String url1 = baseURL + "dashboard.jsp";
@@ -24,7 +30,14 @@
 		response.sendRedirect(url1);
 	} else {
 		System.out.println("error-- redirecting to index.jsp") ;
-		response.sendRedirect("/login.jsp");
+		
+		String errorResponse="";
+		if(request.getAttribute("msg")!=null){
+			errorResponse=request.getAttribute("msg").toString();
+		}
+		
+		request.setAttribute("msg", errorResponse);
+		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 
 %>
@@ -41,7 +54,8 @@
 
 </head>
 
-<body class="gray-bg">
+<body class="gray-bg" id="admin_index_holder">
+
 
 
     <div class="middle-box text-center animated fadeInDown">
@@ -62,8 +76,12 @@
     
 
 </body>
+  <!-- Toastr script -->
+    <script src="../js/plugins/toastr/toastr.min.js"></script>
 
-</html><script>
+</html>
+
+<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
