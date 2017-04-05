@@ -11,7 +11,6 @@ import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.admin.services.OrgAdminSkillService;
-import in.orgadmin.services.OrgadminCourseService;
 
 /**
  * Servlet implementation class RoleSkillCreateOrDeleteController

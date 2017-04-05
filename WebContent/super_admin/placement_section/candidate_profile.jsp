@@ -1,6 +1,6 @@
 
+<%@page import="in.recruiter.service.RecruiterServices"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
-<%@page import="in.recruiter.services.RecruiterServices"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%

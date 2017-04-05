@@ -18,9 +18,10 @@ import org.json.JSONObject;
 
 import com.google.api.client.json.Json;
 import com.google.gson.Gson;
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
 
 import in.superadmin.bean.DataTableBean;
+
 
 /**
  * Servlet implementation class UserManagementData

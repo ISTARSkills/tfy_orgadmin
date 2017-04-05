@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.istarindia.apps.dao.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUser;
 
 public class DurationHandler extends ColumnHandler {
 

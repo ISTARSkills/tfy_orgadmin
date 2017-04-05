@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.json.JSONArray;
 
-import com.istarindia.apps.dao.DBUTILS;
+import com.viksitpro.core.utilities.DBUTILS;
 
 import in.talentify.core.javabean.SuperAdminEvent;
 

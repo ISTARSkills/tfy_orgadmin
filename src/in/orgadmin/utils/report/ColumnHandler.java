@@ -1,6 +1,6 @@
 package in.orgadmin.utils.report;
 
-import com.istarindia.apps.dao.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUser;
 
 public abstract class ColumnHandler {
 
@@ -10,5 +10,7 @@ public abstract class ColumnHandler {
 
 	public abstract StringBuffer getHTML(String status, IstarUser user, String taskType, int taskID, int reportID,
 			String itemType);
+
+	
 
 }

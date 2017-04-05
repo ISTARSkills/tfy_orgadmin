@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
 				if (user.getPassword().equalsIgnoreCase(request.getParameter("password"))) {
 					
 					System.out.println("-------------------Email -> " +	user.getEmail());
-					request.getSession().setMaxInactiveInterval(2000);
+					//request.getSession().setMaxInactiveInterval(2000);
 					request.getSession().setAttribute("user", user);
 										
 					
@@ -76,7 +76,7 @@ public class LoginController extends HttpServlet {
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				request.setAttribute("msg", "Missing Username or password");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}

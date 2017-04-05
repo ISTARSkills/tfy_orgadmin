@@ -1,3 +1,4 @@
+
 var webSocket ;
 function readyFn(jQuery) {
 

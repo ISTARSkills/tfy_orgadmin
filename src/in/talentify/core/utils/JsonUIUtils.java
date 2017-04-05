@@ -21,11 +21,11 @@ public class JsonUIUtils {
 		ArrayList<JSONArray> arrayList = new ArrayList<>();
 
 		if (type.equalsIgnoreCase("Program")) {
-			sql = "SELECT DISTINCT 	skill_objective.name, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective WHERE 	course_id = "
+			sql = "SELECT DISTINCT 	skill_objective.name as skill_title, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective WHERE 	course_id = "
 					+ course_id + " AND college_id = " + college_id
 					+ " AND skill_objective.id = mastery_level_per_course.skill_id AND ( 	rookie != '0' 	AND master != '0' 	AND apprentice != '0' 	AND wizard != '0' )";
 		} else {
-			sql = "SELECT DISTINCT 	skill_objective. NAME, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective, 	batch WHERE 	batch.batch_group_id = mastery_level_per_course.batch_group_id AND batch.course_id = "
+			sql = "SELECT DISTINCT 	skill_objective. NAME as skill_title, 	rookie, 	master, 	apprentice, 	wizard FROM 	mastery_level_per_course, 	skill_objective, 	batch WHERE 	batch.batch_group_id = mastery_level_per_course.batch_group_id AND batch.course_id = "
 					+ course_id + " AND college_id = " + college_id
 					+ " AND skill_objective. ID = mastery_level_per_course.skill_id AND ( 	rookie != '0' 	AND master != '0' 	AND apprentice != '0' 	AND wizard != '0' )";
 		}

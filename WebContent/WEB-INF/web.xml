@@ -12,7 +12,7 @@
     <init-param>
       <description>Define storage path for company image uploads</description>
       <param-name>upload_path</param-name>
-      <param-value>C:/root/Camera Roll/company_image/</param-value>
+      <param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
@@ -27,7 +27,7 @@
     <init-param>
       <description>Send Offer Letter to Placed Student</description>
       <param-name>upload_path</param-name>
-      <param-value>C:/root/Camera Roll/offer_letters/</param-value>
+      <param-value>C:/Users/mayank/Pictures/Camera Roll/offer_letters/</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
@@ -42,11 +42,16 @@
     <init-param>
       <description>Send Offer Letter to Placed Student</description>
       <param-name>upload_path</param-name>
-      <param-value>C:/root/Camera Roll/company_image/</param-value>
+      <param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
     <servlet-name>UpdateOrganizationDetails</servlet-name>
     <url-pattern>/update_organization_details</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ChatServerStarter</servlet-name>
+    <servlet-class>com.viksitpro.chat.services.ChatServerStarter</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet>
 </web-app>

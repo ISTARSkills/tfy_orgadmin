@@ -47,6 +47,8 @@
 			
 
 		</div>
+		
+		<jsp:include page="../chat_element.jsp"></jsp:include>
 	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>

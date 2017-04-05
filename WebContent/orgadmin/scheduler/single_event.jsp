@@ -41,7 +41,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 				<label>Choose Trainer</label> <select
 					class="form-control m-b scheduler_select" name="trainerID">
 					<option value="">Select Trainer...</option>
-					<%=ui.getAllTrainer()%>
+					<%=ui.getAllTrainer(null)%>
 
 				</select>
 			</div>
@@ -51,7 +51,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple
 						tabindex="4" name="" id="single_associateTrainerID" class="associateTrainer">
 						<option value="">Select Associate Trainers...</option>
-					       <%=ui.getAllTrainer()%>
+					       <%=ui.getAllTrainer(null)%>
 
 					</select>
 			</div>

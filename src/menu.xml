@@ -10,10 +10,11 @@
 	<parent_links display_name="User Management" is_visible_in_menu="true" jsp_file="/super_admin/user_management.jsp" url="/super_admin/user_management.jsp" valid_role="super_admin" />
 	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
 	<parent_links display_name="Analytics" is_visible_in_menu="true" jsp_file="/super_admin/analytics.jsp" url="/super_admin/analytics.jsp" valid_role="super_admin" />
-	<parent_links display_name="Billing" is_visible_in_menu="true"  jsp_file="/super_admin/billing.jsp" url="/super_admin/billing.jsp" valid_role="super_admin" />
-	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	
+<!-- 	<parent_links display_name="Billing" is_visible_in_menu="true"  jsp_file="/super_admin/billing.jsp" url="/super_admin/billing.jsp" valid_role="super_admin" />
+	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	 -->
 	<parent_links display_name="Batch Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report1.jsp" url="/super_admin/ops_report1.jsp" valid_role="super_admin"/>
 	<parent_links display_name="Assessment Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report_2.jsp" url="/super_admin/ops_report_2.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Istar Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
 	
 	
 	

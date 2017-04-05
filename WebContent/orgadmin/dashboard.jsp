@@ -1,3 +1,5 @@
+<%@page import="java.util.HashSet"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -18,7 +20,7 @@
 <%
 	UIUtils uiUtil = new UIUtils();
 	JSONArray calendardata = null;
-	/* 	OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
+	 	IstarUser u = (IstarUser) request.getSession().getAttribute("user"); 
 	int colegeID = (int) request.getSession().getAttribute("orgId");
 
 	if (request.getParameter("course_id") != null
@@ -512,8 +514,28 @@
 								</div>
 							</div>
 							<div id="tab-2" class="tab-pane">
-								<div class="panel-body">
-									<div class="alert alert-danger">
+								<div class="panel-body" id="orgadmin_notifications">
+								<%String getOrgAdminNotification ="select id, title, details from istar_notifiction where (receiver_id = "+u.getId()+" OR sender_id = "+u.getId()+") and type='ADMIN_NOTIFICATION'"; 
+									List<HashMap<String, Object>> data = dbutils.executeQuery(getOrgAdminNotification);
+									
+									for(HashMap<String, Object> row: data)
+									{
+										String title =row.get("title").toString();
+										String id = row.get("id").toString();
+										
+										%>
+										<div class="alert alert-danger" id ="notice_<%=id%>">
+										<%=title %>
+										<%if(row.get("details")!=null){ %>
+										<p><%=row.get("details").toString() %></p>
+										<%} %>
+									</div>
+										
+										<% 
+									}
+								%>
+								
+									<!-- <div class="alert alert-danger">
 										Scheduled class of Asset Management cancelled.
 										<p>Reason: Unavailability of classroom</p>
 									</div>
@@ -521,7 +543,8 @@
 										conducted for Final Year UI Developer Batch.</div>
 
 									<div class="alert alert-warning">Poor attendence in Final
-										Year BCOM Batch</div>
+										Year BCOM Batch</div> -->
+										
 
 
 								</div>
@@ -555,7 +578,7 @@
 		</div>
 	</div>
 
-
+<jsp:include page="../chat_element.jsp"></jsp:include>
 
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>

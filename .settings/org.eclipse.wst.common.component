@@ -5,7 +5,7 @@
         <dependent-module archiveName="tfy_core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/tfy_core/tfy_core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="tfy_orgadmin"/>
         <property name="java-output-path" value="/tfy_orgadmin/build/classes"/>
+        <property name="context-root" value="/"/>
     </wb-module>
 </project-modules>

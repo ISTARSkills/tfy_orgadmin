@@ -1,6 +1,6 @@
 package in.orgadmin.utils.report;
 
-import com.istarindia.apps.dao.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUser;
 
 public class BatchColumnHandler extends ColumnHandler {
 

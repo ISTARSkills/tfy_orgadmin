@@ -65,7 +65,7 @@ public class SuperAdminDashboardServices {
 	
 	
 	public List<HashMap<String, Object>> getAllAccount(){
-		String sql="select id,name from organization";
+		String sql="SELECT DISTINCT 	organization. ID, 	organization. NAME FROM 	batch_schedule_event, 	classroom_details, 	organization WHERE 	batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND CAST ( 	batch_schedule_event.eventdate AS DATE ) = (SELECT CURRENT_DATE) AND batch_schedule_event. TYPE LIKE '%EVENT_TRAINER%' ";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> lists = dbutils.executeQuery(sql);
 		return lists;

@@ -102,13 +102,19 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 						<br>
 
-						<div class="col-lg-12">
-							<label class="control-label">Gender</label> <select
-								class="form-control m-b" name="user_gender">
-								<option value="MALE">Male</option>
-								<option value="FEMALE">Female</option>
-							</select>
-						</div>
+						<div class="col-lg-6">
+								<label class="control-label">Gender</label> <select
+									class="form-control m-b" name="user_gender">
+									<option value="MALE">Male</option>
+									<option value="FEMALE">Female</option>
+								</select>
+							</div>
+							<div class="col-lg-6">
+								<label class="control-label">Mobile No</label> <input type="number"
+									name="user_mobile" class="form-control"
+									placeholder="Mobile Number">
+
+							</div>
 
 						<br>
 

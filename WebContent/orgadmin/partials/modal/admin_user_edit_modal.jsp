@@ -17,68 +17,79 @@
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 	}
 
-	int colegeID =  (int)request.getSession().getAttribute("orgId");
-	
-	IstarUser user=new IstarUserDAO().findById(user_id);
-	ArrayList<Integer> selectedBG=new OrgAdminBatchGroupService().getSelectedBatchBgoups(user_id);
+	int colegeID = (int) request.getSession().getAttribute("orgId");
+
+	IstarUser user = new IstarUserDAO().findById(user_id);
+	ArrayList<Integer> selectedBG = new OrgAdminBatchGroupService().getSelectedBatchBgoups(user_id);
 	UserProfile stuProfileData = user.getUserProfile();
-	String lastName =  "";
-	if(stuProfileData!=null)
-	{
+	String lastName = "";
+	if (stuProfileData != null) {
 		lastName = stuProfileData.getLastName();
 	}
 	UIUtils ui = new UIUtils();
 %>
-	
 
-<div id="edit_user_model_<%=user.getId()%>" class="modal inmodal edit_modal" role="dialog">
-<div class='modal-dialog modal-lg'><div class='modal-content animated flipInY'>
 
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal">
-		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-	</button>
-	<h4 class="modal-title pull-left">Edit a user</h4>
-</div>
-<div class="modal-body">
+<div id="edit_user_model_<%=user.getId()%>"
+	class="modal inmodal edit_modal" role="dialog">
+	<div class='modal-dialog modal-lg'>
+		<div class='modal-content animated flipInY'>
 
-	<form class="form-horizontal" action="<%=baseURL%>createOrUpdateUser"
-		method="post">
-
-		<input type="hidden" value="<%=colegeID%>" name="college_id" /> 
-		<input type="hidden" value="<%=user_id%>" name="user_id" />
-		<div class="form-group">
-
-			<div class="col-lg-6">
-
-				<label>First Name</label> <input type="text"
-					placeholder="First Name.." name="user_f_name" class="form-control" value="<%=stuProfileData.getFirstName()%>">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title pull-left">Edit a user</h4>
 			</div>
+			<div class="modal-body">
 
-			<div class="col-lg-6">
-				<label>Last Name</label> <input type="text"
-					placeholder="Last Name.." name="user_l_name" class="form-control" value="<%=lastName%>">
-			</div>
+				<form class="form-horizontal"
+					action="<%=baseURL%>createOrUpdateUser" method="post">
 
-			<br>
+					<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input
+						type="hidden" value="<%=user_id%>" name="user_id" />
+					<div class="form-group">
 
-			<div class="col-lg-12">
-				<label class="control-label">Gender</label> <select
-					class="form-control m-b" name="user_gender">
-					<option value="MALE" <%=stuProfileData.getGender()=="MALE"? "selected":"" %>>Male</option>
-					<option value="FEMALE" <%=stuProfileData.getGender()=="FEMALE"? "selected":"" %>>Female</option>
-				</select>
-			</div>
+						<div class="col-lg-6">
 
-			<br>
+							<label>First Name</label> <input type="text"
+								placeholder="First Name.." name="user_f_name"
+								class="form-control" value="<%=stuProfileData.getFirstName()%>">
+						</div>
 
-			<div class="col-lg-12">
-				<label>Email</label> <input type="email"
-					placeholder="joe@schmoe.com" name="user_email" class="form-control" value="<%=user.getEmail()%>">
-			</div>
+						<div class="col-lg-6">
+							<label>Last Name</label> <input type="text"
+								placeholder="Last Name.." name="user_l_name"
+								class="form-control" value="<%=lastName%>">
+						</div>
 
-		</div>
-		<div class="form-group">
+						<br>
+
+						<div class="col-lg-6">
+							<label class="control-label">Gender</label> <select
+								class="form-control m-b" name="user_gender">
+								<option value="MALE"
+									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
+								<option value="FEMALE"
+									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
+							</select>
+						</div>
+						<div class="col-lg-6">
+							<label class="control-label">Mobile No</label> <input type="number"
+								name="user_mobile" class="form-control"
+								value="<%=user.getMobile()%>" placeholder="Mobile Number">
+
+						</div>
+						<br>
+
+						<div class="col-lg-12">
+							<label>Email</label> <input type="email"
+								placeholder="joe@schmoe.com" name="user_email"
+								class="form-control" value="<%=user.getEmail()%>">
+						</div>
+
+					</div>
+					<div class="form-group">
 						<h3 class="m-b-n-md">Group</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
@@ -92,30 +103,33 @@
 							</div>
 							<input type="hidden" value="" name="batch_groups" />
 						</div>
+					</div>
+
+					<div class="form-group">
+						<h3 class="m-b-n-md">Role(only for corporate)</h3>
+						<hr class="m-b-xs">
+						<div class="col-lg-12">
+							<label class="font-noraml">Select Roles the student will
+								belong to:</label>
+							<div>
+								<select data-placeholder="roles..." class="chosen-select"
+									name="role_name" multiple tabindex="4">
+									<option value="">Select</option>
+									<option value="">Account Manager</option>
+									<option value="">Account Manager</option>
+								</select>
+							</div>
+						</div>
+
+
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Save
+							changes</button>
+					</div>
+				</form>
 			</div>
-
-		<div class="form-group">
-			<h3 class="m-b-n-md">Role(only for corporate)</h3>
-			<hr class="m-b-xs">
-			<div class="col-lg-12">
-				<label class="font-noraml">Select Roles the student will
-					belong to:</label>
-				<div>
-					<select data-placeholder="roles..." class="chosen-select"
-						name="role_name" multiple tabindex="4">
-						<option value="">Select</option>
-						<option value="">Account Manager</option>
-						<option value="">Account Manager</option>
-					</select>
-				</div>
-			</div>
-
-
 		</div>
-
-		<div class="form-group">
-			<button type="submit" class="btn btn-primary">Save changes</button>
-		</div>
-	</form>
+	</div>
 </div>
-</div></div></div>

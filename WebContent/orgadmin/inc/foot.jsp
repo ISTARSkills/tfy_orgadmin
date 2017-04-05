@@ -60,7 +60,8 @@
  	 <script src="<%=basePath %>js/plugins/highchart/no-data-to-display.js"></script>
  	 <script src="<%=basePath %>js/plugins/highchart/data.js"></script>
  	 <script src="<%=basePath %>js/plugins/highchart/exporting.js"></script>
-
+<script src="<%=basePath %>js/reconnecting-websocket.min.js"></script>
+<script src="<%=basePath %>js/websocket.js"></script>
  	 
  	 <script src="<%=basePath %>js/app.js"></script>
 

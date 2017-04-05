@@ -15,7 +15,7 @@
 <div class="col-lg-4">
 	<div class="ibox">
 		<div class="ibox-content clickablecards"
-			data-url="/orgadmin_login?org_id=<%=(int) item.get("id")%>">
+			data-url="/orgadmin_login?not_auth=true&org_id=<%=(int) item.get("id")%>">
 			<h3>
 				<strong><%=item.get("name")%></strong>
 			</h3>

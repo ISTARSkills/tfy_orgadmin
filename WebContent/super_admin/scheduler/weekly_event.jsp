@@ -29,7 +29,7 @@
 	<div class="panel-body border-event">
 
 		<form id="idForm3" class="form">
-			<input type="hidden" name="orgAdminUserID" value="300" />
+			<input type="hidden" name="AdminUserID" value="300" />
 			<input type="hidden" name="tabType" value="weeklyEvent" />
 			
 			<div class="form-group">
@@ -46,7 +46,7 @@
 				<label>Choose Trainer</label> <select class="form-control m-b"
 					name="trainerID">
 					<option value="">Select Trainer...</option>
-					<%=ui.getAllTrainer()%>
+					<%=ui.getAllTrainer(null)%>
 
 				</select>
 			</div>
@@ -56,7 +56,7 @@
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple
 						tabindex="4" name="" id="weekly_associateTrainerID" class="associateTrainer">
 						<option value="">Select Associate Trainers...</option>
-					       <%=ui.getAllTrainer()%>
+					       <%=ui.getAllTrainer(null)%>
 
 					</select>
 			</div>

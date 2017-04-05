@@ -3,7 +3,7 @@ package in.orgadmin.utils.report;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import com.istarindia.apps.dao.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUser;
 
 public class DateHandler extends ColumnHandler {
 

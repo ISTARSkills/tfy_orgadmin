@@ -65,11 +65,21 @@
 					}
 				%>
 			</ul>
+			<%if(request.getParameterMap().containsKey("not_auth") && request.getParameter("not_auth").equalsIgnoreCase("true")){%>
+			<!-- <ul class="nav navbar-top-links navbar-right">
+				<li><a href="/auth/logout"> <i class="fa fa-sign-out"></i>
+						Log out
+				</a></li>
+			</ul> -->
+			<%} else {%>
+			
 			<ul class="nav navbar-top-links navbar-right">
 				<li><a href="/auth/logout"> <i class="fa fa-sign-out"></i>
 						Log out
 				</a></li>
 			</ul>
+			
+			<%} %>
 		</div>
 	</nav>
 

@@ -77,6 +77,7 @@ public class AdminUIServices {
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
+		out.append("<option value=''>Select Organization</option>");
 		for (HashMap<String, Object> item : data) {
 			out.append("<option value='" + item.get("id") + "'>" + item.get("name") + "</option>");
 		}

@@ -97,7 +97,7 @@
 						action="<%=baseURL%>createOrUpdateUser" method="post">
 
 						<input type="hidden" value="super_admin" name="creation_type" />
-						<input type="hidden" value="STUDENT" name="user_type" />
+						<!-- 	<input type="hidden" value="STUDENT" name="user_type" /> -->
 
 						<div class="form-group">
 							<div class="col-lg-6">
@@ -113,12 +113,18 @@
 
 							<br>
 
-							<div class="col-lg-12">
+							<div class="col-lg-6">
 								<label class="control-label">Gender</label> <select
 									class="form-control m-b" name="user_gender">
 									<option value="MALE">Male</option>
 									<option value="FEMALE">Female</option>
 								</select>
+							</div>
+							<div class="col-lg-6">
+								<label class="control-label">Mobile No</label> <input type="number"
+									name="user_mobile" class="form-control"
+									placeholder="Mobile Number">
+
 							</div>
 
 							<br>
@@ -130,34 +136,47 @@
 							</div>
 
 						</div>
-						<div class="form-group">
-							<h3 class="m-b-n-md">Group</h3>
-							<hr class="m-b-xs">
-							<div class="col-lg-12">
-								<label class="font-noraml">Select Groups the student
-									will belong to:</label>
-								<div>
-									<select data-placeholder="group..." class="select2-dropdown"
-										multiple tabindex="4">
-										<%=adminUiServcies.getBatchGroups(-3, null)%>
-									</select>
-								</div>
-								<input type="hidden" value="" name="batch_groups" />
-							</div>
-						</div>
 
 						<div class="form-group">
+							<input type="hidden" value="STUDENT" id="user_type"
+								name="user_type" /> <label>Select User Type</label> <select
+								class="form-control m-b userType">
+								<option value="STUDENT">Student</option>
+								<option value="TRAINER">Trainer</option>
+
+							</select>
+						</div>
+						<div class="form-group" id="hide_college_holder">
 							<div class="col-lg-12">
 								<label class="font-noraml">Organization</label>
 								<div>
-									<select name="college_id" class="form-control m-b">
+									<select name="college_id" id="college_id"
+										class="form-control m-b college_id">
 										<%=adminUiServcies.getAllOrganizations()%>
 									</select>
 								</div>
 							</div>
 						</div>
+						<div id="batch_group_holder">
+							<div class="form-group" id="hide_group_holder">
+								<h3 class="m-b-n-md">Group</h3>
+								<hr class="m-b-xs">
+								<div class="col-lg-12">
+									<label class="font-noraml">Select Groups the student
+										will belong to:</label>
+									<div>
+										<select data-placeholder="group..."
+											id="main_batch_group_holder" class="select2-dropdown"
+											multiple tabindex="4">
+										</select>
+									</div>
+									<input type="hidden" value="" name="batch_groups" />
+								</div>
+							</div>
+						</div>
 
-						<div class="form-group">
+
+						<div class="form-group" id="hide_role_holder">
 							<h3 class="m-b-n-md">Role(only for corporate)</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">

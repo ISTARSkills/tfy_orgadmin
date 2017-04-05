@@ -4,32 +4,21 @@
 package in.talentify.core.utils;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import com.istarindia.apps.dao.DBUTILS;
-import com.istarindia.apps.dao.IstarUser;
-import com.istarindia.apps.dao.IstarUserDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.utils.report.IStarColumn;
 import in.orgadmin.utils.report.Report;
 import in.orgadmin.utils.report.ReportCollection;
-import in.orgadmin.utils.report.ReportColumnHandlerFactory;
 
 /**
  * @author Vaibhav

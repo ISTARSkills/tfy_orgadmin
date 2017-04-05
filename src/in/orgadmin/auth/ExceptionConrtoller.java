@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import in.talentify.core.utils.EmailSendingUtility;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 
-import com.istarindia.apps.services.task.EmailSendingUtility;
+
 
 /**
  * Servlet implementation class ExceptionHandleConrtoller

@@ -191,7 +191,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			Organization college = new OrganizationDAO().findById(collegeId);
 			String orgName = college.getName();
 			
-			String sql10 = "SELECT DISTINCT 	csobj .skill_objective_id, 	c.course_name, 	CAST ( 		AVG (sp.percentage) AS INTEGER 	) FROM 	batch_group AS bg, 	batch AS b, 	course_skill_objective AS csobj, course c, 	skill_precentile sp, 	batch_students AS bs WHERE 	bg.college_id = 3 AND b.batch_group_id = bg. ID AND bs.batch_group_id = b.batch_group_id AND b.course_id = csobj .course_id AND csobj .course_id = c.id AND csobj .skill_objective_id = sp.skill_id AND bs.student_id = sp.student_id GROUP BY 	c .course_name, 	csobj .skill_objective_id ORDER BY 	AVG";
+			String sql10 = "SELECT DISTINCT 	csobj .skill_objective_id, 	c.course_name, 	CAST ( 		AVG (sp.percentage) AS INTEGER 	) FROM 	batch_group AS bg, 	batch AS b, 	course_skill_objective AS csobj, course c, 	skill_precentile sp, 	batch_students AS bs WHERE 	bg.college_id = "+collegeId+" AND b.batch_group_id = bg. ID AND bs.batch_group_id = b.batch_group_id AND b.course_id = csobj .course_id AND csobj .course_id = c.id AND csobj .skill_objective_id = sp.skill_id AND bs.student_id = sp.student_id GROUP BY 	c .course_name, 	csobj .skill_objective_id ORDER BY 	AVG";
 			
 		//	System.out.println("sql------->" + sql10);
 			

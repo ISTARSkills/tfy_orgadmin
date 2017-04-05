@@ -36,6 +36,7 @@ public class OrgadminLoginController extends IStarBaseServelet {
 		String url = "/orgadmin/dashboard.jsp";
 		if(request.getParameter("org_id")!=null){
 			request.getSession().setAttribute("orgId", Integer.parseInt(request.getParameter("org_id")));
+			//request.getSession().setAttribute("not_auth", "true");
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}

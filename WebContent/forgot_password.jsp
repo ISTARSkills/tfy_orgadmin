@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@page import="com.istarindia.apps.dao.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 
 <!DOCTYPE html>
 <html>
