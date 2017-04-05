@@ -1,3 +1,6 @@
+<%@page import="java.sql.Timestamp"%>
+<%@page import="org.ocpsoft.prettytime.PrettyTime"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
@@ -35,6 +38,9 @@
 	}
 	DBUTILS dbutils = new DBUTILS();
 	
+	NotificationAndTicketServices serv = new NotificationAndTicketServices();
+	List<HashMap<String, Object>> data = serv.getNotificationAndTicket(u.getId());
+	
 %>
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
@@ -52,7 +58,7 @@
 							<li class="active"><a data-toggle="tab" href="#tab-1">Todays
 									Events</a></li>
 							<li class=""><a data-toggle="tab" href="#tab-2">Notifications&nbsp;&nbsp;<span
-									class="label label-warning pull-right">24</span></a></li>
+									class="label label-warning pull-right"><%=data.size()%></span></a></li>
 						</ul>
 						<div class="tab-content dash_main_tab">
 							<div id="tab-1" class="tab-pane active">
@@ -515,20 +521,26 @@
 							</div>
 							<div id="tab-2" class="tab-pane">
 								<div class="panel-body" id="orgadmin_notifications">
-								<%String getOrgAdminNotification ="select id, title, details from istar_notifiction where (receiver_id = "+u.getId()+" OR sender_id = "+u.getId()+") and type='ADMIN_NOTIFICATION'"; 
-									List<HashMap<String, Object>> data = dbutils.executeQuery(getOrgAdminNotification);
-									
+								<%
+									PrettyTime p = new PrettyTime();
 									for(HashMap<String, Object> row: data)
 									{
 										String title =row.get("title").toString();
 										String id = row.get("id").toString();
-										
+										String time =p.format((Timestamp)row.get("created_at"));
 										%>
 										<div class="alert alert-danger" id ="notice_<%=id%>">
 										<%=title %>
 										<%if(row.get("details")!=null){ %>
 										<p><%=row.get("details").toString() %></p>
-										<%} %>
+										<%}
+										if(row.get("first_name")!=null && !row.get("first_name").toString().equalsIgnoreCase("NA"))
+										{											
+											%>
+											<p><span class="label label-danger"><%=row.get("first_name").toString() %> (<%=time%>)</span></p>
+											<% 
+										}
+										%>
 									</div>
 										
 										<% 

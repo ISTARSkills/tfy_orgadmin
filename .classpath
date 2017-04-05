@@ -44,10 +44,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/json-20160810.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/paranamer-2.5.5.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/postgresql-9.4.1212.jre7.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.7.7.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spark-core-2.5.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-api-9.0.0.rc0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/firebase-server-sdk-3.0.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-json.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/simple-xml-2.7.1.jar"/>
@@ -74,5 +71,23 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-pool2-2.4.2.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-http-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-io-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-security-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-server-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-servlet-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-util-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-webapp-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jetty-xml-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/prettytime-2.1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/spark-core-2.5.5.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-api-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-client-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-common-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-server-9.3.6.v20151106.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/websocket-servlet-9.3.6.v20151106.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -1,3 +1,7 @@
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Collection"%>
+<%@page import="com.viksitpro.core.utilities.RoleTypes"%>
 <%@page import="com.viksitpro.chat.services.Chat"%>
 <%@page import="com.viksitpro.chat.services.MessageService"%>
 <%@page import="java.util.HashSet"%>
@@ -109,8 +113,18 @@ else if (type.equalsIgnoreCase("USER")){
         <div class="form-chat" >
             <div class="input-group input-group-sm" style="    top: 550px; position: absolute; width: 276px;">
             <input type="text" class="form-control chat_message" id="<%=type.toLowerCase()%>_<%=userId%>"> 
-            <span class="input-group-btn"> <button
-                    class="btn btn-primary" type="button" id="send_notification">Notice
-            </button> </span></div>
+            <%
+            String allowedRoleToSendNotification[] ={RoleTypes.SUPER_ADMIN, RoleTypes.ORG_ADMIN, RoleTypes.COORDINATOR};
+            if(Arrays.asList(allowedRoleToSendNotification).contains(user.getUserRoles().iterator().next().getRole().getRoleName())) 
+            {
+            	%>
+            	<span class="input-group-btn"> <button
+                    class="btn btn-primary" type="button" id="send_notification" data-user_id="<%=user.getId()%>" data-user_type="<%=user.getUserRoles().iterator().next().getRole().getRoleName()%>">Notice
+            	</button> </span>
+            	<% 
+            }%>
+            
+            
+            </div>
         </div>
 

@@ -1,3 +1,7 @@
+<%@page import="java.sql.Timestamp"%>
+<%@page import="org.ocpsoft.prettytime.PrettyTime"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.util.Date"%>
 <%@page import="com.viksitpro.core.dao.entities.Slide"%>
@@ -20,9 +24,9 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	}
 	
 	DBUTILS util = new DBUTILS();
-	
-	String sql = "select description from exception_log where exception_component  !='EVENT_DELIVERY'";
-	List<HashMap<String, Object>> data = util.executeQuery(sql);
+	IstarUser u = (IstarUser)session.getAttribute("user");
+	NotificationAndTicketServices serv = new NotificationAndTicketServices();
+	List<HashMap<String, Object>> data = serv.getNotificationAndTicket(u.getId());
 %>
 <div class="col-lg-6" id="dashboard_left_holder">
 	<div class="tabs-container">
@@ -495,18 +499,30 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			<div id="tab-2" class="tab-pane">
 			<div class="panel-body">
 			<%
-
-			for(HashMap<String, Object> row: data)
-			{
-				%>
-				<div class="alert alert-danger"><%=row.get("description") %>
-						
-					</div>
-					
-				<% 
-				
-			}
-			%>
+									PrettyTime p = new PrettyTime();
+									for(HashMap<String, Object> row: data)
+									{
+										String title =row.get("title").toString();
+										String id = row.get("id").toString();
+										String time =p.format((Timestamp)row.get("created_at"));
+										%>
+										<div class="alert alert-danger" id ="notice_<%=id%>">
+										<%=title %>
+										<%if(row.get("details")!=null){ %>
+										<p><%=row.get("details").toString() %></p>
+										<%}
+										if(row.get("first_name")!=null && !row.get("first_name").toString().equalsIgnoreCase("NA"))
+										{											
+											%>
+											<p><span class="label label-danger"><%=row.get("first_name").toString() %> (<%=time%>)</span></p>
+											<% 
+										}
+										%>
+									</div>
+										
+										<% 
+									}
+								%>
 				
 					
 
