@@ -180,18 +180,18 @@ public class OrgAdminSkillService {
 			List<HashMap<String, Object>> data = new ArrayList<>();
 
 			if (skillType.equalsIgnoreCase("COURSE")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.course_id = (select id from course where parent_skill_objective_id = "
+				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.course_id = (select course_id from course_skill_objective where skill_objective_id = "
 						+ skillId + ") order by course_id";
 				System.err.println(sql);
 				data = db.executeQuery(sql);
 
 			} else if (skillType.equalsIgnoreCase("MODULE")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.module_id = (select id from module where parent_skill_objective_id = "
+				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.module_id = (select module_id from module_skill_objective where skill_objective_id = "
 						+ skillId + ") order by course_id";
 				System.err.println(sql);
 				data = db.executeQuery(sql);
 			} else if (skillType.equalsIgnoreCase("CMSESSION")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and lesson_cmsession.cmsession_id = (select id from cmsession where parent_skill_objective_id = "
+				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and lesson_cmsession.cmsession_id = (select cmsession_id from cmsession_skill_objective where skill_objective_id = "
 						+ skillId + ") order by course_id";
 				System.err.println(sql);
 				data = db.executeQuery(sql);
