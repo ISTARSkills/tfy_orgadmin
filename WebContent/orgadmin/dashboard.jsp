@@ -8,8 +8,7 @@
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.viksitpro.core.dao.entities.Slide"%>
-<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
+
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
@@ -154,30 +153,7 @@
 																				<%
 																					} else {
 																				%>
-																				<ul
-																					class="sortable-list connectList agile-list ui-sortable"
-																					id="todo">
-																					<%
-																						Date slide_start;
-																									for (HashMap<String, Object> log : logs) {
-																										SlideDAO slideDAO = new SlideDAO();
-																										try {
-																											Slide slide = slideDAO.findById(Integer.parseInt(log.get("slide_id").toString()));
-																					%>
-																					<li class="info-element" id="">Slide Title : <%=slide.getTitle().toUpperCase()%>
-																						<div class="agile-detail">
-																							Time Started: <i class="fa fa-clock-o"></i>
-																							<%=log.get("created_at").toString().substring(11)%>
-																						</div>
-																					</li>
-																					<%
-																						} catch (Exception e) {
-																											e.printStackTrace();
-																										}
-																									}
-																					%>
-
-																				</ul>
+																				
 																				<%
 																					}
 																				%>

@@ -3,8 +3,6 @@
 <%@page
 	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.viksitpro.core.dao.entities.Slide"%>
-<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
