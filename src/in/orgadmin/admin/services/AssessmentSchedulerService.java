@@ -76,12 +76,15 @@ public class AssessmentSchedulerService {
 				
 				int  istarAssessmentEventId  = db.executeUpdateReturn(assessmentEventsql);
 				
-				String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"+AdminUserID+"', 		'"+bstudent.getIstarUser().getId()+"', 		'SCHEDULED', 		 CAST ( 			'"+event_date+"' AS TIMESTAMP 		), 		CAST ( 			'("+event_date+")' AS TIMESTAMP )+ interval ' 1 ' minute * ("+assessment.getAssessmentdurationhours()+"*60+"+assessment.getAssessmentdurationminutes()+"), 		'f', 		't', 		now(), 		now(), 		"+istarAssessmentEventId+", 		'ASSESSMENT' 	)RETURNING ID;";
-				
+				//creating task for assessment event with itemType="ASSESSMENT_EVENT"
+				String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"+AdminUserID+"', 		'"+bstudent.getIstarUser().getId()+"', 		'SCHEDULED', 		 CAST ( 			'"+event_date+"' AS TIMESTAMP 		), 		CAST ( 			'("+event_date+")' AS TIMESTAMP )+ interval ' 1 ' minute * ("+assessment.getAssessmentdurationhours()+"*60+"+assessment.getAssessmentdurationminutes()+"), 		'f', 		't', 		now(), 		now(), 		"+istarAssessmentEventId+", 		'ASSESSMENT_EVENT' 	)RETURNING ID;";				
 				int  taskID  = db.executeUpdateReturn(tasksql);
 				
-				String notificationsql="INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"+AdminUserID+", 		'"+bstudent.getIstarUser().getId()+"', 		'"+title_new+"', 		'"+details_new+"', 		'UNREAD', 		NULL, 		'ASSESSMENT_EVENT', 		't', 		now(), 		"+taskID+" 	);";
+				//creating task for student to take the assessment with itemType="ASSESSMENT"
+				String studentAssessmentTaskSQL="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"+AdminUserID+"', 		'"+bstudent.getIstarUser().getId()+"', 		'SCHEDULED', 		 CAST ( 			'"+event_date+"' AS TIMESTAMP 		), 		CAST ( 			'("+event_date+")' AS TIMESTAMP )+ interval ' 1 ' minute * ("+assessment.getAssessmentdurationhours()+"*60+"+assessment.getAssessmentdurationminutes()+"), 		'f', 		't', 		now(), 		now(), 		"+istarAssessmentEventId+", 		'ASSESSMENT' 	);";
+				db.executeUpdate(studentAssessmentTaskSQL);
 				
+				String notificationsql="INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"+AdminUserID+", 		'"+bstudent.getIstarUser().getId()+"', 		'"+title_new+"', 		'"+details_new+"', 		'UNREAD', 		NULL, 		'ASSESSMENT_EVENT', 		't', 		now(), 		"+taskID+" 	);";
 				db.executeUpdate(notificationsql);
 			  } 
 			}
