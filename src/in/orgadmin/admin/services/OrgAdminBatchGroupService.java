@@ -217,6 +217,9 @@ public class OrgAdminBatchGroupService {
 
 						System.err.println(sqlInsertStudentPl);
 						util.executeUpdate(sqlInsertStudentPl);
+						
+						String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+stu+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				
+						util.executeUpdate(tasksql);
 
 					}
 				}

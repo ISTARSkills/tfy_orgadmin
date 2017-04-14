@@ -31,7 +31,7 @@ public class OrgAdminSkillService {
 				+ " 		) 	) UNION 	( 		SELECT 			skill_objective. ID, 			skill_objective. NAME, 			'CMSESSION' AS parent_ype 		FROM 			skill_objective, 			cmsession, cmsession_skill_objective 		WHERE cmsession.id = cmsession_skill_objective.cmsession_id AND cmsession_skill_objective.skill_objective_id = skill_objective.id 		AND cmsession. ID IN ( 			SELECT DISTINCT 				cmsession_module.cmsession_id 			FROM 				course, 				batch, 				batch_group, 				module_course, 				cmsession_module 			WHERE 				course. ID = batch.course_id 			AND batch.batch_group_id = batch_group. ID 			AND module_course.course_id = course. ID 			AND cmsession_module.module_id = module_course.module_id 			AND batch_group.college_id = "
 				+ orgId + " 		) 	) ORDER BY 	ID";
 
-		// System.err.println(sql);
+		System.err.println("VAIBAHV -->"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -146,7 +146,7 @@ public class OrgAdminSkillService {
 			sql = "SELECT DISTINCT 	course. ID, 	course.course_name AS NAME, 	COUNT ( 		DISTINCT lesson_cmsession.lesson_id 	) FROM 	batch, 	batch_group, 	module_course, 	cmsession_module, 	lesson_cmsession, 	course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND course. ID = module_course.course_id AND batch.course_id = course. ID AND batch.batch_group_id = batch_group. ID AND batch_group.college_id = "
 					+ orgId + " GROUP BY 	course. ID, 	course.course_name ORDER BY course.course_name";
 		}
-		System.err.println(sql);
+		System.err.println("abhinav --> "+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -248,6 +248,10 @@ public class OrgAdminSkillService {
 		if (result.size() == 0) {
 			sql = "INSERT INTO student_playlist (id, student_id, course_id, lesson_id, status) VALUES ((select COALESCE(max(id),0)+1 from student_playlist), '"
 					+ student_id + "', '" + course_id + "', '" + lesson_id + "', 'INCOMPLETE')";
+			
+			String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+student_id+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				
+			db.executeUpdate(tasksql);
+			
 			System.err.println(sql);
 			db.executeUpdate(sql);
 			if (!lessonList.contains(lesson_id)) {
