@@ -1,6 +1,4 @@
-
 <%@page import="in.superadmin.ops.service.OpsReportSevices"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -11,7 +9,78 @@
 <body class="top-navigation" id="super_admin_ops_report">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<div class="row p-xl">
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose College</label>
+						<div>
+							<select data-placeholder="select College" tabindex="4" class="report_college"
+								id='report_college'>
+								<%=service.getOrganization()%>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose Section</label>
+						<div>
+							<select data-placeholder="select Section" tabindex="4" class="report_batch report_batch_holder"
+								id='report_batch'>
+
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose Assessment</label>
+						<div>
+							<select data-placeholder="select Assessment" tabindex="4" class="report_assessment"
+								data-url='../ops_report_partial/batch_question_report.jsp'
+								id='report_assessment'>
+							</select>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+			<div class="ops_report_holder" id="ops_report_holder_result2"></div>
+
+
+		</div>
+	</div>
+	<!-- Mainly scripts -->
+	
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<%-- 
+<%@page import="in.superadmin.ops.service.OpsReportSevices"%>
+<%
+	String url = request.getRequestURL().toString();
+	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
+			+ request.getContextPath() + "/";
+
+	OpsReportSevices service = new OpsReportSevices();
+%>
+<body class="top-navigation" id="super_admin_ops_report">
+	<div id="wrapper">
+		<div id="page-wrapper" class="gray-bg">
 
 			<div class="row p-xl">
 				<div class="col-lg-4">
@@ -172,3 +241,4 @@
 
 </body>
 </html>
+ --%>

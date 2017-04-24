@@ -1,4 +1,5 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css);
+@import url('https://fonts.googleapis.com/css?family=Lato');
 /*
  * Social Buttons for Bootstrap
  *
@@ -62,7 +63,7 @@
  * Only for this example - not needed for the buttons
  * ----------------------------------------------------- */
 .btn-social-icon {margin-bottom: 4px;}
-.social-class .social-hex{font-family:Monaco,Menlo,Consolas,"Courier New",monospace;font-size:10px;opacity:.3;float:right}
+.social-class .social-hex{font-family: 'Lato', sans-serif;font-size:10px;opacity:.3;float:right}
 .social-class li{margin-bottom:4px}.social-class li:hover .social-hex{opacity:1}
 .social-class li:hover code{background-color:#e8e8ee}
 .social-class code{cursor:default}

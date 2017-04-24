@@ -10,19 +10,23 @@
 	<parent_links display_name="User Management" is_visible_in_menu="true" jsp_file="/super_admin/user_management.jsp" url="/super_admin/user_management.jsp" valid_role="super_admin" />
 	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
 	<parent_links display_name="Analytics" is_visible_in_menu="true" jsp_file="/super_admin/analytics.jsp" url="/super_admin/analytics.jsp" valid_role="super_admin" />
-<!-- 	<parent_links display_name="Billing" is_visible_in_menu="true"  jsp_file="/super_admin/billing.jsp" url="/super_admin/billing.jsp" valid_role="super_admin" />
-	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	 -->
+	<!-- <parent_links display_name="Billing" is_visible_in_menu="true"  jsp_file="/super_admin/billing.jsp" url="/super_admin/billing.jsp" valid_role="super_admin" />
+	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/super_admin/placement.jsp" url="/super_admin/placement.jsp" valid_role="super_admin"/>	
 	<parent_links display_name="Batch Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report1.jsp" url="/super_admin/ops_report1.jsp" valid_role="super_admin"/>
 	<parent_links display_name="Assessment Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report_2.jsp" url="/super_admin/ops_report_2.jsp" valid_role="super_admin"/>
-	<parent_links display_name="Istar Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
-	
+	--><parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/super_admin/classrroms.jsp" url="/super_admin/classrroms.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/super_admin/report_partials/student_report.jsp" url="/super_admin/report_partials/student_report.jsp" valid_role="super_admin"/>
+	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/super_admin/super_admin_tickets.jsp" url="/super_admin/super_admin_tickets.jsp" valid_role="super_admin"/>
 	
 	
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/orgadmin/dashboard.jsp" url="/orgadmin/dashboard.jsp" valid_role="org_admin" />
 	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/orgadmin/scheduler.jsp" url="/orgadmin/scheduler.jsp" valid_role="org_admin" />
 	<parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/orgadmin/report.jsp" url="/orgadmin/report.jsp" valid_role="org_admin" />
 	<parent_links display_name="Admin" is_visible_in_menu="true" jsp_file="/orgadmin/admin.jsp" url="/orgadmin/admin.jsp" valid_role="org_admin" />
-	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
-
+	<parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/orgadmin/istar_notification.jsp" url="/orgadmin/istar_notification.jsp" valid_role="org_admin"/>
+	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin"/>
+<!-- 	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
+ -->
 
 </menu>

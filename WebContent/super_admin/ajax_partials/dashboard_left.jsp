@@ -1,11 +1,11 @@
+<%@page import="in.talentify.core.services.NotificationColor"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
 <%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.viksitpro.core.dao.entities.Slide"%>
-<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page
@@ -71,7 +71,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 							<ul class="list-unstyled m-t-md">
 								<li><label>Batch: </label> <%=item.get("batchname")%></li>
-								<li><label>CLassroom: </label> <%=item.get("classroom_identifier")%></li>
+								<li><label>Classroom: </label> <%=item.get("classroom_identifier")%></li>
 								<li><label>Trainer: </label> <%=item.get("trainername")%></li>
 							</ul>
 
@@ -133,7 +133,8 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 																	<ul
 																		class="sortable-list connectList agile-list ui-sortable full-height-scroll"
 																		id="todo">
-																		<%
+																		<li class="info-element">No Logs Found</li>
+																		<%-- <%
 																			Date slide_start;
 																						for (HashMap<String, Object> log : logs) {
 																							SlideDAO slideDAO = new SlideDAO();
@@ -151,7 +152,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 																								e.printStackTrace();
 																							}
 																						}
-																		%>
+																		%> --%>
 
 																	</ul>
 																</div>
@@ -500,23 +501,35 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			<div class="panel-body">
 			<%
 									PrettyTime p = new PrettyTime();
+			                           NotificationColor col = new NotificationColor();
 									for(HashMap<String, Object> row: data)
 									{
 										String title =row.get("title").toString();
-										String id = row.get("id").toString();
-										String time =p.format((Timestamp)row.get("created_at"));
-										%>
-										<div class="alert alert-danger" id ="notice_<%=id%>">
-										<%=title %>
-										<%if(row.get("details")!=null){ %>
-										<p><%=row.get("details").toString() %></p>
-										<%}
-										if(row.get("first_name")!=null && !row.get("first_name").toString().equalsIgnoreCase("NA"))
-										{											
-											%>
-											<p><span class="label label-danger"><%=row.get("first_name").toString() %> (<%=time%>)</span></p>
-											<% 
+										int id = (int)row.get("id"); 
+										String time =p.format((Date)row.get("created_at"));
+										String details = "";
+										int sender_id = (int) row.get("sender_id");
+										if(row.get("details")!=null){
+										
+										details = row.get("details").toString();
+										String getdetails[] = details.split(";");		
+										details = getdetails[0];
 										}
+										String colorLabel =	col.getColor(row.get("type").toString());
+										%>
+										<div class="alert alert-<%=colorLabel %>" id ="notice_<%=id %>">
+										<div class="ibox-tools pull-right">
+
+											<a id="<%=id %>" class="close-link notification_read"> <i class="fa fa-times"></i>
+											</a>
+										</div>
+										<%=title %>
+										
+									<% 	
+									IstarUser sender = new IstarUserDAO().findById(sender_id);					
+									%>
+									<p><span class="label label-<%=colorLabel%>">Sender : <%=sender.getEmail() %> (<%=time%>)</span></p>	
+									<% 
 										%>
 									</div>
 										

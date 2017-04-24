@@ -1,6 +1,4 @@
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
-<%@page import="com.viksitpro.core.dao.entities.Slide"%>
-<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.sql.Date"%>
 <%@page
 	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
@@ -51,7 +49,7 @@
 
 						<ul class="list-unstyled m-t-md">
 							<li><label>Batch: </label> <%=item.get("batchname")%></li>
-							<li><label>CLassroom: </label> <%=item.get("classroom_identifier")%></li>
+							<li><label>Classroom: </label> <%=item.get("classroom_identifier")%></li>
 							<li><label>Trainer: </label> <%=item.get("trainername")%></li>
 						</ul>
 					</div>
@@ -110,7 +108,9 @@
 																<ul
 																	class="sortable-list connectList agile-list ui-sortable full-height-scroll"
 																	id="todo">
-																	<%
+																	
+																	<li class="info-element">No Logs Found</li>
+																	<%-- <%
 																		Date slide_start;
 																				for (HashMap<String, Object> log : logs) {
 																					SlideDAO slideDAO = new SlideDAO();
@@ -137,7 +137,7 @@
 																					}
 																				}
 																	%>
-
+ --%>
 																</ul>
 															</div>
 															<%

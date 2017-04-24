@@ -2,12 +2,72 @@
 <%
 	OpsReportSevices opsReport = new OpsReportSevices();
 %>
-<jsp:include page="inc/head.jsp"></jsp:include>
 
 <body class="top-navigation" id="super_admin_ops_report">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<div class="row p-xl">
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose College</label>
+						<div>
+							<select data-placeholder="select College" tabindex="4" class="report_college"
+								id='report_college'>
+								<%=opsReport.getOrganization()%>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose Section</label>
+						<div>
+							<select data-placeholder="select Section" tabindex="4" class="report_batch"
+								id='report_batch'>
+
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<div class="form-group">
+						<label class="font-bold">Choose Assessment</label>
+						<div>
+							<select data-placeholder="select Assessment" tabindex="4" data-url='../ops_report_partial/student_assessment_report.jsp' class="report_assessment"
+								id='report_assessment'>
+							</select>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+			
+				<div class="ops_report_holder" id="ops_report_holder_result1"></div>
+
+		</div>
+	</div>
+
+
+	
+</body>
+
+</html>
+
+
+
+
+<%-- <%@page import="in.superadmin.ops.service.OpsReportSevices"%>
+<%
+	OpsReportSevices opsReport = new OpsReportSevices();
+%>
+
+<body class="top-navigation" id="super_admin_ops_report">
+	<div id="wrapper">
+		<div id="page-wrapper" class="gray-bg">
 			<div class="row p-xl">
 				<div class="col-lg-4">
 					<div class="form-group">
@@ -189,3 +249,4 @@
 </body>
 
 </html>
+ --%>

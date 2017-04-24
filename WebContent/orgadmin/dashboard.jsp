@@ -94,7 +94,7 @@
 
 											<ul class="list-unstyled m-t-md">
 												<li><label>Batch: </label> <%=item.get("batchname")%></li>
-												<li><label>CLassroom: </label> <%=item.get("classroom_identifier")%></li>
+												<li><label>Classroom: </label> <%=item.get("classroom_identifier")%></li>
 												<li><label>Trainer: </label> <%=item.get("trainername")%></li>
 											</ul>
 

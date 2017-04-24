@@ -77,11 +77,11 @@
 			%>
 
 
-<div class="modal-header">
+<div class="modal-header custom-theme-panal-color">
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title">Modify Events details</h4>
+	<h4 class="modal-title" style="color: white!important;">Modify Events details</h4>
 
 </div>
 <div class="modal-body">
@@ -159,8 +159,8 @@
 
 
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-danger delete-event" id="<%=evntid%>" data-dismiss="modal">Delete Event</button>
-	<button type="button" data-form="idForm4" class="btn btn-primary edit-submit-btn">Save changes</button>
+<div class="modal-footer custom-theme-panal-color">
+    <button type="button" class="btn btn-white custom-theme-btn-primary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-danger custom-theme-btn-primary delete-event" id="<%=evntid%>" data-dismiss="modal">Delete Event</button>
+	<button type="button" data-form="idForm4" class="btn btn-primary custom-theme-btn-primary edit-submit-btn">Save changes</button>
 </div>

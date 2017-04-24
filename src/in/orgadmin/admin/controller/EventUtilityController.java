@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.utilities.DBUTILS;
+
 import in.orgadmin.admin.services.AssessmentSchedulerService;
 import in.orgadmin.admin.services.EventSchedulerService;
 import in.talentify.core.utils.UIUtils;
@@ -39,6 +41,16 @@ public class EventUtilityController extends HttpServlet {
 		String editEventId = null;
 		String eventDateTime = null;
 
+		if (request.getParameterMap().containsKey("type")
+				&& request.getParameter("type").equalsIgnoreCase("markasread")) {
+			int notificationEventID = Integer.parseInt(request.getParameter("notificationEventID"));
+			DBUTILS db = new DBUTILS();
+			String markAsRead ="update istar_notification set status='READ' where id = "+notificationEventID;
+			db.executeUpdate(markAsRead);
+			
+		}
+		
+		
 		if (request.getParameterMap().containsKey("type")
 				&& request.getParameter("type").equalsIgnoreCase("userOrgfilter")) {
 			UIUtils uiUtils = new UIUtils();

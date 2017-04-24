@@ -6,6 +6,7 @@
  *
  * Built for http://www.improvely.com
  */
+@import url('https://fonts.googleapis.com/css?family=Lato');
 
  .daterangepicker.dropdown-menu {
   max-width: none;
@@ -54,7 +55,7 @@
 }
 
 .daterangepicker .calendar th, .daterangepicker .calendar td {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+ font-family: 'Lato', sans-serif;
   white-space: nowrap;
   text-align: center;
   min-width: 32px;

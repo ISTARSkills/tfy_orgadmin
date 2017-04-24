@@ -75,16 +75,15 @@ public class EventSchedulerService {
 				+ " 		) RETURNING ID ),  ins2 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		ID, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, 		associate_trainee, 		batch_group_code 	) 	VALUES 		( 			"
 				+ trainerID + ", 			now(), 			" + AdminUserID + ", 			'" + eventDate
 				+ "', 			" + hours + ", 			" + minute
-				+ ", 			't', 			'BATCH_SCHEDULE_EVENT_TRAINER', 			'2017-03-28 00:55:13.671873', 			( 				SELECT 					COALESCE (MAX(ID) + 1, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'"
+				+ ", 			't', 			'BATCH_SCHEDULE_EVENT_TRAINER', 			now(), 			( 				SELECT 					COALESCE (MAX(ID) + 1, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'"
 				+ action + "', 			" + cmsessionID + ", 			" + batchID + ", 			'" + evnetName
 				+ "', 			" + classroomID + ", 			'" + associateTrainerID
 				+ "', 			NULL 		) RETURNING ID ),  ins3 AS ( 	INSERT INTO batch_schedule_event ( 		actor_id, 		created_at, 		creator_id, 		eventdate, 		eventhour, 		eventminute, 		isactive, 		TYPE, 		updated_at, 		ID, 		status, 		ACTION, 		cmsession_id, 		batch_id, 		event_name, 		classroom_id, 		associate_trainee, 		batch_group_code 	) 	VALUES 		( 			( 				SELECT 					presentor_id 				FROM 					trainer_presentor 				WHERE 					trainer_id = "
 				+ trainerID + " 			), 			now(), 			" + AdminUserID + ", 			'" + eventDate
 				+ "', 			" + hours + ", 			" + minute
-				+ ", 			't', 			'BATCH_SCHEDULE_EVENT_PRESENTOR', 			'2017-03-28 00:55:13.671873', 			( 				SELECT 					COALESCE (MAX(ID) + 2, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'"
+				+ ", 			't', 			'BATCH_SCHEDULE_EVENT_PRESENTOR', 			now(), 			( 				SELECT 					COALESCE (MAX(ID) + 2, 1) 				FROM 					batch_schedule_event 			), 			'SCHEDULED', 			'"
 				+ action + "', 			" + cmsessionID + ", 			" + batchID + ", 			'" + evnetName
-				+ "', 			" + classroomID + ", 			'" + associateTrainerID
-				+ "', 			NULL 		) RETURNING ID ),  ins4 AS ( 	INSERT INTO event_queue_event_mapping ( 		ID, 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID) + 1, 1) 			FROM 				event_queue_event_mapping 		), 		ins1. ID, 		'Trainer Event: "
+				+ "', 			" + classroomID + ", 			'0', 			NULL 		) RETURNING ID ),  ins4 AS ( 	INSERT INTO event_queue_event_mapping ( 		ID, 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID) + 1, 1) 			FROM 				event_queue_event_mapping 		), 		ins1. ID, 		'Trainer Event: "
 				+ evnetName + "', 		" + trainerID
 				+ ", 		ins2. ID, 		now(), 		now() 	FROM 		ins2, 		ins1 ),  ins5 AS ( 	INSERT INTO event_queue_event_mapping ( 		ID, 		event_queue_id, 		event_for, 		user_id, 		event_id, 		created_at, 		updated_at 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID) + 2, 1) 			FROM 				event_queue_event_mapping 		), 		ins1. ID, 		'Presenter Event: "
 				+ evnetName

@@ -1,3 +1,4 @@
+<%@page import="in.talentify.core.utils.ColourCodeUitls"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.*"%>
@@ -76,7 +77,8 @@
 
 								</div>
 								<div class="col-lg-9 no-padding bg-muted">
-									<div class="ibox no-padding no-margins bg-muted p-xs">
+									<div class="ibox no-padding no-margins bg-muted p-xs" style="padding-top: 5px;">
+										<%=new ColourCodeUitls().getColourCode() %>
 										<div class="ibox-content">
 											<%
 											CalenderUtils  calUtil = new CalenderUtils();

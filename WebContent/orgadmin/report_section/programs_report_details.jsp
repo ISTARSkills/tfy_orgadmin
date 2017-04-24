@@ -197,6 +197,8 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 					</div>
 				</div>
 				<div class="col-lg-5">
+				<div class="ibox white-bg" style="padding-top: 5px;">
+				<%=new ColourCodeUitls().getColourCodeForReports() %>
 					<div class="ibox-content">
 						<%
 						CalenderUtils  calUtil = new CalenderUtils();
@@ -212,7 +214,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 						}
 						%>
 						<%=calUtil.getCalender(input_params).toString()%>
-					</div>
+					</div></div>
 				</div>
 
 			</div>

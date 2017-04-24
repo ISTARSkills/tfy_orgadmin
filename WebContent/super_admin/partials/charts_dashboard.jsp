@@ -1,3 +1,4 @@
+<%@page import="in.talentify.core.utils.ColourCodeUitls"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -21,6 +22,8 @@
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
+		<div class="ibox white-bg" style="padding-top: 5px;"">
+			<%=new ColourCodeUitls().getColourCode() %>
 			<div class="ibox">
 				<div class="ibox-content">
 					<%
@@ -30,7 +33,7 @@
 					%>
 					<%=calUtil.getCalender(input_params).toString()%>
 				</div>
-			</div>
+			</div></div>
 		</div>
 	</div>
 </div>

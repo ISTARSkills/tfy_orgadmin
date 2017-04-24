@@ -23,24 +23,25 @@
 				class="navbar-toggle collapsed" type="button">
 				<i class="fa fa-reorder"></i>
 			</button>
-			<a href="/super_admin/dashboard.jsp" class="navbar-brand">Talentify</a>
+			<a href="/super_admin/dashboard.jsp" class="navbar-brand custom-theme-color">Talentify</a>
 		</div>
 		<div class="navbar-collapse collapse" id="navbar">
 			<ul class="nav navbar-nav">
 				<%
 					for (ParentLink link : (new UIUtils()).getMenuLinks(userRole.toLowerCase())) {
 						if (link.isIs_visible_in_menu()) {
+							int nav_link_id =0;
 							if (link.getDisplayName().equalsIgnoreCase("Placement") && userRole.equalsIgnoreCase("ORG_ADMIN")) {
 								Organization admin =new Organization();
 								if (admin.getIsCompany() != null && !admin.getIsCompany()) {
 				%>
-				<li><a href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+				<li><a id ="<%=link.getDisplayName().replace(" ","")%>" class="top_navbar_holder" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					}
 
 							} else {
 				%>
-				<li><a href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+				<li><a id ="<%=link.getDisplayName().replace(" ","")%>" class="top_navbar_holder" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					}
 				%>

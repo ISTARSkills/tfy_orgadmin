@@ -8,6 +8,18 @@ import com.viksitpro.core.utilities.DBUTILS;
 public class OpsReportSevices {
 
 	DBUTILS dbutils = new DBUTILS();
+	
+	public int getTotalNoOfQuestions(int assessmentId) {
+		
+		int totQuestion =0;
+		String sql = "SELECT number_of_questions FROM assessment WHERE id = "+assessmentId;
+		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
+		if(data.size() > 0){
+		totQuestion =(int) data.get(0).get("number_of_questions");
+		}
+		return totQuestion;
+		
+	}
 
 	public StringBuffer getStudentReportDetailsForTable(int assessmentId, int batchId) {
 		String sql = "SELECT 	TFINAL.user_id AS student_id, 	TFINAL.first_name AS student_name, 	TFINAL.score AS score, 	TFINAL.percentage AS percentage, 	( 		CASE 		WHEN TFINAL.percentage LIKE 'Absent' THEN 			'Absent' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 75 			AND CAST (TFINAL.percentage AS INTEGER) <= 100 		) THEN 			'A+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 60 			AND CAST (TFINAL.percentage AS INTEGER) < 75 		) THEN 			'A' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) >= 40 			AND CAST (TFINAL.percentage AS INTEGER) < 60 		) THEN 			'B+' 		WHEN ( 			CAST (TFINAL.percentage AS INTEGER) < 40 		) THEN 			'B' 		END 	) AS grade FROM 	( 		SELECT DISTINCT 			user_profile.user_id, 			user_profile.first_name, 			( 				CASE 				WHEN report.score IS NOT NULL THEN 					CAST (report.score AS VARCHAR) 				ELSE 					'Absent' 				END 			) AS score, 			CAST ( 				( 					CASE 					WHEN report.score IS NULL THEN 						'Absent' 					ELSE 						CAST ( 							(report.score * 100) / ( 								SELECT 									COUNT (DISTINCT questionid) 								FROM 									assessment_question 								WHERE 									assessmentid = "
@@ -43,7 +55,7 @@ public class OpsReportSevices {
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
-		out.append("<table id='datatable1' class='table table-bordered'>" + "<thead> <tr><th>Marks Scored</th>"
+		out.append("<table id='student_score_graph_table' class='table table-bordered'>" + "<thead> <tr><th>Marks Scored</th>"
 				+ " <th>Category</th>" + "<th>No of Student</th></tr></thead><tbody> ");
 
 		for (HashMap<String, Object> item : data) {
@@ -78,7 +90,7 @@ public class OpsReportSevices {
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 
-		out.append("<table  id='datatable2' class='table table-bordered'>" + "<thead> <tr><th>Marks Scored</th>"
+		out.append("<table  id='student_precentage_graph_datatable' class='table table-bordered'>" + "<thead> <tr><th>Marks Scored</th>"
 				+ " <th>Category</th>" + "<th>No of Student</th></tr></thead><tbody> ");
 
 		for (HashMap<String, Object> item : data) {

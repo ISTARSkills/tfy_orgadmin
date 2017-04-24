@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
 body.stop-scrolling {
   height: 100%;
   overflow: hidden; }
@@ -18,7 +20,7 @@ body.stop-scrolling {
 
 .sweet-alert {
   background-color: white;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Lato', sans-serif;
   width: 478px;
   padding: 17px;
   border-radius: 5px;

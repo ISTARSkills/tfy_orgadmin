@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.utilities.DBUTILS;
 
+import in.talentify.core.services.CalenderColorCodes;
+
 /**
  * Servlet implementation class GetEventsController
  */
@@ -87,14 +89,15 @@ public class GetEventsController extends HttpServlet {
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object>> data = util.executeQuery(getEvent);
 		HashMap<String, String> statusColor = new HashMap<>();
-		statusColor.put("ASSESSMENT","#fbc02d");
-		statusColor.put("SCHEDULED","#A9CCE3");
-		statusColor.put("STARTED","#C0392B");
-		statusColor.put("TEACHING","#58D68D");		
-		statusColor.put("ATTENDANCE","#F7DC6F");
-		statusColor.put("FEEDBACK","#DC7633");
-		statusColor.put("COMPLETED","#626567");
-		statusColor.put("REACHED","#FF00FF");
+		statusColor.put("ASSESSMENT",CalenderColorCodes.ASSESSMENT);
+		statusColor.put("SCHEDULED",CalenderColorCodes.SCHEDULED);
+		statusColor.put("STARTED",CalenderColorCodes.STARTED);
+		statusColor.put("TEACHING",CalenderColorCodes.TEACHING);		
+		statusColor.put("ATTENDANCE",CalenderColorCodes.ATTENDANCE);
+		statusColor.put("FEEDBACK",CalenderColorCodes.FEEDBACK);
+		statusColor.put("COMPLETED",CalenderColorCodes.COMPLETED);
+		statusColor.put("REACHED",CalenderColorCodes.REACHED);
+		statusColor.put("NOT_PUBLISHED",CalenderColorCodes.NOT_PUBLISHED);
 		
 		
 

@@ -10,58 +10,95 @@ function readyFn(jQuery) {
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
 	
+	$('.top_navbar_holder').css('color',' #676a6c');
+	
+
 	switch (body_id) {
 	case 'orgadmin_dashboard':
 		init_orgadmin_dashboard();
+		$('#Dashboard').css('color','  #eb384f');
 		initChat();
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
+		$('#Admin').css('color','  #eb384f');
 		break;
 	case 'orgadmin_scheduler':
 		init_orgadmin_scheduler();
+		$('#Scheduler').css('color','  #eb384f');
 		break;
 		
 	case 'orgadmin_report':
 		init_orgadmin_report();
+		$('#Reports').css('color','  #eb384f');
 		break;
 	
 	case 'orgadmin_report_detail':
 		init_orgadmin_report_detail();
+		$('#Reports').css('color','  #eb384f');
 		break;
 	case 'superadmin_dashboard':
 		init_super_admin_dashboard();
 		initChat();
+		$('#Dashboard').css('color','  #eb384f');
 		break;
 	case 'super_admin_account_managment':
 		init_super_admin_account_mgmt();
+		$('#AccountManagement').css('color','  #eb384f');
 		break;
 	case 'super_admin_user_managment':
 		init_super_admin_usermgmt();
+		$('#UserManagement').css('color',' #eb384f');
 		break;
 	case 'super_admin_scheduler':
 		init_super_admin_scheduler();
+		$('#Scheduler').css('color','  #eb384f');
 		break;	
 	case 'super_admin_analytics':
 		init_super_admin_analytics();
+		$('#Analytics').css('color','  #eb384f');
 		break;
 
 	case 'super_admin_comp_prof':
 		init_super_admin_comp_prof();
+		//$('#Dashboard').css('color',' #1ab394');
 		break;
 	case 'super_admin_placemenet':
 		init_super_admin_placemenet();
+	//	$('#Dashboard').css('color',' #1ab394');
 		break;
-
+	case 'super_admin_classroom':
+		init_superadmin_class_room();
+		initChat();
+		$('#Classrooms').css('color','  #eb384f');
+		break;
+	case 'super_admin_report':
+		init_super_admin_report();
+		initChat();
+		$('#Reports').css('color','  #eb384f');
+		break;
+	case 'istar_notification':
+		init_istar_notification();
+		initChat();
+		$('#Notification').css('color',' #eb384f');
+		break;
+	case 'super_admin_tickets':	
+		initChat();
+		initTicket();
+		$('#Tickets').css('color',' #eb384f');
+	case 'org_admin_tickets':	
+		initChat();
+		initTicket();
+		$('#Tickets').css('color','  #eb384f');
 	default:
 		init_orgadmin_none();
 	}
 	
 	createCalender();
-	
+	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	
-	$.contextMenu({
+/*	$.contextMenu({
         selector: '.fc-event', 
         callback: function(key, options) {
             var m = "clicked: " + key;           
@@ -121,7 +158,9 @@ function readyFn(jQuery) {
                       
           }
         }
-    });
+    });*/
+	
+
 
 	
 }
@@ -575,7 +614,86 @@ function init_session_logs(){
 	});
 }
 
+function init_edit_delete_event(eventID,status){
+	
+	var eventid = eventID;
+	var status = status;
+	$('.key').on('click', function() {
+		var key = $(this).attr('id');
+	if(key === 'delete'){
+			
+        console.log('----------status------->'+$(this).data('status'));
+		
+		 
+		
+		$.post(
+   				"../event_utility_controller", 
+   				{deleteEventid : eventid,status:$(this).data('status')}, 
+   				function(data) {location.reload();})
+	}
+	else if(key === 'edit'){
+		
+		var org_id = $('#org_id').val();
+		var url;
+		
+		if(org_id != undefined && org_id != null){
+			
+			url= "../orgadmin/edit_old_event.jsp";
+			
+		}else{
+			
+			url= "../super_admin/edit_old_event.jsp";
+		}
+		
+		
+		$.post(url, 
+				{eventid : eventid}, 
+				function(data) {
+					
+					       $('.event-edit-modal').empty();
+								$('.event-edit-modal').append(data);
+								 $('#myModal2').modal('show');
+								 $('.select2-dropdown').select2();
+								 scheduler_onShowOfModal();
+							});
+	}
+	
+	});
+	
+}
+function event_details_card() {
+$('.fc-event').on('click', function() {
+	var status = $(this).data('status');
+	var eventid =$(this).attr('event_id');
+	  console.log('----------event_id------->'+$(this).attr('event_id'));
+		
+	  var org_id = $('#org_id').val();
+			var url;
+			
+			if(org_id != undefined && org_id != null){
+				
+				url= "../orgadmin/event_details.jsp";
+				
+			}else{
+				
+				url= "../super_admin/event_details.jsp";
+			}
+			
+			
+			$.post(url, 
+					{eventid : eventid,status :status}, 
+					function(data) {
+						
+						       $('.event_details').empty();
+									$('.event_details').append(data);
+									 $('#event_details').modal('show');
+									 init_edit_delete_event(eventid,status);
+								});
+			
+	
+});
 
+}
 
 
 function loadTables(){
@@ -643,7 +761,27 @@ function init_orgadmin_none() {
 	
 }
 
+function mark_as_read_notification(){
+	 $(".notification_read").click(function(){
+	//$('.notification_read').unbind().on("click", function() {
+       var notificationEventID = $(this).attr('id');
+       var parentID = $('#'+notificationEventID).parent().parent().attr('id');;
+      
+		var url = '../event_utility_controller'
+		    $.post(url, {
+		    	notificationEventID : notificationEventID,
+		    	type : "markasread"
+		        },
+		        function(data) {
+		        	//location.reload();	
+		        	
+		        	$("#"+parentID ).remove();
 
+	
+		        });
+	});
+	
+}
 
 function init_orgadmin_dashboard() {
     console.log('intiliazing Dashboard');
@@ -653,6 +791,7 @@ function init_orgadmin_dashboard() {
     create_course_view_datatable(true);
     create_program_view_datatable(true);
     scheduler_createOldEvent();
+    mark_as_read_notification();
 }
 
 function init_orgadmin_admin() {
@@ -2221,24 +2360,52 @@ function init_super_admin_dashboard(){
 
 		});
 	
-	$('.activeaccount').click(function() {
-		var id=$(this).data('id');
-		var url='/super_admin/ajax_partials/dashboard_left.jsp?colegeID='+id;
-		$.get(url, function( data ) {
-			  $(".result").html(data);
-			  $('#dashboard_left_holder').remove();
-			  $('#dashboard_holder').prepend(data);					      				    
-			});	
-		
-		/* Calendar FUnctionality*/
-		
-		$("#dashoboard_cal").fullCalendar('destroy');
-		$('#dashoboard_cal').data('url','/get_events_controller?org_id='+id);
-		console.log($('#dashoboard_cal').data('url'));
-		createCalender();
-				
-	});
+	 $('.activeaccount').click(function() {
+			var id=$(this).data('id');
+			if(id==-3){
+				window.location.reload();
+			}else{
+			var url='/super_admin/ajax_partials/dashboard_left.jsp?colegeID='+id;
+			$.get(url, function( data ) {
+				 
+				  $('#dashboard_left_holder').remove();
+				  $('#dashboard_holder').prepend(data);				      				    
+				});	
+			
+			/* Calendar FUnctionality*/
+			
+			$("#dashoboard_cal").fullCalendar('destroy');
+			$('#dashoboard_cal').data('url','/get_events_controller?org_id='+id);
+			console.log($('#dashoboard_cal').data('url'));
+			createCalender();
+			//mark_as_read_notification();
+		}
+			//mark_as_read_notification();			
+		});
+	
+// load js via ajax 
+	 mark_as_read_notification();
+	 
 }
+
+function update_dashboard_left() {
+	 /*$.get("response.php", function(data) {
+	   $("#some_div").html(data);
+	   window.setTimeout(update, 10000);
+	 });*/
+	
+	$.ajax({
+	 url: "/super_admin/ajax_partials/dashboard_left.jsp",
+	 cache: false
+	})
+	 .done(function( html ) {
+	 $('#loader_left').hide();
+	 $( "#dashboard_left_holder" ).empty();
+	   $( "#dashboard_left_holder" ).append( html );
+	   window.setTimeout(update_dashboard_left, 60000);
+	   init_orgadmin_dashboard();
+	 });
+	}
 
 function init_super_admin_account_mgmt(){
 	$('.scroll_content').slimscroll({
@@ -2255,7 +2422,7 @@ function init_super_admin_account_mgmt(){
 	            'active');
 	        var firstChar = $(this).data(
 	            'char')
-
+if(firstChar!='add'){
 	        var url = '/super_admin/ajax_partials/college_cards.jsp?firstLetter=' +
 	            firstChar;
 	        $.get(url, function(data) {
@@ -2265,19 +2432,117 @@ function init_super_admin_account_mgmt(){
 
 	            accountmanagment_card_init();
 	        });
+}else if(firstChar=='add'){
+	init_create_edit_organization(false,0);
+}
+
 
 	    });
 	accountmanagment_card_init();
 }
 
+function init_create_edit_organization(flag,org){ 
+	var url="";
+if(flag){	
+	url='./partials/modal/create_edit_org_modal.jsp?type=Edit&org_id='+org;
+}
+else{
+	url='./partials/modal/create_edit_org_modal.jsp?type=Create';
+}
+
+	$.get(url, function(data) {
+     
+		$('#edit_org_model').remove();
+		$('body').append(data);	        			
+		
+		$('#edit_org_model').on("shown.bs.modal",function(e){
+			var baseURL = $(".js-data-example-ajax").data("pin_uri");
+			var urlPin = baseURL + "PinCodeController";
+
+			$(".js-data-example-ajax").select2({
+				ajax : {
+					url : urlPin,
+					dataType : 'json',
+					delay : 250,
+					data : function(params) {
+						return {
+							q : params.term, // search term
+							page : params.page
+						};
+					},
+					processResults : function(data, params) {
+						params.page = params.page || 1;
+						return {
+							results : data.items,
+							pagination : {
+								more : (params.page * 30) < data.total_count
+							}
+						};
+					},
+					cache : true
+				},
+				escapeMarkup : function(markup) {
+					return markup;
+				}, 
+				minimumInputLength : 1,
+				templateResult : formatRepo,
+				templateSelection : formatRepoSelection
+			});
+		});	        			
+
+		$('#org_profile').unbind().on("keyup",function (){
+			
+			$('input[name=org_profile]').val($(this).val());
+		});
+
+		$('#org_modal_submit').unbind().on("click",function (e){
+			    				
+				var checkData =function(){
+						
+					$('#edit_org_model_form').find(':input,select').each(function(){
+						var inputs = $(this); 
+						var inputsname = $(this).attr('name');
+						console.log('--'+$(this).attr('name')+'---->'+inputs.val());
+						
+						 if (inputsname != undefined && $(inputs).attr('type')!='submit' && $(inputs).attr('name')!='org_profile' && inputs.val() == '') {
+							 flag = false;
+							 return flag;
+						 }else{
+							 flag = true; 
+						 }
+						});
+						return flag;
+				}
+			
+			if(checkData()){
+				
+			var url='../create_or_update_organization';
+			 $.post(url, $('#edit_org_model_form').serialize().toString(),
+					 function(data) {
+				 if(data=="success"){
+					 toastr.success('SuccessFully '+$('#org_modal_submit').html()+'d');
+					 $('#edit_org_model').modal('hide');
+				 }else{
+					 toastr.error('Please Provide Proper Information');
+				 }
+		        });
+		}else{
+			toastr.error('Please Fill required Fileds!');
+		}
+		});
+		
+		$('#edit_org_model').modal('show');
+    });
+	
+}
 
 function accountmanagment_card_init() {
     $('.clickablecards').unbind().on("click",function() {
             $('.clickablecards').each(function() {
-                $(this).removeClass('lazur-bg');
+                $(this).removeClass('college-bg');
 
             });
-            $(this).addClass('lazur-bg');
+            $(this).addClass('college-bg');
             $('#modal-title').html($(this).find('h3').text());
             $("#account_managment_iframe").attr("src",
                 $(this).data('url'));
@@ -2288,6 +2553,11 @@ function accountmanagment_card_init() {
         $(this).slimscroll({
             height: $(this).parent().height()
         });
+    });
+    
+    $('.edit_organization').unbind().on("click",function(e){
+    	var orgId=$(this).data('org');	
+    	init_create_edit_organization(true,orgId);
     });
 }
 
@@ -3146,3 +3416,498 @@ function company_profile() {
 	 
 }
 
+function init_istar_notification(){
+	
+	
+	
+	$('#notification_type_holder').on("change", function() {
+		
+		if($(this).val() === 'playPresentation' ){
+			
+			$('#play_presentation_holder').show();
+			$('#play_assessment_holder').hide();
+			
+		}else if($(this).val() === 'playAssessment' ){
+			$('#play_presentation_holder').hide();
+			$('#play_assessment_holder').show();
+			
+			
+		}else{
+			$('#play_presentation_holder').hide();
+			$('#play_assessment_holder').hide();
+		}
+		
+	});
+
+	$('#notification_college_holder').on("change", function() {
+		var orgId = $(this).val();
+		var type = 'org';
+		$.ajax({
+			type : "POST",
+			url : '../get_notification',
+			data : {
+				orgId : orgId,
+				type : type
+			},
+			success : function(data) {
+				$('#notification_batchgroup_holder').html(data);
+			}
+		});
+	});
+
+	$('#notification_batchgroup_holder').unbind().on("change", function() {
+		var batchGroup = $(this).val();
+		var type = 'batchGroup';
+
+		if (batchGroup != 'null') {
+			$.ajax({
+				type : "POST",
+				url : '../get_notification',
+				data : {
+					type : type,
+					batchGroup : batchGroup
+				},
+				success : function(data) {
+					$('#notification_batchgroup_holder').select2();
+					$('#student_holder').html($(data)[1]);			
+					$('#notification_course_holder').html($(data)[0]);
+					$('#course_holder').select2();
+					init_checkAllStudent();
+					init_courseFilter();
+
+
+				}
+			});
+		}
+	});
+	
+	function init_courseFilter() {
+	$('#course_holder').on("change", function() {
+		var course = $(this).val();
+		var type = 'course';
+
+		if (course != 'null') {
+			$.ajax({
+				type : "POST",
+				url : '../get_notification',
+				data : {
+					type : type,
+					course : course
+				},
+				success : function(data) {
+					$('#notification_cmsession_holder').html(data);
+					init_cmsessionFilter();
+
+				}
+			});
+		}
+	});
+	}
+	
+	function init_cmsessionFilter() {
+		$('#notification_cmsession_holder').on("change", function() {
+			var cmsession = $(this).val();
+			var type = 'cmsession';
+
+			if (cmsession != 'null') {
+				$.ajax({
+					type : "POST",
+					url : '../get_notification',
+					data : {
+						type : type,
+						cmsession : cmsession
+					},
+					success : function(data) {
+						
+						$('#notification_ppt_holder').html(data);
+
+					}
+				});
+			}
+		});
+		}
+	
+	
+	function init_checkAllStudent() {
+
+		$("#checkAll").change(function(){
+		        if($(this).is(":checked")) {
+		          
+		            $('.student_checkbox_holder').prop('checked', true);
+
+		        } else {
+		        	 $('.student_checkbox_holder').prop('checked', false);
+		        }
+		        
+		    });
+		
+	}
+	
+	$( "#send_notification" ).click(function() {
+		var flag = false;
+		var type = $('#notification_type_holder').val();
+		var title = $('#title').val();
+		var comment = $('#comment').val();
+		var courseID = $('#course_holder').val();
+		var batchGroupID = $('#notification_batchgroup_holder').val();
+		var collegeID = $('#notification_college_holder').val();
+		var cmsessionID = $('#notification_cmsession_holder').val();
+		var pptID = $('#notification_ppt_holder option:selected').data('ppt');
+		var lessonID =  $('#notification_ppt_holder').val();
+		var assessmentID = $('#notification_assessment_holder').val();
+		var adminID = $('#adminID').val();
+		
+		var studentlistID=[];
+		
+		$('input:checkbox.student_checkbox_holder').each(function () {	
+			if($(this).is(":checked")){
+				studentlistID.push(this.checked ? $(this).val() : ""); 	
+			}
+		  });
+		
+		console.log(title+","+comment+","+courseID+","+batchGroupID+","+collegeID+","+cmsessionID+","+pptID+","+","+studentlistID);
+		
+	if(studentlistID.length > 0){
+		
+		if(type === 'playAssessment'){
+			
+			if(assessmentID != 'null'){
+				flag = true;
+			}else{
+				flag = false;
+				alert('Select ppt');
+			}
+		}
+		else if(type === 'playPresentation'){
+			
+			if(courseID != 'null' && cmsessionID != 'null' && lessonID!= 'null'){
+				flag = true;
+			}else{
+				flag = false;
+				alert('Select course session ppt');
+			}
+			
+		}
+		else if(type === 'complexObjectUpdate'){
+			
+			flag = true;
+			
+		}
+		else if(type === 'coUpdateWithMessage'){
+			
+			flag = true;
+			
+		}
+		else{
+			
+			flag = false;
+			alert('Select Notification Type');
+		}
+		
+	
+		
+		
+	}else{
+		
+		flag = false;
+		alert('Select Student');
+	}
+		
+	if(flag == true){
+		$('#spinner_holder').show();
+		
+		$.ajax({
+			type : "POST",
+			url : '../get_notification',
+			data : {
+				type : type,
+				title : title,
+				comment : comment,
+				courseID : courseID,
+				batchGroupID : batchGroupID,
+				collegeID : collegeID,
+				cmsessionID : cmsessionID,
+				lessonID:lessonID,
+				pptID:pptID,
+				adminID:adminID,
+				assessmentID:assessmentID,
+				studentlistID : studentlistID.toString()
+				},
+			success : function(data) {
+				$('#spinner_holder').hide();
+			   location.reload();
+
+			}
+		});
+		
+	}
+		
+	});
+
+	
+}
+
+function init_opsReport2(){
+	
+	$('.ops_report_data_table').each(
+			function(e) {
+
+				var question_id = $(this).data('question');
+
+				var table = 'ops_report_' + question_id;
+
+				Highcharts.chart('container_' + question_id, {
+					data : {
+						table : table
+					},
+					chart : {
+						type : 'column'
+					},
+					title : {
+						text : 'NO of Students'
+					},
+					yAxis : {
+						allowDecimals : false,
+						title : {
+							text : 'student'
+						}
+					},
+					plotOptions : {
+						series : {
+							borderWidth : 0,
+							dataLabels : {
+								enabled : true,
+								format : '{point.y}'
+							}
+						}
+					},
+					tooltip : {
+						formatter : function() {
+							return this.point.y + ' ' + this.point.name
+									+ ' <b>' + this.series.name
+									+ '</b> this question<br/>';
+						}
+					}, colors: ['#1ab394','#f8ac59', '#8f938f']
+				});
+
+			});
+}
+
+function init_opsReport(){
+
+	
+	Highcharts.chart('student_score_graph_container',
+			{
+				data : {
+					table : 'student_score_graph_table'
+				},
+				chart : {
+					type : 'column'
+				},
+				title : {
+					text : 'Student Score Graph'
+				},
+				yAxis : {
+					allowDecimals : false,
+					title : {
+						text : 'Units'
+					}
+				},
+				tooltip : {
+					formatter : function() {
+						return this.point.y
+								+ ' <b>'
+								+ this.series.name
+								+ '</b><br/>'
+								+ ' '
+								+ this.point.name
+										.toLowerCase();
+					}
+				}
+			});
+
+	Highcharts.chart('student_precentage_graph_container',
+			{
+				data : {
+					table : 'student_precentage_graph_datatable'
+				},
+				chart : {
+					type : 'column'
+				},
+				title : {
+					text : 'Student Percentage Graph'
+				},
+				yAxis : {
+					allowDecimals : false,
+					title : {
+						text : 'Units'
+					}
+				},
+				tooltip : {
+					formatter : function() {
+						return this.point.y
+								+ ' <b>'
+								+ this.series.name
+								+ '</b><br/>'
+								+ ' are '
+								+ this.point.name
+										.toLowerCase();
+					}
+				}
+			});
+	
+	
+}
+
+
+function init_reports_section(){
+	
+	
+	  $('.report_college').on("change", function() {
+			var orgId = $(this).val();
+			var type = 'org';
+			$.ajax({
+				type : "POST",
+				url : '/get_ops_report',
+				data : {
+					orgId : orgId,
+					type : type
+				},
+				success : function(data) {
+					$('.report_batch').html(data);
+				}
+			});
+		});
+	
+	$('.report_batch').on("change", function() {
+		var batch = $(this).val();
+		var type = 'batch';
+
+		if (batch != 'null') {
+			$.ajax({
+				type : "POST",
+				url : '/get_ops_report',
+				data : {
+					type : type,
+					batch : batch
+				},
+				success : function(data) {
+					$('.report_assessment').html(data);
+
+				}
+			});
+		}
+	});
+
+	$('.report_assessment').on("change", function() {
+		var batch = $('.report_batch').val();
+		var flag = false;
+		if(batch == 'null'){
+			flag = true;
+			batch = $('.report_batch_holder').val();
+		}
+		
+		var assessment = $(this).val();
+		var url=$(this).data('url');
+		if (assessment != 'null') {
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : {
+					assessmentId : assessment,
+					batchId : batch
+				},
+				success : function(data) {
+					
+					if(flag == false){
+						$('#ops_report_holder_result1').html(data);
+						init_opsReport();
+					}else{
+						$('#ops_report_holder_result2').html(data);
+						init_opsReport2();
+					}
+					
+				}
+			});
+		}else{
+			if(flag == false){
+				$('#ops_report_holder_result1').html("<div class='col-lg-4'></div><div class='alert alert-danger text-center col-lg-4'>Sorry No Data Found</div><div class='col-lg-4'></div>");
+				
+			}else{
+				$('#ops_report_holder_result2').html("<div class='col-lg-4'></div><div class='alert alert-danger text-center col-lg-4'>Sorry No Data Found</div><div class='col-lg-4'></div>");
+	
+			}
+			
+		}
+	});
+}
+
+function init_super_admin_report(){
+	
+	init_reports_section();
+	
+}
+
+function init_superadmin_class_room(){
+	
+	$('#class-add').on("click",function(){
+		var urls = 'partials/modal/create_edit_classroom_modal.jsp?type=Create';
+    	$.get( urls, function( data ) {
+    		  $('#edit_class_room_model').remove(); 
+    		  $("body").append(data);
+    		  init_classRoom_Modal();
+    		  $('#edit_class_room_model').modal();
+    		});
+		
+		
+		
+	});
+	
+}
+
+function init_classRoom_Modal(){
+	
+	$('#class_modal_submit').unbind().on("click",function (e){
+		var checkData =function(){
+			$('#edit_class_model_form').find(':input,select').each(function(){
+				var inputs = $(this); 
+				var inputsname = $(this).attr('name');
+				console.log('--'+$(this).attr('name')+'---->'+inputs.val());
+				
+				 if (inputsname != undefined && $(inputs).attr('type')!='submit' && inputs.val() == '') {
+					 flag = false;
+					 return flag;
+				 }else if ($(inputs).attr('name')=='class_ip' && !ValidateIPaddress(inputs.val())){
+					 flag = false;
+					 return flag;
+				 }else{
+					 flag = true; 
+				 }
+				});
+				return flag;
+		}
+	
+	if(checkData()){
+		
+	var url='../create_or_update_classroom';
+	 $.post(url, $('#edit_class_model_form').serialize().toString(),
+			 function(data) {
+		 				$('#edit_class_room_model').modal('hide');
+		 				var table=$('#classroom_list').DataTable();
+		 			  table.search('').draw();
+        });
+}else{
+	toastr.error('Please Fill required Fileds!');
+}
+});	
+	
+}
+
+function ValidateIPaddress(ipaddress)   
+{	  
+ if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))  
+  {  
+    return (true)  
+  }  
+return (false)  
+}

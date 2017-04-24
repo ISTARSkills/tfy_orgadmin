@@ -14,6 +14,10 @@
 	</div>
 	<div class="ibox-content">
 		<p>
+		
+		<button type="button" class="btn btn-w-m lazur-bg activeaccount" data-id="-3">
+				<strong>All Accounts</strong>
+			</button>
 			<%
 				for (HashMap<String, Object> item : lists) {
 			%>

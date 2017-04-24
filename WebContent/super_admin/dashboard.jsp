@@ -2,8 +2,6 @@
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
-<%@page import="com.viksitpro.core.dao.entities.Slide"%>
-<%@page import="com.viksitpro.core.dao.entities.SlideDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
@@ -37,6 +35,19 @@
 									role="dialog" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content animated flipInY event-edit-modal">
+
+										</div>
+									</div>
+								</div>
+
+
+		<!--  -->
+			<!-- event details modal -->
+
+								<div class="modal inmodal" id="event_details" tabindex="-1"
+									role="dialog" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content animated flipInY event_details">
 
 										</div>
 									</div>

@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import com.viksitpro.core.dao.entities.Assessment;
+import com.viksitpro.core.dao.entities.AssessmentDAO;
+import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.utilities.DBUTILS;
 
@@ -17,6 +20,160 @@ import in.talentify.core.xmlbeans.MenuHolder;
 import in.talentify.core.xmlbeans.ParentLink;
 
 public class UIUtils {
+	
+	
+	public HashMap<String, String> getALLEventDetails(String eventID) {
+		DBUTILS util = new DBUTILS();
+		HashMap<String, String> hashMap  = new HashMap<String, String>();
+		String listOfassociateTrainer = "NONE";
+		hashMap.put("asoctraineremail", listOfassociateTrainer);
+		hashMap.put("asoctrainername", listOfassociateTrainer);
+		
+		 
+		String sessionsCovered="none";
+		String nextSession="none";
+		String assessmentTitle="none";
+		
+		hashMap.put("sessions_covered", sessionsCovered);
+		hashMap.put("next_session", nextSession);
+		
+		hashMap.put("assessment_title", assessmentTitle);
+		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch. ID AS batchid, 	batch. NAME AS batchname,   course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom,   organization.name AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail,  CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, 	 batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch, 	user_profile,   istar_user, 	organization, 	classroom_details, 	course WHERE 	batch_schedule_event.batch_id = batch. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch.course_id AND istar_user.id = user_profile.user_id AND batch_schedule_event. ID = '"+ eventID +"'";
+		
+		
+		
+		
+		
+		
+		 System.out.println(sql);
+		List<HashMap<String, Object>> res = util.executeQuery(sql);
+		if(res.size() > 0){
+			hashMap.put("batchname", res.get(0).get("batchname").toString());
+			hashMap.put("coursename", res.get(0).get("coursename").toString());
+			hashMap.put("classroom", res.get(0).get("classroom").toString());
+			hashMap.put("trainername", res.get(0).get("trainername").toString());
+			hashMap.put("traineremail", res.get(0).get("traineremail").toString());
+			hashMap.put("evedate", res.get(0).get("evedate").toString());
+			hashMap.put("duration", res.get(0).get("hours").toString()+" hour "+ res.get(0).get("minute").toString()+" minute");
+			hashMap.put("status", res.get(0).get("status").toString());
+			hashMap.put("colname", res.get(0).get("colname").toString());
+		//	hashMap.put("associate_trainee", res.get(0).get("associate_trainee").toString());
+			
+			
+			
+			sql = "SELECT 	COUNT(batch_students.student_id) as totstudent FROM 	batch, 	batch_group, 	batch_students WHERE 	batch_group. ID = batch.batch_group_id AND batch_group. ID = batch_students.batch_group_id AND batch.id = "+res.get(0).get("batchid")+" AND batch_students.user_type = 'STUDENT'";
+			List<HashMap<String, Object>> res1 = util.executeQuery(sql);
+			hashMap.put("totstudent", res1.get(0).get("totstudent").toString());
+			
+			if(res.get(0) != null && res.get(0).get("associate_trainee") != null && res.get(0).get("associate_trainee").toString() != null && !res.get(0).get("associate_trainee").toString().equalsIgnoreCase("NONE") && !res.get(0).get("associate_trainee").toString().equalsIgnoreCase("0")){
+				
+				listOfassociateTrainer = res.get(0).get("associate_trainee").toString();
+				 if (listOfassociateTrainer.contains(",")) {
+					 for (String retval: listOfassociateTrainer.split(",")) {
+						
+						 
+						 sql = "SELECT 	istar_user.email AS asoctraineremail, 	user_profile.first_name AS asoctrainername FROM 	istar_user, 	user_profile WHERE 	istar_user.ID = user_profile.user_id AND istar_user.ID ="+Integer.parseInt(retval);
+						 List<HashMap<String, Object>> res2 = util.executeQuery(sql);
+						 
+						 hashMap.put("asoctraineremail", res2.get(0).get("asoctraineremail").toString());
+						 hashMap.put("asoctrainername", res2.get(0).get("asoctrainername").toString());
+						 
+				      }
+					 
+				 }else{
+					 
+					 sql = "SELECT 	istar_user.email AS asoctraineremail, 	user_profile.first_name AS asoctrainername FROM 	istar_user, 	user_profile WHERE 	istar_user.ID = user_profile.user_id AND istar_user.ID  ="+Integer.parseInt(listOfassociateTrainer);
+					 List<HashMap<String, Object>> res3 = util.executeQuery(sql);
+					 hashMap.put("asoctraineremail", res3.get(0).get("asoctraineremail").toString());
+					 hashMap.put("asoctrainername", res3.get(0).get("asoctrainername").toString());
+				 }
+				
+			}else{
+				
+				hashMap.put("associate_trainee", listOfassociateTrainer);
+				
+			}
+			
+			String batch_id = res.get(0).get("batchid").toString();
+			String getLastSessionId = "select cmsession_id from event_session_log where batch_id= "+batch_id+" ORDER BY id desc limit 1";
+			List<HashMap<String, Object>> lastSessionData = util.executeQuery(getLastSessionId);
+			int  lastSessionId = -1;
+			if(lastSessionData.size()>0)
+			{
+				lastSessionId = (int)lastSessionData.get(0).get("cmsession_id");
+			}
+			String orderedLessonInCourse ="SELECT 	cmsession_module.cmsession_id AS cm_id FROM 	lesson_cmsession, 	task, 	cmsession_module,   module_course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND lesson_cmsession.lesson_id = task.item_id AND module_course .course_id = ( 	SELECT 		course_id 	FROM 		batch 	WHERE 		ID = "+batch_id+" )";
+			 System.out.println(orderedLessonInCourse);
+			List<HashMap<String, Object>> orderLessonData = util.executeQuery(orderedLessonInCourse); 
+			int nextSesionId= -1;
+			boolean gotCurrentSesison = false;
+			if(lastSessionId!=-1)
+			{
+				//has previous logs
+				for(HashMap<String, Object> rr: orderLessonData)
+				{
+					if(!gotCurrentSesison && rr.get("cm_id").toString().equalsIgnoreCase(lastSessionId+""))
+					{
+						gotCurrentSesison= true;						
+					}
+					if(gotCurrentSesison)
+					{
+						if(!rr.get("cm_id").toString().equalsIgnoreCase(lastSessionId+""))
+						{
+							nextSesionId = (int)rr.get("cm_id");
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				//not yet started
+				nextSesionId = (int)orderLessonData.get(0).get("cm_id");
+				nextSession = new CmsessionDAO().findById(nextSesionId).getTitle();
+			}	
+			
+			
+			
+			if(nextSesionId!=-1)
+			{
+				nextSession = new CmsessionDAO().findById(nextSesionId).getTitle();						
+			}
+			else
+			{
+				nextSession ="All cmsessions are covered";
+			}
+			
+			hashMap.put("next_session", nextSession);
+			
+			if(res.get(0).get("status").toString().equalsIgnoreCase("ASSESSMENT")){
+				
+				System.out.println("ASSESSMENT");
+				String action = res.get(0).get("action").toString();
+				String getAssessmentId[] = action.split("__");		
+				int assessment_id = Integer.parseInt(getAssessmentId[1]);
+				Assessment assess = new AssessmentDAO().findById(assessment_id);
+				sql = "SELECT COUNT(actor_id) as totstudent FROM istar_assessment_event WHERE batch_id ="+res.get(0).get("batchid")+" AND assessment_id = "+assessment_id+" AND CAST (eventdate as VARCHAR) ='"+res.get(0).get("evedate")+"'";
+				System.out.println(sql); 
+				List<HashMap<String, Object>> res4 = util.executeQuery(sql);
+				hashMap.put("totstudent", res4.get(0).get("totstudent").toString());
+				hashMap.put("assessment_title", assess.getAssessmenttitle());
+				
+			}
+			else if(res.get(0).get("status").toString().equalsIgnoreCase("TEACHING") ||res.get(0).get("status").toString().equalsIgnoreCase("ATTENDANCE") || res.get(0).get("status").toString().equalsIgnoreCase("FEEDBACK") || res.get(0).get("status").toString().equalsIgnoreCase("COMPLETED"))
+			{
+				String getSessionTaught="select string_agg(DISTINCT cmsession.title,', ')  as sessions from event_session_log , cmsession where event_session_log.event_id = '"+eventID+"' and event_session_log.cmsession_id = cmsession.id";
+				List<HashMap<String, Object>> sessionTaught = util.executeQuery(getSessionTaught);
+				sessionsCovered = (String)sessionTaught.get(0).get("sessions");
+				hashMap.put("sessions_covered", sessionsCovered);
+			}
+			
+		}
+		
+		
+		
+		return hashMap;
+	}
 
 	public List<HashMap<String, Object>> getJobMasterLevelForCourse(int course_id) {
 		DBUTILS util = new DBUTILS();

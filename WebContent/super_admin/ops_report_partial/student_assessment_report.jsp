@@ -17,7 +17,7 @@
 
 <div class='title-action'>
 	<a
-		href="ops_report_partial/print_student_assessment_report.jsp?assessmentId=<%=assessmentId%>&batchId=<%=batchId%>"
+		href="../ops_report_partial/print_student_assessment_report.jsp?assessmentId=<%=assessmentId%>&batchId=<%=batchId%>"
 		target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
 		Print Report </a>
 </div>
@@ -58,7 +58,7 @@
 
 							</div>
 						</div>
-					</div> 
+					</div>  
 					<div class="col-lg-3 p-xxs bg-muted">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
@@ -73,6 +73,22 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-3 p-xxs bg-muted">
+						<div class="ibox float-e-margins">
+							<div class="ibox-title">
+							<% int totalQuestion = opsReport.getTotalNoOfQuestions(assessmentId); %>
+								<h5>Total No Of Questions: <%=totalQuestion %></h5>
+
+							</div>
+							<div class="ibox-content p-xxs bg-muted">
+
+
+								<%--  <%=opsReport.getStudentScoreDetailsForTable(assessmentId,batchId)%>  --%>
+
+
+							</div>
+						</div>
+					</div> 
 				</div>
 			</div>
 
@@ -84,7 +100,7 @@
 
 			<div class="ibox-content">
 				<div class="row">
-					<div id="container1" style="display:none"></div>
+					<div id="student_score_graph_container" style="display:none"></div>
 				</div>
 			</div>
 		</div>
@@ -92,7 +108,7 @@
 
 			<div class="ibox-content">
 				<div class="row">
-					<div id="container2"></div>
+					<div id="student_precentage_graph_container"></div>
 				</div>
 			</div>
 		</div>
