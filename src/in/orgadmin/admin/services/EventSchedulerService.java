@@ -389,14 +389,14 @@ public class EventSchedulerService {
 		} else {
 
 			out.append("<div class='col-lg-4 new_schedule' id='new_schedule_parent_" + id + "' data-trainer_data='"
-					+ trainerData + "'>" + "<div class='panel panel-primary'> ");
+					+ trainerData + "'>" + "<div class='panel panel-primary custom-theme-panel-primary'> ");
 		}
 
 		out.append("" + "<div class='panel-body'>" + "<h3>New-Session</h3>" + "<p>Course: " + data.get("courseName")
 				+ ".</p>" + "<p class='trainer_id_holder' data-trainer_id=''>Trainer : " + data.get("trainerName")
 				+ "</p>" + "<hr>" + "<p class=''><i class='fa fa-calendar'> Date: " + data.get("eventDate") + "</i>"
 				+ "<i class='fa fa-clock-o pull-right '> Time: " + data.get("startTime") + "</i> </p> </div> "
-				+ "<div class='panel-heading text-center'> 	" + "<button "
+				+ "<div class='panel-heading custom-theme-panal-color text-center'> 	" + "<button "
 				+ "' class='btn btn-block btn-outline btn-default modify-modal-newSchedular' id='" + id
 				+ "' type='button'> " + "<i class='fa fa-plus'></i>&nbsp;&nbsp;Modify Details </button> </div> "
 				+ "</div> </div>");

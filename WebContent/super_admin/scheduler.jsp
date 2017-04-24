@@ -41,7 +41,7 @@
 
 							<div class="row show-grid white-bg">
 								<div class="col-lg-3 white-bg no-borders whit-bg-schedular">
-									<h1 class="text-info font-bold">Create a new Event</h1>
+									<h1 class="text-danger font-bold">Create A New Event</h1>
 									<div class="tabs-container">
 										<ul class="nav nav-tabs gray-bg-schedular">
 											<li class="<%=target.equalsIgnoreCase("tab_1")? "active":"" %>"><a id="tab_1" data-toggle="tab" href="#tab-1">Single Event</a></li>
@@ -96,12 +96,13 @@
 									<input id="orgID" type="hidden" value="<%=colegeID %>" />
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
-											<div class="modal-header">
+											<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 												<button type="button" class="close" data-dismiss="modal">
 													<span aria-hidden="true">&times;</span><span
 														class="sr-only">Close</span>
 												</button>
-												<h4 class="modal-title">Events details</h4>
+												<h4 class="modal-title text-center">Events Details</h4>
 												<h4 class="text-danger modal-subTitle"></h4>
 											</div>
 											<div class="modal-body">
@@ -110,13 +111,13 @@
 
 											<div class="modal-footer">
 												<h4 class="text-danger modal-subTitle pull-left"></h4>
-												<button type="button" class="btn btn-white"
+												<button type="button" class="btn btn-danger"
 													data-dismiss="modal">Close</button>
 												<button type="button" id="final_submit_btn"
 													data-dismiss="modal"
-													class="btn btn-primary final-submit-btn">Save
+													class="btn btn-primary final-submit-btn custom-theme-btn-primary">Save
 													changes</button>
-											</div>
+											</div></div>
 										</div>
 									</div>
 								</div>

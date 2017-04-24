@@ -138,9 +138,9 @@
 			</div>
 			<div class="form-group form-inline">
 				<label class="font-bold">Duration</label> <label class="sr-only">Hours</label>
-				<input type="number" value="" name="hours" placeholder="Hours"
+				<input type="number" value="1" name="hours" placeholder="Hours"
 					class="form-control duration_holder"> <label class="sr-only">minute</label>
-				<input type="number" value="" name="minute" placeholder="Minute"
+				<input type="number" value="0" name="minute" placeholder="Minute"
 					class="form-control duration_holder">
 			</div>
 
@@ -160,7 +160,7 @@
 				</select>
 
 			</div>
-			<button class="btn btn-primary form-submit-btn" data-form="idForm3"
+			<button class="btn btn-primary form-submit-btn custom-theme-btn-primary" data-form="idForm3"
 				type="button">Save changes</button>
 		</form>
 

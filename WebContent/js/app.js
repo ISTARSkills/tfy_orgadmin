@@ -721,6 +721,21 @@ function loadTables(){
 		    	// open modal using js now 
 		    	// action goes here!!
 		    });
+		  $('#classroom_list_info').css('display','none');
+		  $('#feedback_list_info').css('display','none');
+		  $('#trainer_details_list_info').css('display','none');
+		  
+		  
+		  $(".class-room-edit-popup").click(function(){
+		    	var classRoomId =  $(this).data('class_id');
+		    	var urls = 'partials/modal/create_edit_classroom_modal.jsp?type=Edit&class_id='+classRoomId;
+		    	$.get( urls, function( data ) {
+		    		  $('#edit_class_room_model').remove(); 
+		    		  $("body").append(data);
+		    		  init_classRoom_Modal();
+		    		  $('#edit_class_room_model').modal();
+		    		});
+		    });
 		} );
 	  
 	  

@@ -638,7 +638,7 @@ public class UIUtils {
 			out.append("<a href='programs_report_details.jsp?course_id=" + item.get("course_id") + "&headname="
 					+ item.get("course_name") + "&college_id=" + college_id
 					+ "' class='btn-link ' ><div class='col-lg-3' id='program_info_1'>"
-					+ "<div class='panel panel-default product-box course-card-height'><div class='panel-heading font-bold'>"
+					+ "<div class='panel panel-default product-box course-card-height'><div class='panel-heading custom-theme-panal-color font-bold' style='color: white;'>"
 					+ item.get("course_name").toString()
 					+ "</div><div class='panel-body' style='width: 315px'><p class='course-desc'>" + course_description
 					+ "</p><div class='row'><div class='col-lg-6'>Attendance</div><div class='col-lg-6 text-center'>"
@@ -671,7 +671,7 @@ public class UIUtils {
 		for (HashMap<String, Object> item : data) {
 			out.append("<a href='programs_report_details.jsp?batch_id=" + item.get("batch_id") + "&headname="
 					+ item.get("batch_name") + "&college_id=" + college_id
-					+ "' class='btn-link '><div class='col-lg-3' id='program_info_1'><div class='panel panel-default product-box batch-card-height'><div class='panel-heading font-bold'>"
+					+ "' class='btn-link '><div class='col-lg-3' id='program_info_1'><div class='panel panel-default product-box batch-card-height'><div class='panel-heading custom-theme-panal-color font-bold'  style='color: white;'>"
 					+ item.get("batch_name").toString()
 					+ "</div><div class='panel-body'><div class='row'><div class='col-lg-6'>Attendance</div><div class='col-lg-6 text-center'>"
 					+ item.get("attendance_perc").toString()

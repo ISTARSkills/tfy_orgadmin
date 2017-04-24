@@ -34,7 +34,7 @@
 							<div class="row show-grid white-bg">
 								<div class="col-lg-3 white-bg no-borders whit-bg-schedular"
 									>
-									<h1 class="text-info font-bold">Create a new Event</h1>
+									<h1 class="text-danger font-bold">Create A New Event</h1>
 									<div class="tabs-container">
 										<ul class="nav nav-tabs gray-bg-schedular">
 											<li class="active"><a data-toggle="tab" href="#tab-1">Single
