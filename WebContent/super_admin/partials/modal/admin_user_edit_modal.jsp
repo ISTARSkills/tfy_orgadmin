@@ -38,11 +38,12 @@
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content animated flipInY'>
 
-			<div class="modal-header">
+			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title pull-left">Edit a user</h4>
+				<h4 class="modal-title text-center">Edit A User</h4>
 			</div>
 			<div class="modal-body">
 
@@ -123,13 +124,13 @@
 							</div>
 						</div>
 					</div>
-
+<div class="modal-footer">
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Save
+						<button type="submit" class="btn btn-danger ">Save
 							changes</button>
-					</div>
+					</div></div>
 				</form>
 			</div>
-		</div>
+		</div></div>
 	</div>
 </div>
