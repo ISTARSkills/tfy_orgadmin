@@ -30,6 +30,7 @@
 				int orgID=0;
 				int batchID = 0;
 				String associate_trainee = null;
+				String selectedTrainerString="0";
 				ArrayList<Integer> setactedTrainer = new ArrayList();
 				if (request.getParameterMap().containsKey("eventid")) {
 
@@ -53,6 +54,7 @@
 						batchID =(int)dd.get("batch_id");
 						associate_trainee =(String)dd.get("associate_trainee");
 						if(associate_trainee != null && !associate_trainee.equalsIgnoreCase("")){
+							selectedTrainerString=associate_trainee;
 						 if (associate_trainee.contains(",")) {
 							 for (String retval: associate_trainee.split(",")) {
 								 setactedTrainer.add(Integer.parseInt(retval));
@@ -76,8 +78,8 @@
 		
 			%>
 
-
-<div class="modal-header custom-theme-panal-color">
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+ <div class="panel-heading custom-theme-panal-color">
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
@@ -118,7 +120,7 @@
 		</div>
             <div class="form-group">
 				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="edit_old_associateTrainerID_holder" name="associateTrainerID" value="<%=setactedTrainer.toString()%>"/>
+				<input type="hidden" id="edit_old_associateTrainerID_holder" name="associateTrainerID" value="<%=selectedTrainerString%>"/>
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
 						tabindex="4" name="" id="edit_old_associateTrainerID">
 						<option value="">Select Associate Trainers...</option>
@@ -159,8 +161,8 @@
 
 
 </div>
-<div class="modal-footer custom-theme-panal-color">
-    <button type="button" class="btn btn-white custom-theme-btn-primary" data-dismiss="modal">Close</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger custom-theme-btn-primary" data-dismiss="modal">Close</button>
     <button type="button" class="btn btn-danger custom-theme-btn-primary delete-event" id="<%=evntid%>" data-dismiss="modal">Delete Event</button>
 	<button type="button" data-form="idForm4" class="btn btn-primary custom-theme-btn-primary edit-submit-btn">Save changes</button>
-</div>
+</div> </div>
