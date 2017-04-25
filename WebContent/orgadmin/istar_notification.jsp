@@ -132,8 +132,6 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						<div class="col-lg-6 white-bg">
 							<div class="ibox">
 								<div class="ibox-content">
-
-
 									<div class="form-group">
 										<label>Title</label> <input type="text" id="title"
 											placeholder="Write Title..." class="form-control">
