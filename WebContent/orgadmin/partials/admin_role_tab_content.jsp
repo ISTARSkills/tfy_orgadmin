@@ -98,11 +98,12 @@
 
 
 		<div class="modal-content animated flipInY">
-			<div class="modal-header">
+			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title pull-left">Create a Role</h4>
+				<h4 class="modal-title text-center">Create Role</h4>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" action="../roleSkillCreateOrDelete" method="post">
@@ -124,14 +125,14 @@
 						</div>
 						<br>
 					</div>
-					
+					 <div class="modal-footer">
 					<div class="form-group">
-						<div class="col-lg-6">
-							<button type="submit" class="btn btn-primary">Create</button>
+						
+							<button type="submit" class="btn btn-danger">Create</button>
 						</div>
 					</div>
 				</form>
 			</div>
-		</div>
+		</div></div>
 	</div>
 </div>

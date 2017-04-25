@@ -136,7 +136,19 @@
 									</div>
 								</div>
 								<!--  -->
+<!-- event details modal -->
 
+								<div class="modal inmodal" id="event_details" tabindex="-1"
+									role="dialog" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content animated flipInY event_details">
+
+										</div>
+									</div>
+								</div>
+
+
+		<!--  -->
 
 							</div>
 

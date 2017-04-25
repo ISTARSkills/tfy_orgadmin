@@ -46,13 +46,13 @@
 
  */								if (admin.getIsCompany() != null && !admin.getIsCompany()) {
 				%>
-				<li><a href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+				<li><a id ="<%=link.getDisplayName().replace(" ","")%>" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					}
 
 							} else {
 				%>
-				<li><a href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+				<li><a id ="<%=link.getDisplayName().replace(" ","")%>" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					}
 				%>

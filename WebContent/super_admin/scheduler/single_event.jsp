@@ -133,7 +133,7 @@
 					class="form-control duration_holder">
 			</div>
 			<h4 class="text-danger display-error"></h4>
-			<button class="btn btn-primary form-submit-btn custom-theme-btn-primary" data-form="idForm1"
+			<button class="btn btn-danger form-submit-btn custom-theme-btn-primary" data-form="idForm1"
 				type="button">Save changes</button>
 		</form>
 	</div>

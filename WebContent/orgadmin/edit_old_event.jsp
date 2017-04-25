@@ -90,11 +90,12 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 %>
 
 
-<div class="modal-header">
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+ <div class="panel-heading custom-theme-panal-color">
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title">Modify Events details</h4>
+	<h4 class="modal-title" style="color: white!important;">Modify Events details</h4>
 
 </div>
 <div class="modal-body">
@@ -179,9 +180,9 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	<button type="button" class="btn btn-danger delete-event"
 		id="<%=evntid%>" data-dismiss="modal">Delete Event</button>
 	<button type="button" data-form="idForm4"
-		class="btn btn-primary edit-submit-btn">Save changes</button>
-</div>
+		class="btn btn-danger edit-submit-btn">Save changes</button>
+</div></div>

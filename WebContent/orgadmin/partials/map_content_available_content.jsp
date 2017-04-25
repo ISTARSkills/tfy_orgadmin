@@ -14,7 +14,7 @@
 		class="col-lg-12 p-xs  b-r-lg border-left-right border-top-bottom border-size-small div-height">
 
 		<div class="col-lg-6 m-b-md">
-			<h3>Content Available</h3>
+			<h3>Skill Available</h3>
 
 			<div class="input-group">
 				<input type="text" name="input-role-skill"

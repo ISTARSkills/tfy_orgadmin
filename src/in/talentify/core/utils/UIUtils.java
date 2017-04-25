@@ -210,6 +210,19 @@ public class UIUtils {
 		return links;
 	}
 
+	public StringBuffer getAllAssessments() {
+		String sql = "SELECT id,assessmenttitle FROM assessment";
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		StringBuffer out = new StringBuffer();
+		out.append("<option value='null'>Select Assessment</option>");
+		for (HashMap<String, Object> item : data) {
+			out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle") + "</option>");
+		}
+		out.append("");
+		return out;
+	}
+	
 	public StringBuffer getEventStats(int orgID) {
 		String sql = "SELECT count(*) as totEvent, COUNT (*) FILTER ( WHERE bse.status = 'COMPLETED' ) AS COMPLETED, "
 				+ " COUNT (*) FILTER ( WHERE bse.status = 'SCHEDULED' ) AS SCHEDULED, COUNT (*) FILTER ( WHERE bse.status = 'TEACHING' ) AS "

@@ -143,7 +143,7 @@
 				<input type="number" value="0" name="minute" placeholder="Minute"
 					class="form-control duration_holder">
 			</div>
-			<button class="btn btn-primary form-submit-btn custom-theme-btn-primary" data-form="idForm2"
+			<button class="btn btn-danger form-submit-btn custom-theme-btn-primary" data-form="idForm2"
 				type="button">Save changes</button>
 		</form>
 

@@ -83,11 +83,12 @@
 %>
 
 
-<div class="modal-header">
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title">Modify Events details</h4>
+	<h4 class="modal-title text-center">Modify Events details</h4>
 
 </div>
 <div class="modal-body">
@@ -179,12 +180,12 @@
 
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
 
 	<%--  <button type="button" class="btn btn-danger newschedule_delete-event" id="<%=istrue?evntid:""%>" data-dismiss="modal">Delete Event</button> --%>
 	<button type="button" data-form="idForm4" data-dismiss="modal"
-		class="btn btn-primary newschedule_edit-submit-btn">Save
+		class="btn btn-danger newschedule_edit-submit-btn">Save
 		changes</button>
 
-</div>
+</div></div>

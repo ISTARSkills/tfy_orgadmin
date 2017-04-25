@@ -28,7 +28,7 @@
 			}
 		%>
 		<div class='col-lg-3'>
-			<div class='widget style1 navy-bg'>
+			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
 					<div class='col-xs-2'>
 						<i class='fa fa-calendar fa-2x'></i>
@@ -42,7 +42,7 @@
 		</div>
 
 		<div class='col-lg-3'>
-			<div class='widget style1 navy-bg'>
+			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
 					<div class='col-xs-2'>
 						<i class='fa fa-calendar fa-2x'></i>
@@ -58,13 +58,13 @@
 		</div>
 
 		<div class='col-lg-3'>
-			<div class='widget style1 navy-bg'>
+			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
 					<div class='col-xs-2'>
 						<i class='fa fa-calendar fa-2x'></i>
 					</div>
 					<div class='col-xs-9 text-right'>
-						<span> SCHEDULED </span>
+						<span> Events Scheduled </span>
 						<h2 class='font-bold'>
 							<%=schedule%></h2>
 					</div>
@@ -73,7 +73,7 @@
 		</div>
 
 		<div class='col-lg-3'>
-			<div class='widget style1 navy-bg'>
+			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
 					<div class='col-xs-2'>
 						<i class='fa fa-calendar fa-2x'></i>

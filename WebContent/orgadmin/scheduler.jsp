@@ -79,7 +79,8 @@
 									<input id="idOfForm" type="hidden" value="" />
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
-											<div class="modal-header">
+											<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 												<button type="button" class="close" data-dismiss="modal">
 													<span aria-hidden="true">&times;</span><span
 														class="sr-only">Close</span>
@@ -93,13 +94,13 @@
 
 											<div class="modal-footer">
 											  <h4 class="text-danger modal-subTitle pull-left"></h4>
-												<button type="button" class="btn btn-white"
+												<button type="button" class="btn  btn-danger"
 													data-dismiss="modal">Close</button>
 												<button type="button" id="final_submit_btn" data-dismiss="modal"
-													class="btn btn-primary final-submit-btn">Save
+													class="btn btn-primary custom-theme-btn-primary final-submit-btn">Save
 													changes</button>
 											</div>
-										</div>
+										</div></div>
 									</div>
 								</div>
 
@@ -120,7 +121,19 @@
 
 								<!--  -->
 
+<!-- event details modal -->
 
+								<div class="modal inmodal" id="event_details" tabindex="-1"
+									role="dialog" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content animated flipInY event_details">
+
+										</div>
+									</div>
+								</div>
+
+
+		<!--  -->
 							</div>
 
 						</div>

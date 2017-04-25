@@ -29,7 +29,7 @@
 						href="#admin_content_main_tab_1" aria-expanded="true">User</a></li>
 					<li class="col-lg-1 text-center no-padding bg-muted"><a
 						class="no-borders" data-toggle="tab"
-						href="#admin_content_main_tab_2" aria-expanded="false">Group</a></li>
+						href="#admin_content_main_tab_2" aria-expanded="false">Section</a></li>
 					<li class="col-lg-1 text-center no-padding bg-muted"><a
 						class="no-borders" data-toggle="tab"
 						href="#admin_content_main_tab_3" aria-expanded="false">Role</a></li>

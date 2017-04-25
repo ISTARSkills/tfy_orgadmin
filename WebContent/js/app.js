@@ -800,6 +800,19 @@ function mark_as_read_notification(){
 
 function init_orgadmin_dashboard() {
     console.log('intiliazing Dashboard');
+    
+    $('#myModal2').on('shown.bs.modal', function() {
+		var otherEventData = []
+		//$('#myModal5').modal('toggle');
+		 scheduler_createOldEvent();
+		 scheduler_DeleteEvent();
+		 scheduler_init_edit_new_trainer_associated();
+		 scheduler_init_edit_old_trainer_associated();
+		 scheduler_ClockDate();
+		 $('select').select2();
+		
+
+	});
     create_progress_view_chart(true);
     create_competetion_view_calendar(true);
     create_dashboard_calendar();

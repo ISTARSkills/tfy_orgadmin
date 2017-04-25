@@ -25,7 +25,7 @@
 								data-toggle="tab" href="#admintab1">Users</a></li>
 
 							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab2">Groups</a></li>
+								data-toggle="tab" href="#admintab2">Sections</a></li>
 
 							<li class="<%=tab.equalsIgnoreCase("role")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
 								data-toggle="tab" href="#admintab3">Roles</a></li>

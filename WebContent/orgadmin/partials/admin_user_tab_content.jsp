@@ -17,16 +17,16 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 <div class="ibox">
 	<div class="col-lg-12">
 		<div class="col-lg-3">
-			<h3 class="font-bold">Filter</h3>
+			<h3 class="font-bold">Filter by</h3>
 			<div class="form-group">
-				<label class="font-bold">by Course</label>
+				<label class="font-bold">Course</label>
 				<div>
 					<select data-placeholder="select course" multiple
 						tabindex="4" id='admin_page_course'>
 						<%=adminUiServcies.getCourses(colegeID) %>
 					</select>
 				</div>
-				<br> <label class="font-bold">by Batch Group</label>
+				<br> <label class="font-bold">Batch Group</label>
 				<div>
 					<select data-placeholder="select Groups"  multiple
 						tabindex="4" id='admin_page_batchgroup'>
@@ -73,17 +73,18 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 		<div class="modal-content animated flipInY">
 
-			<div class="modal-header">
+			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title pull-left">Create a user</h4>
+				<h4 class="modal-title text-center">Create User</h4>
 			</div>
 			<div class="modal-body">
 
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateUser" method="post">
-<input type="hidden" value="STUDENT" name="user_type" />
+                 <input type="hidden" value="STUDENT" name="user_type" />
 					<input type="hidden" value="<%=colegeID%>" name="college_id" />
 					<div class="form-group">
 
@@ -158,13 +159,13 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 
 					</div>
-
+<div class="modal-footer">
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary">Save
+						<button type="submit" class="btn btn-danger">Save
 							changes</button>
-					</div>
+					</div></div>
 				</form>
 			</div>
-		</div>
+		</div></div>
 	</div>
 </div>
