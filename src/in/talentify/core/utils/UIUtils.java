@@ -663,7 +663,7 @@ public class UIUtils {
 					+ stu_enrolled
 					+ "</div></div><div class='progress progress-striped active m-t-sm'><div style='width: "
 					+ completion_perc + "%" + "' aria-valuemax='100'aria-valuemin='0' aria-valuenow='" + completion_perc
-					+ "' role='progressbar'class='progress-bar'><span class='text-center'>" + completion_perc + " %"
+					+ "' role='progressbar'class='progress-bar progress-bar-danger'><span class='text-center'>" + completion_perc + " %"
 					+ "</span></div></div></div></div></div></a> ");
 
 		}
@@ -696,7 +696,7 @@ public class UIUtils {
 					+ "</div></div><div class='progress progress-striped active m-t-sm'><div style='width: "
 					+ item.get("completion_perc").toString() + "%"
 					+ "' aria-valuemax='100'aria-valuemin='0' aria-valuenow='" + item.get("completion_perc").toString()
-					+ "' role='progressbar'class='progress-bar'><span class='text-center'>"
+					+ "' role='progressbar'class='progress-bar progress-bar-danger'><span class='text-center'>"
 					+ item.get("completion_perc").toString() + " %" + "</span></div></div></div></div></div></a> ");
 
 		}

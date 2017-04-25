@@ -146,7 +146,7 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
                                             <small><%=(String)row.get("skill_title") %></small>
                                                 <div class="stat-percent"><%=(int)row.get("percentile_country")%>% </div>
                                                 <div class="progress progress-mini" style="margin-bottom: 11px; ">
-                                                    <div style="width: <%=(int)row.get("percentile_country")%>%;" class="progress-bar"></div>
+                                                    <div style="width: <%=(int)row.get("percentile_country")%>%;" class="progress-bar progress-bar-danger"></div>
                                                 </div>
                                             
                                             <%
@@ -252,7 +252,7 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
                                             <small><%=(String)row.get("skill_title") %></small>
                                                 <div class="stat-percent"><%=(int)row.get("percentile_country")%>% </div>
                                                 <div class="progress progress-mini" style="margin-bottom: 11px; ">
-                                                    <div style="width: <%=(int)row.get("percentile_country")%>%;" class="progress-bar"></div>
+                                                    <div style="width: <%=(int)row.get("percentile_country")%>%;" class="progress-bar progress-bar-danger"></div>
                                                 </div>
                                             
                                             <%
