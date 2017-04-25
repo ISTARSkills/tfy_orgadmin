@@ -64,13 +64,23 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 
 			</div>
-
+<div style="display: none" id="spinner_holder">
+				<div style="width: 100%; z-index: 6; position: fixed;"
+					class="spiner-example">
+					<div style="width: 100%;"
+						class="sk-spinner sk-spinner-three-bounce">
+						<div style="width: 50px; height: 50px;" class="sk-bounce1"></div>
+						<div style="width: 50px; height: 50px;" class="sk-bounce2"></div>
+						<div style="width: 50px; height: 50px;" class="sk-bounce3"></div>
+					</div>
+				</div>
+			</div>
 			<div id="">
 				<form role="form">
 
 					<div class="row">
 
-						<div class="col-lg-6">
+						<div class="col-lg-6 white-bg">
 							<div class="ibox">
 								<div class="ibox-content">
 
@@ -81,10 +91,12 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 									</div>
 									<div class="form-group">
 										<label>Comments</label>
-										<textarea class="form-control" id="comment" placeholder="Write comment..."></textarea>
+										<textarea class="form-control" id="comment"
+											placeholder="Write comment..."></textarea>
 									</div>
 									<div class="form-group">
-										<button class="btn btn-sm btn-primary pull-right m-t-n-xs" id ="send_notification" type="button">
+										<button class="btn btn-sm btn-primary pull-right m-t-n-xs custom-theme-btn-primary"
+											id="send_notification" type="button">
 											<strong>Send Notification</strong>
 										</button>
 
@@ -98,11 +110,12 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 							<div class="ibox">
 								<div class="ibox-content">
 
-									<h3 class="m-b-xxs">Student List <label class="checkbox-inline pull-right"> <input type="checkbox" id="checkAll"> checkAll </label></h3>
-									<div id="student_holder">
-									
-									
-									</div>
+									<h3 class="m-b-xxs">
+										Student List <label class="checkbox-inline pull-right">
+											<input type="checkbox" id="checkAll"> checkAll
+										</label>
+									</h3>
+									<div id="student_holder"></div>
 
 								</div>
 

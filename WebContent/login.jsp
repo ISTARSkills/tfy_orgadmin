@@ -64,7 +64,7 @@
 				</div>
 
 				<button type="submit" style="font-weight: 600; font-size: 16px"
-					class="btn btn-primary block full-width m-b login-button">Login</button>
+					class="btn btn-danger custom-theme-btn-primary block full-width m-b login-button">Login</button>
 
 				<%--  <a href="<%=baseURL%>forgot_password.jsp">Forgot password?</a> --%>
 			</form>

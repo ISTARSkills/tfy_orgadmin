@@ -15,13 +15,13 @@
 	<div class="ibox-content">
 		<p>
 		
-		<button type="button" class="btn btn-w-m lazur-bg activeaccount" data-id="-3">
+		<button type="button" class="btn btn-w-m lazur-bg custom-theme-btn-primary activeaccount" data-id="-3">
 				<strong>All Accounts</strong>
 			</button>
 			<%
 				for (HashMap<String, Object> item : lists) {
 			%>
-			<button type="button" class="btn btn-w-m lazur-bg activeaccount"
+			<button type="button" class="btn btn-w-m lazur-bg custom-theme-btn-primary activeaccount"
 				data-id="<%=item.get("id")%>">
 				<strong><%=item.get("name")%></strong>
 			</button>

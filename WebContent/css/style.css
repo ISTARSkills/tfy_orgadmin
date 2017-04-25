@@ -323,7 +323,7 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 }
 
 .navbar-default .special_link a {
-	background: #1ab394;
+	background: #eb384f;
 	color: white;
 }
 
@@ -334,7 +334,7 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 
 .navbar-default .special_link a span.label {
 	background: #fff;
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .navbar-default .landing_link a {
@@ -343,7 +343,7 @@ body.mini-navbar .navbar-default .nav>li>.nav-second-level li a {
 }
 
 .navbar-default .landing_link a:hover {
-	background: #1ab394 !important;
+	background: #eb384f !important;
 	color: white;
 }
 
@@ -459,7 +459,7 @@ body.canvas-menu .logo-element {
 
 body.mini-navbar .nav-header {
 	padding: 0;
-	background-color: #1ab394;
+	background-color: #eb384f;
 }
 
 body.canvas-menu .nav-header {
@@ -586,7 +586,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .top-navigation .navbar-nav .dropdown-menu>.active>a {
 	background: white;
-	color: #1ab394;
+	color: #eb384f;
 	font-weight: bold;
 }
 
@@ -605,7 +605,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .top-navigation .nav>li a:hover, .top-navigation .nav>li a:focus {
 	background: #fff;
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .top-navigation .nav>li.active {
@@ -614,8 +614,12 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .top-navigation .nav>li.active>a {
-	color: #1ab394;
+	color: #eb384f;
 }
+
+/* .custom-theme-top-navigation .nav>li.active>a {
+	color: #eb384f !important;
+} */
 
 .top-navigation .navbar-right {
 	margin-right: 10px;
@@ -636,7 +640,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .top-navigation .navbar-brand {
-	background: #1ab394;
+	background: #eb384f;
 	color: #fff;
 	padding: 15px 25px;
 }
@@ -669,7 +673,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .navbar-toggle {
-	background-color: #1ab394;
+	background-color: #eb384f;
 	color: #fff;
 	padding: 6px 12px;
 	font-size: 14px;
@@ -1374,8 +1378,8 @@ button.dim:active:before {
 }
 
 .fc-state-active {
-	background-color: #1ab394;
-	border-color: #1ab394;
+	background-color: #eb384f;
+	border-color: #eb384f;
 	color: #ffffff;
 }
 
