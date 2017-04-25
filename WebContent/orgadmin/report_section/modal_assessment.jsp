@@ -37,7 +37,7 @@
 								for (HashMap<String, Object> item : studentList) {
 							%>
 							<div class="row">
-								<div
+								<div id="user_<%=item.get("student_id")%>"
 									class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center modal-student"
 									style="min-height: 100px; border-width: 1px;"
 									data-user='<%=item.get("student_id")%>'

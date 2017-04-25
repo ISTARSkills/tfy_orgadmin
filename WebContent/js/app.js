@@ -1135,14 +1135,17 @@ function bind_report_session_clicks() {
             $('#assessment_modal_' + assessment_id).unbind().on('shown.bs.modal', function() {
 
                 $('.modal-student').unbind().on("click", function() {
+                	$('.modal-student').css('border-color','');
                     var assessment_id = $(this).data('assessment');
                     var batch_id = $(this).data('batch');
                     var user_id = $(this).data('user');
 
                     var urls = './report_section/moadl_question_data.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id + '&user_id=' + user_id;
+                    $('#'+$(this).attr('id')).css('border-color','  #eb384f');
                     $.get(urls, function(data) {
                         $(".result").html(data);
                         $('#modal_question_holder').html(data);
+                       
                         $('.full-height-scroll').each(function() {
                             $(this).slimscroll({
                                 height: $(this).parent().height()
