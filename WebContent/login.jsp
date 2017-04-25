@@ -41,7 +41,7 @@
 		<div class="login-screen-box">
 			<div>
 				<img alt="Talentify"
-					src="img/user_images/recruiter_portal_trans_logo.png" width="60%"
+					src="img/user_images/new_talentify_logo.png" width="60%"
 					height="60%">
 			</div>
 
