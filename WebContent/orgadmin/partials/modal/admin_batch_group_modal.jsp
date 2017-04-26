@@ -31,9 +31,9 @@
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title text-center">Edit a group</h4>
+				<h4 class="modal-title text-center">Edit Section</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding-bottom: 0px;">
 
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateBatchGroup" method="post">
@@ -42,10 +42,10 @@
 					<input type="hidden" value="<%=groupId%>" name="bg_id" />
 
 					<div class="form-group">
-						<h3 class="m-b-n-md">Name of the group</h3>
+						<h3 class="m-b-n-md">Name of the Section</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
-							<input type="text" placeholder="Group Name.." name="group_name"  id='bg_name_idd'  value="<%=bg.getName() %>"
+							<input type="text" placeholder="Section Name.." name="group_name"  id='bg_name_idd'  value="<%=bg.getName() %>"
 								class="form-control">
 						</div>
 					</div>
@@ -54,8 +54,8 @@
 						<h3 class="m-b-n-md">Description</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
-							<label>Short Text about Batch Group</label> <input type="text"
-								placeholder="Group Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
+							<label class="font-noraml">Short Text about Batch Group</label> <input type="text"
+								placeholder="Section Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
 								class="form-control">
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 								all users within East Point College to this group</label>
 						</div>
 					</div>
-<div class="modal-footer">
+<div class="modal-footer" style="padding-bottom: 0px;">
 					<div class="form-group">
 						<button type="submit" class="btn btn-danger">Save
 							changes</button>

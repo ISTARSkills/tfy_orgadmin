@@ -21,12 +21,14 @@
 
 
 <div class="ibox">
-	<h3 class="pull-left">Roles</h3>
-
-	<button class="btn btn-default pull-right m-b-sm" data-toggle="modal"
+<!-- 	<h3 class="pull-left">Roles</h3>
+<br/><br/><br/> -->
+<button type="button" class="btn btn-w-m btn-danger" data-toggle="modal"
+								data-target="#create_role_model" style="margin-bottom: 10px;">Add Role</button>
+	<!-- <button class="btn btn-default pull-right m-b-sm" data-toggle="modal"
 		data-target="#create_role_model" type="button">
 		<i class="fa fa-plus-circle"></i>
-	</button>
+	</button> -->
 
 	<!-- tab start -->
 	<div class="row m-t-lg">
@@ -105,27 +107,26 @@
 				</button>
 				<h4 class="modal-title text-center">Create Role</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding-bottom: 0px;">
 				<form class="form-horizontal" action="../roleSkillCreateOrDelete" method="post">
 					<div class="form-group">
+					<div class="col-lg-4">
 						<input type="hidden" name="type" value="create_role">
 						<div class="col-lg-12">
-							<label>Role Name</label> <input type="text"
+							<label class="control-label">Role Name</label> <input type="text"
 								placeholder="Enter Role Name.." name="role_name"
 								class="form-control">
 						</div>
-						<br>
-					</div>
+						</div>
 					
-					<div class="form-group">
-						<div class="col-lg-12">
-							<label>Role Description</label> <input type="text"
+						<div class="col-lg-8">
+							<label class="control-label">Role Description</label> <input type="text"
 								placeholder="Enter Short Description.." name="role_desc"
 								class="form-control">
 						</div>
 						<br>
 					</div>
-					 <div class="modal-footer">
+					 <div class="modal-footer" style="padding-bottom: 0px">
 					<div class="form-group">
 						
 							<button type="submit" class="btn btn-danger">Create</button>

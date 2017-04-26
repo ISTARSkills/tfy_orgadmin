@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="tfy.admin.services.AdminServices"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="java.util.ArrayList"%>
@@ -14,6 +15,9 @@
 	int colegeID = 0;
 	UIUtils uiUtil = new UIUtils();
 	DBUTILS dbutils1 = new DBUTILS();
+	AdminServices serv = new AdminServices();
+	ReportUtils utils = new ReportUtils();
+	HashMap<String, String> conditions = new HashMap<>();
 	if (request.getParameterMap().containsKey("colegeID")) {
 
 		colegeID = Integer.parseInt(request.getParameter("colegeID"));
@@ -59,11 +63,11 @@
 					<div id="tab-13" class="tab-pane">
 						<div class="panel-body">
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Select Course</label>
+								<label class="col-sm-3 control-label">Select Program</label>
 								<div class="col-sm-4">
 									<select class="form-control m-b graph_filter_selector"  data-report_id="3040" name="course_id" data-college_id="<%=colegeID%>">										
 										<%
-										AdminServices serv = new AdminServices();
+										
 										ArrayList<Course> courses = serv.getCoursesInCollege(colegeID);
 										for(Course course : courses)
 										{
@@ -75,12 +79,8 @@
 
 								</div>
 							</div>
-							<!-- <table id="program_view_datatable" style="display: none">
-
-							</table>
-							<div id="program_view"></div> -->
-							<%ReportUtils utils = new ReportUtils();
-							HashMap<String, String> conditions = new HashMap<>();
+							
+							<%
 								conditions.put("college_id", colegeID+"");
 							if(courses.size()>0){
 								conditions.put("course_id", courses.get(0).getId()+"");
@@ -94,20 +94,32 @@
 						<div class="panel-body">
 
 							<div class="form-group">
-								<label class="col-sm-3 control-label">Select Batch Group</label>
+								<label class="col-sm-3 control-label">Select Section</label>
 
 								<div class="col-sm-4">
-									<select class="form-control m-b"
-										id="select_batchgroup_course_view" name="account"
-										data-college='<%=colegeID%>'>
-										<%=uiUtil.getBatchGroups(colegeID, null)%>
+								<select class="form-control m-b graph_filter_selector"  data-report_id="3041" name="batch_group_id" data-college_id="<%=colegeID%>">										
+										<%
+										ArrayList<BatchGroup> batchGroups = serv.getBatchGroupInCollege(colegeID);
+										for(BatchGroup batchGroup : batchGroups)
+										{
+										%>
+										<option value="<%=batchGroup.getId()%>"><%=batchGroup.getName().trim()%></option>
+										<%
+										} %>
 									</select>
+									
 								</div>
 							</div>
-							<table id="course_view_datatable" style="display: none">
-
-							</table>
-							<div id="course_view"></div>
+							<%
+							
+								conditions.put("college_id", colegeID+"");
+							if(courses.size()>0){
+								conditions.put("batch_group_id", batchGroups.get(0).getId()+"");
+							}
+							System.err.println();;							
+							%>
+							<%=utils.getHTML(3041, conditions) %>
+							
 						</div>
 					</div>
 				</div>

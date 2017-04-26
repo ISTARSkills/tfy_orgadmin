@@ -53,29 +53,7 @@ public class JsonUIUtils {
 		}
 
 		JSONObject rookie = new JSONObject();
-		try {
-			JSONArray dataArry = new JSONArray();
-			for (String key : rookie_map.keySet()) {
-				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
-				dataArry.put((rookie_map.get(key) / total) * 100);
-			}
-			rookie.put("name", "rookie");
-			rookie.put("data", dataArry);
-		} catch (Exception e) {
-		}
-
-		JSONObject apprentice = new JSONObject();
-		try {
-			JSONArray dataArry = new JSONArray();
-			for (String key : apprentice_map.keySet()) {
-				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
-				dataArry.put((apprentice_map.get(key) / total) * 100);
-			}
-			apprentice.put("name", "apprentice");
-			apprentice.put("data", dataArry);
-		} catch (Exception e) {
-		}
-
+		
 		JSONObject master = new JSONObject();
 		try {
 			JSONArray dataArry = new JSONArray();
@@ -83,7 +61,7 @@ public class JsonUIUtils {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((master_map.get(key) / total) * 100);
 			}
-			master.put("name", "master");
+			master.put("name", "Master");
 			master.put("data", dataArry);
 		} catch (Exception e) {
 		}
@@ -95,16 +73,38 @@ public class JsonUIUtils {
 				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
 				dataArry.put((wizard_map.get(key) / total) * 100);
 			}
-			wizard.put("name", "wizard");
+			wizard.put("name", "Wizard");
 			wizard.put("data", dataArry);
 		} catch (Exception e) {
 		}
+		try {
+			JSONArray dataArry = new JSONArray();
+			for (String key : rookie_map.keySet()) {
+				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
+				dataArry.put((rookie_map.get(key) / total) * 100);
+			}
+			rookie.put("name", "Rookie");
+			rookie.put("data", dataArry);
+		} catch (Exception e) {
+		}
 
-		contentArry.put(rookie);
-		contentArry.put(apprentice);
+		JSONObject apprentice = new JSONObject();
+		try {
+			JSONArray dataArry = new JSONArray();
+			for (String key : apprentice_map.keySet()) {
+				float total = rookie_map.get(key) + master_map.get(key) + apprentice_map.get(key) + wizard_map.get(key);
+				dataArry.put((apprentice_map.get(key) / total) * 100);
+			}
+			apprentice.put("name", "Apprentice");
+			apprentice.put("data", dataArry);
+		} catch (Exception e) {
+		}
+
+		
 		contentArry.put(master);
 		contentArry.put(wizard);
-
+		contentArry.put(rookie);
+		contentArry.put(apprentice);
 		arrayList.add(titles);
 		arrayList.add(contentArry);
 
@@ -135,21 +135,23 @@ public class JsonUIUtils {
 
 			try {
 				PieChartJson json = new PieChartJson();
-				json.setName("master");
+				json.setName("Master");
 				json.setY(Float.parseFloat(item.get("master").toString()));
 				pie.add(json);
 				PieChartJson json1 = new PieChartJson();
-				json1.setName("rookie");
-				json1.setY(Float.parseFloat(item.get("rookie").toString()));
+				json1.setName("Wizard");
+				json1.setY(Float.parseFloat(item.get("wizard").toString()));
 				pie.add(json1);
+				
 				PieChartJson json2 = new PieChartJson();
-				json2.setName("apprentice");
-				json2.setY(Float.parseFloat(item.get("apprentice").toString()));
+				json2.setName("Rookie");
+				json2.setY(Float.parseFloat(item.get("rookie").toString()));
 				pie.add(json2);
 				PieChartJson json3 = new PieChartJson();
-				json3.setName("wizard");
-				json3.setY(Float.parseFloat(item.get("wizard").toString()));
+				json3.setName("Apprentice");
+				json3.setY(Float.parseFloat(item.get("apprentice").toString()));
 				pie.add(json3);
+				
 			} catch (Exception e) {
 
 				pie = null;

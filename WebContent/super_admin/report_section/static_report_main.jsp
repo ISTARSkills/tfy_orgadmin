@@ -9,7 +9,7 @@ UIUtils ui_Util = new UIUtils();
 			<div class="ibox-content">
 			
 				<div class="row">
-					<div class="col-lg-4">
+					<div class="col-lg-2">
 			<div class="form-group">
 				<label>Choose Organization</label> 
 				<select class="form-control m-b org_holder " name="orgID">

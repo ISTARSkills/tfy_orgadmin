@@ -198,7 +198,7 @@ UIUtils ui_Util = new UIUtils();
 		<div class="col-lg-12">
 			<div class="ibox float-e-margins">
 				<div class="ibox-title">
-					<h5>Trainer Details</h5>
+					<h5>Student FeedBack Details</h5>
 					
 				</div>
 				<div class="ibox-content">

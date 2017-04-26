@@ -14,7 +14,7 @@
 %>
 
 <div class="ibox">
-	<h3 class="pull-left font-bold">Content Mapping</h3>
+	<!-- <h3 class="pull-left font-bold">Content Mapping</h3> -->
 
 	<!-- tab start -->
 	<div class="row m-t-lg">
@@ -60,7 +60,7 @@
 
 								
 
-							</div>
+							</div> 
 							<div class="spiner-example spinner-animation-holder_User">
 								<div class="sk-spinner sk-spinner-three-bounce">
 									<div class="sk-bounce1"></div>
@@ -73,7 +73,7 @@
 
 					<div id="admin_content_main_tab_2" class="tab-pane">
 						<div class="panel-body no-borders content-map-ajax-request"
-							data-url="partials/map_inner_tab_content_for_group.jsp" data-type='Group'
+							data-url="partials/map_inner_tab_content_for_group.jsp" data-type='Group' data-size='<%=userCount%>'
 							data-org='<%=colegeID%>'>
 							<%-- <jsp:include page="../partials/map_inner_tab_content.jsp">
 								<jsp:param value='<%=colegeID%>' name="colegeID" />

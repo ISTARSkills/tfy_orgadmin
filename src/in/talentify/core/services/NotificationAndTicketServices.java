@@ -33,4 +33,34 @@ public class NotificationAndTicketServices {
 		
 		
 	}
+	
+	public List<HashMap<String, Object>> getTickets(int user_id)
+	{
+		DBUTILS util = new DBUTILS();
+		String sql = "select id, title, description, creator_id, receiver_id, created_at, updated_at, status, ticket_type from ticket where ticket.creator_id = "+user_id+" or ticket.receiver_id ="+user_id;
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		return data;
+	}
+	public List<HashMap<String, Object>> getTicket(String ticketID)
+	{
+		DBUTILS util = new DBUTILS();
+		String sql = "select id, title, description, creator_id, receiver_id, created_at, updated_at, status, ticket_type from ticket where ticket.id ="+ticketID;
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		return data;
+	}
+	public List<HashMap<String, Object>> getTicketSummary(String ticket_id)
+	{
+		DBUTILS util = new DBUTILS();
+		String sql = "select ticket.id, ticket.title, ticket.description, ticket.creator_id, ticket.receiver_id, ticket.created_at, ticket.updated_at, ticket.status, ticket.ticket_type, ticket.tags, ticket_comment.comment_by, ticket_comment.created_at as comment_created_at,ticket_comment.comment from ticket,ticket_comment where ticket.id = ticket_comment.ticket_id and ticket.id = "+ticket_id+" order by comment_created_at";
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		return data;
+	}
+	
+	public void createTicket(String title, String description,String creatorId, String receiverId, String status, String ticketType)
+	{
+		DBUTILS util = new DBUTILS();
+		String createTicket="INSERT INTO ticket (id, title, description, creator_id, receiver_id, created_at, status, ticket_type, updated_at) VALUES "
+				+ "((select COALESCE(max(id),0)+1 from ticket), '"+title+"', '"+description+"', "+creatorId+", "+receiverId+", now(), '"+status+"', '"+ticketType+"', now());";
+		util.executeUpdate(createTicket);
+	}
 }

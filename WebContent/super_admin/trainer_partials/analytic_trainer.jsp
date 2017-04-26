@@ -88,7 +88,7 @@ UIUtils ui_Util = new UIUtils();
 
 					<div class="table-responsive">
 						<table
-							class="table table-striped table-bordered table-hover dataTables-example">
+							class="table table-bordered datatable_istar" id='trainer_details_list' data-url='../program_graphs?trainerDetails=trainerDetails'>
 							<thead>
 								<tr>
 									<th>Trainer Name</th>
@@ -99,25 +99,10 @@ UIUtils ui_Util = new UIUtils();
 									<th>Early finish</th>
 									<th>Location</th>
 									<th>Unbilled Hours</th>
-									<th>Amount</th>
+									
 								</tr>
 							</thead>
-							<tbody id="trainer_details_body">
-
-							</tbody>
-							<tfoot>
-								<tr>
-									<th>Trainer Name</th>
-									<th>Date Joined</th>
-									<th>E-mail</th>
-									<th>Rating</th>
-									<th>Late Start</th>
-									<th>Early finish</th>
-									<th>Location</th>
-									<th>Unbilled Hours</th>
-									<th>Amount</th>
-								</tr>
-							</tfoot>
+							
 						</table>
 
 

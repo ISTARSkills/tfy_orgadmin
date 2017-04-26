@@ -133,7 +133,7 @@ public class CreateNotification extends HttpServlet {
 			StringBuffer out = new StringBuffer();
 
 			out.append(
-					"<select data-placeholder='select Course' tabindex='4' data-course='course' id='course_holder'>");
+					"<select data-placeholder='Select Course' tabindex='4' data-course='course' id='course_holder'>");
 			out.append("<option value=''>Select Course</option>");
 			for (HashMap<String, Object> item : data) {
 				out.append("<option value='" + item.get("id") + "'>" + item.get("course_name") + "</option>");

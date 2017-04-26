@@ -51,11 +51,10 @@
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title text-center"><%=type%>
-					a Class Room
+				<h4 class="modal-title text-center"><%=type%> Class Room
 				</h4>
 			</div>
-			<div class="modal-body" style="padding: 10px;">
+			<div class="modal-body" style="padding-bottom: 0px">
 
 				<form class="form-horizontal"
 					action="../create_or_update_classroom"
@@ -63,35 +62,32 @@
 					<input type="hidden" value="<%=class_id%>" name="class_id" />
 					<div class="form-group">
 
-						<div class="col-lg-12">
-							<label>Class Room Name *</label> <input type="text" placeholder="Class Room Name"
+						<div class="col-lg-6">
+							<label class="control-label">Class Room Name *</label> <input type="text" placeholder="Class Room Name"
 								name="class_name" class="form-control"
 								value="<%=className%>">
 						</div>
-						<br>
-						<br>
+						
 
-						<div class="col-lg-12">
-							<label>IP Address *</label> <input type="text"
+						<div class="col-lg-6">
+							<label class="control-label">IP Address *</label> <input type="text"
 								placeholder="Eg. 192.168.0.0" name="class_ip"
 								class="form-control"
 								value='<%=classIP%>'>
 						</div>
-						<br>
-						<br>
 						
-						<div class="col-lg-12">
-							<label>Max Students *</label> <input type="number"
+						
+						<div class="col-lg-6">
+							<label class="control-label">Max Students *</label> <input type="number"
 								placeholder="0-10000" name="class_students"
 								class="form-control"
 								value='<%=max_students%>'>
 						</div>
-						<br>
-						<br>
+						
 
 				<%if(type.equalsIgnoreCase("Create")){ %>
-						<div class="col-lg-12">
-							<label>Organization *</label> <select
+						<div class="col-lg-6">
+							<label class="control-label">Organization *</label> <select
 								class="form-control" name="org_id"
 								data-validation="required">
 								<%=utils.getOrganization()%>
@@ -101,10 +97,10 @@
 						<input type="hidden" value="<%=organization_id%>" name="org_id" />
 						<%} %>
 					</div>
-<div class="modal-footer">
+<div class="modal-footer" style="padding-bottom: 0px">
 					<div class="form-group">
 						<button type="button" id="class_modal_submit"
-							class="btn btn-primary btn-danger"><%=(type.equalsIgnoreCase("Create")?"Create":"Update")%></button>
+							class="btn btn-primary btn-danger"><%=(type.equalsIgnoreCase("Create")?"Create Class Room":"Update Class Room")%></button>
 					</div></div>
 				</form>
 			</div>

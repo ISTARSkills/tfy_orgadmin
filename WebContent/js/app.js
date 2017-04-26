@@ -2,9 +2,15 @@
 var webSocket ;
 function readyFn(jQuery) {
 
+
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
+
+
+
+	
+
 	$('select').select2();
 	loadTables();
 
@@ -78,7 +84,7 @@ function readyFn(jQuery) {
 	case 'super_admin_report':
 		init_super_admin_report();
 		initChat();
-		$('#Reports').css('color','  #eb384f');
+		$('#Students Reports').css('color','  #eb384f');
 		break;
 	case 'istar_notification':
 		init_istar_notification();
@@ -101,7 +107,9 @@ function readyFn(jQuery) {
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	
+
 	
+
 }
 
 
@@ -177,7 +185,10 @@ function initiateGraphFilter()
 	
 	
 
+
 }
+function initiateGraphFilter()
+{
 function createGraphs()
  	{
  		try{
@@ -245,6 +256,8 @@ function createGraphs()
  		} catch (err) {
  		console.log(err);
  		}
+
+
  	}
 	
 
@@ -804,6 +817,7 @@ function loadTables(){
 		  $('#classroom_list_info').css('display','none');
 		  $('#feedback_list_info').css('display','none');
 		  $('#trainer_details_list_info').css('display','none');
+		  $('#account_details_list_info').css('display','none');
 		  
 		  
 		  $(".class-room-edit-popup").click(function(){
@@ -896,9 +910,11 @@ function init_orgadmin_dashboard() {
     create_progress_view_chart(true);
     create_competetion_view_calendar(true);
     create_dashboard_calendar();
-    create_course_view_datatable(true);
+   // create_course_view_datatable(true);
    // create_program_view_datatable(true);
+
     scheduler_createOldEvent();
+
     mark_as_read_notification();
 }
 
@@ -932,6 +948,14 @@ function init_orgadmin_admin() {
 
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');
+    
+  /*  $('.gray-bg-schedular >li.active').click(function(){  	
+    	$('.associateTrainer').select2();
+    });*/
+    
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
+    	$('.associateTrainer').select2();
+    	});
     
   //---form submiton function
     scheduler_submitModal();
@@ -1086,7 +1110,7 @@ function init_orgadmin_report_detail(){
             }
         },
         series: [{
-            name: 'Brands',
+            name: 'Percentage',
             colorByPoint: true,
 
             data: $('#pieChartData').data('content')
@@ -1651,6 +1675,7 @@ function admin_load_resources(){
 		var tab=$(this);
 		var type=$(this).data('type');
 		var id=$(this).data('org');
+		var usercount =$(this).data('size');
 		var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
 		if(type=='User'){
 			url=url+'&offset=0'
@@ -2567,6 +2592,7 @@ else{
 		$('body').append(data);	        			
 		
 		$('#edit_org_model').on("shown.bs.modal",function(e){
+			
 			var baseURL = $(".js-data-example-ajax").data("pin_uri");
 			var urlPin = baseURL + "PinCodeController";
 
@@ -2599,8 +2625,9 @@ else{
 				templateResult : formatRepo,
 				templateSelection : formatRepoSelection
 			});
+			
 		});	        			
-
+		$('.js-data-example-ajax').select2();
 		$('#org_profile').unbind().on("keyup",function (){
 			
 			$('input[name=org_profile]').val($(this).val());
@@ -2646,7 +2673,23 @@ else{
     });
 	
 }
+function formatRepo(repo) {
+	if (repo.loading)
+		return repo.text;
 
+	var markup = "<div class='select2-result-repository clearfix'>"
+			+ repo.id + "</div>";
+
+	if (repo.description) {
+		markup += "<div class='select2-result-repository__description'>"
+				+ repo.id + "</div>";
+	}
+	return markup;
+}
+
+function formatRepoSelection(repo) {
+	return repo.id;
+}
 function accountmanagment_card_init() {
     $('.clickablecards').unbind().on("click",function() {
             $('.clickablecards').each(function() {
@@ -2718,6 +2761,11 @@ function init_super_admin_scheduler(){
 											window.location.href = url;
 });
 	   
+	   $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
+	    	$('.associateTrainer').select2();
+	    	});
+	    
+	   
 	   //---form submiton function
 	    scheduler_submitModal();
 	    
@@ -2774,7 +2822,7 @@ function init_super_admin_analytics() {
     trainerLevelGraph();
     trainerSkillGraph();
     studentFeedBackGraph();
-    trainerDetailsTable();
+   // trainerDetailsTable();
     studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
@@ -2855,8 +2903,31 @@ function programGraph(cID, oID) {
         $('#program_spiner').css('cssText', 'display:none !important');
 
         $("#datatable10").html(data);
-
         Highcharts.chart('container10', {
+            data: {
+                table: 'datatable10'
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Program Statistics'
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Units'
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        this.point.y + ' ' + this.point.name.toLowerCase();
+                }
+            }
+        });
+
+        /*Highcharts.chart('container10', {
             data: {
                 table: document.getElementById('datatable10')
             },
@@ -2872,6 +2943,7 @@ function programGraph(cID, oID) {
                     text: 'Units'
                 }
             },
+            showInLegend: true,
             tooltip: {
                 formatter: function() {
                     return '<b>' + this.series.name + '</b><br/>' +
@@ -2882,7 +2954,7 @@ function programGraph(cID, oID) {
             legend: {
                 enabled: false
             }
-        });
+        });*/
     });
 
 
@@ -3378,13 +3450,13 @@ function trainerDataTable() {
 
 
 
-function trainerDetailsTable() {
+/*function trainerDetailsTable() {
     var urls = '../program_graphs?trainerDetails=trainerDetails';
     $.get(urls, function(data) {
         $("#trainer_details_body").html(data);
         trainerDataTable();
     });
-}
+}*/
 
 
 
@@ -3530,7 +3602,7 @@ function company_profile() {
 function init_istar_notification(){
 	
 	
-	
+	console.log('istar Notification');
 	$('#notification_type_holder').on("change", function() {
 		
 		if($(this).val() === 'playPresentation' ){
@@ -4021,4 +4093,4 @@ function ValidateIPaddress(ipaddress)
     return (true)  
   }  
 return (false)  
-}
+}}

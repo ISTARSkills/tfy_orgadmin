@@ -1,4 +1,4 @@
-<%@page import="in.talentify.core.utils.ReportUtils"%>
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"

@@ -42,7 +42,7 @@
 				</button>
 				<h4 class="modal-title text-center">Edit User</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding-bottom: 0px;">
 
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateUser" method="post">
@@ -53,28 +53,20 @@
 
 						<div class="col-lg-6">
 
-							<label>First Name</label> <input type="text"
+							<label class="control-label">First Name</label> <input type="text"
 								placeholder="First Name.." name="user_f_name"
 								class="form-control" value="<%=stuProfileData.getFirstName()%>">
 						</div>
 
 						<div class="col-lg-6">
-							<label>Last Name</label> <input type="text"
+							<label class="control-label">Last Name</label> <input type="text"
 								placeholder="Last Name.." name="user_l_name"
 								class="form-control" value="<%=lastName%>">
 						</div>
 
 						<br>
 
-						<div class="col-lg-6">
-							<label class="control-label">Gender</label> <select
-								class="form-control m-b" name="user_gender">
-								<option value="MALE"
-									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
-								<option value="FEMALE"
-									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
-							</select>
-						</div>
+						
 						<div class="col-lg-6">
 							<label class="control-label">Mobile No</label> <input type="number"
 								name="user_mobile" class="form-control"
@@ -83,48 +75,58 @@
 						</div>
 						<br>
 
-						<div class="col-lg-12">
-							<label>Email</label> <input type="email"
+						<div class="col-lg-6">
+							<label class="control-label">Email</label> <input type="email"
 								placeholder="joe@schmoe.com" name="user_email"
 								class="form-control" value="<%=user.getEmail()%>">
 						</div>
+						
+						
+						 <div class="col-lg-2">
+							<label class="control-label">Gender</label> <select
+								class="form-control m-b" name="user_gender">
+								<option value="MALE"
+									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
+								<option value="FEMALE"
+									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
+							</select>
+						</div> 
 
 					</div>
 					<div class="form-group">
-						<h3 class="m-b-n-md">Group</h3>
+					<div class="col-lg-6">
+						<h3 class="m-b-n-md">Section</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
-							<label class="font-noraml">Select Groups the student will
+							<label class="font-noraml">Select Section the student will
 								belong to:</label>
 							<div>
-								<select data-placeholder="group..." class="select2-dropdown"
+								<select data-placeholder="Section..." class="select2-dropdown"
 									multiple tabindex="4">
 									<%=ui.getBatchGroups(colegeID, selectedBG)%>
 								</select>
 							</div>
 							<input type="hidden" value="" name="batch_groups" />
 						</div>
-					</div>
-
-					<div class="form-group">
+					</div><div class="col-lg-6">
 						<h3 class="m-b-n-md">Role(only for corporate)</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
 							<label class="font-noraml">Select Roles the student will
 								belong to:</label>
 							<div>
-								<select data-placeholder="roles..." class="chosen-select"
+								<select data-placeholder="Roles..." class="chosen-select"
 									name="role_name" multiple tabindex="4">
 									<option value="">Select</option>
 									<option value="">Account Manager</option>
 									<option value="">Account Manager</option>
 								</select>
 							</div>
-						</div>
+						</div></div>
 
 
 					</div>
- <div class="modal-footer">
+ <div class="modal-footer" style="padding-bottom: 0px;">
 					<div class="form-group">
 						<button type="submit" class="btn btn-danger">Save
 							changes</button>

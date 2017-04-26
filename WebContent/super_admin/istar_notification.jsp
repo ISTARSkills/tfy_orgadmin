@@ -10,7 +10,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 %>
 <jsp:include page="inc/head.jsp"></jsp:include>
 
-<body class="top-navigation" id="super_admin_ops_report">
+<body class="top-navigation" id="istar_notification">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
@@ -19,7 +19,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="form-group">
 						<label class="font-bold">Choose College</label>
 						<div>
-							<select data-placeholder="select College" tabindex="4" id='notification_college_holder'>
+							<select data-placeholder="Select College" tabindex="4" id='notification_college_holder'>
 								<%=opsReport.getOrganization()%>
 							</select>
 						</div>
@@ -30,7 +30,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="form-group">
 						<label class="font-bold">Choose BatchGroup</label>
 						<div>
-							<select data-placeholder="select BatchGroup" tabindex="4" id='notification_batchgroup_holder'></select>
+							<select data-placeholder="Select BatchGroup" tabindex="4" id='notification_batchgroup_holder'></select>
 						</div>
 					</div>
 				</div>
@@ -38,7 +38,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="form-group">
 						<label class="font-bold">Choose Course</label>
 						<div id= "notification_course_holder" >
-							 <select data-placeholder="select Course" tabindex="4" data-url='' id='course_holder'></select> 
+							 <select data-placeholder="Select Course" tabindex="4" data-url='' id='course_holder'></select> 
 						</div>
 					</div>
 				</div>
@@ -46,7 +46,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="form-group">
 						<label class="font-bold">Choose Lesson</label>
 						<div>
-							<select data-placeholder="select Lessson" tabindex="4" data-url='' id='notification_lesson_holder'> </select>
+							<select data-placeholder="Select Lessson" tabindex="4" data-url='' id='notification_lesson_holder'> </select>
 						</div>
 					</div>
 				</div>
@@ -92,7 +92,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 									<div class="form-group">
 										<label>Comments</label>
 										<textarea class="form-control" id="comment"
-											placeholder="Write comment..."></textarea>
+											placeholder="Write Comment..."></textarea>
 									</div>
 									<div class="form-group">
 										<button class="btn btn-sm btn-primary pull-right m-t-n-xs custom-theme-btn-primary"
@@ -112,7 +112,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 									<h3 class="m-b-xxs">
 										Student List <label class="checkbox-inline pull-right">
-											<input type="checkbox" id="checkAll"> checkAll
+											<input type="checkbox" id="checkAll"> Check All
 										</label>
 									</h3>
 									<div id="student_holder"></div>
@@ -134,7 +134,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>
-	<script>
+	<!-- <script>
 		$(document).ready(function() {
 
 			$('#notification_college_holder').on("change", function() {
@@ -288,7 +288,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			
 			
 		});
-	</script>
+	</script> -->
 </body>
 
 </html>

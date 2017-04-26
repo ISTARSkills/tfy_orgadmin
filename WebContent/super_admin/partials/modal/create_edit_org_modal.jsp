@@ -53,11 +53,10 @@
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 				</button>
-				<h4 class="modal-title text-center"><%=type%>
-					a Organization
+				<h4 class="modal-title text-center"><%=type%> Organization
 				</h4>
 			</div>
-			<div class="modal-body" style="padding: 10px;">
+			<div class="modal-body" style="padding-bottom: 0px">
 
 				<form class="form-horizontal"
 					action="../create_or_update_organization" id="edit_org_model_form"
@@ -66,15 +65,15 @@
 					<div class="form-group">
 
 						<div class="col-lg-12">
-							<label>Name *</label> <input type="text"
+							<label class="control-label">Name *</label> <input type="text"
 								placeholder="College Name" name="org_name" class="form-control"
 								value="<%=(college != null && college.getName() != null) ? college.getName() : ""%>">
 						</div>
 						<br> <br>
 
 						<div class="col-lg-12">
-							<label>Address Line 1 *</label> <input type="text"
-								placeholder="Eg. Infosys Gate 1, 1st Main Rd" name="org_addr1"
+							<label class="control-label">Address Line 1 *</label> <input type="text"
+								placeholder="Infosys Gate 1, 1st Main Rd" name="org_addr1"
 								class="form-control"
 								value='<%=(college != null && college.getAddress() != null && college.getAddress().getAddressline1() != null)
 							? college.getAddress().getAddressline1() : ""%>'>
@@ -82,38 +81,35 @@
 						<br> <br>
 
 						<div class="col-lg-12">
-							<label>Address Line 2 *</label> <input type="text"
-								placeholder="Eg. Electronics City Phase 1, Electronic City"
+							<label class="control-label">Address Line 2 *</label> <input type="text"
+								placeholder="Electronics City Phase 1, Electronic City"
 								name="org_addr2" class="form-control"
 								value='<%=(college != null && college.getAddress() != null && college.getAddress().getAddressline1() != null)
 							? college.getAddress().getAddressline2() : ""%>'>
 						</div>
 						<br> <br>
 
-						<div class="col-lg-12">
-							<label>PIN *</label> <select
+						<div class="col-lg-6">
+							<label class="control-label">Pincode *</label> <select
 								class="js-data-example-ajax  form-control"
-								data-pin_uri="<%=baseURL%>" name="pincode"
+								 data-pin_uri="<%=baseURL%>" name="pincode"
 								data-validation="required">
-								<option
-									value="<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null)
-					? college.getAddress().getPincode().getPin() : ""%>"
-									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null)
-					? "selected" : ""%>
-									style="width: 350px;" tabindex="2"><%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null)
-					? college.getAddress().getPincode().getPin() : "Select Pincode"%></option>
+								<option>Select Pincode</option>
+								<option value="<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? college.getAddress().getPincode().getPin() : ""%>"
+									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? "selected" : ""%> style="width: 350px;" tabindex="2">
+									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? college.getAddress().getPincode().getPin() : "Select Pincode"%></option>
 							</select>
 						</div>
 
-						<div class="col-lg-12">
-							<label>Max Students *</label> <input type="number"
+						<div class="col-lg-6">
+							<label class="control-label" >Max Students *</label> <input type="number"
 								placeholder="0-10000" name="max_students" class="form-control"
 								value='<%=(college != null)? college.getMaxStudent() : ""%>'>
 						</div>
 						<br> <br>
 
 						<div class="col-lg-12">
-							<label>Organization Profile</label>
+							<label class="control-label">Organization Profile</label>
 							<textarea class="form-control" id="org_profile" placeholder="Organization Profile..."
 								style="margin: 0px -5px 0px 0px;"><%=(college != null && college.getProfile()!=null && !college.getProfile().equalsIgnoreCase("null"))? college.getProfile() : ""%></textarea>
 						</div>
@@ -130,15 +126,15 @@
 														
 							
 						<div class="col-lg-6">
-							<label>Principal/HR Manager Email *</label> <input type="email"
-								placeholder="Eg. principal_org_name@istarindia.com"
+							<label class="control-label">Principal/HR Manager Email *</label> <input type="email"
+								placeholder="principal_org_name@istarindia.com"
 								name="org_admin_email" class="form-control"
 								value='<%=orgAdminEmail%>'>
 						</div>
 						
 						<div class="col-lg-6">
-							<label>Principal/HR Manager Name *</label> <input type="text"
-								placeholder="Eg. principal_org_name"
+							<label class="control-label">Principal/HR Manager Name *</label> <input type="text"
+								placeholder="principal_org_name"
 								name="org_admin_name" class="form-control"
 								value='<%=orgAdminName%>'>
 						</div>
@@ -155,8 +151,8 @@
 						</div>
 						
 						<div class="col-lg-6">
-							<label>Principal/HR Manager Mobile *</label> <input type="number"
-								placeholder="Eg. 9876543210"
+							<label class="control-label">Principal/HR Manager Mobile *</label> <input type="number"
+								placeholder="9876543210"
 								name="org_admin_mobile" class="form-control"
 								value='<%=orgAdminMobile%>'>
 						</div>
@@ -175,7 +171,7 @@
 
 						<br>
 					</div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="padding-bottom: 0px">
 					<div class="form-group">
 						<button type="button" id="org_modal_submit"
 							class="btn btn-primary custom-theme-btn-primary"><%=(type.equalsIgnoreCase("Create")?"Create":"Update")%></button>

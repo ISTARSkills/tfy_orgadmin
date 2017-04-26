@@ -18,7 +18,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon"
-	href="img/user_images/recruiter_portal_trans_logo.png" />
+	href="img/user_images/new_talentify_logo.png" />
 <title>Talentify | Login</title>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">

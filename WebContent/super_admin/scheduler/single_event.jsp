@@ -52,7 +52,7 @@
 			<div class="form-group">
 				<label>Choose Associate Trainee</label>
 				<input type="hidden" id="single_associateTrainerID_holder" name="associateTrainerID" value=""/>
-				<select data-placeholder="select Groups AssociateTrainerID"  multiple
+				<select data-placeholder="Select Associate Trainer"  multiple
 						tabindex="4" name="" id="single_associateTrainerID" class="associateTrainer">
 						<option value="">Select Associate Trainers...</option>
 					       <%=ui.getAllTrainer(null)%>
@@ -60,9 +60,9 @@
 					</select>
 			</div>
 			<div class="form-group">
-				<label>Choose Batches</label> <select
+				<label>Choose Section</label> <select
 					class="form-control m-b batchGroupID scheduler_select" name="">
-					<option value="">Select BatchGroup...</option>
+					<option value="">Select Section...</option>
 				 <%=ui.getBatchGroups(colegeID,null)%> 
 
 				</select>
@@ -76,7 +76,7 @@
 				</select>
 			</div>
 			<div class="form-group">
-				<label>Select Type</label> <select
+				<label>Select Event Type</label> <select
 					class="form-control m-b eventType" name="eventType">
 					<option value="session">Session</option>
 					<option value="assessment">Assessment</option>
@@ -99,7 +99,7 @@
 			<div class="form-group">
 				<label>Select Class-Room</label> <select class="form-control m-b"
 					name="classroomID">
-					<!-- <option value="">Select classroom...</option> -->
+					 <option value="">Select Classroom...</option> 
 					<%=ui.getAllClassroom(colegeID)%>
 
 				</select>
@@ -114,7 +114,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="font-bold">Start Time</label>
+				<label class="font-bold">Event Time</label>
 				<div class="input-group clockpicker" data-autoclose="true">
 					<input type="text" class="form-control time_holder" name="startTime"
 						value="09:30"> <span class="input-group-addon"> <span
