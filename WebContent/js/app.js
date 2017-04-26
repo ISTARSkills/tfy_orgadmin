@@ -2,6 +2,9 @@
 var webSocket ;
 function readyFn(jQuery) {
 
+	initiateGraphFilter();
+	createGraphs();
+	
 	$('select').select2();
 	loadTables();
 
@@ -164,8 +167,111 @@ function readyFn(jQuery) {
 
 	
 }
+function initiateGraphFilter()
+{
+	
+	$(".graph_filter_selector" ).each(function() {
+		 
+		var params ={}; 
+		$.each($(this).context.dataset, function( index, value ) {
+			 // alert( index + ": " + value );
+			  params[index]=value;
+			});
+		
+		var filter_name = $(this).attr("name");
+		var filter_value = $(this).val();
+		params[filter_name]=filter_value;
+		
+		var report_id = $(this).data("report_id");
+		var data_table_id='chart_datatable_'+report_id;
+		$(this).unbind().on('change',function() {
+			  $.ajax({
+		             type: "POST",
+		             url: '../chart_filter',
+		             data: jQuery.param( params ),
+		             success: function(data){
+		            	 alert(data);
+		            	 $('#'+data_table_id).replaceWith(data);
+		            	 createGraphs();
+		             }
+		         });
+		  });
+		
+	});
+	
+	
+	
+	
 
- 	 
+}
+function createGraphs()
+ 	{
+ 		try{
+ 			$('.datatable_report').each(function(i, obj) {
+ 				var tableID  = $(this).attr('id');
+ 			    var containerID = '#'+$(this).data('graph_containter');
+ 			    var graph_type = $(this).data('graph_type');
+ 			    var graph_title =$(this).data('report_title'); 
+ 			    var y_axis_title =$(this).data('y_axis_title');
+ 			    if(graph_type.indexOf('table')<=-1)
+ 			    	{
+ 						console.log("App.js::handleGraphs() -> graph found --> " + tableID);
+ 						 var graph_title = $(this).data('graph_title');
+ 						
+ 						 $(containerID).highcharts({
+ 						        data: {
+ 						            table: tableID
+ 						        },
+ 						        chart: {
+ 						        	 zoomType: 'x',
+ 						            type: graph_type, 
+ 						            options3d: {
+ 						                enabled: true,
+ 						                alpha: 45
+ 						            }
+ 						        },
+ 						       title : {
+ 									text : graph_title
+ 								},
+ 								yAxis : {
+ 									allowDecimals : false,
+ 									title : {
+ 										text : y_axis_title
+ 									}
+ 								},
+ 						        tooltip: {
+ 						            crosshairs: [true,true],
+ 						            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+ 						            formatter: function() {
+ 						                return this.series.name+': <b>'+this.y+'</b>';
+ 						            }
+ 						        },
+ 						        plotOptions: {
+ 						            pie: {
+ 						                allowPointSelect: true,
+ 						                cursor: 'pointer',
+ 						                dataLabels: {
+ 						                    enabled: true,
+ 						                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+ 						                    style: {
+ 						                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+ 						                    }
+ 						                }
+ 						            }
+ 						        }
+ 						    });
+ 			    	}
+ 			    
+ 			   
+ 			});
+ 			
+ 			//Hide Table
+ 			//$('.dataTables_wrapper').hide();
+
+ 		} catch (err) {
+ 		console.log(err);
+ 		}
+ 	}
 	
 
 function initChat()
@@ -817,7 +923,7 @@ function init_orgadmin_dashboard() {
     create_competetion_view_calendar(true);
     create_dashboard_calendar();
     create_course_view_datatable(true);
-    create_program_view_datatable(true);
+   // create_program_view_datatable(true);
     scheduler_createOldEvent();
     mark_as_read_notification();
 }

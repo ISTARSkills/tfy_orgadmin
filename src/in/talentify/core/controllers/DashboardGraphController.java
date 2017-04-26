@@ -144,15 +144,10 @@ public class DashboardGraphController extends IStarBaseServelet {
 			
 			collegeId = Integer.parseInt(request.getParameter("collegeId"));
 			
-			out.append("	<table id='progress_view_datatable' data-college="+collegeId+" style='display: none'>"
-					+ "<thead><tr><th></th>");
-
-		
-
+			out.append("<table id='progress_view_datatable' data-college="+collegeId+" style='display: none'><thead><tr><th></th>");
 			String sql9 = "select id, created_at, batch_group_name, avg_score from bg_progress where college_id ="
 					+ collegeId + " ORDER BY created_at";
 			//System.out.println("sql------->" + sql9);
-			
 			List<HashMap<String, Object>> progress_views = dbutils.executeQuery(sql9);
 
 			String bg_name = "FALSE";

@@ -30,5 +30,4 @@
 <link href="<%=basePath%>css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=basePath%>css/jquery.rateyo.min.css">
 
-
 </head>

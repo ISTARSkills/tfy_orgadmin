@@ -1,3 +1,7 @@
+<%@page import="tfy.admin.services.AdminServices"%>
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="in.talentify.core.utils.ColourCodeUitls"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
@@ -56,19 +60,34 @@
 						<div class="panel-body">
 							<div class="form-group">
 								<label class="col-sm-3 control-label">Select Course</label>
-
 								<div class="col-sm-4">
-									<select class="form-control m-b" name="account"
-										id="select_course_program_view" data-college='<%=colegeID%>'>
-										<%=uiUtil.getCourses(colegeID)%>
+									<select class="form-control m-b graph_filter_selector"  data-report_id="3040" name="course_id" data-college_id="<%=colegeID%>">										
+										<%
+										AdminServices serv = new AdminServices();
+										ArrayList<Course> courses = serv.getCoursesInCollege(colegeID);
+										for(Course course : courses)
+										{
+										%>
+										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+										<%
+										} %>
 									</select>
 
 								</div>
 							</div>
-							<table id="program_view_datatable" style="display: none">
+							<!-- <table id="program_view_datatable" style="display: none">
 
 							</table>
-							<div id="program_view"></div>
+							<div id="program_view"></div> -->
+							<%ReportUtils utils = new ReportUtils();
+							HashMap<String, String> conditions = new HashMap<>();
+								conditions.put("college_id", colegeID+"");
+							if(courses.size()>0){
+								conditions.put("course_id", courses.get(0).getId()+"");
+							}
+							System.err.println();;							
+							%>
+							<%=utils.getHTML(3040, conditions) %>
 						</div>
 					</div>
 					<div id="tab-14" class="tab-pane">
