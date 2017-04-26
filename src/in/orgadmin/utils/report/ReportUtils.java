@@ -40,7 +40,7 @@ public class ReportUtils {
 		System.err.println(report.getSql());
 		String sql1=report.getSql();
 		out.append("<div class='graph_holder' id='graph_container_"+reportID+"' ></div> ");
-		out.append("<table class='data_holder datatable_report' data-graph_containter='graph_container_"+reportID+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
+		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+reportID+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
 				+ " data-graph_holder='container" + reportID + "' id='chart_datatable_"+reportID+"'");
 		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
 		out.append("<thead><tr>");
