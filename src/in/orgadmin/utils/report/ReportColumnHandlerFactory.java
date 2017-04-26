@@ -7,7 +7,7 @@ package in.orgadmin.utils.report;
  * @author vaibhav
  *
  */
-public class ReportColumnHandlerFactory {/*
+public class ReportColumnHandlerFactory {
 
 	private static ReportColumnHandlerFactory instance = null;
 
@@ -24,9 +24,13 @@ public class ReportColumnHandlerFactory {/*
 
 	public ColumnHandler getHandler(String columnHandler) {
 		switch (columnHandler) {
-		case "EDIT_CLASSROOM_HANDLER":
-			return (new EditClassroomHandler());
-		case "BATCH_ATTENDANCE_HANDLER":
+		case "PROFILE_IMAGE":
+			return (new ProfileImageHandler());
+		case "STAR_RATING":
+			return (new RatingHandler());
+		case "USER_HANDLER":
+			return (new UserHandler());	
+		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":
 			return (new ViewAssessmentDetailsHandler());
@@ -55,12 +59,12 @@ public class ReportColumnHandlerFactory {/*
 		case "TRAINER_LOGS_HANDLER":
 			return (new TrainerLogsHandler());	
 		case "VIEW_ATTENDANCE_DETAILS_HANDLER":
-			return (new Attendance_Detail_Handler());
+			return (new Attendance_Detail_Handler());*/
 		default:
 			break;
 		}
 		return null;
 
 	}
-*/
+
 }

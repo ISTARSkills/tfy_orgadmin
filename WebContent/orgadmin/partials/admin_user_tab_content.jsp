@@ -1,3 +1,6 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -7,8 +10,9 @@
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	
-/* OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
+
 int colegeID = (int)request.getSession().getAttribute("orgId");
+IstarUser orgadmin = (IstarUser) request.getSession().getAttribute("user");
 AdminUIServices adminUiServcies = new AdminUIServices();
 
 
@@ -44,8 +48,8 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 <br/><br/>
 			<div class="row">
 				<br>
-				<table class="table table-bordered datatable_istar" id='student_list' data-url='../get_list_of_users?college_id=<%=colegeID%>' >
-					<thead>
+				<%-- <table class="table table-bordered datatable_istar" id='student_list' data-report_id='3042' data-college_id='<%=colegeID%>' >
+				 <thead>
 						<tr>
 							<th data-visisble='true'>#</th>
 							<th data-visisble='true' >Name</th>
@@ -54,12 +58,19 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 							<th data-visisble='true' >Batch Group</th>
 							<th data-visisble='true' >Action</th>
 						</tr>
-					</thead>
-					<tbody>
-						
-					</tbody>
-				</table>
-
+				</thead>
+				
+				</table> --%>
+				<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");
+				conditions.put("college_id", colegeID+"");
+				
+				%>
+				
+				<%=util.getTableOuterHTML(3042, conditions)%>
 			</div>
 		</div>
 

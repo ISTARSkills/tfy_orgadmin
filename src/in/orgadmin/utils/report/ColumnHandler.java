@@ -8,8 +8,7 @@ public abstract class ColumnHandler {
 		super();
 	}
 
-	public abstract StringBuffer getHTML(String status, IstarUser user, String taskType, int taskID, int reportID,
-			String itemType);
+	public abstract StringBuffer getHTML( String value, int reportID);
 
 	
 

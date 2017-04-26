@@ -19,6 +19,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.json.JSONArray;
 
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -35,28 +36,87 @@ import in.talentify.core.utils.CMSRegistry;
 public class ReportUtils {
 
 	public StringBuffer getHTML(int reportID, HashMap<String, String> conditions) {
-		StringBuffer out = new StringBuffer();
+		
 		Report report = getReport(reportID);
 		System.err.println(report.getSql());
 		String sql1=report.getSql();
-		out.append("<div class='graph_holder' id='graph_container_"+reportID+"' ></div> ");
-		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+reportID+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
-				+ " data-graph_holder='container" + reportID + "' id='chart_datatable_"+reportID+"'");
-		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
-		out.append("<thead><tr>");
-		
-		for (String key : conditions.keySet()) {
-			
-				String paramName=":"+key;
-				
-				if (sql1.contains(paramName)) {
-					System.out.println("key->" + key + "   value-> " + conditions.get(key));
-					
-					sql1 =sql1.replaceAll(paramName, conditions.get(key));
-
-				}
-			
+		for (String key : conditions.keySet()) {			
+			String paramName=":"+key;				
+			if (sql1.contains(paramName)) {
+				System.out.println("key->" + key + "   value-> " + conditions.get(key));					
+				sql1 =sql1.replaceAll(paramName, conditions.get(key));
+			}			
 		}
+		System.out.println("report type>>"+report.getType_of_report());
+		if(report.getType_of_report().equalsIgnoreCase(ReportHolderTypes.COLUMN))
+		{
+			return getGraphHTML(sql1, report);
+		}			
+		else
+		{
+			return new StringBuffer();
+		}
+		
+		//return out;
+
+	}
+
+	/*public JSONArray getDataTableBody(String searchTerm, int reportId, HashMap<String, Object> condition)
+	{
+		
+	}*/
+	
+	
+	
+	
+	public StringBuffer getTableOuterHTML(int reportID, HashMap<String, String> conditions) {
+		Report report = getReport(reportID);
+		StringBuffer out = new StringBuffer();
+		String dataAttrString="";
+		for(String key: conditions.keySet())
+		{
+			dataAttrString+="data-"+key+"='"+conditions.get(key)+"'  ";
+		}
+		out.append("<table class='table table-bordered datatable_istar' "+dataAttrString+" id='chart_datatable_"+report.getId()+"' data-report_id='"+report.getId()+"'>");
+		out.append("<thead> <tr>");
+		
+		for (IStarColumn iterable_element : report.getColumns()) {
+			try {
+				if(iterable_element.isVisible){
+					out.append("<th data-visisble='true'>"+iterable_element.getDisplayName()+"</th>");
+				}				
+			} catch (Exception e) {				
+			}
+		}
+		
+		//DBUTILS db = new DBUTILS();
+		//List<HashMap<String, Object>> data = db.executeQuery(sql1);
+		out.append("</tr></thead>");
+		/*out.append("<tbody>");
+		for (HashMap<String, Object> hashMap : data) {
+			out.append("<tr>");
+			for (IStarColumn iterable_element : report.getColumns()) {
+				if(iterable_element.isVisible){
+				out.append("<td>"+hashMap.get(iterable_element.getName())+"</td>");	
+				}
+			}
+			
+			out.append("</tr>");
+		}
+		out.append("</tbody>");*/
+		out.append("</table>");
+		
+		return out;
+	}
+
+	private StringBuffer getGraphHTML(String sql1, Report report) {
+		StringBuffer out = new StringBuffer();
+		out.append("<div class='graph_holder' id='graph_container_"+report.getId()+"' ></div> ");
+		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+report.getId()+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
+				+ " data-graph_holder='container" + report.getId() + "' id='chart_datatable_"+report.getId()+"'");
+		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
+		out.append("<thead><tr>");		
+		
 		
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);
@@ -92,10 +152,7 @@ public class ReportUtils {
 		
 		out.append("</tbody> </table>");
 		
-		System.out.println(out.toString());
-		
 		return out;
-
 	}
 
 	public Report getReport(int reportID) {

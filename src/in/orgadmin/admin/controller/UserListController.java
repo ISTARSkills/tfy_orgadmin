@@ -86,12 +86,9 @@ public class UserListController extends HttpServlet {
 			jsonObject.put("recordsTotal", resultSize.size() + "");
 			jsonObject.put("recordsFiltered", resultSize.size() + "");
 			jsonObject.put("iDisplayLength", 10);
-
 			JSONArray array = new JSONArray();
 			for (HashMap<String, Object> item : data) {
-
 				// tableRowsdata.put(item.get("courses"));
-
 				if (condition(item, searchTerm) || searchTerm.equalsIgnoreCase("")) {
 					JSONArray tableRowsdata = new JSONArray();
 					tableRowsdata.put("<img style='width:27px' src='" + item.get("profile_image").toString()

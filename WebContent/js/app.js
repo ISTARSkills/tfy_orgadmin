@@ -4,7 +4,7 @@ function readyFn(jQuery) {
 
 	initiateGraphFilter();
 	createGraphs();
-	
+	createDataTables();
 	$('select').select2();
 	loadTables();
 
@@ -101,72 +101,46 @@ function readyFn(jQuery) {
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	
-/*	$.contextMenu({
-        selector: '.fc-event', 
-        callback: function(key, options) {
-            var m = "clicked: " + key;           
-           var eventid =  $(this).attr('event_id');
-   		if(key === 'delete'){
-   			
-   			console.log('----------status------->'+$(this).data('status'));
-   			
-   			 
-   			
-   			$.post(
-   	   				"../event_utility_controller", 
-   	   				{deleteEventid : eventid,status:$(this).data('status')}, 
-   	   				function(data) {location.reload();})
-   		}
-   		else if(key === 'edit'){
-   			
-   			var org_id = $('#org_id').val();
-   			var url;
-   			
-   			if(org_id != undefined && org_id != null){
-   				
-   				url= "../orgadmin/edit_old_event.jsp";
-   				
-   			}else{
-   				
-   				url= "../super_admin/edit_old_event.jsp";
-   			}
-   			
-   			
-   			$.post(url, 
-   					{eventid : eventid}, 
-   					function(data) {
-   						
-   						       $('.event-edit-modal').empty();
-   									$('.event-edit-modal').append(data);
-   									 $('#myModal2').modal('show');
-   								});
-   		}
-   		
-           
-            
-            
-        },
-        items: {
-            "delete": {name: "Delete", icon: "delete"},
-            "edit": {name: "Edit", icon: "edit",visible:true},
-        },
-        events:{show : function(options){
-           	if($(this).data('status')==='ASSESSMENT'){
-           		options.$menu.find('.context-menu-icon-edit').addClass('display-hidden');
-           	}else{
-           		options.$menu.find('.context-menu-icon-edit').removeClass('display-hidden');
-           	}
-          },
-          hide : function(options){
-                      
-          }
-        }
-    });*/
-	
-
-
 	
 }
+
+
+function createDataTables()
+{
+	$("table.datatable_istar" ).each(function() {
+		var id = $(this).attr('id');
+		var url = '../data_table_controller?';
+		var params ={}; 
+		$.each($(this).context.dataset, function( index, value ) {
+		
+			url +=index+'='+value+'&';
+			});		
+		alert(id);
+	    $('#'+id).DataTable({
+	         pageLength: 10,
+	         responsive: true,
+	         dom: '<"html5buttons"B>lTfgitp',
+	         buttons: [
+	             { extend: 'copy'},
+	             {extend: 'csv'},
+	             {extend: 'excel', title: 'ExampleFile'},
+	             {extend: 'pdf', title: 'ExampleFile'},
+	             {extend: 'print',
+	              customize: function (win){
+	                     $(win.document.body).addClass('white-bg');
+	                     $(win.document.body).css('font-size', '10px');
+	                     $(win.document.body).find('table')
+	                             .addClass('compact')
+	                             .css('font-size', 'inherit');
+	             }
+	             }
+	         ], "processing": true,
+	         "serverSide": true,
+	         "ajax": url	        
+	     });
+	});
+}
+
 function initiateGraphFilter()
 {
 	
@@ -803,7 +777,7 @@ $('.fc-event').on('click', function() {
 
 
 function loadTables(){
-	var url=$('.datatable').attr('url');
+	/*var url=$('.datatable').attr('url');
 	
 	$('table.datatable_istar').each(function(){
 	  var id=$(this).attr('id');
@@ -871,7 +845,7 @@ function loadTables(){
 
 	     });
 	  
-	});
+	});*/
 
 	
 }
