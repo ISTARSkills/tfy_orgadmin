@@ -16,6 +16,7 @@ public class Report {
 	String sql;
 	ArrayList<IStarColumn> columns;
 	String title;
+	String yAxisTitle;
 	String type_of_report;
 	Boolean dateselector = false;
 	int id;
@@ -136,6 +137,15 @@ public class Report {
 
 	public void setGroupByCol(String groupByCol) {
 		this.groupByCol = groupByCol;
+	}
+
+	@XmlElement(name="y_axis_title")
+	public String getyAxisTitle() {
+		return yAxisTitle;
+	}
+
+	public void setyAxisTitle(String yAxisTitle) {
+		this.yAxisTitle = yAxisTitle;
 	}
 
 	

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filter_lists>
+<filter id="1" type_of_filter="single_selection" related_report_list="3040">		    
+	<sql>
+	SELECT DISTINCT 	course. ID, 	course.course_name FROM 	batch_group, 	batch, 	course WHERE 	batch_group.college_id = 3 AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID</sql>	
+	<title>Select Course</title>
+</filter>
+</filter_lists>

@@ -7,7 +7,7 @@ package in.orgadmin.utils.report;
  * @author vaibhav
  *
  */
-public class ReportColumnHandlerFactory {
+public class ReportColumnHandlerFactory {/*
 
 	private static ReportColumnHandlerFactory instance = null;
 
@@ -62,5 +62,5 @@ public class ReportColumnHandlerFactory {
 		return null;
 
 	}
-
+*/
 }

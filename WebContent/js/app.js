@@ -2,8 +2,12 @@
 var webSocket ;
 function readyFn(jQuery) {
 
+
 	initiateGraphFilter();
 	createGraphs();
+
+
+
 	
 	$('select').select2();
 	loadTables();
@@ -271,6 +275,8 @@ function createGraphs()
  		} catch (err) {
  		console.log(err);
  		}
+
+
  	}
 	
 
@@ -925,7 +931,9 @@ function init_orgadmin_dashboard() {
     create_dashboard_calendar();
     create_course_view_datatable(true);
    // create_program_view_datatable(true);
+
     scheduler_createOldEvent();
+
     mark_as_read_notification();
 }
 

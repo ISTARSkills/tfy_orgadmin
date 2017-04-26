@@ -1,7 +1,7 @@
 /**
  * 
  */
-package in.talentify.core.utils;
+package in.orgadmin.utils.report;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -14,11 +14,19 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.utils.report.IStarColumn;
 import in.orgadmin.utils.report.Report;
 import in.orgadmin.utils.report.ReportCollection;
+import in.talentify.core.utils.CMSRegistry;
 
 /**
  * @author Vaibhav
@@ -30,44 +38,29 @@ public class ReportUtils {
 		StringBuffer out = new StringBuffer();
 		Report report = getReport(reportID);
 		System.err.println(report.getSql());
-		out.append("<div class='graph_holder' id='container" + reportID + "' ></div> ");
-		out.append("<table class='data_holder' data-report_title='"+report.getTitle()+"' "
-				+ " data-graph_holder='container" + reportID + "' id='datatable" + reportID
-				+ "' ");
+		String sql1=report.getSql();
+		out.append("<div class='graph_holder' id='graph_container_"+reportID+"' ></div> ");
+		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+reportID+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
+				+ " data-graph_holder='container" + reportID + "' id='chart_datatable_"+reportID+"'");
 		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
 		out.append("<thead><tr>");
-		DBUTILS db = new DBUTILS();
-		List<HashMap<String, Object>> data = db.executeQuery(report.getSql());
 		
-		List<HashMap<String, Object>> pivotedData = new ArrayList<>();
-		if(report.getIsPivot())
-		{
+		for (String key : conditions.keySet()) {
 			
-			for(String str: data.get(0).keySet())
-			{
-				System.out.println("keyset >>>"+str);
-				HashMap<String, Object> pivotedRow = new HashMap<>();
-				for(int i =0; i<data.size(); i++)
-				{
-					pivotedRow.put(data.get(i).get(str).toString(),str );
+				String paramName=":"+key;
 				
-					pivotedData.add(pivotedRow);
-				}
-				
+				if (sql1.contains(paramName)) {
+					System.out.println("key->" + key + "   value-> " + conditions.get(key));
 					
-			}
-			
-			out.append("<th>"+report.getGroupByCol().toString()+"</th>");
-			for(int i =0; i<data.size(); i++)
-			{
-				out.append("<th>"+data.get(i).get(report.getPrimaryColumn()).toString()+"</th>");
-			}
-			
-			
+					sql1 =sql1.replaceAll(paramName, conditions.get(key));
+
+				}
 			
 		}
-		else
-		{
+		
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql1);
+		
 			for (IStarColumn iterable_element : report.getColumns()) {
 				try {
 					out.append("<th>"+iterable_element.getDisplayName()+"</th>");
@@ -76,46 +69,9 @@ public class ReportUtils {
 					//e.printStackTrace();
 				}
 			}
-		}	
-				
-		
 		
 		out.append("</tr></thead> ");
-		out.append("<tbody>");
-		
-		
-		if(report.getIsPivot())
-		{
-			
-			int i=0;
-			for (HashMap<String, Object> hashMap : pivotedData) {
-				out.append("<tr>");
-				
-				for(String str : hashMap.keySet())
-				{
-					if(hashMap.get(str).toString().equalsIgnoreCase(report.getGroupByCol()))
-					{
-						out.append("<td>"+str+"</td>");	
-						break;
-					}
-				}
-				
-				for(String str : hashMap.keySet())
-				{
-					if(hashMap.get(str).toString().equalsIgnoreCase("avg_score"))
-					{
-						//out.append("<td>"+str+"</td>");
-						//out.append("<td>"+str+"</td>");
-					}
-				}
-				
-				
-				out.append("</tr>");
-			}
-			
-		}
-		else
-		{
+		out.append("<tbody>");	
 			int i=0;
 			for (HashMap<String, Object> hashMap : data) {
 				out.append("<tr>");
@@ -132,7 +88,7 @@ public class ReportUtils {
 				
 				out.append("</tr>");
 			}
-		}	
+			
 		
 		out.append("</tbody> </table>");
 		
@@ -146,7 +102,7 @@ public class ReportUtils {
 		ReportCollection reportCollection = new ReportCollection();
 		Report report = new Report();
 		try {
-			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("/report_list.xml");
+			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("report_list.xml");
 			File file = new File(url.toURI());
 			JAXBContext jaxbContext = JAXBContext.newInstance(ReportCollection.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
