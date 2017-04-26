@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <istar_reports>
 <reports id="3040" type_of_report="column">	
-	    <column columnHandler="NONE" display_name="Course Name" isVisible="true" name="name" />		
+	    <column columnHandler="NONE" display_name="Section Name" isVisible="true" name="name" />		
 		<column columnHandler="NONE" display_name="rookie" isVisible="true" name="rookie" />
 		<column columnHandler="NONE" display_name="apprentice" isVisible="true" name="apprentice" />
 		<column columnHandler="NONE" display_name="master" isVisible="true" name="master" />
 		<column columnHandler="NONE" display_name="wizard" isVisible="true" name="wizard" />
 	<sql>
-	SELECT 	batch_group. NAME, 	CAST ( 		(SUM(master) * 100) / COUNT (*) AS INTEGER 	) AS master, 	CAST ( 		(SUM(rookie) * 100) / COUNT (*) AS INTEGER 	) AS rookie, 	CAST ( 		(SUM(apprentice) * 100) / COUNT (*) AS INTEGER 	) AS apprentice, 	CAST ( 		(SUM(wizard) * 100) / COUNT (*) AS INTEGER 	) AS wizard FROM 	mastery_level_per_course, 	batch_group WHERE 	mastery_level_per_course.college_id = :college_id AND course_id = :course_id AND batch_group. ID = mastery_level_per_course.batch_group_id GROUP BY 	batch_group. NAME
-		</sql>
+SELECT 	batch_group. NAME, 	CAST (SUM (master) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS master, 	CAST (SUM (rookie) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS rookie, 	CAST (SUM (apprentice) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS apprentice, CAST ( 	SUM (wizard) * 100 / (  		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS wizard FROM 	mastery_level_per_course, 	batch_group WHERE 	mastery_level_per_course.college_id = :college_id AND course_id = :course_id AND batch_group. ID = mastery_level_per_course.batch_group_id GROUP BY 	batch_group. NAME		</sql>
 	<filter_sql>
 		
 	</filter_sql>	
 		<title>Section Wise Performance of Students</title>
 		<y_axis_title>Number of Students</y_axis_title>
 </reports>
+<reports id="3041" type_of_report="column">	
+	    <column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />		
+		<column columnHandler="NONE" display_name="rookie" isVisible="true" name="rookie" />
+		<column columnHandler="NONE" display_name="apprentice" isVisible="true" name="apprentice" />
+		<column columnHandler="NONE" display_name="master" isVisible="true" name="master" />
+		<column columnHandler="NONE" display_name="wizard" isVisible="true" name="wizard" />
+	<sql>
+SELECT 	course.course_name, 	CAST (AVG(master) * 100 AS INTEGER) AS master, 	CAST (AVG(rookie) * 100 AS INTEGER) AS rookie, 	CAST ( 		AVG (apprentice) * 100 AS INTEGER 	) AS apprentice, 	CAST (AVG(wizard) * 100 AS INTEGER) AS wizard, 	CAST ( 		( 			AVG (master) + AVG (rookie) + AVG (apprentice) + AVG (wizard) 		) AS INTEGER 	) AS total FROM 	mastery_level_per_course, 	course WHERE 	 mastery_level_per_course.college_id = :college_id AND batch_group_id = :batch_group_id AND course. ID = mastery_level_per_course.course_id GROUP BY 	course.course_name ORDER BY 	total		</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title>Program Wise Performance of Students</title>
+		<y_axis_title>Number of Students</y_axis_title>
+</reports>
 </istar_reports>
+
+

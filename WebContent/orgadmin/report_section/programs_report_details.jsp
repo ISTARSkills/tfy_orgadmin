@@ -1,3 +1,6 @@
+<%@page import="tfy.complexobject.utils.XMLSkillReportLAData"%>
+<%@page import="tfy.complexobject.utils.XMLStudentReport"%>
+<%@page import="tfy.studentcard.services.FlashXMLReportService"%>
 <%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>
@@ -234,171 +237,54 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 			<div class="<%=flag ? "col-lg-12" : "col-lg-6"%>">
 				<div class="ibox-content profile-content">
-					<h3 class="font-bold">Students Enrolled In <%=courseName %></h3>
-					<div class="ibox-content student_content_holder">
+					<h3 class="font-bold">Students Enrolled in <%=courseName %></h3>
+					<div class="ibox-content student_content_holder" style="height: 228px !important;">
 						<div id="student_list_container">
 							<%
 								if (student_list.size() > 0) {
-									FlashXMLReportService service = new FlashXMLReportService();
 									for (HashMap<String, Object> item : student_list) {
-										XMLStudentReport stuReport = service.getStudentReport(Integer.parseInt(item.get("student_id").toString()), skillId);
-										XMLSkillReportLAData skillData= new XMLSkillReportLAData();
-										if(stuReport!=null && stuReport.getOverAllData()!=null)
-										{
-											skillData = stuReport.getOverAllData();
-										}
 							%>
 							<div class="col-lg-2">
 								<div
 									class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder">
-									<div data-target="#<%=item.get("student_id").toString()%>"
+									<div data-target="#<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>"
 										class='holder-data'>
 										<img alt="image" class="img-circle m-t-sm student_image"
 											src="<%=item.get("profile_image").toString()%>" />
-										<p class="m-r-sm m-t-sm"><%=item.get("name").toString()%></p>
+										<p class="m-r-sm m-t-sm"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></p>
 									</div>
 									<div class="modal inmodal"
-										id="<%=item.get("student_id").toString()%>" tabindex="-1"
+										id="<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>" tabindex="-1"
 										role="dialog" aria-hidden="true">
 										<div class="modal-dialog">
 											<div class="modal-content animated flipInY">
-												<div class="modal-header" style="padding: 13px 18px !important;">
-												
+												<div class="modal-header">
 													<button type="button" class="close" data-dismiss="modal">
 														<span aria-hidden="true">&times;</span><span
 															class="sr-only">Close</span>
 													</button>
-													  <div class="m-b-md">
-                            <h2 class="font-bold no-margins">
-                                <%=item.get("name").toString()%>
-                            </h2>
-                                
-                                 <div>
-                                <span class="fa fa-envelope m-r-xs"></span>
-                               
-                                <%=item.get("email").toString()%> |
-                                 <span class="fa fa-phone m-r-xs"></span>
-                               
-                                <%=item.get("mobileno").toString()%>
-                            </div>
-                            </div>
+													<h4 class="modal-title"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></h4>
 												</div>
-												<div class="modal-body" style="padding: 0px 30px 9px 30px !important">												
-                        <div class="widget-head-color-box navy-bg p-lg text-center" style="padding:9px !important;">
-                          
-                             <div class="row">
-                             <div class="col-md-4">
-                           
-                                <h2 class="font-bold">#<%=skillData.getRank()%></h2>
-                                 <h3> <span> Batch Rank </span></h3>
-                             </div>
-                             <div class="col-md-4">
-                              <img src=" <%=item.get("profile_image").toString()%>" class="img-circle circle-border m-b-md" alt="profile" style="width: 128px;    height: 128px;">
-                             
-                             </div>
-                             <div class="col-md-4">
-                              <h2 class="font-bold"><%=skillData.getPointsEarned() %></h2>
-                                 <h3> <span> Points Earned </span></h3>
-                             </div>
-                            </div>
-                            
-                            
-                        </div> 
-                        
-                        <%
-                        if(skillData!=null && skillData.getSubSkills()!=null)
-                        {
-                        %>                      
-                            <div class="col-lg-12" style="    padding-left: 0px;    padding-right: 0px;    margin-top: 32px;">
-                    <!--  -->
-                    <div class="ibox ">
-                        <div class="ibox-title">
-                            <h5>Skill Profile</h5>
-                        </div>
-                        <div class="ibox-content" >
-                        <div class="full-height div-scroll-height-2"
-				style="height: 232px !important;">
-				<div class="full-height-scroll">
-		  
-		    <% for(XMLSkillReportLAData subSkill:  skillData.getSubSkills()){%>
-		        <div class="col-md-12" style="padding-left: 0px !important;">
-		            <ul class="tree1">
-		                <li><%=subSkill.getSkillName()%>
-		                    <ul> 
-		                    <% int percentagesubSkill=1;
-                                            	
-                                            	if(subSkill.getTotalPoints()!=null && subSkill.getTotalPoints()!=0){
-                                                      percentagesubSkill= subSkill.getPointsEarned()*100/subSkill.getTotalPoints();
-                                                      if(percentagesubSkill==0)
-                                                      {
-                                                    	  percentagesubSkill=1;
-                                                      }
-                                            	}
-                                                     %>
-		                    <div class="progress " >
-		                                <div style="width: <%=percentagesubSkill%>%; padding:20px;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentagesubSkill%>" role="progressbar" class="progress-bar ">
-		                                    
-		                                </div>
-		                            </div>
-		                        <p><%=subSkill.getPointsEarned() %> / <%=subSkill.getTotalPoints()%> Points.</p>
-		                     <%if(subSkill.getSubSkills().size()>0)
-                                        	{%>
-                                        	<%for(XMLSkillReportLAData child : subSkill.getSubSkills()){ %>
-		                        <li><%=child.getSkillName() %>
-		                        
-		                         <%
-                                                     int percentageChild=1;
-                                                 	if(child.getTotalPoints()!=null && child.getTotalPoints()!=0){
-                                                 		percentageChild= child.getPointsEarned()*100/child.getTotalPoints();
-                                                 		if(percentageChild==0)
-                                                 		{
-                                                 			percentageChild=1;
-                                                 		}
-                                                 	}
-                                                     %>
-		                         <div class="progress"  >
-		                                <div style="width: <%=percentageChild%>%; padding:20px;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentageChild%>" role="progressbar" class="progress-bar">
-		                                    
-		                                </div>
-		                            </div>
-		                        
-		                        </li>
-		                        
-		                       <%}
-                                        	
-		                       } %>
-		                           <!--  <li>Company Maintenance
-		                         <div class="progress"  >
-		                                <div style="width: 10%; padding:20px;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="35" role="progressbar" class="progress-bar">
-		                                    <span class="sr-only">35% Complete (success)</span>
-		                                </div>
-		                            </div>
-		                        
-		                        </li> -->
-		                    </ul>
-		                </li>
-		                
-		            </ul>
-		        </div>
-		        <%} %>            
+												<div class="modal-body">
+													<p>
+														<strong>First Name: </strong><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%>
+													</p>
+													<p>
+														<strong>Last Name: </strong><%=item.get("lastname").toString()!= null ?item.get("lastname").toString():""%>
+													</p>
+													<p>
+														<strong>Email: </strong><%=item.get("email").toString()!= null ?item.get("email").toString():""%>
+													</p>
+													<p>
+														<strong>Mobile: </strong><%=item.get("mobile").toString()!= null ?item.get("mobile").toString():""%>
+													</p>
+													<p>
+														<strong>Gender: </strong><%=item.get("gender").toString().toUpperCase()!= null ?item.get("gender").toString():""%>
+													</p>
+													<p>
+														<strong>College Name: </strong><%=item.get("college_name").toString()!= null ?item.get("college_name").toString():""%>
+													</p>
 
-</div></div>
-                        </div>
-
-                    </div>
-                </div>
-                            
-                         <%
-                        }
-                         %>   
-                            
-                            
-                            
-                            
-                            <!--  -->
-                       
-                
-												
 												</div>
 												<div class="modal-footer">
 													<button type="button" class="btn btn-primary"

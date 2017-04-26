@@ -194,7 +194,7 @@ function initiateGraphFilter()
 		             url: '../chart_filter',
 		             data: jQuery.param( params ),
 		             success: function(data){
-		            	 alert(data);
+		            	// alert(data);
 		            	 $('#'+data_table_id).replaceWith(data);
 		            	 createGraphs();
 		             }
@@ -929,7 +929,7 @@ function init_orgadmin_dashboard() {
     create_progress_view_chart(true);
     create_competetion_view_calendar(true);
     create_dashboard_calendar();
-    create_course_view_datatable(true);
+   // create_course_view_datatable(true);
    // create_program_view_datatable(true);
 
     scheduler_createOldEvent();

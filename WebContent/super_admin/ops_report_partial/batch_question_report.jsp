@@ -24,7 +24,7 @@
 <div class='title-action'>
 	<a
 		href="ops_report_partial/print_batch_question_report.jsp?assessmentId=<%=assessmentId%>&batchId=<%=batchId%>"
-		target="_blank" class="btn btn-primary"><i class="fa fa-print"></i>
+		target="_blank" class="btn btn-danger"><i class="fa fa-print"></i>
 		Print Report </a>
 </div>
 <%

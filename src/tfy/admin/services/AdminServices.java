@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.viksitpro.core.dao.entities.Batch;
 import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.Organization;
@@ -49,4 +50,28 @@ public class AdminServices {
 			return courses;
 		}	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<BatchGroup> getBatchGroupInCollege(int college_id)
+	{
+		
+		BatchGroupDAO dao = new BatchGroupDAO();
+		ArrayList<BatchGroup> batchGroup = new ArrayList<>();
+		if(college_id==-3)
+		{
+			//super admin
+			return (ArrayList<BatchGroup>)dao.findAll();
+		}
+		else
+		{
+			
+			Organization org = new OrganizationDAO().findById(college_id);
+			
+			batchGroup.addAll(org.getBatchGroups());
+	
+		}
+		return batchGroup;
+		
+	}
+	
 }
