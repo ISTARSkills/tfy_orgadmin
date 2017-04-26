@@ -97,7 +97,7 @@
 								<label class="col-sm-3 control-label">Select Section</label>
 
 								<div class="col-sm-4">
-								<select class="form-control m-b graph_filter_selector"  data-report_id="3040" name="batch_group_id" data-college_id="<%=colegeID%>">										
+								<select class="form-control m-b graph_filter_selector"  data-report_id="3041" name="batch_group_id" data-college_id="<%=colegeID%>">										
 										<%
 										ArrayList<BatchGroup> batchGroups = serv.getBatchGroupInCollege(colegeID);
 										for(BatchGroup batchGroup : batchGroups)

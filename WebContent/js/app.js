@@ -176,19 +176,21 @@ function initiateGraphFilter()
 	
 	$(".graph_filter_selector" ).each(function() {
 		 
-		var params ={}; 
-		$.each($(this).context.dataset, function( index, value ) {
-			 // alert( index + ": " + value );
-			  params[index]=value;
-			});
 		
-		var filter_name = $(this).attr("name");
-		var filter_value = $(this).val();
-		params[filter_name]=filter_value;
 		
 		var report_id = $(this).data("report_id");
 		var data_table_id='chart_datatable_'+report_id;
 		$(this).unbind().on('change',function() {
+			var params ={}; 
+			$.each($(this).context.dataset, function( index, value ) {
+				 // alert( index + ": " + value );
+				  params[index]=value;
+				});
+			
+			var filter_name = $(this).attr("name");
+			var filter_value = $(this).val();
+			params[filter_name]=filter_value;
+			
 			  $.ajax({
 		             type: "POST",
 		             url: '../chart_filter',
