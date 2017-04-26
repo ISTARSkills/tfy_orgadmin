@@ -14,12 +14,14 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content">
+			<div class="wrapper wrapper-content white-bg">
 
 				<div class="row white-bg">
-					<button class="btn btn-default dim pull-right" id="class-add" type="button">
+				<button type="button" class="btn btn-w-m btn-danger" id="class-add" style="margin-top: 16px;">Add Class Room</button>
+								<br><br>
+					<!-- <button class="btn btn-default dim pull-right" id="class-add" type="button">
 						<i class="fa fa-plus-circle"></i>
-					</button>
+					</button> -->
 				</div>
 
 				<div class="row">

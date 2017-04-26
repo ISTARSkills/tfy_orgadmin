@@ -2,6 +2,9 @@
 var webSocket ;
 function readyFn(jQuery) {
 
+	initiateGraphFilter();
+	createGraphs();
+	
 	$('select').select2();
 	loadTables();
 
@@ -75,7 +78,7 @@ function readyFn(jQuery) {
 	case 'super_admin_report':
 		init_super_admin_report();
 		initChat();
-		$('#Reports').css('color','  #eb384f');
+		$('#Students Reports').css('color','  #eb384f');
 		break;
 	case 'istar_notification':
 		init_istar_notification();
@@ -164,8 +167,111 @@ function readyFn(jQuery) {
 
 	
 }
+function initiateGraphFilter()
+{
+	
+	$(".graph_filter_selector" ).each(function() {
+		 
+		var params ={}; 
+		$.each($(this).context.dataset, function( index, value ) {
+			 // alert( index + ": " + value );
+			  params[index]=value;
+			});
+		
+		var filter_name = $(this).attr("name");
+		var filter_value = $(this).val();
+		params[filter_name]=filter_value;
+		
+		var report_id = $(this).data("report_id");
+		var data_table_id='chart_datatable_'+report_id;
+		$(this).unbind().on('change',function() {
+			  $.ajax({
+		             type: "POST",
+		             url: '../chart_filter',
+		             data: jQuery.param( params ),
+		             success: function(data){
+		            	 alert(data);
+		            	 $('#'+data_table_id).replaceWith(data);
+		            	 createGraphs();
+		             }
+		         });
+		  });
+		
+	});
+	
+	
+	
+	
 
- 	 
+}
+function createGraphs()
+ 	{
+ 		try{
+ 			$('.datatable_report').each(function(i, obj) {
+ 				var tableID  = $(this).attr('id');
+ 			    var containerID = '#'+$(this).data('graph_containter');
+ 			    var graph_type = $(this).data('graph_type');
+ 			    var graph_title =$(this).data('report_title'); 
+ 			    var y_axis_title =$(this).data('y_axis_title');
+ 			    if(graph_type.indexOf('table')<=-1)
+ 			    	{
+ 						console.log("App.js::handleGraphs() -> graph found --> " + tableID);
+ 						 var graph_title = $(this).data('graph_title');
+ 						
+ 						 $(containerID).highcharts({
+ 						        data: {
+ 						            table: tableID
+ 						        },
+ 						        chart: {
+ 						        	 zoomType: 'x',
+ 						            type: graph_type, 
+ 						            options3d: {
+ 						                enabled: true,
+ 						                alpha: 45
+ 						            }
+ 						        },
+ 						       title : {
+ 									text : graph_title
+ 								},
+ 								yAxis : {
+ 									allowDecimals : false,
+ 									title : {
+ 										text : y_axis_title
+ 									}
+ 								},
+ 						        tooltip: {
+ 						            crosshairs: [true,true],
+ 						            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+ 						            formatter: function() {
+ 						                return this.series.name+': <b>'+this.y+'</b>';
+ 						            }
+ 						        },
+ 						        plotOptions: {
+ 						            pie: {
+ 						                allowPointSelect: true,
+ 						                cursor: 'pointer',
+ 						                dataLabels: {
+ 						                    enabled: true,
+ 						                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+ 						                    style: {
+ 						                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+ 						                    }
+ 						                }
+ 						            }
+ 						        }
+ 						    });
+ 			    	}
+ 			    
+ 			   
+ 			});
+ 			
+ 			//Hide Table
+ 			//$('.dataTables_wrapper').hide();
+
+ 		} catch (err) {
+ 		console.log(err);
+ 		}
+ 	}
 	
 
 function initChat()
@@ -724,6 +830,7 @@ function loadTables(){
 		  $('#classroom_list_info').css('display','none');
 		  $('#feedback_list_info').css('display','none');
 		  $('#trainer_details_list_info').css('display','none');
+		  $('#account_details_list_info').css('display','none');
 		  
 		  
 		  $(".class-room-edit-popup").click(function(){
@@ -817,7 +924,7 @@ function init_orgadmin_dashboard() {
     create_competetion_view_calendar(true);
     create_dashboard_calendar();
     create_course_view_datatable(true);
-    create_program_view_datatable(true);
+   // create_program_view_datatable(true);
     scheduler_createOldEvent();
     mark_as_read_notification();
 }
@@ -852,6 +959,14 @@ function init_orgadmin_admin() {
 
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');
+    
+  /*  $('.gray-bg-schedular >li.active').click(function(){  	
+    	$('.associateTrainer').select2();
+    });*/
+    
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
+    	$('.associateTrainer').select2();
+    	});
     
   //---form submiton function
     scheduler_submitModal();
@@ -1006,7 +1121,7 @@ function init_orgadmin_report_detail(){
             }
         },
         series: [{
-            name: 'Brands',
+            name: 'Percentage',
             colorByPoint: true,
 
             data: $('#pieChartData').data('content')
@@ -1571,6 +1686,7 @@ function admin_load_resources(){
 		var tab=$(this);
 		var type=$(this).data('type');
 		var id=$(this).data('org');
+		var usercount =$(this).data('size');
 		var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
 		if(type=='User'){
 			url=url+'&offset=0'
@@ -2487,6 +2603,7 @@ else{
 		$('body').append(data);	        			
 		
 		$('#edit_org_model').on("shown.bs.modal",function(e){
+			
 			var baseURL = $(".js-data-example-ajax").data("pin_uri");
 			var urlPin = baseURL + "PinCodeController";
 
@@ -2519,8 +2636,9 @@ else{
 				templateResult : formatRepo,
 				templateSelection : formatRepoSelection
 			});
+			
 		});	        			
-
+		$('.js-data-example-ajax').select2();
 		$('#org_profile').unbind().on("keyup",function (){
 			
 			$('input[name=org_profile]').val($(this).val());
@@ -2566,7 +2684,23 @@ else{
     });
 	
 }
+function formatRepo(repo) {
+	if (repo.loading)
+		return repo.text;
 
+	var markup = "<div class='select2-result-repository clearfix'>"
+			+ repo.id + "</div>";
+
+	if (repo.description) {
+		markup += "<div class='select2-result-repository__description'>"
+				+ repo.id + "</div>";
+	}
+	return markup;
+}
+
+function formatRepoSelection(repo) {
+	return repo.id;
+}
 function accountmanagment_card_init() {
     $('.clickablecards').unbind().on("click",function() {
             $('.clickablecards').each(function() {
@@ -2638,6 +2772,11 @@ function init_super_admin_scheduler(){
 											window.location.href = url;
 });
 	   
+	   $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
+	    	$('.associateTrainer').select2();
+	    	});
+	    
+	   
 	   //---form submiton function
 	    scheduler_submitModal();
 	    
@@ -2694,7 +2833,7 @@ function init_super_admin_analytics() {
     trainerLevelGraph();
     trainerSkillGraph();
     studentFeedBackGraph();
-    trainerDetailsTable();
+   // trainerDetailsTable();
     studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
@@ -2775,8 +2914,31 @@ function programGraph(cID, oID) {
         $('#program_spiner').css('cssText', 'display:none !important');
 
         $("#datatable10").html(data);
-
         Highcharts.chart('container10', {
+            data: {
+                table: 'datatable10'
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Program Statistics'
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Units'
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                        this.point.y + ' ' + this.point.name.toLowerCase();
+                }
+            }
+        });
+
+        /*Highcharts.chart('container10', {
             data: {
                 table: document.getElementById('datatable10')
             },
@@ -2792,6 +2954,7 @@ function programGraph(cID, oID) {
                     text: 'Units'
                 }
             },
+            showInLegend: true,
             tooltip: {
                 formatter: function() {
                     return '<b>' + this.series.name + '</b><br/>' +
@@ -2802,7 +2965,7 @@ function programGraph(cID, oID) {
             legend: {
                 enabled: false
             }
-        });
+        });*/
     });
 
 
@@ -3298,13 +3461,13 @@ function trainerDataTable() {
 
 
 
-function trainerDetailsTable() {
+/*function trainerDetailsTable() {
     var urls = '../program_graphs?trainerDetails=trainerDetails';
     $.get(urls, function(data) {
         $("#trainer_details_body").html(data);
         trainerDataTable();
     });
-}
+}*/
 
 
 
@@ -3450,7 +3613,7 @@ function company_profile() {
 function init_istar_notification(){
 	
 	
-	
+	console.log('istar Notification');
 	$('#notification_type_holder').on("change", function() {
 		
 		if($(this).val() === 'playPresentation' ){

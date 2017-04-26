@@ -23,7 +23,7 @@ System.out.println(message.toString());
 
 
 %>
-<link rel="shortcut icon" href="<%=baseURL%>assets/img/talentify_logo_fav_48x48.png" />
+<link rel="shortcut icon" href="<%=baseURL%>img/user_images/new_talentify_logo.png" />
 
 <!-- Web Fonts -->
 <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'/>

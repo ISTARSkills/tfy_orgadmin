@@ -24,6 +24,8 @@
 <div class="tabs-container">
 
 	<div class="tabs-left">
+	
+	
 		<ul class="nav nav-tabs gray-bg tab-width-custom">
 
 			<%

@@ -13,8 +13,9 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	
 	 int user_id=(new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0)).getId();
 	 
-	 Organization college=new OrganizationDAO().findById(colegeID);
-	 user_id = college.getUserOrgMappings().iterator().next().getIstarUser().getId();
+	/*  Organization college=new OrganizationDAO().findById(colegeID); */
+	 user_id = ui.getOrgPrincipal(colegeID);
+	/*  user_id = college.getUserOrgMappings().iterator().next().getIstarUser().getId(); */
 	
 	
 %>
@@ -25,26 +26,12 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
 			<div class="row p-xl">
-				<div class="col-lg-2">
-				<input type="hidden" id="notification_college_holder" value="<%=colegeID%>">
-				<input type="hidden" id="adminID" value="<%=user_id%>">
-					<%-- <div class="form-group">
-						<label class="font-bold">Choose College</label>
-						<div>
-							<select data-placeholder="select College" tabindex="4"
-								id='notification_college_holder'>
-								<%=opsReport.getOrganization()%>
-							</select>
-						</div>
-					</div> --%>
-				</div>
-
-
+			
 				<div class="col-lg-2">
 					<div class="form-group">
 						<label class="font-bold">Choose Section</label>
 						<div>
-							<select data-placeholder="select Section" tabindex="4"
+							<select data-placeholder="Select Section" tabindex="4"
 								id='notification_batchgroup_holder'></select>
 						</div>
 					</div>
@@ -54,7 +41,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="form-group">
 						<label class="font-bold">Notification Type</label>
 						<div>
-							<select data-placeholder="select Notification" tabindex="4"
+							<select data-placeholder="Select Notification" tabindex="4"
 								id='notification_type_holder'>
 								<option value="null">Select Notification</option>
 								<option value="playPresentation">PLAY PRESENTATION</option>
@@ -70,7 +57,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						<div class="form-group">
 							<label class="font-bold">Choose Course</label>
 							<div id="notification_course_holder">
-								<select data-placeholder="select Course" tabindex="4"
+								<select data-placeholder="Select Course" tabindex="4"
 									data-url='' id='course_holder'></select>
 							</div>
 						</div>
@@ -79,7 +66,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						<div class="form-group">
 							<label class="font-bold">Choose Session</label>
 							<div>
-								<select data-placeholder="select Session" tabindex="4"
+								<select data-placeholder="Select Session" tabindex="4"
 									data-url='' id='notification_cmsession_holder'>
 								</select>
 							</div>
@@ -89,7 +76,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						<div class="form-group">
 							<label class="font-bold">Choose Presentation</label>
 							<div>
-								<select data-placeholder="select Presentation" tabindex="4"
+								<select data-placeholder="Select Presentation" tabindex="4"
 									data-url='' id='notification_ppt_holder'>
 								</select>
 							</div>
@@ -101,7 +88,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						<div class="form-group">
 							<label class="font-bold">Choose Assessment</label>
 							<div>
-								<select data-placeholder="select Assessment" tabindex="4"
+								<select data-placeholder="Select Assessment" tabindex="4"
 									data-url='' id='notification_assessment_holder'>
 									<%=ui.getAllAssessments()%>
 								</select>
@@ -110,7 +97,19 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					</div>
 				</div>
 
-
+<div class="col-lg-2">
+				<input type="hidden" id="notification_college_holder" value="<%=colegeID%>">
+				<input type="hidden" id="adminID" value="<%=user_id%>">
+					<%-- <div class="form-group">
+						<label class="font-bold">Choose College</label>
+						<div>
+							<select data-placeholder="select College" tabindex="4"
+								id='notification_college_holder'>
+								<%=opsReport.getOrganization()%>
+							</select>
+						</div>
+					</div> --%>
+				</div>
 
 			</div>
 			<div style="display: none" id="spinner_holder">
@@ -139,7 +138,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 									<div class="form-group">
 										<label>Comments</label>
 										<textarea class="form-control" id="comment"
-											placeholder="Write comment..."></textarea>
+											placeholder="Write Comment..."></textarea>
 									</div>
 									<div class="form-group">
 										<button class="btn btn-sm btn-danger pull-right m-t-n-xs"
@@ -159,7 +158,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 									<h3 class="m-b-xxs">
 										Student List <label class="checkbox-inline pull-right">
-											<input type="checkbox" id="checkAll"> checkAll
+											<input type="checkbox" id="checkAll"> Check All
 										</label>
 									</h3>
 									<div id="student_holder"></div>

@@ -18,12 +18,16 @@ Organization college=new OrganizationDAO().findById(colegeID);
 %>
 
 <div class="ibox">
+<button type="button" class="btn btn-w-m btn-danger" data-toggle="modal"
+								data-target="#create_group_model" style="margin-bottom: 10px;">Add Section</button>
 	<div class="col-lg-12">
 
-		<button class="btn btn-default pull-right" data-toggle="modal"
+		<!-- <button class="btn btn-default pull-right" data-toggle="modal"
 			data-target="#create_group_model" type="button">
 			<i class="fa fa-plus-circle"></i>
-		</button>
+		</button> -->
+		
+		
 
 		<div class="row">
 			<table class="table table-bordered dataTables-example" id='batch_group_list'>
@@ -58,17 +62,17 @@ Organization college=new OrganizationDAO().findById(colegeID);
 					</button>
 					<h4 class="modal-title text-center">Create Section</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" style="padding-bottom: 0px;">
 
 					<form class="form-horizontal"
 						action="<%=baseURL%>createOrUpdateBatchGroup" method="post">
 						<input type="hidden" value="" name="user_id" /> <input
 							type="hidden" value="<%=colegeID%>" name="college_id" />
 						<div class="form-group">
-							<h3 class="m-b-n-md">Name of the group</h3>
+							<h3 class="m-b-n-md">Name of the Section</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
-								<input type="text" placeholder="Group Name.." name="group_name"
+								<input type="text" placeholder="Section Name.." name="group_name"
 									class="form-control">
 							</div>
 						</div>
@@ -77,8 +81,8 @@ Organization college=new OrganizationDAO().findById(colegeID);
 							<h3 class="m-b-n-md">Description</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
-								<label>Short Text about Batch Group</label> <input type="text"
-									placeholder="Group Description.." name="group_desc"
+								<label class="font-noraml">Short Text about Section</label> <input type="text"
+									placeholder="Section Description.." name="group_desc"
 									class="form-control">
 							</div>
 						</div>
@@ -103,7 +107,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 							</div>
 						</div>
 						<input type="hidden" name="student_list">
-						 <div class="modal-footer">
+						 <div class="modal-footer" style="padding-bottom: 0px;">
 						<div class="form-group">
 							<button type="submit" class="btn btn-danger">Save
 								changes</button>

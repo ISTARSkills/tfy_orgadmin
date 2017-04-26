@@ -15,7 +15,18 @@ UIUtils ui_Util = new UIUtils();
 		<div class="ibox-content">
 
 			<div class="row">
-				<div class="col-lg-5">
+			<div class="col-lg-2">
+			<div class="form-group">
+				<label>Choose Organization</label> 
+				<select class="form-control m-b org_holder_programTab " name="orgID">
+				
+					<%= ui_Util.getOrganization() %>
+
+				</select>
+			</div>
+			</div>
+			
+				<div class="col-lg-2">
 					<div class="form-group">
 						<label>Choose Program</label> <select
 							class="form-control m-b course_holder " name="courseID">
@@ -26,16 +37,7 @@ UIUtils ui_Util = new UIUtils();
 					</div>
 				</div>
 			
-					<div class="col-lg-5">
-			<div class="form-group">
-				<label>Choose Organization</label> 
-				<select class="form-control m-b org_holder_programTab " name="orgID">
-				
-					<%= ui_Util.getOrganization() %>
-
-				</select>
-			</div>
-			</div>
+					
 				</div>
 
 		</div>
@@ -84,7 +86,9 @@ UIUtils ui_Util = new UIUtils();
 			
 			%>
 			
-			<table class="table table-bordered">
+			<div class="table-responsive">
+						<table
+							class="table table-bordered datatable_istar" id='account_details_list' data-url='../program_graphs?accountDetails=accountDetails'>
                                 <thead>
                                 <tr>
                                     
@@ -95,24 +99,12 @@ UIUtils ui_Util = new UIUtils();
                                     <th>Apprentice</th>
                                 </tr>
                                 </thead>
-                               
-                                <tbody>
-                               <% for (HashMap<String, Object> data :getTableData){ %>
-                                <tr>
-                                    
-                                    <td><%=data.get("cname") %></td>
-                                    <td><%=data.get("avgapp") %></td>
-                                    <td><%=data.get("avgrooki") %></td>
-                                    <td><%=data.get("avgmaaster") %></td>
-                                    <td><%=data.get("avgwiz") %></td>
-                                </tr>
-                                <%} %>
-                                </tbody>
+                        
                             </table>
 			
 			
 			
-			
+			</div>
 			</div>
 		</div>
 	</div>

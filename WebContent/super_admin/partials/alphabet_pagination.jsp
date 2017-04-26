@@ -1,7 +1,10 @@
 <div class="ibox float-e-margins">
 	<div class="ibox-content">
+	<button type="button" class="btn btn-w-m btn-danger paginatedalphabet" data-char="add" >Add Organization</button>
+	
 		<nav>
-			<ul class="pagination">
+			<ul class="pagination" style="margin:0px !important;">
+			<li><a href="#" class="text-center paginatedalphabet" data-char="0">All</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="a">A</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="b">B</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="c">C</a></li>

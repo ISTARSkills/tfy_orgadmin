@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>
 <%@page import="in.orgadmin.calender.utils.CalenderUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
@@ -32,9 +34,12 @@
 	
 	int sessionCount = 0;
 	int assessmentCount=0;
+	String courseName="";
 	if (request.getParameter("course_id") != null
 			&& !request.getParameter("course_id").toString().equalsIgnoreCase("null")) {
 		flag = true;
+		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
+		courseName = course.getCourseName();
 		System.out.println("course_id -------" + request.getParameter("course_id").toString());
 		pieChartData = jsonUIUtils.getPieChartData(
 				Integer.parseInt(request.getParameter("course_id").toString()), college_id, "Program");
@@ -53,7 +58,8 @@
 			&& !request.getParameter("batch_id").toString().equalsIgnoreCase("null")) {
 		flag = false;
 		System.out.println("batch_id--------" + request.getParameter("batch_id").toString());
-
+		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
+		courseName = batch.getCourse().getCourseName();
 		pieChartData = jsonUIUtils.getPieChartData(
 				Integer.parseInt(request.getParameter("batch_id").toString()), college_id, "Batch");
 		barChartData = jsonUIUtils.getBarChartData(
@@ -136,7 +142,7 @@
 		<!-- row1 end -->
 		<br>
 
-		<!-- row2 start -->
+	<%-- 	<!-- row2 start -->
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="ibox">
@@ -189,15 +195,15 @@
 				</div>
 			</div>
 		</div>
-		<!-- row2 end -->
+		<!-- row2 end --> --%>
 		<br>
 
 		<!-- row3 start -->
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="col-lg-7">
-					<div class="ibox-content">
-						<div id="container"
+					<div class="ibox-content" style="height: 672px !important;">
+						<div id="container" style="height: 641px !important;"
 							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
 
 						<table id="datatable" style="display: none;">
@@ -215,7 +221,7 @@
 					</div>
 				</div>
 				<div class="col-lg-5">
-				<div class="ibox white-bg" style="padding-top: 5px;">
+				<div class="ibox white-bg" style="padding-top: 5px; height: 672px !important;"">
 				<%=new ColourCodeUitls().getColourCodeForReports() %>
 					<div class="ibox-content">
 						<%
@@ -244,9 +250,8 @@
 
 			<div class="<%=flag ? "col-lg-12" : "col-lg-6"%>">
 				<div class="ibox-content profile-content">
-					<h3 class="font-bold">Students Enrolled in Data Analytics
-						Program</h3>
-					<div class="ibox-content student_content_holder">
+					<h3 class="font-bold">Students Enrolled in <%=courseName %></h3>
+					<div class="ibox-content student_content_holder" style="height: 228px !important;">
 						<div id="student_list_container">
 							<%
 								if (student_list.size() > 0) {

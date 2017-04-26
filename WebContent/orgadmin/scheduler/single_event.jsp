@@ -47,8 +47,8 @@ user_id = ui.getOrgPrincipal(colegeID);
 			</div>
 			<div class="form-group">
 				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="single_associateTrainerID_holder" name="associateTrainerID" value="NONE"/>
-				<select data-placeholder="select Groups AssociateTrainerID"  multiple
+				<input type="hidden" id="single_associateTrainerID_holder" name="associateTrainerID" value="0"/>
+				<select data-placeholder="Select Associate Trainer"  multiple
 						tabindex="4" name="" id="single_associateTrainerID" class="associateTrainer">
 						<option value="">Select Associate Trainers...</option>
 					       <%=ui.getAllTrainer(null)%>
@@ -56,9 +56,9 @@ user_id = ui.getOrgPrincipal(colegeID);
 					</select>
 			</div>
 			<div class="form-group">
-				<label>Choose Batches</label> <select
+				<label>Choose Section</label> <select
 					class="form-control m-b batchGroupID scheduler_select" name="">
-					<option value="">Select BatchGroup...</option>
+					<option value="">Select Section...</option>
 					<%=ui.getBatchGroups(colegeID,null)%>
 
 				</select>
@@ -73,7 +73,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 				</select>
 			</div>
 			<div class="form-group">
-				<label>Select Type</label> <select
+				<label>Select Event Type</label> <select
 					class="form-control m-b eventType" name="eventType">
 					<option value="session">Session</option>
 					<option value="assessment">Assessment</option>
@@ -110,7 +110,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="font-bold">Start Time</label>
+				<label class="font-bold">Event Time</label>
 				<div class="input-group clockpicker" data-autoclose="true">
 					<input type="text" class="form-control time_holder" name="startTime"
 						value="09:30"> <span class="input-group-addon"> <span

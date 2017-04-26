@@ -11,7 +11,7 @@
 					<div class="form-group">
 						<label class="font-bold">Choose College</label>
 						<div>
-							<select data-placeholder="select College" tabindex="4" class="report_college"
+							<select data-placeholder="Select College" tabindex="4" class="report_college"
 								id='report_college'>
 								<%=opsReport.getOrganization()%>
 							</select>
@@ -23,7 +23,7 @@
 					<div class="form-group">
 						<label class="font-bold">Choose Section</label>
 						<div>
-							<select data-placeholder="select Section" tabindex="4" class="report_batch"
+							<select data-placeholder="Select Section" tabindex="4" class="report_batch"
 								id='report_batch'>
 
 							</select>
@@ -35,7 +35,7 @@
 					<div class="form-group">
 						<label class="font-bold">Choose Assessment</label>
 						<div>
-							<select data-placeholder="select Assessment" tabindex="4" data-url='../ops_report_partial/student_assessment_report.jsp' class="report_assessment"
+							<select data-placeholder="Select Assessment" tabindex="4" data-url='../ops_report_partial/student_assessment_report.jsp' class="report_assessment"
 								id='report_assessment'>
 							</select>
 						</div>

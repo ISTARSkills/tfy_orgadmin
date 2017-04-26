@@ -1713,7 +1713,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc:after,
 
 .dataTables_length {
 	float: left;
-    margin-top: 60px;
+   
 }
 
 .dataTables_filter label {
@@ -4346,7 +4346,7 @@ table.table-mail tr td {
 }
 
 .college-bg {
-	background-color: #cdf0e9;
+	background-color: #FCEAEC;
 	color: #ffffff;
 }
 .yellow-bg {
@@ -5531,7 +5531,7 @@ a.compose-mail {
 
 @media screen and (min-width: 1450px) and (max-width: 1600px){
 	span.select2.select2-container.select2-container--default{
-	width: 240px !important;
+	width: 100% !important;
 	}
 }
 
@@ -10058,13 +10058,13 @@ body.md-skin {
 div.dataTables_wrapper div.dataTables_filter {
 	text-align: right;
 	float: left;
-	background: #e0e0e0;
+	
 	padding-left: 10px;
 	padding-top: 6px;
 	padding-right: 13px;
 	margin-bottom: 13px;
-	border: 1px solid #c5baba;
-	margin-top: 40px;
+	
+	
     float: right;
 }
 
@@ -11046,7 +11046,7 @@ width: 150px;height: 150px;
 }
 
 #super_admin_account_managment .pagination>li>a{
-	width: 3.84% !important;
+	width: 3.60% !important;
 	min-height: 60px;
 	padding: 20px 10px !important;
 }
