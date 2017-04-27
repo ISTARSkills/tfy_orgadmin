@@ -48,14 +48,7 @@ public class ReportUtils {
 			}			
 		}
 		System.out.println("report type>>"+report.getType_of_report());
-		if(report.getType_of_report().equalsIgnoreCase(ReportHolderTypes.COLUMN))
-		{
-			return getGraphHTML(sql1, report);
-		}			
-		else
-		{
-			return new StringBuffer();
-		}
+		return getGraphHTML(sql1, report);
 		
 		//return out;
 

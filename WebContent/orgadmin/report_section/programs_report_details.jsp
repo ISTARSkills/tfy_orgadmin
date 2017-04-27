@@ -1,6 +1,4 @@
-<%@page import="tfy.complexobject.utils.XMLSkillReportLAData"%>
-<%@page import="tfy.complexobject.utils.XMLStudentReport"%>
-<%@page import="tfy.studentcard.services.FlashXMLReportService"%>
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>
@@ -20,11 +18,12 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	request.setAttribute("base_url", baseURL);
-	
+	ReportUtils util = new ReportUtils();
+	HashMap<String, String> conditions = new HashMap();
 	UIUtils uiUtil = new UIUtils();
 	boolean flag = false;
 	JsonUIUtils jsonUIUtils = new JsonUIUtils();
-	JSONArray pieChartData = null;
+	//JSONArray pieChartData = null;
 	StringBuffer attendanceData = null;
 	JSONArray calendardata = null;
 
@@ -35,12 +34,15 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		int sessionCount = 0;
 		int assessmentCount=0;
 		String courseName="";
+		String batch_id=null;
+		String course_id=null;
 	if (request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
 		flag = true;
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
 		courseName = course.getCourseName();
+		course_id =request.getParameter("course_id");
 		System.out.println("course_id -------"+request.getParameter("course_id").toString());
-		pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
+		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
@@ -52,8 +54,8 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
 		courseName = batch.getCourse().getCourseName();
 		System.out.println("batch_id--------"+request.getParameter("batch_id").toString());
-
-		pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
+		batch_id =request.getParameter("batch_id");
+		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
@@ -76,17 +78,17 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 %>
 
 
-<div id="data-holder" style='display: none;'>
+<%-- <div id="data-holder" style='display: none;'>
 	<div id='nosofpages' data-content='<%=nosofpages%>'></div>
 	<div id='pieChartData' data-content='<%=pieChartData%>'></div>
 	<div id='barchartTitle' data-content='<%=barChartData.get(0)%>'></div>
 	<div id='barchartContent' data-content='<%=barChartData.get(1)%>'></div>
-</div>
+</div> --%>
 
 <div collegeid="<%=college_id%>" id="myid"
 	data-course="<%=courseOrBatchId %>" type="<%=flag%>"></div>
-<div id="wrapper">
-	<div id="page-wrapper" class="gray-bg">
+<!-- <div id="wrapper">
+	<div id="page-wrapper" class="gray-bg"> -->
 		<div class="row wrapper border-bottom white-bg page-heading">
 			<div class="col-lg-9">
 				<% if(request.getParameter("headname") != null && !request.getParameter("headname").toString().equalsIgnoreCase("null")){
@@ -105,8 +107,28 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 				<div class="col-lg-3 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container1"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+					
+					
+								
+								<%
+								  conditions = new HashMap();
+							      conditions.put("college_id", college_id+"");
+							      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("batch_id", batch_id);  
+							    	 %>
+							    	 <%= util.getHTML(3048, conditions) %>
+							    	 <% 
+							      }
+							      
+							      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("course_id", course_id); 
+							    	  %>
+								    	 <%= util.getHTML(3050, conditions) %>
+								    	 <%
+							      }
+				%>
+				
+				
 					</div>
 				</div>
 
@@ -114,17 +136,42 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 				<div class="col-lg-9 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container2"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+					
+							
+								 <%
+			      conditions = new HashMap();
+			      conditions.put("college_id", college_id+"");
+			      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+			    	  conditions.put("batch_id", batch_id);  
+			    	  %>
+				    	 <%= util.getHTML(3049, conditions) %>
+				    	 <%
+			      }
+			      
+			      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+			    	  conditions.put("course_id", course_id); 
+			    	  %>
+				    	 <%= util.getHTML(3051, conditions) %>
+				    	 <%
+			      }
+			      
+			      
+				%>
+				
+				
+				
+				
+				</div>
+						
 					</div>
 				</div>
 
 			</div>
 
 
-		</div>
+		
 		<!-- row1 end -->
-		<br>
+		<br/><br/>
 
 		<%-- <!-- row2 start -->
 		<div class="row">
@@ -182,7 +229,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 			</div>
 		</div>
 		<!-- row2 end --> --%>
-		<br>
+		
 
 		<!-- row3 start -->
 		<div class="row">
@@ -201,7 +248,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 								</tr>
 							</thead>
 							<tbody>
-								<%=attendanceData %>
+								 <%=attendanceData %> 
 							</tbody>
 						</table>
 					</div>
@@ -387,10 +434,10 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 
 
-	</div>
-	<!-- page wrapper end -->
+<!-- 	</div>
+	page wrapper end
 
-</div>
+</div> -->
 
 
 <!-- Mainly scripts -->

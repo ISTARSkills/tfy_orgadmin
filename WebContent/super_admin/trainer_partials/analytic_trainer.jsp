@@ -1,3 +1,4 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -85,8 +86,23 @@ UIUtils ui_Util = new UIUtils();
 					
 				</div>
 				<div class="ibox-content">
-
-					<div class="table-responsive">
+<div class="row">
+			
+			
+			
+			
+			<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");			
+				%>
+				
+				<%=util.getTableOuterHTML(3048, conditions)%>
+				
+				
+				</div>
+					<!-- <div class="table-responsive">
 						<table
 							class="table table-bordered datatable_istar" id='trainer_details_list' data-url='../program_graphs?trainerDetails=trainerDetails'>
 							<thead>
@@ -106,7 +122,7 @@ UIUtils ui_Util = new UIUtils();
 						</table>
 
 
-					</div>
+					</div> -->
 				</div>
 			</div>
 		</div>

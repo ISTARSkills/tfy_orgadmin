@@ -193,7 +193,7 @@ SELECT DISTINCT 	csobj.skill_objective_id, 	C .course_name, 	CAST ( 		AVG (sp.pe
 		<y_axis_title>Number of Students</y_axis_title>
 </reports>
 
-<reports id="3045" type_of_report="column">	
+<reports id="3045" type_of_report="table">	
         <column columnHandler="NONE" display_name="Section Code" isVisible="true" name="batch_code" />
 		<column columnHandler="NONE" display_name="Section Name" isVisible="true" name="bg_name" />
 		<column columnHandler="NONE" display_name="Number of Batchs" isVisible="true" name="batches" />
@@ -225,5 +225,89 @@ SELECT 	profile_image, 	first_name, 	(case when atten_perc is not null then 				
 	</filter_sql>	
 		<title>Section Wise Performance of Students</title>
 		<y_axis_title>Number of Students</y_axis_title>
+</reports>
+<reports id="3047" type_of_report="table">	
+		<column columnHandler="NONE" display_name="Account Name" isVisible="true" name="cname" />
+		<column columnHandler="NONE" display_name="Master" isVisible="true" name="avgmaaster" />
+		<column columnHandler="NONE" display_name="Wizard" isVisible="true" name="avgwiz" />
+		<column columnHandler="NONE" display_name="Rooki" isVisible="true" name="avgrooki" />
+		<column columnHandler="NONE" display_name="Apprentice" isVisible="true" name="avgapp" />		
+	<sql>
+SELECT 	T1.cname, 	T1.summaster / countmaster AS avgmaaster, 	T1.sumwizard / countwizard AS avgwiz, 	T1.sumrookie / countrookie AS avgrooki, 	T1.sumapprentice / countapprentice AS avgapp,   count(*) OVER() as total_rows FROM 	( 		SELECT 			organization. NAME AS cname, 			SUM ( 				mastery_level_per_course.apprentice 			) AS sumapprentice, 			SUM ( 				mastery_level_per_course.rookie 			) AS sumrookie, 			SUM ( 				mastery_level_per_course.master 			) AS summaster, 			SUM ( 				mastery_level_per_course.wizard 			) AS sumwizard, 			COUNT ( 				mastery_level_per_course.apprentice 			) AS countapprentice, 			COUNT ( 				mastery_level_per_course.rookie 			) AS countrookie, 			COUNT ( 				mastery_level_per_course.master 			) AS countmaster, 			COUNT ( 				mastery_level_per_course.wizard 			) AS countwizard 		FROM 			mastery_level_per_course, 			organization 		WHERE 			organization. ID = mastery_level_per_course.college_id 		GROUP BY 			cname 	) T1 order by :order_by_column :order_type limit :limit offset :offset
+		</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
+</reports>
+
+<reports id="3048" type_of_report="table">	
+		<column columnHandler="NONE" display_name="ID" isVisible="true" name="tid" />
+		<column columnHandler="NONE" display_name="Trainer Name" isVisible="true" name="tname" />
+		<column columnHandler="NONE" display_name="Trainer Email" isVisible="true" name="temail" />
+		<column columnHandler="STAR_RATING" display_name="Rating" isVisible="true" name="avgrating" />
+		<column columnHandler="NONE" display_name="Late Started" isVisible="true" name="late_started" />	
+		<column columnHandler="NONE" display_name="Early Ended" isVisible="true" name="early_ended" />	
+		<column columnHandler="NONE" display_name="Location" isVisible="true" name="city" />		
+		<column columnHandler="NONE" display_name="Unbilled Hours" isVisible="true" name="hours" />			
+	<sql>
+SELECT   TF.tid, 	TF.tname, 	TF.joindate, 	TF.temail, 	TF.avgrating, 	COALESCE (TF.LATE_STARTED, 0) AS LATE_STARTED, 	COALESCE (TF.EARLY_ENDED, 0) AS EARLY_ENDED, 	TF.city, 	COALESCE (TF.hours, 0) AS hours, 	COALESCE (TF. MIN, 0) AS MIN, count(*) OVER() as total_rows 	 FROM 	( 		( 			SELECT 				tid, 				joindate, 				tname, 				temail, 				city, 				( 					CASE 					WHEN round( 						AVG (student_feedback.rating) 					) IS NULL THEN 						1 					ELSE 						round( 							AVG (student_feedback.rating) 						) 					END 				) AS avgrating 			FROM 				( 					SELECT 						istar_user. ID AS tid, 						istar_user.created_at AS joindate, 						user_profile.first_name AS tname, 						istar_user.email AS temail, 						pincode.city AS city 					FROM 						address, 						pincode, 						istar_user, 						user_profile, 						user_role 					WHERE 						user_profile.address_id = address. ID 					AND istar_user. ID = user_profile.user_id 					AND address.pincode_id = pincode. ID 					AND user_profile.user_id = user_role.user_id 					AND user_role.role_id = 14 				) xxx 			LEFT JOIN batch_schedule_event ON ( 				xxx.tid = batch_schedule_event.actor_id 			) 			LEFT JOIN student_feedback ON ( 				student_feedback.trainer_id = xxx.tid 				AND student_feedback.event_id = batch_schedule_event. ID 			) 			GROUP BY 				tid, 				joindate, 				tname, 				temail, 				city 			ORDER BY 				tid 		) T1 		LEFT JOIN ( 			SELECT 				exception_log.trainer_id AS t_id, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'LATE_STARTED' 				) AS LATE_STARTED, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'EARLY_ENDED' 				) AS EARLY_ENDED 			FROM 				exception_log 			WHERE 				exception_log.exception_component = 'EVENT_DELIVERY' 			GROUP BY 				exception_log.trainer_id 		) T2 ON (T1.tid = T2.t_id) 		LEFT JOIN ( 			SELECT 				batch_schedule_event.actor_id AS tids, 				SUM ( 					batch_schedule_event.eventhour 				) AS hours, 				SUM ( 					batch_schedule_event.eventminute 				) AS MIN 			FROM 				batch_schedule_event 			WHERE 				batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' 			AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' 			GROUP BY 				actor_id 		) T3 ON (T3.tids = T1.tid) 	) TF	order by :order_by_column :order_type limit :limit offset :offset	</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
+</reports>
+
+<reports id="3048" type_of_report="pie">	
+		<column columnHandler="NONE" display_name="Category" isVisible="true" name="category" />
+		<column columnHandler="NONE" display_name="Count" isVisible="true" name="count" />
+	<sql>	
+SELECT unnest(array['master', 'wizard', 'rookie', 'apprentice']) AS category,    unnest(array[TF.master, TF.wizard, TF.rookie,TF.apprentice]) AS count FROM (  SELECT DISTINCT 	CAST ( 		COALESCE ( 			AVG ( 				CAST (NULLIF(master, 0) AS INTEGER) 			), 			0 		) AS INTEGER 	) AS master, 	CAST ( 		COALESCE ( 			AVG ( 				CAST (NULLIF(rookie, 0) AS INTEGER) 			), 			0 		) AS INTEGER 	) AS rookie, 	CAST ( 		COALESCE ( 			AVG ( 				CAST ( 					NULLIF (apprentice, 0) AS INTEGER 				) 			), 			0 		) AS INTEGER 	) AS apprentice, 	CAST ( 		COALESCE ( 			AVG ( 				CAST (NULLIF(wizard, 0) AS INTEGER) 			), 			0 		) AS INTEGER 	) AS wizard FROM 	mastery_level_per_course, 	batch WHERE 	batch. ID = :batch_id AND batch.batch_group_id = mastery_level_per_course.batch_group_id AND college_id = :college_id GROUP BY 	mastery_level_per_course.batch_group_id, 	mastery_level_per_course.college_id      )TF</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
+</reports>
+<reports id="3049" type_of_report="bar">	
+        <column columnHandler="NONE" display_name="Skill Name" isVisible="true" name="name" />
+		<column columnHandler="NONE" display_name="Master" isVisible="true" name="master" />
+		<column columnHandler="NONE" display_name="Wizard" isVisible="true" name="wizard" />
+		<column columnHandler="NONE" display_name="Rookie" isVisible="true" name="rookie" />
+		<column columnHandler="NONE" display_name="Apprentice" isVisible="true" name="apprentice" />
+	<sql>	
+WITH summary AS ( 	SELECT 		skill_objective.name, 		rookie, 		master, 		apprentice, 		wizard, 		ROW_NUMBER () OVER ( 			PARTITION BY skill_objective.name 			ORDER BY 				mastery_level_per_course.created_at DESC 		) AS rk 	FROM 		mastery_level_per_course, 		skill_objective, 		batch 	WHERE 		batch.batch_group_id = mastery_level_per_course.batch_group_id 	AND batch. ID = :batch_id 	AND college_id = :college_id 	AND skill_objective. ID = mastery_level_per_course.skill_id 	AND ( 		rookie + master + apprentice + wizard > 0 	) ) SELECT 	s.* FROM 	summary s WHERE 	s.rk = 1</sql>
+<filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
+</reports>
+<reports id="3051" type_of_report="bar">	
+        <column columnHandler="NONE" display_name="Skill Name" isVisible="true" name="name" />
+		<column columnHandler="NONE" display_name="Master" isVisible="true" name="master" />
+		<column columnHandler="NONE" display_name="Wizard" isVisible="true" name="wizard" />
+		<column columnHandler="NONE" display_name="Rookie" isVisible="true" name="rookie" />
+		<column columnHandler="NONE" display_name="Apprentice" isVisible="true" name="apprentice" />
+	<sql>	
+WITH summary AS ( 	SELECT 		pp.name, 		CAST (mm.rookie AS INTEGER) AS rookie, 		CAST (mm.master AS INTEGER) AS master, 		CAST (mm.apprentice AS INTEGER) AS apprentice, 		CAST (mm.wizard AS INTEGER) AS wizard, 		ROW_NUMBER () OVER ( 			PARTITION BY pp.name 			ORDER BY 				mm.created_at DESC 		) AS rk 	FROM 		mastery_level_per_course mm, 		skill_objective pp 	WHERE 		course_id = :course_id 	AND college_id = :college_id 	AND pp. ID = mm.skill_id 	AND ( 		rookie + master + apprentice + wizard > 0 	) ) SELECT 	s.* FROM 	summary s WHERE 	s.rk = 1
+</sql><filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
+</reports>
+<reports id="3050" type_of_report="pie">	
+		<column columnHandler="NONE" display_name="Category" isVisible="true" name="category" />
+		<column columnHandler="NONE" display_name="Count" isVisible="true" name="count" />
+	<sql>	
+SELECT 	UNNEST ( 		ARRAY [ 'master', 		'wizard', 		'rookie', 		'apprentice' ] 	) AS category 	, 	UNNEST ( 		ARRAY [ TF.master, 		TF.wizard, 		TF.rookie, 		TF.apprentice ] 	) AS count FROM 	( 		SELECT DISTINCT 	course_id, 	college_id, 	CAST (COALESCE ( 		AVG ( 			CAST (NULLIF(master, 0) AS INTEGER) 		), 		0 	)AS INTEGER) AS master, 	CAST (COALESCE ( 		AVG ( 			CAST (NULLIF(rookie, 0) AS INTEGER) 		), 		0 	)AS INTEGER) AS rookie, 	CAST (COALESCE ( 		AVG ( 			CAST ( 				NULLIF (apprentice, 0) AS INTEGER 			) 		), 		0 	) AS INTEGER)AS apprentice, 	CAST (COALESCE ( 		AVG ( 			CAST (NULLIF(wizard, 0) AS INTEGER) 		), 		0 	)AS INTEGER) AS wizard FROM 	mastery_level_per_course WHERE 	course_id = :course_id AND college_id = :college_id GROUP BY 	course_id, 	college_id) TF	
+</sql> <filter_sql>
+		
+	</filter_sql>	
+		<title></title>
+		<y_axis_title></y_axis_title>
 </reports>
 </istar_reports>
