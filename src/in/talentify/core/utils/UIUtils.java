@@ -703,7 +703,7 @@ public class UIUtils {
 		return out;
 	}
 
-	public StringBuffer getAllGroups(int orgId) {
+/*	public StringBuffer getAllGroups(int orgId) {
 		String sql = "select T1.bg_id, T1.bg_name,T1.bg_desc,T1.batch_code, COALESCE(T2.batches,0) as batches, COALESCE(T3.students,0) as students from (select batch_group.id as bg_id, batch_group.name as bg_name, batch_group.bg_desc as bg_desc,batch_group.batch_code from batch_group where  "
 				+ "batch_group.college_id =" + orgId
 				+ ")T1  left join (select count(batch.id) as batches, batch.batch_group_id  from batch where batch.batch_group_id in (select batch_group.id from batch_group where  "
@@ -732,7 +732,7 @@ public class UIUtils {
 		}
 		out.append("");
 		return out;
-	}
+	}*/
 
 	public StringBuffer getAllStudentsForBatch(int orgId, ArrayList<Integer> selectedStudents) {
 		String sql = "SELECT 	istar_user. ID, email FROM 	user_org_mapping, 	istar_user, user_role WHERE 	istar_user. ID = user_org_mapping.user_id AND user_role.user_id = istar_user. ID AND user_org_mapping.organization_id = "

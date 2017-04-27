@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.mail.MessagingException;
@@ -11,6 +12,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.utilities.EmailUtils;
 
 import in.orgadmin.admin.services.EmailService;
@@ -24,7 +29,7 @@ public class MAIN {
 	
 	public static void main(String[] args) {
 
-	
+		
 		
 		/**/
 		
@@ -75,9 +80,8 @@ public class MAIN {
 		//System.out.println("2>>>"+(new CMSRegistry()).getClass().getClassLoader().getResource("report_list.xml"));
 		ReportUtils utils = new ReportUtils();
 		HashMap<String, String> conditions = new HashMap<>();
-		conditions.put("course_id", "3");
-		conditions.put("college_id", "3");
-		System.err.println(utils.getHTML(3040, conditions));;
+		
+		System.err.println(utils.getHTML(3048, conditions));;
 		
 		/*int totalStudent=50;
 		int nintyPercent = (int)(.9* totalStudent);		

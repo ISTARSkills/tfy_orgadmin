@@ -81,6 +81,7 @@ public class DataTableController extends IStarBaseServelet {
 		String resultSize ="0";
 		for (HashMap<String, Object> item : data) {
 			resultSize = item.get("total_rows").toString();
+			System.out.println("-------------------------->"+sql1);
 			if (condition(item, searchTerm) || searchTerm.equalsIgnoreCase("")) {
 				JSONArray tableRowsdata = new JSONArray();
 				for (IStarColumn iterable_element : report.getColumns()) {

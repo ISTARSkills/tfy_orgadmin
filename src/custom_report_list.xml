@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<custom_report_list>
+<custom_report id="1">
+<sql>SELECT
+	ID,
+	bg_progress.batch_group_id,
+	CAST (
+		'' || to_char(
+			created_at,
+			'YYYY-MM-DD HH:MM:SS'
+		) || '' AS TIMESTAMP
+	) AS created_at,
+	batch_group_name,
+	CAST (avg_score AS INTEGER) AS avg_score
+FROM
+	bg_progress
+WHERE
+	college_id = :college_id
+ORDER BY
+	created_at</sql>
+</custom_report>
+<custom_report id="2">
+<sql>SELECT DISTINCT
+	course. ID,
+	course_name
+FROM
+	batch_group,
+	batch,
+	course
+WHERE
+	batch_group.college_id = :college_id
+AND batch_group. ID = batch.batch_group_id
+AND batch.course_id = course. ID </sql>
+</custom_report>
+<custom_report id = "3">
+<sql>
+select Tf.college_id, Tf.course_id, Tf.avg_score from (SELECT DISTINCT
+	batch_group.college_id,
+	batch.course_id,
+	CAST (AVG(report.score) AS INTEGER) AS avg_score
+FROM
+	batch_group,
+	batch,	
+	assessment,
+	report,
+	istar_user, user_org_mapping, user_role
+WHERE
+	batch_group. ID = batch.batch_group_id
+AND batch.course_id = assessment.course_id
+AND assessment. ID = report.assessment_id
+AND report.user_id = istar_user.ID
+AND batch_group.college_id = user_org_mapping.organization_id
+and user_org_mapping.user_id = istar_user.id
+and istar_user.id = user_role.user_id
+and user_role.role_id = 12
+GROUP BY
+	batch_group.college_id,
+	batch.course_id
+ORDER BY
+	batch_group.college_id,
+	batch.course_id
+)TF
+WHERE TF.college_id = :college_id
+</sql>
+</custom_report>
+<custom_report id ="4">
+<sql>
+select Tf.course_id, CAST (AVG(TF.avg_score) AS INTEGER) AS avg_score from (SELECT DISTINCT
+	batch_group.college_id,
+	batch.course_id,
+	CAST (AVG(report.score) AS INTEGER) AS avg_score
+FROM
+	batch_group,
+	batch,	
+	assessment,
+	report,
+	istar_user, user_org_mapping, user_role
+WHERE
+	batch_group. ID = batch.batch_group_id
+AND batch.course_id = assessment.course_id
+AND assessment. ID = report.assessment_id
+AND report.user_id = istar_user.ID
+AND batch_group.college_id = user_org_mapping.organization_id
+and user_org_mapping.user_id = istar_user.id
+and istar_user.id = user_role.user_id
+and user_role.role_id = 12
+GROUP BY
+	batch_group.college_id,
+	batch.course_id
+ORDER BY
+	batch_group.college_id,
+	batch.course_id
+)TF
+WHERE TF.college_id != 2
+GROUP BY TF.course_id
+</sql>
+</custom_report>
+</custom_report_list>
