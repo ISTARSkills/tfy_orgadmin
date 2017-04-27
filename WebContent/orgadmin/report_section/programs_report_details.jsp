@@ -18,14 +18,16 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	request.setAttribute("base_url", baseURL);
-	
+	ReportUtils util = new ReportUtils();
+	HashMap<String, String> conditions = new HashMap();
 	UIUtils uiUtil = new UIUtils();
 	boolean flag = false;
 	JsonUIUtils jsonUIUtils = new JsonUIUtils();
 	JSONArray pieChartData = null;
 	StringBuffer attendanceData = null;
 	JSONArray calendardata = null;
-
+	String batch_id=null;
+	String course_id=null;
 	ArrayList<JSONArray> barChartData = null;
 	int studentcount = 0;
 	int courseOrBatchId = 0;
@@ -38,8 +40,9 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
 		courseName = course.getCourseName();
 		System.out.println("course_id -------"+request.getParameter("course_id").toString());
-		pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
-		barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
+		course_id =request.getParameter("course_id");
+		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
+		//barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		courseOrBatchId = Integer.parseInt(request.getParameter("course_id").toString());
@@ -50,9 +53,9 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
 		courseName = batch.getCourse().getCourseName();
 		System.out.println("batch_id--------"+request.getParameter("batch_id").toString());
-
-		pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
-		barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
+		batch_id =request.getParameter("batch_id");
+		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
+		//barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		courseOrBatchId = Integer.parseInt(request.getParameter("batch_id").toString());
@@ -74,17 +77,11 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 %>
 
 
-<div id="data-holder" style='display: none;'>
-	<div id='nosofpages' data-content='<%=nosofpages%>'></div>
-	<div id='pieChartData' data-content='<%=pieChartData%>'></div>
-	<div id='barchartTitle' data-content='<%=barChartData.get(0)%>'></div>
-	<div id='barchartContent' data-content='<%=barChartData.get(1)%>'></div>
-</div>
+
 
 <div collegeid="<%=college_id%>" id="myid"
 	data-course="<%=courseOrBatchId %>" type="<%=flag%>"></div>
-<div id="wrapper">
-	<div id="page-wrapper" class="gray-bg">
+
 		<div class="row wrapper border-bottom white-bg page-heading">
 			<div class="col-lg-9">
 				<% if(request.getParameter("headname") != null && !request.getParameter("headname").toString().equalsIgnoreCase("null")){
@@ -103,8 +100,23 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 				<div class="col-lg-3 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container1"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+						<%
+								  conditions = new HashMap();
+							      conditions.put("college_id", college_id+"");
+							      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("batch_id", batch_id);  
+							    	 %>
+							    	 <%= util.getHTML(3048, conditions) %>
+							    	 <% 
+							      }
+							      
+							      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("course_id", course_id); 
+							    	  %>
+								    	 <%= util.getHTML(3050, conditions) %>
+								    	 <%
+							      }
+				%>
 					</div>
 				</div>
 
@@ -112,8 +124,25 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 				<div class="col-lg-9 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container2"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+						 <%
+			      conditions = new HashMap();
+			      conditions.put("college_id", college_id+"");
+			      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+			    	  conditions.put("batch_id", batch_id);  
+			    	  %>
+				    	 <%= util.getHTML(3049, conditions) %>
+				    	 <%
+			      }
+			      
+			      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+			    	  conditions.put("course_id", course_id); 
+			    	  %>
+				    	 <%= util.getHTML(3051, conditions) %>
+				    	 <%
+			      }
+			      
+			      
+				%>
 					</div>
 				</div>
 
@@ -385,10 +414,6 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 
 
-	</div>
-	<!-- page wrapper end -->
-
-</div>
 
 
 <!-- Mainly scripts -->
