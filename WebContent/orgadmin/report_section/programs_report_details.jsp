@@ -1,6 +1,3 @@
-<%@page import="tfy.complexobject.utils.XMLSkillReportLAData"%>
-<%@page import="tfy.complexobject.utils.XMLStudentReport"%>
-<%@page import="tfy.studentcard.services.FlashXMLReportService"%>
 <%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>

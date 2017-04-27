@@ -4,7 +4,9 @@ function readyFn(jQuery) {
 
 
 	
-
+	initiateGraphFilter();
+	createGraphs();
+	createDataTables();
 	/*
 	 * Page specific js
 	 */
@@ -98,9 +100,7 @@ function readyFn(jQuery) {
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	
-	initiateGraphFilter();
-	createGraphs();
-	createDataTables();
+	
 
 	$('select').select2();
 	loadTables();

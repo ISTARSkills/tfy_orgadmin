@@ -1,3 +1,4 @@
+<%@page import="tfy.admin.services.GraphCustomServices"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="tfy.admin.services.AdminServices"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
@@ -18,6 +19,7 @@
 	AdminServices serv = new AdminServices();
 	ReportUtils utils = new ReportUtils();
 	HashMap<String, String> conditions = new HashMap<>();
+	GraphCustomServices custServ= new GraphCustomServices();
 	if (request.getParameterMap().containsKey("colegeID")) {
 
 		colegeID = Integer.parseInt(request.getParameter("colegeID"));
@@ -43,9 +45,8 @@
 					<div id="tab-11" class="tab-pane active">
 						<div class="panel-body">
 							
-					  <% conditions.put("college_id", colegeID+""); %>
-							<%=utils.getHTML(3043, conditions) %>  
-							
+					  
+					<%=custServ.getProgressGraph(colegeID) %>			
 						</div>
 					</div>
 					<div id="tab-12" class="tab-pane">
@@ -82,6 +83,7 @@
 							</div>
 							
 							<%
+							
 								conditions.put("college_id", colegeID+"");
 							if(courses.size()>0){
 								conditions.put("course_id", courses.get(0).getId()+"");
@@ -117,7 +119,7 @@
 							if(batchGroups.size()>0){
 								conditions.put("batch_group_id", batchGroups.get(0).getId()+"");
 							}
-							System.err.println();;							
+													
 							%>
 							<%=utils.getHTML(3041, conditions) %>
 							
@@ -147,7 +149,6 @@
 						input_params.put("org_id", college_id + "");
 					%>
 					<%=calUtil.getCalender(input_params).toString()%>
-					<!-- <div style="background-color: white !important" id="calendar"></div> -->
 				</div>
 			</div></div>
 		</div>
