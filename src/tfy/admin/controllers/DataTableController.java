@@ -56,6 +56,7 @@ public class DataTableController extends IStarBaseServelet {
 		}
 		
 		String searchTerm = request.getParameter("search[value]");
+		System.out.println("search term>>>"+searchTerm);
 		if (searchTerm != null && searchTerm.equalsIgnoreCase("")) {
 			conditions.put("limit", request.getParameter("length"));
 			conditions.put("offset", request.getParameter("start"));
@@ -74,14 +75,14 @@ public class DataTableController extends IStarBaseServelet {
 			}			
 		}
 		
-		
+		System.out.println("-------------------------->"+sql1);
 		
 		JSONArray array = new JSONArray();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);		
 		String resultSize ="0";
 		for (HashMap<String, Object> item : data) {
 			resultSize = item.get("total_rows").toString();
-			System.out.println("-------------------------->"+sql1);
+			
 			if (condition(item, searchTerm) || searchTerm.equalsIgnoreCase("")) {
 				JSONArray tableRowsdata = new JSONArray();
 				for (IStarColumn iterable_element : report.getColumns()) {
@@ -122,10 +123,13 @@ public class DataTableController extends IStarBaseServelet {
 	}
 	
 	public boolean condition(HashMap<String, Object> item, String searchTerm) {
+		System.err.println("Search Term is "+searchTerm);
 		boolean status = false;
 		for (String key : item.keySet()) {
 			if (item.get(key) != null && searchTerm != null) {
 				for (int i = 0; i < searchTerm.split(",").length; i++) {
+					System.out.println("item.get(key).toString().toUpperCase()"+item.get(key).toString().toUpperCase());
+					System.out.println("searchTerm.split(,)[i].toUpperCase()"+searchTerm.split(",")[i].toUpperCase());
 					if (item.get(key).toString().toUpperCase().contains(searchTerm.split(",")[i].toUpperCase())) {
 						status = true;
 						break;

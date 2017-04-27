@@ -37,7 +37,7 @@
 							View</a></li>
 					<li class=""><a data-toggle="tab" href="#tab-13">Program
 							View</a></li>
-					<li class=""><a data-toggle="tab" href="#tab-14">Course
+					<li class=""><a data-toggle="tab" href="#tab-14">Section
 							View</a></li>
 
 				</ul>

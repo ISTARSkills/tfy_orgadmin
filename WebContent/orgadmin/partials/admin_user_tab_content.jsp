@@ -20,13 +20,12 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 <div class="ibox">
 	<div class="col-lg-12">
-		<div class="col-lg-3">
-		<button type="button" class="btn btn-w-m btn-danger" data-toggle="modal"
-								data-target="#create_user_model" style="margin-top: 16px;">Add User</button>
-								<hr/>
-			<h3 class="font-bold">Filter by</h3>
+		<div class="col-lg-2">
+		
+			
 			<div class="form-group">
-				<label class="font-bold">Course</label>
+			<h3 class="font-bold">Filter by</h3>
+				<label class="font-bold">Program</label>
 				<div>
 					<select data-placeholder="Select Course" multiple
 						tabindex="4" id='admin_page_course'>
@@ -40,16 +39,16 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 						<%=adminUiServcies.getBatchGroups(colegeID,null) %>
 					</select>
 				</div>
+				<div><button type="button" class="btn btn-w-m btn-danger" data-toggle="modal"
+								data-target="#create_user_model" style="margin-top: 16px;">Add New User</button></div>
+				
 			</div>
 		</div>
-		<div class="col-lg-9">
-			<!-- <button class="btn btn-default pull-right" data-toggle="modal"
-				data-target="#create_user_model" type="button">
-				<i class="fa fa-plus-circle"></i>
-			</button> -->
+		<div class="col-lg-10">
+			
 			
 
-<br/><br/>
+
 			<div class="row">
 				<br>
 				<%-- <table class="table table-bordered datatable_istar" id='student_list' data-report_id='3042' data-college_id='<%=colegeID%>' >

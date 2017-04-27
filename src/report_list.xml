@@ -38,7 +38,7 @@ SELECT 	course.course_name, 	CAST (AVG(master)  AS INTEGER) AS master, 	CAST (AV
 		<column columnHandler="NONE" display_name="Batch Groups" isVisible="true" name="batch_groups" />		
 		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="id"/>		
 	<sql>
-SELECT
+SELECT ID,
 	profile_image,
 	first_name,
 	(case when atten_perc is not null then
@@ -55,7 +55,7 @@ SELECT
 	email,
 	 mobile,
 	batch_groups,
-	ID,
+	
 	courses,
 	course_ids, count(*) OVER() as total_rows
 FROM
@@ -198,7 +198,7 @@ SELECT DISTINCT 	csobj.skill_objective_id, 	C .course_name, 	CAST ( 		AVG (sp.pe
 		<column columnHandler="NONE" display_name="Section Name" isVisible="true" name="bg_name" />
 		<column columnHandler="NONE" display_name="Number of Batchs" isVisible="true" name="batches" />
 		<column columnHandler="NONE" display_name="Number of Students" isVisible="true" name="course_name" />
-		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="bg_id"/>
+		<column columnHandler="BG_ROLE_HANDLER" display_name="Edit" isVisible="true" name="bg_id"/>
 	<sql>
 SELECT 	T1.bg_id, 	T1.bg_name, T1.batch_code, 	COALESCE (T2.batches, 0) AS batches, 	COALESCE (T3.students, 0) AS students, count(*) OVER() as total_rows FROM 	( 		SELECT 			batch_group. ID AS bg_id, 			batch_group. NAME AS bg_name, 			batch_group.bg_desc AS bg_desc, 			batch_group.batch_code 		FROM 			batch_group 		WHERE 			 batch_group.college_id =  :college_id 				 	) T1 LEFT JOIN ( 	SELECT 		COUNT (batch. ID) AS batches, 		batch.batch_group_id 	FROM 		batch 	WHERE 		batch.batch_group_id IN ( 			SELECT 				batch_group. ID 			FROM 				batch_group 			WHERE 				 batch_group.college_id =  :college_id 				 		) 	GROUP BY 		batch.batch_group_id ) T2 ON (T2.batch_group_id = T1.bg_id) LEFT JOIN ( 	SELECT 		batch_students.batch_group_id, 		COUNT (batch_students.student_id) AS students 	FROM 		batch_students 	WHERE 		batch_students.batch_group_id IN ( 			SELECT 				batch_group. ID 			FROM 				batch_group 			WHERE 				batch_group.college_id = :college_id 			 		) 	GROUP BY 		batch_students.batch_group_id ) T3 ON (T3.batch_group_id = T1.bg_id) order by :order_by_column :order_type limit :limit offset :offset</sql>
 	<filter_sql>

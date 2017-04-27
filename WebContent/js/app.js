@@ -1617,7 +1617,28 @@ function admin_course_batch_init() {
 	
     $('#admin_page_course').on('change', function() {
         var key = $('#admin_page_course').val();
+        var prevKey=$('#admin_page_batchgroup').val();
+        var selectBox=$($('#admin_page_batchgroup >option'));
+    	var searchArray=[];
+    	
+    	
+    	
         var searchKey = "";
+        
+        if(prevKey!=null)
+        	{
+        	//searchKey = prevKey+",";
+	        	if(prevKey!=null){
+	        		$.each(prevKey, function(index, value) {
+	        			selectBox.each(function(){
+	        				if($(this).val()==value){
+	        					searchArray.push($(this).text());
+	        				}
+	        			});
+	        		});
+	        	}
+	        	searchKey =searchArray+",";
+        	}
         if (key != null) {
             $.each(key, function(index, value) {
                 if (index != 0) {
@@ -1629,7 +1650,10 @@ function admin_course_batch_init() {
         }
         filter_user_table(searchKey);
     });
+    
+    
     $('#admin_page_batchgroup').on('change', function() {
+    	var prevKey=$('#admin_page_course').val();
     	var key = $('#admin_page_batchgroup').val();
     	var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
@@ -1643,6 +1667,10 @@ function admin_course_batch_init() {
     		});
     	}
         var searchKey = "";
+        if(prevKey!=null)
+    	{
+        	searchKey = prevKey+",";
+    	}
         key=searchArray;
         if (key != null) {
             $.each(key, function(index, value) {
@@ -1661,7 +1689,7 @@ function filter_user_table(key) {
     if (key == null) {
         key = '';
     }
-    var table = $('#student_list').DataTable();
+    var table = $('#chart_datatable_3042').DataTable();
     table.search(key).draw();
 }
 
