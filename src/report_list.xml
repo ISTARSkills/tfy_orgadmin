@@ -7,7 +7,7 @@
 		<column columnHandler="NONE" display_name="master" isVisible="true" name="master" />
 		<column columnHandler="NONE" display_name="wizard" isVisible="true" name="wizard" />
 	<sql>
-SELECT 	batch_group. NAME, 	CAST (SUM (master) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS master, 	CAST (SUM (rookie) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS rookie, 	CAST (SUM (apprentice) * 100 / ( 		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS apprentice, CAST ( 	SUM (wizard) * 100 / (  		SUM (master) + SUM (rookie) + SUM (apprentice) + SUM (wizard) 	)AS INTEGER 	) AS wizard FROM 	mastery_level_per_course, 	batch_group WHERE 	mastery_level_per_course.college_id = :college_id AND course_id = :course_id AND batch_group. ID = mastery_level_per_course.batch_group_id GROUP BY 	batch_group. NAME		</sql>
+SELECT 	batch_group. NAME, 	CAST (AVG(master) AS INTEGER) AS master, 	CAST (AVG(rookie) AS INTEGER) AS rookie, 	CAST (AVG(apprentice) AS INTEGER) AS apprentice, 	CAST (AVG(wizard) AS INTEGER) AS wizard FROM 	mastery_level_per_course, 	batch_group WHERE 	mastery_level_per_course.college_id = :college_id AND course_id = :course_id AND batch_group. ID = mastery_level_per_course.batch_group_id GROUP BY 	batch_group. NAME		</sql>
 	<filter_sql>
 		
 	</filter_sql>	
@@ -21,7 +21,7 @@ SELECT 	batch_group. NAME, 	CAST (SUM (master) * 100 / ( 		SUM (master) + SUM (r
 		<column columnHandler="NONE" display_name="master" isVisible="true" name="master" />
 		<column columnHandler="NONE" display_name="wizard" isVisible="true" name="wizard" />
 	<sql>
-SELECT 	course.course_name, 	CAST (AVG(master) * 100 AS INTEGER) AS master, 	CAST (AVG(rookie) * 100 AS INTEGER) AS rookie, 	CAST ( 		AVG (apprentice) * 100 AS INTEGER 	) AS apprentice, 	CAST (AVG(wizard) * 100 AS INTEGER) AS wizard, 	CAST ( 		( 			AVG (master) + AVG (rookie) + AVG (apprentice) + AVG (wizard) 		) AS INTEGER 	) AS total FROM 	mastery_level_per_course, 	course WHERE 	 mastery_level_per_course.college_id = :college_id AND batch_group_id = :batch_group_id AND course. ID = mastery_level_per_course.course_id GROUP BY 	course.course_name ORDER BY 	total		</sql>
+SELECT 	course.course_name, 	CAST (AVG(master)  AS INTEGER) AS master, 	CAST (AVG(rookie)  AS INTEGER) AS rookie, 	CAST ( 		AVG (apprentice)  AS INTEGER 	) AS apprentice, 	CAST (AVG(wizard)  AS INTEGER) AS wizard, 	CAST ( 		( 			AVG (master) + AVG (rookie) + AVG (apprentice) + AVG (wizard) 		) AS INTEGER 	) AS total FROM 	mastery_level_per_course, 	course WHERE 	 mastery_level_per_course.college_id = :college_id AND batch_group_id = :batch_group_id AND course. ID = mastery_level_per_course.course_id GROUP BY 	course.course_name ORDER BY 	total		</sql>
 	<filter_sql>
 		
 	</filter_sql>	
@@ -162,6 +162,47 @@ LEFT JOIN (
 		<y_axis_title>Number of Students</y_axis_title>
 </reports>
 
+<reports id="3043" type_of_report="column">	
+	    <column columnHandler="NONE" display_name="Date" isVisible="true" name="created_at" />		
+		<column columnHandler="NONE" display_name="Section" isVisible="true" name="batch_group_name" />
+		<column columnHandler="NONE" display_name="Avg Score" isVisible="true" name="avg_score" />
+		
+	<sql>
+	SELECT 	created_at, 	batch_group_name, 	avg_score FROM 	bg_progress WHERE 	college_id = :college_id ORDER BY 	created_at
+</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title>Program Wise Performance of Students</title>
+		<y_axis_title>Number of Students</y_axis_title>
+</reports>
 
+<reports id="3044" type_of_report="column">	
+		<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" display_name="Avg Score" isVisible="true" name="avg_score" />
+		
+	<sql>
+SELECT DISTINCT 	csobj.skill_objective_id, 	C .course_name, 	CAST ( 		AVG (sp.percentage) AS INTEGER 	)as avg_score FROM 	batch_group AS bg, 	batch AS b, 	course_skill_objective AS csobj, 	course C, 	skill_precentile sp, 	batch_students AS bs WHERE 	bg.college_id = :college_id AND b.batch_group_id = bg. ID AND bs.batch_group_id = b.batch_group_id AND b.course_id = csobj.course_id AND csobj.course_id = C . ID AND csobj.skill_objective_id = sp.skill_id AND bs.student_id = sp.student_id GROUP BY 	C .course_name, 	csobj.skill_objective_id ORDER BY 	avg_score </sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title>Program Wise Performance of Students</title>
+		<y_axis_title>Number of Students</y_axis_title>
+</reports>
+
+<reports id="3045" type_of_report="column">	
+        <column columnHandler="NONE" display_name="Section Code" isVisible="true" name="batch_code" />
+		<column columnHandler="NONE" display_name="Section Name" isVisible="true" name="bg_name" />
+		<column columnHandler="NONE" display_name="Number of Batchs" isVisible="true" name="batches" />
+		<column columnHandler="NONE" display_name="Number of Students" isVisible="true" name="course_name" />
+		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="bg_id"/>
+	<sql>
+SELECT 	T1.bg_id, 	T1.bg_name, T1.batch_code, 	COALESCE (T2.batches, 0) AS batches, 	COALESCE (T3.students, 0) AS students, count(*) OVER() as total_rows FROM 	( 		SELECT 			batch_group. ID AS bg_id, 			batch_group. NAME AS bg_name, 			batch_group.bg_desc AS bg_desc, 			batch_group.batch_code 		FROM 			batch_group 		WHERE 			 batch_group.college_id =  :college_id 				 	) T1 LEFT JOIN ( 	SELECT 		COUNT (batch. ID) AS batches, 		batch.batch_group_id 	FROM 		batch 	WHERE 		batch.batch_group_id IN ( 			SELECT 				batch_group. ID 			FROM 				batch_group 			WHERE 				 batch_group.college_id =  :college_id 				 		) 	GROUP BY 		batch.batch_group_id ) T2 ON (T2.batch_group_id = T1.bg_id) LEFT JOIN ( 	SELECT 		batch_students.batch_group_id, 		COUNT (batch_students.student_id) AS students 	FROM 		batch_students 	WHERE 		batch_students.batch_group_id IN ( 			SELECT 				batch_group. ID 			FROM 				batch_group 			WHERE 				batch_group.college_id = :college_id 			 		) 	GROUP BY 		batch_students.batch_group_id ) T3 ON (T3.batch_group_id = T1.bg_id) order by :order_by_column :order_type limit :limit offset :offset</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title>Program Wise Performance of Students</title>
+		<y_axis_title>Number of Students</y_axis_title>
+</reports>
 
 </istar_reports>

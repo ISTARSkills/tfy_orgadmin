@@ -42,22 +42,23 @@
 				<div class="tab-content">
 					<div id="tab-11" class="tab-pane active">
 						<div class="panel-body">
-							<div id="progress_view"></div>
-
-							<table id="progress_view_datatable" data-college='<%=colegeID%>'
-								style="display: none">
-
-								</tbody>
-							</table>
+							
+					  <% conditions.put("college_id", colegeID+""); %>
+							<%=utils.getHTML(3043, conditions) %>  
+							
 						</div>
 					</div>
 					<div id="tab-12" class="tab-pane">
 						<div class="panel-body">
-							<table id="competition_view_datatable"
+						
+						  <% conditions.put("college_id", colegeID+""); %>
+							<%=utils.getHTML(3044, conditions) %>   
+							
+							<%-- <table id="competition_view_datatable"
 								data-college='<%=colegeID%>' style="display: none">
 
 							</table>
-							<div id="competition_view"></div>
+							<div id="competition_view"></div> --%>
 						</div>
 					</div>
 					<div id="tab-13" class="tab-pane">
@@ -113,7 +114,7 @@
 							<%
 							
 								conditions.put("college_id", colegeID+"");
-							if(courses.size()>0){
+							if(batchGroups.size()>0){
 								conditions.put("batch_group_id", batchGroups.get(0).getId()+"");
 							}
 							System.err.println();;							

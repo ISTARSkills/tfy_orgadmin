@@ -3,16 +3,7 @@ var webSocket ;
 function readyFn(jQuery) {
 
 
-	initiateGraphFilter();
-	createGraphs();
-	createDataTables();
-
-
-
 	
-
-	$('select').select2();
-	loadTables();
 
 	/*
 	 * Page specific js
@@ -26,7 +17,7 @@ function readyFn(jQuery) {
 	case 'orgadmin_dashboard':
 		init_orgadmin_dashboard();
 		$('#Dashboard').css('color','  #eb384f');
-		initChat();
+		initChat();	
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
@@ -107,7 +98,12 @@ function readyFn(jQuery) {
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	
+	initiateGraphFilter();
+	createGraphs();
+	createDataTables();
 
+	$('select').select2();
+	loadTables();
 	
 
 }
@@ -124,7 +120,7 @@ function createDataTables()
 			url +=index+'='+value+'&';
 			});		
 		alert(id);
-	    $('#'+id).DataTable({
+		$(this).DataTable({
 	         pageLength: 10,
 	         responsive: true,
 	         dom: '<"html5buttons"B>lTfgitp',
@@ -187,8 +183,7 @@ function initiateGraphFilter()
 
 
 }
-function initiateGraphFilter()
-{
+
 function createGraphs()
  	{
  		try{
@@ -907,8 +902,8 @@ function init_orgadmin_dashboard() {
 		
 
 	});
-    create_progress_view_chart(true);
-    create_competetion_view_calendar(true);
+  //  create_progress_view_chart(true);
+    //create_competetion_view_calendar(true);
     create_dashboard_calendar();
    // create_course_view_datatable(true);
    // create_program_view_datatable(true);
@@ -4093,4 +4088,4 @@ function ValidateIPaddress(ipaddress)
     return (true)  
   }  
 return (false)  
-}}
+}

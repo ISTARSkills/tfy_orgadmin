@@ -133,6 +133,7 @@ public class ReportUtils {
 		out.append("</tr></thead> ");
 		out.append("<tbody>");	
 			int i=0;
+			if(data.size() >0){
 			for (HashMap<String, Object> hashMap : data) {
 				out.append("<tr>");
 				for (IStarColumn iterable_element : report.getColumns()) {
@@ -149,7 +150,7 @@ public class ReportUtils {
 				out.append("</tr>");
 			}
 			
-		
+	}
 		out.append("</tbody> </table>");
 		
 		return out;

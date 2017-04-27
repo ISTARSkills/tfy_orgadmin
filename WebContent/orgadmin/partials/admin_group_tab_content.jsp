@@ -1,3 +1,5 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
@@ -30,7 +32,18 @@ Organization college=new OrganizationDAO().findById(colegeID);
 		
 
 		<div class="row">
-			<table class="table table-bordered dataTables-example" id='batch_group_list'>
+		<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");
+				conditions.put("college_id", colegeID+"");
+				
+				%>
+				
+				<%=util.getTableOuterHTML(3045, conditions)%>
+				
+			<%-- <table class="table table-bordered dataTables-example" id='batch_group_list'>
 				<thead>
 					<tr>
 						<th>Batch Code</th>
@@ -43,7 +56,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 				<tbody>
 					<%=ui.getAllGroups(colegeID) %>
 				</tbody>
-			</table>
+			</table> --%>
 		</div>
 	</div>
 
