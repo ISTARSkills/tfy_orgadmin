@@ -1,3 +1,5 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -60,7 +62,15 @@
 							<!-- <br /> <br /> -->
 							<div class="row">
 								<br>
-								<table class="table table-bordered datatable_istar"
+								<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");			
+				%>
+				
+				<%=util.getTableOuterHTML(3046, conditions)%>
+								<!-- <table class="table table-bordered datatable_istar"
 									id='student_list' data-url='../get_list_of_users?college_id=-3'>
 									<thead>
 										<tr>
@@ -76,7 +86,7 @@
 									<tbody>
 
 									</tbody>
-								</table>
+								</table> -->
 
 							</div>
 						</div>

@@ -119,7 +119,7 @@ function createDataTables()
 		
 			url +=index+'='+value+'&';
 			});		
-		alert(id);
+		//alert(id);
 		$(this).DataTable({
 	         pageLength: 10,
 	         responsive: true,
