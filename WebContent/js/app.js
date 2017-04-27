@@ -168,7 +168,7 @@ function initiateGraphFilter()
 		             url: '../chart_filter',
 		             data: jQuery.param( params ),
 		             success: function(data){
-		            	 alert(data);
+		            	
 		            	 $('#'+data_table_id).replaceWith(data);
 		            	 createGraphs();
 		             }
@@ -196,9 +196,7 @@ function createGraphs()
  			    if(graph_type.indexOf('table')<=-1)
  			    	{
  						console.log("App.js::handleGraphs() -> graph found --> " + tableID);
- 						 var graph_title = $(this).data('graph_title');
- 						
- 						 $(containerID).highcharts({
+ 						$(containerID).highcharts({
  						        data: {
  						            table: tableID
  						        },

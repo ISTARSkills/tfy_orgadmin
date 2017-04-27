@@ -45,15 +45,19 @@
 					<div id="tab-11" class="tab-pane active">
 						<div class="panel-body">
 							
-					  
-					<%=custServ.getProgressGraph(colegeID) %>			
+					 <% conditions = new HashMap();
+					 conditions.put("college_id", colegeID+"");
+					 %> 
+					<%=custServ.getProgressGraph(1,conditions) %>			
 						</div>
 					</div>
 					<div id="tab-12" class="tab-pane">
 						<div class="panel-body">
 						
-						  <% conditions.put("college_id", colegeID+""); %>
-							<%=utils.getHTML(3044, conditions) %>   
+						  <% conditions = new HashMap();
+					 conditions.put("college_id", colegeID+"");
+					 %> 
+					<%=custServ.getCompetitionGraph(conditions)%>   
 							
 							<%-- <table id="competition_view_datatable"
 								data-college='<%=colegeID%>' style="display: none">
@@ -83,7 +87,7 @@
 							</div>
 							
 							<%
-							
+							conditions = new HashMap();
 								conditions.put("college_id", colegeID+"");
 							if(courses.size()>0){
 								conditions.put("course_id", courses.get(0).getId()+"");
@@ -114,7 +118,7 @@
 								</div>
 							</div>
 							<%
-							
+							conditions = new HashMap();
 								conditions.put("college_id", colegeID+"");
 							if(batchGroups.size()>0){
 								conditions.put("batch_group_id", batchGroups.get(0).getId()+"");
@@ -126,13 +130,9 @@
 						</div>
 					</div>
 				</div>
-
-
 			</div>
 		</div>
-
 	</div>
-
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
