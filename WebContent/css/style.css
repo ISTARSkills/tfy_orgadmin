@@ -729,7 +729,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btn-primary.btn-outline {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .btn-success.btn-outline {
@@ -755,8 +755,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btn-primary {
-	background-color: #1ab394;
-	border-color: #1ab394;
+	background-color: #eb384f;
+	border-color: #eb384f;
 	color: #FFFFFF;
 }
 
@@ -940,7 +940,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 
 .btn-link:hover, .btn-link:focus, .btn-link:active, .btn-link.active,
 	.open .dropdown-toggle.btn-link {
-	color: #1ab394;
+	color: #eb384f;
 	text-decoration: none;
 }
 
@@ -1118,7 +1118,7 @@ button.dim:active:before {
 }
 
 .label-primary, .badge-primary {
-	background-color: #1ab394;
+	background-color: #eb384f;
 	color: #FFFFFF;
 }
 
@@ -1178,7 +1178,7 @@ button.dim:active:before {
 	display: block;
 	overflow: hidden;
 	cursor: pointer;
-	border: 2px solid #1ab394;
+	border: 2px solid #eb384f;
 	border-radius: 2px;
 }
 
@@ -1209,7 +1209,7 @@ button.dim:active:before {
 .onoffswitch-inner:before {
 	content: "ON";
 	padding-left: 10px;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	color: #FFFFFF;
 }
 
@@ -1225,7 +1225,7 @@ button.dim:active:before {
 	width: 20px;
 	margin: 0;
 	background: #FFFFFF;
-	border: 2px solid #1ab394;
+	border: 2px solid #eb384f;
 	border-radius: 2px;
 	position: absolute;
 	top: 0;
@@ -1416,9 +1416,9 @@ button.dim:active:before {
 
 .fc-event, .fc-agenda .fc-event-time, .fc-event a {
 	padding: 4px 6px;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	/* background color */
-	border-color: #1ab394;
+	border-color: #eb384f;
 	/* border color */
 }
 
@@ -1531,8 +1531,8 @@ button.dim:active:before {
 /* LIST GROUP */
 a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus
 	{
-	background-color: #1ab394;
-	border-color: #1ab394;
+	background-color: #eb384f;
+	border-color: #eb384f;
 	color: #FFFFFF;
 	z-index: 2;
 }
@@ -1854,7 +1854,7 @@ div.dt-button-info {
 }
 
 .pace .pace-progress {
-	background: #1ab394;
+	background: #eb384f;
 	position: fixed;
 	z-index: 2040;
 	top: 0;
@@ -2014,7 +2014,7 @@ div.dt-button-info {
 }
 
 .has-success .form-control {
-	border-color: #1ab394;
+	border-color: #eb384f;
 }
 
 .has-warning .form-control {
@@ -2026,7 +2026,7 @@ div.dt-button-info {
 }
 
 .has-success .control-label {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .has-warning .control-label {
@@ -2058,7 +2058,7 @@ div.dt-button-info {
 }
 
 .noUi-connect {
-	background: none repeat scroll 0 0 #1ab394;
+	background: none repeat scroll 0 0 #eb384f;
 	box-shadow: none;
 }
 
@@ -2097,7 +2097,7 @@ div.dt-button-info {
 	display: block;
 	overflow: hidden;
 	cursor: pointer;
-	border: 2px solid #1AB394;
+	border: 2px solid #eb384f;
 	border-radius: 3px;
 }
 
@@ -2130,7 +2130,7 @@ div.dt-button-info {
 .onoffswitch-inner:before {
 	content: "ON";
 	padding-left: 7px;
-	background-color: #1AB394;
+	background-color: #eb384f;
 	color: #FFFFFF;
 }
 
@@ -2147,7 +2147,7 @@ div.dt-button-info {
 	width: 18px;
 	margin: 0;
 	background: #FFFFFF;
-	border: 2px solid #1AB394;
+	border: 2px solid #eb384f;
 	border-radius: 3px;
 	position: absolute;
 	top: 0;
@@ -2695,11 +2695,11 @@ label.error {
 }
 
 .toast {
-	background-color: #1ab394;
+	background-color: #eb384f;
 }
 
 .toast-success {
-	background-color: #1ab394;
+	background-color: #eb384f;
 }
 
 .toast-error {
@@ -2748,7 +2748,7 @@ label.error {
 }
 
 .inspinia-notify.alert-info {
-	border-left: 6px solid #1ab394;
+	border-left: 6px solid #eb384f;
 }
 /* Image cropper style */
 .img-container, .img-preview {
@@ -2884,11 +2884,11 @@ a.forum-item-title:hover {
 }
 
 .forum-item.active .fa {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .forum-item.active a.forum-item-title {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 @media ( max-width : 992px) {
@@ -3080,7 +3080,7 @@ a.forum-item-title:hover {
 }
 
 .vertical-date small {
-	color: #1ab394;
+	color: #eb384f;
 	font-weight: 400;
 }
 
@@ -3339,7 +3339,7 @@ a.forum-item-title:hover {
 	position: absolute;
 	left: 10px;
 	border-radius: 3px;
-	background: #1ab394;
+	background: #eb384f;
 	padding: 3px;
 	color: white;
 	cursor: pointer;
@@ -3449,7 +3449,7 @@ a.forum-item-title:hover {
 }
 /*Slick Carousel */
 .slick-prev:before, .slick-next:before {
-	color: #1ab394 !important;
+	color: #eb384f !important;
 }
 /* Payments */
 .payment-card {
@@ -4124,7 +4124,7 @@ img.circle-border {
 	font-weight: 600;
 	padding: 17px 20px;
 	text-align: center;
-	background-color: #1ab394;
+	background-color: #eb384f;
 }
 
 .login-panel {
@@ -4331,7 +4331,7 @@ table.table-mail tr td {
 }
 
 .navy-bg {
-	background-color: #1ab394;
+	background-color: #eb384f;
 	color: #ffffff;
 }
 
@@ -4364,12 +4364,12 @@ table.table-mail tr td {
 }
 
 .panel-primary {
-	border-color: #1ab394;
+	border-color: #eb384f;
 }
 
 .panel-primary>.panel-heading {
-	background-color: #1ab394;
-	border-color: #1ab394;
+	background-color: #eb384f;
+	border-color: #eb384f;
 }
 
 .panel-success {
@@ -4413,7 +4413,7 @@ table.table-mail tr td {
 }
 
 .progress-bar {
-	background-color: #1ab394;
+	background-color: #eb384f;
 }
 
 .progress-small, .progress-small .progress-bar {
@@ -4463,7 +4463,7 @@ table.table-mail tr td {
 }
 /* COLORS */
 .text-navy {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .text-primary {
@@ -5349,7 +5349,7 @@ ul.notes li div {
 }
 
 .category-list li a .text-navy {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .category-list li a .text-primary {
@@ -5600,7 +5600,7 @@ a.compose-mail {
 }
 
 .file-list li a:hover {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .user-friends img {
@@ -5725,7 +5725,7 @@ dd.project-people {
 .faq-question {
 	font-size: 18px;
 	font-weight: 600;
-	color: #1ab394;
+	color: #eb384f;
 	display: block;
 }
 
@@ -5968,7 +5968,7 @@ dd.project-people {
 }
 /* ISSUE TRACKER */
 .issue-tracker .btn-link {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 table.issue-tracker tbody tr td {
@@ -6034,7 +6034,7 @@ table.issue-tracker tbody tr td {
 }
 
 .agile-list li.success-element {
-	border-left: 3px solid #1ab394;
+	border-left: 3px solid #eb384f;
 }
 
 .agile-detail {
@@ -6131,14 +6131,14 @@ table.shoping-cart-table tr td:last-child {
 }
 
 .product-name:hover, .product-name:focus {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .product-price {
 	font-size: 14px;
 	font-weight: 600;
 	color: #ffffff;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	padding: 6px 12px;
 	position: absolute;
 	top: -32px;
@@ -6281,7 +6281,7 @@ table.shoping-cart-table tr td:last-child {
 }
 
 .vote-actions a {
-	color: #1ab394;
+	color: #eb384f;
 	font-weight: 600;
 }
 
@@ -6316,7 +6316,7 @@ table.shoping-cart-table tr td:last-child {
 }
 
 .vote-info a:hover {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .vote-icon {
@@ -6327,7 +6327,7 @@ table.shoping-cart-table tr td:last-child {
 }
 
 .vote-icon.active {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 body.body-small .vote-icon {
@@ -6359,7 +6359,7 @@ body.body-small .vote-icon {
 	height: 38px;
 	width: 38px;
 	display: block;
-	background: #1ab394;
+	background: #eb384f;
 	padding: 9px 8px;
 	text-align: center;
 	color: #fff;
@@ -6368,7 +6368,7 @@ body.body-small .vote-icon {
 
 .open-small-chat:hover {
 	color: white;
-	background: #1ab394;
+	background: #eb384f;
 }
 
 .small-chat-box {
@@ -6434,7 +6434,7 @@ body.body-small .vote-icon {
 }
 
 .small-chat-box .content .chat-message.active {
-	background: #1ab394;
+	background: #eb384f;
 	color: #fff;
 }
 
@@ -6542,7 +6542,7 @@ body.body-small .vote-icon {
 .sk-spinner-rotating-plane.sk-spinner {
 	width: 30px;
 	height: 30px;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	margin: 0 auto;
 	-webkit-animation: sk-rotatePlane 1.2s infinite ease-in-out;
 	animation: sk-rotatePlane 1.2s infinite ease-in-out;
@@ -6715,7 +6715,7 @@ rotateY
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	opacity: 0.6;
 	position: absolute;
 	top: 0;
@@ -6798,7 +6798,7 @@ scale
 }
 
 .sk-spinner-wave div {
-	background-color: #1ab394;
+	background-color: #eb384f;
 	height: 100%;
 	width: 6px;
 	display: inline-block;
@@ -6892,7 +6892,7 @@ scaleY
 
 .sk-spinner-wandering-cubes .sk-cube1, .sk-spinner-wandering-cubes .sk-cube2
 	{
-	background-color: #1ab394;
+	background-color: #eb384f;
 	width: 10px;
 	height: 10px;
 	position: absolute;
@@ -7115,7 +7115,7 @@ rotate
 	width: 40px;
 	height: 40px;
 	margin: 0 auto;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	border-radius: 100%;
 	-webkit-animation: sk-pulseScaleOut 1s infinite ease-in-out;
 	animation: sk-pulseScaleOut 1s infinite ease-in-out;
@@ -7202,7 +7202,7 @@ opacity
 	display: inline-block;
 	position: absolute;
 	top: 0;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	border-radius: 100%;
 	-webkit-animation: sk-chasingDotsBounce 2s infinite ease-in-out;
 	animation: sk-chasingDotsBounce 2s infinite ease-in-out;
@@ -7296,7 +7296,7 @@ scale
 .sk-spinner-three-bounce div {
 	width: 18px;
 	height: 18px;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	border-radius: 100%;
 	display: inline-block;
 	-webkit-animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
@@ -7404,7 +7404,7 @@ scale
 	margin: 0 auto;
 	width: 20%;
 	height: 20%;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	border-radius: 100%;
 	-webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out;
 	animation: sk-circleBounceDelay 1.2s infinite ease-in-out;
@@ -7617,7 +7617,7 @@ scale
 .sk-spinner-cube-grid .sk-cube {
 	width: 33%;
 	height: 33%;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	float: left;
 	-webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
 	animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
@@ -7729,7 +7729,7 @@ scale3D
  *
  */
 .sk-spinner-wordpress.sk-spinner {
-	background-color: #1ab394;
+	background-color: #eb384f;
 	width: 30px;
 	height: 30px;
 	border-radius: 30px;
@@ -7838,7 +7838,7 @@ rotate
 	margin: 0 auto;
 	width: 18%;
 	height: 18%;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	border-radius: 100%;
 	-webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out;
 	animation: sk-circleFadeDelay 1.2s infinite ease-in-out;
@@ -8048,7 +8048,7 @@ body.landing-page {
 }
 
 .landing-page span.navy {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .landing-page p.text-color {
@@ -8056,7 +8056,7 @@ body.landing-page {
 }
 
 .landing-page a.navy-link {
-	color: #1ab394;
+	color: #eb384f;
 	text-decoration: none;
 }
 
@@ -8083,7 +8083,7 @@ body.landing-page {
 	width: 60px;
 	height: 1px;
 	margin: 60px auto 0;
-	border-bottom: 2px solid #1ab394;
+	border-bottom: 2px solid #eb384f;
 }
 
 .landing-page .navbar-wrapper {
@@ -8134,12 +8134,12 @@ body.landing-page {
 	{
 	background: transparent;
 	color: #fff;
-	border-top: 6px solid #1ab394;
+	border-top: 6px solid #eb384f;
 }
 
 .landing-page .navbar-default .navbar-nav>li>a:hover, .landing-page .navbar-default .navbar-nav>li>a:focus
 	{
-	color: #1ab394;
+	color: #eb384f;
 	background: inherit;
 }
 
@@ -8170,7 +8170,7 @@ body.landing-page {
 	height: auto;
 	display: block;
 	font-size: 14px;
-	background: #1ab394;
+	background: #eb384f;
 	padding: 15px 20px 15px 20px;
 	border-radius: 0 0 5px 5px;
 	font-weight: 700;
@@ -8182,7 +8182,7 @@ body.landing-page {
 }
 
 .landing-page .navbar-scroll.navbar-default .nav li a:hover {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .landing-page .navbar-wrapper .navbar.navbar-scroll {
@@ -8207,7 +8207,7 @@ body.landing-page {
 
 .landing-page .navbar-default .navbar-nav>.active>a, .landing-page .navbar-default .navbar-nav>.active>a:hover
 	{
-	border-top: 6px solid #1ab394;
+	border-top: 6px solid #eb384f;
 }
 
 .landing-page .navbar-fixed-top {
@@ -8381,7 +8381,7 @@ body.landing-page {
 }
 
 .landing-page .features small {
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .landing-page .features h2 {
@@ -8398,13 +8398,13 @@ body.landing-page {
 }
 
 .landing-page .features-icon {
-	color: #1ab394;
+	color: #eb384f;
 	font-size: 40px;
 }
 
 .landing-page .navy-section {
 	margin-top: 60px;
-	background: #1ab394;
+	background: #eb384f;
 	color: #fff;
 	padding: 20px 0;
 }
@@ -8423,7 +8423,7 @@ body.landing-page {
 }
 
 .landing-page .social-icon a {
-	background: #1ab394;
+	background: #eb384f;
 	color: #fff;
 	padding: 4px 8px;
 	height: 28px;
@@ -8460,7 +8460,7 @@ body.landing-page {
 
 .landing-page .pricing-plan .pricing-price span {
 	font-weight: 700;
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .landing-page li.pricing-desc {
@@ -8470,7 +8470,7 @@ body.landing-page {
 }
 
 .landing-page li.pricing-title {
-	background: #1ab394;
+	background: #eb384f;
 	color: #fff;
 	padding: 10px;
 	border-radius: 4px 4px 0 0;
@@ -8481,7 +8481,7 @@ body.landing-page {
 .landing-page .testimonials {
 	padding-top: 80px;
 	padding-bottom: 90px;
-	background-color: #1ab394;
+	background-color: #eb384f;
 	background-image: url('../img/landing/avatar_all.png');
 }
 
@@ -8490,7 +8490,7 @@ body.landing-page {
 }
 
 .landing-page .features .big-icon {
-	color: #1ab394 !important;
+	color: #eb384f !important;
 }
 
 .landing-page .contact {
@@ -8557,8 +8557,8 @@ body.landing-page {
 }
 
 .landing-page .btn-primary {
-	background-color: #1ab394;
-	border-color: #1ab394;
+	background-color: #eb384f;
+	border-color: #eb384f;
 	color: #FFFFFF;
 	font-size: 14px;
 	padding: 10px 20px;
@@ -8651,7 +8651,7 @@ body.landing-page {
 		color: #676a6c;
 	}
 	.landing-page .navbar-default .nav li a:hover {
-		color: #1ab394;
+		color: #eb384f;
 	}
 	.landing-page .navbar-wrapper .navbar {
 		padding-top: 0;
@@ -9002,7 +9002,7 @@ body.rtls .top-navigation .footer.fixed, body.rtls.top-navigation .footer.fixed
 }
 
 .spin-icon {
-	background: #1ab394;
+	background: #eb384f;
 	position: absolute;
 	padding: 7px 10px 7px 13px;
 	border-radius: 20px 0 0 20px;
@@ -9661,7 +9661,7 @@ body.md-skin {
 
 .md-skin .nav .open>a, .md-skin .nav .open>a:hover, .md-skin .nav .open>a:focus
 	{
-	background: #1ab394;
+	background: #eb384f;
 }
 
 .md-skin .navbar-top-links li {
@@ -9744,7 +9744,7 @@ body.md-skin {
 }
 
 .md-skin .navbar-fixed-top, .md-skin .navbar-static-top {
-	background-color: #1ab394 !important;
+	background-color: #eb384f !important;
 	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px
 		rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -9860,7 +9860,7 @@ body.md-skin {
 .md-skin.landing-page .navbar-default .navbar-nav>li>a:hover, .md-skin.landing-page .navbar-default .navbar-nav>li>a:focus
 	{
 	background: inherit;
-	color: #1ab394;
+	color: #eb384f;
 }
 
 .md-skin.landing-page.body-small .nav.navbar-right>li>a {
@@ -9897,12 +9897,12 @@ body.md-skin {
 .md-skin.top-navigation .nav>li a:hover, .md-skin .top-navigation .nav>li a:focus,
 	.md-skin.top-navigation .nav .open>a, .md-skin.top-navigation .nav .open>a:hover,
 	.md-skin.top-navigation .nav .open>a:focus {
-	color: #1ab394;
+	color: #eb384f;
 	background: #ffffff;
 }
 
 .md-skin.top-navigation .nav>li.active a {
-	color: #1ab394;
+	color: #eb384f;
 	background: #ffffff;
 }
 
@@ -10691,11 +10691,11 @@ margin-left: 20px;
 }
 
 .irs-from, .irs-to, .irs-single {
-    background: #1ab394 !important;
+    background: #eb384f !important;
 }
 
 .irs-from:after, .irs-to:after, .irs-single:after {
-    border-top-color: #1ab394 !important;
+    border-top-color: #eb384f !important;
 }
 
 
@@ -10916,7 +10916,7 @@ white-space: pre-line;}
 #orgadmin_report_detail .tooltip>.tooltip-inner {
 	background-color: #FFFFFF;
 	color: black;
-	border: 1px solid #1ab394;
+	border: 1px solid #eb384f;
 	padding: 5px;
 	min-width: 150px;
 }
@@ -11104,7 +11104,7 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
 .sk-spinner-three-bounce div {
   width: 18px;
   height: 18px;
-  background-color: #1ab394;
+  background-color: #eb384f;
   border-radius: 100%;
   display: inline-block;
   /* -webkit-animation: sk-threeBounceDelay 1.4s infinite ease-in-out; */
@@ -11185,4 +11185,6 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
   .display-hidden{
   display: none !important
   }
-  
+  hr{
+      border-top: 1px solid #f8fafb;
+  }

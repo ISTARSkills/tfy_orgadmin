@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,8 +38,7 @@ public class OrgAdminBatchGroupService {
 			selectedStudents.add((int) item.get("student_id"));
 		}
 
-		for (Integer integer : selectedStudents) {
-		}
+		
 		return selectedStudents;
 	}
 
@@ -71,7 +71,7 @@ public class OrgAdminBatchGroupService {
 					"th", "st" };
 
 	public BatchGroup createBatchGroup(String groupName, String bg_desc, int studentCount, int org_id,
-			int assessmentId) {
+			int assessmentId, int parentGroupId, String groupType) {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = new BatchGroup();
 		batchGroup.setName(groupName);
@@ -80,6 +80,10 @@ public class OrgAdminBatchGroupService {
 		batchGroup.setBatchCode("" + getRandomInteger(100000, 999999));
 		batchGroup.setAssessmentId(assessmentId);
 		batchGroup.setBgDesc(bg_desc);
+		batchGroup.setParentGroupId(parentGroupId);
+		batchGroup.setType(groupType);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		batchGroup.setYear(year);
 		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;
@@ -99,14 +103,18 @@ public class OrgAdminBatchGroupService {
 	}
 
 	public BatchGroup updateBatchGroup(int bg_id, String groupName, String bg_desc, int studentCount, int org_id,
-			int assessmentId) {
+			int assessmentId, int parentGroupId, String groupType) {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = batchGroupDAO.findById(bg_id);
 		batchGroup.setName(groupName);
 		batchGroup.setCreatedAt(new Timestamp(new Date().getTime()));
 		batchGroup.setUpdatedAt(new Timestamp(new Date().getTime()));
 		batchGroup.setBgDesc(bg_desc);
+		batchGroup.setType(groupType);
+		batchGroup.setParentGroupId(parentGroupId);
 		batchGroup.setAssessmentId(assessmentId);
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		batchGroup.setYear(year);
 		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;

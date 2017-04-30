@@ -95,4 +95,274 @@ WHERE TF.college_id != 2
 GROUP BY TF.course_id
 </sql>
 </custom_report>
+<custom_report id="5">
+<sql>select id, name from batch_group where type=':filter_by' and college_id = :college_id</sql>
+</custom_report>
+<custom_report id="6">
+<sql>SELECT DISTINCT
+	istar_user. ID,
+	istar_user.email
+FROM
+	istar_user,
+	user_org_mapping,
+	user_role
+WHERE
+	istar_user. ID = user_org_mapping.user_id
+AND user_org_mapping.organization_id = :college_id
+AND user_org_mapping.user_id = user_role.user_id
+AND user_role.role_id = (
+	SELECT
+		ID
+	FROM
+		ROLE
+	WHERE
+		role_name = 'STUDENT'
+)</sql>
+</custom_report>
+<custom_report id="7">
+<sql>select distinct istar_user.id, istar_user.email from istar_user, batch_students, user_role
+where istar_user.id = batch_students.student_id
+and batch_students.batch_group_id in ( :batch_group_ids)
+and batch_students.student_id = user_role.user_id
+and user_role.role_id = (select id from role where role_name='STUDENT')</sql>
+</custom_report>
+<custom_report id="8"><sql>
+select DISTINCT istar_user.id, istar_user.email from batch_students, istar_user, user_role
+where batch_students.student_id = istar_user.id
+and user_role.user_id = batch_students.student_id 
+and user_role.role_id = (select id from role where role_name='STUDENT')
+and batch_students.batch_group_id = :batch_group_id
+
+</sql></custom_report>
+<custom_report id="9"><sql>
+select cast (count(*) as INTEGER) as count from istar_user, user_org_mapping, user_role
+where istar_user.id = user_org_mapping.user_id
+and user_org_mapping.user_id = user_role.user_id
+and user_role.role_id = (select id from role where role_name='STUDENT')
+and user_org_mapping.organization_id = :college_id
+</sql></custom_report>
+<custom_report id="10"><sql>
+select istar_user. ID, 	istar_user.email, cast (count(distinct student_playlist.lesson_id) as integer) as count
+from istar_user, user_org_mapping, user_role, student_playlist
+where istar_user.id = user_org_mapping.user_id
+and user_org_mapping.user_id = user_role.user_id
+and user_role.role_id = (select id from role where role_name='STUDENT')
+and user_org_mapping.organization_id = :college_id
+and student_playlist.student_id = istar_user.id
+AND istar_user.email like '%:search_term%'
+GROUP BY istar_user. ID, 	istar_user.email
+ORDER BY 	istar_user.email LIMIT :limit OFFSET :offset
+</sql></custom_report>
+<custom_report id="11"><sql>
+SELECT
+	batch_group. ID,
+	batch_group. NAME AS NAME,
+	cast (COUNT (
+		DISTINCT student_playlist.lesson_id
+	)
+as integer) as count
+FROM
+	batch_group
+LEFT JOIN batch_students ON (
+	batch_students.batch_group_id = batch_group. ID
+)
+LEFT JOIN student_playlist ON (
+	student_playlist.student_id = batch_students.student_id
+)
+WHERE
+	batch_group.college_id = :college_id
+and batch_group.type =':type' 
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME
+
+
+</sql>
+</custom_report>
+<custom_report id ="12"><sql>
+(
+	SELECT
+		skill_objective. ID,
+		skill_objective. NAME,
+		'COURSE' AS parent_type
+	FROM
+		skill_objective,
+		course,
+		course_skill_objective
+	WHERE
+		course. ID = course_skill_objective.course_id
+	AND course_skill_objective.skill_objective_id = skill_objective. ID
+	AND course. ID IN (
+		SELECT DISTINCT
+			course. ID
+		FROM
+			course,
+			batch,
+			batch_group
+		WHERE
+			course. ID = batch.course_id
+		AND batch.batch_group_id = batch_group. ID
+		AND batch_group.college_id = :college_id
+	)
+)
+UNION
+	(
+		SELECT
+			skill_objective. ID,
+			skill_objective. NAME,
+			'MODULE' AS parent_ype
+		FROM
+			skill_objective,
+			MODULE,
+			module_skill_objective
+		WHERE
+			MODULE . ID = module_skill_objective.module_id
+		AND module_skill_objective.skill_objective_id = skill_objective. ID
+		AND MODULE . ID IN (
+			SELECT DISTINCT
+				module_course.module_id
+			FROM
+				course,
+				batch,
+				batch_group,
+				module_course
+			WHERE
+				course. ID = batch.course_id
+			AND batch.batch_group_id = batch_group. ID
+			AND module_course.course_id = course. ID
+			AND batch_group.college_id = :college_id
+		)
+	)
+UNION
+	(
+		SELECT
+			skill_objective. ID,
+			skill_objective. NAME,
+			'CMSESSION' AS parent_ype
+		FROM
+			skill_objective,
+			cmsession,
+			cmsession_skill_objective
+		WHERE
+			cmsession. ID = cmsession_skill_objective.cmsession_id
+		AND cmsession_skill_objective.skill_objective_id = skill_objective. ID
+		AND cmsession. ID IN (
+			SELECT DISTINCT
+				cmsession_module.cmsession_id
+			FROM
+				course,
+				batch,
+				batch_group,
+				module_course,
+				cmsession_module
+			WHERE
+				course. ID = batch.course_id
+			AND batch.batch_group_id = batch_group. ID
+			AND module_course.course_id = course. ID
+			AND cmsession_module.module_id = module_course.module_id
+			AND batch_group.college_id = :college_id
+		)
+	)
+ORDER BY
+	ID
+</sql></custom_report>
+<custom_report id="13">
+<sql>
+SELECT DISTINCT
+	lesson_cmsession.lesson_id,
+	lesson_cmsession.cmsession_id,
+	module_course.module_id,
+	module_course.course_id
+FROM
+	module_course,
+	cmsession_module,
+	lesson_cmsession
+WHERE
+	module_course.module_id = cmsession_module.module_id
+AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id
+AND module_course.course_id = (
+	SELECT
+		course_id
+	FROM
+		course_skill_objective
+	WHERE
+		skill_objective_id = :skill_objective_id
+)
+ORDER BY
+	course_id
+</sql>
+</custom_report>
+<custom_report id="14">
+<sql>
+SELECT DISTINCT
+	lesson_cmsession.lesson_id,
+	lesson_cmsession.cmsession_id,
+module_course.module_id,
+	module_course.course_id
+FROM
+	module_course,
+	cmsession_module,
+	lesson_cmsession
+WHERE
+	module_course.module_id = cmsession_module.module_id
+AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id
+AND module_course.module_id = (
+	SELECT
+		module_id
+	FROM
+		module_skill_objective
+	WHERE
+		skill_objective_id = :skill_objective_id
+)
+ORDER BY
+	course_id
+</sql>
+</custom_report>
+<custom_report id="15">
+<sql>
+SELECT DISTINCT
+	lesson_cmsession.lesson_id,
+lesson_cmsession.cmsession_id,
+module_course.module_id,
+	module_course.course_id
+FROM
+	module_course,
+	cmsession_module,
+	lesson_cmsession
+WHERE
+	module_course.module_id = cmsession_module.module_id
+AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id
+AND lesson_cmsession.cmsession_id = (
+	SELECT
+		cmsession_id
+	FROM
+		cmsession_skill_objective
+	WHERE
+		skill_objective_id = :skill_objective_id
+)
+ORDER BY
+	course_id
+</sql></custom_report>
+<custom_report id ="16">
+<sql>
+select distinct student_id from batch_students where batch_group_id = :batch_group_id
+</sql>	
+</custom_report>
+<custom_report id ="17">
+<sql>
+select distinct course_id from course_skill_objective where  skill_objective_id = :skill_objective_id
+and course_id not in (select distinct course_id from batch where batch_group_id = :batch_group_id)
+</sql>	
+</custom_report>
+<custom_report id="18">
+<sql>INSERT INTO batch ( ID, createdat, NAME, updatedat, batch_group_id, course_id, order_id, YEAR ) VALUES ( (SELECT COALESCE(max(id),0)+1 from batch), now(), ':batch_name', now(), :bg_id, :course_id, (SELECT COALESCE(max(id),0)+1 from batch), :year )  </sql>
+</custom_report>
+<custom_report id="19">
+<sql>
+select id , name from batch_group where parent_group_id = :parent_group_id
+</sql>
+</custom_report>
+<custom_report id ="20">
+<sql>select cast (count(*) as integer) as count from batch where batch_group_id= :batch_group_id and course_id = :course_id </sql>
+</custom_report>
 </custom_report_list>

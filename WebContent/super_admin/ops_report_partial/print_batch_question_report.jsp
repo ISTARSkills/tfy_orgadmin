@@ -147,7 +147,7 @@
 											+ '</b> this question<br/>';
 								}
 							},
-							colors : [ '#1ab394', '#f8ac59', '#8f938f' ]
+							colors : [ '#eb384f', '#f8ac59', '#8f938f' ]
 						});
 
 					});

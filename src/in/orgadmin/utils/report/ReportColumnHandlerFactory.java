@@ -31,7 +31,7 @@ public class ReportColumnHandlerFactory {
 		case "USER_HANDLER":
 			return (new UserHandler());
 		case "BG_ROLE_HANDLER":
-			return (new SectionRoleHandler());
+			return (new BGRoleHandler());
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":

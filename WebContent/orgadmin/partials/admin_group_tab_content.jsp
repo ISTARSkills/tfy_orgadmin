@@ -21,59 +21,33 @@ Organization college=new OrganizationDAO().findById(colegeID);
 
 <div class="ibox">
 <button type="button" class="btn btn-w-m btn-danger" data-toggle="modal"
-								data-target="#create_group_model" style="margin-bottom: 10px;">Add Section</button>
+								data-target="#create_group_model" style="margin-bottom: 10px;">Add Section / Role</button>
 	<div class="col-lg-12">
-
-		<!-- <button class="btn btn-default pull-right" data-toggle="modal"
-			data-target="#create_group_model" type="button">
-			<i class="fa fa-plus-circle"></i>
-		</button> -->
-		
-		
-
-		<div class="row">
+	<div class="row">
 		<%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();
 				conditions.put("limit", "12");
 				conditions.put("offset", "0");
-				conditions.put("college_id", colegeID+"");
-				
-				%>
-				
+				conditions.put("college_id", colegeID+"");				
+				%>				
 				<%=util.getTableOuterHTML(3045, conditions)%>
-				
-			<%-- <table class="table table-bordered dataTables-example" id='batch_group_list'>
-				<thead>
-					<tr>
-						<th>Batch Code</th>
-						<th>Group Name</th>
-						<th>Number of Students</th>
-						<th>Number of batches</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<%=ui.getAllGroups(colegeID) %>
-				</tbody>
-			</table> --%>
 		</div>
 	</div>
 
-
+	
 	<div class="modal inmodal" id="create_group_model" tabindex="-1"
 		role="dialog" aria-hidden="true" style="display: none;">
 		<div class="modal-dialog modal-lg">
 
 
 			<div class="modal-content animated flipInY">
-
 					<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
                                         <div class="panel-heading custom-theme-panal-color">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
-					<h4 class="modal-title text-center">Create Section</h4>
+					<h4 class="modal-title text-center">Create Section / Role</h4>
 				</div>
 				<div class="modal-body" style="padding-bottom: 0px;">
 
@@ -82,7 +56,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 						<input type="hidden" value="" name="user_id" /> <input
 							type="hidden" value="<%=colegeID%>" name="college_id" />
 						<div class="form-group">
-							<h3 class="m-b-n-md">Name of the Section</h3>
+							<h3 class="m-b-n-md">Name</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
 								<input type="text" placeholder="Section Name.." name="group_name"
@@ -99,15 +73,62 @@ Organization college=new OrganizationDAO().findById(colegeID);
 									class="form-control">
 							</div>
 						</div>
-
+						<div class="form-group">
+							<h3 class="m-b-n-md">Type</h3>
+							<hr class="m-b-xs">
+							<div class="col-lg-3">
+								<select
+									class="form-control" name="group_type">
+									<option value="ROLE">ROLE</option>
+									<option value="SECTION">SECTION</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<h3 class="m-b-n-md">Parent Role / Section</h3>
+							<hr class="m-b-xs">
+							<div class="col-lg-10">
+								<select
+									class="form-control" name="parent_group_id">
+									<option value="-1">NONE</option>
+									<%
+									for(BatchGroup bg : college.getBatchGroups())
+									{										
+										%>
+										<option value="<%=bg.getId()%>"><%=bg.getName() %> (<%=bg.getType()%>)</option>				
+										<% 	
+									}
+									%>
+									
+								</select>
+							</div>
+						</div>
+						
 						<div class="form-group">
 							<h3 class="m-b-n-md">Members</h3>
 							<hr class="m-b-xs">
-							<div class="col-lg-12">
-								
+							<div class="col-lg-2">								
 								<div>
-									<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4">
-										<%=ui.getAllStudentsForBatch(colegeID,null)%>
+									<select data-placeholder="Filter By" class="select2-dropdown" tabindex="4" name="filter_by" id="member_filter_by" data-college_id="<%=colegeID%>">
+										<option value=""></option>
+										<option value="ORG">ORG</option>
+										<option value="ROLE"> ROLE</option>	
+										<option value="SECTION"> SECTION</option>	
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-4" id="role_section_holder" style="display:none">								
+								<div>
+									<select data-placeholder="Role/Section Name" class="select2-dropdown" multiple tabindex="8" name="role_section_id" id="role_section_options">
+									
+											
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6">								
+								<div>
+									<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list" id="student_list_holder">
+										
 									</select>
 								</div>
 							</div>
@@ -115,11 +136,11 @@ Organization college=new OrganizationDAO().findById(colegeID);
 
 						<div class="form-group">
 							<div class="col-lg-12">
-								<input type="checkbox" name="select_all" class="js-switch" /> <label>Select
-									all users within <%=college.getName() %> to this group</label>
+								<input type="checkbox" name="select_all" class="js-switch" /> <label>Add
+									all users to this group</label>
 							</div>
 						</div>
-						<input type="hidden" name="student_list">
+						
 						 <div class="modal-footer" style="padding-bottom: 0px;">
 						<div class="form-group">
 							<button type="submit" class="btn btn-danger">Save
@@ -130,4 +151,17 @@ Organization college=new OrganizationDAO().findById(colegeID);
 			</div></div>
 		</div>
 	</div>
+	
+	<div class="modal inmodal" id="edit_group_modal" tabindex="-1"
+		role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog modal-lg">
+
+
+			<div class="modal-content animated flipInY" id="edit_group_modal_content">
+					
+	</div>
+	</div>
+	</div>
+	
+	
 </div>

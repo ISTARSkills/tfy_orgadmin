@@ -63,7 +63,7 @@
 
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
-
+<script src="<%=basePath %>js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="<%=basePath %>js/plugins/highchart/highcharts.js"></script>
 <script src="<%=basePath %>js/plugins/highchart/no-data-to-display.js"></script>
 <script src="<%=basePath %>js/plugins/highchart/data.js"></script>

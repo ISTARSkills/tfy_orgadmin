@@ -11,7 +11,7 @@ String type = request.getParameter("type");
 List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllContentAssosicatedSkills(colegeID,type_id,type);
 
 %>
-<div class="ibox-content no-borders">
+
 	<div
 		class="col-lg-12 p-xs  b-r-lg border-left-right border-top-bottom border-size-small div-height">
 		<h3>Content associated with ${param.type}</h3>
@@ -38,4 +38,3 @@ List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllContentAss
 			</div>
 		</div>
 	</div>
-</div>

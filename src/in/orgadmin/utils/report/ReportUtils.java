@@ -116,7 +116,7 @@ public class ReportUtils {
 		
 			for (IStarColumn iterable_element : report.getColumns()) {
 				try {
-					out.append("<th>"+iterable_element.getDisplayName()+"</th>");
+					out.append("<th>"+iterable_element.getDisplayName().toUpperCase()+"</th>");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();

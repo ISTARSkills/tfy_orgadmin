@@ -7,6 +7,7 @@ function readyFn(jQuery) {
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
+	
 	/*
 	 * Page specific js
 	 */
@@ -63,11 +64,11 @@ function readyFn(jQuery) {
 
 	case 'super_admin_comp_prof':
 		init_super_admin_comp_prof();
-		//$('#Dashboard').css('color',' #1ab394');
+		//$('#Dashboard').css('color',' #eb384f');
 		break;
 	case 'super_admin_placemenet':
 		init_super_admin_placemenet();
-	//	$('#Dashboard').css('color',' #1ab394');
+	//	$('#Dashboard').css('color',' #eb384f');
 		break;
 	case 'super_admin_classroom':
 		init_superadmin_class_room();
@@ -142,7 +143,156 @@ function createDataTables()
 	         "serverSide": true,
 	         "ajax": url	        
 	     });
+		
+		$(this).on( 'draw.dt', function () {
+		    callColumnHandlerFunctions();
+		} );
+		
 	});
+	
+	
+}
+
+function  callColumnHandlerFunctions(){
+	initEditUserModalCall();
+	initEditGroupModalCall();
+	initDeleteGroupCall();
+}
+
+function initDeleteGroupCall()
+{
+	$('.delete_group').click(function () {
+    	var groupName = $(this).data('group_name');
+    	var groupId = $(this).data('group_id');
+    	var $trTobeDelete = $(this).parents('tr');
+        swal({
+                    title: "Are you sure about deleting this Group - "+groupName+" ?",
+                    text: "All events, batches, and statistics will be deleted.!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false },
+                function (isConfirm) {
+                    if (isConfirm) {
+                    	
+                    	var urls = '../delete_group?group_id='+groupId;
+    	    	        $.get(urls, function(data) {    	    	        	
+    	    	        	swal("Deleted!", groupName+" has been deleted.", "success"); 
+    	    	        	$trTobeDelete.remove();
+    	    	        });   	                            		                            	
+                    } else {
+                        swal("Cancelled", "Group deletion cancelled successfully.", "error");
+                    }
+                });
+        
+    });
+	
+}
+
+function markUserAsDropOut()
+{
+	 $(".user-edit-popup").unbind().on("click",function(){
+		 		 
+		 var user_id =  $(this).data('user_id');
+		 var url ="../mark_student_as_dropout?user_id="+user_id;
+		 $.get( urls, function( data ) {
+			 
+   		});
+		 
+	 });
+}
+
+function initEditGroupModalCall()
+{
+	 $(".group-edit-popup").unbind().on("click",function(){
+	    	var group_id =  $(this).data('group_id');
+	    	var urls = '../modal/admin_batch_group_modal.jsp?bg_id='+group_id;
+	    	$.get( urls, function( data ) {
+	    		
+	    		$('#edit_group_modal_content').empty();
+	    		$('#edit_group_modal_content').append(data);
+	    		
+	    		var cid = $('#edit_member_filter_by').data("college_id");
+	    		
+	    		
+	    		var urls = '../get_filtered_students?entity_id='+cid+'&filter_by=ORG&batch_group_id='+group_id;
+	    	    $.get(urls, function(data) {
+	    	    	$('#edit_student_list_holder').empty();
+	    	    	$('#edit_student_list_holder').append(data);
+	    	    	
+	    	    });
+	    		
+	    		
+	    	    $('#edit_member_filter_by').unbind().on("change",function (){
+	    	    	var filterBy=$(this).val();
+	    	    	var collegeId = $(this).data("college_id");
+	    	    	
+	    	    	if(filterBy==='ROLE')
+	    	    	{
+	    	    		var urls = '../get_filtered_groups?college_id='+collegeId+'&filter_by='+filterBy;
+	    	            $.get(urls, function(data) {
+	    	            	$('#edit_role_section_options').empty();
+	    	            	$('#edit_role_section_options').append(data);
+	    	            });
+	    	    		$('#edit_role_section_holder').show();
+	    	    	}
+	    	    	else if(filterBy==='SECTION')
+	    	    	{
+	    	    		var urls = '../get_filtered_groups?college_id='+collegeId+'&filter_by='+filterBy;
+	    	            $.get(urls, function(data) {
+	    	            	$('#edit_role_section_options').empty();
+	    	            	$('#edit_role_section_options').append(data);
+	    	            });
+	    	    		$('#edit_role_section_holder').show();
+	    	    	}
+	    	    	else
+	    	    	{    		
+	    	    		$('#edit_role_section_holder').hide();
+	    	    		var urls = '../get_filtered_students?entity_id='+collegeId+'&filter_by=ORG&batch_group_id='+group_id;
+	    	            $.get(urls, function(data) {
+	    	            	$('#edit_student_list_holder').empty();
+	    	            	$('#edit_student_list_holder').append(data);
+	    	            });
+	    	    	}    	 
+	    	    });
+	    	    
+	    	    $('#edit_role_section_options').unbind().on("change",function (){
+	    	    	var groupId = $(this).val();    	
+	    	    	var urls = '../get_filtered_students?entity_id='+groupId+'&filter_by=GROUP&batch_group_id='+group_id;
+	    	        $.get(urls, function(data) {
+	    	        	$('#edit_student_list_holder').empty();
+	    	        	$('#edit_student_list_holder').append(data);
+	    	        });        
+	    	    });
+	    		
+	    	    $('select').select2();
+	    		$('#edit_group_modal').modal();	    		   		 
+	    		});
+	    	// open modal using js now 
+	    	// action goes here!!
+	    });
+}
+
+
+function initEditUserModalCall()
+{
+	 $(".user-edit-popup").unbind().on("click",function(){
+	    	var user_id =  $(this).data('user_id');
+	    	var urls = 'partials/modal/admin_user_edit_modal.jsp?user_id='+user_id;
+	    	$.get( urls, function( data ) {	    		  	    		  
+	    		  if($('#edit_user_model_'+user_id).length>0){
+	    			  $('#edit_user_model_'+user_id).remove(); 
+	    		  }
+	    		  $( "body" ).append(data);
+	    		  admin_edit_modal_create();
+	    		  $('#edit_user_model_'+user_id).modal();	    		 
+	    		});
+	    	// open modal using js now 
+	    	// action goes here!!
+	    });
 }
 
 function initiateGraphFilter()
@@ -199,48 +349,23 @@ function createGraphs()
  			    if(graph_type.indexOf('table')<=-1)
  			    	{
  						console.log("App.js::handleGraphs() -> graph found --> " + tableID);
- 						$(containerID).highcharts({
- 						        data: {
- 						            table: tableID
- 						        },
- 						        chart: {
- 						        	 zoomType: 'x',
- 						            type: graph_type, 
- 						            options3d: {
- 						                enabled: true,
- 						                alpha: 45
- 						            }
- 						        },
- 						       title : {
- 									text : graph_title
- 								},
- 								yAxis : {
- 									allowDecimals : false,
- 									title : {
- 										text : y_axis_title
- 									}
- 								},
- 						        tooltip: {
- 						            crosshairs: [true,true],
- 						            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
- 						            formatter: function() {
- 						                return this.series.name+': <b>'+this.y+'</b>';
- 						            }
- 						        },
- 						        plotOptions: {
- 						            pie: {
- 						                allowPointSelect: true,
- 						                cursor: 'pointer',
- 						                dataLabels: {
- 						                    enabled: true,
- 						                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
- 						                    style: {
- 						                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
- 						                    }
- 						                }
- 						            }
- 						        }
- 						    });
+ 						
+ 						if(graph_type==='column') {
+ 							create_column_graph(tableID);
+ 						} else if(graph_type==='bar'){
+ 							create_bar_chart(tableID);
+ 						} else if(graph_type==='pie') {
+ 							create_pie_chart(tableID);
+ 						} else if(graph_type==='area') {
+ 							create_area_chart(tableID);
+ 						}else if(graph_type==='line') {
+ 							create_line_chart(tableID);
+ 						} else {
+ 							
+ 						}
+ 						
+ 						
+ 						
  			    	}
  			    
  			   
@@ -254,8 +379,261 @@ function createGraphs()
  		}
 
 
+ 		
  	}
+
+function create_bar_chart(tableID)
+{
+    var containerID = '#'+$('#'+tableID).data('graph_containter');
+    var graph_type = $('#'+tableID).data('graph_type');
+    var graph_title =$('#'+tableID).data('report_title'); 
+    var y_axis_title =$('#'+tableID).data('y_axis_title');
+
+$(containerID).highcharts({
+        data: {
+            table: tableID
+        },
+        chart: {
+        	 zoomType: 'x',
+            type: graph_type, 
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+       title : {
+			text : graph_title
+		},
+		yAxis : {
+			allowDecimals : false,
+			title : {
+				text : y_axis_title
+			}
+		},
+        tooltip: {
+            crosshairs: [true,true],
+            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            formatter: function() {
+                return this.series.name+': <b>'+this.y+'</b>';
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function create_pie_chart(tableID)
+{
+    var containerID = '#'+$('#'+tableID).data('graph_containter');
+    var graph_type = $('#'+tableID).data('graph_type');
+    var graph_title =$('#'+tableID).data('report_title'); 
+    var y_axis_title =$('#'+tableID).data('y_axis_title');
+
+$(containerID).highcharts({
+        data: {
+            table: tableID
+        },
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+       title : {
+			text : graph_title
+		},
+		yAxis : {
+			allowDecimals : false,
+			title : {
+				text : y_axis_title
+			}
+		},
+        tooltip: {
+            crosshairs: [true,true],
+            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            formatter: function() {
+                return this.series.name+': <b>'+this.y+'</b>';
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+    });
 	
+}
+
+function create_area_chart(tableID)
+{
+    var containerID = '#'+$('#'+tableID).data('graph_containter');
+    var graph_type = $('#'+tableID).data('graph_type');
+    var graph_title =$('#'+tableID).data('report_title'); 
+    var y_axis_title =$('#'+tableID).data('y_axis_title');
+
+$(containerID).highcharts({
+        data: {
+            table: tableID
+        },
+        chart: {
+        	 zoomType: 'x',
+            type: graph_type, 
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+       title : {
+			text : graph_title
+		},
+		yAxis : {
+			allowDecimals : false,
+			title : {
+				text : y_axis_title
+			}
+		},
+        tooltip: {
+            crosshairs: [true,true],
+            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            formatter: function() {
+                return this.series.name+': <b>'+this.y+'</b>';
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function create_line_chart(tableID)
+{
+    var containerID = '#'+$('#'+tableID).data('graph_containter');
+    var graph_type = $('#'+tableID).data('graph_type');
+    var graph_title =$('#'+tableID).data('report_title'); 
+    var y_axis_title =$('#'+tableID).data('y_axis_title');
+
+$(containerID).highcharts({
+        data: {
+            table: tableID
+        },
+        chart: {
+        	 zoomType: 'x',
+            type: graph_type, 
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+       title : {
+			text : graph_title
+		},
+		yAxis : {
+			allowDecimals : false,
+			title : {
+				text : y_axis_title
+			}
+		},
+        tooltip: {
+            crosshairs: [true,true],
+            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            formatter: function() {
+                return this.series.name+': <b>'+this.y+'</b>';
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function create_column_graph(tableID) {
+	
+	//	var tableID  = $(this).attr('id');
+	    var containerID = '#'+$('#'+tableID).data('graph_containter');
+	    var graph_type = $('#'+tableID).data('graph_type');
+	    var graph_title =$('#'+tableID).data('report_title'); 
+	    var y_axis_title =$('#'+tableID).data('y_axis_title');
+	
+	$(containerID).highcharts({
+	        data: {
+	            table: tableID
+	        },
+	        chart: {
+	        	 zoomType: 'x',
+	            type: graph_type, 
+	            options3d: {
+	                enabled: true,
+	                alpha: 45
+	            }
+	        },
+	       title : {
+				text : graph_title
+			},
+			yAxis : {
+				allowDecimals : false,
+				title : {
+					text : y_axis_title
+				}
+			},
+	        tooltip: {
+	            crosshairs: [true,true],
+	            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+	            formatter: function() {
+	                return this.series.name+': <b>'+this.y+'</b>';
+	            }
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+	                    style: {
+	                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+	                    }
+	                }
+	            }
+	        }
+	    });
+}
+
 
 function initChat()
 {			
@@ -793,23 +1171,7 @@ function loadTables(){
 	  var url=$(this).data('url');
 	  
 	  $('#'+id).on( 'draw.dt', function () {   
-		  $(".user-edit-popup").click(function(){
-		    	var user_id =  $(this).data('user_id');
-		    	var urls = 'partials/modal/admin_user_edit_modal.jsp?user_id='+user_id;
-		    	$.get( urls, function( data ) {
-		    		  $( ".result" ).html( data );
-		    		  
-		    		  if($('#edit_user_model_'+user_id).length>0){
-		    			  $('#edit_user_model_'+user_id).remove(); 
-		    		  }
-		    		  $( "body" ).append(data);
-		    		  admin_edit_modal_create();
-		    		  $('#edit_user_model_'+user_id).modal();
-		    		 
-		    		});
-		    	// open modal using js now 
-		    	// action goes here!!
-		    });
+		 
 		  $('#classroom_list_info').css('display','none');
 		  $('#feedback_list_info').css('display','none');
 		  $('#trainer_details_list_info').css('display','none');
@@ -916,6 +1278,12 @@ function init_orgadmin_dashboard() {
 
 function init_orgadmin_admin() {
     console.log('intiliazing Admin');
+    //Edit User Call goes here
+    initEditUserModalCall();
+    initCreateSectionCall();
+    //
+    
+    
     trainerDataTable();
     //init user tab search box
     admin_course_batch_init();
@@ -941,6 +1309,64 @@ function init_orgadmin_admin() {
     });
     
 }
+
+
+function initCreateSectionCall()
+{
+	
+		var cid = $('#member_filter_by').data("college_id");
+		var urls = '../get_filtered_students?entity_id='+cid+'&filter_by=ORG';
+	    $.get(urls, function(data) {
+	    	$('#student_list_holder').empty();
+	    	$('#student_list_holder').append(data);
+	    	
+	    });
+	    
+		
+	
+	
+	
+	$('#member_filter_by').unbind().on("change",function (){
+    	var filterBy=$(this).val();
+    	var collegeId = $(this).data("college_id");
+    	if(filterBy==='ROLE')
+    	{
+    		var urls = '../get_filtered_groups?college_id='+collegeId+'&filter_by='+filterBy;
+            $.get(urls, function(data) {
+            	$('#role_section_options').empty();
+            	$('#role_section_options').append(data);
+            });
+    		$('#role_section_holder').show();
+    	}
+    	else if(filterBy==='SECTION')
+    	{
+    		var urls = '../get_filtered_groups?college_id='+collegeId+'&filter_by='+filterBy;
+            $.get(urls, function(data) {
+            	$('#role_section_options').empty();
+            	$('#role_section_options').append(data);
+            });
+    		$('#role_section_holder').show();
+    	}
+    	else
+    	{    		
+    		$('#role_section_holder').hide();
+    		var urls = '../get_filtered_students?entity_id='+collegeId+'&filter_by=ORG';
+            $.get(urls, function(data) {
+            	$('#student_list_holder').empty();
+            	$('#student_list_holder').append(data);
+            });
+    	}    	 
+    });
+    
+    $('#role_section_options').unbind().on("change",function (){
+    	var groupId = $(this).val();    	
+    	var urls = '../get_filtered_students?entity_id='+groupId+'&filter_by=GROUP';
+        $.get(urls, function(data) {
+        	$('#student_list_holder').empty();
+        	$('#student_list_holder').append(data);
+        });        
+    });	
+ }
 
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');
@@ -1079,7 +1505,7 @@ function init_orgadmin_report_detail(){
 
 
     Highcharts.setOptions({
-        colors: ['#50B432', '#ED561B', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+        colors: ['#eb384f', '#ED561B', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
     });
 
     Highcharts.chart('container1', {
@@ -1591,7 +2017,7 @@ function admin_edit_modal_create() {
 	                $("input[name='student_list']").val(sel.substring(0, sel.length - 1));
 	                $("input[name='batch_groups']").val(sel.substring(0, sel.length - 1));
 
-	                $('select').select2();
+	               // $('select').select2();
 	                
 	                $('.select2-dropdown').on("change",function() {
 	                        var kk = $(this).val();
@@ -1710,6 +2136,7 @@ function admin_load_resources(){
 			  $(".result").html(data);
 			  
 			  $('.spinner-animation-holder_'+type).css("cssText","display:none !important;");
+			  tab.empty();
 			  tab.append(data);
 			  count++;
 			  if(count==3){
@@ -1748,9 +2175,9 @@ function admin_load_resources(){
 			$.get(url, function( data ) {
 				  $(".result").html(data);
 				  
-				  $(tab).parent().parent().find('.tabs-container').remove();
+				  $(tab).parent().find('.tabs-container').remove();
 				  
-				  $(tab).parent().parent().append(data);					  
+				  $(tab).parent().append(data);					  
 				  
 				    //initilize and event handling of skills search box
 				   admin_skill_content_search_init();
@@ -1840,41 +2267,7 @@ function admin_skill_alertBinding() {
 
         var type = $($(this).find('.role-skill')).data('type');
 
-        if (type != null && type == 'skill') {
-
-            var roleId = $($(this).find('.role-skill')).data('role-id');
-            var skillId = $($(this).find('.role-skill')).data('skill-id');
-            var text = $(this).text();
-
-            var avialable = true;
-            $('#role_associated_' + roleId).find('.role-map').each(function() {
-                if ($(this).data('role_skill') === skillId) {
-                    avialable = false;
-                }
-            });
-
-            if (avialable) {
-
-                //<button aria-hidden='true' data-dismiss='alert' data-role='"+roleId+"' data-role_skill='"+skillId+"'	class='close role-map' type='button'>x</button>
-                var appendingDiv = "<div class='alert alert-dismissable gray-bg'>" + text + "</div>";
-
-                $('#role_skill_count_' + roleId).html(parseInt($('#role_skill_count_' + roleId).text()) + 1);
-                $('#role_associated_' + roleId).prepend(appendingDiv);
-
-                var url = "../roleSkillCreateOrDelete"; // the script where you handle the form input.
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: {roleId: roleId,skillId: skillId,type: 'roles_map'},
-                    success: function(data) {
-                        console.log('successfullly mapped');
-                    }
-                });
-
-            } else {
-                console.log('already exist');
-            }
-        } else if (type != null && type == 'content') {
+         	if (type != null && type == 'content') {
 
             var roleIdType = $($(this).find('.role-skill')).data('role-id');
             var skillId = $($(this).find('.role-skill')).data('skill-id');
@@ -1895,11 +2288,11 @@ function admin_skill_alertBinding() {
             }
 
             console.log("typeId " + typeId + " , " + "userType " + userType + " , " + "skillId " + skillId + " , " + "lessonType " + lessonType);
-            var url = "../roleSkillCreateOrDelete"; // the script where you handle the form input.
+            var url = "../create_delete_content_map"; // the script where you handle the form input.
             $.ajax({
                 type: "POST",
                 url: url,
-                data: {typeId: typeId,userType: userType,skillId: skillId,lessonType: lessonType,type: 'content_map'},
+                data: {entityId: typeId,entityType: userType,skillId: skillId,skillType: lessonType,type: 'content_map'},
                 success: function(data) {
                     $('#role_associated_' + roleIdType).prepend(data);
                     $('#role_skill_count_' + roleIdType).html(parseInt($('#role_skill_count_' + roleIdType).text()) + parseInt($(data).length));
@@ -2515,7 +2908,7 @@ function init_super_admin_dashboard(){
 			 scheduler_init_edit_new_trainer_associated();
 			 scheduler_init_edit_old_trainer_associated();
 			 scheduler_ClockDate();
-			 $('select').select2();
+			$('select').select2();
 			
 
 		});
@@ -3894,7 +4287,7 @@ function init_opsReport2(){
 									+ ' <b>' + this.series.name
 									+ '</b> this question<br/>';
 						}
-					}, colors: ['#1ab394','#f8ac59', '#8f938f']
+					}, colors: ['#eb384f','#f8ac59', '#8f938f']
 				});
 
 			});

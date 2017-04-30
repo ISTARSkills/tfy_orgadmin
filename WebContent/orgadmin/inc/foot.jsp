@@ -55,6 +55,7 @@
 	<script src="<%=basePath%>js/jquery.rateyo.min.js"></script>
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
+<script src="<%=basePath%>js/plugins/dualListbox/jquery.bootstrap-duallistbox.js"></script>
 
  	 <script src="<%=basePath %>js/plugins/highchart/highcharts.js"></script>
  	 <script src="<%=basePath %>js/plugins/highchart/no-data-to-display.js"></script>
@@ -62,6 +63,7 @@
  	 <script src="<%=basePath %>js/plugins/highchart/exporting.js"></script>
 <script src="<%=basePath %>js/reconnecting-websocket.min.js"></script>
 <script src="<%=basePath %>js/websocket.js"></script>
+ <script src="<%=basePath %>js/plugins/sweetalert/sweetalert.min.js"></script>
  	 
  	 <script src="<%=basePath %>js/app.js"></script>
 

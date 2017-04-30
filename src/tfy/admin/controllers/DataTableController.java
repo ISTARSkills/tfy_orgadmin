@@ -123,13 +123,11 @@ public class DataTableController extends IStarBaseServelet {
 	}
 	
 	public boolean condition(HashMap<String, Object> item, String searchTerm) {
-		System.err.println("Search Term is "+searchTerm);
+		
 		boolean status = false;
 		for (String key : item.keySet()) {
 			if (item.get(key) != null && searchTerm != null) {
-				for (int i = 0; i < searchTerm.split(",").length; i++) {
-					System.out.println("item.get(key).toString().toUpperCase()"+item.get(key).toString().toUpperCase());
-					System.out.println("searchTerm.split(,)[i].toUpperCase()"+searchTerm.split(",")[i].toUpperCase());
+				for (int i = 0; i < searchTerm.split(",").length; i++) {					
 					if (item.get(key).toString().toUpperCase().contains(searchTerm.split(",")[i].toUpperCase())) {
 						status = true;
 						break;

@@ -104,15 +104,15 @@ public class OrgAdminUserService {
 				
 		DBUTILS db = new DBUTILS();
 		
-		String updateIstarStudentSql = "UPDATE istar_user SET  'email' = '"+email+"',  'password' = '"+password+"',  'mobile' = '"+mobileNumber+"', WHERE 	('id' = "+userID+");";
+		String updateIstarStudentSql = "UPDATE istar_user SET  email = '"+email+"',  password = '"+password+"',  mobile = '"+mobileNumber+"', WHERE 	id = "+userID+";";
 		
 		db.executeUpdate(updateIstarStudentSql);
 		
-		String updateUserProfileSql = "UPDATE user_profile SET  'first_name' = '"+firstname+"',  'last_name' = '"+lastname+"',  'gender' = '"+gender+"',  'profile_image' = '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png',  'user_id' = "+userID+",  'aadhar_no' = NULL WHERE 	('id' = '0');";
+		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '"+firstname+"',  last_name = '"+lastname+"',  gender = '"+gender+"',  profile_image = '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png' WHERE   user_id = "+userID+" ;";
 		
 		db.executeUpdate(updateUserProfileSql);
 		
-		String updateUserOrgMapping = "UPDATE user_org_mapping SET organization_id='7' WHERE (user_id='"+userID+"');";
+		String updateUserOrgMapping = "UPDATE user_org_mapping SET organization_id='"+college_id+"' WHERE (user_id='"+userID+"');";
 		  
 		db.executeUpdate(updateUserOrgMapping);
 		

@@ -1,12 +1,20 @@
 package in.orgadmin.admin.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.utilities.DBUTILS;
+
+import in.orgadmin.utils.report.CustomReport;
+import in.orgadmin.utils.report.CustomReportUtils;
 
 public class OrgAdminSkillService {
 
@@ -22,15 +30,10 @@ public class OrgAdminSkillService {
 		return data;
 	}
 
-	public List<HashMap<String, Object>> getAllLessonSkills(int orgId) {
-
-		String sql = "( 	SELECT 		skill_objective. ID, 		skill_objective. NAME, 		'COURSE' AS parent_type 	FROM 		skill_objective, 		course,    course_skill_objective 	WHERE course.id = course_skill_objective.course_id AND course_skill_objective.skill_objective_id = skill_objective.id 	AND course. ID IN ( 		SELECT DISTINCT 			course. ID 		FROM 			course, 			batch, 			batch_group 		WHERE 			course. ID = batch.course_id 		AND batch.batch_group_id = batch_group. ID 		AND batch_group.college_id = "
-				+ orgId
-				+ " 	) ) UNION 	( 		SELECT 			skill_objective. ID, 			skill_objective. NAME, 			'MODULE' AS parent_ype 		FROM 			skill_objective, 			MODULE, module_skill_objective 		WHERE MODULE.id = module_skill_objective.module_id AND module_skill_objective.skill_objective_id = skill_objective.id 		AND MODULE . ID IN ( 			SELECT DISTINCT 				module_course.module_id 			FROM 				course, 				batch, 				batch_group, 				module_course 			WHERE 				course. ID = batch.course_id 			AND batch.batch_group_id = batch_group. ID 			AND module_course.course_id = course. ID 			AND batch_group.college_id = "
-				+ orgId
-				+ " 		) 	) UNION 	( 		SELECT 			skill_objective. ID, 			skill_objective. NAME, 			'CMSESSION' AS parent_ype 		FROM 			skill_objective, 			cmsession, cmsession_skill_objective 		WHERE cmsession.id = cmsession_skill_objective.cmsession_id AND cmsession_skill_objective.skill_objective_id = skill_objective.id 		AND cmsession. ID IN ( 			SELECT DISTINCT 				cmsession_module.cmsession_id 			FROM 				course, 				batch, 				batch_group, 				module_course, 				cmsession_module 			WHERE 				course. ID = batch.course_id 			AND batch.batch_group_id = batch_group. ID 			AND module_course.course_id = course. ID 			AND cmsession_module.module_id = module_course.module_id 			AND batch_group.college_id = "
-				+ orgId + " 		) 	) ORDER BY 	ID";
-
+	public List<HashMap<String, Object>> getAllSkills(int orgId) {
+		CustomReportUtils repUtils   = new CustomReportUtils();
+		String sql = repUtils.getReport(12).getSql();
+		sql = sql.replaceAll(":college_id", orgId+"");
 		System.err.println("VAIBAHV -->"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -115,38 +118,44 @@ public class OrgAdminSkillService {
 	}
 
 	public int getTotalUsers(int orgId) {
-		int count = 0;
-		String sql = "SELECT 	CAST (COUNT(T . ID) AS INT) FROM 	( 		SELECT DISTINCT 			istar_user. ID, 			istar_user.email AS NAME, 			COUNT ( 				DISTINCT student_playlist.lesson_id 			) 		FROM 			student_playlist, 			istar_user, user_org_mapping 		WHERE 			istar_user. ID = student_playlist.student_id AND istar_user.id = user_org_mapping.user_id 		AND user_org_mapping.organization_id = "+orgId+" 		GROUP BY 			istar_user.email, 			istar_user. ID 	) T";
-		DBUTILS db = new DBUTILS();
-		try {
-			List<HashMap<String, Object>> data = db.executeQuery(sql);
-			count = (int) data.get(0).get("count");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		CustomReportUtils repoUtils = new CustomReportUtils();
+		CustomReport rep = repoUtils.getReport(9);
+		String sql = rep.getSql();
+		sql = sql.replaceAll(":college_id", orgId+"");
+		DBUTILS util = new DBUTILS();
+		int count = (int)util.executeQuery(sql).get(0).get("count"); 
 		return count;
 
 	}
 
 	public List<HashMap<String, Object>> getAllContentUserList(int orgId, String type, int offset, String searchKey) {
 		String sql = "";
+		CustomReportUtils repUtils = new CustomReportUtils();
 		if (type.equalsIgnoreCase("User")) {
-
+			CustomReport report = repUtils.getReport(10); 
 			String searchquery = "";
 			if (searchKey != null && !searchKey.equalsIgnoreCase("")) {
-				searchquery = " AND istar_user.email like '%" + searchKey + "%'";
+				searchquery = searchKey;
 			}
-
-			sql = "SELECT DISTINCT 	istar_user. ID, 	istar_user.email AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	student_playlist, 	istar_user, user_org_mapping WHERE 	istar_user. ID = student_playlist.student_id AND istar_user. ID = user_org_mapping.user_id AND user_org_mapping.organization_id = "+ orgId + searchquery + " GROUP BY 	istar_user.email, 	istar_user. ID ORDER BY 	istar_user.email LIMIT 10 OFFSET  " + offset ;
-
+			sql = report.getSql();
+			sql = sql.replaceAll(":college_id", orgId+"");
+			sql = sql.replaceAll(":limit", "10");
+			sql = sql.replaceAll(":offset", offset+"");
+			sql = sql.replaceAll(":search_term", searchquery);
+			
+			
 		} else if (type.equalsIgnoreCase("Group")) {
-			sql = "SELECT 	batch_group. ID, 	batch_group. NAME AS NAME, 	COUNT ( 		DISTINCT student_playlist.lesson_id 	) FROM 	batch_group LEFT JOIN batch_students ON ( 	batch_students.batch_group_id = batch_group. ID ) LEFT JOIN student_playlist ON ( 	student_playlist.student_id = batch_students.student_id ) WHERE 	batch_group.college_id = "
-					+ orgId + " GROUP BY 	batch_group. ID, 	batch_group. NAME";
+			CustomReport report = repUtils.getReport(11); 
+			sql = report.getSql();
+			sql = sql.replaceAll(":college_id", orgId+"");
+			sql = sql.replaceAll(":type", "SECTION");
 		} else if (type.equalsIgnoreCase("Role")) {
-			sql = "SELECT DISTINCT 	course. ID, 	course.course_name AS NAME, 	COUNT ( 		DISTINCT lesson_cmsession.lesson_id 	) FROM 	batch, 	batch_group, 	module_course, 	cmsession_module, 	lesson_cmsession, 	course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND course. ID = module_course.course_id AND batch.course_id = course. ID AND batch.batch_group_id = batch_group. ID AND batch_group.college_id = "
-					+ orgId + " GROUP BY 	course. ID, 	course.course_name ORDER BY course.course_name";
+			CustomReport report = repUtils.getReport(11); 
+			sql = report.getSql();
+			sql = sql.replaceAll(":college_id", orgId+"");
+			sql = sql.replaceAll(":type", "ROLE");
 		}
-		System.err.println("abhinav --> "+sql);
+		System.out.println("final sql"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -171,71 +180,155 @@ public class OrgAdminSkillService {
 		return data;
 	}
 
-	public StringBuffer createContentAssosicatedSkill(String userType, String skillType, int skillId, int typeId) {
+	public StringBuffer createContentAssosicatedSkill(String entityType, String skillType, int skillId, int entityId) {
 		StringBuffer out = new StringBuffer();
-
+		CustomReportUtils repUtils = new CustomReportUtils();
 		try {
 			DBUTILS db = new DBUTILS();
 			String sql = "";
 			List<HashMap<String, Object>> data = new ArrayList<>();
 
 			if (skillType.equalsIgnoreCase("COURSE")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.course_id = (select course_id from course_skill_objective where skill_objective_id = "
-						+ skillId + ") order by course_id";
+				//:skill_objective_id
+				CustomReport rep = repUtils.getReport(13); 
+				
+				sql = rep.getSql();
+				sql = sql.replaceAll(":skill_objective_id", skillId+"");
 				System.err.println(sql);
 				data = db.executeQuery(sql);
 
 			} else if (skillType.equalsIgnoreCase("MODULE")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.module_id = (select module_id from module_skill_objective where skill_objective_id = "
-						+ skillId + ") order by course_id";
+				CustomReport rep = repUtils.getReport(14); 				
+				sql = rep.getSql();
+				sql = sql.replaceAll(":skill_objective_id", skillId+"");
 				System.err.println(sql);
 				data = db.executeQuery(sql);
 			} else if (skillType.equalsIgnoreCase("CMSESSION")) {
-				sql = "select distinct lesson_cmsession.lesson_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and lesson_cmsession.cmsession_id = (select cmsession_id from cmsession_skill_objective where skill_objective_id = "
-						+ skillId + ") order by course_id";
+				CustomReport rep = repUtils.getReport(15); 				
+				sql = rep.getSql();
+				sql = sql.replaceAll(":skill_objective_id", skillId+"");
 				System.err.println(sql);
 				data = db.executeQuery(sql);
 			}
 
 			// user mapping
-			if (userType.equalsIgnoreCase("User")) {
+			if (entityType.equalsIgnoreCase("User")) {
 				for (HashMap<String, Object> item : data) {
-					out.append(updateStudentPlayList(typeId, (int) item.get("course_id"), (int) item.get("lesson_id"),
-							userType, typeId));
+					out.append(updateStudentPlayList(entityId, (int) item.get("module_id"), (int) item.get("cmsession_id"),(int) item.get("course_id"), (int) item.get("lesson_id"),
+							entityType, entityId));
 				}
 			}
 
 			// batch group mapping
-			else if (userType.equalsIgnoreCase("Group")) {
-
-				sql = "SELECT DISTINCT 	stu.student_id FROM 	batch_group bg, 	batch b, 	batch_students stu WHERE 	bg. ID = b.batch_group_id AND stu.batch_group_id = bg. ID AND bg. ID="
-						+ typeId;
+			else if (entityType.equalsIgnoreCase("Group") || entityType.equalsIgnoreCase("Role") ) {				
+				//create Student PlayList
+				CustomReport rep = repUtils.getReport(16); 				
+				sql = rep.getSql();
+				sql = sql.replaceAll(":batch_group_id", entityId+"");
+					
 				System.err.println(sql);
 				List<HashMap<String, Object>> result = db.executeQuery(sql);
 
 				for (HashMap<String, Object> item : result) {
 					for (HashMap<String, Object> resultitem : data) {
 						out.append(
-								updateStudentPlayList((int) item.get("student_id"), (int) resultitem.get("course_id"),
-										(int) resultitem.get("lesson_id"), userType, typeId));
+								updateStudentPlayList((int) item.get("student_id"), (int) resultitem.get("module_id"),
+										(int) resultitem.get("cmsession_id"), (int) resultitem.get("course_id"),
+										(int) resultitem.get("lesson_id"), entityType, entityId));
 					}
 				}
 
 			}
-
-			// role mapping
-			else if (userType.equalsIgnoreCase("Role")) {
-				for (HashMap<String, Object> item : data) {
-					out.append(createcontentRolesMapping(typeId, (int) item.get("lesson_id"), userType, typeId));
+			
+			
+			//create batches
+			if(skillType.equalsIgnoreCase("COURSE"))
+			{
+				if(entityType.equalsIgnoreCase("Role"))
+				{
+					BatchGroup role = new BatchGroupDAO().findById(entityId);
+					// create batch in role and in group also
+					CustomReport rep = repUtils.getReport(17); 				
+					sql = rep.getSql();
+					sql = sql.replaceAll(":batch_group_id", entityId+"");
+					sql = sql.replaceAll(":skill_objective_id", skillId+"");					
+					List<HashMap<String, Object>> getCourseIDs = db.executeQuery(sql);
+					for(HashMap<String, Object> courseRow: getCourseIDs)
+					{
+						int courseId = (int) courseRow.get("course_id");
+						Course course = new CourseDAO().findById(courseId);
+						CustomReport rep2 = repUtils.getReport(18);
+						String insertIntoBatch=rep2.getSql();
+						insertIntoBatch = insertIntoBatch.replaceAll(":batch_name", role.getName()+" - "+course.getCourseName().replaceAll("'",""));
+						insertIntoBatch = insertIntoBatch.replaceAll(":bg_id", entityId+"");
+						insertIntoBatch = insertIntoBatch.replaceAll(":course_id", courseId+"");
+						int year = Calendar.getInstance().get(Calendar.YEAR);
+						insertIntoBatch = insertIntoBatch.replaceAll(":year", year+"");
+						db.executeUpdate(insertIntoBatch);
+						
+						CustomReport childRep= repUtils.getReport(19);
+						String getChildGroup=childRep.getSql();
+						getChildGroup = getChildGroup.replaceAll(":parent_group_id", entityId+"");
+						List<HashMap<String, Object>> childGroups = db.executeQuery(getChildGroup);
+						for(HashMap<String, Object> childGroupRow : childGroups)
+						{
+							int childbgId = (int)childGroupRow.get("id");
+							String childBGName = (String)childGroupRow.get("name").toString().replaceAll("'","");
+							CustomReport dd = repUtils.getReport(20);
+							String qq = dd.getSql().replaceAll(":course_id", courseId+"").replaceAll(":batch_group_id", childbgId+"");
+							if((int)db.executeQuery(qq).get(0).get("count") == 0)
+							{
+								//create batch for child group
+								CustomReport rep3 = repUtils.getReport(18);
+								String insertIntoChildBatch=rep3.getSql();
+								insertIntoChildBatch = insertIntoChildBatch.replaceAll(":batch_name", childBGName+" - "+course.getCourseName().replaceAll("'",""));
+								insertIntoChildBatch = insertIntoChildBatch.replaceAll(":bg_id", childbgId+"");
+								insertIntoChildBatch = insertIntoChildBatch.replaceAll(":course_id", courseId+"");							
+								insertIntoChildBatch = insertIntoChildBatch.replaceAll(":year", year+"");
+								db.executeUpdate(insertIntoChildBatch);
+							}
+							
+						}
+						
+					}
+					
+				}
+				else if(entityType.equalsIgnoreCase("Group"))
+				{
+					//create batch in only group
+					BatchGroup section = new BatchGroupDAO().findById(entityId);
+					// create batch in role and in group also
+					CustomReport rep = repUtils.getReport(17); 				
+					sql = rep.getSql();
+					sql = sql.replaceAll(":batch_group_id", entityId+"");
+					sql = sql.replaceAll(":skill_objective_id", skillId+"");					
+					List<HashMap<String, Object>> getCourseIDs = db.executeQuery(sql);
+					for(HashMap<String, Object> courseRow: getCourseIDs)
+					{
+						int courseId = (int) courseRow.get("course_id");
+						Course course = new CourseDAO().findById(courseId);
+						CustomReport rep2 = repUtils.getReport(18);
+						String insertIntoBatch=rep2.getSql();
+						insertIntoBatch = insertIntoBatch.replaceAll(":batch_name", section.getName()+" - "+course.getCourseName().replaceAll("'",""));
+						insertIntoBatch = insertIntoBatch.replaceAll(":bg_id", entityId+"");
+						insertIntoBatch = insertIntoBatch.replaceAll(":course_id", courseId+"");
+						int year = Calendar.getInstance().get(Calendar.YEAR);
+						insertIntoBatch = insertIntoBatch.replaceAll(":year", year+"");
+						db.executeUpdate(insertIntoBatch);
+					}	
 				}
 			}
+			
+			
+			
+			
 
 		} catch (Exception e) {
 		}
 		return out;
 	}
 
-	public String updateStudentPlayList(int student_id, int course_id, int lesson_id, String userType, int typeId) {
+	public String updateStudentPlayList(int student_id, int module_id, int cmsession_id, int course_id, int lesson_id, String userType, int typeId) {
 		DBUTILS db = new DBUTILS();
 		Lesson lesson = new LessonDAO().findById(lesson_id);
 		String appendingString = "";
@@ -246,10 +339,11 @@ public class OrgAdminSkillService {
 		List<HashMap<String, Object>> result = db.executeQuery(sql);
 
 		if (result.size() == 0) {
-			sql = "INSERT INTO student_playlist (id, student_id, course_id, lesson_id, status) VALUES ((select COALESCE(max(id),0)+1 from student_playlist), '"
-					+ student_id + "', '" + course_id + "', '" + lesson_id + "', 'INCOMPLETE')";
+			sql = "INSERT INTO student_playlist (id, student_id, course_id, lesson_id,module_id, cmsession_id, status) VALUES ((select COALESCE(max(id),0)+1 from student_playlist), '"
+					+ student_id + "', '" + course_id + "', '" + lesson_id + "',"+module_id+","+cmsession_id+",'INCOMPLETE')";
 			
-			String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+student_id+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				
+			String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )"
+					+ "VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+student_id+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				
 			db.executeUpdate(tasksql);
 			
 			System.err.println(sql);

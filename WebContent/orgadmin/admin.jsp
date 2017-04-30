@@ -25,10 +25,9 @@
 								data-toggle="tab" href="#admintab1">Users</a></li>
 
 							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab2">Sections</a></li>
+								data-toggle="tab" href="#admintab2">Section / Roles</a></li>
 
-							<li class="<%=tab.equalsIgnoreCase("role")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab3">Roles</a></li>
+							
 
 							<li class="<%=tab.equalsIgnoreCase("content")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
 								data-toggle="tab" href="#admintab4">Content Mapping</a></li>
@@ -48,25 +47,15 @@
 								<div class="panel-body">
 									<jsp:include page="partials/admin_group_tab_content.jsp" />
 								</div>
-							</div>
-
-							<div id="admintab3" class="<%=tab.equalsIgnoreCase("role")? "active":"" %> tab-pane div-min-height">
-								<div class="panel-body">
-									<jsp:include page="partials/admin_role_tab_content.jsp" />
-								</div>
-							</div>
+							</div>							
 
 							<div id="admintab4" class="<%=tab.equalsIgnoreCase("content")? "active":"" %> tab-pane div-min-height">
 								<div class="panel-body">
-									<jsp:include page="partials/admin_content_map_tab_content.jsp" />
+									<jsp:include page="partials/admin_content_map_tab_content.jsp" />									
 								</div>
 							</div>
 
-							<%-- <div id="admintab5" class="<%=tab.equalsIgnoreCase("bill")? "active":"" %> tab-pane div-min-height">
-								<div class="panel-body">
-									<jsp:include page="partials/admin_billing_tab_content.jsp" />
-								</div>
-							</div> --%>
+							
 
 						</div>
 					</div>

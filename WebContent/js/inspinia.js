@@ -53,7 +53,7 @@
 	function handleGraphs() {
 		try{
 		Highcharts.theme = {
-				   colors: ['#50B432', '#ED561B', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+				   colors: ['#eb384f', '#ED561B', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
 				   
 				   // General
 				   background2: '#F0F0EA'
