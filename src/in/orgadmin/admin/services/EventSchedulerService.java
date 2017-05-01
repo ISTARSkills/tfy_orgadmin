@@ -151,11 +151,8 @@ public class EventSchedulerService {
 
 				System.out.println("sql-----> "+notificationsql);
 				db.executeUpdate(notificationsql);
-
 			}
-
 		}
-
 	}
 
 	public void deleteEvent(String eventID) {
@@ -328,7 +325,6 @@ public class EventSchedulerService {
 	public void insertUpdateData(int trainerID, int hours, int minute, int batchID, String eventType, String eventDate,
 			String startTime, int classroomID, int AdminUserID, int sessionID, String eventID,
 			String associateTrainerID) {
-
 		try {
 			FinaleventDate = formatter.parse(dateformatto.format(dateformatfrom.parse(eventDate)) + " " + startTime);
 		} catch (ParseException e) {

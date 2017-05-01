@@ -138,10 +138,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 				if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("session")){
 					
 					if (request.getParameterMap().containsKey("eventValue")) {
-
-						
-						
-						 JSONParser parser = new JSONParser();
+						JSONParser parser = new JSONParser();
 					      String eventDataDetails = request.getParameter("eventDataDetails");
 					     
 					      Object obj = null;
