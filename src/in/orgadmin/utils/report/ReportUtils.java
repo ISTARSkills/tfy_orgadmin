@@ -35,15 +35,15 @@ import in.talentify.core.utils.CMSRegistry;
  */
 public class ReportUtils {
 
-	public StringBuffer getHTML(int reportID, HashMap<String, String> conditions) {
-		
+	public StringBuffer getHTML(int reportID, HashMap<String, String> conditions) {		
 		Report report = getReport(reportID);
 		System.err.println(report.getSql());
 		String sql1=report.getSql();
-		for (String key : conditions.keySet()) {			
+		for (String key : conditions.keySet()) {	
+			System.out.println("key->" + key + "   value-> " + conditions.get(key));
 			String paramName=":"+key;				
 			if (sql1.contains(paramName)) {
-				System.out.println("key->" + key + "   value-> " + conditions.get(key));					
+									
 				sql1 =sql1.replaceAll(paramName, conditions.get(key));
 			}			
 		}
@@ -103,14 +103,67 @@ public class ReportUtils {
 	}
 
 	private StringBuffer getGraphHTML(String sql1, Report report) {
+		
+			
+		
+		if(report.getType_of_report().equalsIgnoreCase("AREA"))
+		{
+			return giveAreaDataTable(sql1, report);
+		}
+		else if(report.getType_of_report().equalsIgnoreCase("PIE"))
+		{
+			return givePieChartData(sql1, report);
+		}
+		else 
+		{
+			return giveSimpleDataDatble(sql1, report);
+		}
+		
+			}
+
+	private StringBuffer givePieChartData(String sql1, Report report) {
+
+		// TODO Auto-generated method stub
 		StringBuffer out = new StringBuffer();
 		out.append("<div class='graph_holder' id='graph_container_"+report.getId()+"' ></div> ");
 		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+report.getId()+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
 				+ " data-graph_holder='container" + report.getId() + "' id='chart_datatable_"+report.getId()+"'");
 		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
-		out.append("<thead><tr>");		
 		
+		out.append("<thead><tr>");	
+		DBUTILS db = new DBUTILS();
+		out.append("<th></th><th>Percentage</th>");
+		List<HashMap<String, Object>> progress_views = db.executeQuery(sql1);
 		
+		out.append("</tr></thead>");
+		out.append("<tbody>");
+		for (HashMap<String, Object> progress_view : progress_views) 
+		{			
+			
+		}
+		if(progress_views.size()>0)
+		{			
+			HashMap<String, Object> progress_view = progress_views.get(0);
+			for(String key: progress_view.keySet())
+			{out.append("<tr>");
+				out.append("<td>"+key.toUpperCase()+"</td><td>"+progress_view.get(key)+"</td>");
+				out.append("</tr>");
+			}
+		}
+		out.append("</tbody></table>");
+		
+		return out;
+	
+	}
+
+	private StringBuffer giveSimpleDataDatble(String sql1, Report report) {
+		StringBuffer out = new StringBuffer();
+		out.append("<div class='graph_holder' id='graph_container_"+report.getId()+"' ></div> ");
+		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+report.getId()+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
+				+ " data-graph_holder='container" + report.getId() + "' id='chart_datatable_"+report.getId()+"'");
+		out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
+		
+		out.append("<thead><tr>");	
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);
 		
@@ -147,6 +200,68 @@ public class ReportUtils {
 		out.append("</tbody> </table>");
 		
 		return out;
+		
+	}
+
+	private StringBuffer giveAreaDataTable(String sql1, Report report) {
+			// TODO Auto-generated method stub
+			StringBuffer out = new StringBuffer();
+			out.append("<div class='graph_holder' id='graph_container_"+report.getId()+"' ></div> ");
+			out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+report.getId()+"' data-y_axis_title='"+report.getyAxisTitle()+"' data-report_title='"+report.getTitle()+"' "
+					+ " data-graph_holder='container" + report.getId() + "' id='chart_datatable_"+report.getId()+"'");
+			out.append(" data-graph_type='" + report.getType_of_report() + "'> ");
+			
+			out.append("<thead><tr>");	
+			DBUTILS db = new DBUTILS();
+			
+			ArrayList<String> colNames = new ArrayList<>();
+			HashMap<String, String> defaultValue = new HashMap<>();
+			List<HashMap<String, Object>> progress_views = db.executeQuery(sql1);
+			for(HashMap<String, Object>  rows : progress_views)
+			{
+				if(!colNames.contains(rows.get("col_name")))
+				{
+					colNames.add(rows.get("col_name").toString());
+					defaultValue.put(rows.get("col_name").toString(),"0");
+				}
+			}
+			
+			out.append("<th></th>");
+			for(int i=0; i< colNames.size(); i++)
+			{
+				out.append("<th>"+colNames.get(i)+"</th>");
+			}
+			
+			out.append("</tr></thead>");
+			out.append("<tbody>");
+			for (HashMap<String, Object> progress_view : progress_views) 
+			{
+				String colName = progress_view.get("col_name").toString();
+				out.append("<tr>");
+				out.append("<td>"+progress_view.get("row_key").toString()+"</td>");
+				for(int i=0; i< colNames.size(); i++)
+				{
+					if(colName.equalsIgnoreCase(colNames.get(i)))
+					{
+						defaultValue.put(colNames.get(i), progress_view.get("col_value").toString());
+						out.append("<td>"+progress_view.get("col_value").toString()+"</td>");
+					}
+					else
+					{
+						//int updatedScore = bgCumScore.get(batchGroupNames.get(i))+2;
+						//bgCumScore.put(batchGroupNames.get(i), updatedScore);
+						out.append("<td>"+defaultValue.get(colNames.get(i))+"</td>");
+					}	
+					
+				}
+				out.append("</tr>");
+				
+			}
+			out.append("</tbody></table>");
+			
+			return out;
+
+		
 	}
 
 	public Report getReport(int reportID) {

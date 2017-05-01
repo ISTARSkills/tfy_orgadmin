@@ -29,6 +29,9 @@
 		<ul class="nav nav-tabs gray-bg tab-width-custom" style="padding: 5px;">
 
 			<%
+			
+			if(list.size()>0)
+			{
 				int i = 0;
 				for (HashMap<String, Object> item : list) {
 			%>
@@ -41,11 +44,19 @@
 			<%
 				i++;
 				}
+			}
+			else
+			{
+				%>
+				<li><a>No Section Available</a></li>
+				<% 
+			}	
+			
 			%>
 		</ul>
 		<div class="tab-content">
 			<%
-				i = 0;
+			int 	i = 0;
 				for (HashMap<String, Object> item : list) {
 			%>
 

@@ -19,7 +19,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 			+ request.getContextPath() + "/";
 	request.setAttribute("base_url", baseURL);
 	ReportUtils util = new ReportUtils();
-	HashMap<String, String> conditions = new HashMap();
+	
 	UIUtils uiUtil = new UIUtils();
 	boolean flag = false;
 	JsonUIUtils jsonUIUtils = new JsonUIUtils();
@@ -46,7 +46,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		courseOrBatchId = Integer.parseInt(request.getParameter("course_id").toString());
-		attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("course_id").toString()),"Program");
+		//attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("course_id").toString()),"Program");
 		calendardata =uiUtil.getCourseReportEvent(college_id,Integer.parseInt(request.getParameter("course_id").toString()),"Program");
 	} else if (request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
 		flag = false;
@@ -59,7 +59,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		courseOrBatchId = Integer.parseInt(request.getParameter("batch_id").toString());
-		attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");
+		//attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");
 		calendardata =uiUtil.getCourseReportEvent(college_id,Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");
 		
 		List<HashMap<String, Object>> items = new ReportDetailService().getAllSessions(Integer.parseInt(request.getParameter("batch_id")), 0, true);
@@ -86,10 +86,28 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 			<div class="col-lg-9">
 				<% if(request.getParameter("headname") != null && !request.getParameter("headname").toString().equalsIgnoreCase("null")){
 				 %>
-				<h2>
-					&nbsp;&nbsp;&nbsp;&nbsp; Report for
-					<%=request.getParameter("headname").toString()%></h2>
-
+				
+					
+	<h2>				
+<ol class="breadcrumb">
+            <li>
+                <%if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){ %>
+                <a href="<%=baseURL %>orgadmin/report.jsp">Batch</a>
+                <%}
+                else
+                {
+                	%>
+                   <a href="<%=baseURL %>orgadmin/report.jsp">Programs</a>
+                    <%
+                	
+                }%>
+            </li>
+            <li class="active">
+                <strong><%=request.getParameter("headname").toString()%></strong>
+            </li>
+        </ol>
+        </h2>
+       
 			</div>
 			<% } %>
 		</div>
@@ -100,8 +118,8 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 				<div class="col-lg-3 no-paddings bg-muted">
 					<div class="ibox-content">
-						<%
-								  conditions = new HashMap();
+						<%HashMap<String, String> conditions = new HashMap();
+								  
 							      conditions.put("college_id", college_id+"");
 							      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
 							    	  conditions.put("batch_id", batch_id);  
@@ -125,19 +143,20 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 				<div class="col-lg-9 no-paddings bg-muted">
 					<div class="ibox-content">
 						 <%
-			      conditions = new HashMap();
-			      conditions.put("college_id", college_id+"");
+						 HashMap<String, String> conditions1 = new HashMap();
+			      
+			      conditions1.put("college_id", college_id+"");
 			      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
-			    	  conditions.put("batch_id", batch_id);  
+			    	  conditions1.put("batch_id", batch_id);  
 			    	  %>
-				    	 <%= util.getHTML(3049, conditions) %>
+				    	 <%= util.getHTML(3049, conditions1) %>
 				    	 <%
 			      }
 			      
 			      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
-			    	  conditions.put("course_id", course_id); 
+			    	  conditions1.put("course_id", course_id); 
 			    	  %>
-				    	 <%= util.getHTML(3051, conditions) %>
+				    	 <%= util.getHTML(3051, conditions1) %>
 				    	 <%
 			      }
 			      
@@ -216,21 +235,25 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 			<div class="col-lg-12">
 				<div class="col-lg-7">
 					<div class="ibox-content" style="height: 672px !important;">
-						<div id="container" style="height: 641px !important;"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
-
-						<table id="datatable" style="display: none;">
-							<thead>
-								<tr>
-
-									<th>Time</th>
-									<th><%=request.getParameter("headname")  %></th>
-								</tr>
-							</thead>
-							<tbody>
-								<%=attendanceData %>
-							</tbody>
-						</table>
+						<%ReportUtils repUtils = new ReportUtils();
+						if(request.getParameterMap().containsKey("course_id") && !request.getParameter("course_id").toString().equalsIgnoreCase("null"))
+						{
+							HashMap<String, String> conditions3 = new HashMap();
+							conditions3.put("course_id", request.getParameter("course_id").toString());
+							conditions3.put("college_id", college_id+"");
+							%>
+							<%=repUtils.getHTML(3053, conditions3) %>	
+							<% 
+						}
+						else
+						{
+							HashMap<String, String> conditions3 = new HashMap();
+							conditions3.put("batch_id", request.getParameter("batch_id").toString());
+						%>
+						<%=repUtils.getHTML(3054, conditions3) %>	
+						<% 
+						}	
+							%>				
 					</div>
 				</div>
 				<div class="col-lg-5">

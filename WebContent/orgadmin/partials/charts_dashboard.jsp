@@ -18,7 +18,6 @@
 	DBUTILS dbutils1 = new DBUTILS();
 	AdminServices serv = new AdminServices();
 	ReportUtils utils = new ReportUtils();
-	HashMap<String, String> conditions = new HashMap<>();
 	GraphCustomServices custServ= new GraphCustomServices();
 	if (request.getParameterMap().containsKey("colegeID")) {
 
@@ -39,13 +38,14 @@
 							View</a></li>
 					<li class=""><a data-toggle="tab" href="#tab-14">Section
 							View</a></li>
-
+					<li class=""><a data-toggle="tab" href="#tab-15">Role
+							View</a></li>
 				</ul>
 				<div class="tab-content">
 					<div id="tab-11" class="tab-pane active">
 						<div class="panel-body">
 							
-					 <% conditions = new HashMap();
+					 <% HashMap<String, String> conditions = new HashMap<>();
 					 conditions.put("college_id", colegeID+"");
 					 %> 
 					<%=custServ.getProgressGraph(1,conditions) %>			
@@ -54,10 +54,10 @@
 					<div id="tab-12" class="tab-pane">
 						<div class="panel-body">
 						
-						  <% conditions = new HashMap();
-					 conditions.put("college_id", colegeID+"");
+						  <% HashMap<String , String> conditions1 = new HashMap();
+					 conditions1.put("college_id", colegeID+"");
 					 %> 
-					<%=custServ.getCompetitionGraph(conditions)%>   
+					<%=custServ.getCompetitionGraph(conditions1)%>   
 							
 							<%-- <table id="competition_view_datatable"
 								data-college='<%=colegeID%>' style="display: none">
@@ -84,17 +84,20 @@
 									</select>
 
 								</div>
-							</div>
-							
+							</div>							
 							<%
-							conditions = new HashMap();
-								conditions.put("college_id", colegeID+"");
+							
 							if(courses.size()>0){
-								conditions.put("course_id", courses.get(0).getId()+"");
+								HashMap <String, String>conditions2 = new HashMap();
+								conditions2.put("college_id", colegeID+"");
+								conditions2.put("course_id", courses.get(0).getId()+"");
+								%>
+								<%=utils.getHTML(3040, conditions2) %>
+								<% 
 							}
-							System.err.println();;							
+											
 							%>
-							<%=utils.getHTML(3040, conditions) %>
+							
 						</div>
 					</div>
 					<div id="tab-14" class="tab-pane">
@@ -118,14 +121,52 @@
 								</div>
 							</div>
 							<%
-							conditions = new HashMap();
-								conditions.put("college_id", colegeID+"");
+							System.out.println(">>>>>"+batchGroups.size());
 							if(batchGroups.size()>0){
-								conditions.put("batch_group_id", batchGroups.get(0).getId()+"");
+								HashMap <String, String> conditions4 = new HashMap();
+								conditions4.put("college_id", colegeID+"");
+								conditions4.put("batch_group_id", batchGroups.get(0).getId()+"");
+								%><%=utils.getHTML(3041, conditions4) %><% 
 							}
 													
 							%>
-							<%=utils.getHTML(3041, conditions) %>
+							
+							
+						</div>
+					</div>
+					<div id="tab-15" class="tab-pane">
+						<div class="panel-body">
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Select Role</label>
+
+								<div class="col-sm-4">
+								<select class="form-control m-b graph_filter_selector"  data-report_id="3051" name="batch_group_id" data-college_id="<%=colegeID%>">										
+										<%
+										ArrayList<BatchGroup> roles = serv.getBatchGroupInCollege(colegeID);
+										for(BatchGroup batchGroup : roles)
+										{
+											if(batchGroup.getType().equalsIgnoreCase("ROLE")){
+										%>
+										<option value="<%=batchGroup.getId()%>"><%=batchGroup.getName().trim()%></option>
+										<%
+											}
+										} %>
+									</select>
+									
+								</div>
+							</div>
+							<%
+							System.out.println(">>>>>"+roles.size());
+							if(roles.size()>0){
+								HashMap <String, String> conditions4 = new HashMap();
+								conditions4.put("college_id", colegeID+"");
+								conditions4.put("batch_group_id", roles.get(0).getId()+"");
+								%><%=utils.getHTML(3052, conditions4) %><% 
+							}
+													
+							%>
+							
 							
 						</div>
 					</div>
