@@ -1,38 +1,51 @@
-<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
-<%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="in.superadmin.ops.service.OpsReportSevices"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="org.ocpsoft.prettytime.PrettyTime"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
+<%@page import="java.util.HashSet"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
+<%@page import="org.json.JSONArray"%>
+<%@page import="in.talentify.core.utils.UIUtils"%>
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<jsp:include page="inc/head.jsp"></jsp:include>
 <%
-String url = request.getRequestURL().toString();
+ String url = request.getRequestURL().toString();
 String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 		+ request.getContextPath() + "/";
-	OpsReportSevices opsReport = new OpsReportSevices();
-	UIUtils ui = new UIUtils();
-	int colegeID = (int)request.getSession().getAttribute("orgId");
-	
-	 int user_id=(new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0)).getId();
-	 
-	/*  Organization college=new OrganizationDAO().findById(colegeID); */
-	 user_id = ui.getOrgPrincipal(colegeID);
-	/*  user_id = college.getUserOrgMappings().iterator().next().getIstarUser().getId(); */
-	
-	
+IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+int collegeID = (int)request.getSession().getAttribute("orgId");
+Organization organization = new OrganizationDAO().findById(collegeID);
 %>
-<jsp:include page="inc/head.jsp"></jsp:include>
-
 <body class="top-navigation" id="istar_notification">
+<input type="hidden" name="college_id" value="<%=collegeID%>" id ="hidden_college_id">
+<input type="hidden" name="admin_id" value="<%=user.getId()%>" id ="hidden_admin_id">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+		<jsp:include page="inc/navbar.jsp"></jsp:include>
 			<div class="row p-xl">
 			
 				<div class="col-lg-2">
 					<div class="form-group">
-						<label class="font-bold">Choose Section</label>
+						<label class="font-bold">Choose Section/ Role</label>
 						<div>
 							<select data-placeholder="Select Section" tabindex="4"
-								id='notification_batchgroup_holder'></select>
+								id='notification_batchgroup_holder'>
+								<%
+								for(BatchGroup bg : organization.getBatchGroups())
+								{
+									%>
+									<option value="<%=bg.getId()%>"><%=bg.getName() %> (<%=bg.getType() %>)</option>
+									<% 
+								}
+								%>
+								</select>
 						</div>
 					</div>
 				</div>
@@ -44,10 +57,10 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 							<select data-placeholder="Select Notification" tabindex="4"
 								id='notification_type_holder'>
 								<option value="null">Select Notification</option>
-								<option value="playPresentation">PLAY PRESENTATION</option>
-								<option value="playAssessment">PLAY ASSESSMENT</option>
-								<option value="complexObjectUpdate">UPDATE STUDENT CONTENT</option>
-								<option value="coUpdateWithMessage">SIMPLE MESSAGE</option>
+								<option value="LESSON">LESSON</option>
+								<option value="ASSESSMENT">PLAY ASSESSMENT</option>
+								<option value="COMPLEX_UPDATE">UPDATE STUDENT CONTENT</option>
+								<option value="MESSAGE">SIMPLE MESSAGE</option>
 							</select>
 						</div>
 					</div>
@@ -56,9 +69,11 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="col-lg-2">
 						<div class="form-group">
 							<label class="font-bold">Choose Course</label>
-							<div id="notification_course_holder">
+							<div>
 								<select data-placeholder="Select Course" tabindex="4"
-									data-url='' id='course_holder'></select>
+									data-url='' id='course_holder'>
+									
+									</select>
 							</div>
 						</div>
 					</div>
@@ -74,9 +89,9 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					</div>
 					<div class="col-lg-2">
 						<div class="form-group">
-							<label class="font-bold">Choose Presentation</label>
+							<label class="font-bold">Choose Lesson</label>
 							<div>
-								<select data-placeholder="Select Presentation" tabindex="4"
+								<select data-placeholder="Select Lesson" tabindex="4"
 									data-url='' id='notification_ppt_holder'>
 								</select>
 							</div>
@@ -90,27 +105,15 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 							<div>
 								<select data-placeholder="Select Assessment" tabindex="4"
 									data-url='' id='notification_assessment_holder'>
-									<%=ui.getAllAssessments()%>
+									
 								</select>
 							</div>
 						</div>
 					</div>
 				</div>
 
-<div class="col-lg-2">
-				<input type="hidden" id="notification_college_holder" value="<%=colegeID%>">
-				<input type="hidden" id="adminID" value="<%=user_id%>">
-					<%-- <div class="form-group">
-						<label class="font-bold">Choose College</label>
-						<div>
-							<select data-placeholder="select College" tabindex="4"
-								id='notification_college_holder'>
-								<%=opsReport.getOrganization()%>
-							</select>
-						</div>
-					</div> --%>
+	<div class="col-lg-2">					
 				</div>
-
 			</div>
 			<div style="display: none" id="spinner_holder">
 				<div style="width: 100%; z-index: 6; position: fixed;"
@@ -136,7 +139,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 											placeholder="Write Title..." class="form-control">
 									</div>
 									<div class="form-group">
-										<label>Comments</label>
+										<label>Description</label>
 										<textarea class="form-control" id="comment"
 											placeholder="Write Comment..."></textarea>
 									</div>
@@ -161,7 +164,10 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 											<input type="checkbox" id="checkAll"> Check All
 										</label>
 									</h3>
-									<div id="student_holder"></div>
+									<div >
+									<ul data-student='student_list' class='todo-list m-t small-list ui-sortable' id="student_holder">
+									</ul>
+									</div>
 
 								</div>
 
@@ -174,32 +180,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 			</div>
 
-		</div><jsp:include page="../chat_element.jsp"></jsp:include>
+		</div>
 	</div>
-
-
-	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
-	<script>
-		$(document).ready(function() {
-			
-			var orgId = $('#notification_college_holder').val();
-			var type = 'org';
-			$.ajax({
-				type : "POST",
-				url : '../get_notification',
-				data : {
-					orgId : orgId,
-					type : type
-				},
-				success : function(data) {
-					$('#notification_batchgroup_holder').html(data);
-				}
-			});
-			
-			
-		});
-	</script>
+<jsp:include page="inc/foot.jsp"></jsp:include>
 </body>
-
-</html>

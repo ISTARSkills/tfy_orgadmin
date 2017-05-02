@@ -1,27 +1,18 @@
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%><div class="row border-bottom white-bg">
-	<%@page import="in.talentify.core.utils.*"%>
-	<%@page import="in.talentify.core.xmlbeans.*"%>
-	<%@page import="com.viksitpro.core.dao.entities.*"%>
+<div class="row border-bottom white-bg">
+<%@page import="in.talentify.core.utils.*"%>
+<%@page import="in.talentify.core.xmlbeans.*"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
 
 	<%
-		String path = request.getContextPath();
-		String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-				+ path + "/";
-		IstarUser user = new IstarUser();
+				IstarUser user = new IstarUser();
 		int count = 0;
 		String activeUrl = request.getServletPath();
 		String[] urlParts = activeUrl.split("/");
 		activeUrl = urlParts[urlParts.length - 1];
-/* 		user = (IstarUser) request.getSession().getAttribute("user");
- */		
+	
 		int colegeID = (int)request.getSession().getAttribute("orgId");
  
- IstarUser istarUser = new IstarUser();
-
- int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
-
+ IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");
  Organization college = new OrganizationDAO().findById(colegeID);
 		
 		String userRole = "ORG_ADMIN";

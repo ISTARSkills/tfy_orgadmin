@@ -1,9 +1,12 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,20 +14,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.chat.services.NotificationService;
+import com.viksitpro.core.dao.entities.Assessment;
+import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
+import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.dao.utils.task.TaskServices;
+import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.NotificationType;
 
+import in.orgadmin.utils.report.CustomReport;
+import in.orgadmin.utils.report.CustomReportUtils;
 import in.talentify.core.utils.PublishDelegator;
 
 /**
  * Servlet implementation class CreateNotofication
  */
-@WebServlet("/get_notification")
+@WebServlet("/create_notification")
 public class CreateNotification extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -35,141 +47,80 @@ public class CreateNotification extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		DBUTILS dbutils = new DBUTILS();
-		System.out.println("get_notification");
-
-		if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("sendNotification")) {
-
-			int lessonID = 0;
-			int collegeID = 0;
-			int batchGroupID = 0;
-			int courseID = 0;
-			String studentlistID = null;
-			String title = "UPDATE_COMPLEX_OBJECT";
-			String comment = null;
-			String hidden_id = "No_Session";
-			String courseName = null;
-			String lessonName = null;
-			if (request.getParameterMap().containsKey("batchGroupID")) {
-				batchGroupID = request.getParameter("batchGroupID") != ""
-						? Integer.parseInt(request.getParameter("batchGroupID")) : 0;
-			}
-
-			if (request.getParameterMap().containsKey("courseID")) {
-				courseID = request.getParameter("courseID") != "" ? Integer.parseInt(request.getParameter("courseID")): 0;
-			}
-
-			if (request.getParameterMap().containsKey("cmsessionID")) {
-				lessonID = request.getParameter("lessonID") != ""
-						? Integer.parseInt(request.getParameter("lessonID")) : 0;
-			}
-
-			if (request.getParameterMap().containsKey("collegeID")) {
-				collegeID = request.getParameter("collegeID") != ""
-						? Integer.parseInt(request.getParameter("collegeID")) : 0;
-			}
-
-			if (request.getParameterMap().containsKey("title")) {
-				title = request.getParameter("title") != "" ? request.getParameter("title") : "UPDATE_COMPLEX_OBJECT";
-			}
-
-			if (request.getParameterMap().containsKey("comment")) {
-				comment = request.getParameter("comment") != "" ? request.getParameter("comment") : "";
-			}
-
-			if (request.getParameterMap().containsKey("studentlistID")) {
-				studentlistID = request.getParameter("studentlistID") != "" ? request.getParameter("studentlistID"): "";
-			}
-			
-			ArrayList<String> studentIDs = new ArrayList<>();
-			for (String str : studentlistID.split(",")) {
-				if (!str.equalsIgnoreCase("")) {
-					studentIDs.add(str);
-				}
-			}
-
-			if (courseID != 0 && lessonID != 0) {
-
-				hidden_id = courseID + ";" + lessonID;
-                 
-				Course course = new CourseDAO().findById(courseID);
-				courseName = course.getCourseName();
-				Lesson lesson = new LessonDAO().findById(lessonID);
-				lessonName = lesson.getTitle();
-			}
-			
-			new PublishDelegator().publishAfterCreatingNotification(studentIDs, title, comment, hidden_id,courseName,lessonName);
-			
+	
+DBUTILS util = new DBUTILS(); 	
+String notificationType =  request.getParameter("notification_type");
+TaskServices taskService = new TaskServices();
+IstarNotificationServices notificationService = new IstarNotificationServices();
+if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
+{
+	String courseId = request.getParameter("course_id");
+	String groupId = request.getParameter("group_id");
+	String cmsession_id = request.getParameter("cmsession_id");
+	String lessonId = request.getParameter("lesson_id");
+	String adminId = request.getParameter("admin_id");
+	String studentIds = request.getParameter("studentlist_id");
+	CustomReportUtils repUtils = new CustomReportUtils();
+	CustomReport report = repUtils.getReport(21);
+	String sql = report.getSql().replaceAll(":course_id", courseId).replaceAll(":lesson_id", lessonId);
+	List<HashMap<String, Object>> lessonData = util.executeQuery(sql);
+	String groupNotificationCode = UUID.randomUUID().toString();
+	
+	if(lessonData.size()>0)
+	{
+		String lessonTitle = lessonData.get(0).get("lesson_title").toString();
+		String courseTitle = lessonData.get(0).get("course_name").toString();
+		String notificationTitle = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
+		String notificationDescription =  lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
+		String taskTitle = lessonData.get(0).get("lesson_title").toString();
+		String taskDescription = lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
 		
-
-		}
-
-		else if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("org")
-				&& request.getParameter("orgId") != null) {
-
-			int orgId = Integer.parseInt(request.getParameter("orgId"));
-			
-			String sql = "SELECT id,name FROM batch_group WHERE college_id in (SELECT id FROM organization where id = "
-					+ orgId + " )";
-
-			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
-			StringBuffer out = new StringBuffer();
-			out.append("<option value='null'>Select BatchGroup</option>");
-			for (HashMap<String, Object> item : data) {
-				out.append("<option value='" + item.get("id") + "'>" + item.get("name") + "</option>");
+		 for(String studentId: studentIds.split(","))
+			{
+				//create Notification and Tasks for all students  
+			 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "LESSON", null, Integer.parseInt(lessonId), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
+			 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, lessonId, "LESSON");
+			 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
+			 
 			}
-			out.append("");
-			response.getWriter().print(out);
-		}
+		
+	}	
+	
+	
+}
+else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
+{
+	String assessmentID = request.getParameter("assessment_id");
+	Assessment assessment = new AssessmentDAO().findById(Integer.parseInt(assessmentID));
+	Course course = new CourseDAO().findById(assessment.getCourse());
+	String notificationTitle = "An assessment with title "+assessment.getAssessmenttitle()+" of course "+course.getCourseName()+" has been added to task list.";
+	String notificationDescription =  assessment.getDescription()!=null ? assessment.getDescription(): "NA";
+	String taskTitle = assessment.getAssessmenttitle();
+	String taskDescription = notificationDescription;
+	String studentIds = request.getParameter("studentlist_id");
+	String adminId = request.getParameter("admin_id");
+	String groupNotificationCode = UUID.randomUUID().toString();
+	for(String studentId: studentIds.split(","))
+	{
+		//create Notification and Tasks for all students  
+	 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "ASSESSMENT", null, assessment.getId(), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
+	 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, assessmentID, "ASSESSMENT");
 
-		else if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("batchGroup")
-				&& request.getParameter("batchGroup") != null) {
-
-			int batchGroup = Integer.parseInt(request.getParameter("batchGroup"));
-			String sql = "SELECT id , course_name FROM course WHERE id in (SELECT course_id FROM batch WHERE batch_group_id in (SELECT id FROM batch_group WHERE id = "
-					+ batchGroup + "))";
-
-			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
-			StringBuffer out = new StringBuffer();
-
-			out.append(
-					"<select data-placeholder='Select Course' tabindex='4' data-course='course' id='course_holder'>");
-			out.append("<option value=''>Select Course</option>");
-			for (HashMap<String, Object> item : data) {
-				out.append("<option value='" + item.get("id") + "'>" + item.get("course_name") + "</option>");
-			}
-			out.append("</select>");
-
-			String sql1 = "SELECT 	ID, 	email FROM 	istar_user WHERE 	ID IN ( 		SELECT 			student_id 		FROM 			batch_students 		WHERE 			batch_group_id = "+batchGroup+" 		AND user_type = 'STUDENT')";
-			List<HashMap<String, Object>> data1 = dbutils.executeQuery(sql1);
-			out.append("<ul data-student='student_list' class='todo-list m-t small-list ui-sortable'>");
-			for (HashMap<String, Object> item1 : data1) {
-				out.append(
-						" <li><label class='checkbox-inline'> <input type='checkbox' class='student_checkbox_holder'  value='"
-								+ item1.get("id") + "' id='inlineCheckbox_" + item1.get("id") + "'>"
-								+ item1.get("email") + "</label></li>");
-			}
-			out.append("</ul>");
-			out.append("");
-			response.getWriter().print(out);
-		}
-
-		else if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("course")
-				&& request.getParameter("course") != null) {
-
-			int course = Integer.parseInt(request.getParameter("course"));
-			String sql = "SELECT DISTINCT 	cmsession. ID, 	cmsession.title FROM 	course, 	MODULE, 	module_course, 	cmsession, 	cmsession_module WHERE 	course. ID = module_course.course_id AND module_course.module_id = MODULE . ID AND MODULE . ID = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession. ID AND course. ID ="
-					+ course + "";
-
-			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
-			StringBuffer out = new StringBuffer();
-			out.append("<option value=''>Select CMSession</option>");
-			for (HashMap<String, Object> item : data) {
-				out.append("<option value='" + item.get("id") + "'>" + item.get("title") + "</option>");
-			}
-			out.append("");
-			response.getWriter().print(out);
-		}
+	 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
+	 
+	}
+	
+}	
+else if(notificationType.equalsIgnoreCase(NotificationType.COMPLEX_UPDATE))
+{
+	
+}		
+else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
+{
+	
+}		
+		
+		
 
 	}
 

@@ -4054,13 +4054,49 @@ function init_istar_notification(){
 	console.log('istar Notification');
 	$('#notification_type_holder').on("change", function() {
 		
-		if($(this).val() === 'playPresentation' ){
+		if($(this).val() === 'LESSON' ){
 			
+			var entity_id = $('#notification_batchgroup_holder').val();
+			var entity_type = 'LESSON';
+			$.ajax({
+				type : "POST",
+				url : '../get_notification_data',
+				data : {
+					entity_id : entity_id,
+					entity_type : entity_type
+				},
+				success : function(data) {
+					$('#course_holder').select2();;
+					$('#course_holder').html(data);
+				}
+			});
+			
+			$('#course_holder').select2();
+			init_courseFilter();			
 			$('#play_presentation_holder').show();
 			$('#play_assessment_holder').hide();
 			
-		}else if($(this).val() === 'playAssessment' ){
+			
+		}else if($(this).val() === 'ASSESSMENT' ){
 			$('#play_presentation_holder').hide();
+			$('#play_assessment_holder').show();	
+			var entity_id = '0';
+			var entity_type = 'ASSESSMENT';
+			$.ajax({
+				type : "POST",
+				url : '../get_notification_data',
+				data : {
+					entity_id : entity_id,
+					entity_type : entity_type
+				},
+				success : function(data) {
+					$('#notification_assessment_holder').select2();
+					$('#notification_assessment_holder').html(data);
+				}
+			});
+			
+			$('#notification_assessment_holder').select2();			
+			$('#play_presentation_holder').hide();			
 			$('#play_assessment_holder').show();
 			
 			
@@ -4073,13 +4109,13 @@ function init_istar_notification(){
 
 	$('#notification_college_holder').on("change", function() {
 		var orgId = $(this).val();
-		var type = 'org';
+		var type = 'ORG';
 		$.ajax({
 			type : "POST",
-			url : '../get_notification',
+			url : '../get_notification_data',
 			data : {
-				orgId : orgId,
-				type : type
+				entity_id : orgId,
+				entity_type : type
 			},
 			success : function(data) {
 				$('#notification_batchgroup_holder').html(data);
@@ -4088,48 +4124,41 @@ function init_istar_notification(){
 	});
 
 	$('#notification_batchgroup_holder').unbind().on("change", function() {
-		var batchGroup = $(this).val();
-		var type = 'batchGroup';
+		var batchGroupId = $(this).val();
+		var type = 'GROUP';
 
-		if (batchGroup != 'null') {
+		if (batchGroupId != 'null') {
 			$.ajax({
 				type : "POST",
-				url : '../get_notification',
+				url : '../get_notification_data',
 				data : {
-					type : type,
-					batchGroup : batchGroup
+					entity_id : batchGroupId,
+					entity_type : type
 				},
-				success : function(data) {
-					$('#notification_batchgroup_holder').select2();
-					$('#student_holder').html($(data)[1]);			
-					$('#notification_course_holder').html($(data)[0]);
-					$('#course_holder').select2();
-					init_checkAllStudent();
-					init_courseFilter();
-
-
+				success : function(data) {					
+					$('#student_holder').html(data);													
+					init_checkAllStudent();					
 				}
 			});
-		}
+		}				
 	});
 	
 	function init_courseFilter() {
 	$('#course_holder').on("change", function() {
 		var course = $(this).val();
-		var type = 'course';
+		var type = 'COURSE';
 
 		if (course != 'null') {
 			$.ajax({
 				type : "POST",
-				url : '../get_notification',
+				url : '../get_notification_data',
 				data : {
-					type : type,
-					course : course
+					entity_type : type,
+					entity_id : course
 				},
 				success : function(data) {
 					$('#notification_cmsession_holder').html(data);
 					init_cmsessionFilter();
-
 				}
 			});
 		}
@@ -4139,20 +4168,20 @@ function init_istar_notification(){
 	function init_cmsessionFilter() {
 		$('#notification_cmsession_holder').on("change", function() {
 			var cmsession = $(this).val();
-			var type = 'cmsession';
+			var type = 'CMSESSION';
 
 			if (cmsession != 'null') {
 				$.ajax({
 					type : "POST",
-					url : '../get_notification',
+					url : '../get_notification_data',
 					data : {
-						type : type,
-						cmsession : cmsession
+						entity_type : type,
+						entity_id : cmsession
 					},
 					success : function(data) {
 						
 						$('#notification_ppt_holder').html(data);
-
+						$('#notification_ppt_holder').select2();
 					}
 				});
 			}
@@ -4161,7 +4190,6 @@ function init_istar_notification(){
 	
 	
 	function init_checkAllStudent() {
-
 		$("#checkAll").change(function(){
 		        if($(this).is(":checked")) {
 		          
@@ -4169,111 +4197,198 @@ function init_istar_notification(){
 
 		        } else {
 		        	 $('.student_checkbox_holder').prop('checked', false);
-		        }
-		        
-		    });
-		
+		        }		        
+		    });		
 	}
 	
-	$( "#send_notification" ).click(function() {
+	$( "#send_notification" ).unbind().on('click',function() {
+		
 		var flag = false;
-		var type = $('#notification_type_holder').val();
-		var title = $('#title').val();
-		var comment = $('#comment').val();
-		var courseID = $('#course_holder').val();
-		var batchGroupID = $('#notification_batchgroup_holder').val();
-		var collegeID = $('#notification_college_holder').val();
-		var cmsessionID = $('#notification_cmsession_holder').val();
-		var pptID = $('#notification_ppt_holder option:selected').data('ppt');
-		var lessonID =  $('#notification_ppt_holder').val();
-		var assessmentID = $('#notification_assessment_holder').val();
-		var adminID = $('#adminID').val();
+		var notification_type = $('#notification_type_holder').val();
+		//defined in istar_notification
 		
-		var studentlistID=[];
-		
-		$('input:checkbox.student_checkbox_holder').each(function () {	
-			if($(this).is(":checked")){
-				studentlistID.push(this.checked ? $(this).val() : ""); 	
+		var adminId = $('#hidden_admin_id').val();
+		//
+		if(notification_type==='LESSON')
+		{			
+			var group_id = $('#notification_batchgroup_holder').val();
+			var notification_type = 'LESSON';
+			var course_id =$('#course_holder').val(); ;
+			var cmsession_id = $('#notification_cmsession_holder').val(); ;
+			var lesson_id =$('#notification_ppt_holder').val();;
+			var studentlistID=[];			
+			$('input:checkbox.student_checkbox_holder').each(function () {	
+				if($(this).is(":checked")){
+					studentlistID.push(this.checked ? $(this).val() : ""); 	
+				}
+			  });
+			
+			var title = $('#title').val();
+			var comment = $('#comment').val(); 
+			
+			if(group_id==null || course_id ==null || cmsession_id==null || lesson_id == null || studentlistID.length <=0)
+			{
+				
+		            swal({
+		                title: "Missing mandatory fields",
+		                text: "Section, Course, Session, Lesson and Students are mandatory to send lesson as notification."
+		            });
+		        
 			}
-		  });
-		
-		console.log(title+","+comment+","+courseID+","+batchGroupID+","+collegeID+","+cmsessionID+","+pptID+","+","+studentlistID);
-		
-	if(studentlistID.length > 0){
-		
-		if(type === 'playAssessment'){
+			else
+			{
+				$('#spinner_holder').show();				
+				$.ajax({
+					type : "POST",
+					url : '../create_notification',
+					data : {
+						notification_type : notification_type,
+						title : title,
+						comment : comment,
+						course_id : course_id,
+						group_id : group_id,						
+						cmsession_id : cmsession_id,
+						lesson_id:lesson_id,						
+						admin_id:adminId,
+						studentlist_id : studentlistID.toString()
+						},
+					success : function(data) {
+						$('#spinner_holder').hide();
+					   location.reload();
+					}
+				});
+			}	
+		}
+		else if(notification_type==='ASSESSMENT')
+		{
+			var group_id = $('#notification_batchgroup_holder').val();
+			var notification_type = 'ASSESSMENT';
+			var assessment_id = $('#notification_assessment_holder').val();
+			var studentlistID=[];			
+			$('input:checkbox.student_checkbox_holder').each(function () {	
+				if($(this).is(":checked")){
+					studentlistID.push(this.checked ? $(this).val() : ""); 	
+				}
+			  });
 			
-			if(assessmentID != 'null'){
-				flag = true;
-			}else{
-				flag = false;
-				alert('Select ppt');
+			var title = $('#title').val();
+			var comment = $('#comment').val(); 			
+			
+			if(group_id==null || assessment_id ==null || studentlistID.length <=0)
+			{
+				
+		            swal({
+		                title: "Missing mandatory fields",
+		                text: "Section, Assessment and Students are mandatory to send assessment as notification."
+		            });
+		        
 			}
-		}
-		else if(type === 'playPresentation'){
+			else
+			{
+				$('#spinner_holder').show();				
+				$.ajax({
+					type : "POST",
+					url : '../create_notification',
+					data : {
+						notification_type : notification_type,
+						title : title,
+						comment : comment,						
+						group_id : group_id,
+						assessment_id: 	assessment_id,			
+						admin_id:adminId,
+						studentlist_id : studentlistID.toString()
+						},
+					success : function(data) {
+						$('#spinner_holder').hide();
+					   location.reload();
+					}
+				});
+			}	
+		}		
+		else if(notification_type==='COMPLEX_UPDATE')
+		{
+			var group_id = $('#notification_batchgroup_holder').val();
+			var notification_type = 'COMPLEX_UPDATE';
 			
-			if(courseID != 'null' && cmsessionID != 'null' && lessonID!= 'null'){
-				flag = true;
-			}else{
-				flag = false;
-				alert('Select course session ppt');
+			var studentlistID=[];			
+			$('input:checkbox.student_checkbox_holder').each(function () {	
+				if($(this).is(":checked")){
+					studentlistID.push(this.checked ? $(this).val() : ""); 	
+				}
+			  });
+			
+			if(studentlistID.length <=0)
+				{
+				 swal({
+		                title: "Missing mandatory fields",
+		                text: "Students are mandatory to send updated content as notification."
+		            });
+		        
+				}
+			else
+			{
+				$('#spinner_holder').show();				
+				$.ajax({
+					type : "POST",
+					url : '../create_notification',
+					data : {
+						notification_type : notification_type,												
+						admin_id:adminId,
+						studentlist_id : studentlistID.toString()
+						},
+					success : function(data) {
+						$('#spinner_holder').hide();
+					   location.reload();
+					}
+				});
+			}	
+		}
+		else if(notification_type==='MESSAGE')
+		{
+			var notification_type = 'MESSAGE';
+			var studentlistID=[];			
+			$('input:checkbox.student_checkbox_holder').each(function () {	
+				if($(this).is(":checked")){
+					studentlistID.push(this.checked ? $(this).val() : ""); 	
+				}
+			  });
+			var title = $('#title').val();
+			var comment = $('#comment').val(); 			
+			if(studentlistID.length <=0 || title==null || comment==null)
+			{
+				swal({
+	                title: "Missing mandatory fields.",
+	                text: "Title, Description and Students are mandatory to send message."
+	            });
 			}
+			else
+				{
+				$('#spinner_holder').show();				
+				$.ajax({
+					type : "POST",
+					url : '../create_notification',
+					data : {
+						notification_type : notification_type,												
+						admin_id:adminId,
+						title : title,
+						comment : comment,
+						studentlist_id : studentlistID.toString()
+						},
+					success : function(data) {
+						$('#spinner_holder').hide();
+					   location.reload();
+					}
+				});
+				}
 			
 		}
-		else if(type === 'complexObjectUpdate'){
-			
-			flag = true;
-			
-		}
-		else if(type === 'coUpdateWithMessage'){
-			
-			flag = true;
-			
-		}
-		else{
-			
-			flag = false;
-			alert('Select Notification Type');
-		}
-		
-	
-		
-		
-	}else{
-		
-		flag = false;
-		alert('Select Student');
-	}
-		
-	if(flag == true){
-		$('#spinner_holder').show();
-		
-		$.ajax({
-			type : "POST",
-			url : '../get_notification',
-			data : {
-				type : type,
-				title : title,
-				comment : comment,
-				courseID : courseID,
-				batchGroupID : batchGroupID,
-				collegeID : collegeID,
-				cmsessionID : cmsessionID,
-				lessonID:lessonID,
-				pptID:pptID,
-				adminID:adminID,
-				assessmentID:assessmentID,
-				studentlistID : studentlistID.toString()
-				},
-			success : function(data) {
-				$('#spinner_holder').hide();
-			   location.reload();
-
-			}
-		});
-		
-	}
-		
+		else
+		{
+			swal({
+                title: "Missing mandatory fields.",
+                text: "Select a type of notification."
+            });
+		}	
 	});
 
 	

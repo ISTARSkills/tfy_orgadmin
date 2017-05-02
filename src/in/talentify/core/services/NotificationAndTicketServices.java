@@ -16,6 +16,9 @@ import com.viksitpro.core.utilities.NotificationType;
  */
 public class NotificationAndTicketServices {
 
+	
+	
+	
 	public List<HashMap<String, Object>> getNotificationAndTicket(int userId)
 	{
 		DBUTILS util = new DBUTILS();		

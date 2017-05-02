@@ -1,5 +1,4 @@
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%><!DOCTYPE html>
+<!DOCTYPE html>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -31,5 +30,4 @@
 <link href="<%=basePath%>css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=basePath%>css/jquery.rateyo.min.css">
 <link href="<%=basePath%>css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-
 </head>

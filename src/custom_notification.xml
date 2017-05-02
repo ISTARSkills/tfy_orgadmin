@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notifications>
+<custom_notification type="LESSON">
+A lesson with title :lesson_title of course :course_title has been added to task list. 
+</custom_notification>
+<custom_notification type="ASSESSMENT">
+An assessment with title :assessment_title of course :course_title has been added to task list. 
+</custom_notification>
+<custom_notification type="CLASSROOM_EVENT">
+Scheduled class of :course_title with trainer :trainer_name in classroom :classroom 
+</custom_notification>
+</notifications>
