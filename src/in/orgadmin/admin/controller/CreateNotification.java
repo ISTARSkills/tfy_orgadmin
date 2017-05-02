@@ -106,7 +106,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "ASSESSMENT", null, assessment.getId(), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
 	 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, assessmentID, "ASSESSMENT");
 
-	 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
+	 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
 	 
 	}
 	
@@ -124,7 +124,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 	String groupNotificationCode = UUID.randomUUID().toString();
 	for(String studentId: studentIds.split(","))
 	{
-		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title, comments, "UNREAD", null, NotificationType.LESSON, true, null, groupNotificationCode);
+		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title, comments, "UNREAD", null, NotificationType.GENERIC, true, null, groupNotificationCode);
 	}
 
 }		
