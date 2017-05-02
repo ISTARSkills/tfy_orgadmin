@@ -117,7 +117,16 @@ else if(notificationType.equalsIgnoreCase(NotificationType.COMPLEX_UPDATE))
 }		
 else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 {
-	
+	String title = request.getParameter("title");
+	String comments = request.getParameter("comment");
+	String studentIds = request.getParameter("studentlist_id");
+	String adminId = request.getParameter("admin_id");
+	String groupNotificationCode = UUID.randomUUID().toString();
+	for(String studentId: studentIds.split(","))
+	{
+		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title, comments, "UNREAD", null, NotificationType.LESSON, true, null, groupNotificationCode);
+	}
+
 }		
 		
 		
