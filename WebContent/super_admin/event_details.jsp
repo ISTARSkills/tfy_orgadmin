@@ -48,7 +48,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	if(status.equalsIgnoreCase("TEACHING") ||status.equalsIgnoreCase("ATTENDANCE") ||status.equalsIgnoreCase("FEEDBACK") ||status.equalsIgnoreCase("COMPLETED"))
 	{
 		%>
-		<p><strong>Sessions Covered: </strong> <%=data.get("sessions_covered") %></p>
+		<p><strong>Sessions Covered: </strong> <%=data.get("sessions_covered") != null ? data.get("sessions_covered"): 0 %></p>
 		<p><strong>Next Session: </strong> <%=data.get("next_session") %></p>
 		<% 
 	}

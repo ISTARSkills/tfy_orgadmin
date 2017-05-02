@@ -19,9 +19,9 @@
 	<div id="wrapper" class="white-bg">
 		<div id="page-wrapper" class="white-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content white-bg">
+			<div class="wrapper wrapper-content white-bg" style="padding: 4px;">
 				<div class="ibox">
-					<div class="col-lg-12">
+					<div class="col-lg-12" style="padding: 0px;">
 						<div class="col-lg-3">
 							<button type="button" class="btn btn-w-m btn-danger"
 								data-toggle="modal" data-target="#create_user_model"

@@ -10060,7 +10060,7 @@ div.dataTables_wrapper div.dataTables_filter {
 	float: left;
 	
 	padding-left: 10px;
-	padding-top: 6px;
+	/* padding-top: 6px; */
 	padding-right: 13px;
 	margin-bottom: 13px;
 	

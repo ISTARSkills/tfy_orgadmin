@@ -140,8 +140,7 @@ public class CreateNotification extends HttpServlet {
 			}
 			out.append("</select>");
 
-			String sql1 = "SELECT id,email FROM istar_user WHERE id in (SELECT student_id FROM batch_students WHERE batch_group_id in (SELECT course_id FROM batch WHERE batch_group_id in (SELECT id FROM batch_group WHERE id = "
-					+ batchGroup + ")) AND user_type = 'STUDENT')";
+			String sql1 = "SELECT 	ID, 	email FROM 	istar_user WHERE 	ID IN ( 		SELECT 			student_id 		FROM 			batch_students 		WHERE 			batch_group_id = "+batchGroup+" 		AND user_type = 'STUDENT')";
 			List<HashMap<String, Object>> data1 = dbutils.executeQuery(sql1);
 			out.append("<ul data-student='student_list' class='todo-list m-t small-list ui-sortable'>");
 			for (HashMap<String, Object> item1 : data1) {
@@ -164,7 +163,7 @@ public class CreateNotification extends HttpServlet {
 
 			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 			StringBuffer out = new StringBuffer();
-			out.append("<option value=''>Select lesson</option>");
+			out.append("<option value=''>Select CMSession</option>");
 			for (HashMap<String, Object> item : data) {
 				out.append("<option value='" + item.get("id") + "'>" + item.get("title") + "</option>");
 			}

@@ -5,7 +5,7 @@
 <%
 	AccountManagementServices services = new AccountManagementServices();
 
-	String firstLetter = "0";
+	String firstLetter = "a";
 	if (request.getParameterMap().containsKey("firstLetter")) {
 		firstLetter = request.getParameter("firstLetter");
 	}

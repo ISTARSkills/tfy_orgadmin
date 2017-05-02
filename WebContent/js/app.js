@@ -2874,9 +2874,13 @@ function update_dashboard_left() {
 	}
 
 function init_super_admin_account_mgmt(){
+	
+	
 	$('.scroll_content').slimscroll({
 	    height: '600px'
 	});
+	
+	
 	$('.paginatedalphabet').click(
 	    function() {
 
@@ -2904,7 +2908,8 @@ if(firstChar!='add'){
 
 
 	    });
-	accountmanagment_card_init();
+	//accountmanagment_card_init();
+	$('.paginatedalphabet')[1].click();
 }
 
 function init_create_edit_organization(flag,org){ 

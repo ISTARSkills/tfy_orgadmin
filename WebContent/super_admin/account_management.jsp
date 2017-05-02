@@ -15,7 +15,7 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content">
+			<div class="wrapper wrapper-content" style=" padding: 4px!important;">
 				<div class="row">
 					<!-- Start Table -->
 					<!-- End Table -->
@@ -24,7 +24,7 @@
 					</div>
 
 				</div>
-				<div class="row" id="account_mgmt_org_holder">
+				<div class="row" id="account_mgmt_org_holder" style="padding-left: 15px; padding-right: 15px;">
 					<jsp:include page="ajax_partials/college_cards.jsp" />
 				</div>
 
