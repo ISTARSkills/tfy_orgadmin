@@ -33,7 +33,7 @@
                         <div class="ibox-title">
                             <h5>Ticket List</h5>
                             <div class="ibox-tools">
-                                <a href="#create_new_ticket_modal" data-toggle="modal" class="btn btn-primary btn-xs" >Add New Issue</a>
+                                <a class="btn btn-primary btn-xs" id = 'open_ticket'>Add New Issue</a>
                             </div>
                         </div>
                         <div class="ibox-content">
@@ -143,7 +143,7 @@
                                                         <div class="form-group"><label>Description *</label> <input type="text" placeholder="Enter Description" class="form-control ticket_filed" name="description">
                                                         
                                                         </div>
-                                                        <select data-placeholder="Select Administration"  multiple
+                                                        <div class="form-group"><select data-placeholder="Select Administration"  multiple
 						tabindex="4" name="receivers" id="receivers" class="ticket_filed">						
 						<%
 						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN"))
@@ -175,8 +175,8 @@
 							}
 						}	
 						%>
-					</select>					
-					<select data-placeholder="Select Ticket Type"
+					</select>	</div>				
+					<div class="form-group"><select data-placeholder="Select Ticket Type"
 						tabindex="8" name="ticket_type" id="ticket_type" class="ticket_filed">
 						<option id ="">Select Ticket Type</option>
 						<option value="<%=TicketTypes.EARLY_FINISH_CLASS%>"><%=TicketTypes.EARLY_FINISH_CLASS%></option>
@@ -185,7 +185,7 @@
 						<option value="<%=TicketTypes.POOR_ASSESSMENT_REPORT%>"><%=TicketTypes.POOR_ASSESSMENT_REPORT%></option>
 						<option value="<%=TicketTypes.POOR_ATTENDENACE%>"><%=TicketTypes.POOR_ATTENDENACE%></option>
 						<option value="<%=TicketTypes.PROJECTOR_ISSUE%>"><%=TicketTypes.PROJECTOR_ISSUE%></option>						
-					</select>
+					</select></div>
                                                         <div>
                         <br>                                
                    <div class="form-group"> <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="create_new_ticket"><strong>Create Ticket</strong></button>                    

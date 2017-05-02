@@ -1,5 +1,4 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@page import=""%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <% 

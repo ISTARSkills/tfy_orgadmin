@@ -29,8 +29,8 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
 	<h2><%=ticketData.get(0).get("title")%></h2>
 	<h3><%=ticketData.get(0).get("description")%></h3>
 	<div style="margin-bottom: 23px;">
-	<span class="label label-primary">Created by:</span> <%=dao.findById(Integer.parseInt(ticketData.get(0).get("creator_id").toString())).getUserProfile().getFirstName()%>
-	<span class="label label-primary">Status :</span><%=ticketData.get(0).get("status")%> (last updated <%=pt.format(updetdat)%>)
+	<span class="label label-primary">Created By: </span> &nbsp;<%=dao.findById(Integer.parseInt(ticketData.get(0).get("creator_id").toString())).getUserProfile().getFirstName()%>
+	<span class="label label-primary">Status : </span>&nbsp;<%=ticketData.get(0).get("status")%> (last updated <%=pt.format(updetdat)%>)
 	<%if(ticketData.get(0).get("status").toString().equalsIgnoreCase(TicketStates.CLOSED)) 
 	{
 	%>

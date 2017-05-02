@@ -109,6 +109,125 @@ function readyFn(jQuery) {
 
 }
 
+function initTicket()
+{
+	
+	$('#open_ticket').unbind().on('click', function(e) {
+		$('#create_new_ticket_modal').modal();
+		
+	});
+	
+	
+$('#create_new_ticket').unbind().on('click', function(e) {	
+		 e.preventDefault();
+		 $("#new_ticket_form").validate({
+		        rules: {
+		            title: {
+		                required: true
+		            },
+		            details: {
+		                required: true
+		            },
+		            ticket_type: {
+		                required: true
+		                
+		            },
+		            receivers: {
+		                required: true		               
+		            }
+		        }
+		    });
+		 
+		 
+		 var url = "../../create_new_ticket";
+		 $.ajax({
+		        type: "POST",
+		        url: url,
+		        data: $("#new_ticket_form").serialize(), // serializes the form's elements.
+		        success: function(data) {
+		        	location.reload();
+		        }
+		    });
+	});
+	
+	
+	$('.ticket_summary_button').unbind().on('click', function() {	 
+    	var ticket_id = $(this).data("ticket_id");
+    	var your_jsp_page_to_request = "/ticket_summary.jsp";			 			 
+		$.post(your_jsp_page_to_request,{ticket_id:ticket_id},		     
+		     function(data){			
+			//alert(data);
+				$("#ticket_summary_body").empty();
+				$("#ticket_summary_body").append(data);		  			
+  		  		$('#ticket_summary_modal').modal();
+  		  		
+  		  		$('.ticket_status_change').unbind().on('click', function() {
+  				alert("asdas");
+  				var ticketId= $(this).data("ticket_id");
+  				var status = $(this).data("status");
+  				$.ajax({
+  		            type: "POST",
+  		            url: "/change_ticket_status",
+  		            data: {ticketId:ticketId, status:status},
+  		            success: function(data){
+  		            	var res = data;
+  		            	if(res==='CLOSED')
+  		            	{
+  		            		$(this).data("status","REOPENED");
+  	  		            	$(this).text("Re Opren Ticket");
+  		            	}
+  		            	else if(res==='REOPENED')
+  		            	{
+  		            		$(this).data("status","CLOSED");
+  	  		            	$(this).text("Close Ticket");
+  		            	}	
+  		            	
+  		            }
+  		        });
+  				
+  			});
+		     }
+		 );
+		
+		
+		
+	});
+	
+	$(document).unbind().on('keypress','#add_comment_to_ticket', function (e) {
+
+  		if (e.keyCode === 13) {
+  			var tiketId = $(this).data("ticket_id");
+  			var commentBy = $(this).data("commented_by");
+  			var message = $(this).val();
+  			if(message!='')
+  			{
+  				var your_jsp_page_to_request = "/ticket_comment.jsp";			 			 
+  				$.post(your_jsp_page_to_request,{ticket_id:tiketId, message:message},		     
+  				     function(data){			
+  						$('#ticket_messages').append(data);
+  						$('#add_comment_to_ticket').val("")
+  						$('#add_comment_to_ticket').focus();
+  						var d = $('#ticket_messages');
+  		  				d.scrollTop(d.prop("scrollHeight"));
+  		  			$.ajax({
+  	  		            type: "POST",
+  	  		            url: "/add_comment_to_ticket",
+  	  		            data: {ticketId:tiketId, message:message,commentBy:commentBy},
+  	  		            success: function(data){
+  	  		            		
+  	  		            	
+  	  		            }
+  	  		        });
+  		  				
+  				     }
+  				 );
+  			}
+  			return false;
+  		}
+  		
+	});	
+	
+}
 
 function createDataTables()
 {
@@ -2874,13 +2993,9 @@ function update_dashboard_left() {
 	}
 
 function init_super_admin_account_mgmt(){
-	
-	
 	$('.scroll_content').slimscroll({
 	    height: '600px'
 	});
-	
-	
 	$('.paginatedalphabet').click(
 	    function() {
 
@@ -2908,8 +3023,7 @@ if(firstChar!='add'){
 
 
 	    });
-	//accountmanagment_card_init();
-	$('.paginatedalphabet')[1].click();
+	accountmanagment_card_init();
 }
 
 function init_create_edit_organization(flag,org){ 
