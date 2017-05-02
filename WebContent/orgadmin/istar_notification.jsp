@@ -58,9 +58,9 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 								id='notification_type_holder'>
 								<option value="null">Select Notification</option>
 								<option value="LESSON">LESSON</option>
-								<option value="ASSESSMENT">PLAY ASSESSMENT</option>
+								<option value="ASSESSMENT">ASSESSMENT</option>
 								<option value="COMPLEX_UPDATE">UPDATE STUDENT CONTENT</option>
-								<option value="MESSAGE">SIMPLE MESSAGE</option>
+								<option value="MESSAGE">MESSAGE</option>
 							</select>
 						</div>
 					</div>
