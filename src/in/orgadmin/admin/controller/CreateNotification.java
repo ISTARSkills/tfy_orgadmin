@@ -29,6 +29,7 @@ import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 
+import in.orgadmin.admin.services.OrgAdminSkillService;
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportUtils;
 import in.talentify.core.utils.PublishDelegator;
@@ -52,6 +53,7 @@ DBUTILS util = new DBUTILS();
 String notificationType =  request.getParameter("notification_type");
 TaskServices taskService = new TaskServices();
 IstarNotificationServices notificationService = new IstarNotificationServices();
+OrgAdminSkillService skillService = new OrgAdminSkillService();
 if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 {
 	String courseId = request.getParameter("course_id");
@@ -70,6 +72,7 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 	{
 		String lessonTitle = lessonData.get(0).get("lesson_title").toString();
 		String courseTitle = lessonData.get(0).get("course_name").toString();
+		String module_id = lessonData.get(0).get("module_id").toString();
 		String notificationTitle = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
 		String notificationDescription =  lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
 		String taskTitle = lessonData.get(0).get("lesson_title").toString();
@@ -81,7 +84,7 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 			 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "LESSON", null, Integer.parseInt(lessonId), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
 			 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, lessonId, "LESSON");
 			 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
-			 
+			 skillService.updateStudentPlayList(Integer.parseInt(studentId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id), Integer.parseInt(courseId), Integer.parseInt(lessonId), "User", Integer.parseInt(studentId));
 			}
 		
 	}	
@@ -105,7 +108,6 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 		//create Notification and Tasks for all students  
 	 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "ASSESSMENT", null, assessment.getId(), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
 	 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, assessmentID, "ASSESSMENT");
-
 	 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
 	 
 	}
