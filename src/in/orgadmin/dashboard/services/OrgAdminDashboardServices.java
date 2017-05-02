@@ -5,6 +5,7 @@ package in.orgadmin.dashboard.services;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,34 @@ import com.viksitpro.core.utilities.DBUTILS;
  *
  */
 public class OrgAdminDashboardServices {
+	
+	public List<HashMap<String, Object >> getSlideCount(String event_id)
+	{
+		DBUTILS util = new DBUTILS();
+		List<HashMap<String, Object >> data = new ArrayList<>();
+		String sql ="SELECT 	CAST ( 		COUNT (DISTINCT slide_id) AS INTEGER 	) AS slide_count FROM 	slide_change_log WHERE 	event_id = '"+event_id+"'";
+		data = util.executeQuery(sql);	
+		return data;
+	}
+	
+	public List<HashMap<String, Object >> getCurrentCMSession(int batch_id)
+	{
+		DBUTILS util = new DBUTILS();
+		List<HashMap<String, Object >> data = new ArrayList<>();
+		String sql =" select cmsession.title from cmsession, event_log where event_log.cmsession_id = cmsession.id and event_log.batch_id = "+batch_id+" order by event_log.id desc limit 1";
+		data = util.executeQuery(sql);
+		if(data.size()>0 && data.get(0).get("title")!=null)
+		{
+			return data;
+		}
+		else
+		{
+			String sql2 ="select cmsession.title from cmsession, module, batch where cmsession.module_id= module.id and module.course_id = batch.course_id and module.order_id = 1 and cmsession.order_id = 1  and  batch.id ="+batch_id;
+			data = util.executeQuery(sql2);
+			return data;
+		}
+		
+	}
 
 	public List<HashMap<String, Object>> getTodaysEventStats(int collegeId) {
 		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");

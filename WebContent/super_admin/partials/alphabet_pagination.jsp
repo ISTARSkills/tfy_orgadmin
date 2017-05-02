@@ -4,7 +4,6 @@
 	
 		<nav>
 			<ul class="pagination" style="margin:0px !important;">
-			<li><a href="#" class="text-center paginatedalphabet" data-char="0">All</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="a">A</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="b">B</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="c">C</a></li>
@@ -31,6 +30,7 @@
 				<li><a href="#" class="text-center paginatedalphabet" data-char="x">X</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="y">Y</a></li>
 				<li><a href="#" class="text-center paginatedalphabet" data-char="z">Z</a></li>
+				<li><a href="#" class="text-center paginatedalphabet" data-char="0">All</a></li>
 			</ul>
 		</nav>
 	</div>
