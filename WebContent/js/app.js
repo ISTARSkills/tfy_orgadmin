@@ -3023,7 +3023,8 @@ if(firstChar!='add'){
 
 
 	    });
-	accountmanagment_card_init();
+	//accountmanagment_card_init();
+	$('.paginatedalphabet')[1].click();
 }
 
 function init_create_edit_organization(flag,org){ 

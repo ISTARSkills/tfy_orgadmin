@@ -39,7 +39,7 @@ public class OrgAdminDashboardServices {
 		}
 		else
 		{
-			String sql2 ="select cmsession.title from cmsession, module, batch where cmsession.module_id= module.id and module.course_id = batch.course_id and module.order_id = 1 and cmsession.order_id = 1  and  batch.id ="+batch_id;
+			String sql2 ="SELECT 	cmsession.title FROM course, module_course, cmsession_module, 	cmsession, 	MODULE, 	batch WHERE course.id = module_course.course_id AND module_course.module_id = MODULE.id AND MODULE.id = cmsession_module.module_id AND cmsession.id = cmsession_module.cmsession_id AND batch.course_id = course.id AND batch. ID ="+batch_id;
 			data = util.executeQuery(sql2);
 			return data;
 		}
