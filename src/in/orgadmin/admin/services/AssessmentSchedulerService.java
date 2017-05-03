@@ -177,12 +177,15 @@ public class AssessmentSchedulerService {
 
 		if (eventID != -01) {
 
-			String sql = "SELECT cmsession_id,batch_id,CAST (eventdate AS VARCHAR) FROM batch_schedule_event WHERE id ="
+			String sql = "SELECT action,batch_id,CAST (eventdate AS VARCHAR) FROM batch_schedule_event WHERE id ="
 					+ eventID;
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 			for (HashMap<String, Object> item : data) {
 
-				assessmentID = (int) item.get("cmsession_id");
+				String action = (String) item.get("action");
+				String getAssessmentId[] = action.split("__");		
+				assessmentID = Integer.parseInt(getAssessmentId[1]);
+				
 				batchId = (int) item.get("batch_id");
 				eventDate = (String) item.get("eventdate");
 
@@ -196,7 +199,8 @@ public class AssessmentSchedulerService {
 
 		}
 
-		eventDate = eventDate.substring(0, eventDate.length() - 2);
+		eventDate = eventDate.substring(0, eventDate.length() - 3);
+		
 
 		String deletesql1 = "DELETE FROM 	istar_notification WHERE 	task_id IN ( 	SELECT	ID 		FROM 			task 		WHERE 			item_id IN ( 				SELECT 					ID 				FROM 					istar_assessment_event 				WHERE 					CAST (eventdate AS VARCHAR) LIKE '%"
 				+ eventDate + "%' 				AND batch_id = " + batchId + " 				AND assessment_id = "
@@ -209,10 +213,12 @@ public class AssessmentSchedulerService {
 		String deletesql4 = "DELETE FROM 	batch_schedule_event WHERE 	CAST (eventdate AS VARCHAR) LIKE '%" + eventDate
 				+ "%' AND batch_id = " + batchId + " AND cmsession_id =" + assessmentID;
 
+		
 		db.executeUpdate(deletesql1);
 		db.executeUpdate(deletesql2);
 		db.executeUpdate(deletesql3);
 		db.executeUpdate(deletesql4);
+		
 
 	}
 
