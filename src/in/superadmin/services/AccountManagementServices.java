@@ -11,9 +11,9 @@ public class AccountManagementServices {
 		String sql = "";
 		System.out.println("first letter>>"+firstLetter);
 		if (firstLetter.equalsIgnoreCase("0")) {
-			sql = "SELECT org . ID, org . NAME, cast (count (uo.user_id) as integer) as count FROM organization org left join user_org_mapping uo on (uo.organization_id =org. ID) left join istar_user s on (s. ID = uo.user_id)  group by org . ID, org . NAME order by org.name";
+			sql = "SELECT 	org. ID, 	org. NAME, 	count(*) filter(where ur.role_id = (select id from role where role_name ='STUDENT'))	 FROM 	organization org LEFT JOIN user_org_mapping uo ON (uo.organization_id = org. ID) LEFT JOIN istar_user s ON (s. ID = uo.user_id) left join user_role ur on (uo.user_id= ur.user_id)  GROUP BY 	org. ID, 	org. NAME ORDER BY 	org. NAME ";
 		} else {
-			sql = "SELECT org . ID, org . NAME, cast (count (uo.user_id) as integer) as count FROM organization org left join user_org_mapping uo on (uo.organization_id =org. ID) left join istar_user s on (s. ID = uo.user_id) where lower(org.name) like '"+firstLetter+"%' group by org . ID, org . NAME order by org.name ";
+			sql = "SELECT 	org. ID, 	org. NAME, 	cast (count(*) filter(where ur.role_id = (select id from role where role_name ='STUDENT') as integer) as count	 FROM 	organization org LEFT JOIN user_org_mapping uo ON (uo.organization_id = org. ID) LEFT JOIN istar_user s ON (s. ID = uo.user_id) left join user_role ur on (uo.user_id= ur.user_id) WHERE 	LOWER (org. NAME) LIKE '"+firstLetter+"%' GROUP BY 	org. ID, 	org. NAME ORDER BY 	org. NAME";
 		}
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		// System.out.println(sql);
