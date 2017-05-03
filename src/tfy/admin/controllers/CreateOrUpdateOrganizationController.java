@@ -58,7 +58,8 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 		String org_profile = request.getParameter("org_profile").replaceAll("'", "");
 
 		String org_admin_email = request.getParameter("org_admin_email").replaceAll("'", "");
-		String org_admin_name = request.getParameter("org_admin_name").replaceAll("'", "");
+		String org_admin_first_name = request.getParameter("org_admin_first_name").replaceAll("'", "");
+		String org_admin_last_name = request.getParameter("org_admin_last_name")!=null ?request.getParameter("org_admin_last_name").replaceAll("'", "") : " ";
 		String org_admin_gender = request.getParameter("org_admin_gender");
 		long org_admin_mobile = Long.parseLong(request.getParameter("org_admin_mobile"));
 		int org_admin_id = Integer.parseInt(request.getParameter("org_admin_id"));
@@ -106,6 +107,8 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 				System.out.println(istarStudentSql);
 				int userID  = db.executeUpdateReturn(istarStudentSql);
 					
+				String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"+org_admin_first_name+"', '"+org_admin_last_name+"', '"+org_admin_gender+"', "+userID+");";
+				db.executeUpdate(insertIntoUserProfile);
 
 				//Student User Role Mapping
 					String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
@@ -137,8 +140,11 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 				IstarUser admin = new IstarUserDAO().findById(org_admin_id);
 				if(admin!=null)
 				{
-					String updateORgadmin = "UPDATE istar_user SET email='"+org_admin_email+"', updated_at=now(), mobile="+org_admin_mobile+" WHERE id="+org_admin_id+";";
+					String updateORgadmin = "UPDATE istar_user SET email='"+org_admin_email+"', created_at=now(), mobile="+org_admin_mobile+" WHERE id="+org_admin_id+";";
 					db.executeUpdate(updateORgadmin);
+					
+					String updateOrgUSerProfile = "UPDATE user_profile SET  first_name='"+org_admin_first_name+"', last_name='"+org_admin_last_name+"', gender='"+org_admin_gender+"' where user_id="+org_admin_id+"";
+					db.executeUpdate(updateOrgUSerProfile);
 				}
 				else
 				{
@@ -148,7 +154,9 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 					System.out.println(istarStudentSql);
 					int userID  = db.executeUpdateReturn(istarStudentSql);
 						
-
+					String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"+org_admin_first_name+"', '"+org_admin_last_name+"', '"+org_admin_gender+"', "+userID+");";
+					db.executeUpdate(insertIntoUserProfile);
+					
 					//Student User Role Mapping
 						String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
 						System.out.println(userRoleMappingSql);

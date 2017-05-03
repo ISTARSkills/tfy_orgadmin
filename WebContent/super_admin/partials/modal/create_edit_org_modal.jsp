@@ -26,7 +26,7 @@
 
 	Organization college = new Organization();
 	IstarUser orgadmin = new IstarUser();
-	String orgAdminId="0",orgAdminEmail="",orgAdminGender="",orgAdminMobile="",orgAdminName="";
+	String orgAdminId="0",orgAdminEmail="",orgAdminGender="",orgAdminMobile="", orgAdminFirstName="", orgAdminLastName="" ;
 	
 	if (!type.equalsIgnoreCase("Create")) {
 		college = new OrganizationDAO().findById(org_id);
@@ -40,9 +40,12 @@
 					orgadmin = userRole.getIstarUser(); 
 					orgAdminId=orgadmin.getId()+"";
 					orgAdminEmail=orgadmin.getEmail();
-					orgAdminGender=orgadmin.getUserProfile().getGender();
 					orgAdminMobile=orgadmin.getMobile()+"";
-					orgAdminName=orgadmin.getUserProfile().getFirstName();	
+					if(orgadmin.getUserProfile()!=null){
+					orgAdminGender=orgadmin.getUserProfile().getGender();					
+					orgAdminFirstName = orgadmin.getUserProfile().getFirstName();	
+					orgAdminLastName = orgadmin.getUserProfile().getLastName();
+					}
 				}
 			}
 		}	
@@ -134,17 +137,23 @@
 														
 							
 						<div class="col-lg-6">
+							<label class="control-label">First Name *</label> <input type="text"
+								placeholder="First Name"
+								name="org_admin_first_name" class="form-control"
+								value='<%=orgAdminFirstName%>'>
+						</div>
+						
+						<div class="col-lg-6">
+							<label class="control-label">Last Name </label> <input type="text"
+								placeholder="Last Name"
+								name="org_admin_last_name" class="form-control"
+								value='<%=orgAdminLastName%>'>
+						</div>
+						<div class="col-lg-6">
 							<label class="control-label">Principal/HR Manager Email *</label> <input type="email"
 								placeholder="principal_org_name@istarindia.com"
 								name="org_admin_email" class="form-control"
 								value='<%=orgAdminEmail%>'>
-						</div>
-						
-						<div class="col-lg-6">
-							<label class="control-label">Principal/HR Manager Name *</label> <input type="text"
-								placeholder="principal_org_name"
-								name="org_admin_name" class="form-control"
-								value='<%=orgAdminName%>'>
 						</div>
 						<br> <br>
 						
