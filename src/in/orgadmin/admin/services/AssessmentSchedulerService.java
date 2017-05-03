@@ -25,6 +25,8 @@ import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserOrgMappingDAO;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.NotificationType;
+import com.viksitpro.core.utilities.TaskCategory;
 
 public class AssessmentSchedulerService {
 
@@ -45,6 +47,8 @@ public class AssessmentSchedulerService {
 		StringBuffer out = new StringBuffer();
 		UUID parent_id = UUID.randomUUID();
 		Assessment assessment = new AssessmentDAO().findById(assessment_id);
+		String assessmentName = assessment.getAssessmenttitle();
+		String assessmentDesc = assessment.getDescription() != null ?assessment.getDescription():"N/A";
 		Batch batch = new BatchDAO().findById(batch_id);
 		Course c = batch.getCourse();
 
@@ -65,8 +69,8 @@ public class AssessmentSchedulerService {
 			}
 		} else {
 
-			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date, AdminUserID, classroomID, assessment_id,
-					associateTrainerID);
+			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date,time, AdminUserID, classroomID, assessment_id,
+					associateTrainerID,assessment);
 		}
 
 		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
@@ -81,19 +85,7 @@ public class AssessmentSchedulerService {
 
 				int istarAssessmentEventId = db.executeUpdateReturn(assessmentEventsql);
 
-				// creating task for assessment event with
-				// itemType="ASSESSMENT_EVENT"
-				String tasksql = "INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"
-						+ AdminUserID + "', 		'" + bstudent.getIstarUser().getId()
-						+ "', 		'SCHEDULED', 		 CAST ( 			'" + event_date
-						+ "' AS TIMESTAMP 		), 		CAST ( 			'(" + event_date
-						+ ")' AS TIMESTAMP )+ interval ' 1 ' minute * (" + assessment.getAssessmentdurationhours()
-						+ "*60+" + assessment.getAssessmentdurationminutes()
-						+ "), 		'f', 		't', 		now(), 		now(), 		" + istarAssessmentEventId
-						+ ", 		'ASSESSMENT_EVENT' 	)RETURNING ID;";
-				int taskID = db.executeUpdateReturn(tasksql);
-
-				// creating task for student to take the assessment with
+				/*	// creating task for student to take the assessment with
 				// itemType="ASSESSMENT"
 				String studentAssessmentTaskSQL = "INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'ASSESSMENT', 		3, 		1, 		'"
 						+ AdminUserID + "', 		'" + bstudent.getIstarUser().getId()
@@ -103,12 +95,18 @@ public class AssessmentSchedulerService {
 						+ "*60+" + assessment.getAssessmentdurationminutes()
 						+ "), 		'f', 		't', 		now(), 		now(), 		" + istarAssessmentEventId
 						+ ", 		'ASSESSMENT' 	);";
-				db.executeUpdate(studentAssessmentTaskSQL);
+				db.executeUpdate(studentAssessmentTaskSQL);*/
+				
+				// creating task for assessment event with
+				// itemType="CLASSROOM_ASSESSMENT"
+				String tasksql = "INSERT INTO task ( 	ID, 	NAME,  description, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date,   is_active, 	created_at, 	updated_at, 	item_id, 	item_type ) VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'"+assessmentName+"',     '"+assessmentDesc+"', 		'"+ AdminUserID + "', 		'" + bstudent.getIstarUser().getId()+ "', 		'SCHEDULED', 		CAST ( 			'" + event_date+ "' AS TIMESTAMP 		), 		CAST ( 			'(" + event_date + ")' AS TIMESTAMP )+ interval ' 1 ' minute * (" + assessment.getAssessmentdurationhours() + "*60+" + assessment.getAssessmentdurationminutes() + "), 	 't',	now(), 		now(), 		" + assessment_id + ", 		'"+TaskCategory.ASSESSMENT+"' 	) RETURNING ID;";
+				int taskID = db.executeUpdateReturn(tasksql);
+				
 
 				String notificationsql = "INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"
 						+ AdminUserID + ", 		'" + bstudent.getIstarUser().getId() + "', 		'" + title_new
 						+ "', 		'" + details_new
-						+ "', 		'UNREAD', 		NULL, 		'ASSESSMENT_EVENT', 		't', 		now(), 		"
+						+ "', 		'UNREAD', 		NULL, 		'"+NotificationType.ASSESSMENT+"', 		't', 		now(), 		"
 						+ taskID + " 	);";
 				db.executeUpdate(notificationsql);
 			}
@@ -121,14 +119,18 @@ public class AssessmentSchedulerService {
 		BatchGroup batchGroup = new BatchGroupDAO().findById(batchGrpId);
 		int batch_group_code = Integer.parseInt(batchGroup.getBatchCode());
 
-		String sql = "SELECT cmsession_id,batch_id,creator_id,CAST(eventdate as VARCHAR)as event_date FROM batch_schedule_event WHERE batch_group_code ='"
+		String sql = "SELECT action,creator_id,batch_id,CAST (eventdate AS VARCHAR)as event_date FROM batch_schedule_event WHERE batch_group_code ='"
 				+ batch_group_code + "'";
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		if (data.size() != 0) {
+			
 			for (HashMap<String, Object> item : data) {
 
-				int assessment_id = (int) item.get("cmsession_id");
+				String action = (String) item.get("action");
+					String getAssessmentId[] = action.split("__");		
+					int	assessment_id = Integer.parseInt(getAssessmentId[1]);
+					
 				int batch_id = (int) item.get("batch_id");
 				int AdminUserID = (int) item.get("creator_id");
 				String event_date = (String) item.get("event_date");
@@ -149,13 +151,18 @@ public class AssessmentSchedulerService {
 		}
 	}
 
-	public void createAssessmentEntryInBse(int trainerID, int hours, int minute, int batchID, String eventDate,
-			int AdminUserID, int classroomID, int assessment_id, String associateTrainerID) {
+	public void createAssessmentEntryInBse(int trainerID, int hours, int minute, int batchID, String eventDate,String time,
+			int AdminUserID, int classroomID, int assessment_id, String associateTrainerID,Assessment assessment) {
 
 		Batch b = new BatchDAO().findById(batchID);
 		Organization org = b.getBatchGroup().getOrganization();
 		String batchCode = b.getBatchGroup().getBatchCode();
+		String batchName = b.getName();
 		Course c = b.getCourse();
+		String title_new = "Event: Assessment Scheduled for "+ batchName +" on " + eventDate;
+		String details_new = "" + c.getCourseName() + ": at " + time;
+		String assessmentName = assessment.getAssessmenttitle();
+		String assessmentDesc = assessment.getDescription() != null ?assessment.getDescription():"N/A";
 		String evnetName = "ASSESSMENT EVENT FOR CLASS-" + org.getName() + "-Ilab-" + c.getCourseName();
 		String action = "assessment_id__" + assessment_id;
 
@@ -167,6 +174,17 @@ public class AssessmentSchedulerService {
 				+ "', 			" + classroomID + ", 			'" + associateTrainerID + "', 	" + batchCode + "	)";
 		DBUTILS db = new DBUTILS();
 		db.executeUpdate(sql);
+		
+		sql ="INSERT INTO task ( 		ID, 	NAME, 	description, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date,  is_active, 	created_at, 	updated_at, 	item_id, 	item_type ) VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'"+assessmentName+"',     '"+assessmentDesc+"', 		'"+ AdminUserID + "', 		'" +trainerID+ "', 		'SCHEDULED', 		CAST ( 			'" + eventDate+ "' AS TIMESTAMP 		), 		CAST ( 			'(" + eventDate + ")' AS TIMESTAMP )+ interval ' 1 ' minute * (" + assessment.getAssessmentdurationhours() + "*60+" + assessment.getAssessmentdurationminutes() + "),     't',     now(), 		now(), 		" + assessment_id + ", 		'"+TaskCategory.CLASSROOM_ASSESSMENT+"' 	) RETURNING ID;";
+		//db.executeUpdate(sql);
+		int taskID = db.executeUpdateReturn(sql);
+		String notificationsql = "INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"
+				+ AdminUserID + ", 		'" + trainerID + "', 		'" + title_new
+				+ "', 		'" + details_new
+				+ "', 		'UNREAD', 		NULL, 		'"+NotificationType.CLASSROOM_ASSESSMENT+"', 		't', 		now(), 		"
+				+ taskID + " 	);";
+		db.executeUpdate(notificationsql);
+		
 	}
 
 	public void deleteAssessment(HashMap<String, String> assessmentData, int eventID) {
@@ -217,7 +235,7 @@ public class AssessmentSchedulerService {
 
 		
 		db.executeUpdate(deletesql1);
-		db.executeUpdate(deletesql2);
+		//db.executeUpdate(deletesql2); IT WILL BE IMPLEMENTED LATER
 		db.executeUpdate(deletesql3);
 		db.executeUpdate(deletesql4);
 		

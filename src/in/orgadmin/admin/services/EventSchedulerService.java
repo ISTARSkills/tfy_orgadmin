@@ -20,6 +20,9 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.NotificationType;
+import com.viksitpro.core.utilities.TaskCategory;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -90,13 +93,13 @@ public class EventSchedulerService {
 				+ evnetName
 				+ "', 		( 			SELECT 				presentor_id 			FROM 				trainer_presentor 			WHERE 				trainer_id = "
 				+ trainerID
-				+ " 		), 		ins3. ID, 		now(), 		now() 	FROM 		ins3, 		ins1 ),  ins6 AS ( 	INSERT INTO task ( 		ID, 		NAME, 		task_type, 		priority, 		OWNER, 		actor, 		STATE, 		start_date, 		end_date, 		is_repeatative, 		is_active, 		created_at, 		updated_at, 		item_id, 		item_type 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'CLASSROOM EVENT TASK', 		2, 		1, 		"
+				+ " 		), 		ins3. ID, 		now(), 		now() 	FROM 		ins3, 		ins1 ),  ins6 AS ( 	INSERT INTO task ( 		ID, 		NAME,  		OWNER, 		actor, 		STATE, 		start_date, 		end_date, 	 		is_active, 		created_at, 		updated_at, 		item_id, 		item_type 	) SELECT 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'CLASSROOM EVENT TASK',  		"
 				+ AdminUserID + ", 		" + trainerID + ", 		'SCHEDULED', 		" + " CAST ('" + eventDate
 				+ "' AS TIMESTAMP), 		CAST ( 			'(" + eventDate
 				+ ")' AS TIMESTAMP 		) + INTERVAL '1' MINUTE * (" + hours + " * 60 + " + minute
-				+ "), 		'f', 		't', 		now(), 		now(), 		ins2. ID, 		'CLASSROOM_SESSION' 	FROM 		ins2 RETURNING ID ),ins7 AS ( INSERT INTO istar_notification ( 	ID, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) SELECT 	( 		SELECT 			COALESCE (MAX(ID) + 1, 1) 		FROM 			istar_notification 	), 	"
+				+ "), 		't', 		now(), 		now(), 		ins2. ID, 		'"+TaskCategory.CLASSROOM_SESSION+"' 	FROM 		ins2 RETURNING ID ),ins7 AS ( INSERT INTO istar_notification ( 	ID, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) SELECT 	( 		SELECT 			COALESCE (MAX(ID) + 1, 1) 		FROM 			istar_notification 	), 	"
 				+ AdminUserID + ", 	'" + trainerID + "', 	'" + title_new + "', 	'" + details_new
-				+ "', 	'UNREAD', 	NULL, 	'BATCH_SCHEDULE_EVENT_TRAINER', 	't', 	now(), 	ins6. ID FROM 	ins6 ) SELECT 	ID FROM 	ins2";
+				+ "', 	'UNREAD', 	NULL, 	'"+NotificationType.CLASSROOM_SESSION+"', 	't', 	now(), 	ins6. ID FROM 	ins6 ) SELECT 	ID FROM 	ins2";
 	
 		System.out.println("sql-----> "+sql);
 		int bseTrainerID = db.executeUpdateReturn(sql);
@@ -109,7 +112,7 @@ public class EventSchedulerService {
 	public void createTaskStudent(int batchID, String eventDate, int hours, int minute, int eventID, String title_new,
 			String details_new, int AdminUserID) {
 
-		String sql = "SELECT actor FROM task WHERE  item_id = " + eventID + " AND item_type = 'CLASSROOM_SESSION' ";
+		String sql = "SELECT actor FROM task WHERE  item_id = " + eventID + " AND item_type = '"+TaskCategory.CLASSROOM_SESSION+"' ";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -139,7 +142,7 @@ public class EventSchedulerService {
 						+ bstudent.getIstarUser().getId() + ", 'SCHEDULED'," + " cast('" + eventDate
 						+ "' as timestamp), cast('(" + eventDate + ")'as timestamp) + interval '1' minute * (" + hours
 						+ "*60+" + minute + "),    'f',  't', now(), now(), " + "" + eventID
-						+ ",'CLASSROOM_SESSION' ) RETURNING ID;";
+						+ ",'"+TaskCategory.CLASSROOM_SESSION+"' ) RETURNING ID;";
 
 				System.out.println("sql-----> "+insertIntoTask);
 				int taskID = db.executeUpdateReturn(insertIntoTask);
@@ -147,7 +150,7 @@ public class EventSchedulerService {
 				String notificationsql = "INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"
 						+ AdminUserID + ", 		'" + bstudent.getIstarUser().getId() + "', 		'" + title_new
 						+ "', 		'" + details_new
-						+ "', 		'UNREAD', 		NULL, 		'BATCH_SCHEDULE_EVENT_TRAINER', 		't', 		now(), 		"
+						+ "', 		'UNREAD', 		NULL, 		'"+NotificationType.CLASSROOM_SESSION+"', 		't', 		now(), 		"
 						+ taskID + " 	);";
 
 				System.out.println("sql-----> "+notificationsql);
