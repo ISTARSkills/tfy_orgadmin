@@ -16,7 +16,7 @@ public class MyAppServletContextListener implements ServletContextListener {
 		System.out.println("ServletContextListener destroyed");
 	}
 
-	// Run this before web application is started
+/*	// Run this before web application is started
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		try {
@@ -28,5 +28,18 @@ public class MyAppServletContextListener implements ServletContextListener {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
-	}
+	}*/
+	
+	@Override
+	public void contextInitialized(ServletContextEvent arg0) {
+		try {
+			System.out.println("ServletContextListener starting OrgAdmin");
+			InputStream targetStream = MyAppServletContextListener.class.getClassLoader().getResourceAsStream("Viksit-ac716147c574.json");
+			FirebaseOptions options = new FirebaseOptions.Builder().setDatabaseUrl("https://fir-viksit.firebaseio.com/").setServiceAccount(targetStream).build();	
+			FirebaseApp.initializeApp(options);
+			System.out.println("ServletContextListener started OrgAdmin");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
 }

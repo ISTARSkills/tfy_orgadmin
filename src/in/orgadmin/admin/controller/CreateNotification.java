@@ -85,11 +85,19 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 			  notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
 			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId));			
 			}
-		 ArrayList<String> students = new ArrayList<>();
+		 List<String> students = new ArrayList<>();
 			students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
 			if(students.size()>0)
 			{	
-				noticeDelegator.sendAndroidNotification(NotificationType.LESSON, students, notificationTitle.trim().replace("'", ""),courseId+"!#"+module_id+"!#"+cmsession_id+"!#"+lessonId);
+				HashMap<String, Object> item = new HashMap<String, Object>();
+				
+				item.put("lessonId", lessonId);
+				item.put("cmsessionId", cmsession_id);
+				item.put("moduleId", module_id);
+				item.put("courseId", courseId);
+				
+				noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
+				//noticeDelegator.sendAndroidNotification(NotificationType.LESSON, students, notificationTitle.trim().replace("'", ""),courseId+"!#"+module_id+"!#"+cmsession_id+"!#"+lessonId);
 			}	
 	}	
 	
@@ -124,7 +132,13 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
 	if(students.size()>0)
 	{	
-		noticeDelegator.sendAndroidNotification(NotificationType.ASSESSMENT, students, notificationTitle.trim().replace("'", ""),assessmentID);
+		HashMap<String, Object> item = new HashMap<String, Object>();
+		
+		item.put("assessmentId", assessmentID);
+		item.put("courseId", course.getId());
+		
+		noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.ASSESSMENT, item);		
+		//noticeDelegator.sendAndroidNotification(NotificationType.ASSESSMENT, students, notificationTitle.trim().replace("'", ""),assessmentID);
 	}	
 	
 }	
@@ -136,7 +150,10 @@ else if(notificationType.equalsIgnoreCase(NotificationType.COMPLEX_UPDATE))
 	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
 	if(students.size()>0)
 	{	
-		noticeDelegator.sendAndroidNotification(NotificationType.COMPLEX_UPDATE, students, "NO_MESSAGE","NO_ID");
+		HashMap<String, Object> item = new HashMap<String, Object>();
+		
+		noticeDelegator.sendNotificationToGroup(students, "NO_MESSAGE", NotificationType.COMPLEX_UPDATE, item);	
+		//noticeDelegator.sendAndroidNotification(NotificationType.COMPLEX_UPDATE, students, "NO_MESSAGE","NO_ID");
 	}	
 }		
 else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
@@ -153,8 +170,10 @@ else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 	ArrayList<String> students = new ArrayList<>();
 	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
 	if(students.size()>0)
-	{	
-		noticeDelegator.sendAndroidNotification(NotificationType.MESSAGE, students, title,"NO_ID");
+	{			HashMap<String, Object> item = new HashMap<String, Object>();
+	
+	noticeDelegator.sendNotificationToGroup(students, title, NotificationType.MESSAGE, item);		
+	//noticeDelegator.sendAndroidNotification(NotificationType.MESSAGE, students, title,"NO_ID");
 	}	
 }		
 		
