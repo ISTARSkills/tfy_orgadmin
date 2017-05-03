@@ -51,19 +51,6 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 			<div class="row">
 				<br>
-				<%-- <table class="table table-bordered datatable_istar" id='student_list' data-report_id='3042' data-college_id='<%=colegeID%>' >
-				 <thead>
-						<tr>
-							<th data-visisble='true'>#</th>
-							<th data-visisble='true' >Name</th>
-							<th data-visisble='true' >Attendance</th>
-							<th data-visisble='true' >E-mail</th>
-							<th data-visisble='true' >Section</th>
-							<th data-visisble='true' >Action</th>
-						</tr>
-				</thead>
-				
-				</table> --%>
 				<%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();

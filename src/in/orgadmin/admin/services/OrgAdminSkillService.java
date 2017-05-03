@@ -34,7 +34,7 @@ public class OrgAdminSkillService {
 		CustomReportUtils repUtils   = new CustomReportUtils();
 		String sql = repUtils.getReport(12).getSql();
 		sql = sql.replaceAll(":college_id", orgId+"");
-		System.err.println("VAIBAHV -->"+sql);
+		//System.err.println("VAIBAHV -->"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -162,7 +162,7 @@ public class OrgAdminSkillService {
 	}
 
 	public List<HashMap<String, Object>> getAllContentAssosicatedSkills(int orgId, int typeId, String type) {
-
+		System.out.println(type);
 		String sql = "";
 		if (type.equalsIgnoreCase("User")) {
 			sql = "SELECT DISTINCT 	lesson.title AS lesson_title, 	lesson. ID AS lesson_id, 	course. ID AS course_id, 	course.course_name AS course_name FROM 	student_playlist, 	lesson, 	course WHERE 	course. ID = student_playlist.course_id AND lesson. ID = student_playlist.lesson_id AND student_id = "
@@ -171,10 +171,10 @@ public class OrgAdminSkillService {
 			sql = "SELECT DISTINCT 	lesson.title AS lesson_title, 	lesson. ID AS lesson_id, 	course. ID AS course_id, 	course.course_name AS course_name FROM 	student_playlist, 	lesson, 	course WHERE 	course. ID = student_playlist.course_id AND lesson. ID = student_playlist.lesson_id AND student_id in (select student_id from batch_students where batch_group_id ="
 					+ typeId + " ) order by course_name, lesson_title";
 		} else if (type.equalsIgnoreCase("Role")) {
-			sql = "select distinct lesson.title AS lesson_title, 	lesson. ID AS lesson_id from lesson where id in ( SELECT DISTINCT 	lesson_cmsession.lesson_id FROM 	batch, 	batch_group, 	module_course, 	cmsession_module, 	lesson_cmsession, 	course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND course. ID = module_course.course_id AND batch.course_id = course. ID AND batch.batch_group_id = batch_group. ID AND batch_group.college_id = "
-					+ orgId + " and batch.course_id = " + typeId + " )";
+			sql = "SELECT DISTINCT 	lesson.title AS lesson_title, 	lesson. ID AS lesson_id, 	course. ID AS course_id, 	course.course_name AS course_name FROM 	student_playlist, 	lesson, 	course WHERE 	course. ID = student_playlist.course_id AND lesson. ID = student_playlist.lesson_id AND student_id in (select student_id from batch_students where batch_group_id ="
+					+ typeId + " ) order by course_name, lesson_title";
 		}
-		// System.err.println(sql);
+		
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;

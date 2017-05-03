@@ -39,7 +39,7 @@ SELECT 	course.course_name, 	CAST (AVG(master)  AS INTEGER) AS master, 	CAST (AV
 		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="id"/>		
 	<sql>
 SELECT ID,
-	COALESCE(profile_image,'http://api.talentify.in/video/android_images/S.png') as profile_image,
+	COALESCE(trim(profile_image),'http://api.talentify.in/video/android_images/S.png') as profile_image,
 	COALESCE(first_name,'NA') as first_name,
 	(case when atten_perc is not null then
 						
@@ -54,9 +54,9 @@ SELECT ID,
 	end ) as atten_perc,
 	email,
 	 mobile,
-	batch_groups,	
-	courses,
-	course_ids, count(*) OVER() as total_rows
+	COALESCE(batch_groups,'') as batch_groups,	
+	COALESCE(courses,'') as courses,
+	COALESCE(course_ids,'') as course_ids, count(*) OVER() as total_rows
 FROM
 	(
 		SELECT
@@ -98,13 +98,13 @@ FROM
 	left join user_org_mapping on (user_org_mapping.user_id = istar_user. ID)
 	left join user_role on (user_role.user_id = istar_user. ID)
 	left join batch_students on (istar_user. ID = batch_students.student_id)
-	left join batch_group on (batch_students.batch_group_id = batch_group. ID)
+	left join batch_group on (batch_students.batch_group_id = batch_group. ID AND batch_group.college_id =4)
 	left join batch on (batch_group. ID = batch.batch_group_id)
 	left join course on (batch.course_id = course. ID)
 		
 	WHERE
-		user_org_mapping.organization_id = :college_id
-	AND batch_group.college_id =:college_id
+		user_org_mapping.organization_id = 4
+	
 	and	user_role.role_id in (select id from role where role_name='STUDENT') 
 GROUP BY
 		istar_user. ID,
@@ -147,7 +147,7 @@ LEFT JOIN (
 				user_org_mapping
 			WHERE
 				istar_user. ID = user_org_mapping.user_id
-			AND user_org_mapping.organization_id = :college_id
+			AND user_org_mapping.organization_id = 4
 		)
 	GROUP BY
 		user_id

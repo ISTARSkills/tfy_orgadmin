@@ -61,6 +61,11 @@ public class DataTableController extends IStarBaseServelet {
 			conditions.put("limit", request.getParameter("length"));
 			conditions.put("offset", request.getParameter("start"));
 		}
+		else
+		{
+			conditions.put("limit", "all");
+			conditions.put("offset", "0");
+		}	
 		
 		conditions.put("order_by_column", (Integer.parseInt(request.getParameter("order[0][column]")) + 1)+"");
 		conditions.put("order_type", request.getParameter("order[0][dir]"));

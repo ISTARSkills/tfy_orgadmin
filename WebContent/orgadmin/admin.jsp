@@ -22,18 +22,16 @@
 					<div class="tabs-container">
 						<ul class="nav nav-tabs">
 							<li class="<%=tab.equalsIgnoreCase("user")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab1">Users</a></li>
+								data-toggle="tab" href="#admintab1" id="admin_user_tab">Users</a></li>
 
 							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab2">Section / Roles</a></li>
+								data-toggle="tab" href="#admintab2" id="admin_section_tab">Section / Roles</a></li>
 
 							
 
 							<li class="<%=tab.equalsIgnoreCase("content")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab4">Content Mapping</a></li>
-
-							<%-- <li class="<%=tab.equalsIgnoreCase("bill")? "active":"" %> col-lg-2 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab5">Billing</a></li> --%>
+								data-toggle="tab" href="#admintab4" id="admin_content_map">Content Mapping</a></li>
+							
 						</ul>
 
 						<div class="tab-content">

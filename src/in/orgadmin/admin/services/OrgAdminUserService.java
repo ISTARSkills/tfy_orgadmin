@@ -104,8 +104,8 @@ public class OrgAdminUserService {
 				
 		DBUTILS db = new DBUTILS();
 		
-		String updateIstarStudentSql = "UPDATE istar_user SET  email = '"+email+"',  password = '"+password+"',  mobile = '"+mobileNumber+"', WHERE 	id = "+userID+";";
-		
+		String updateIstarStudentSql = "UPDATE istar_user SET  email = '"+email+"',  password = '"+password+"',  mobile = '"+mobileNumber+"' WHERE 	id = "+userID+";";
+		System.out.println("updateIstarStudentSql>>>"+updateIstarStudentSql);
 		db.executeUpdate(updateIstarStudentSql);
 		
 		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '"+firstname+"',  last_name = '"+lastname+"',  gender = '"+gender+"',  profile_image = '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png' WHERE   user_id = "+userID+" ;";

@@ -406,6 +406,7 @@ function initEditUserModalCall()
 	    			  $('#edit_user_model_'+user_id).remove(); 
 	    		  }
 	    		  $( "body" ).append(data);
+	    		  $('select').select2();
 	    		  admin_edit_modal_create();
 	    		  $('#edit_user_model_'+user_id).modal();	    		 
 	    		});
@@ -1562,6 +1563,7 @@ function init_orgadmin_report_detail(){
                 type: $('#myid').attr('type')
             },
             function(data) {
+            	$("#student_list_container").empty();
                 $("#student_list_container").html(data);
             });
     });
@@ -2195,7 +2197,7 @@ function admin_load_resources(){
     }).on("page", function(event, /* page number  here */ num){
 			var offset=(num*10)-10;
 						
-			var tab=$(this);
+			var tab=$(this);			
 			var type=$(this).data('type');
 			var id=$(this).data('org');
 			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
@@ -2205,11 +2207,11 @@ function admin_load_resources(){
 		
 			//console.log(url);
 			$.get(url, function( data ) {
-				  $(".result").html(data);
+				 
 				  
-				  $(tab).parent().find('.tabs-container').remove();
-				  
-				  $(tab).parent().append(data);					  
+				  $(tab).parent().parent().find('.tabs-container').remove();
+				 
+				  $(tab).parent().parent().append(data);					  
 				  
 				    //initilize and event handling of skills search box
 				   admin_skill_content_search_init();

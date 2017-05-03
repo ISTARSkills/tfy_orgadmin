@@ -47,13 +47,12 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 
 		if (request.getParameterMap().containsKey("user_email")
 				&& !request.getParameter("user_f_name").equalsIgnoreCase("")
-				&& !request.getParameter("user_l_name").equalsIgnoreCase("")
-				&& !request.getParameter("user_gender").equalsIgnoreCase("")
+								
 				&& !request.getParameter("user_email").equalsIgnoreCase("")
 				&& !request.getParameter("user_mobile").equalsIgnoreCase("")) {
 
 			String user_f_name = request.getParameter("user_f_name");
-			String user_l_name = request.getParameter("user_l_name");
+			String user_l_name = request.getParameter("user_l_name")!=null ? request.getParameter("user_l_name").toString(): " ";
 			String user_gender = request.getParameter("user_gender");
 			String user_email = request.getParameter("user_email");
 			Integer college_id = request.getParameter("college_id") != ""
@@ -88,9 +87,9 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			}
 
 			if (userID != 0) {
-				if (bg_list.size() > 0) {
+				
 					new OrgAdminBatchGroupService().createorUpdateBGStudents(bg_list, userID);
-				}
+				
 			}
 
 		} else {
