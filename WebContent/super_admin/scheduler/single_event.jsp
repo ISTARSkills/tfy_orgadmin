@@ -51,7 +51,7 @@
 			</div>
 			<div class="form-group">
 				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="single_associateTrainerID_holder" name="associateTrainerID" value=""/>
+				<input type="hidden" id="single_associateTrainerID_holder" name="associateTrainerID" value="0"/>
 				<select data-placeholder="Select Associate Trainer"  multiple
 						tabindex="4" name="" id="single_associateTrainerID" class="associateTrainer">
 						<option value="">Select Associate Trainers...</option>
