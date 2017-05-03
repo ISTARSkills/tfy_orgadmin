@@ -37,12 +37,15 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 						<div>
 							<select data-placeholder="Select Section" tabindex="4"
 								id='notification_batchgroup_holder'>
+								<option value="null">Select Section / Role</option>
 								<%
 								for(BatchGroup bg : organization.getBatchGroups())
 								{
+									if(bg.getBatchStudentses().size()>0){
 									%>
 									<option value="<%=bg.getId()%>"><%=bg.getName() %> (<%=bg.getType() %>)</option>
 									<% 
+									}
 								}
 								%>
 								</select>
@@ -56,7 +59,7 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 						<div>
 							<select data-placeholder="Select Notification" tabindex="4"
 								id='notification_type_holder'>
-								<option value="null">Select Notification</option>
+								<option value="null">Select Notification Type</option>
 								<option value="LESSON">LESSON</option>
 								<option value="ASSESSMENT">ASSESSMENT</option>
 								<option value="COMPLEX_UPDATE">UPDATE STUDENT CONTENT</option>
@@ -71,8 +74,7 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 							<label class="font-bold">Choose Course</label>
 							<div>
 								<select data-placeholder="Select Course" tabindex="4"
-									data-url='' id='course_holder'>
-									
+									data-url='' id='course_holder'>									
 									</select>
 							</div>
 						</div>

@@ -1,9 +1,8 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -14,25 +13,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.chat.services.NotificationService;
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
-import com.viksitpro.core.dao.entities.Cmsession;
-import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
-import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.LessonDAO;
-import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 
-import in.orgadmin.admin.services.OrgAdminSkillService;
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportUtils;
-import in.talentify.core.utils.PublishDelegator;
+import in.talentify.core.utils.AndroidNoticeDelegator;
+import tfy.admin.services.StudentPlayListServices;
 
 /**
  * Servlet implementation class CreateNotofication
@@ -53,7 +46,8 @@ DBUTILS util = new DBUTILS();
 String notificationType =  request.getParameter("notification_type");
 TaskServices taskService = new TaskServices();
 IstarNotificationServices notificationService = new IstarNotificationServices();
-OrgAdminSkillService skillService = new OrgAdminSkillService();
+StudentPlayListServices playListService = new StudentPlayListServices();
+AndroidNoticeDelegator noticeDelegator = new AndroidNoticeDelegator();
 if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 {
 	String courseId = request.getParameter("course_id");
@@ -77,16 +71,26 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 		String notificationDescription =  lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
 		String taskTitle = lessonData.get(0).get("lesson_title").toString();
 		String taskDescription = lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
-		
+		if(request.getParameterMap().containsKey("title") && !request.getParameter("title").toString().isEmpty())
+		{
+			notificationTitle =  request.getParameter("title");
+		}
+		if(request.getParameterMap().containsKey("comment") && !request.getParameter("comment").toString().isEmpty())
+		{
+			notificationDescription  = request.getParameter("comment");
+		}
 		 for(String studentId: studentIds.split(","))
 			{
-				//create Notification and Tasks for all students  
-			 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "LESSON", null, Integer.parseInt(lessonId), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
-			 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, lessonId, "LESSON");
-			 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
-			 skillService.updateStudentPlayList(Integer.parseInt(studentId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id), Integer.parseInt(courseId), Integer.parseInt(lessonId), "User", Integer.parseInt(studentId));
+			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), studentId, studentId, lessonId, "LESSON");
+			  notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
+			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId));			
 			}
-		
+		 ArrayList<String> students = new ArrayList<>();
+			students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
+			if(students.size()>0)
+			{	
+				noticeDelegator.sendAndroidNotification(NotificationType.LESSON, students, notificationTitle.trim().replace("'", ""),courseId+"!#"+module_id+"!#"+cmsession_id+"!#"+lessonId);
+			}	
 	}	
 	
 	
@@ -103,19 +107,37 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	String studentIds = request.getParameter("studentlist_id");
 	String adminId = request.getParameter("admin_id");
 	String groupNotificationCode = UUID.randomUUID().toString();
-	for(String studentId: studentIds.split(","))
+	if(request.getParameterMap().containsKey("title") && !request.getParameter("title").toString().isEmpty())
 	{
-		//create Notification and Tasks for all students  
-	 //Task task  = taskService.createTask(taskTitle, taskDescription, "SCHEDULED", null, "ASSESSMENT", null, assessment.getId(), Integer.parseInt(adminId), Integer.parseInt(studentId), null, null, null, null, null, null, null, true, false, false, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), null);
-	 int taskId = taskService.createTodaysTask(taskTitle, taskDescription, studentId, studentId, assessmentID, "ASSESSMENT");
-	 notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
-	 
+		notificationTitle =  request.getParameter("title");
 	}
+	if(request.getParameterMap().containsKey("comment") && !request.getParameter("comment").toString().isEmpty())
+	{
+		notificationDescription  = request.getParameter("comment");
+	}
+	for(String studentId: studentIds.split(","))
+	{	
+		int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), studentId, studentId, assessmentID, "ASSESSMENT");
+		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);	 
+	}
+	ArrayList<String> students = new ArrayList<>();
+	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
+	if(students.size()>0)
+	{	
+		noticeDelegator.sendAndroidNotification(NotificationType.ASSESSMENT, students, notificationTitle.trim().replace("'", ""),assessmentID);
+	}	
 	
 }	
 else if(notificationType.equalsIgnoreCase(NotificationType.COMPLEX_UPDATE))
 {
-	
+	String adminId = request.getParameter("admin_id");
+	String studentIds = request.getParameter("studentlist_id");
+	ArrayList<String> students = new ArrayList<>();
+	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
+	if(students.size()>0)
+	{	
+		noticeDelegator.sendAndroidNotification(NotificationType.COMPLEX_UPDATE, students, "NO_MESSAGE","NO_ID");
+	}	
 }		
 else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 {
@@ -126,9 +148,14 @@ else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 	String groupNotificationCode = UUID.randomUUID().toString();
 	for(String studentId: studentIds.split(","))
 	{
-		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title, comments, "UNREAD", null, NotificationType.GENERIC, true, null, groupNotificationCode);
+		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title.trim().replace("'", ""), comments.trim().replace("'", ""), "UNREAD", null, NotificationType.GENERIC, true, null, groupNotificationCode);
 	}
-
+	ArrayList<String> students = new ArrayList<>();
+	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
+	if(students.size()>0)
+	{	
+		noticeDelegator.sendAndroidNotification(NotificationType.MESSAGE, students, title,"NO_ID");
+	}	
 }		
 		
 		

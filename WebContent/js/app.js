@@ -4069,6 +4069,7 @@ function init_istar_notification(){
 				success : function(data) {
 					$('#course_holder').select2();;
 					$('#course_holder').html(data);
+					$('#notification_assessment_holder').select2('val','null');
 				}
 			});
 			
@@ -4091,12 +4092,16 @@ function init_istar_notification(){
 					entity_type : entity_type
 				},
 				success : function(data) {
-					$('#notification_assessment_holder').select2();
+					
 					$('#notification_assessment_holder').html(data);
+					$('#notification_assessment_holder').select2();
+					$('#course_holder').select2('val','null');
+					$('#notification_cmsession_holder').select2('val','null');
+					$('#notification_ppt_holder').select2('val','null');
 				}
 			});
 			
-			$('#notification_assessment_holder').select2();			
+				
 			$('#play_presentation_holder').hide();			
 			$('#play_assessment_holder').show();
 			
@@ -4104,6 +4109,10 @@ function init_istar_notification(){
 		}else{
 			$('#play_presentation_holder').hide();
 			$('#play_assessment_holder').hide();
+			$('#course_holder').select2('val','null');
+			$('#notification_cmsession_holder').select2('val','null');
+			$('#notification_ppt_holder').select2('val','null');
+			$('#notification_assessment_holder').select2('val','null');
 		}
 		
 	});
@@ -4119,6 +4128,8 @@ function init_istar_notification(){
 				entity_type : type
 			},
 			success : function(data) {
+				
+				$('#notification_batchgroup_holder').select2('val','null');
 				$('#notification_batchgroup_holder').html(data);
 			}
 		});
@@ -4138,7 +4149,8 @@ function init_istar_notification(){
 				},
 				success : function(data) {					
 					$('#student_holder').html(data);													
-					init_checkAllStudent();					
+					init_checkAllStudent();	
+					$('#notification_type_holder').select2('val','null');
 				}
 			});
 		}				
@@ -4159,6 +4171,7 @@ function init_istar_notification(){
 				},
 				success : function(data) {
 					$('#notification_cmsession_holder').html(data);
+					$('#notification_cmsession_holder').select2('val','null');
 					init_cmsessionFilter();
 				}
 			});
@@ -4182,7 +4195,7 @@ function init_istar_notification(){
 					success : function(data) {
 						
 						$('#notification_ppt_holder').html(data);
-						$('#notification_ppt_holder').select2();
+						$('#notification_ppt_holder').select2('val','null');
 					}
 				});
 			}
