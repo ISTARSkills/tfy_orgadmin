@@ -1,3 +1,4 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
@@ -25,24 +26,13 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-12 white-bg">
-						<table class="table table-bordered datatable_istar"
-							id='classroom_list' data-url='../get_list_of_classroom'>
-							<thead>
-								<tr>
-									<th data-visisble='true'>#</th>
-									<th data-visisble='true'>Class Room Name</th>
-									<th data-visisble='true'>IP Adddress</th>
-									<th data-visisble='true'>Organization</th>
-									<th data-visisble='true'>Maximum Students</th>
-									<th data-visisble='true'>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-
-							</tbody>
-						</table>
-					</div>
+					<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");							
+				%>				
+				<%=util.getTableOuterHTML(3055, conditions)%>
 				</div>
 
 			</div>

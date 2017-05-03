@@ -28,7 +28,7 @@ if(userRole.equalsIgnoreCase("SUPER_ADMIN"))
 }
 else if(userRole.equalsIgnoreCase("ORG_ADMIN"))
 {
-	String getListOfOrg = "select * from (SELECT 	user_role. user_id as id, 	role.role_name, 	organization. NAME, 	org_type, 	( 		CASE 		WHEN image IS NULL THEN 			'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png' 		ELSE 			image 		END 	) AS image, 	COUNT (chat_messages. ID) AS chat_count FROM 	organization, 	chat_messages, 	user_org_mapping, 	user_role, role WHERE user_role.role_id = role.id and organization. ID = user_org_mapping.organization_id AND user_org_mapping.user_id = user_role.user_id AND user_role.role_id in (13) AND ( 	(user_role.user_id = chat_messages.user_id and chat_messages.receiver_id = 5107) 	OR (user_role.user_id = chat_messages.receiver_id and chat_messages.user_id = 5107) )AND chat_messages.sent = 'f' GROUP BY 	user_role. user_id, 	organization. NAME, 	org_type, 	image, role_name order by name) TT union (SELECT 	user_role. user_id as id, 	role.role_name, 	organization. NAME, 	org_type, 	( 		CASE 		WHEN image IS NULL THEN 			'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png' 		ELSE 			image 		END 	) AS image, 	COUNT (chat_messages. ID) AS chat_count FROM 	organization, 	chat_messages, 	user_org_mapping, 	user_role, role WHERE user_role.role_id = role.id and organization. ID = user_org_mapping.organization_id AND user_org_mapping.user_id = user_role.user_id AND user_role.role_id in (15) AND ( 	user_role.user_id = chat_messages.user_id 	OR user_role.user_id = chat_messages.receiver_id ) AND chat_messages.sent = 'f' GROUP BY 	user_role. user_id, 	organization. NAME, 	org_type, 	image, role_name order by name )   ";
+	String getListOfOrg = "SELECT 	* FROM 	( 		SELECT 			user_role.user_id AS ID, 			ROLE .role_name, 			organization. NAME, 			org_type, 			( 				CASE 				WHEN image IS NULL THEN 					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png' 				ELSE 					image 				END 			) AS image 		FROM 			organization, 			 			user_org_mapping, 			user_role, 			ROLE 		WHERE 			user_role.role_id = ROLE . ID 		AND organization. ID = user_org_mapping.organization_id 		AND user_org_mapping.user_id = user_role.user_id 		AND user_role.role_id IN (13) 		 		GROUP BY 			user_role.user_id, 			organization. NAME, 			org_type, 			image, 			role_name 		ORDER BY 			NAME 	) TT UNION 	( 		SELECT 			user_role.user_id AS ID, 			ROLE .role_name, 			organization. NAME, 			org_type, 			( 				CASE 				WHEN image IS NULL THEN 					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png' 				ELSE 					image 				END 			) AS image 		FROM 			organization, 			 			user_org_mapping, 			user_role, 			ROLE 		WHERE 			user_role.role_id = ROLE . ID 		AND organization. ID = user_org_mapping.organization_id 		AND user_org_mapping.user_id = user_role.user_id 		AND user_role.role_id IN (15) 		 		GROUP BY 			user_role.user_id, 			organization. NAME, 			org_type, 			image, 			role_name 		ORDER BY 			NAME 	)";
 	orgList = util.executeQuery(getListOfOrg);		
 
 	String getBatchGroups="SELECT 	batch_group. ID, 	batch_group. NAME, 	'video/android_images/' || SUBSTRING ( 		TRIM (batch_group. NAME) 		FROM 			1 FOR 1 	) || '.png' AS image, 	COUNT (batch_group_messages. ID) AS chat_count FROM 	batch_group, 	batch_group_messages WHERE 	batch_group. ID = batch_group_messages.batch_group_id AND batch_group_messages.sent = 'f' and batch_group.college_id = (select organization_id from user_org_mapping where user_id = "+user.getId()+" limit 1) GROUP BY 	batch_group. ID, 	batch_group. NAME, 	image";
@@ -103,7 +103,7 @@ data-receiver_id="" data-receiver_name="" data-receiver_image="">
                                             <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
                                                 <a href="#"><%=org.get("name")%>
-                                                <span class="label label-primary" style="float:right"><%=org.get("chat_count")%></span></a>
+                                                
                                             </div>
                                         </div>
 									<%
@@ -135,7 +135,7 @@ data-receiver_id="" data-receiver_name="" data-receiver_image="">
 									<div class="chat-user" id="entity_bg_group_<%=group.get("id") %>" data-user_id="<%=group.get("id") %>" data-user_type="BG_GROUP" data-user_name="<%=group.get("name")%>" data-user_image="<%=image%>">
                                             <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
-                                                <a href="#"><%=group.get("name")%><span class="label label-primary" style="float:right"><%=group.get("chat_count")%></span></a>
+                                                <a href="#"><%=group.get("name")%><%-- <span class="label label-primary" style="float:right"><%=group.get("chat_count")%></span> --%></a>
                                             </div>
                                         </div>
 									<%
@@ -183,7 +183,8 @@ data-receiver_id="" data-receiver_name="" data-receiver_image="">
 									<div class="chat-user" id="entity_user_<%=users.get("id")%>" data-user_id="<%=users.get("id") %>" data-user_type="USER" data-user_name="<%=name%>" data-user_image="<%=image%>" >
                                             <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
-                                                <a href="#"><%=name%><span class="label label-primary" style="float:right"><%=users.get("chat_count")%></span></a>
+                                                <a href="#"><%=name%>
+                                                <%-- <span class="label label-primary" style="float:right"><%=users.get("chat_count")%></span> --%></a>
                                             </div>
                                         </div>
 									<%

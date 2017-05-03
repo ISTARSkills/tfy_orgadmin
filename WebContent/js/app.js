@@ -13,9 +13,7 @@ function readyFn(jQuery) {
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
 	
-	$('.top_navbar_holder').css('color',' #676a6c');
-	
-
+	$('.top_navbar_holder').css('color',' #676a6c');	
 	switch (body_id) {
 	case 'orgadmin_dashboard':
 		init_orgadmin_dashboard();

@@ -521,5 +521,17 @@ ORDER BY
 		<title>Attendance Record of Batch  Over Time</title>
 		<y_axis_title>Percentage</y_axis_title>
 </reports>
-
+<reports id="3055" type_of_report="table">
+ <column columnHandler="NONE" display_name="Id" isVisible="true" name="id" />		
+		<column columnHandler="NONE" display_name="ClassRoom Name" isVisible="true" name="classroom_identifier" />
+		<column columnHandler="NONE" display_name="Organization" isVisible="true" name="name" />
+		<column columnHandler="NONE" display_name="Max Students" isVisible="true" name="max_students" />
+		<column columnHandler="NONE" display_name="IP Address" isVisible="true" name="ip_address" />
+			
+<sql>select classroom_details.id, classroom_identifier, max_students, ip_address, organization.name , count(*) over() as total_rows 
+from classroom_details, organization where 
+organization.id = classroom_details.organization_id 
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
 </istar_reports>
