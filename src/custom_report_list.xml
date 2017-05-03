@@ -142,16 +142,34 @@ and user_role.role_id = (select id from role where role_name='STUDENT')
 and user_org_mapping.organization_id = :college_id
 </sql></custom_report>
 <custom_report id="10"><sql>
-select istar_user. ID, 	istar_user.email, cast (count(distinct student_playlist.lesson_id) as integer) as count
-from istar_user, user_org_mapping, user_role, student_playlist
-where istar_user.id = user_org_mapping.user_id
-and user_org_mapping.user_id = user_role.user_id
-and user_role.role_id = (select id from role where role_name='STUDENT')
-and user_org_mapping.organization_id = :college_id
-and student_playlist.student_id = istar_user.id
-AND istar_user.email like '%:search_term%'
-GROUP BY istar_user. ID, 	istar_user.email
-ORDER BY 	istar_user.email LIMIT :limit OFFSET :offset
+SELECT
+	istar_user. ID,
+	istar_user.email,
+	CAST (
+		COUNT (
+			DISTINCT student_playlist.lesson_id
+		) AS INTEGER
+	) AS COUNT
+FROM
+	istar_user left join user_org_mapping on (istar_user. ID = user_org_mapping.user_id)	
+	 left join user_role on (user_org_mapping.user_id = user_role.user_id)
+	left join student_playlist on (student_playlist.student_id = istar_user. ID)
+WHERE
+user_role.role_id = (
+	SELECT
+		ID
+	FROM
+		ROLE
+	WHERE
+		role_name = 'STUDENT'
+)
+AND user_org_mapping.organization_id = :college_id
+AND istar_user.email LIKE '%:search_term%'
+GROUP BY
+	istar_user. ID,
+	istar_user.email
+ORDER BY
+	istar_user.email LIMIT :limit OFFSET :offset
 </sql></custom_report>
 <custom_report id="11"><sql>
 SELECT
@@ -192,18 +210,6 @@ GROUP BY
 	WHERE
 		course. ID = course_skill_objective.course_id
 	AND course_skill_objective.skill_objective_id = skill_objective. ID
-	AND course. ID IN (
-		SELECT DISTINCT
-			course. ID
-		FROM
-			course,
-			batch,
-			batch_group
-		WHERE
-			course. ID = batch.course_id
-		AND batch.batch_group_id = batch_group. ID
-		AND batch_group.college_id = :college_id
-	)
 )
 UNION
 	(
@@ -217,21 +223,7 @@ UNION
 			module_skill_objective
 		WHERE
 			MODULE . ID = module_skill_objective.module_id
-		AND module_skill_objective.skill_objective_id = skill_objective. ID
-		AND MODULE . ID IN (
-			SELECT DISTINCT
-				module_course.module_id
-			FROM
-				course,
-				batch,
-				batch_group,
-				module_course
-			WHERE
-				course. ID = batch.course_id
-			AND batch.batch_group_id = batch_group. ID
-			AND module_course.course_id = course. ID
-			AND batch_group.college_id = :college_id
-		)
+		AND module_skill_objective.skill_objective_id = skill_objective. ID	
 	)
 UNION
 	(
@@ -246,22 +238,7 @@ UNION
 		WHERE
 			cmsession. ID = cmsession_skill_objective.cmsession_id
 		AND cmsession_skill_objective.skill_objective_id = skill_objective. ID
-		AND cmsession. ID IN (
-			SELECT DISTINCT
-				cmsession_module.cmsession_id
-			FROM
-				course,
-				batch,
-				batch_group,
-				module_course,
-				cmsession_module
-			WHERE
-				course. ID = batch.course_id
-			AND batch.batch_group_id = batch_group. ID
-			AND module_course.course_id = course. ID
-			AND cmsession_module.module_id = module_course.module_id
-			AND batch_group.college_id = :college_id
-		)
+		
 	)
 ORDER BY
 	ID

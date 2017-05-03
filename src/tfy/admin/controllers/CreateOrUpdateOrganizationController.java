@@ -92,8 +92,8 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 					+ ", '73.8834149', '18.4866277' )RETURNING ID;";
 			int addressId = db.executeUpdateReturn(sql);
 
-			sql = "INSERT INTO organization (id, name, org_type, address_id, industry, profile,created_at, updated_at, iscompany) VALUES "
-					+ "((select COALESCE(max(id),0)+1 from organization ), '"+org_name.trim()+"', 'COLLEGE', "+addressId+", 'EDUCATION', '"+org_profile+"',  now(), now(), 'f') RETURNING ID;";
+			sql = "INSERT INTO organization (id, name, org_type, address_id, industry, profile,created_at, updated_at, iscompany, max_student) VALUES "
+					+ "((select COALESCE(max(id),0)+1 from organization ), '"+org_name.trim()+"', 'COLLEGE', "+addressId+", 'EDUCATION', '"+org_profile+"',  now(), now(), 'f', "+max_students+") RETURNING ID;";
 			college_id = db.executeUpdateReturn(sql);
 
 			// create or update orgAdmin
@@ -111,10 +111,9 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 					String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
 					System.out.println(userRoleMappingSql);
 					db.executeUpdate(userRoleMappingSql);
-					
-				
-				
-				response.getWriter().print("success");
+					String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 
+					db.executeUpdate(insertIntoOrgMapping);
+					response.getWriter().print("success");
 			}
 
 		} else {
