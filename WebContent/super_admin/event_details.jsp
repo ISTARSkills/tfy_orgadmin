@@ -66,9 +66,9 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-primary custom-theme-btn-primary" data-dismiss="modal">Close</button>
                                           <%if(!status.equalsIgnoreCase("ASSESSMENT")){ %>
-                                           <button type="button" class="btn btn-primary custom-theme-btn-primary  key" id="edit" data-dismiss="modal">Edit Event</button>
+                                           <button type="button" class="btn btn-primary custom-theme-btn-primary  key" data-status="<%=status%>" id="edit" data-dismiss="modal">Edit Event</button>
                                            <%} %>
-                                            <button type="button" class="btn btn-primary custom-theme-btn-primary key" id="delete" data-dismiss="modal">Delete Event</button>
+                                            <button type="button" class="btn btn-primary custom-theme-btn-primary key" data-status="<%=status%>" id="delete" data-dismiss="modal">Delete Event</button>
                                             
                                         </div>
                                     </div>
