@@ -68,9 +68,8 @@ public class AndroidNoticeDelegator {
 		}else{
 			System.out.println("DEV SERVER");
 			for(String istarUserId : allIstarUserIds){
-				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification-dev");
-				
-				databaseReferenceForUser.child(istarUserId);
+				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification-dev").child(istarUserId);
+
 				Map<String, Object> hopperUpdates = new HashMap<String, Object>();
 				hopperUpdates.put("item", item);
 				hopperUpdates.put("message", message);
