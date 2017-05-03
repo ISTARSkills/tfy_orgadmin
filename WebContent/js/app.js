@@ -264,7 +264,7 @@ function createDataTables()
 		$(this).on( 'draw.dt', function () {
 		    callColumnHandlerFunctions();
 		} );
-		
+		$('.dataTables_info').hide();
 	});
 	
 	

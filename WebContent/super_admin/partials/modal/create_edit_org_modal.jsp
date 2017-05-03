@@ -1,3 +1,6 @@
+<%@page import="com.viksitpro.core.dao.entities.UserRole"%>
+<%@page import="com.viksitpro.core.dao.entities.UserOrgMapping"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
@@ -21,24 +24,29 @@
 		type = request.getParameter("type");
 	}
 
-	Organization college = null;
-	
+	Organization college = new Organization();
+	IstarUser orgadmin = new IstarUser();
 	String orgAdminId="0",orgAdminEmail="",orgAdminGender="",orgAdminMobile="",orgAdminName="";
 	
 	if (!type.equalsIgnoreCase("Create")) {
 		college = new OrganizationDAO().findById(org_id);
-		String sql="SELECT id,email,gender,CAST (mobile AS INTEGER),name FROM org_admin where organization_id="+org_id;
-		
-		DBUTILS db=new DBUTILS();
-		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		
-		for (HashMap<String, Object> item : data) {
-			orgAdminId=(int)item.get("id")+"";
-			orgAdminEmail=(String)item.get("email");
-			orgAdminGender=(String)item.get("gender");
-			orgAdminMobile=(Integer)item.get("mobile")+"";
-			orgAdminName=(String)item.get("name");
+		//String sql="SELECT id,email,gender,CAST (mobile AS INTEGER),name FROM org_admin where organization_id="+org_id;
+		for(UserOrgMapping userOrg : college.getUserOrgMappings())
+		{
+			for(UserRole  userRole : userOrg.getIstarUser().getUserRoles())
+			{
+				if(userRole.getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN"))
+				{
+					orgadmin = userRole.getIstarUser(); 
+					orgAdminId=orgadmin.getId()+"";
+					orgAdminEmail=orgadmin.getEmail();
+					orgAdminGender=orgadmin.getUserProfile().getGender();
+					orgAdminMobile=orgadmin.getMobile()+"";
+					orgAdminName=orgadmin.getUserProfile().getFirstName();	
+				}
+			}
 		}	
+		
 	}
 %>
 
@@ -155,20 +163,8 @@
 								placeholder="9876543210"
 								name="org_admin_mobile" class="form-control"
 								value='<%=orgAdminMobile%>'>
-						</div>
-		
-							
-						<%-- <div class="col-lg-12">
-							<label>Type</label> <select class="form-control"
-								data-pin_uri="<%=baseURL%>" name="org_type"
-								data-validation="required">
-								<option value="COLLEGE" <%=(college != null)? "selected" : ""%>
-									style="width: 350px;" tabindex="2">COLLEGE</option>
-								<option value="COMPANY" style="width: 350px;" tabindex="2">COMPANY</option>
-							</select>
-						</div> --%>
-
-
+						</div>		
+						
 						<br>
 					</div>
                 <div class="modal-footer" style="padding-bottom: 0px">
