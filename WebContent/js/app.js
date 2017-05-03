@@ -78,7 +78,7 @@ function readyFn(jQuery) {
 	case 'super_admin_report':
 		init_super_admin_report();
 		initChat();
-		$('#Students Reports').css('color','  #eb384f');
+		$('#StudentsReports').css('color','  #eb384f');
 		break;
 	case 'istar_notification':
 		init_istar_notification();

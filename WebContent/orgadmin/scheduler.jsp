@@ -85,7 +85,7 @@
 													<span aria-hidden="true">&times;</span><span
 														class="sr-only">Close</span>
 												</button>
-												<h4 class="modal-title">Events details</h4>
+												<h4 class="modal-title text-center">Event Details</h4>
 												<h4 class="text-danger modal-subTitle"></h4>
 											</div>
 											<div class="modal-body">

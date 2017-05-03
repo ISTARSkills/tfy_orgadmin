@@ -46,6 +46,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 	int classroomID = 0;
 	String classroomName = "";
 	String associate_trainee = null;
+	String selectedTrainerString="0";
 	ArrayList<Integer> setactedTrainer = new ArrayList();
 	if (request.getParameterMap().containsKey("eventid")) {
 
@@ -69,6 +70,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 			batchID =(int)dd.get("batch_id");
 			associate_trainee =(String)dd.get("associate_trainee");
 			if(associate_trainee != null && !associate_trainee.equalsIgnoreCase("")){
+				selectedTrainerString=associate_trainee;
 			if (associate_trainee.contains(",")) {
 				 for (String retval: associate_trainee.split(",")) {
 					 setactedTrainer.add(Integer.parseInt(retval));
@@ -95,7 +97,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title" style="color: white!important;">Modify Events details</h4>
+	<h4 class="modal-title text-center" style="color: white!important;">Modify Events Details</h4>
 
 </div>
 <div class="modal-body">
@@ -105,71 +107,66 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 			type="hidden" name="eventType" value="session" /> <input
 			type="hidden" name="AdminUserID" value="<%=user_id%>" /> <input
 			type="hidden" name="batchID" value="<%=batchID%>" />
-		<div class="form-group" id="data_2">
-			<div class="col-lg-12">
-				<label class="font-bold">Event Date</label>
+			
+			<div class="form-group" id="data_2">
+			<div class="col-lg-4">
+				<label class="control-label">Event Date</label>
 				<div class="input-group date">
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
-						type="text" class="form-control" name="eventDate"
-						value="<%=eventDate%>">
+						type="text" class="form-control" name="eventDate" value="<%=eventDate%>">
 				</div>
 			</div>
-		</div>
-
-		<div class="form-group">
-			<label class="font-bold">Start Time</label>
+		<div class="col-lg-4">
+			<label class="control-label">Event Time</label>
 			<div class="input-group clockpicker " data-autoclose="true">
-				<input type="text" class="form-control" name="startTime"
-					value="<%=eventTime%>"> <span class="input-group-addon">
-					<span class="fa fa-clock-o"></span>
+				<input type="text" class="form-control" name="startTime" value="<%=eventTime%>"> <span
+					class="input-group-addon"> <span class="fa fa-clock-o"></span>
 				</span>
-			</div>
-
+			</div></div>
+			
+		<div class="col-lg-2">
+			<label class="control-label" >Hours</label> <input type="number" value="<%=eventHours%>"
+				name="hours" placeholder="Hours" class="form-control"> 
 		</div>
-		<div class="form-group form-inline">
-			<label class="sr-only">Hours</label> <input type="number"
-				value="<%=eventHours%>" name="hours" placeholder="Hours"
-				class="form-control"> <label class="sr-only">minute</label>
-			<input type="number" value="<%=eventminute%>" name="minute"
-				placeholder="Minute" class="form-control">
-		</div>
+		<div class="col-lg-2">
+		<label class="control-label">Minute</label> <input type="number" value="<%=eventminute%>"
+				name="minute" placeholder="Minute" class="form-control">
+		</div></div>
+            <div class="form-group">
+            <div class="col-lg-6">
+				<label class="control-label" >Choose Associate Trainee</label>
+				<input type="hidden" id="edit_old_associateTrainerID_holder" name="associateTrainerID" value="<%=selectedTrainerString%>"/>
+				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
+						tabindex="4" name="" id="edit_old_associateTrainerID">
+						<option value="">Select Associate Trainers...</option>
+					       <%=ui.getAllTrainer(setactedTrainer)%>
 
-		<div class="form-group">
-			<label>Choose Associate Trainee</label> <input type="hidden"
-				id="edit_old_associateTrainerID_holder" name="associateTrainerID"
-				value="<%=setactedTrainer.toString() %>" /> <select
-				data-placeholder="select Groups AssociateTrainerID" multiple
-				class="select2-dropdown" tabindex="4" name=""
-				id="edit_old_associateTrainerID">
-				<option value="">Select Associate Trainers...</option>
-				<%=ui.getAllTrainer(setactedTrainer)%>
-
-			</select>
-		</div>
-
-		<div class="form-group">
-
-			<div class="col-lg-12">
+					</select>
+			
+</div>
+			<div class="col-lg-6">
 				<label class="control-label">Select Trainer</label> <select
 					class="form-control m-b" name="trainerID">
-					<option value="<%=istrue ? trainerID : ""%>"><%=istrue ? trainerEmail : ""%></option>
+					<option value="<%=istrue?trainerID:"" %>"><%=istrue?trainerEmail:"" %></option>
 					<%=ui.getAllTrainer(null)%>
 
 				</select>
 			</div>
-			<div class="col-lg-12">
+			</div>
+			 <div class="form-group">
+			<div class="col-lg-6">
 				<label class="control-label">Select Class-Room</label> <select
 					class="form-control m-b" name=classroomID>
-					<option value="<%=istrue ? classroomID : ""%>"><%=istrue ? classroomName : ""%></option>
+					<option value="<%=istrue?classroomID:"" %>"><%=istrue?classroomName:"" %></option>
 					<%=istrue ? ui.getAllClassroom(colegeID) : ""%>
 
 				</select>
 			</div>
-			<div class="col-lg-12">
+			<div class="col-lg-6">
 				<label class="control-label">Select Session</label> <select
 					class="form-control m-b" name=sessionID>
-
-					<%=ui.getLessons(batchID, batch.getCourse().getId())%>
+					
+					<%=ui.getLessons(batchID,batch.getCourse().getId())%>
 
 				</select>
 			</div>
