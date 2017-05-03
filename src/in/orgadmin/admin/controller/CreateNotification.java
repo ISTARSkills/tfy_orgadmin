@@ -91,10 +91,10 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 			{	
 				HashMap<String, Object> item = new HashMap<String, Object>();
 				
-				item.put("lessonId", lessonId);
-				item.put("cmsessionId", cmsession_id);
-				item.put("moduleId", module_id);
-				item.put("courseId", courseId);
+				item.put("lessonId", Integer.parseInt(lessonId));
+				item.put("cmsessionId", Integer.parseInt(cmsession_id));
+				item.put("moduleId", Integer.parseInt(module_id));
+				item.put("courseId", Integer.parseInt(courseId));
 				
 				noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
 				//noticeDelegator.sendAndroidNotification(NotificationType.LESSON, students, notificationTitle.trim().replace("'", ""),courseId+"!#"+module_id+"!#"+cmsession_id+"!#"+lessonId);
@@ -134,7 +134,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	{	
 		HashMap<String, Object> item = new HashMap<String, Object>();
 		
-		item.put("assessmentId", assessmentID);
+		item.put("assessmentId", Integer.parseInt(assessmentID));
 		item.put("courseId", course.getId());
 		
 		noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.ASSESSMENT, item);		
