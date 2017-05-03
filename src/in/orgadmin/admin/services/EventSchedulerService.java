@@ -39,14 +39,15 @@ public class EventSchedulerService {
 
 	public void createEvent(int trainerID, int hours, int minute, int batchID, String eventDate, String startTime,
 			int AdminUserID, int classroomID, int cmsessionID, String associateTrainerID) {
-		String action = "cmsession_id__" + cmsessionID;
+		String action = "cmsession_id__-1";
+		cmsessionID = -1;
 		Batch b = new BatchDAO().findById(batchID);
 		Organization org = b.getBatchGroup().getOrganization();
 		Course c = b.getCourse();
-		if (cmsessionID == -1) {
+		/*if (cmsessionID == -1) {
 			cmsessionID = -1;
 			action = "cmsession_id__-1";
-		}
+		}*/
 
 		String evnetName = "REAL EVENT FOR CLASS-" + org.getName() + "-Ilab-" + c.getCourseName();
 

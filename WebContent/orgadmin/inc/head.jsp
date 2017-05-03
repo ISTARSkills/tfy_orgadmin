@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="<%=basePath%>img/user_images/new_talentify_logo.png" />
-<title>Istar | Dashboard</title>
+<title>Talentify | Admin-Portal</title>
 <link href="<%=basePath %>css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=basePath %>css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 

@@ -123,7 +123,7 @@ public class EventUtilityController extends HttpServlet {
 			response.getWriter().print(ui.getCourseEventCard(orgID));
 
 		}
-		// delete event
+		// delete event from calendar 
 		if (request.getParameterMap().containsKey("deleteEventid")
 				&& !request.getParameter("deleteEventid").equalsIgnoreCase("")) {
 
@@ -133,7 +133,6 @@ public class EventUtilityController extends HttpServlet {
 					&& request.getParameter("status").equalsIgnoreCase("ASSESSMENT")) {
 				int assessmentEventID = Integer.parseInt(request.getParameter("deleteEventid"));
 				AssessmentSchedulerService asservice = new AssessmentSchedulerService();
-
 				asservice.deleteAssessment(null, assessmentEventID);
 
 			} else {
