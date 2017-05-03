@@ -174,6 +174,7 @@ public class AssessmentSchedulerService {
 		int batchId = 0;
 		int assessmentID = 0;
 		String eventDate = null;
+		String action = "";
 
 		if (eventID != -01) {
 
@@ -182,7 +183,7 @@ public class AssessmentSchedulerService {
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 			for (HashMap<String, Object> item : data) {
 
-				String action = (String) item.get("action");
+				 action = (String) item.get("action");
 				String getAssessmentId[] = action.split("__");		
 				assessmentID = Integer.parseInt(getAssessmentId[1]);
 				
@@ -210,8 +211,9 @@ public class AssessmentSchedulerService {
 				+ " 	)";
 		String deletesql3 = "DELETE FROM 	istar_assessment_event WHERE 	CAST (eventdate AS VARCHAR) LIKE '%"
 				+ eventDate + "%' AND batch_id = " + batchId + " AND assessment_id =" + assessmentID;
+		
 		String deletesql4 = "DELETE FROM 	batch_schedule_event WHERE 	CAST (eventdate AS VARCHAR) LIKE '%" + eventDate
-				+ "%' AND batch_id = " + batchId + " AND cmsession_id =" + assessmentID;
+				+ "%' AND batch_id = " + batchId + " AND action ='"+action+"'";
 
 		
 		db.executeUpdate(deletesql1);
@@ -268,6 +270,7 @@ public class AssessmentSchedulerService {
 		hashMap.put("trainerID", trainerID + "");
 		hashMap.put("classroomID", classroomID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
+		hashMap.put("courseName", courseName);
 
 		try {
 			FinaleventDate = formatter.parse(dateformatto.format(dateformatfrom.parse(eventDate)) + " " + time);
