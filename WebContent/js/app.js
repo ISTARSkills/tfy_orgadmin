@@ -4133,6 +4133,22 @@ function init_istar_notification(){
 				$('#notification_batchgroup_holder').html(data);
 			}
 		});
+		
+		var type = 'ORG_STUDENTS';
+		
+		$.ajax({
+			type : "POST",
+			url : '../get_notification_data',
+			data : {
+				entity_id : orgId,
+				entity_type : type
+			},
+			success : function(data) {
+				
+				$('#student_holder').html(data);													
+				init_checkAllStudent();	
+			}
+		});
 	});
 
 	$('#notification_batchgroup_holder').unbind().on("change", function() {
@@ -4288,12 +4304,12 @@ function init_istar_notification(){
 			var title = $('#title').val();
 			var comment = $('#comment').val(); 			
 			
-			if(group_id==null || assessment_id ==null || studentlistID.length <=0)
+			if(assessment_id ==null || studentlistID.length <=0)
 			{
 				
 		            swal({
 		                title: "Missing mandatory fields",
-		                text: "Section, Assessment and Students are mandatory to send assessment as notification."
+		                text: "Assessment and Students are mandatory to send assessment as notification."
 		            });
 		        
 			}
@@ -4306,8 +4322,7 @@ function init_istar_notification(){
 					data : {
 						notification_type : notification_type,
 						title : title,
-						comment : comment,						
-						group_id : group_id,
+						comment : comment,												
 						assessment_id: 	assessment_id,			
 						admin_id:adminId,
 						studentlist_id : studentlistID.toString()

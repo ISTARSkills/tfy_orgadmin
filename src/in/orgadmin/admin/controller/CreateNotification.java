@@ -81,7 +81,7 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 		}
 		 for(String studentId: studentIds.split(","))
 			{
-			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), studentId, studentId, lessonId, "LESSON");
+			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, lessonId, "LESSON");
 			  notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
 			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId));			
 			}
@@ -117,7 +117,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	}
 	for(String studentId: studentIds.split(","))
 	{	
-		int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), studentId, studentId, assessmentID, "ASSESSMENT");
+		int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, assessmentID, "ASSESSMENT");
 		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);	 
 	}
 	ArrayList<String> students = new ArrayList<>();

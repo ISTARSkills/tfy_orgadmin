@@ -48,10 +48,23 @@ public class GetNotificationData extends IStarBaseServelet {
 					sb.append("<option value="+row.get("id")+">"+row.get("name")+" ("+row.get("type")+")</option>");
 				}			
 			}
+			if(entityType.equalsIgnoreCase("ORG_STUDENTS"))
+			{
+				//return all sections/ roles
+				String sql = "select distinct istar_user. ID, 	istar_user.email from istar_user, user_org_mapping where istar_user.id = user_org_mapping.user_id and user_org_mapping.organization_id = "+entityId;
+				List<HashMap<String, Object>> groups = util.executeQuery(sql);
+				for(HashMap<String, Object> row: groups)
+				{
+					sb.append(
+							" <li><label class='checkbox-inline'> <input type='checkbox' class='student_checkbox_holder'  value='"
+									+ row.get("id") + "' id='inlineCheckbox_" + row.get("id") + "'>"
+									+ row.get("email") + "</label></li>");
+				}			
+			}
 			else if(entityType.equalsIgnoreCase("GROUP"))
 			{
 				//return all students
-				String sql = "select istar_user.id , istar_user.email from batch_students, istar_user, user_role where batch_students.batch_group_id = "+entityId+" and batch_students.student_id = istar_user.id and istar_user.id = user_role.user_id and user_role.role_id = (select id from role where role_name='STUDENT' limit 1);";
+				String sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT','TRAINER') );";
 				System.out.println("Get NotificationData 54>>sql"+sql);
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				for(HashMap<String, Object> row: groups)
