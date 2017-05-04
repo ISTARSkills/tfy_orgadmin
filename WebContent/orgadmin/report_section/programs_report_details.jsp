@@ -40,28 +40,21 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
 		courseName = course.getCourseName();
 		System.out.println("course_id -------"+request.getParameter("course_id").toString());
-		course_id =request.getParameter("course_id");
-		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
-		//barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
+		course_id =request.getParameter("course_id");		
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
-		courseOrBatchId = Integer.parseInt(request.getParameter("course_id").toString());
-		//attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("course_id").toString()),"Program");
+		courseOrBatchId = Integer.parseInt(request.getParameter("course_id").toString());		
 		calendardata =uiUtil.getCourseReportEvent(college_id,Integer.parseInt(request.getParameter("course_id").toString()),"Program");
 	} else if (request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
 		flag = false;
 		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
 		courseName = batch.getCourse().getCourseName();
 		System.out.println("batch_id--------"+request.getParameter("batch_id").toString());
-		batch_id =request.getParameter("batch_id");
-		//pieChartData = jsonUIUtils.getPieChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
-		//barChartData = jsonUIUtils.getBarChartData(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
+		batch_id =request.getParameter("batch_id");		
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("batch_id").toString()), college_id,"Batch");
 		courseOrBatchId = Integer.parseInt(request.getParameter("batch_id").toString());
-		//attendanceData = jsonUIUtils.getAttendanceReport(Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");
-		calendardata =uiUtil.getCourseReportEvent(college_id,Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");
-		
+		calendardata =uiUtil.getCourseReportEvent(college_id,Integer.parseInt(request.getParameter("batch_id").toString()),"Batch");		
 		List<HashMap<String, Object>> items = new ReportDetailService().getAllSessions(Integer.parseInt(request.getParameter("batch_id")), 0, true);
 		sessionCount = items.size();
 		items = new ReportDetailService().getAllAssessments(Integer.parseInt(request.getParameter("batch_id")), 0, true);
@@ -76,8 +69,9 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 	
 %>
 
-
-
+<div id="data-holder" style='display: none;'>
+	<div id='nosofpages' data-content='<%=nosofpages%>'></div>
+</div>
 
 <div collegeid="<%=college_id%>" id="myid"
 	data-course="<%=courseOrBatchId %>" type="<%=flag%>"></div>
@@ -170,65 +164,8 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 		</div>
 		<!-- row1 end -->
-		<br>
+		
 
-		<%-- <!-- row2 start -->
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="ibox">
-					<div class="ibox-content skill-overflow" id="ibox-content">
-						<h2>Skill Level</h2>
-						<div class="m-l-xl tooltip-demo custom-skill-level">
-							<%
-							List <HashMap<String, Object>> jobData = new ArrayList();
-							if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null"))
-							{
-								int c_id = Integer.parseInt(request.getParameter("course_id")); 
-								jobData = uiUtil.getJobMasterLevelForCourse(c_id);
-							}
-							else if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null"))
-							{
-								int b_id = Integer.parseInt(request.getParameter("batch_id")); 
-								jobData = uiUtil.getJobMasterLevelForBatch(b_id);
-							}	
-							if(jobData != null){
-							
-									for (HashMap<String, Object> row: jobData) {
-										
-										String title =(String) row.get("title");
-										String companyUrl = (String)row.get("company_image");
-										int wizard_level = (int) row.get("wizard_level");
-										int master_level = (int) row.get("master_level");
-										int apprentice_level = (int) row.get("apprentice_level");
-										int rookie_level = (int) row.get("rookie_level");
-								%>
-							<div class="tip-top inner-level" data-toggle="tooltip"
-								data-placement="top"
-								title="<h4><%=title %></h4>
-							<p>Rookie: <%=rookie_level%>%<br> Apprentice: <%=apprentice_level%>%<br> Master: <%=master_level%>%<br>
-							 wizard: <%=wizard_level%>%<br></p>"
-								data-original-title="">
-								<img class="img-circle skill-img" src="<%=companyUrl%>"></img>
-							</div>
-
-							<%
-									//if (m != 9) {
-								%>
-							<div class="between-div">
-								<hr class="between">
-							</div>
-							<%
-									//}
-								}}
-								%>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- row2 end --> --%>
-		<br>
 
 		<!-- row3 start -->
 		<div class="row">
@@ -296,56 +233,22 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 							%>
 							<div class="col-lg-2">
 								<div
-									class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder">
+									class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder" data-course_id="<%=course_id%>" data-target="<%=item.get("student_id").toString()%>">
 									<div data-target="#<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>"
 										class='holder-data'>
 										<img alt="image" class="img-circle m-t-sm student_image"
 											src="<%=item.get("profile_image").toString()%>" />
 										<p class="m-r-sm m-t-sm"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></p>
 									</div>
-									<div class="modal inmodal"
-										id="<%=item.get("student_id").toString()!= null ?item.get("student_id").toString():""%>" tabindex="-1"
-										role="dialog" aria-hidden="true">
-										<div class="modal-dialog">
-											<div class="modal-content animated flipInY">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal">
-														<span aria-hidden="true">&times;</span><span
-															class="sr-only">Close</span>
-													</button>
-													<h4 class="modal-title"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></h4>
-												</div>
-												<div class="modal-body">
-													<p>
-														<strong>First Name: </strong><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%>
-													</p>
-													<p>
-														<strong>Last Name: </strong><%=item.get("lastname").toString()!= null ?item.get("lastname").toString():""%>
-													</p>
-													<p>
-														<strong>Email: </strong><%=item.get("email").toString()!= null ?item.get("email").toString():""%>
-													</p>
-													<p>
-														<strong>Mobile: </strong><%=item.get("mobile").toString()!= null ?item.get("mobile").toString():""%>
-													</p>
-													<p>
-														<strong>Gender: </strong><%=item.get("gender").toString().toUpperCase()!= null ?item.get("gender").toString():""%>
-													</p>
-													<p>
-														<strong>College Name: </strong><%=item.get("college_name").toString()!= null ?item.get("college_name").toString():""%>
-													</p>
-
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-primary"
-														data-dismiss="modal">Close</button>
-
-												</div>
-											</div>
-										</div>
-									</div>
+									
 
 								</div>
+								<div class="modal inmodal"
+									id="student_card_modal"	data-student_id="<%=item.get("student_id").toString()%>" tabindex="-1"
+										role="dialog" aria-hidden="true">
+
+
+</div>
 
 							</div>
 

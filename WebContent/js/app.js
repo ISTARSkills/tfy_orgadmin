@@ -2,7 +2,62 @@
 var webSocket ;
 function readyFn(jQuery) {
 
+	$.fn.extend({
+	    treed: function (o) {
+	        
+	        var openedClass = 'glyphicon-minus-sign';
+	        var closedClass = 'glyphicon-plus-sign';
+	        
+	        if (typeof o != 'undefined'){
+	          if (typeof o.openedClass != 'undefined'){
+	          openedClass = o.openedClass;
+	          }
+	          if (typeof o.closedClass != 'undefined'){
+	          closedClass = o.closedClass;
+	          }
+	        };
+	        
+	          //initialize each of the top levels
+	          var tree = $(this);
+	          tree.addClass("tree");
+	          tree.find('li').has("ul").each(function () {
+	              var branch = $(this); //li with children ul
+	              branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+	              branch.addClass('branch');
+	              branch.on('click', function (e) {
+	                  if (this == e.target) {
+	                      var icon = $(this).children('i:first');
+	                      icon.toggleClass(openedClass + " " + closedClass);
+	                      $(this).children().children().toggle();
+	                  }
+	              })
+	              branch.children().children().toggle();
+	          });
+	          //fire event from the dynamically added icon
+	        tree.find('.branch .indicator').each(function(){
+	          $(this).on('click', function () {
+	              $(this).closest('li').click();
+	          });
+	        });
+	          //fire event to open branch if the li contains an anchor instead of text
+	          tree.find('.branch>a').each(function () {
+	              $(this).on('click', function (e) {
+	                  $(this).closest('li').click();
+	                  e.preventDefault();
+	              });
+	          });
+	          //fire event to open branch if the li contains a button instead of text
+	          tree.find('.branch>button').each(function () {
+	              $(this).on('click', function (e) {
+	                  $(this).closest('li').click();
+	                  e.preventDefault();
+	              });
+	          });
+	      }
+	  });
 
+		$('.tree1').treed();
+	    
 	
 	initiateGraphFilter();
 	createGraphs();
@@ -274,8 +329,27 @@ function  callColumnHandlerFunctions(){
 	initEditUserModalCall();
 	initEditGroupModalCall();
 	initDeleteGroupCall();
+	initStudentProfileHandler();
 }
 
+function initStudentProfileHandler()
+{
+	$('.admin_student_holder').unbind().on("click",function(){
+		$('#admin_page_loader').show();
+    	var student_id=$(this).data('target');
+    	var jsp="/student_card.jsp";
+    	$.post(jsp, 
+				{student_id:student_id}, 
+				function(data) {
+					$('#admin_student_card_modal').empty();
+					$('#admin_student_card_modal').append(data);
+					$('.tree1').treed();					
+					$('#admin_page_loader').hide()
+					$('#admin_student_card_modal').modal();
+					
+		});
+	 });		
+}
 function initDeleteGroupCall()
 {
 	$('.delete_group').click(function () {
@@ -1563,6 +1637,9 @@ function init_orgadmin_report_detail(){
             function(data) {
             	$("#student_list_container").empty();
                 $("#student_list_container").html(data);
+                initiateStudentReportHolder();
+                
+                
             });
     });
 	
@@ -1628,11 +1705,33 @@ function init_orgadmin_report_detail(){
     });
 
 	
-    $('.student_holder').on("click",function(){
-    	var target=$(this).find('.holder-data').data('target');
-    	$(target).modal().show();
-    });	
+    
+    initiateStudentReportHolder();
+    	
+   	
 }
+
+function initiateStudentReportHolder()
+{
+	$('.student_holder').unbind().on("click",function(){
+		$('#admin_page_loader').show();
+    	var student_id=$(this).data('target');
+    	var course_id = $(this).data("course_id");
+    	var jsp="/student_card.jsp";
+    	$.post(jsp, 
+				{course_id : course_id,student_id:student_id}, 
+				function(data) {
+					$('#student_card_modal').empty();
+					$('#student_card_modal').append(data);
+					$('.tree1').treed();					
+					$('#admin_page_loader').hide()
+					$('#student_card_modal').modal();
+					
+		});
+	 });	
+}
+
+
 
 function bind_report_session_clicks() {
     $('.batch-session-button').unbind().on("click", function() {
@@ -2177,7 +2276,7 @@ function admin_load_resources(){
 			   admin_skill_content_search_init();
 			    
 			    //removeing conetent skills event handling and ajax calls
-			   admin_skill_alertBinding();
+			  // admin_skill_alertBinding();
 			    
 			   
 			    $('.full-height-scroll').each(function(){
@@ -2215,7 +2314,7 @@ function admin_load_resources(){
 				   admin_skill_content_search_init();
 				    
 				    //removeing conetent skills event handling and ajax calls
-				   admin_skill_alertBinding();
+				   //admin_skill_alertBinding();
 				    
 				    $('.full-height-scroll').each(function(){
 				    	$(this).slimscroll({height:$(this).parent().height()});
@@ -2249,7 +2348,7 @@ function admin_load_resources(){
 			   admin_skill_content_search_init();
 			    
 			    //removeing conetent skills event handling and ajax calls
-			   admin_skill_alertBinding();
+			   //admin_skill_alertBinding();
 			    
 			    $('.full-height-scroll').each(function(){
 			    	$(this).slimscroll({height:$(this).parent().height()});
@@ -2328,7 +2427,7 @@ function admin_skill_alertBinding() {
                 success: function(data) {
                     $('#role_associated_' + roleIdType).prepend(data);
                     $('#role_skill_count_' + roleIdType).html(parseInt($('#role_skill_count_' + roleIdType).text()) + parseInt($(data).length));
-                    admin_skill_alertBinding();
+                    //admin_skill_alertBinding();
                 }
             });
 
@@ -2354,7 +2453,7 @@ function admin_skill_alertBinding() {
                 success: function(data) {
                 		if($(data).length>0){
                     $('#batch_associated_'+batch_group).prepend(data);
-                    admin_skill_alertBinding();
+                    //admin_skill_alertBinding();
                 		}
                 }
             });

@@ -62,31 +62,21 @@ public class GetAllStudentByCourse extends HttpServlet {
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {
-			sb.append(
-					"<div class='col-lg-2'> <div class='product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder'> <div class='holder-data' data-toggle='modal' data-target='"
-							+ "#" + item.get("student_id").toString()
-							+ "'><img alt='image' class='img-circle m-t-sm' src='"
-							+ item.get("profile_image").toString()
-							+ "' style='width: 40px; height: 40px;' /> <p class='m-r-sm m-t-sm'>"
-							+ item.get("first_name").toString() + "</p></div></div></div><div class='modal inmodal' id='"
-							+ item.get("student_id").toString()
-							+ "' tabindex='-1' role='dialog' aria-hidden='true'> <div class='modal-dialog'>                                     <div class='modal-content animated flipInY'>                                         <div class='modal-header'>                                             <button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>                                             <h4 class='modal-title'>"
-							+ item.get("first_name").toString()
-							+ "</h4>                                         </div>                                         <div class='modal-body'>                                             <p><strong>First Name: </strong>"
-							+ item.get("first_name").toString()
-							+ "</p>                                             <p><strong>Last Name: </strong>"
-							+ item.get("lastname").toString()
-							+ "</p>                                             <p><strong>Email: </strong>"
-							+ item.get("email").toString()
-							+ " </p>                                             <p><strong>Mobile: </strong>"
-							+ item.get("mobile").toString()
-							+ " </p>                                             <p><strong>Gender: </strong>"
-							+ item.get("gender").toString().toUpperCase()
-							+ "</p>                                             <p><strong>College Name: </strong>"
-							+ item.get("college_name").toString()
-
-							+ " </p> </div><div class='modal-footer'><button type='button' class='btn btn-primary' data-dismiss='modal'>Close</button> </div></div></div></div>");
-		}
+			String fname= item.get("first_name").toString()!= null ?item.get("first_name").toString():"";
+			sb.append("<div class='col-lg-2'> "
+					+ "<div class='product-box p-xl b-r-lg border-left-right border-top-bottom text-center student_holder' data-course_id='"+request.getParameter("id").toString()+"' "
+					+ "data-target='"+item.get("student_id").toString()+"'> "
+					+ "<div data-target='#"+item.get("student_id").toString()+"' "
+					+ "class='holder-data'> "
+					+ "<img alt='image' class='img-circle m-t-sm student_image' src='"+item.get("profile_image").toString()+"' /> "
+					+ "<p class='m-r-sm m-t-sm'>"
+					+ ""+fname+""
+					+ "</p> </div> "
+					+ "  </div>"
+					+ "<div class='modal inmodal' id='student_card_modal' data-student_id='"+item.get("student_id").toString()+"' tabindex='-1' role='dialog' aria-hidden='true'>"
+					+ "</div>"
+					+ "  </div>");
+							}
 		response.getWriter().println(sb);
 
 	}

@@ -74,4 +74,16 @@
 		</div>
 	</nav>
 
+
+<div style="display: none" id="admin_page_loader">
+				<div style="width: 100%; z-index: 6; position: fixed;"
+					class="spiner-example">
+					<div style="width: 100%;"
+						class="sk-spinner sk-spinner-three-bounce">
+						<div style="width: 50px; height: 50px;" class="sk-bounce1"></div>
+						<div style="width: 50px; height: 50px;" class="sk-bounce2"></div>
+						<div style="width: 50px; height: 50px;" class="sk-bounce3"></div>
+					</div>
+				</div>
+			</div>
 </div>

@@ -22,8 +22,11 @@ import org.hibernate.Transaction;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.dao.entities.UserOrgMapping;
+import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.EmailUtils;
 
@@ -40,10 +43,10 @@ public class MAIN {
 	
 	public static void main(String[] args) {
 
-		ReportUtils util = new ReportUtils();
+		/*ReportUtils util = new ReportUtils();
 		HashMap<String, String> conditions = new HashMap();
 		
-		/**/
+		
 		
 		  String course_id="3";
 		 conditions.put("course_id", course_id); 
@@ -52,10 +55,50 @@ public class MAIN {
 		  getAttendanceGraph(3052, conditions);
 		//checkingReportUtils();
 		//nosense();
-
+*/
+		
+		dapoooo();
 	}
 	
 	
+	private static void dapoooo() {
+		Organization college = new OrganizationDAO().findById(2);
+		//String sql="SELECT id,email,gender,CAST (mobile AS INTEGER),name FROM org_admin where organization_id="+org_id;
+		for(UserOrgMapping userOrg : college.getUserOrgMappings())
+		{
+			for(UserRole  userRole : userOrg.getIstarUser().getUserRoles())
+			{
+				if(userRole.getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN"))
+				{
+					IstarUser orgadmin = userRole.getIstarUser(); 
+					System.out.println(userRole.getIstarUser());
+					System.out.println(orgadmin.getId());
+					System.out.println(orgadmin.getEmail());
+					System.out.println();
+					System.out.println();
+					System.out.println();
+					System.out.println();
+					System.out.println();
+					System.out.println();
+					System.out.println();
+					
+				/*	orgAdminId=orgadmin.getId()+"";
+					orgAdminEmail=orgadmin.getEmail();
+					orgAdminMobile=orgadmin.getMobile()+"";
+					if(orgadmin.getUserProfile()!=null){
+					orgAdminGender=orgadmin.getUserProfile().getGender();					
+					orgAdminFirstName = orgadmin.getUserProfile().getFirstName();	
+					orgAdminLastName = orgadmin.getUserProfile().getLastName();*/
+					}
+				}
+			}
+		
+		System.out.println("done");
+		}
+		
+	
+
+
 	public static CustomReport getReport(int reportID) {
 		CustomReportList reportCollection = new CustomReportList();
 		CustomReport report = new CustomReport();

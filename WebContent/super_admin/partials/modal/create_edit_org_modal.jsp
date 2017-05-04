@@ -23,32 +23,28 @@
 	if (request.getParameter("type") != null) {
 		type = request.getParameter("type");
 	}
-
+DBUTILS util = new DBUTILS();
 	Organization college = new Organization();
 	IstarUser orgadmin = new IstarUser();
 	String orgAdminId="0",orgAdminEmail="",orgAdminGender="",orgAdminMobile="", orgAdminFirstName="", orgAdminLastName="" ;
 	
 	if (!type.equalsIgnoreCase("Create")) {
 		college = new OrganizationDAO().findById(org_id);
-		//String sql="SELECT id,email,gender,CAST (mobile AS INTEGER),name FROM org_admin where organization_id="+org_id;
-		for(UserOrgMapping userOrg : college.getUserOrgMappings())
+		String sql="select istar_user.id , istar_user.email, istar_user.mobile, user_profile.gender, user_profile.first_name, user_profile.last_name from  istar_user, user_profile, user_org_mapping, user_role where user_org_mapping.organization_id = "+org_id+" and user_role.role_id = (select id from role where role_name='ORG_ADMIN') and user_org_mapping.user_id = istar_user.id and istar_user.id = user_role.user_id and istar_user.id = user_profile.user_id";
+		List<HashMap<String, Object>> adminData = util.executeQuery(sql);
+		if(adminData.size()>0)
 		{
-			for(UserRole  userRole : userOrg.getIstarUser().getUserRoles())
-			{
-				if(userRole.getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN"))
-				{
-					orgadmin = userRole.getIstarUser(); 
-					orgAdminId=orgadmin.getId()+"";
-					orgAdminEmail=orgadmin.getEmail();
-					orgAdminMobile=orgadmin.getMobile()+"";
-					if(orgadmin.getUserProfile()!=null){
-					orgAdminGender=orgadmin.getUserProfile().getGender();					
-					orgAdminFirstName = orgadmin.getUserProfile().getFirstName();	
-					orgAdminLastName = orgadmin.getUserProfile().getLastName();
-					}
-				}
-			}
-		}	
+			
+			orgAdminId=adminData.get(0).get("id").toString();
+			orgAdminEmail=adminData.get(0).get("email").toString();
+			orgAdminMobile=adminData.get(0).get("mobile").toString();
+			
+			orgAdminGender=adminData.get(0).get("gender").toString();					
+			orgAdminFirstName = adminData.get(0).get("first_name").toString();	
+			orgAdminLastName = adminData.get(0).get("last_name").toString();
+			
+		}
+		
 		
 	}
 %>

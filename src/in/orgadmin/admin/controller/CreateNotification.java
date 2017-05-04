@@ -25,7 +25,7 @@ import com.viksitpro.core.utilities.NotificationType;
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportUtils;
 import in.talentify.core.utils.AndroidNoticeDelegator;
-import tfy.admin.services.StudentPlayListServices;
+import tfy.admin.services.StudentPlayListServicesAdmin;
 
 /**
  * Servlet implementation class CreateNotofication
@@ -46,7 +46,7 @@ DBUTILS util = new DBUTILS();
 String notificationType =  request.getParameter("notification_type");
 TaskServices taskService = new TaskServices();
 IstarNotificationServices notificationService = new IstarNotificationServices();
-StudentPlayListServices playListService = new StudentPlayListServices();
+StudentPlayListServicesAdmin playListService = new StudentPlayListServicesAdmin();
 AndroidNoticeDelegator noticeDelegator = new AndroidNoticeDelegator();
 if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 {

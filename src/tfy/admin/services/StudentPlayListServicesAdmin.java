@@ -9,7 +9,7 @@ import com.viksitpro.core.utilities.DBUTILS;
  * @author mayank
  *
  */
-public class StudentPlayListServices {
+public class StudentPlayListServicesAdmin {
 
 	public void createStudentPlayList(int student_id, int course_id, int module_id, int cmsession_id, int lesson_id)
 	{
