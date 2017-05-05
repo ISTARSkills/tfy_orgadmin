@@ -16,11 +16,21 @@
 
 	ReportDetailService service = new ReportDetailService();
 %>
+
 <div class="modal inmodal" id="assessment_modal_<%=assessment_id%>"
 	tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content animated flipInY">
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
+                                        
+                                        <button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+	</button>
+	<h4 class="modal-title text-center">Assessment Details</h4>
 
+</div>
+<div class="modal-body" style="padding: 0px;">
 			<!-- start -->
 
 			<div class="row">
@@ -28,7 +38,7 @@
 
 					<div class="ibox full-height modal-height" >
 						<div class="ibox-header">
-							<h3 class="font-bold m-l-sm">Students</h3>
+							<h3 class="font-bold text-center">Students</h3>
 						</div>
 
 						<div class="ibox-content full-height-scroll">
@@ -68,13 +78,17 @@
 
 					<div class="ibox">
 						<div class="ibox-header">
-							<h3 class="font-bold">Questions</h3>
+							<h3 class="font-bold text-center">Questions</h3>
 						</div>
 						<div id="modal_question_holder" class="full-height modal-height"></div>
 					</div>
 				</div>
 			</div>
 			<!-- end -->
+			</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+</div>
 		</div>
 	</div>
-</div>
+</div></div></div>

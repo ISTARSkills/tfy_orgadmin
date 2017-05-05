@@ -103,11 +103,16 @@
 			</div>
 		<div class="col-lg-4">
 			<label class="control-label">Event Time</label>
-			<div class="input-group clockpicker " data-autoclose="true">
+			<div class="input-group" data-autoclose="true">
+				 <span class="input-group-addon"> <span
+						class="fa fa-clock-o"></span>
+					</span><input type="text" style="width: 100%; height: 28px;" name="startTime" id="currenTime" class="timepicker" value="<%=istrue ? eventTime : ""%>"/>
+				</div> 
+			<%-- <div class="input-group clockpicker " data-autoclose="true">
 				<input type="text" class="form-control" name="startTime" value="<%=eventTime%>"> <span
 					class="input-group-addon"> <span class="fa fa-clock-o"></span>
 				</span>
-			</div></div>
+			</div> --%></div>
 			
 		<div class="col-lg-2">
 			<label class="control-label" >Hours</label> <input type="number" value="<%=eventHours%>"

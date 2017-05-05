@@ -44,6 +44,7 @@
 <!-- Toastr script -->
 <script src="<%=basePath %>js/plugins/toastr/toastr.min.js"></script>
 
+<script type="text/javascript" src="<%=basePath %>js/wickedpicker.js"></script>
 
 <!-- Jquery Validate -->
 <script src="<%=basePath %>js/plugins/validate/jquery.validate.min.js"></script>

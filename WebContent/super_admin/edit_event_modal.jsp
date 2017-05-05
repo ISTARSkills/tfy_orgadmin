@@ -37,6 +37,7 @@
 				int AdminUserID =0;
 				int orgID=0;
 				String associateTrainerID = null;
+				String selectedTrainerString="0";
 				ArrayList<Integer> setactedTrainer = new ArrayList();
 
 if(request.getParameter("newEventID")!=null){
@@ -54,10 +55,10 @@ if(request.getParameter("newEventID")!=null){
 					 eventDate = request.getParameter("eventDate");
 					 eventTime = request.getParameter("startTime");
 					 tabType = request.getParameter("tabType");	
-					
+					System.out.print("------------>"+eventTime);
 					 associateTrainerID = request.getParameter("associateTrainerID");
 						if(associateTrainerID != null && !associateTrainerID.equalsIgnoreCase("")){
-
+							selectedTrainerString=associateTrainerID;
 					 if (associateTrainerID.contains(",")) {
 						 for (String retval: associateTrainerID.split(",")) {
 							 setactedTrainer.add(Integer.parseInt(retval));
@@ -85,7 +86,7 @@ if(request.getParameter("newEventID")!=null){
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title text-center">Modify Events details</h4>
+	<h4 class="modal-title text-center">Modify Events Details</h4>
 
 </div>
 <div class="modal-body">
@@ -109,11 +110,16 @@ if(request.getParameter("newEventID")!=null){
 
 		<div class="form-group">
 			<label class="font-bold">Start Time</label>
-			<div class="input-group clockpicker " data-autoclose="true">
+			<div class="input-group" data-autoclose="true">
+				 <span class="input-group-addon"> <span
+						class="fa fa-clock-o"></span>
+					</span><input type="text" style="width: 100%; height: 28px;" name="startTime" id="currenTime" class="timepicker" value="<%=istrue ? eventTime : ""%>"/>
+				</div> 
+			<%-- <div class="input-group clockpicker " data-autoclose="true">
 				<input type="text" class="form-control" name="startTime" value="<%=istrue?eventTime:""%>"> <span
 					class="input-group-addon"> <span class="fa fa-clock-o"></span>
 				</span>
-			</div>
+			</div> --%>
 			
 		</div>
 		<div class="form-group form-inline">
@@ -123,9 +129,9 @@ if(request.getParameter("newEventID")!=null){
 				name="minute" placeholder="Minute" class="form-control">
 		</div>
 
-<div class="form-group">
+      <div class="form-group">
 				<label>Choose Associate Trainee</label>
-				<input type="hidden" id="edit_associateTrainerID_holder" name="associateTrainerID" value="<%=setactedTrainer.toString()%>"/>
+				<input type="hidden" id="edit_associateTrainerID_holder" name="associateTrainerID" value="<%=selectedTrainerString%>"/>
 				<select data-placeholder="select Groups AssociateTrainerID"  multiple class="select2-dropdown"
 						tabindex="4" name="" id="edit_associateTrainerID">
 						<option value="">Select Associate Trainers...</option>

@@ -29,7 +29,12 @@
 <script src="<%=basePath %>js/plugins/dataTables/datatables.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>js/jquery.bootpag.js"></script>
 
-
+ <script type="text/javascript" src="<%=basePath %>js/wickedpicker.js"></script>
+ 
+ <%--  <script type="text/javascript" src="<%=basePath %>js/spec/wickedpickerSpec.js"></script> --%>
+<%--     <script type="text/javascript" src="<%=basePath %>js/spec/wickedpicker.min.js"></script>
+ --%>  
+ 
 <!-- Data picker -->
 <script
 	src="<%=basePath %>js/plugins/datapicker/bootstrap-datepicker.js"></script>

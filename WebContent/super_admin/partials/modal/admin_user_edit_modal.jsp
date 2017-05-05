@@ -49,7 +49,7 @@
 
 				<form class="form-horizontal"
 					action="<%=baseURL%>createOrUpdateUser" method="post">
-
+<input type="hidden" value="super_admin" name="creation_type" />
 					<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input
 						type="hidden" value="<%=user_id%>" name="user_id" />
 					<div class="form-group">

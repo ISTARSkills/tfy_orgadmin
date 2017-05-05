@@ -74,12 +74,12 @@ public class ReportDetailService {
 		String userChoice = "";
 		if (optionItem != null && optionItem.size() > 0) {
 			if ((boolean) optionItem.get(0).get("correct")) {
-				userChoice = "<span class='badge badge-success pull-right m-r-sm'>Correct</span>";
+				userChoice = "<span style='display:none;' class='badge badge-success pull-right m-r-sm'>Correct</span>";
 			} else {
-				userChoice = "<span class='badge badge badge-danger pull-right m-r-sm'>Incorrect</span>";
+				userChoice = "<span style='display:none;' class='badge badge badge-danger pull-right m-r-sm'>Incorrect</span>";
 			}
 		} else {
-			userChoice = "<span class='badge pull-right m-r-sm'>Skipped</span>";
+			userChoice = "<span style='display:none;' class='badge pull-right m-r-sm'>Skipped</span>";
 		}
 
 		StringBuffer out = new StringBuffer();

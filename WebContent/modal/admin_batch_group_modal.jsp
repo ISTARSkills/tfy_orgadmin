@@ -53,7 +53,7 @@
 						<h3 class="m-b-n-md">Description</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
-							<label class="font-noraml">Short Text about Batch Group</label> <input type="text"
+							<label class="font-noraml">Short Text about Section</label> <input type="text"
 								placeholder="Section Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
 								class="form-control">
 						</div>

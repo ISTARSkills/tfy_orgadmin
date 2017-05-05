@@ -22,7 +22,11 @@
 <title>Talentify | Login</title>
 
 <link href="css/bootstrap.min.css" rel="stylesheet">
+
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+  <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
 
 <link href="css/animate.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
@@ -32,11 +36,19 @@
 
 <body class="gray-bg"
 	style="background-size: cover; background-repeat: no-repeat; background-image: url('assets/images/demo.png')">
-	<%if(request.getAttribute("msg")!=null && request.getAttribute("msg").toString().equalsIgnoreCase("")){%>
-	<p id="error_holder"><%=request.getAttribute("msg") %></p>
-	<%}%>
-	<div class="text-center loginscreen animated fadeInDown">
+	
+	<% String errormsg=""; 
+	Boolean flag = false;%>
+	<%if(request.getAttribute("msg")!=null && !request.getAttribute("msg").toString().equalsIgnoreCase("")){
+		
+		 errormsg = request.getAttribute("msg").toString();
+		 flag = true;
+		 request.removeAttribute("msg");
 
+	}%>
+	
+	<% System.out.println("---------------->"+errormsg); %>
+	<div class="text-center loginscreen animated fadeInDown">
 
 		<div class="login-screen-box">
 			<div>
@@ -68,9 +80,11 @@
 
 				<%--  <a href="<%=baseURL%>forgot_password.jsp">Forgot password?</a> --%>
 			</form>
-
+          <%--    <p class="m-t">
+				<small><%=errormsg %></small>
+			</p> --%>
 			<p class="m-t">
-				<small>ISTAR Skill Development Pvt. Ltd. &copy; 2016</small>
+				<small>ISTAR Skill Development Pvt. Ltd. &copy; 2017</small>
 			</p>
 		</div>
 	</div>
@@ -78,6 +92,9 @@
 	<!-- Mainly scripts -->
 	<script src="js/jquery-2.1.1.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	 <!-- Sweet alert -->
+    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+	
 	<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -88,10 +105,32 @@
   ga('send', 'pageview');
   
    $(document).ready(function(){
-	  if($('#error_holder').text().length!=0){
-			alert($('#error_holder').html());
-		}
+	 
+	   var flag = <%=flag%>;
+	   
+	 if(flag === true){
+		 callMyFunction(); 
+	 }else{
+		 
+	 }
+	  
+	  
+
+
+	   
 	});
+   
+   function callMyFunction(){
+	  
+	  
+           swal({
+               title: "<%=errormsg%>"
+           });
+          
+      
+	   
+	   
+   }
 
 </script>
 </body>

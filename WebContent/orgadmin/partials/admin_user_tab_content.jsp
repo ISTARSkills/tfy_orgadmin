@@ -21,8 +21,6 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 <div class="modal inmodal"
 									id="admin_student_card_modal" tabindex="-1"
 										role="dialog" aria-hidden="true">
-sdsds
-
 </div>
 <div class="ibox">
 	<div class="col-lg-12">

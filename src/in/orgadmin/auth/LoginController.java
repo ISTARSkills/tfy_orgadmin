@@ -35,13 +35,14 @@ public class LoginController extends HttpServlet {
 			throws ServletException, IOException {
 		request.getSession().removeAttribute("user");
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
+		
 			System.out.println("Email -> " + request.getParameter("email"));
 			System.out.println("Password -> " + request.getParameter("password"));
 			
 			try {
 				IstarUserDAO dao = new IstarUserDAO();
-				IstarUser user = dao.findByEmail(request.getParameter("email")).get(0);
-				if (user.getPassword().equalsIgnoreCase(request.getParameter("password"))) {
+				IstarUser user = dao.findByEmail(request.getParameter("email").toLowerCase()).get(0);
+				if (user.getPassword().equals(request.getParameter("password"))) {
 					
 					System.out.println("-------------------Email -> " +	user.getEmail());
 					//request.getSession().setMaxInactiveInterval(2000);
@@ -55,9 +56,7 @@ public class LoginController extends HttpServlet {
 						System.out.println("User logged in. ID -> " + user.getId());
 						System.out.println("User logged in. Type -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
 						url = "/super_admin/dashboard.jsp";
-					}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("STUDENT")) {
-						
-						url = "/orgadmin/student/dashboard.jsp?student_id=" + user.getId();
+						request.getRequestDispatcher(url).forward(request, response);
 					} else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
 						
 						System.out.println("User logged in. ID -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
@@ -68,22 +67,28 @@ public class LoginController extends HttpServlet {
 						request.getSession().setAttribute("orgId", user.getUserOrgMappings().iterator().next().getOrganization().getId());
 						
 						url = "/orgadmin/dashboard.jsp";
-					} 
+						request.getRequestDispatcher(url).forward(request, response);
+					}
+					else {
+						
+						request.setAttribute("msg", "User Does Not Have Permission To Access");
+						request.getRequestDispatcher("/index.jsp").forward(request, response);
+					}
 					System.out.println(url);
-					request.getRequestDispatcher(url).forward(request, response);
+					
 				} else {
-					request.setAttribute("msg", "Wrong Username or password");
+					request.setAttribute("msg", "Wrong Password");
 					request.getRequestDispatcher("/index.jsp").forward(request, response);
 				}
 			} catch (Exception e) {
 				//e.printStackTrace();
-				request.setAttribute("msg", "Missing Username or password");
+				request.setAttribute("msg", "Wrong Username");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}
 		} else {
 			
 			System.err.println("9111");
-			request.setAttribute("msg", "Missing Username or password");
+			request.setAttribute("msg", "Missing Username or Password");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		}
 	}

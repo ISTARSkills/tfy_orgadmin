@@ -5,9 +5,6 @@
 <!DOCTYPE html>
 <html>
 
-    <!-- Toastr style -->
-    <link href="../css/plugins/toastr/toastr.min.css" rel="stylesheet">
-
 <head>
 <% 
 	String url = request.getRequestURL().toString();
@@ -25,17 +22,36 @@
 		}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
 			System.out.println("------------------------------>"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
 			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
+		}else{
+			
+			String errorResponse="";
+			if(request.getAttribute("msg")!=null){
+				
+				errorResponse=request.getAttribute("msg").toString();
+				System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
+			}
+			
+			request.setAttribute("msg", errorResponse);
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+			
+			
 		}
 		
-		response.sendRedirect(url1);
+		//response.sendRedirect(url1);
+		
 	} else {
-		System.out.println("error-- redirecting to index.jsp") ;
+		
+		
 		
 		String errorResponse="";
 		if(request.getAttribute("msg")!=null){
+			
 			errorResponse=request.getAttribute("msg").toString();
+			System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
 		}
 		
+		/* request.setAttribute("msg", errorResponse);
+		request.getRequestDispatcher("/login.jsp").forward(request, response); */
 		request.setAttribute("msg", errorResponse);
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
@@ -76,9 +92,6 @@
     
 
 </body>
-  <!-- Toastr script -->
-    <script src="../js/plugins/toastr/toastr.min.js"></script>
-
 </html>
 
 <script>

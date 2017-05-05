@@ -10822,12 +10822,19 @@ margin-left: 20px;
 	 width: 100% !important;
 }
 
+#super_admin_scheduler .wickedpicker {
+	z-index: 2050 !important; /* has to be larger than 1050 */
+}
 
 #orgadmin_scheduler .datepicker.dropdown-menu {
 	z-index: 2050 !important; /* has to be larger than 1050 */
 }
 
 #orgadmin_scheduler .clockpicker-popover {
+	z-index: 2050 !important; /* has to be larger than 1050 */
+}
+
+#orgadmin_scheduler .wickedpicker {
 	z-index: 2050 !important; /* has to be larger than 1050 */
 }
 
@@ -11012,6 +11019,10 @@ border-width: 2px
 width: 150px;height: 150px;
 }
 
+#orgadmin_dashboard .wickedpicker {
+	z-index: 2050 !important; /* has to be larger than 1050 */
+}
+
 #superadmin_dashboard .dash_main_tab{
 max-height: 100vh; overflow: overlay;
 }
@@ -11033,7 +11044,7 @@ width: 150px;height: 150px;
 	z-index: 2050 !important; /* has to be larger than 1050 */
 }
 
-#superadmin_dashboard .clockpicker-popover {
+#superadmin_dashboard .wickedpicker {
 	z-index: 2050 !important; /* has to be larger than 1050 */
 }
 

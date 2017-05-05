@@ -104,7 +104,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 		
 		if (request.getParameterMap().containsKey("associateTrainerID")) {
 			associateTrainerID = request.getParameter("associateTrainerID") != ""
-					? request.getParameter("associateTrainerID") : "";
+					? request.getParameter("associateTrainerID") : "0";
 		}
 
 		
