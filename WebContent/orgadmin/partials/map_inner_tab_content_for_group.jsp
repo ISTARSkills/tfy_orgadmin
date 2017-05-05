@@ -16,11 +16,15 @@
 	if (request.getParameter("searchkey") != null) {
 		searchKey = request.getParameter("searchkey").toString().replaceAll("%20", "");
 	}
-
+	String limit = "10";
+	if(request.getParameterMap().containsKey("limit"))
+	{
+		limit = request.getParameter("limit");
+	}
 	List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllContentUserList(colegeID, type,
-			offset, searchKey);
+			offset, searchKey,limit);
 %>
-
+<div class="panel-body no-borders content-map-ajax-request" >
 <div class="tabs-container">
 
 	<div class="tabs-left">
@@ -37,7 +41,7 @@
 			%>
 
 			<li class="<%=i == 0 ? "active" : ""%> no-padding bg-muted"><a
-				data-toggle="tab" href="#admin_content_inner_tab_<%=i + type%>"
+			data-target="#admin_content_inner_tab_<%=i+type%>"	data-toggle="tabajax_admin_child" href="partials/available_mapped_content.jsp" data-entity_type="<%=type%>" data-entity_id="<%=item.get("id") %>" data-college_id="<%=colegeID %>"
 				aria-expanded="false"><%=item.get("name")%>  <span class="label"
 					id="role_skill_count_<%=type + item.get("id")%>"><%=item.get("count")%></span>
 			</a></li>
@@ -62,27 +66,7 @@
 
 			<div id="admin_content_inner_tab_<%=i + type%>"
 				class="tab-pane <%=i == 0 ? "active" : ""%>">
-				<div class="panel-body custom-body-style-3">
-
-										<div class="col-lg-6" style="padding: 0px;
-    margin-top: -15px;
-    margin-left: -15px;">
-											<jsp:include page="./map_content_available_content.jsp">
-												<jsp:param value='<%=type + item.get("id")%>' name="role_id" />
-												<jsp:param value='<%=colegeID%>' name="colegeID" />
-											</jsp:include>
-										</div>
-
-										<div class="col-lg-6" style="padding: 0px;
-    margin-top: -15px;
-    margin-left: 4px;">
-											<jsp:include page="./map_content_associated_role_content.jsp">
-												<jsp:param value='<%=item.get("id")%>' name="type_id" />
-												<jsp:param value='<%=type%>' name="type" />
-												<jsp:param value='<%=colegeID%>' name="colegeID" />
-											</jsp:include>
-										</div>
-									</div>
+				
 			</div>
 			<%
 				i++;
@@ -92,6 +76,6 @@
 	</div>
 </div>
 
-
+</div>
 
 

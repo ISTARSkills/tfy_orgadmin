@@ -17,6 +17,7 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 
 %>
+<div class="panel-body">
 <div class="modal inmodal"
 									id="admin_student_card_modal" tabindex="-1"
 										role="dialog" aria-hidden="true">
@@ -126,11 +127,6 @@ sdsds
 									<option value="FEMALE">Female</option>
 								</select>
 							</div> 
-							
-                             
-						
-
-						
 
 					</div>
 					<div class="form-group">
@@ -141,11 +137,11 @@ sdsds
 							<label class="font-noraml">Select Section the student will
 								belong to:</label>
 							<div>
-								<select data-placeholder="Section..."  class="select2-dropdown" multiple tabindex="4">
+								<select data-placeholder="Section..."  class="select2-dropdown" multiple tabindex="4" name="batch_groups">
 									<%=adminUiServcies.getBatchGroups(colegeID,null) %>
 								</select>
 							</div>
-							<input type="hidden" value="" name="batch_groups" />
+							<input type="hidden" value=""  />
 						</div>
 					</div>
 
@@ -177,4 +173,5 @@ sdsds
 			</div>
 		</div></div>
 	</div>
+</div>
 </div>

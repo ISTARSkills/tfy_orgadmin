@@ -326,6 +326,12 @@ String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfi
 
 			<%
 												} // will be visioble if there will be atlest one course
+						{
+													
+													%>
+													<h2 style=" text-align: center;"> No Skill Profile Available.</h2>
+													<% 
+						}
 												%>
 		</div>
 		<div class="modal-footer">

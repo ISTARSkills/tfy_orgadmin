@@ -34,7 +34,6 @@ public class OrgAdminSkillService {
 		CustomReportUtils repUtils   = new CustomReportUtils();
 		String sql = repUtils.getReport(12).getSql();
 		sql = sql.replaceAll(":college_id", orgId+"");
-		//System.err.println("VAIBAHV -->"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -128,7 +127,7 @@ public class OrgAdminSkillService {
 
 	}
 
-	public List<HashMap<String, Object>> getAllContentUserList(int orgId, String type, int offset, String searchKey) {
+	public List<HashMap<String, Object>> getAllContentUserList(int orgId, String type, int offset, String searchKey, String limit) {
 		String sql = "";
 		CustomReportUtils repUtils = new CustomReportUtils();
 		if (type.equalsIgnoreCase("User")) {
@@ -139,7 +138,7 @@ public class OrgAdminSkillService {
 			}
 			sql = report.getSql();
 			sql = sql.replaceAll(":college_id", orgId+"");
-			sql = sql.replaceAll(":limit", "10");
+			sql = sql.replaceAll(":limit", limit);
 			sql = sql.replaceAll(":offset", offset+"");
 			sql = sql.replaceAll(":search_term", searchquery);
 			

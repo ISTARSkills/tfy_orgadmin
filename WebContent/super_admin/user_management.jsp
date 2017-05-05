@@ -14,7 +14,12 @@
 
 	AdminUIServices adminUiServcies = new AdminUIServices();
 %>
+<div class="modal inmodal"
+									id="admin_student_card_modal" tabindex="-1"
+										role="dialog" aria-hidden="true">
 
+
+</div>
 <body class="top-navigation" id="super_admin_user_managment">
 	<div id="wrapper" class="white-bg">
 		<div id="page-wrapper" class="white-bg">

@@ -1,3 +1,4 @@
+<%@page import="tfy.admin.services.AdminServices"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
@@ -39,9 +40,12 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 								id='notification_batchgroup_holder'>
 								<option value="null">Select Section / Role</option>
 								<%
+								
 								for(BatchGroup bg : organization.getBatchGroups())
 								{
+									System.err.println(organization.getId()+"---"+bg.getName());
 									if(bg.getBatchStudentses().size()>0){
+										System.out.println(bg.getName());
 									%>
 									<option value="<%=bg.getId()%>"><%=bg.getName() %> (<%=bg.getType() %>)</option>
 									<% 

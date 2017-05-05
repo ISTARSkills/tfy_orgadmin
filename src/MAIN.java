@@ -58,9 +58,23 @@ public class MAIN {
 */
 		
 		dapoooo();
+		asdas();
 	}
 	
 	
+	private static void asdas() {
+		// TODO Auto-generated method stub
+		Organization org = new OrganizationDAO().findById(2);
+		for(BatchGroup bg : org.getBatchGroups())
+		{
+			if(bg.getBatchStudentses().size()>0){
+			System.out.println(bg.getName()+ " "+bg.getId()+" "+bg.getType());
+			
+			}
+		}
+	}
+
+
 	private static void dapoooo() {
 		Organization college = new OrganizationDAO().findById(2);
 		//String sql="SELECT id,email,gender,CAST (mobile AS INTEGER),name FROM org_admin where organization_id="+org_id;

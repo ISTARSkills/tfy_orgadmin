@@ -143,14 +143,14 @@
 								<div class="col-sm-4">
 								<select class="form-control m-b graph_filter_selector"  data-report_id="3051" name="batch_group_id" data-college_id="<%=colegeID%>">										
 										<%
-										ArrayList<BatchGroup> roles = serv.getBatchGroupInCollege(colegeID);
+										ArrayList<BatchGroup> roles = serv.getRolesInCollege(colegeID);
 										for(BatchGroup batchGroup : roles)
 										{
-											if(batchGroup.getType().equalsIgnoreCase("ROLE")){
+											
 										%>
 										<option value="<%=batchGroup.getId()%>"><%=batchGroup.getName().trim()%></option>
 										<%
-											}
+											
 										} %>
 									</select>
 									

@@ -66,13 +66,13 @@
 						<div class="col-lg-12">
 							
 							<div>
-								<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4">
+								<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list">
 									<%=ui.getAllStudentsForBatch(bg.getOrganization().getId(),selectedStudents)%>
 								</select>
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="student_list">
+					<input type="hidden" >
 					<div class="form-group" >
 						<div class="col-lg-12">
 							<input type="checkbox" name="select_all" class="js-switch" /> <label>Select

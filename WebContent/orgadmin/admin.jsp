@@ -22,35 +22,26 @@
 					<div class="tabs-container">
 						<ul class="nav nav-tabs">
 							<li class="<%=tab.equalsIgnoreCase("user")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab1" id="admin_user_tab">Users</a></li>
+								data-toggle="tabajax" data-target="#admintab1" href="partials/admin_user_tab_content.jsp" id="admin_user_tab">Users</a></li>
 
 							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab2" id="admin_section_tab">Section / Roles</a></li>
+								data-toggle="tabajax" data-target="#admintab2" href="partials/admin_group_tab_content.jsp" id="admin_section_tab">Section / Roles</a></li>
 
 							
 
 							<li class="<%=tab.equalsIgnoreCase("content")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
-								data-toggle="tab" href="#admintab4" id="admin_content_map">Content Mapping</a></li>
+								data-toggle="tabajax" data-target="#admintab4" href="partials/admin_content_map_tab_content.jsp" id="admin_content_map">Content Mapping</a></li>
 							
 						</ul>
 
 						<div class="tab-content">
-							<div id="admintab1" class="<%=tab.equalsIgnoreCase("user")? "active":"" %> tab-pane div-min-height">
-								<div class="panel-body">
-									<jsp:include page="partials/admin_user_tab_content.jsp" />
-								</div>
+							<div id="admintab1" class="<%=tab.equalsIgnoreCase("user")? "active":"" %> tab-pane div-min-height">								
 							</div>
 
 							<div id="admintab2" class="<%=tab.equalsIgnoreCase("group")? "active":"" %> tab-pane div-min-height">
-								<div class="panel-body">
-									<jsp:include page="partials/admin_group_tab_content.jsp" />
-								</div>
 							</div>							
 
 							<div id="admintab4" class="<%=tab.equalsIgnoreCase("content")? "active":"" %> tab-pane div-min-height">
-								<div class="panel-body">
-									<jsp:include page="partials/admin_content_map_tab_content.jsp" />									
-								</div>
 							</div>
 
 							

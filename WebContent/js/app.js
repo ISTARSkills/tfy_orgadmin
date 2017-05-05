@@ -293,33 +293,43 @@ function createDataTables()
 			url +=index+'='+value+'&';
 			});		
 		//alert(id);
-		$(this).DataTable({
-	         pageLength: 10,
-	         responsive: true,
-	         dom: '<"html5buttons"B>lTfgitp',
-	         buttons: [
-	             { extend: 'copy'},
-	             {extend: 'csv'},
-	             {extend: 'excel', title: 'ExampleFile'},
-	             {extend: 'pdf', title: 'ExampleFile'},
-	             {extend: 'print',
-	              customize: function (win){
-	                     $(win.document.body).addClass('white-bg');
-	                     $(win.document.body).css('font-size', '10px');
-	                     $(win.document.body).find('table')
-	                             .addClass('compact')
-	                             .css('font-size', 'inherit');
-	             }
-	             }
-	         ], "processing": true,
-	         "serverSide": true,
-	         "ajax": url	        
-	     });
+		if ( $.fn.dataTable.isDataTable(this) ) {
+		    
+		}
+		else
+		{
+			$(this).DataTable({
+		         pageLength: 10,
+		         responsive: true,
+		         dom: '<"html5buttons"B>lTfgitp',
+		         buttons: [
+		             { extend: 'copy'},
+		             {extend: 'csv'},
+		             {extend: 'excel', title: 'ExampleFile'},
+		             {extend: 'pdf', title: 'ExampleFile'},
+		             {extend: 'print',
+		              customize: function (win){
+		                     $(win.document.body).addClass('white-bg');
+		                     $(win.document.body).css('font-size', '10px');
+		                     $(win.document.body).find('table')
+		                             .addClass('compact')
+		                             .css('font-size', 'inherit');
+		             }
+		             }
+		         ], "processing": true,
+		         "serverSide": true,
+		         "ajax": url	        
+		     });
+			
+			$(this).on( 'draw.dt', function () {
+			    callColumnHandlerFunctions();
+			} );
+			$('.dataTables_info').hide();
+			
+		}	
 		
-		$(this).on( 'draw.dt', function () {
-		    callColumnHandlerFunctions();
-		} );
-		$('.dataTables_info').hide();
+		
+		
 	});
 	
 	
@@ -1452,7 +1462,7 @@ function init_orgadmin_dashboard() {
 		 scheduler_DeleteEvent();
 		 scheduler_init_edit_new_trainer_associated();
 		 scheduler_init_edit_old_trainer_associated();
-		 scheduler_ClockDate();
+		 scheduler_ClockDate(false);
 		 $('select').select2();
 		
 
@@ -1472,34 +1482,340 @@ function init_orgadmin_admin() {
     console.log('intiliazing Admin');
     //Edit User Call goes here
     initEditUserModalCall();
-    initCreateSectionCall();
-    //
+	$.get('partials/admin_user_tab_content.jsp', function(data) {        	
+    $('#admintab1').html(data);
+    $('select').select2();
+	createDataTables();
+	user_filter_by_course_batch();
+	$('#admin_user_tab').tab('show');
+	});
     
     
-    trainerDataTable();
-    //init user tab search box
-    admin_course_batch_init();
-    
-    //init multiple selection inupt boxes
-    admin_choosen_init();
-    
-    //event handlings of edit window
-    admin_edit_modal_create();
-    
-  //ajax requests
-    admin_load_resources();
-    
-    $.extend($.expr[":"], {
-        "containsIN": function(elem, i,match, array) {
-            return (elem.textContent ||
-                    elem.innerText || "")
-                .toLowerCase()
-                .indexOf(
-                    (match[3] || "")
-                    .toLowerCase()) >= 0;
-        }
+    $('[data-toggle="tabajax"]').unbind().on('click',function(e) {
+    	$('#admin_page_loader').show();
+        	var $this = $(this),
+            loadurl = $this.attr('href'),
+            targ = $this.attr('data-target');
+        	$.get(loadurl, function(data) {        	
+            $(targ).html(data);
+            $('#admin_page_loader').hide();
+            $('select').select2();
+        	createDataTables();
+        	user_filter_by_course_batch();
+        	initCreateSectionCall();
+        	//admin_load_resources();
+            load_content_mapping();
+            $.extend($.expr[":"], {
+                "containsIN": function(elem, i,match, array) {
+                    return (elem.textContent ||
+                            elem.innerText || "")
+                        .toLowerCase()
+                        .indexOf(
+                            (match[3] || "")
+                            .toLowerCase()) >= 0;
+                }
+            });
+        });
+
+        $this.tab('show');
+        return false;
     });
     
+}
+
+function load_content_mapping()
+{	
+	  $('[data-toggle="tabajax_content_mapping"]').unbind().on('click',function(e) {
+	    	$('#admin_page_loader').show();
+	        	var $this = $(this),
+	             loadurl = $this.attr('href'),
+	             targ = $this.attr('data-target'),
+	             entity_type = $this.data('type'),
+	             college_id = $this.data('org');
+	        	 loadurl += '?type='+entity_type+'&colegeID='+college_id;	
+	        	$.get(loadurl, function(data) {        	
+	            $(targ).html(data);
+	            $('#admin_page_loader').hide();	            	        	
+	        	//admin_load_resources();
+	        	 $('.full-height-scroll').each(function(){
+				    	$(this).slimscroll({height:$(this).parent().height()});
+				    });	        	 
+	            init_user_pagination_in_user_tab();
+	            init_user_search_in_user_tab();
+	            init_child_entity_tabs();
+	            
+	            
+	            $.extend($.expr[":"], {
+	                "containsIN": function(elem, i,match, array) {
+	                    return (elem.textContent ||
+	                            elem.innerText || "")
+	                        .toLowerCase()
+	                        .indexOf(
+	                            (match[3] || "")
+	                            .toLowerCase()) >= 0;
+	                }
+	            });
+	        });
+
+	        $this.tab('show');
+	        return false;
+	    });
+}
+function init_child_entity_tabs()
+{
+	
+	$('[data-toggle="tabajax_admin_child"]').unbind().on('click',function(e) {
+    	$('#admin_page_loader').show();
+        	var $this = $(this),
+             loadurl = $this.attr('href'),
+             targ = $this.attr('data-target'),
+             entity_type = $this.data('entity_type'),
+             college_id = $this.data('college_id'),
+        	 entity_id = $this.data('entity_id');
+        	 loadurl += '?entity_id='+entity_id+'&entityType='+entity_type+'&college_id='+college_id;	
+        	$.get(loadurl, function(data) {        	
+            $(targ).html(data);
+            $('#admin_page_loader').hide();	            	        	
+        	$('.full-height-scroll').each(function(){
+			    $(this).slimscroll({height:$(this).parent().height()});
+			    });	        	 
+            $.extend($.expr[":"], {
+                "containsIN": function(elem, i,match, array) {
+                    return (elem.textContent ||
+                            elem.innerText || "")
+                        .toLowerCase()
+                        .indexOf(
+                            (match[3] || "")
+                            .toLowerCase()) >= 0;
+                }
+            });
+            admin_skill_content_search_init();
+            init_admin_skill_addition();
+            init_admin_skill_removal();
+        });
+
+        $this.tab('show');
+        return false;
+    });
+}
+
+function init_admin_skill_addition()
+{
+	//add_content
+	$('.add_content').unbind().on('click',function(){
+		var skillId = $(this).data('skill_id');
+		var entityId = $(this).data('entity_id');
+		var entityType = $(this).data('entity_type');
+		var adminId = $(this).data('admin_id');
+		var college_id = $(this).data('college_id');
+		var loadurl = $(this).data('href');
+        var targ = $(this).parents('.tab-pane').attr('id');
+
+          loadurl += '?entity_id='+entityId+'&entityType='+entityType+'&college_id='+college_id;	
+		
+		$('#admin_page_loader').show();
+		var jsp="/add_content_to_entity";
+		$.post(jsp, 
+				{skill_id : skillId,entity_id:entityId,entity_type:entityType, admin_id:adminId }, 
+				function(data) {					
+					
+					$.get(loadurl, function(data2) {
+						
+						$('#'+targ).empty();
+			            $('#'+targ).html(data2);
+			        	            	        	
+			    	$('.full-height-scroll').each(function(){
+					    $(this).slimscroll({height:$(this).parent().height()});
+					    });	        	 
+			        $.extend($.expr[":"], {
+			            "containsIN": function(elem, i,match, array) {
+			                return (elem.textContent ||
+			                        elem.innerText || "")
+			                    .toLowerCase()
+			                    .indexOf(
+			                        (match[3] || "")
+			                        .toLowerCase()) >= 0;
+			            }
+			        });
+			        admin_skill_content_search_init();
+			        init_admin_skill_addition();
+			        init_admin_skill_removal();
+			    });
+
+					
+					$('#admin_page_loader').hide();	
+					
+		});
+
+	});
+}
+
+function init_admin_skill_removal()
+{
+	$('.remove_content').unbind().on('click',function(){
+		var contentId = $(this).data('content_id');
+		var entityId = $(this).data('entity_id');
+		var entityType = $(this).data('entity_type');
+		$('admin_page_loader').show();
+		var jsp="/remove_content_from_entity";
+    	$.post(jsp, 
+				{content_id : contentId,entity_id:entityId,entity_type:entityType }, 
+				function(data) {					
+					
+					$('#admin_page_loader').hide();
+					
+		});
+		
+		
+		
+		
+	});
+}
+
+
+function init_user_search_in_user_tab()
+{
+	$('#content-user-search').on('keypress', function(e) {		
+		if(e.keyCode === 13)
+			{
+			$('#admin_page_loader').show();
+			var searchkey=$(this).val().replace(' ','%20');
+			var tab=$(this);
+			var type=$(this).data('type');
+			var id=$(this).data('org');
+			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
+			
+			if(searchkey.length!=0){
+			 url=url+'&searchkey='+searchkey+'&limit=all';
+			 
+			}else{
+				url=url+'&offset=0';
+				$('#admin_page_loader').hide();
+			}			
+			console.log(url);
+			
+			$.get(url, function( data ) {			  
+				  $(tab).parent().parent().parent().find('.actual_content_body').remove();			  
+				  $(tab).parent().parent().parent().append(data);					  
+				    $('.full-height-scroll').each(function(){
+				    	$(this).slimscroll({height:$(this).parent().height()});
+				    });
+				    $('#admin_page_loader').hide();
+				});
+			}
+		
+		});
+
+}
+function init_user_pagination_in_user_tab()
+{
+	$('#page-selection').bootpag({
+        total: parseInt($('#page-selection').data('size')/10+1),
+        maxVisible: 10
+    }).on("page", function(event, /* page number  here */ num){
+    		$('#admin_page_loader').show();
+			var offset=(num*10)-10;						
+			var tab=$(this);			
+			var type=$(this).data('type');
+			var id=$(this).data('org');
+			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
+			if(type=='User'){
+				url=url+'&offset='+offset
+			}		
+			$.get(url, function( data ) {				 				  
+				  $(tab).parent().parent().find('.actual_content_body').remove();				 
+				  $(tab).parent().parent().append(data);					  				  
+				    //initilize and event handling of skills search box
+				   //admin_skill_content_search_init();				    
+				    //removeing conetent skills event handling and ajax calls
+				   //admin_skill_alertBinding();				    
+				    $('.full-height-scroll').each(function(){
+				    	$(this).slimscroll({height:$(this).parent().height()});
+				    });
+				    $('#admin_page_loader').hide();
+				});
+    });
+}
+
+function user_filter_by_course_batch() {
+	$('.dataTables_info').hide();
+	
+    $('#admin_page_course').on('change', function() {
+        var key = $('#admin_page_course').val();
+        var prevKey=$('#admin_page_batchgroup').val();
+        var selectBox=$($('#admin_page_batchgroup >option'));
+    	var searchArray=[];
+    	
+    	
+    	
+        var searchKey = "";
+        
+        if(prevKey!=null)
+        	{
+        	//searchKey = prevKey+",";
+	        	if(prevKey!=null){
+	        		$.each(prevKey, function(index, value) {
+	        			selectBox.each(function(){
+	        				if($(this).val()==value){
+	        					searchArray.push($(this).text());
+	        				}
+	        			});
+	        		});
+	        	}
+	        	searchKey =searchArray+",";
+        	}
+        if (key != null) {
+            $.each(key, function(index, value) {
+                if (index != 0) {
+                    searchKey = searchKey + "," + value;
+                } else {
+                    searchKey = searchKey + value;
+                }
+            });
+        }
+        filter_user_table(searchKey);
+    });
+    
+    
+    $('#admin_page_batchgroup').on('change', function() {
+    	var prevKey=$('#admin_page_course').val();
+    	var key = $('#admin_page_batchgroup').val();
+    	var selectBox=$($('#admin_page_batchgroup >option'));
+    	var searchArray=[];
+    	if(key!=null){
+    		$.each(key, function(index, value) {
+    			selectBox.each(function(){
+    				if($(this).val()==value){
+    					searchArray.push($(this).text());
+    				}
+    			});
+    		});
+    	}
+        var searchKey = "";
+        if(prevKey!=null)
+    	{
+        	searchKey = prevKey+",";
+    	}
+        key=searchArray;
+        if (key != null) {
+            $.each(key, function(index, value) {
+                if (index != 0) {
+                    searchKey = searchKey + "," + value;
+                } else {
+                    searchKey = searchKey + value;
+                }
+            });
+        }
+        filter_user_table(searchKey);
+    });
+}
+
+function filter_user_table(key) {
+    if (key == null) {
+        key = '';
+    }
+    var table = $('#chart_datatable_3042').DataTable();
+    table.search(key).draw();
 }
 
 
@@ -1508,13 +1824,15 @@ function initCreateSectionCall()
 	
 		var cid = $('#member_filter_by').data("college_id");
 		var urls = '../get_filtered_students?entity_id='+cid+'&filter_by=ORG';
+		if(cid!=null)
+			{
 	    $.get(urls, function(data) {
 	    	$('#student_list_holder').empty();
 	    	$('#student_list_holder').append(data);
 	    	
 	    });
 	    
-		
+			}
 	
 	
 	
@@ -1579,7 +1897,7 @@ function init_orgadmin_scheduler() {
     scheduler_init_edit_old_trainer_associated();
 	
 	//---clock Date 
-    scheduler_ClockDate();
+    scheduler_ClockDate(true);
     
     //onChange filter function for batchGroup,course and assessment
     scheduler_onChange_init();
@@ -2160,14 +2478,7 @@ function admin_edit_modal_create() {
 	    });
 }
 
-function admin_choosen_init() {
-	 $('select').select2();
-	 $('.select2-dropdown').on("change",function() {
-         var kk = $(this).val();
-         $("input[name='student_list']").val(kk);
-         $("input[name='batch_groups']").val(kk);
-  });
-}
+
 
 function admin_course_batch_init() {
 	$('.dataTables_info').hide();
@@ -2242,13 +2553,6 @@ function admin_course_batch_init() {
     });
 }
 
-function filter_user_table(key) {
-    if (key == null) {
-        key = '';
-    }
-    var table = $('#chart_datatable_3042').DataTable();
-    table.search(key).draw();
-}
 
 function admin_load_resources(){
 	var count=0;
@@ -2362,10 +2666,10 @@ function admin_load_resources(){
 function admin_skill_content_search_init() {
     $('input[name=input-role-skill]').keyup(function(e) {
         var key = this.value;
-        var data_role = $(this)
-            .data('role');
+        var entityType = $(this).data('entity_type');
+        var entityId = $(this).data('entity_id');
         if (key.length > 0) {
-            $('#skill_' + data_role).each(function() {
+            $('#skill_' + entityType+'_'+entityId).each(function() {
                 $(this).each(function() {
                     $(this).find('.skill-avilable').each(function() {
                         $(this).css(
@@ -2654,13 +2958,14 @@ function scheduler_formValidation(formID,flag){
 }
 
 // adding clock and date js
-function scheduler_ClockDate() {
+//adding clock and date js
+function scheduler_ClockDate(flag) {
 
 	
 	
 	
 	var d = new Date();
-	
+	var time="10:10";
 	$.date = function(dateObject) {
 		var d = new Date(dateObject); 
 		var day = d.getDate(); 
@@ -2688,12 +2993,34 @@ function scheduler_ClockDate() {
             autoclose: true,
             format : "dd/mm/yyyy"
         });
-	
+	if(flag === true){
 	$('.time_holder').val(d.getHours()+':'+d.getMinutes());
 	$('.date_holder').val($.date(d));
-	$('.date_holder').val($.date(d));
-	$('.date_holder').val($.date(d));
-	
+/*	$('.date_holder').val($.date(d));
+	$('.date_holder').val($.date(d));*/
+	 time = d.getHours()+':'+d.getMinutes();
+	}else{
+		time = $('#currenTime').val();
+	}
+	 var options = {
+  		    now: time, //hh:mm 24 hour format only, defaults to current time
+  	        twentyFour: true,  //Display 24 hour format, defaults to false
+  	        upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
+  	        downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
+  	        close: 'wickedpicker__close', //The close class selector to use, for custom CSS
+  	        hoverState: 'hover-state', //The hover state class to use, for custom CSS
+  	        title: 'Event Time', //The Wickedpicker's title,
+  	        showSeconds: false, //Whether or not to show seconds,
+  	        timeSeparator: ':', // The string to put in between hours and minutes (and seconds)
+  	        secondsInterval: 1, //Change interval for seconds, defaults to 1,
+  	        minutesInterval: 1, //Change interval for minutes, defaults to 1
+  	        beforeShow: null, //A function to be called before the Wickedpicker is shown
+  	        afterShow: null, //A function to be called after the Wickedpicker is closed/hidden
+  	        show: null, //A function to be called when the Wickedpicker is shown
+  	        clearable: false, //Make the picker's input clearable (has clickable "x")
+	    };
+	   
+	 $('.timepicker').wickedpicker(options);
 }
 
 function scheduler_onChange_init(){
@@ -3018,7 +3345,7 @@ function scheduler_onShowOfModal(){
 			 scheduler_DeleteEvent();
 			 scheduler_newSchedularmodifyModal();
 			 scheduler_createEditedNewModal5();
-			 scheduler_ClockDate();
+			 scheduler_ClockDate(false);
 			 $('select').select2();
 			 
 			
@@ -3038,7 +3365,7 @@ function init_super_admin_dashboard(){
 			 scheduler_DeleteEvent();
 			 scheduler_init_edit_new_trainer_associated();
 			 scheduler_init_edit_old_trainer_associated();
-			 scheduler_ClockDate();
+			 scheduler_ClockDate(false);
 			$('select').select2();
 			
 
@@ -3323,7 +3650,7 @@ function init_super_admin_scheduler(){
 	    scheduler_init_edit_old_trainer_associated();
 		
 		//---clock Date 
-	    scheduler_ClockDate();
+	    scheduler_ClockDate(true);
 	    
 	    //onChange filter function for batchGroup,course and assessment
 	    scheduler_onChange_init();
@@ -3958,44 +4285,7 @@ function trainerRatingGraph() {
     });
 }
 
-function trainerDataTable() {
-    $('.dataTables-example').each(function(){
-    	$(this).DataTable({
-        pageLength: 15,
-        responsive: true,
-        dom: '<"html5buttons"B>lTfgitp',
-        buttons: [{
-                extend: 'copy'
-            },
-            {
-                extend: 'csv'
-            },
-            {
-                extend: 'excel',
-                title: 'ExampleFile'
-            },
-            {
-                extend: 'pdf',
-                title: 'ExampleFile'
-            },
 
-            {
-                extend: 'print',
-                customize: function(win) {
-                    $(win.document.body).addClass('white-bg');
-                    $(win.document.body).css('font-size', '10px');
-
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', 'inherit');
-                }
-            }
-        ]
-
-    });
-    	});
-    
-}
 
 
 

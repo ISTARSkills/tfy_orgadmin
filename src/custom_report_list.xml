@@ -149,7 +149,8 @@ SELECT
 		COUNT (
 			DISTINCT student_playlist.lesson_id
 		) AS INTEGER
-	) AS COUNT
+	) AS COUNT,
+	cast (COUNT (*) OVER () as integer) as total_user
 FROM
 	istar_user left join user_org_mapping on (istar_user. ID = user_org_mapping.user_id)	
 	 left join user_role on (user_org_mapping.user_id = user_role.user_id)
@@ -198,50 +199,10 @@ GROUP BY
 </sql>
 </custom_report>
 <custom_report id ="12"><sql>
-(
-	SELECT
-		skill_objective. ID,
-		skill_objective. NAME,
-		'COURSE' AS parent_type
-	FROM
-		skill_objective,
-		course,
-		course_skill_objective
-	WHERE
-		course. ID = course_skill_objective.course_id
-	AND course_skill_objective.skill_objective_id = skill_objective. ID
-)
-UNION
-	(
-		SELECT
-			skill_objective. ID,
-			skill_objective. NAME,
-			'MODULE' AS parent_ype
-		FROM
-			skill_objective,
-			MODULE,
-			module_skill_objective
-		WHERE
-			MODULE . ID = module_skill_objective.module_id
-		AND module_skill_objective.skill_objective_id = skill_objective. ID	
-	)
-UNION
-	(
-		SELECT
-			skill_objective. ID,
-			skill_objective. NAME,
-			'CMSESSION' AS parent_ype
-		FROM
-			skill_objective,
-			cmsession,
-			cmsession_skill_objective
-		WHERE
-			cmsession. ID = cmsession_skill_objective.cmsession_id
-		AND cmsession_skill_objective.skill_objective_id = skill_objective. ID
-		
-	)
-ORDER BY
-	ID
+select distinct skill_objective.id, skill_objective.name from skill_objective, cmsession_skill_objective
+where cmsession_skill_objective.skill_objective_id = skill_objective.id
+and skill_objective.id in (select parent_skill from skill_objective where type ='LEARNING_OBJECTIVE')
+order by name
 </sql></custom_report>
 <custom_report id="13">
 <sql>
@@ -297,28 +258,26 @@ ORDER BY
 </custom_report>
 <custom_report id="15">
 <sql>
-SELECT DISTINCT
-	lesson_cmsession.lesson_id,
-lesson_cmsession.cmsession_id,
-module_course.module_id,
-	module_course.course_id
+SELECT
+	distinct lesson.id as lesson_id, cmsession.id as cmsession_id, module.id as module_id, course.id as course_id, lesson.title as lesson_title, lesson.description as lesson_desc, course.course_name as course_name
 FROM
-	module_course,
+	cmsession_skill_objective,
+	lesson_cmsession,
 	cmsession_module,
-	lesson_cmsession
-WHERE
-	module_course.module_id = cmsession_module.module_id
-AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id
-AND lesson_cmsession.cmsession_id = (
-	SELECT
-		cmsession_id
-	FROM
-		cmsession_skill_objective
-	WHERE
-		skill_objective_id = :skill_objective_id
-)
-ORDER BY
-	course_id
+	module_course,
+	lesson,
+	cmsession,
+	module,
+	course
+where  
+cmsession_skill_objective.skill_objective_id = :skill_objective_id
+and cmsession_skill_objective.cmsession_id = lesson_cmsession.cmsession_id
+and lesson_cmsession.cmsession_id = cmsession_module.cmsession_id
+and cmsession_module.module_id = module_course.module_id
+and module_course.course_id = course.id 
+and module_course.module_id= module.id
+and cmsession_module.cmsession_id = cmsession.id 
+and lesson_cmsession.lesson_id = lesson.id  
 </sql></custom_report>
 <custom_report id ="16">
 <sql>
@@ -352,6 +311,59 @@ and lesson_cmsession.lesson_id = lesson.id
 and module_course.course_id = course.id 
 and module_course.course_id = :course_id
 and lesson_cmsession.lesson_id = :lesson_id
+</sql>
+</custom_report>
+<custom_report id="22">
+<sql>
+SELECT DISTINCT
+	lesson.title ||' ( Course - '||course.course_name||' )' AS content_title,
+	lesson. ID AS content_id
+FROM
+	student_playlist,
+	lesson,
+	course
+WHERE
+	course. ID = student_playlist.course_id
+AND lesson. ID = student_playlist.lesson_id
+AND student_id = :user_id
+ORDER BY
+	content_title,content_id
+</sql>
+</custom_report>
+<custom_report id="23">
+<sql>
+SELECT DISTINCT
+	lesson.title ||' ( Course - '||course.course_name||' )' AS content_title,
+	lesson. ID AS content_id
+FROM
+	student_playlist,
+	lesson,
+	course
+WHERE
+	course. ID = student_playlist.course_id
+AND lesson. ID = student_playlist.lesson_id
+AND student_id in (select DISTINCT student_id from batch_students where batch_group_id=:section_id)
+ORDER BY
+	content_title,content_id
+</sql>
+</custom_report>
+<custom_report id="24">
+<sql>
+SELECT DISTINCT
+	lesson.title ||' ( Course - '||course.course_name||' )' AS content_title,
+	lesson. ID AS content_id
+FROM
+	student_playlist,
+	lesson,
+	course
+WHERE
+	course. ID = student_playlist.course_id
+AND lesson. ID = student_playlist.lesson_id
+AND student_id in (select DISTINCT student_id from batch_students where batch_group_id=:role_id)
+ORDER BY
+	content_title,content_id
+
+
 </sql>
 </custom_report>
 </custom_report_list>

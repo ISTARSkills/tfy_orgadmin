@@ -1,11 +1,16 @@
+<%@page import="org.jgroups.util.UUID"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.orgadmin.admin.services.OrgAdminSkillService"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%
-	int colegeID = Integer.parseInt(request.getParameter("colegeID"));
-	List<HashMap<String, Object>> listSkills = new OrgAdminSkillService().getAllSkills(colegeID);
+String collegeID = request.getParameter("college_id");
+String entityType = request.getParameter("entity_type");
+String entityId = request.getParameter("entity_id");
+List<HashMap<String, Object>> listSkills = new OrgAdminSkillService().getAllSkills(Integer.parseInt(collegeID));
+IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 %>
 <div
 		class="col-lg-12 p-xs  b-r-lg border-left-right border-top-bottom border-size-small div-height">
@@ -15,7 +20,7 @@
 
 			<div class="input-group">
 				<input type="text" name="input-role-skill"
-					data-role="${param.role_id}" placeholder="Search Skill..."
+					data-entity_id="<%=entityId %>" data-entity_type="<%=entityType%>" placeholder="Search Skill..."
 					class=" form-control b-r-lg"> <span class="input-group-btn">
 					<button type="button" class="btn btn-white b-r-lg">
 						<span><i class="fa fa-search"></i></span>
@@ -28,17 +33,15 @@
 
 		<div class="col-lg-12">
 			<div class="full-height div-scroll-height-2">
-				<div class="full-height-scroll" id="skill_${param.role_id}">
+				<div class="full-height-scroll" id="skill_<%=entityType%>_<%=entityId%>">
 					<%
 						for (HashMap<String, Object> item : listSkills) {
 					%>
 					<div
-						class="alert gray-bg p-xs  b-r-lg border-left-right border-top-bottom skill-avilable">
-						<button aria-hidden="true" data-dismiss="alert"
-							data-type="content" data-role-id="${param.role_id}"
-							data-lesson-type="<%=item.get("parent_type")%>"
-							data-skill-id="<%=item.get("id")%>" class="close role-skill"
-							type="button">
+						class="alert gray-bg p-xs  b-r-lg border-left-right border-top-bottom skill-avilable" >
+						<button aria-hidden="true" data-dismiss="alert"	 class="close role-skill add_content" type="button" 
+					data-href="partials/available_mapped_content.jsp" data-college_id="<%=collegeID %>"	 
+					data-skill_id="<%=item.get("id")%>" data-entity_type="<%=entityType%>" data-entity_id="<%=entityId%>" data-admin_id="<%=user.getId()%>">
 							<i class="fa fa-chevron-circle-right"></i>
 						</button>
 						<%=item.get("name")%></div>

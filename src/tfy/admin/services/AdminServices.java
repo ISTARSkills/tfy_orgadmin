@@ -16,6 +16,9 @@ import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
+import in.orgadmin.utils.report.CustomReport;
+import in.orgadmin.utils.report.CustomReportUtils;
+
 /**
  * @author mayank
  *
@@ -75,7 +78,62 @@ public class AdminServices {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<BatchGroup> getRolesInCollege(int college_id)
+	{
+		
+		BatchGroupDAO dao = new BatchGroupDAO();
+		ArrayList<BatchGroup> roles = new ArrayList<>();
+		if(college_id==-3)
+		{
+			//super admin
+			for(BatchGroup bg : (ArrayList<BatchGroup>) dao.findAll())
+			{
+				if(bg.getType().equalsIgnoreCase("ROLE"))
+				{
+					roles.add(bg);
+				}
+			}
+		}
+		else
+		{
+			
+			Organization org = new OrganizationDAO().findById(college_id);
+			
+			for(BatchGroup bg :  org.getBatchGroups())
+			{
+				if(bg.getType().equalsIgnoreCase("ROLE"))
+				{
+					roles.add(bg);
+				}
+			}
 	
+		}
+		return roles;
+		
+	}
+	
+	
+	public List<HashMap<String, Object>> getAllContentAssosicatedSkills(int orgId, int entityId, String entityType) {
+		System.out.println(entityType);
+		String sql = "";
+		CustomReportUtils repUtils= new CustomReportUtils();
+		
+		if (entityType.equalsIgnoreCase("User")) {
+			CustomReport report = repUtils.getReport(22);
+			sql = report.getSql().replaceAll(":user_id", entityId+"");
+		} else if (entityType.equalsIgnoreCase("Group")) {
+			CustomReport report = repUtils.getReport(23);
+			sql = report.getSql().replaceAll(":section_id", entityId+"");
+		} else if (entityType.equalsIgnoreCase("Role")) {
+			CustomReport report = repUtils.getReport(24);
+			sql = report.getSql().replaceAll(":role_id", entityId+"");
+		}
+		
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		return data;
+	}
 	
 	
 }
