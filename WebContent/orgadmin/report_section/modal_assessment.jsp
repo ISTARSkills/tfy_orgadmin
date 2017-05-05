@@ -20,15 +20,23 @@
 	tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content animated flipInY">
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
+                                        
+                                        <button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+	</button>
+	<h4 class="modal-title text-center">Assessment Details</h4>
 
+</div>
 			<!-- start -->
 
-			<div class="row">
+			<div class="row" style="margin: 0px;">
 				<div class="col-lg-4">
 
 					<div class="ibox full-height modal-height" >
 						<div class="ibox-header">
-							<h3 class="font-bold m-l-sm">Students</h3>
+							<h2 class="font-bold text-center">Students</h2>
 						</div>
 
 						<div class="ibox-content full-height-scroll">
@@ -42,15 +50,15 @@
 									style="min-height: 100px; border-width: 1px;"
 									data-user='<%=item.get("student_id")%>'
 									data-assessment='<%=assessment_id%>' data-batch='<%=batch_id%>'>
-									<div class="col-lg-4" style="margin-top: 3px;">
+									<div class="col-lg-2" style="margin-top: 28px;margin-bottom: 28px;">
 										<img alt="image" class="img-circle m-l-xxs student_image"
 											src='<%=item.get("profile_image")%>'
 											/>
 									</div>
-									<div class="col-lg-8" style="margin-top: 3px;">
-										<p class="m-r-sm m-t-sm"><%=item.get("name")%>
-											<small class="text-muted"><%=item.get("email")%></small>
-										</p>
+									<div class="col-lg-10" style="margin-top: 19px;margin-bottom: 19px;">
+										<p class="m-r-sm m-t-sm" style="margin-bottom: 0px;"><%=item.get("name")%></p>
+											<p class="m-r-sm m-t-sm" style="margin-top: 0px;"><small class="text-muted"><%=item.get("email")%></small></p>
+										
 									</div>
 								</div>
 							</div>
@@ -68,13 +76,17 @@
 
 					<div class="ibox">
 						<div class="ibox-header">
-							<h3 class="font-bold">Questions</h3>
+							<h2 class="font-bold text-center">Questions</h2>
 						</div>
 						<div id="modal_question_holder" class="full-height modal-height"></div>
 					</div>
 				</div>
 			</div>
 			<!-- end -->
+			<div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+</div>
+		</div>
 		</div>
 	</div>
 </div>

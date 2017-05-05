@@ -52,14 +52,14 @@
 									style="min-height: 100px; border-width: 1px;"
 									data-user='<%=item.get("student_id")%>'
 									data-assessment='<%=assessment_id%>' data-batch='<%=batch_id%>'>
-									<div class="col-lg-4" style="margin-top: 3px;">
+									<div class="col-lg-4" style="margin-top: 28px;margin-bottom: 28px;">
 										<img alt="image" class="img-circle m-l-xxs student_image"
 											src='<%=item.get("profile_image")%>'
 											/>
 									</div>
-									<div class="col-lg-8" style="margin-top: 3px;">
-										<p class="m-r-sm m-t-sm"><%=item.get("name")%>
-											<small class="text-muted"><%=item.get("email")%></small>
+									<div class="col-lg-8" style="margin-top: 19px;margin-bottom: 19px;">
+										<p class="m-r-sm m-t-sm" style="margin-bottom: 0px;"><%=item.get("name")%></p>
+											<p class="m-r-sm m-t-sm" style="margin-top: 0px;"><small class="text-muted"><%=item.get("email")%></small></p>
 										</p>
 									</div>
 								</div>
