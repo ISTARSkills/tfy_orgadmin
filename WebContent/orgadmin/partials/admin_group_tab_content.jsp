@@ -74,9 +74,10 @@ Organization college=new OrganizationDAO().findById(colegeID);
 							</div>
 						</div>
 						<div class="form-group">
+						<div class="col-lg-3">
 							<h3 class="m-b-n-md">Type</h3>
 							<hr class="m-b-xs">
-							<div class="col-lg-3">
+							<div class="col-lg-12">
 								<select
 									class="form-control" name="group_type">
 									<option value="ROLE">ROLE</option>
@@ -84,10 +85,10 @@ Organization college=new OrganizationDAO().findById(colegeID);
 								</select>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="col-lg-9">
 							<h3 class="m-b-n-md">Parent Role / Section</h3>
 							<hr class="m-b-xs">
-							<div class="col-lg-10">
+							<div class="col-lg-12">
 								<select
 									class="form-control" name="parent_group_id">
 									<option value="-1">NONE</option>
@@ -102,7 +103,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 									
 								</select>
 							</div>
-						</div>
+						</div></div>
 						
 						<div class="form-group">
 							<h3 class="m-b-n-md">Members</h3>

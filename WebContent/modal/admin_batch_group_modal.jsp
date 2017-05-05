@@ -59,9 +59,10 @@
 						</div>
 					</div>
 					<div class="form-group">
+					<div class="col-lg-3">
 							<h3 class="m-b-n-md">Type</h3>
 							<hr class="m-b-xs">
-							<div class="col-lg-3">
+							<div class="col-lg-12">
 							
 								<select
 									class="form-control" name="group_type">
@@ -70,10 +71,10 @@
 								</select>
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="col-lg-9">
 							<h3 class="m-b-n-md">Parent Role / Batch Group</h3>
 							<hr class="m-b-xs">
-							<div class="col-lg-10">
+							<div class="col-lg-12">
 								<select
 									class="form-control" name="parent_group_id" id="parent_group_selector">
 									<option value="-1">NONE</option>
@@ -90,7 +91,7 @@
 									%>
 									
 								</select>
-							</div>
+							</div></div>
 						</div>
 					
 					<div class="form-group">
