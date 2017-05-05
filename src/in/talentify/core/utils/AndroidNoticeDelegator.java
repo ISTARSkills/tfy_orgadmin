@@ -57,7 +57,7 @@ public class AndroidNoticeDelegator {
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
 				//hopperUpdates.put("eventDate", eventDate);
-				databaseReferenceForUser.push().setValue(hopperUpdates);
+				databaseReferenceForUser.setValue(hopperUpdates);
 			}
 			try {
 				Thread.sleep(1000);
@@ -75,7 +75,7 @@ public class AndroidNoticeDelegator {
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
 				//hopperUpdates.put("eventDate", eventDate);
-				databaseReferenceForUser.push().setValue(hopperUpdates);
+				databaseReferenceForUser.setValue(hopperUpdates);
 			}
 			try {
 				Thread.sleep(1000);
