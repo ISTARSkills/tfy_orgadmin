@@ -58,7 +58,7 @@ function readyFn(jQuery) {
 
 		$('.tree1').treed();
 	    
-	
+		$('#wizard').steps();
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
@@ -81,6 +81,7 @@ function readyFn(jQuery) {
 		break;
 	case 'orgadmin_scheduler':
 		init_orgadmin_scheduler();
+		
 		$('#Scheduler').css('color','  #eb384f');
 		break;
 		
@@ -288,16 +289,17 @@ function createDataTables()
 		var id = $(this).attr('id');
 		var url = '../data_table_controller?';
 		var params ={}; 
-		$.each($(this).context.dataset, function( index, value ) {
-		
-			url +=index+'='+value+'&';
+		$.each($(this).context.dataset, function( index, value ) {		
+			url +=index+'='+value+'&';						
 			});		
-		//alert(id);
+		
 		if ( $.fn.dataTable.isDataTable(this) ) {
-		    
+		    console.log('dddd');
+		    this.DataTable();
 		}
 		else
 		{
+			console.log('>>>>eee>>>');
 			$(this).DataTable({
 		         pageLength: 10,
 		         responsive: true,
@@ -1541,6 +1543,8 @@ function load_content_mapping()
 				    	$(this).slimscroll({height:$(this).parent().height()});
 				    });	        	 
 	            init_user_pagination_in_user_tab();
+	            init_section_pagination_in_section_tab();
+	            init_role_pagination_in_role_tab();
 	            init_user_search_in_user_tab();
 	            init_child_entity_tabs();
 	            
@@ -1675,7 +1679,7 @@ function init_admin_skill_removal()
 
 function init_user_search_in_user_tab()
 {
-	$('#content-user-search').on('keypress', function(e) {		
+	$('.content-user-search').on('keypress', function(e) {		
 		if(e.keyCode === 13)
 			{
 			$('#admin_page_loader').show();
@@ -1709,8 +1713,8 @@ function init_user_search_in_user_tab()
 }
 function init_user_pagination_in_user_tab()
 {
-	$('#page-selection').bootpag({
-        total: parseInt($('#page-selection').data('size')/10+1),
+	$('#user_page-selection').bootpag({
+        total: parseInt($('#user_page-selection').data('size')/10+1),
         maxVisible: 10
     }).on("page", function(event, /* page number  here */ num){
     		$('#admin_page_loader').show();
@@ -1719,16 +1723,59 @@ function init_user_pagination_in_user_tab()
 			var type=$(this).data('type');
 			var id=$(this).data('org');
 			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
-			if(type=='User'){
-				url=url+'&offset='+offset
-			}		
+			url=url+'&offset='+offset;	
 			$.get(url, function( data ) {				 				  
 				  $(tab).parent().parent().find('.actual_content_body').remove();				 
-				  $(tab).parent().parent().append(data);					  				  
-				    //initilize and event handling of skills search box
-				   //admin_skill_content_search_init();				    
-				    //removeing conetent skills event handling and ajax calls
-				   //admin_skill_alertBinding();				    
+				  $(tab).parent().parent().append(data);	
+				  init_child_entity_tabs();
+				    $('.full-height-scroll').each(function(){
+				    	$(this).slimscroll({height:$(this).parent().height()});
+				    });
+				    $('#admin_page_loader').hide();
+				});
+    });
+}
+function init_role_pagination_in_role_tab()
+{
+	$('#role_page-selection').bootpag({
+        total: parseInt($('#role_page-selection').data('size')/10+1),
+        maxVisible: 10
+    }).on("page", function(event, /* page number  here */ num){
+    		$('#admin_page_loader').show();
+			var offset=(num*10)-10;						
+			var tab=$(this);			
+			var type=$(this).data('type');
+			var id=$(this).data('org');
+			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
+			url=url+'&offset='+offset;	
+			$.get(url, function( data ) {				 				  
+				  $(tab).parent().parent().find('.actual_content_body').remove();				 
+				  $(tab).parent().parent().append(data);	
+				  init_child_entity_tabs();
+				    $('.full-height-scroll').each(function(){
+				    	$(this).slimscroll({height:$(this).parent().height()});
+				    });
+				    $('#admin_page_loader').hide();
+				});
+    });
+}
+function init_section_pagination_in_section_tab()
+{
+	$('#section_page-selection').bootpag({
+        total: parseInt($('#section_page-selection').data('size')/10+1),
+        maxVisible: 10
+    }).on("page", function(event, /* page number  here */ num){
+    		$('#admin_page_loader').show();
+			var offset=(num*10)-10;						
+			var tab=$(this);			
+			var type=$(this).data('type');
+			var id=$(this).data('org');
+			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
+			url=url+'&offset='+offset;	
+			$.get(url, function( data ) {				 				  
+				  $(tab).parent().parent().find('.actual_content_body').remove();				 
+				  $(tab).parent().parent().append(data);	
+				  init_child_entity_tabs();
 				    $('.full-height-scroll').each(function(){
 				    	$(this).slimscroll({height:$(this).parent().height()});
 				    });
@@ -1880,6 +1927,12 @@ function initCreateSectionCall()
 
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');
+    //$("#wizard").steps();
+    
+   /* $('#dddddddd').unbind().on('click',function (){
+    	alert ('calling wizard');
+    	init_auto_scheduler();	      	
+    });*/
     
   /*  $('.gray-bg-schedular >li.active').click(function(){  	
     	$('.associateTrainer').select2();
@@ -1920,6 +1973,88 @@ function init_orgadmin_scheduler() {
     scheduler_createEditedNewModal5();
     //function to add another function on show of modal
     scheduler_onShowOfModal();   
+}
+
+function init_auto_scheduler()
+{
+	//createDataTables();
+	
+	/*$("#wizard_form").steps({
+        bodyTag: "fieldset",
+        onStepChanging: function (event, currentIndex, newIndex)
+        {
+            // Always allow going backward even if the current step contains invalid fields!
+            if (currentIndex > newIndex)
+            {
+                return true;
+            }
+
+            // Forbid suppressing "Warning" step if the user is to young
+            if (newIndex === 3 && Number($("#age").val()) < 18)
+            {
+                return false;
+            }
+
+            var form = $(this);
+
+            // Clean up if user went backward before
+            if (currentIndex < newIndex)
+            {
+                // To remove error styles
+                $(".body:eq(" + newIndex + ") label.error", form).remove();
+                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+            }
+
+            // Disable validation on fields that are disabled or hidden.
+            form.validate().settings.ignore = ":disabled,:hidden";
+
+            // Start validation; Prevent going forward if false
+            return form.valid();
+        },
+        onStepChanged: function (event, currentIndex, priorIndex)
+        {
+            // Suppress (skip) "Warning" step if the user is old enough.
+            if (currentIndex === 2 && Number($("#age").val()) >= 18)
+            {
+                $(this).steps("next");
+            }
+
+            // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+            if (currentIndex === 2 && priorIndex === 3)
+            {
+                $(this).steps("previous");
+            }
+        },
+        onFinishing: function (event, currentIndex)
+        {
+            var form = $(this);
+
+            // Disable validation on fields that are disabled.
+            // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+            form.validate().settings.ignore = ":disabled";
+
+            // Start validation; Prevent form submission if false
+            return form.valid();
+        },
+        onFinished: function (event, currentIndex)
+        {
+            var form = $(this);
+
+            // Submit form input
+            form.submit();
+        }
+    }).validate({
+                errorPlacement: function (error, element)
+                {
+                    element.before(error);
+                },
+                rules: {
+                    confirm: {
+                        equalTo: "#password"
+                    }
+                }
+            });*/
+	
 }
 
 function init_orgadmin_report(){

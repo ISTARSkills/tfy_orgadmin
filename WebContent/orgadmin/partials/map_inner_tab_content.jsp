@@ -28,8 +28,8 @@
 	}
 %>
 					<div class="text-center">
-						<div id="page-selection" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content.jsp" data-type='User' data-size='<%=totalEntities%>'>
-							<input type='text' id="content-user-search" placeholder=" Search Users..." class="form-control b-r-lg no-opaddings pull-right m-r-xl m-t-sm content-user-search-holder" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content.jsp" data-type='User' data-size='<%=list.size()%>'/>
+						<div id="user_page-selection" class="page-selection" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content.jsp" data-type='User' data-size='<%=totalEntities%>'>
+							<input type='text' id="content-user-search"  placeholder=" Search Users..." class="form-control b-r-lg no-opaddings pull-right m-r-xl m-t-sm content-user-search-holder content-user-search" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content.jsp" data-type='User' data-size='<%=list.size()%>'/>
 						</div>
 					</div>
 <div class="panel-body no-borders content-map-ajax-request actual_content_body">					 

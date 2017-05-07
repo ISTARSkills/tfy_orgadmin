@@ -23,7 +23,16 @@
 	}
 	List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllContentUserList(colegeID, type,
 			offset, searchKey,limit);
+	int totalEntities =0;
+	if(list.size()>0)
+	{
+		totalEntities = (int)list.get(0).get("total_user");
+	}
 %>
+<div class="text-center">
+						<div id="role_page-selection" class="page-selection" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content_for_role.jsp" data-type='role' data-size='<%=totalEntities%>'>
+						</div>
+					</div>
 <div class="panel-body no-borders content-map-ajax-request" >
 <div class="tabs-container role_container">
 

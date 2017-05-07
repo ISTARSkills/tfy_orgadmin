@@ -23,8 +23,18 @@
 	}
 	List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllContentUserList(colegeID, type,
 			offset, searchKey,limit);
+	int totalEntities =0;
+	if(list.size()>0)
+	{
+		totalEntities = (int)list.get(0).get("total_user");
+	}
 %>
-<div class="panel-body no-borders content-map-ajax-request" >
+<div class="text-center">
+						<div id="section_page-selection" class="page-selection" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content_for_group.jsp" data-type='group' data-size='<%=totalEntities%>'>
+							<input type='text' id="content-user-search"  placeholder=" Search Groups..." class="form-control b-r-lg no-opaddings pull-right m-r-xl m-t-sm content-user-search-holder content-user-search" data-org='<%=colegeID%>' data-url="partials/map_inner_tab_content_for_group.jsp" data-type='Group' data-size='<%=totalEntities%>'/>
+						</div>
+					</div>
+<div class="panel-body no-borders content-map-ajax-request actual_content_body" >
 <div class="tabs-container">
 
 	<div class="tabs-left">

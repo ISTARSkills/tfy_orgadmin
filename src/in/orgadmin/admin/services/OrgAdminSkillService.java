@@ -146,13 +146,27 @@ public class OrgAdminSkillService {
 		} else if (type.equalsIgnoreCase("Group")) {
 			CustomReport report = repUtils.getReport(11); 
 			sql = report.getSql();
+			String searchquery = "";
+			if (searchKey != null && !searchKey.equalsIgnoreCase("")) {
+				searchquery = searchKey;
+			}
 			sql = sql.replaceAll(":college_id", orgId+"");
 			sql = sql.replaceAll(":type", "SECTION");
+			sql = sql.replaceAll(":limit", limit);
+			sql = sql.replaceAll(":offset", offset+"");
+			sql = sql.replaceAll(":search_term", searchquery);
 		} else if (type.equalsIgnoreCase("Role")) {
 			CustomReport report = repUtils.getReport(11); 
 			sql = report.getSql();
+			String searchquery = "";
+			if (searchKey != null && !searchKey.equalsIgnoreCase("")) {
+				searchquery = searchKey;
+			}
 			sql = sql.replaceAll(":college_id", orgId+"");
 			sql = sql.replaceAll(":type", "ROLE");
+			sql = sql.replaceAll(":limit", limit);
+			sql = sql.replaceAll(":offset", offset+"");
+			sql = sql.replaceAll(":search_term", searchquery);
 		}
 		System.out.println("final sql"+sql);
 		DBUTILS db = new DBUTILS();

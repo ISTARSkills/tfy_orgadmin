@@ -179,7 +179,8 @@ SELECT
 	cast (COUNT (
 		DISTINCT student_playlist.lesson_id
 	)
-as integer) as count
+as integer) as count,
+	cast (COUNT (*) OVER () as integer) as total_user
 FROM
 	batch_group
 LEFT JOIN batch_students ON (
@@ -191,10 +192,11 @@ LEFT JOIN student_playlist ON (
 WHERE
 	batch_group.college_id = :college_id
 and batch_group.type =':type' 
+AND NAME LIKE '%:search_term%'
 GROUP BY
 	batch_group. ID,
 	batch_group. NAME
-
+LIMIT :limit OFFSET :offset
 
 </sql>
 </custom_report>

@@ -534,4 +534,21 @@ organization.id = classroom_details.organization_id
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
+<reports id="3056" type_of_report="table">
+		<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+		<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" display_name="# Students" isVisible="true" name="student_count" />
+		<column columnHandler="NONE" display_name="Completed" isVisible="true" name="completed" />
+		<column columnHandler="NONE" display_name="Start Date" isVisible="true" name="start_date" />
+		<column columnHandler="NONE" display_name="End Date" isVisible="true" name="end_date" />
+		<column columnHandler="NONE" display_name="Scheduled Days" isVisible="true" name="scheduled_days"/>
+		<column columnHandler="NONE" display_name="Task Frequency" isVisible="true" name="frequency"/>
+			
+<sql>
+select course.id, course_name, student_count, student_count as completed, cast (start_date as varchar) as start_date, cast (end_date as varchar) as end_date, scheduled_days, frequency , cast (count(*) over() as integer) as total_rows 
+from course, auto_scheduler_data
+where course.id = auto_scheduler_data.course_id
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
 </istar_reports>

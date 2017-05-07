@@ -32,4 +32,5 @@
 <link href="<%=basePath%>css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 <link href="<%=basePath%>css/wickedpicker.css" rel="stylesheet">
 <link href="<%=basePath%>css/wickedpicker.min.css" rel="stylesheet">
+<link href="<%=basePath%>css/plugins/steps/jquery.steps.css" rel="stylesheet">
 </head>
