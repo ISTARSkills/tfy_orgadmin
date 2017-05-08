@@ -83,7 +83,7 @@ public class OrgAdminUserService {
 			
 			
 		    //Trainer Student  User Profile
-			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	profile_image, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		NULL, 		'"+firstname+"', 		'"+lastname+"', 	NULL,	'"+gender+"', '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png',  "+userID+", 		NULL 	); ";
+			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		NULL, 		'"+firstname+"', 		'"+lastname+"', 	NULL,	'"+gender+"',   "+userID+", 		NULL 	); ";
 		
 			db.executeUpdate(UserProfileSql);
 			System.out.println(UserProfileSql);
@@ -108,7 +108,7 @@ public class OrgAdminUserService {
 		System.out.println("updateIstarStudentSql>>>"+updateIstarStudentSql);
 		db.executeUpdate(updateIstarStudentSql);
 		
-		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '"+firstname+"',  last_name = '"+lastname+"',  gender = '"+gender+"',  profile_image = '/video/android_images/"+firstname.toUpperCase().charAt(0)+".png' WHERE   user_id = "+userID+" ;";
+		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '"+firstname+"',  last_name = '"+lastname+"',  gender = '"+gender+"' WHERE   user_id = "+userID+" ;";
 		
 		db.executeUpdate(updateUserProfileSql);
 		

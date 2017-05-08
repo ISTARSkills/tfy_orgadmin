@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.BatchStudents;
 import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
@@ -27,6 +29,8 @@ import com.viksitpro.core.dao.entities.UserOrgMappingDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 import com.viksitpro.core.utilities.TaskCategory;
+
+import in.talentify.core.utils.AndroidNoticeDelegator;
 
 public class AssessmentSchedulerService {
 
@@ -37,7 +41,8 @@ public class AssessmentSchedulerService {
 	SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf1 = new SimpleDateFormat("HH:mm a");
 	Date FinaleventDate = null;
-
+	AndroidNoticeDelegator noticeDelegator = new AndroidNoticeDelegator();
+	
 	public void createAssessment(int trainerID, int batch_id, int assessment_id, String event_date, String time,
 			int AdminUserID, int classroomID, String associateTrainerID) {
 
@@ -72,10 +77,11 @@ public class AssessmentSchedulerService {
 			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date,time, AdminUserID, classroomID, assessment_id,
 					associateTrainerID,assessment);
 		}
-
+		ArrayList<String> students = new ArrayList<>();
+		
 		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
 			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getIstarUser().getId())) {
-
+				students.add(bstudent.getIstarUser().getId()+"");
 				String assessmentEventsql = "INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	id, 	status, 	action, 	assessment_id, 	batch_id ) VALUES 	( 		'"
 						+ bstudent.getIstarUser().getId() + "', 		now(), 		" + AdminUserID + ", 		'"
 						+ event_date + "', 		'" + assessment.getAssessmentdurationhours() + "', 		'"
@@ -102,6 +108,8 @@ public class AssessmentSchedulerService {
 				String tasksql = "INSERT INTO task ( 	ID, 	NAME,  description, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date,   is_active, 	created_at, 	updated_at, 	item_id, 	item_type ) VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'"+assessmentName+"',     '"+assessmentDesc+"', 		'"+ AdminUserID + "', 		'" + bstudent.getIstarUser().getId()+ "', 		'SCHEDULED', 		CAST ( 			'" + event_date+ "' AS TIMESTAMP 		), 		CAST ( 			'(" + event_date + ")' AS TIMESTAMP )+ interval ' 1 ' minute * (" + assessment.getAssessmentdurationhours() + "*60+" + assessment.getAssessmentdurationminutes() + "), 	 't',	now(), 		now(), 		" + assessment_id + ", 		'"+TaskCategory.ASSESSMENT+"' 	) RETURNING ID;";
 				int taskID = db.executeUpdateReturn(tasksql);
 				
+				
+				
 
 				String notificationsql = "INSERT INTO istar_notification ( 	id, 	sender_id, 	receiver_id, 	title, 	details, 	status, 	ACTION, 	TYPE, 	is_event_based, 	created_at, 	task_id ) VALUES 	( 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_notification), 		"
 						+ AdminUserID + ", 		'" + bstudent.getIstarUser().getId() + "', 		'" + title_new
@@ -111,6 +119,22 @@ public class AssessmentSchedulerService {
 				db.executeUpdate(notificationsql);
 			}
 		}
+		
+		
+		if(students.size()>0)
+		{	
+			HashMap<String, Object> item = new HashMap<String, Object>();
+			
+			item.put("assessmentId", assessment_id);
+			item.put("courseId", assessment.getCourse());
+			Course course = new CourseDAO().findById(assessment.getCourse());
+			String notificationTitle = "An assessment with title "+assessment.getAssessmenttitle()+" of course "+course.getCourseName()+" has been added to task list.";
+			String notificationDescription =  assessment.getDescription()!=null ? assessment.getDescription(): "NA";
+			
+			noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.ASSESSMENT, item);		
+			
+		}
+		
 
 	}
 

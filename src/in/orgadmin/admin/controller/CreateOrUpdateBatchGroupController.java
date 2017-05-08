@@ -63,7 +63,8 @@ Param -> student_list : Value ->2037*/
 
 			String group_name = request.getParameter("group_name");
 			String group_desc = request.getParameter("group_desc");
-			String groupType = request.getParameter("group_type");
+			String groupType = "SCHEDULED";
+			groupType = request.getParameter("group_type");
 			int parentGroupId = Integer.parseInt(request.getParameter("parent_group_id"));			
 			String student_list;
 			if(request.getParameterMap().containsKey("select_all") && request.getParameter("select_all").equalsIgnoreCase("on"))
