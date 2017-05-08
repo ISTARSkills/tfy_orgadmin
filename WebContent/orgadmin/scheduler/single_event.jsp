@@ -115,7 +115,8 @@ user_id = ui.getOrgPrincipal(colegeID);
 					<!-- <input type="text" class="form-control time_holder" name="startTime"
 						value="09:30">--> <span class="input-group-addon"> <span
 						class="fa fa-clock-o"></span>
-					</span><input type="text" style="width: 100%; height: 28px;" name="startTime" class="timepicker"/>
+					</span><!-- <input type="text" style="width: 100%; height: 28px;" name="startTime" class="timepicker"/> -->
+					<input type="text" style="width: 100%; height: 28px;" name="startTime" class="time_element"/>
 				</div> 
                
 
