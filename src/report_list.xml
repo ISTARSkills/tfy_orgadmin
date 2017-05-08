@@ -551,4 +551,111 @@ where course.id = auto_scheduler_data.course_id
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
+<reports id="3057" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Email" isVisible="true" name="email" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />
+<sql>
+select distinct istar_user.id , istar_user.email, cast (count(DISTINCT student_playlist.lesson_id) as INTEGER) as tasks, cast (count(DISTINCT student_playlist.course_id) as INTEGER) as courses,
+ count(*) over() as total_rows 
+from istar_user  
+join user_org_mapping on (istar_user.id = user_org_mapping.user_id and user_org_mapping.organization_id = :college_id) 
+join user_role on (istar_user.id = user_role.user_id and user_role.role_id=(select id from role where role_name='STUDENT'))
+left join student_playlist on (istar_user.id = student_playlist.student_id)
+group by istar_user.id , istar_user.email
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+<reports id="3058" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Name" isVisible="true" name="name" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />	
+<sql>
+select DISTINCT TF.id, TF.name , 
+cast (min (TF.stu_tasks) as integer) as tasks,
+min(TF.courses) as courses,
+count(*) over() as total_rows  from (
+select DISTINCT batch_group.id , batch_group.name, student_playlist.student_id, 
+count(distinct student_playlist.lesson_id)as stu_tasks, cast (count(DISTINCT course_id) as integer)  as courses from student_playlist, batch_students, batch_group
+where student_playlist.student_id = batch_students.student_id
+and batch_students.batch_group_id = batch_group.id
+and batch_group.college_id = :college_id
+and batch_group.type = 'SECTION'
+group by batch_group.id , batch_group.name, student_playlist.student_id
+order by batch_group.id,batch_group.name, student_playlist.student_id
+) TF
+group by TF.id, TF.name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+<reports id="3059" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Name" isVisible="true" name="name" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />
+<sql>
+select DISTINCT TF.id, TF.name , 
+cast (min (TF.stu_tasks) as integer) as tasks,
+min(TF.courses) as courses,
+count(*) over() as total_rows  from (
+select DISTINCT batch_group.id , batch_group.name, student_playlist.student_id, 
+count(distinct student_playlist.lesson_id)as stu_tasks, cast (count(DISTINCT course_id) as integer)  as courses from student_playlist, batch_students, batch_group
+where student_playlist.student_id = batch_students.student_id
+and batch_students.batch_group_id = batch_group.id
+and batch_group.college_id = :college_id
+and batch_group.type = 'ROLE'
+group by batch_group.id , batch_group.name, student_playlist.student_id
+order by batch_group.id,batch_group.name, student_playlist.student_id
+) TF
+group by TF.id, TF.name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+<reports id="3060" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<sql>
+select course.id, course.course_name, cast (count(distinct student_playlist.lesson_id) as integer) as tasks, cast (count(*) over() as integer) as total_rows  from course 
+left join student_playlist on (course.id = student_playlist.course_id and student_playlist.student_id = :entity_id)
+where 
+course.id in (select distinct course_id from batch where batch_group_id in (select distinct batch_group_id from batch_students where student_id  = :entity_id))
+group by  course.id, course.course_name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+<reports id="3061" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+<column columnHandler="NONE" display_name="# Students" isVisible="true" name="total_students" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<sql>
+select TF.id , TF.course_name, cast ((select count(*) from batch_students where batch_group_id =:entity_id) as integer) as total_students , cast (min(lessons) as integer) as tasks, cast (count(*) over() as integer) as total_rows from (select course.id , course.course_name, student_playlist.student_id, count(distinct student_playlist.lesson_id) as lessons
+from 
+course left join student_playlist on (student_playlist.course_id = course.id and student_playlist.student_id in (select distinct student_id from batch_students where batch_group_id=:entity_id))
+where course.id in (select distinct course_id from batch where batch_group_id = :entity_id)
+group by course.id , course.course_name,student_playlist.student_id
+) TF 
+group by TF.id , TF.course_name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+<reports id="3062" type_of_report="table">
+<column columnHandler="CHECKBOX_HANDLER" display_name=" " isVisible="true" name="id" />		
+<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+<column columnHandler="NONE" display_name="# Students" isVisible="true" name="total_students" />
+<column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
+<sql>
+select TF.id , TF.course_name, cast ((select count(*) from batch_students where batch_group_id =:entity_id) as integer) as total_students , cast (min(lessons) as integer) as tasks, cast (count(*) over() as integer) as total_rows from (select course.id , course.course_name, student_playlist.student_id, count(distinct student_playlist.lesson_id) as lessons
+from 
+course left join student_playlist on (student_playlist.course_id = course.id and student_playlist.student_id in (select distinct student_id from batch_students where batch_group_id=:entity_id))
+where course.id in (select distinct course_id from batch where batch_group_id = :entity_id)
+group by course.id , course.course_name,student_playlist.student_id
+) TF 
+group by TF.id , TF.course_name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
 </istar_reports>

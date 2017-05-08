@@ -3,6 +3,10 @@
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%
+ReportUtils util = new ReportUtils();
+int collegeId = Integer.parseInt(request.getSession().getAttribute("orgId").toString());
+%>
 <div class="row">
 	<div class="col-lg-12">
 		<div class="col-lg-12">
@@ -11,27 +15,29 @@
 					<div id="wizard">
 						<h1>Select Entity</h1>
 						<div class="step-content" style="position: relative !important;">
-
 							<div class="row">
-								<div class="col-lg-4">
+								<div class="col-lg-3">
 									<div class="form-group">
-										<label>Entity Type*</label> <select class="select2_demo_1 form-control">
+										<label>Select Entity Type*</label> <select class="select2_demo_1 form-control" 
+										data-college_id="<%=collegeId%>" 
+										data-user_report_id="3057" 
+										data-section_report_id="3058" 
+										data-role_report_id="3059" 
+										data-course_report_id_for_user="3060"
+										data-course_report_id_for_section="3061"
+										data-course_report_id_for_role="3062"
+										id="entity_type_selector">
+											<option value="null">Select Entity Type</option>
 											<option value="USER">User</option>
 											<option value="SECTION">Section</option>
 											<option value="ROLE">Role</option>
 										</select>
-
 									</div>
-									<div class="form-group">
-										<label>Select Entity*</label> <select class="select2_demo_1 form-control">
-											<%for(int i=0; i<10;i++){
-	                                       %>
-											<option value="mayank1@istarindia.com">Mahyank
-												<%=i%></option>
-											<% }%>
-										</select>
-
-									</div>
+								</div>
+								<div class="col-lg-12">										
+									<div id="entity_list_holder" style="display:none">
+																											
+									</div>									
 								</div>
 							</div>
 						</div>
@@ -40,13 +46,11 @@
 						<div class="step-content" style="position: relative !important;">
 							<div class="text-center m-t-md">
 								<div class="row">
-									<%
-				ReportUtils util = new ReportUtils();
-				HashMap<String, String> conditions = new HashMap();
-				conditions.put("limit", "12");
-				conditions.put("offset", "0");							
-				%>
-									<%=util.getTableOuterHTML(3056, conditions)%>
+									<div class="col-lg-12">										
+									<div id="entity_course_holder" style="display:none">
+																											
+									</div>									
+								</div>
 								</div>
 
 							</div>
@@ -55,113 +59,11 @@
 						<div class="step-content" style="position: relative !important;">
 							<div class="row m-b-lg m-t-lg">
 								<div class="col-lg-3">
-									<div class="col-md-12">
-
-
-										<div class="profile-info" style="margin-left: 0px !important;">
-											<div class="">
-												<div>
-													<h2 class="no-margins">Direct Tax Theory</h2>
-													<h3>Section : BCOM Final Year</h3>
-
-												</div>
-											</div>
-										</div>
-										<div class="row  m-t-sm">
-											<div class="col-sm-4">
-												<div class="font-bold">#Students</div>
-												55
-											</div>
-											<div class="col-sm-4">
-												<div class="font-bold">#Sessions</div>
-												22
-											</div>
-											<div class="col-sm-4">
-												<div class="font-bold">#Lessons</div>
-												12
-											</div>
-										</div>
-										<br>
-										<div class="form-group">
-											<label>Select Start Date</label> <select class="select2_demo_1 form-control">
-												<%for(int i=0; i<10;i++){
-	                                       %>
-												<option value="mayank1@istarindia.com">Mahyank
-													<%=i%></option>
-												<% }%>
-											</select>
-
-										</div>
-										<div class="form-group">
-											<label>Select End Date</label> <select class="select2_demo_1 form-control">
-												<%for(int i=0; i<10;i++){
-	                                       %>
-												<option value="mayank1@istarindia.com">Mahyank
-													<%=i%></option>
-												<% }%>
-											</select>
-
-										</div>
-										<div class="form-group">
-											<label>Select Days of Week &nbsp;</label><br> <label class="checkbox-inline"> <input type="checkbox" value="SUN" name="scheduled_days"> SUN
-											</label> <label class="checkbox-inline"> <input type="checkbox" value="MON" name="scheduled_days"> MON
-											</label> <label class="checkbox-inline"> <input type="checkbox" value="TUE" name="scheduled_days"> TUE
-											</label> <label class="checkbox-inline"> <input type="checkbox" value="WED" name="scheduled_days"> WED
-											</label><br> <label class="checkbox-inline"> <input type="checkbox" value="THU" name="scheduled_days"> THU
-											</label> <label class="checkbox-inline"> <input type="checkbox" value="FRI" name="scheduled_days"> FRI
-											</label> <label class="checkbox-inline"> <input type="checkbox" value="SAT" name="scheduled_days"> SAT
-											</label>
-										</div>
-										<div class="form-group">
-											<label>Tasks Per Day</label>
-											<input type="text" class="form-control" name="frequency">
-										</div>
-								<div class="form-group">
-                                    <button class="btn btn-primary" type="submit">Save </button>
-                                </div>
+									<div id="auto_scheduler_edit_course">
+									
 									</div>
-
-
-
-
 								</div>
-								<%-- <div class="row">
 								
-								 <div class="col-lg-4">
-								 
-								  <div class="form-group">
-										<label>Entity Name </label> BTech 2nd Year
-
-									</div>
-									<div class="form-group">
-										<label>Entity Type </label> Section
-
-									</div>
-									<div class="form-group">
-										<label>Course Name </label> Direct Tax Theory
-
-									</div>
-								 
-								
-                                
-                                
-                            </div>
-									<div class="form-group">
-										<label>Course Name*</label> Direct Tax Theory
-									</div>
-									<div class="form-group">
-										<label>Select Entity*</label> <select class="select2_demo_1 form-control">
-											<%for(int i=0; i<10;i++){
-	                                       %>
-											<option value="mayank1@istarindia.com">Mahyank
-												<%=i%></option>
-											<% }%>
-										</select>
-
-									</div>
-								</div> 
-								
-							</div> --%>
 							</div>
 						</div>
 					</div>
@@ -170,4 +72,5 @@
 			</div>
 		</div>
 
+	</div>
 	</div>

@@ -74,4 +74,5 @@
 <script src="<%=basePath %>js/reconnecting-websocket.min.js"></script>
 <script src="<%=basePath %>js/websocket.js"></script>
 <script src="<%=basePath %>js/plugins/steps/jquery.steps.min.js"></script>
+<script src="<%=basePath %>js/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="<%=basePath %>js/app.js"></script>

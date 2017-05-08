@@ -295,7 +295,7 @@ function createDataTables()
 		
 		if ( $.fn.dataTable.isDataTable(this) ) {
 		    console.log('dddd');
-		    this.DataTable();
+		    //this.DataTable();
 		}
 		else
 		{
@@ -320,12 +320,15 @@ function createDataTables()
 		             }
 		         ], "processing": true,
 		         "serverSide": true,
-		         "ajax": url	        
+		         "ajax": url,
+		         "drawCallback": function( settings ) {
+		            
+		         }
 		     });
 			
 			$(this).on( 'draw.dt', function () {
 			    callColumnHandlerFunctions();
-			} );
+			});
 			$('.dataTables_info').hide();
 			
 		}	
@@ -1926,17 +1929,8 @@ function initCreateSectionCall()
  }
 
 function init_orgadmin_scheduler() {
-    console.log('intiliazing scheduler');
-    //$("#wizard").steps();
-    
-   /* $('#dddddddd').unbind().on('click',function (){
-    	alert ('calling wizard');
-    	init_auto_scheduler();	      	
-    });*/
-    
-  /*  $('.gray-bg-schedular >li.active').click(function(){  	
-    	$('.associateTrainer').select2();
-    });*/
+    console.log('intiliazing scheduler');    	
+    init_auto_scheduler();
     
     $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
     	$('.associateTrainer').select2();
@@ -1977,85 +1971,236 @@ function init_orgadmin_scheduler() {
 
 function init_auto_scheduler()
 {
-	//createDataTables();
-	
-	/*$("#wizard_form").steps({
-        bodyTag: "fieldset",
-        onStepChanging: function (event, currentIndex, newIndex)
-        {
-            // Always allow going backward even if the current step contains invalid fields!
-            if (currentIndex > newIndex)
-            {
-                return true;
-            }
+	$('#entity_type_selector').unbind().on('change', function(){
+		$('#admin_page_loader').show();
+		var entityType = $(this).val();
+		var orgId = $(this).data('college_id');
+		var reportId = '3057';
+		var course_report_id ='';
+		 
+		if(entityType==='USER' )
+		{			
+			reportId =  $(this).data('user_report_id');
+			course_report_id = $(this).data('course_report_id_for_user');
+		}else if (entityType==='SECTION' )
+		{
+			reportId =  $(this).data('section_report_id');
+			course_report_id = $(this).data('course_report_id_for_section');
+		}
+		else if(entityType==='ROLE' )
+		{
+			reportId =  $(this).data('role_report_id');
+			course_report_id = $(this).data('course_report_id_for_role');
+		}	
 
-            // Forbid suppressing "Warning" step if the user is to young
-            if (newIndex === 3 && Number($("#age").val()) < 18)
-            {
-                return false;
-            }
+		var jsp="/get_data_table_header";
+    	$.post(jsp, 
+				{report_id : reportId,college_id:orgId}, 
+				function(data) {
+					$('#entity_list_holder').empty();
+					$('#entity_list_holder').append(data);
+					
+					//starts here
+					$("table.datatable_istar" ).each(function() {
+						var id = $(this).attr('id');
+					var url = '../data_table_controller?';
+					var params ={}; 
+					$.each($(this).context.dataset, function( index, value ) {		
+						url +=index+'='+value+'&';						
+						});							
+					if ( $.fn.dataTable.isDataTable(this) ) {
+					    console.log('dddd');
+					    //this.DataTable();
+					}
+					else
+					{
+						console.log('>>>>eee>>>');
+						$(this).DataTable({
+					         pageLength: 10,
+					         responsive: true,
+					         dom: '<"html5buttons"B>lTfgitp',
+					         buttons: [
+					             { extend: 'copy'},
+					             {extend: 'csv'},
+					             {extend: 'excel', title: 'ExampleFile'},
+					             {extend: 'pdf', title: 'ExampleFile'},
+					             {extend: 'print',
+					              customize: function (win){
+					                     $(win.document.body).addClass('white-bg');
+					                     $(win.document.body).css('font-size', '10px');
+					                     $(win.document.body).find('table')
+					                             .addClass('compact')
+					                             .css('font-size', 'inherit');
+					             }
+					             }
+					         ], "processing": true,
+					         "serverSide": true,
+					         "ajax": url,
+					         "drawCallback": function( settings ) {
+					        	 $('input[name=radio_button_'+reportId+']:radio').on('click', function(){
+										var selectedEntityId = $('input[name=radio_button_'+reportId+']:checked').val();
+										
+										$.post(jsp, 
+												{report_id : course_report_id, entity_id:selectedEntityId}, 
+												function(data2) {
+													$('#entity_course_holder').empty();
+													$('#entity_course_holder').append(data2);
+													
+													
+													var url2 = '../data_table_controller?';
+													var params2 ={}; 
+													$.each($('#chart_datatable_'+course_report_id)[0].dataset, function( index, value ) {		
+														url2 +=index+'='+value+'&';						
+														});	
+													$('#chart_datatable_'+course_report_id).dataTable({
+														pageLength: 10,
+												         responsive: true,
+												         dom: '<"html5buttons"B>lTfgitp',
+												         buttons: [
+												             { extend: 'copy'},
+												             {extend: 'csv'},
+												             {extend: 'excel', title: 'ExampleFile'},
+												             {extend: 'pdf', title: 'ExampleFile'},
+												             {extend: 'print',
+												              customize: function (win){
+												                     $(win.document.body).addClass('white-bg');
+												                     $(win.document.body).css('font-size', '10px');
+												                     $(win.document.body).find('table')
+												                             .addClass('compact')
+												                             .css('font-size', 'inherit');
+												             }
+												             }
+												         ], "processing": true,
+												         "serverSide": true,
+												         "ajax": url2,
+														"drawCallback": function( settings ) {
+													    	//to preserve selected entityId after data table refresh.
+															//$('input[name=radio_button_'+reportId+'][value='+selectedEntityId+']').attr('checked',true);
+															// now what happens after selecting a course
+															$('input[name=radio_button_'+course_report_id+']:radio').unbind().on('change', function(){
+																$('#admin_page_loader').show();
+																var courseId = $('input[name=radio_button_'+course_report_id+']:checked').val();
+																var entityId = selectedEntityId;
+																var edit_course_page_url="/edit_course_for_auto_scheduler.jsp";
+														    	$.post(edit_course_page_url, 
+																		{entity_type : entityType,entity_id:entityId, course_id :courseId}, 
+																		function(data3) {
+																			$('#auto_scheduler_edit_course').empty();
+																			$('#auto_scheduler_edit_course').append(data3);
+																			$('#data_5 .input-daterange').datepicker({
+																                keyboardNavigation: false,
+																                forceParse: false,
+																                autoclose: true
+																            });
+																			
+																		    
+																			init_edit_course_changes();
 
-            var form = $(this);
-
-            // Clean up if user went backward before
-            if (currentIndex < newIndex)
-            {
-                // To remove error styles
-                $(".body:eq(" + newIndex + ") label.error", form).remove();
-                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-            }
-
-            // Disable validation on fields that are disabled or hidden.
-            form.validate().settings.ignore = ":disabled,:hidden";
-
-            // Start validation; Prevent going forward if false
-            return form.valid();
-        },
-        onStepChanged: function (event, currentIndex, priorIndex)
-        {
-            // Suppress (skip) "Warning" step if the user is old enough.
-            if (currentIndex === 2 && Number($("#age").val()) >= 18)
-            {
-                $(this).steps("next");
-            }
-
-            // Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
-            if (currentIndex === 2 && priorIndex === 3)
-            {
-                $(this).steps("previous");
-            }
-        },
-        onFinishing: function (event, currentIndex)
-        {
-            var form = $(this);
-
-            // Disable validation on fields that are disabled.
-            // At this point it's recommended to do an overall check (mean ignoring only disabled fields)
-            form.validate().settings.ignore = ":disabled";
-
-            // Start validation; Prevent form submission if false
-            return form.valid();
-        },
-        onFinished: function (event, currentIndex)
-        {
-            var form = $(this);
-
-            // Submit form input
-            form.submit();
-        }
-    }).validate({
-                errorPlacement: function (error, element)
-                {
-                    element.before(error);
-                },
-                rules: {
-                    confirm: {
-                        equalTo: "#password"
-                    }
-                }
-            });*/
-	
+																			$('#admin_page_loader').hide();													
+																		});
+															});
+													    }
+													});
+													$('#entity_course_holder').show();
+												});
+									});		
+					         }
+					     });
+						
+						$(this).on( 'draw.dt', function () {
+						    callColumnHandlerFunctions();
+						});
+						$('.dataTables_info').hide();
+						
+					}						
+				});
+					//ends here
+					
+								
+					$('#entity_list_holder').show();
+					$('#admin_page_loader').hide();
+		});		
+	});
 }
+
+function init_edit_course_changes()
+{
+		
+	var scheduler_entity_id = $('#scheduler_entity_id').val();
+	var scheduler_entity_type =$('#scheduler_entity_type').val();
+	var scheduler_course_id = $('#scheduler_course_id').val();
+	var scheduler_total_lessons =$('#scheduler_total_lessons').val();
+	var schedule_days = new Array();
+	
+	$.each( $('input[name=scheduled_days]:checked'), function() {
+		console.log($(this).val());
+		schedule_days.push($(this).val());
+		  // or you can do something to the actual checked checkboxes by working directly with  'this'
+		  // something like $(this).hide() (only something useful, probably) :P
+		});
+	
+	//$('input[name=scheduled_days][type=checkbox]:checked').serialize();
+	var start_date = $('#sd').val();
+	var end_date = $('#ed').val();
+	//scheduled_days
+	$('input[name=scheduled_days][type=checkbox]').unbind().on('change',function(){
+		schedule_days = new Array();
+		$.each( $('input[name=scheduled_days]:checked'), function() {
+			schedule_days.push($(this).val());
+			  // or you can do something to the actual checked checkboxes by working directly with  'this'
+			  // something like $(this).hide() (only something useful, probably) :P
+			});
+	});
+	
+	$('#sd').on('change', function(){
+		//alert($('#sd').val());
+		start_date = $('#sd').val();		
+	});
+	
+	$('#ed').on('change', function(){
+		//alert($('#ed').val());
+		end_date = $('#ed').val();		
+	});
+	
+	$('#save_auto_schedule').unbind().on('click',function(){
+		if(schedule_days !=null && start_date!=null && end_date!=null){
+			var jsp="/auto_schedule";
+	    	$.post(jsp, 
+					{scheduled_days : schedule_days,start_date:start_date,scheduler_entity_type: scheduler_entity_type, scheduler_course_id:scheduler_course_id, end_date:end_date,scheduler_total_lessons:scheduler_total_lessons, type:'checking'}, 
+					function(data) {						
+						
+						swal({
+	                        title: "Are you sure?",
+	                        text: data,
+	                        type: "warning",
+	                        showCancelButton: true,
+	                        confirmButtonColor: "#DD6B55",
+	                        confirmButtonText: "Yes, schedule it!",
+	                        cancelButtonText: "No, cancel !",
+	                        closeOnConfirm: false,
+	                        closeOnCancel: false },
+	                    function (isConfirm) {
+	                        if (isConfirm) {
+	                            swal("Created!", "Tasks has been scheduled.", "success");
+	                            $.post(jsp, 
+	                					{scheduler_entity_id: scheduler_entity_id,scheduled_days : schedule_days,start_date:start_date,end_date:end_date,scheduler_total_lessons:scheduler_total_lessons, type:'create'}, 
+	                					function(data) {
+	                						
+	                					});	
+	                        } else {
+	                            swal("Cancelled", "Task scheduling cancelled successfully.", "error");
+	                        }
+	                    });
+						
+			});
+		}
+		else
+			{
+			alert('null ');
+			}
+	});
+}
+
 
 function init_orgadmin_report(){
 	$('.course_rating').each(function(){

@@ -72,8 +72,7 @@
 								<label class="col-sm-3 control-label">Select Program</label>
 								<div class="col-sm-4">
 									<select class="form-control m-b graph_filter_selector"  data-report_id="3040" name="course_id" data-college_id="<%=colegeID%>">										
-										<%
-										
+										<%										
 										ArrayList<Course> courses = serv.getCoursesInCollege(colegeID);
 										for(Course course : courses)
 										{
