@@ -599,8 +599,10 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 		String sql = "";
 
-		sql = "select distinct course_name,course_description,attendance_perc,avg_feedback,completion_perc,stu_enrolled,course_id from course_stats where college_id="
-				+ college_id;
+		sql = "select T1.course_name, T1.course_description, COALESCE(course_stats.attendance_perc,0) as attendance_perc, COALESCE(course_stats.avg_feedback,0 ) as avg_feedback, COALESCE(course_stats.completion_perc,0) as completion_perc, COALESCE(course_stats.stu_enrolled,0) as stu_enrolled, COALESCE(course_stats.college_id,0) as college_id, T1.course_id from (select distinct course.id as course_id, course_name, course_description, batch_group.college_id from batch_group, batch, course where batch.course_id = course.id and  batch_group.id = batch.batch_group_id and batch_group.college_id = "
+				+ college_id
+				+ ")T1 left join course_stats on (T1.course_id = course_stats.course_id and course_stats.college_id = T1.college_id)";
+
 
 		// System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
@@ -674,8 +676,9 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 		String sql = "";
 
-		sql = "select distinct batch_name,stu_enrolled,completion_perc,avg_feedback,attendance_perc,batch_id from batch_stats where college_id ="
-				+ college_id;
+		sql = "select T1.name as batch_name, 	COALESCE (batch_stats.stu_enrolled, 0) AS stu_enrolled, 	COALESCE (batch_stats.completion_perc, 0) AS completion_perc, 	COALESCE (batch_stats.avg_feedback, 0) AS avg_feedback, 	COALESCE (batch_stats.attendance_perc, 0) AS attendance_perc, 	T1.id as batch_id   from (select distinct batch.id, batch.name  from batch_group, batch where batch_group.college_id = "
+				+ college_id
+				+ " and batch.batch_group_id = batch_group.id ) T1 left join batch_stats on (T1.id = batch_stats.batch_id)";
 
 		// System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
