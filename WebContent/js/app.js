@@ -2108,6 +2108,7 @@ function init_auto_scheduler()
 																			$('#admin_page_loader').hide();													
 																		});
 															});
+															$('.pagination .paginate_button').css('display','inline');
 													    }
 													});
 													$('#entity_course_holder').show();
@@ -2118,6 +2119,7 @@ function init_auto_scheduler()
 						
 						$(this).on( 'draw.dt', function () {
 						    callColumnHandlerFunctions();
+						    $('.pagination .paginate_button').css('display','inline');
 						});
 						$('.dataTables_info').hide();
 						
