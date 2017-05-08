@@ -30,6 +30,7 @@
 <script type="text/javascript" src="<%=basePath %>js/jquery.bootpag.js"></script>
 
  <script type="text/javascript" src="<%=basePath %>js/wickedpicker.js"></script>
+ <script type="text/javascript" src="<%=basePath %>js/timepicki.js"></script>
  
  <%--  <script type="text/javascript" src="<%=basePath %>js/spec/wickedpickerSpec.js"></script> --%>
 <%--     <script type="text/javascript" src="<%=basePath %>js/spec/wickedpicker.min.js"></script>

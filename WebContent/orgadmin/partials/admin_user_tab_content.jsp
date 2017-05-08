@@ -118,7 +118,7 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 								placeholder="joe@schmoe.com" name="user_email"
 								class="form-control">
 						</div>
-						 <div class="col-lg-2" style="float: inherit;">
+						 <div class="col-lg-2">
 								<label class="control-label">Gender</label> <select
 									class="form-control m-b" name="user_gender">
 									<option value="MALE">Male</option>

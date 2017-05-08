@@ -104,8 +104,8 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 			if (!isexist) {
 				//service.createOrgAdmin(college_id, org_admin_email, org_admin_gender, org_admin_mobile, org_admin_name);
 				// Insert new Student
-				String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) "
-						+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+org_admin_email+"', 'test123', 		now(), 		'"+org_admin_mobile+"', 		NULL 	)RETURNING ID;";
+				String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) "
+						+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+org_admin_email+"', 'test123', 		now(), 		'"+org_admin_mobile+"', 		NULL,    'f' 	)RETURNING ID;";
 				
 				System.out.println(istarStudentSql);
 				int userID  = db.executeUpdateReturn(istarStudentSql);

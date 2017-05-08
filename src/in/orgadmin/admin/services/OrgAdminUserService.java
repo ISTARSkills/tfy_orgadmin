@@ -41,7 +41,7 @@ public class OrgAdminUserService {
 			
 			
 			// Insert new Student
-			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL,    'f' 	)RETURNING ID;";
 			
 			
 			 userID  = db.executeUpdateReturn(istarStudentSql);
@@ -59,10 +59,10 @@ public class OrgAdminUserService {
 			String presenterEmail = presenterEmailaddress[0]+"_presenter@"+presenterEmailaddress[1];
 			
 			//Insert new Trainer
-			String istarTrainerSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+			String istarTrainerSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL,    'f' 	)RETURNING ID;";
 		
 			//Insert new Presenter 
-			String istarPresenterSql =  "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+presenterEmail+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL 	)RETURNING ID;";
+			String istarPresenterSql =  "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+presenterEmail+"', 		'"+password+"', 		now(), 		'"+mobileNumber+"', 		NULL,    'f' 	)RETURNING ID;";
 			
 			userID = db.executeUpdateReturn(istarTrainerSql);
 		   presenterUserID = db.executeUpdateReturn(istarPresenterSql);

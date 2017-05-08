@@ -113,7 +113,8 @@ if(request.getParameter("newEventID")!=null){
 			<div class="input-group" data-autoclose="true">
 				 <span class="input-group-addon"> <span
 						class="fa fa-clock-o"></span>
-					</span><input type="text" style="width: 100%; height: 28px;" name="startTime" id="currenTime" class="timepicker" value="<%=istrue ? eventTime : ""%>"/>
+					</span><%-- <input type="text" style="width: 100%; height: 28px;" name="startTime" id="currenTime" class="timepicker" value="<%=istrue ? eventTime : ""%>"/> --%>
+					<input type="text" style="width: 100%; height: 35px;" name="startTime" class="time_element" id="currenTime" value="<%=istrue ? eventTime : ""%>"/>
 				</div> 
 			<%-- <div class="input-group clockpicker " data-autoclose="true">
 				<input type="text" class="form-control" name="startTime" value="<%=istrue?eventTime:""%>"> <span

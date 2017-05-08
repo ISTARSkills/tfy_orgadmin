@@ -3241,8 +3241,7 @@ function scheduler_formValidation(formID,flag){
 //adding clock and date js
 function scheduler_ClockDate(flag) {
 
-	
-	
+
 	
 	var d = new Date();
 	var time="10:10";
@@ -3274,15 +3273,17 @@ function scheduler_ClockDate(flag) {
             format : "dd/mm/yyyy"
         });
 	if(flag === true){
-	$('.time_holder').val(d.getHours()+':'+d.getMinutes());
-	$('.date_holder').val($.date(d));
+	//$('.time_holder').val(d.getHours()+':'+d.getMinutes());
+//	$('.date_holder').val($.date(d));
 /*	$('.date_holder').val($.date(d));
 	$('.date_holder').val($.date(d));*/
 	 time = d.getHours()+':'+d.getMinutes();
+	 $('.time_element').val(time);
 	}else{
-		time = $('#currenTime').val();
+		//time = $('#currenTime').val();
+		 $('#currenTime').val();
 	}
-	 var options = {
+	/* var options = {
   		    now: time, //hh:mm 24 hour format only, defaults to current time
   	        twentyFour: true,  //Display 24 hour format, defaults to false
   	        upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
@@ -3300,7 +3301,19 @@ function scheduler_ClockDate(flag) {
   	        clearable: false, //Make the picker's input clearable (has clickable "x")
 	    };
 	   
-	 $('.timepicker').wickedpicker(options);
+	 $('.timepicker').wickedpicker(options);*/
+	
+	 $('.time_element').timepicki({
+			show_meridian:false,
+			min_hour_value:0,
+			max_hour_value:23,
+			step_size_minutes:15,
+			overflow_minutes:true,
+			increase_direction:'up',
+			disable_keyboard_mobile: true});
+	       
+	       
+	
 }
 
 function scheduler_onChange_init(){
