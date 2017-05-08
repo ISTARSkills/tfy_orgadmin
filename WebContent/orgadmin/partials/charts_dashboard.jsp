@@ -140,7 +140,7 @@
 								<label class="col-sm-3 control-label">Select Role</label>
 
 								<div class="col-sm-4">
-								<select class="form-control m-b graph_filter_selector"  data-report_id="3051" name="batch_group_id" data-college_id="<%=colegeID%>">										
+								<select class="form-control m-b graph_filter_selector"  data-report_id="3052" name="batch_group_id" data-college_id="<%=colegeID%>">										
 										<%
 										ArrayList<BatchGroup> roles = serv.getRolesInCollege(colegeID);
 										for(BatchGroup batchGroup : roles)

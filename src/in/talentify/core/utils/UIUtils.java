@@ -452,7 +452,7 @@ public class UIUtils {
 
 		StringBuffer out = new StringBuffer();
 
-		String sql1 = "SELECT 	lesson. ID AS ID, 	lesson.title AS title, 	task.state AS status FROM 	event_log, 	lesson, 	task WHERE 	event_log.lesson_id = lesson. ID AND task.item_id = lesson. ID AND batch_id = "
+		String sql1 = "SELECT DISTINCT	lesson. ID AS ID, 	lesson.title AS title, 	task.state AS status FROM 	event_log, 	lesson, 	task WHERE 	event_log.lesson_id = lesson. ID AND task.item_id = lesson. ID AND batch_id = "
 				+ batch_id + " ORDER BY 	ID DESC LIMIT 1;";
 		List<HashMap<String, Object>> res1 = util.executeQuery(sql1);
 		if (res1.size() > 0) {

@@ -444,7 +444,7 @@ FROM
 	course
 WHERE
 	mastery_level_per_course.college_id = :college_id
-AND batch_group_id in (select distinct id from batch_group where parent_group_id =33
+AND batch_group_id in (select distinct id from batch_group where parent_group_id = :batch_group_id
 UNION select id from batch_group where id = :batch_group_id )
 AND course. ID = mastery_level_per_course.course_id
 GROUP BY

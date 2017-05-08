@@ -75,6 +75,8 @@
 												String eventId = (String) item.get("event_id");
 												int batch_id = (int) item.get("batch_id");
 												int trainerId = (int) item.get("actor_id");
+												List<HashMap<String, Object>> slideCount = dashboardServices.getSlideCount(eventId);
+												List<HashMap<String, Object>> currentCMsession = dashboardServices.getCurrentCMSession(batch_id);
 									%>
 									<div
 										class="col-lg-12 white-bg p-xs border-top-bottom border-left-right border-size-sm p-xs b-r-md dash_notification_holder">
@@ -95,6 +97,8 @@
 												<li><label>Batch: </label> <%=item.get("batchname")%></li>
 												<li><label>Classroom: </label> <%=item.get("classroom_identifier")%></li>
 												<li><label>Trainer: </label> <%=item.get("trainername")%></li>
+												<li><label>Current Session: </label> <%=currentCMsession.get(0).get("title")%></li>
+								                <li><label>Slides Covered: </label> <%=slideCount.get(0).get("slide_count")%></li>
 											</ul>
 
 

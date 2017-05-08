@@ -35,8 +35,8 @@ SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 			</p>
 			<p class="m-r-sm m-t-sm">
 				Session:
-				<%=item.get("cmsession_id")%></p>
-			<p class="m-r-sm m-t-sm"><%=item.get("title")%></p>
+				</p>
+			<p class="m-r-sm m-t-sm"><%=item.get("title")%>(<%=item.get("cmsession_id")%>)</p>
 		</div>
 	</div>
 </div>

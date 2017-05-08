@@ -67,12 +67,12 @@
 								<select
 									class="form-control" name="group_type">
 									<option value="ROLE" <%if(bg.getType().equalsIgnoreCase("ROLE")) {	%>selected	<% } %>>ROLE</option>
-									<option value="BATCH_GROUP" <%if(bg.getType().equalsIgnoreCase("BATCH_GROUP")) {	%>selected	<% } %>>SECTION</option>
+									<option value="SECTION" <%if(bg.getType().equalsIgnoreCase("SECTION")) {	%>selected	<% } %>>SECTION</option>
 								</select>
 							</div>
 						</div>
 						<div class="col-lg-9">
-							<h3 class="m-b-n-md">Parent Role / Batch Group</h3>
+							<h3 class="m-b-n-md">Parent Role / Section</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
 								<select
@@ -102,20 +102,20 @@
 									<select data-placeholder="Filter By" class="select2-dropdown" tabindex="4" name="filter_by" id="edit_member_filter_by" data-batch_group_id="<%=bg.getId()%>" data-college_id="<%=bg.getOrganization().getId()%>">
 										<option value=""></option>
 										<option value="ORG">ORG</option>
-										<option value="ROLE"> ROLE</option>	
-										<option value="SECTION"> SECTION</option>	
+										<option value="ROLE">ROLE</option>	
+										<option value="SECTION">SECTION</option>	
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-4" id="edit_role_section_holder" style="display:none">								
+							<!-- <div class="col-lg-4" id="edit_role_section_holder" style="display:none">								
 								<div>
 									<select data-placeholder="Role/Section Name" class="select2-dropdown" multiple tabindex="8" name="role_section_id" id="edit_role_section_options">
 									
 											
 									</select>
 								</div>
-							</div>
-							<div class="col-lg-6">								
+							</div> -->
+							<div class="col-lg-10">								
 								<div>
 									<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list" id="edit_student_list_holder">
 										

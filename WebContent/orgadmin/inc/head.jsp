@@ -10,6 +10,7 @@
 <link rel="shortcut icon" href="<%=basePath%>img/user_images/new_talentify_logo.png" />
 <title>Talentify | Admin-Portal</title>
 <link href="<%=basePath %>css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=basePath%>css/timepicki.css" rel="stylesheet">
 <link href="<%=basePath %>css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 
     <link href="<%=basePath %>css/plugins/select2/select2.min.css" rel="stylesheet">
@@ -30,9 +31,8 @@
 <link href="<%=basePath%>css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=basePath%>css/jquery.rateyo.min.css">
 <link href="<%=basePath%>css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-<link href="<%=basePath%>css/wickedpicker.css" rel="stylesheet">
-<link href="<%=basePath%>css/wickedpicker.min.css" rel="stylesheet">
+
 <link href="<%=basePath%>css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <link href="<%=basePath%>css/plugins/steps/jquery.steps.css" rel="stylesheet">
-<link href="<%=basePath%>css/timepicki.css" rel="stylesheet">
+
 </head>

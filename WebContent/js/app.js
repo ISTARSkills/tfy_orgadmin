@@ -1294,7 +1294,7 @@ function init_edit_delete_event(eventID,status){
 	
 	var eventid = eventID;
 	var status = status;
-	$('.key').on('click', function() {
+	$('.key').unbind().on('click', function() {
 		var key = $(this).attr('id');
 	if(key === 'delete'){
 			
@@ -1338,7 +1338,7 @@ function init_edit_delete_event(eventID,status){
 	
 }
 function event_details_card() {
-$('.fc-event').on('click', function() {
+$('.fc-event').unbind().on('click', function() {
 	var status = $(this).data('status');
 	var eventid =$(this).attr('event_id');
 	  console.log('----------event_id------->'+$(this).attr('event_id'));
@@ -1975,7 +1975,7 @@ function init_orgadmin_scheduler() {
     //function to add another function on show of modal
     scheduler_onShowOfModal();  
     //auto scheduler
-    init_autoscheduler(); 
+     
 }
 
 function init_auto_scheduler()
