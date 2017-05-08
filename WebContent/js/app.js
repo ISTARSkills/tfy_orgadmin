@@ -2164,6 +2164,7 @@ function init_edit_course_changes()
 	
 	$('#save_auto_schedule').unbind().on('click',function(){
 		if(schedule_days !=null && start_date!=null && end_date!=null){
+			$('#admin_page_loader').show();
 			var jsp="/auto_schedule";
 	    	$.post(jsp, 
 					{scheduled_days : schedule_days,start_date:start_date,scheduler_entity_type: scheduler_entity_type, scheduler_course_id:scheduler_course_id, end_date:end_date,scheduler_total_lessons:scheduler_total_lessons, type:'checking'}, 
@@ -2175,17 +2176,24 @@ function init_edit_course_changes()
 	                        type: "warning",
 	                        showCancelButton: true,
 	                        confirmButtonColor: "#DD6B55",
-	                        confirmButtonText: "Yes, schedule it!",
-	                        cancelButtonText: "No, cancel !",
+	                        confirmButtonText: "Yes, Schedule it!",
+	                        cancelButtonText: "No, cancel!",
 	                        closeOnConfirm: false,
 	                        closeOnCancel: false },
 	                    function (isConfirm) {
 	                        if (isConfirm) {
 	                            swal("Created!", "Tasks has been scheduled.", "success");
 	                            $.post(jsp, 
-	                					{scheduler_entity_id: scheduler_entity_id,scheduled_days : schedule_days,start_date:start_date,end_date:end_date,scheduler_total_lessons:scheduler_total_lessons, type:'create'}, 
-	                					function(data) {
-	                						
+	                					{scheduler_entity_id: scheduler_entity_id,scheduled_days : schedule_days, scheduler_entity_type: scheduler_entity_type,scheduler_course_id:scheduler_course_id,start_date:start_date,end_date:end_date,scheduler_total_lessons:scheduler_total_lessons, type:'create'}, 
+	                					function(data2) {
+	                						if(data2!=null)
+	                							{
+	                								var tasks_per_day = data2.split('!#')[0];
+	                								var days_scheduled = data2.split('!#')[1];
+	                								$('#tasks_per_day').val(tasks_per_day);
+	                								$('#total_days_scheduled').val(days_scheduled);
+	                								$('#admin_page_loader').hide();
+	                							}
 	                					});	
 	                        } else {
 	                            swal("Cancelled", "Task scheduling cancelled successfully.", "error");

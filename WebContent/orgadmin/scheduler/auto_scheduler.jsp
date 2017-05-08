@@ -58,7 +58,7 @@ int collegeId = Integer.parseInt(request.getSession().getAttribute("orgId").toSt
 						<h1>Edit Course</h1>
 						<div class="step-content" style="position: relative !important;">
 							<div class="row m-b-lg m-t-lg">
-								<div class="col-lg-3">
+								<div class="col-lg-4">
 									<div id="auto_scheduler_edit_course">
 									
 									</div>

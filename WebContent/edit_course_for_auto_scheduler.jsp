@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
@@ -50,15 +51,22 @@ else
 Timestamp startDate = null;
 Timestamp endDate = null;
 ArrayList <String>scheduledDays=new ArrayList();
-int freq = 0;
-String sql="select entity_id, entity_type, start_date, end_date, scheduled_days, frequency from auto_scheduler_data where entity_id = "+entityId+" and entity_type = '"+entityType+"'";
+String tasks_per_day = "0";
+String scheduled_days_count = "0";
+SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+String sql="select entity_id, entity_type, start_date, end_date, scheduled_days,scheduled_days_count, tasks_per_day from auto_scheduler_data where entity_id = "+entityId+" and entity_type = '"+entityType+"' and course_id="+courseId;
 List<HashMap<String, Object>> data = util.executeQuery(sql);
 if(data.size()>0)
 {	for(HashMap<String, Object> row: data){
 		startDate = (Timestamp)	row.get("start_date");
 		endDate = (Timestamp)	row.get("end_date");
-		scheduledDays =(ArrayList <String>) Arrays.asList(row.get("scheduled_days").toString().split(","));
-		freq = (int)row.get("frequency");
+		for(String str : row.get("scheduled_days").toString().split(","))
+		{
+			scheduledDays.add(str);	
+		}
+		 //=(ArrayList <String>) Arrays.asList();
+		tasks_per_day = row.get("tasks_per_day").toString();
+		scheduled_days_count= row.get("scheduled_days_count").toString();
 	}
 }
 
@@ -71,8 +79,20 @@ if(data.size()>0)
 										<div class="profile-info" style="margin-left: 0px !important;">
 											<div class="">
 												<div>
-													<h2 class="no-margins"><%=course.getCourseName() %></h2>
-													<h3><%=entityType %> : <%=entityName %></h3>
+													
+													<div class="form-group">
+											<label>Course</label>
+											<input type="text" class="form-control"  disabled value="<%=course.getCourseName() %>">
+										</div>
+										
+										<div class="form-group">
+											<label>Entity Type</label>
+											<input type="text" class="form-control"  disabled  value="<%=entityType %>" >
+										</div>
+										<div class="form-group">
+											<label>Entity Name/Email</label>
+											<input type="text" class="form-control"  disabled  value="<%=entityName %>" >
+										</div>
 												</div>
 											</div>
 										</div>
@@ -94,9 +114,9 @@ if(data.size()>0)
 										<div class="form-group" id="data_5">
                                 <label>Start Date - End Date</label>
                                 <div class="input-daterange input-group" id="datepicker">
-                                    <input id ="sd" type="text" class="input-sm form-control" name="start" <%if(startDate!=null) { %>value="<%=startDate%>" <% } %> />
+                                    <input id ="sd" type="text" class="input-sm form-control" name="start" <%if(startDate!=null) { %>value="<%=df.format(startDate.getTime())%>" <% } %> />
                                     <span class="input-group-addon">to</span>
-                                    <input id ="ed" type="text" class="input-sm form-control" name="end" <%if(endDate!=null) { %>value="<%=endDate%>" <% } %> />
+                                    <input id ="ed" type="text" class="input-sm form-control" name="end" <%if(endDate!=null) { %>value="<%=df.format(endDate.getTime())%>" <% } %> />
                                 </div>
                             </div>										
 										<div class="form-group">
@@ -111,10 +131,16 @@ if(data.size()>0)
 											</label>
 										</div>
 										<div class="form-group">
-											<label>Tasks Per Day</label>
-											<input type="text" class="form-control"  disabled name="frequency" <%=freq%> id="freq">
+											<label>#Tasks Per Day</label>
+											<input type="text" class="form-control"  disabled name="frequency" value="<%=tasks_per_day%>" id="tasks_per_day" style="    width: 88px;">
 										</div>
+										<div class="form-group">
+											<label>#Days Scheduled</label>
+											<input type="text" class="form-control"  disabled name="frequency" value="<%=scheduled_days_count%>" id="total_days_scheduled" style="    width: 88px;">
+										</div>
+								<%if(data.size()==0){ %>
 								<div class="form-group">
                                     <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button>
                                 </div>
+                                <%} %>
 									</div>

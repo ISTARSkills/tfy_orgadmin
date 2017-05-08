@@ -1,6 +1,7 @@
 package tfy.admin.controllers;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,32 +58,46 @@ Parameter Name - type, Value - checking*/
 		String days [] = request.getParameterValues("scheduled_days[]");
 		ArrayList<Integer> daysList = new ArrayList<>();
 		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-		System.out.println(days.length);
-		for(String day: days)
+		if(days==null)
 		{
-			if(day.equalsIgnoreCase("SUN"))
-			{
-				daysList.add(Calendar.SUNDAY);
-			}else if(day.equalsIgnoreCase("MON"))
-			{
-				daysList.add(Calendar.MONDAY);
-			}else if(day.equalsIgnoreCase("TUE"))
-			{
-				daysList.add(Calendar.TUESDAY);
-			}else if(day.equalsIgnoreCase("WED"))
-			{
-				daysList.add(Calendar.WEDNESDAY);
-			}else if(day.equalsIgnoreCase("THU"))
-			{
-				daysList.add(Calendar.THURSDAY);
-			}else if(day.equalsIgnoreCase("FRI"))
-			{
-				daysList.add(Calendar.FRIDAY);
-			}else if(day.equalsIgnoreCase("SAT"))
-			{
-				daysList.add(Calendar.SATURDAY);
-			} 
+			daysList.add(Calendar.SUNDAY);
+			daysList.add(Calendar.MONDAY);
+			daysList.add(Calendar.TUESDAY);
+			daysList.add(Calendar.WEDNESDAY);
+			daysList.add(Calendar.THURSDAY);
+			daysList.add(Calendar.FRIDAY);
+			daysList.add(Calendar.SATURDAY);
 		}
+		else
+		{
+			System.out.println(days.length);
+			for(String day: days)
+			{
+				if(day.equalsIgnoreCase("SUN"))
+				{
+					daysList.add(Calendar.SUNDAY);
+				}else if(day.equalsIgnoreCase("MON"))
+				{
+					daysList.add(Calendar.MONDAY);
+				}else if(day.equalsIgnoreCase("TUE"))
+				{
+					daysList.add(Calendar.TUESDAY);
+				}else if(day.equalsIgnoreCase("WED"))
+				{
+					daysList.add(Calendar.WEDNESDAY);
+				}else if(day.equalsIgnoreCase("THU"))
+				{
+					daysList.add(Calendar.THURSDAY);
+				}else if(day.equalsIgnoreCase("FRI"))
+				{
+					daysList.add(Calendar.FRIDAY);
+				}else if(day.equalsIgnoreCase("SAT"))
+				{
+					daysList.add(Calendar.SATURDAY);
+				} 
+			}
+		}	
+		
 		
 		Date startDate = new Date();
 		Date endDate= new Date();
@@ -154,15 +169,36 @@ Parameter Name - type, Value - checking*/
 				lessons.add(lid);
 			}
 			int workingDays = getWorkingDaysBetweenTwoDates(startDate, endDate, daysList);
-			String autoData ="INSERT INTO auto_scheduler_data (id, entity_type, entity_id, course_id, student_count, start_date, end_date, scheduled_days, frequency) VALUES "
-					+ "((select COALESCE(max(id),0)+1 from auto_scheduler_data), '"+scheduler_entity_type+"', "+scheduler_entity_id+", "+scheduler_course_id+", "+stuCount+", "+start_date+", "+end_date+", '"+days+"', '3');";
-			createTaskBetweenTwoDates(startDate, endDate, daysList,workingDays,users, modules, cmsessions, lessons, scheduler_course_id);
+			int freq =0;
+			int total_scheduled_days = 0;
+			if(workingDays>0)
+			{
+				freq = (int)Math.ceil((double)scheduler_total_lessons/workingDays);
+				
+				if(scheduler_total_lessons<workingDays)
+				{
+					total_scheduled_days = scheduler_total_lessons%workingDays;
+				}
+				else 
+				{	
+					total_scheduled_days = (int)Math.ceil((double)workingDays/freq);
+				}
+				System.out.println("freq>>"+freq);
+				String autoData ="INSERT INTO auto_scheduler_data (id, entity_type, entity_id, course_id, student_count, start_date, end_date, scheduled_days, scheduled_days_count,tasks_per_day) VALUES "
+						+ "((select COALESCE(max(id),0)+1 from auto_scheduler_data), '"+scheduler_entity_type+"', "+scheduler_entity_id+", "+scheduler_course_id+", "+stuCount+", '"+new Timestamp(startDate.getTime())+"', '"+new Timestamp(endDate.getTime())+"', '"+ String.join(",", days)+"', "+total_scheduled_days+","+freq+");";
+				System.out.println(autoData);
+				util.executeUpdate(autoData);				
+				createTaskBetweenTwoDates(startDate, endDate, daysList,workingDays,users, modules, cmsessions, lessons, scheduler_course_id, freq);
+			}		
+			
+			response.getWriter().write(freq+"!#"+total_scheduled_days);
+			 
 		}	
 		
 	}
 	
 	private void createTaskBetweenTwoDates(Date startDate, Date endDate, ArrayList<Integer> daysList, int totalDays, ArrayList<Integer> users, 
-			ArrayList<Integer> modules, ArrayList<Integer> cmsessions, ArrayList<Integer> lessons, String scheduler_course_id) {
+			ArrayList<Integer> modules, ArrayList<Integer> cmsessions, ArrayList<Integer> lessons, String scheduler_course_id, int freq) {
 	    Calendar startCal = Calendar.getInstance();
 	    startCal.setTime(startDate);        
 	    Calendar endCal = Calendar.getInstance();
@@ -170,7 +206,7 @@ Parameter Name - type, Value - checking*/
 	    System.out.println(">>"+startDate);
 	    System.out.println(">>"+endDate);
 	    int workDays = 0;
-
+	    int currentOrderId=0;
 	    //Return 0 if start and end are the same
 	    if (startCal.getTimeInMillis() == endCal.getTimeInMillis()) {
 	        return ;
@@ -180,27 +216,70 @@ Parameter Name - type, Value - checking*/
 	        startCal.setTime(endDate);
 	        endCal.setTime(startDate);
 	    }
-
-	    do {
-	       //excluding start date
-	        startCal.add(Calendar.DAY_OF_MONTH, 1);
-	        if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
-	        	//System.out.println("checming for "+startCal.get(Calendar.DAY_OF_WEEK));
-	        	Date taskDate = new Date(startCal.getInstance().getTimeInMillis());
-	        	System.out.println("creatting task for date+"+taskDate);
-	        	for(int stid : users)
-	        	{
-	        		int cid=Integer.parseInt(scheduler_course_id);
-	        		int mid = modules.get(workDays);
-	        		int cms = cmsessions.get(workDays);
-	        		int lid = lessons.get(workDays);
-	        		scheduleTask(stid, cid, mid, cms, lid, taskDate);
-	        	}
-	            ++workDays;
-	        }
-	    } while (startCal.getTimeInMillis() <= endCal.getTimeInMillis() && workDays <lessons.size()); //excluding end date
-
-		
+	    int daysCount=0;
+	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
+	    {
+	    	System.out.println("chedking for "+sd);
+	    	if(daysCount<=totalDays)
+	    	{
+	    		if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
+		    		Date taskDate = startCal.getTime();
+		        	System.out.println("creatting task for date+"+taskDate);		        	
+		        	for(int stid : users)
+		        	{
+		        		int cid=Integer.parseInt(scheduler_course_id);
+		        		for(int i=0;i<freq;i++){
+		        			int orderId = currentOrderId+i;
+			        		if(orderId<lessons.size()){
+			        			int mid = modules.get(orderId);
+				        		int cms = cmsessions.get(orderId);
+				        		int lid = lessons.get(orderId);
+				        		scheduleTask(stid, cid, mid, cms, lid, taskDate);
+			        		}
+			        			
+		        		}
+		        	}
+		        	currentOrderId = currentOrderId+freq;
+		        	daysCount++;
+		        }
+	    	}
+	    	else
+	    	{
+	    		break;
+	    	}	
+	    	
+	    	startCal.add(Calendar.DATE, 1);
+	    	sd = startCal.getTime();
+	    }
+	    
+	    /*for(int daysCount=0; daysCount< totalDays; )
+	    {
+	    	
+	    	 if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK)) && currentOrderId< lessons.size()) {
+		        	Date taskDate = startCal.getTime();
+		        	System.out.println("creatting task for date+"+taskDate);		        	
+		        	for(int stid : users)
+		        	{
+		        		int cid=Integer.parseInt(scheduler_course_id);
+		        		for(int i=0;i<freq;i++){
+		        			int orderId = currentOrderId+i;
+			        		if(orderId<lessons.size()){
+			        			int mid = modules.get(orderId);
+				        		int cms = cmsessions.get(orderId);
+				        		int lid = lessons.get(orderId);
+				        		scheduleTask(stid, cid, mid, cms, lid, taskDate);
+			        		}
+			        			
+		        		}
+		        	}		            
+		            currentOrderId = currentOrderId+freq;
+		            daysCount++;
+		        }
+	    	 startCal.add(Calendar.DATE, 1);
+	    	 System.out.println("checkig for "+startCal.getTime());
+	    }*/
+	    
+	   
 	}
 
 	private void scheduleTask(int stid, int cid, int mid, int cms, int lid, Date taskDate) {
@@ -216,7 +295,7 @@ Parameter Name - type, Value - checking*/
 		String taskTitle = lesson.getTitle().toString();
 		String taskDescription = lesson.getDescription()!=null ? lesson.getDescription(): "NA";
 		String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
-				+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', "+taskDate+","+endate +", 't', now(), now(), "+lid+", 'LESSON') returning id;";
+				+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+lid+", 'LESSON') returning id;";
 		System.out.println(">>>"+sql);
 		taskId = util.executeUpdateReturn(sql); 
 		
@@ -247,16 +326,17 @@ Parameter Name - type, Value - checking*/
 	        startCal.setTime(endDate);
 	        endCal.setTime(startDate);
 	    }
-
-	    do {
-	       //excluding start date
-	        startCal.add(Calendar.DAY_OF_MONTH, 1);
-	        if (days.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
+	    
+	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
+	    {
+	    	if (days.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
 	        	//System.out.println("checming for "+startCal.get(Calendar.DAY_OF_WEEK));
 	            ++workDays;
 	        }
-	    } while (startCal.getTimeInMillis() <= endCal.getTimeInMillis()); //excluding end date
-
+	    	startCal.add(Calendar.DATE, 1);
+	    	sd = startCal.getTime();
+	    }
+	    
 	    return workDays;
 	}
 
