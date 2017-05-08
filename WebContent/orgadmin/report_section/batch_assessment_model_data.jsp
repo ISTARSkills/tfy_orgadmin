@@ -31,8 +31,8 @@ for (HashMap<String, Object> item : assessmentItems) {
 		<p class="m-r-sm m-t-sm">
 				<small><span class="label label-info">DATE : <%=format.format(item.get("eventdate"))%></span></small>
 			</p>
-			<p class="m-r-sm m-t-sm">Assessment: <%=item.get("assessment_id")%></p>
-			<p class="m-r-sm m-t-sm"><%=item.get("assessmenttitle")%></p>
+			<p class="m-r-sm m-t-sm">Assessment</p>
+			<p class="m-r-sm m-t-sm"><%=item.get("assessmenttitle")%>(<%=item.get("assessment_id")%>)</p>
 		</div>
 	</div>
 </div>

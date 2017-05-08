@@ -64,11 +64,11 @@
 
 			// developer can specify which arrow makes the numbers go up or down
 			var top_arrow_button = (settings.increase_direction === 'down') ?
-				"<div class='prev action-prev'></div>" :
-				"<div class='prev action-next'></div>";
+				"<div class='scheduler_prev action-scheduler_prev'></div>" :
+				"<div class='scheduler_prev action-scheduler_next'></div>";
 			var bottom_arrow_button = (settings.increase_direction === 'down') ?
-				"<div class='next action-next'></div>" :
-				"<div class='next action-prev'></div>";
+				"<div class='scheduler_next action-scheduler_next'></div>" :
+				"<div class='scheduler_next action-scheduler_prev'></div>";
 
 			var new_ele = $(
 				"<div class='timepicker_wrap " + settings.custom_classes + "'>" +
@@ -287,16 +287,16 @@
 				// UP
 				if (e.which === 38) {
 					if (settings.increase_direction === 'down') {
-						direction = 'prev';
+						direction = 'scheduler_prev';
 					} else {
-						direction = 'next';
+						direction = 'scheduler_next';
 					}
 				// DOWN
 				} else if (e.which === 40) {
 					if (settings.increase_direction === 'down') {
-						direction = 'next';
+						direction = 'scheduler_next';
 					} else {
-						direction = 'prev';
+						direction = 'scheduler_prev';
 					}
 				}
 
@@ -335,7 +335,7 @@
 				
 				if (tim.length !== 0 && mini.length !== 0 && (!settings.show_meridian || meri.length !== 0)) {
 					// store the value so we can set the initial value
-					// next time the picker is opened
+					// scheduler_next time the picker is opened
 					ele.attr('data-timepicki-tim', tim);
 					ele.attr('data-timepicki-mini', mini);
 					
@@ -442,7 +442,7 @@
 				var ele_st = Number(settings.min_hour_value);
 				var ele_en = Number(settings.max_hour_value);
 				var step_size = Number(settings.step_size_hours);
-				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+				if ((cur_ele && cur_ele.hasClass('action-scheduler_next')) || direction === 'scheduler_next') {
 					if (cur_time + step_size > ele_en) {
 						var min_value = ele_st;
 						if (min_value < 10) {
@@ -458,7 +458,7 @@
 						}
 						ele_next.find("." + cur_cli + " .ti_tx input").val(cur_time);
 					}
-				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+				} else if ((cur_ele && cur_ele.hasClass('action-scheduler_prev')) || direction === 'scheduler_prev') {
 					var minValue = Number(settings.min_hour_value)
 					if (cur_time - step_size < minValue) {
 						var max_value = ele_en;
@@ -484,11 +484,11 @@
 				var ele_st = 0;
 				var ele_en = 59;
 				var step_size = Number(settings.step_size_minutes);
-				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+				if ((cur_ele && cur_ele.hasClass('action-scheduler_next')) || direction === 'scheduler_next') {
 					if (cur_mins + step_size > ele_en) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val("00");
 						if(settings.overflow_minutes){
-							change_time(null, 'next');
+							change_time(null, 'scheduler_next');
 						}
 					} else {
 						cur_mins = cur_mins + step_size;
@@ -498,11 +498,11 @@
 							ele_next.find("." + cur_cli + " .mi_tx input").val(cur_mins);
 						}
 					}
-				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+				} else if ((cur_ele && cur_ele.hasClass('action-scheduler_prev')) || direction === 'scheduler_prev') {
 					if (cur_mins - step_size <= -1) {
 						ele_next.find("." + cur_cli + " .mi_tx input").val(ele_en + 1 - step_size);
 						if(settings.overflow_minutes){
-							change_time(null, 'prev');
+							change_time(null, 'scheduler_prev');
 						}
 					} else {
 						cur_mins = cur_mins - step_size;
@@ -521,13 +521,13 @@
 				var ele_en = 1;
 				var cur_mer = null;
 				cur_mer = ele_next.find("." + cur_cli + " .mer_tx input").val();
-				if ((cur_ele && cur_ele.hasClass('action-next')) || direction === 'next') {
+				if ((cur_ele && cur_ele.hasClass('action-scheduler_next')) || direction === 'scheduler_next') {
 					if (cur_mer == "AM") {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
 					} else {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("AM");
 					}
-				} else if ((cur_ele && cur_ele.hasClass('action-prev')) || direction === 'prev') {
+				} else if ((cur_ele && cur_ele.hasClass('action-scheduler_prev')) || direction === 'scheduler_prev') {
 					if (cur_mer == "AM") {
 						ele_next.find("." + cur_cli + " .mer_tx input").val("PM");
 					} else {
@@ -537,8 +537,8 @@
 			}
 
 			// handle clicking on the arrow icons
-			var cur_next = ele_next.find(".action-next");
-			var cur_prev = ele_next.find(".action-prev");
+			var cur_next = ele_next.find(".action-scheduler_next");
+			var cur_prev = ele_next.find(".action-scheduler_prev");
 			$(cur_prev).add(cur_next).on("click", function() {
 				var cur_ele = $(this);
 				if (cur_ele.parent().attr("class") == "time") {

@@ -17,7 +17,7 @@ int collegeId = Integer.parseInt(request.getSession().getAttribute("orgId").toSt
 						<div class="step-content" style="position: relative !important;">
 							<div class="row">
 								<div class="col-lg-3">
-									<div class="form-group">
+									<div class="form-group ">
 										<label>Select Entity Type*</label> <select class="select2_demo_1 form-control" 
 										data-college_id="<%=collegeId%>" 
 										data-user_report_id="3057" 

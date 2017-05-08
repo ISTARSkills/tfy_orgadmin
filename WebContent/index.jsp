@@ -20,7 +20,7 @@
 		if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
 			url1 = "/super_admin/dashboard.jsp";
 		}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
-			System.out.println("------------------------------>"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
+			System.out.println("---------vfvfvfv--------------------->"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
 			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
 		}else{
 			
