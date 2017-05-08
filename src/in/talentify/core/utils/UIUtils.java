@@ -38,7 +38,10 @@ public class UIUtils {
 		hashMap.put("next_session", nextSession);
 		
 		hashMap.put("assessment_title", assessmentTitle);
-		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch. ID AS batchid, 	batch. NAME AS batchname,   course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom,   organization.name AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail,  CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, 	 batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch, 	user_profile,   istar_user, 	organization, 	classroom_details, 	course WHERE 	batch_schedule_event.batch_id = batch. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch.course_id AND istar_user.id = user_profile.user_id AND batch_schedule_event. ID = '"+ eventID +"'";
+		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch. ID AS batchid, 	batch. NAME AS batchname,   course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom,  "
+				+ " organization.name AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail,  CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, "
+				+ "	 batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch, 	user_profile,   istar_user, 	organization, 	classroom_details, 	course "
+				+ "WHERE 	batch_schedule_event.batch_id = batch. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch.course_id AND istar_user.id = user_profile.user_id AND batch_schedule_event. ID = '"+ eventID +"'";
 		
 		
 		
@@ -162,7 +165,7 @@ public class UIUtils {
 			}
 			else if(res.get(0).get("status").toString().equalsIgnoreCase("TEACHING") ||res.get(0).get("status").toString().equalsIgnoreCase("ATTENDANCE") || res.get(0).get("status").toString().equalsIgnoreCase("FEEDBACK") || res.get(0).get("status").toString().equalsIgnoreCase("COMPLETED"))
 			{
-				String getSessionTaught="select string_agg(DISTINCT cmsession.title,', ')  as sessions from event_session_log , cmsession where event_session_log.event_id = '"+eventID+"' and event_session_log.cmsession_id = cmsession.id";
+				String getSessionTaught="select string_agg(DISTINCT cmsession.title,', ')  as sessions from event_log , cmsession where event_log.event_id = '"+eventID+"' and event_log.cmsession_id = cmsession.id";
 				List<HashMap<String, Object>> sessionTaught = util.executeQuery(getSessionTaught);
 				sessionsCovered = (String)sessionTaught.get(0).get("sessions");
 				hashMap.put("sessions_covered", sessionsCovered);
