@@ -59,6 +59,10 @@
 <!-- highcharts -->
 <%-- <script src="<%=basePath %>js/highcharts-custom.js"></script>
  --%>
+ 
+ <!-- Jquery Validate -->
+    <script src="<%=basePath %>js/plugins/validate/jquery.validate.min.js"></script>
+ 
 
 <script src="<%=basePath %>js/plugins/chosen/chosen.jquery.js"></script>
 <script src="<%=basePath %>js/plugins/select2/select2.full.min.js"></script>

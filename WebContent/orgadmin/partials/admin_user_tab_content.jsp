@@ -18,9 +18,7 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 %>
 <div class="panel-body">
-<div class="modal inmodal"
-									id="admin_student_card_modal" tabindex="-1"
-										role="dialog" aria-hidden="true">
+<div class="modal inmodal" id="admin_student_card_modal" tabindex="-1" role="dialog" aria-hidden="true">
 </div>
 <div class="ibox">
 	<div class="col-lg-12">
@@ -97,30 +95,30 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 
 							<label  class="control-label">First Name</label> <input type="text"
 								placeholder="First Name.." name="user_f_name"
-								class="form-control">
+								class="form-control" required>
 						</div>
 
 						<div class="col-lg-6">
 							<label  class="control-label" >Last Name</label> <input type="text"
 								placeholder="Last Name.." name="user_l_name"
-								class="form-control">
+								class="form-control" >
 						</div>
 
 						<div class="col-lg-6">
 								<label class="control-label">Mobile No</label> <input type="number"
 									name="user_mobile" class="form-control"
-									placeholder="Mobile Number">
+									placeholder="Mobile Number" >
 
 						</div>
 
                        <div class="col-lg-6">
 							<label  class="control-label">Email</label> <input type="email"
 								placeholder="joe@schmoe.com" name="user_email"
-								class="form-control">
+								class="form-control" required>
 						</div>
 						 <div class="col-lg-2">
 								<label class="control-label">Gender</label> <select
-									class="form-control m-b" name="user_gender">
+									class="form-control m-b" required name="user_gender">
 									<option value="MALE">Male</option>
 									<option value="FEMALE">Female</option>
 								</select>

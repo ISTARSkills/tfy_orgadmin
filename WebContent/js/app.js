@@ -362,6 +362,7 @@ function initStudentProfileHandler()
 					$('.tree1').treed();					
 					$('#admin_page_loader').hide()
 					$('#admin_student_card_modal').modal();
+					userValidation();
 					
 		});
 	 });		
@@ -484,7 +485,29 @@ function initEditGroupModalCall()
 	    });
 }
 
-
+function userValidation(){
+	
+	 $("#formUser").validate({
+	        rules: {
+	        	user_f_name: {
+	                required: true,
+	               
+	            },
+	            user_gender: {
+	            	 selectcheck: true,
+	               
+	            },
+	            user_mobile: {
+	                required: true,
+	               
+	            },
+	            user_email: {
+	                required: true,
+	               
+	            }
+	        }
+	    });
+}
 function initEditUserModalCall()
 {
 	 $(".user-edit-popup").unbind().on("click",function(){
@@ -497,7 +520,9 @@ function initEditUserModalCall()
 	    		  $( "body" ).append(data);
 	    		  $('select').select2();
 	    		  admin_edit_modal_create();
-	    		  $('#edit_user_model_'+user_id).modal();	    		 
+	    		  $('#edit_user_model_'+user_id).modal();	
+	    		  userValidation();
+	    		 
 	    		});
 	    	// open modal using js now 
 	    	// action goes here!!
@@ -1495,6 +1520,8 @@ function init_orgadmin_admin() {
 	createDataTables();
 	user_filter_by_course_batch();
 	$('#admin_user_tab').tab('show');
+	  
+	
 	});
     
     
