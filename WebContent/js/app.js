@@ -59,6 +59,7 @@ function readyFn(jQuery) {
 		$('.tree1').treed();
 	    
 		$('#wizard').steps();
+	
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
@@ -428,6 +429,7 @@ function initEditGroupModalCall()
 	    	    $.get(urls, function(data) {
 	    	    	$('#edit_student_list_holder').empty();
 	    	    	$('#edit_student_list_holder').append(data);
+	    	    	$('#edit_student_list_holder').select2();
 	    	    	
 	    	    });
 	    		
@@ -1928,6 +1930,11 @@ function initCreateSectionCall()
     });	
  }
 
+function init_autoscheduler(){
+	
+	
+}
+
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');    	
     init_auto_scheduler();
@@ -1966,7 +1973,9 @@ function init_orgadmin_scheduler() {
     //create modified event  
     scheduler_createEditedNewModal5();
     //function to add another function on show of modal
-    scheduler_onShowOfModal();   
+    scheduler_onShowOfModal();  
+    //auto scheduler
+    init_autoscheduler(); 
 }
 
 function init_auto_scheduler()
@@ -3315,7 +3324,7 @@ function scheduler_ClockDate(flag) {
 			show_meridian:false,
 			min_hour_value:0,
 			max_hour_value:23,
-			step_size_minutes:15,
+			step_size_minutes:1,
 			overflow_minutes:true,
 			increase_direction:'up',
 			disable_keyboard_mobile: true});
