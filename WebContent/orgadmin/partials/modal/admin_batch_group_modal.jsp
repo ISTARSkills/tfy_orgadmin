@@ -45,7 +45,7 @@
 						<h3 class="m-b-n-md">Name of the Section</h3>
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
-							<input type="text" placeholder="Section Name.." name="group_name"  id='bg_name_idd'  value="<%=bg.getName() %>"
+							<input type="text" placeholder="Section Name.." name="group_name"  required id='bg_name_idd'  value="<%=bg.getName() %>"
 								class="form-control">
 						</div>
 					</div>
@@ -55,7 +55,7 @@
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
 							<label class="font-noraml">Short Text about Batch Group</label> <input type="text"
-								placeholder="Section Description.." name="group_desc"   id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
+								placeholder="Section Description.." name="group_desc"  required  id='bg_desc_idd' value="<%=bg.getBgDesc()!=null ? bg.getBgDesc(): "" %>"
 								class="form-control">
 						</div>
 					</div>

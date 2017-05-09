@@ -60,7 +60,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
 								<input type="text" placeholder="Section Name.." name="group_name"
-									class="form-control">
+									required class="form-control">
 							</div>
 						</div>
 
@@ -80,8 +80,8 @@ Organization college=new OrganizationDAO().findById(colegeID);
 							<div class="col-lg-12">
 								<select
 									class="form-control" name="group_type">
-									<option value="ROLE">ROLE</option>
 									<option value="SECTION">SECTION</option>
+									<option value="ROLE">ROLE</option>
 								</select>
 							</div>
 						</div>

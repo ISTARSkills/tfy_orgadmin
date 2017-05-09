@@ -173,7 +173,7 @@ function initTicket()
 	});
 	
 	
-$('#create_new_ticket').unbind().on('click', function(e) {	
+/*$('#create_new_ticket').unbind().on('click', function(e) {	
 		 e.preventDefault();
 		 $("#new_ticket_form").validate({
 		        rules: {
@@ -203,7 +203,7 @@ $('#create_new_ticket').unbind().on('click', function(e) {
 		        	location.reload();
 		        }
 		    });
-	});
+	});*/
 	
 	
 	$('.ticket_summary_button').unbind().on('click', function() {	 
@@ -212,12 +212,16 @@ $('#create_new_ticket').unbind().on('click', function(e) {
 		$.post(your_jsp_page_to_request,{ticket_id:ticket_id},		     
 		     function(data){			
 			//alert(data);
-				$("#ticket_summary_body").empty();
-				$("#ticket_summary_body").append(data);		  			
+				$(".ticket_summary_body").empty();
+				$(".ticket_summary_body").append(data);		  			
   		  		$('#ticket_summary_modal').modal();
-  		  		
+  		  	 $('#ticket_summary_modal').on('hidden.bs.modal', function () {
+  		    	
+  		  		location.reload();
+  		    	  
+  		    	});
   		  		$('.ticket_status_change').unbind().on('click', function() {
-  				alert("asdas");
+  				//alert("asdas");
   				var ticketId= $(this).data("ticket_id");
   				var status = $(this).data("status");
   				$.ajax({
@@ -228,19 +232,22 @@ $('#create_new_ticket').unbind().on('click', function(e) {
   		            	var res = data;
   		            	if(res==='CLOSED')
   		            	{
-  		            		$(this).data("status","REOPENED");
-  	  		            	$(this).text("Re Opren Ticket");
+  		            		//$(this).data("status","REOPENED");
+  		            		$('.ticket_status_change').attr("data-status","REOPENED");
+  	  		            	$('.ticket_status_change').html("Re Opren Ticket");
   		            	}
   		            	else if(res==='REOPENED')
   		            	{
-  		            		$(this).data("status","CLOSED");
-  	  		            	$(this).text("Close Ticket");
+  		            		//$(this).data("status","CLOSED");
+  		            		$('.ticket_status_change').attr("data-status","CLOSED");
+  	  		            	$('.ticket_status_change').html("Close Ticket");
   		            	}	
   		            	
   		            }
   		        });
   				
   			});
+  		  		
 		     }
 		 );
 		
@@ -1467,7 +1474,7 @@ function mark_as_read_notification(){
 	//$('.notification_read').unbind().on("click", function() {
        var notificationEventID = $(this).attr('id');
        var parentID = $('#'+notificationEventID).parent().parent().attr('id');;
-      
+       var notice_count = $('#admin_notice_count').text();
 		var url = '../event_utility_controller'
 		    $.post(url, {
 		    	notificationEventID : notificationEventID,
@@ -1477,6 +1484,10 @@ function mark_as_read_notification(){
 		        	//location.reload();	
 		        	
 		        	$("#"+parentID ).remove();
+		        	if(notice_count != 0){
+		        		notice_count = notice_count -1;
+		        		$("#admin_notice_count").html(notice_count);
+		        	}
 
 	
 		        });
@@ -2316,6 +2327,18 @@ function init_orgadmin_report_detail(){
             });
     });
 	
+	  $('#myModal2').on('shown.bs.modal', function() {
+			var otherEventData = []
+			//$('#myModal5').modal('toggle');
+			 scheduler_createOldEvent();
+			 scheduler_DeleteEvent();
+			 scheduler_init_edit_new_trainer_associated();
+			 scheduler_init_edit_old_trainer_associated();
+			 scheduler_ClockDate(false);
+			$('select').select2();
+			
+
+		});
 	//session
 	$('#session-page-selection').bootpag({
         total: parseInt($('#session-page-selection').data('size')/3)+1,
@@ -3953,6 +3976,16 @@ function accountmanagment_card_init() {
         });
     });
     
+ $('#account_managment_model').on('hidden.bs.modal', function () {
+    	
+    	var url = '../orgadmin_login'
+		    $.post(url, {delete_session : true },
+		        function(data) {
+                      console.log('session ended');
+		        });
+    	  
+    	});
+ 
     $('.edit_organization').unbind().on("click",function(e){
     	var orgId=$(this).data('org');	
     	init_create_edit_organization(true,orgId);
@@ -4109,7 +4142,6 @@ function init_super_admin_analytics() {
     trainerLevelGraph();
     trainerSkillGraph();
     studentFeedBackGraph();
-   // trainerDetailsTable();
     studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
@@ -4136,6 +4168,8 @@ function init_super_admin_analytics() {
         programGraph(courseID, orgID);
         $('#program_spiner').css('cssText', 'display:block !important');
     });
+    
+  
 }
 
 function accountsUtils() {

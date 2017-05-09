@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.utilities.TicketStates;
 
 import in.talentify.core.services.NotificationAndTicketServices;
@@ -38,6 +40,7 @@ public class CreateNewTicketController extends IStarBaseServelet {
 			Parameter Name - receivers, Value - 5108
 			Parameter Name - ticket_type, Value - EARLY_FINISH_CLASS
 		  */
+		String user_type =null;
 		if(request.getParameterMap().containsKey("title") && request.getParameterMap().containsKey("description") && request.getParameterMap().containsKey("ticket_type") && request.getParameterMap().containsKey("receivers") 
 				&& request.getParameterMap().containsKey("created_by") )
 		{
@@ -48,12 +51,20 @@ public class CreateNewTicketController extends IStarBaseServelet {
 			String createdBy = request.getParameter("created_by");
 			NotificationAndTicketServices serv = new NotificationAndTicketServices();
 			System.out.println(receivers.length);
+			IstarUser user = new IstarUserDAO().findById(Integer.parseInt(createdBy));
+			 user_type = user.getUserRoles().iterator().next().getRole().getRoleName();
 			for(String recievr : receivers)
 			{
 				serv.createTicket(title, description, createdBy, recievr, TicketStates.RAISED, ticketType);
 			}	
 		}	
 		
+		if (user_type.equalsIgnoreCase("SUPER_ADMIN")) {
+				
+			response.sendRedirect("super_admin/super_admin_tickets.jsp");
+		} else {
+			response.sendRedirect("orgadmin/org_admin_tickets.jsp");
+		}
 			
 		
 		
