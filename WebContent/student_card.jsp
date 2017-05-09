@@ -143,7 +143,7 @@ String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfi
 			</div>
 		</div>
 
-		<div class="modal-body" style="padding: 0px 2px 9px 2px !important; background-color: #e8e8e9;">
+		<div class="modal-body" style="padding: 0px 2px 0px 2px !important; background-color: #e8e8e9;">
 			<%
 						if(courses.size()>0)
 						{
@@ -151,7 +151,7 @@ String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfi
 												
 												%>
 			<div class="tabs-container">
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs student-nav">
 					<%
                         for(HashMap<String, Object> course: courses)
 												{
@@ -326,10 +326,10 @@ String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfi
 
 			<%
 												} // will be visioble if there will be atlest one course
-						{
+						else{
 													
 													%>
-													<h2 style=" text-align: center;"> No Skill Profile Available.</h2>
+													 <h2 style=" text-align: center;"> No Skill Profile Available.</h2>
 													<% 
 						}
 												%>

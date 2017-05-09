@@ -3,7 +3,9 @@ package in.talentify.core.utils;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +20,7 @@ import com.viksitpro.core.utilities.DBUTILS;
 public class AndroidNoticeDelegator {
 
 	String deployment_type;
-
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	public AndroidNoticeDelegator() {
 		super();
 		initPublishDelegator();
@@ -56,11 +58,13 @@ public class AndroidNoticeDelegator {
 				hopperUpdates.put("item", item);
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
+				hopperUpdates.put("time", dateFormat.format(new Date()));
 				//hopperUpdates.put("eventDate", eventDate);
-				databaseReferenceForUser.setValue(hopperUpdates);
+				//databaseReferenceForUser.setValue(hopperUpdates);
+				databaseReferenceForUser.push().setValue(hopperUpdates);
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				System.out.println("error in sending notification");
 			}			
@@ -74,11 +78,14 @@ public class AndroidNoticeDelegator {
 				hopperUpdates.put("item", item);
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
+				hopperUpdates.put("time", dateFormat.format(new Date()));
 				//hopperUpdates.put("eventDate", eventDate);
-				databaseReferenceForUser.setValue(hopperUpdates);
+				//databaseReferenceForUser.setValue(hopperUpdates);
+				databaseReferenceForUser.push().setValue(hopperUpdates);
+
 			}
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				System.out.println("error in sending notification");
 			}			

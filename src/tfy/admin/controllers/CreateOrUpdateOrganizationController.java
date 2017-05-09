@@ -97,7 +97,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 			int addressId = db.executeUpdateReturn(sql);
 
 			sql = "INSERT INTO organization (id, name, org_type, address_id, industry, profile,created_at, updated_at, iscompany, max_student) VALUES "
-					+ "((select COALESCE(max(id),0)+1 from organization ), '"+org_name.trim()+"', 'COLLEGE', "+addressId+", 'EDUCATION', '"+org_profile+"',  now(), now(), 'f', "+max_students+") RETURNING ID;";
+					+ "((select COALESCE(max(id),0)+1 from organization ), '"+org_name.trim()+"', '"+org_type+"', "+addressId+", 'EDUCATION', '"+org_profile+"',  now(), now(), 'f', "+max_students+") RETURNING ID;";
 			college_id = db.executeUpdateReturn(sql);
 
 			// create or update orgAdmin
@@ -134,7 +134,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 						+ addressId + ")";
 				db.executeUpdate(sql);
 
-				sql = "UPDATE organization SET  name='"+org_name+"', org_type='COLLEGE', address_id='"+addressId+"', industry='EDUCATION', profile='"+org_profile+"', updated_at=now() WHERE id="+college_id+";";
+				sql = "UPDATE organization SET  name='"+org_name+"', org_type='"+org_type+"', address_id='"+addressId+"', industry='EDUCATION', profile='"+org_profile+"', updated_at=now(), max_student="+max_students+" WHERE id="+college_id+";";
 				db.executeUpdate(sql);
 
 				

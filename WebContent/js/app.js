@@ -1818,6 +1818,7 @@ function init_section_pagination_in_section_tab()
 
 function user_filter_by_course_batch() {
 	$('.dataTables_info').hide();
+	var tableID = $('.datatable_istar').attr('id');
 	
     $('#admin_page_course').on('change', function() {
         var key = $('#admin_page_course').val();
@@ -1852,7 +1853,7 @@ function user_filter_by_course_batch() {
                 }
             });
         }
-        filter_user_table(searchKey);
+        filter_user_table(searchKey,tableID);
     });
     
     
@@ -1885,15 +1886,43 @@ function user_filter_by_course_batch() {
                 }
             });
         }
-        filter_user_table(searchKey);
+        filter_user_table(searchKey,tableID);
     });
+    
+    $('#admin_page_orgs').on('change', function() {
+		var key = $('#admin_page_orgs').val();
+		var selectBox = $($('#admin_page_orgs >option'));
+		var searchArray = [];
+		if (key != null) {
+			$.each(key, function(index, value) {
+				selectBox.each(function() {
+					if ($(this).val() == value) {
+						searchArray.push($(this).text());
+					}
+				});
+			});
+		}
+		var searchKey = "";
+		key = searchArray;
+		if (key != null) {
+			$.each(key, function(index, value) {
+				if (index != 0) {
+					searchKey = searchKey + "," + value;
+				} else {
+					searchKey = searchKey + value;
+				}
+			});
+		}
+		filter_user_table(searchKey,tableID);
+	});
 }
 
-function filter_user_table(key) {
+function filter_user_table(key,tableID) {
     if (key == null) {
         key = '';
     }
-    var table = $('#chart_datatable_3042').DataTable();
+    var table_id =tableID;
+    var table = $('#'+tableID).DataTable();
     table.search(key).draw();
 }
 
@@ -3930,39 +3959,82 @@ function accountmanagment_card_init() {
     });
 }
 
+function set_batchgroup_data(){
+
+	$('#main_batch_group_holder').on('change', function(){
+		var setOfBatchGroup = []
+		var batchGroup = $(this).val();
+		
+		
+		setOfBatchGroup.push(batchGroup);
+		
+		$('#batch_groups').val(setOfBatchGroup);
+		
+	});
+	
+}
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
-	admin_course_batch_init();
-	admin_choosen_init();
-	admin_edit_modal_create();
 	
-	$('#admin_page_orgs').on('change', function() {
-		var key = $('#admin_page_orgs').val();
-		var selectBox = $($('#admin_page_orgs >option'));
-		var searchArray = [];
-		if (key != null) {
-			$.each(key, function(index, value) {
-				selectBox.each(function() {
-					if ($(this).val() == value) {
-						searchArray.push($(this).text());
-					}
-				});
-			});
-		}
-		var searchKey = "";
-		key = searchArray;
-		if (key != null) {
-			$.each(key, function(index, value) {
-				if (index != 0) {
-					searchKey = searchKey + "," + value;
-				} else {
-					searchKey = searchKey + value;
-				}
-			});
-		}
-		filter_user_table(searchKey);
+	user_filter_by_course_batch();
+	admin_edit_modal_create();
+	set_batchgroup_data();
+	
+$('#college_id').on('change', function(){
+		
+		var college_id = $(this).val();
+		var url = '../event_utility_controller'
+		    $.post(url, {
+		    	college_id : college_id,
+		    	type : "userOrgfilter"
+		        },
+		        function(data) {
+
+		      $('#batch_group_holder').html(data);
+		      set_batchgroup_data();
+		      $('#main_batch_group_holder').select2();
+		     
+	
+		        });
+		
+		
 	});
+	
+	$('.userType').on('change', function(){
+		var user_type = $(this).val();
+		if(user_type === 'TRAINER'){
+			$('#hide_college_holder').hide();
+			//$('#hide_group_holder').hide();
+			$('#hide_role_holder').hide();
+			$('#user_type').val('TRAINER');
+			$('#college_id').val('2').trigger('change');
+			var url = '../event_utility_controller'
+			    $.post(url, {
+			    	college_id : '2',
+			    	type : "userOrgfilter"
+			        },
+			        function(data) {
+
+			      $('#batch_group_holder').html(data);
+			      set_batchgroup_data();
+			      $('#main_batch_group_holder').select2();
+			     
+		
+			        });
+			
+			
+		}else{
+			$('#hide_college_holder').show();
+			//$('#hide_group_holder').show();
+			$('#hide_role_holder').show();
+			$('#user_type').val('STUDENT');
+		}
+		 set_batchgroup_data();
+		
+	});
+	
+	
 }
 
 function init_super_admin_scheduler(){
