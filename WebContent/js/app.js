@@ -58,7 +58,7 @@ function readyFn(jQuery) {
 
 		$('.tree1').treed();
 	    
-		$('#wizard').steps();
+		//$('#wizard').steps();
 	
 	initiateGraphFilter();
 	createGraphs();

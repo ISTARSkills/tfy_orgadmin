@@ -1,3 +1,4 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>
@@ -18,7 +19,7 @@
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	request.setAttribute("base_url", baseURL);
-
+	ReportUtils util = new ReportUtils();
 	UIUtils uiUtil = new UIUtils();
 	boolean flag = false;
 	JsonUIUtils jsonUIUtils = new JsonUIUtils();
@@ -30,19 +31,21 @@
 	int studentcount = 0;
 	int courseOrBatchId = 0;
 	List<HashMap<String, Object>> student_list = null;
-
+	String batch_id=null;
+	String course_id=null;
 	
 	int sessionCount = 0;
 	int assessmentCount=0;
 	String courseName="";
-	int course_id=0;
+	//int course_id=0;
 	if (request.getParameter("course_id") != null
 			&& !request.getParameter("course_id").toString().equalsIgnoreCase("null")) {
 		flag = true;
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
-		course_id = course.getId();
+		//course_id = course.getId();
 		courseName = course.getCourseName();
 		System.out.println("course_id -------" + request.getParameter("course_id").toString());
+		course_id =request.getParameter("course_id");	
 		pieChartData = jsonUIUtils.getPieChartData(
 				Integer.parseInt(request.getParameter("course_id").toString()), college_id, "Program");
 		barChartData = jsonUIUtils.getBarChartData(
@@ -61,8 +64,10 @@
 		flag = false;
 		System.out.println("batch_id--------" + request.getParameter("batch_id").toString());
 		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
+		batch_id =request.getParameter("batch_id");	
 		courseName = batch.getCourse().getCourseName();
-		course_id = batch.getCourse().getId();
+		//course_id = batch.getCourse().getId();
+		course_id =  batch.getCourse().getId().toString();
 		pieChartData = jsonUIUtils.getPieChartData(
 				Integer.parseInt(request.getParameter("batch_id").toString()), college_id, "Batch");
 		barChartData = jsonUIUtils.getBarChartData(
@@ -97,22 +102,35 @@
 
 <div collegeid="<%=college_id%>" id="myid"
 	data-course="<%=courseOrBatchId%>" type="<%=flag%>"></div>
-<div id="wrapper">
-	<div id="page-wrapper" class="gray-bg">
+
 		<div class="row wrapper border-bottom white-bg page-heading">
 			<div class="col-lg-9">
-				<%
-					if (request.getParameter("headname") != null
-							&& !request.getParameter("headname").toString().equalsIgnoreCase("null")) {
-				%>
-				<h2>
-					&nbsp;&nbsp;&nbsp;&nbsp; Report for
-					<%=request.getParameter("headname").toString()%></h2>
-
+				<% if(request.getParameter("headname") != null && !request.getParameter("headname").toString().equalsIgnoreCase("null")){
+				 %>
+				
+					
+	<h2>				
+<ol class="breadcrumb">
+            <li>
+                <%if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){ %>
+                <a href="<%=baseURL %>super_admin/analytics.jsp">Batch</a>
+                <%}
+                else
+                {
+                	%>
+                   <a href="<%=baseURL %>super_admin/analytics.jsp">Programs</a>
+                    <%
+                	
+                }%>
+            </li>
+            <li class="active">
+                <strong><%=request.getParameter("headname").toString()%></strong>
+            </li>
+        </ol>
+        </h2>
+       
 			</div>
-			<%
-				}
-			%>
+			<% } %>
 		</div>
 		<!-- row1 start -->
 		<div class="row">
@@ -121,8 +139,23 @@
 
 				<div class="col-lg-3 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container1"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+						<%HashMap<String, String> conditions = new HashMap();
+								  
+							      conditions.put("college_id", college_id+"");
+							      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("batch_id", batch_id);  
+							    	 %>
+							    	 <%= util.getHTML(3048, conditions) %>
+							    	 <% 
+							      }
+							      
+							      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+							    	  conditions.put("course_id", course_id); 
+							    	  %>
+								    	 <%= util.getHTML(3050, conditions) %>
+								    	 <%
+							      }
+				%>
 					</div>
 				</div>
 
@@ -130,8 +163,26 @@
 
 				<div class="col-lg-9 no-paddings bg-muted">
 					<div class="ibox-content">
-						<div id="container2"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
+						 <%
+						 HashMap<String, String> conditions1 = new HashMap();
+			      
+			      conditions1.put("college_id", college_id+"");
+			      if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
+			    	  conditions1.put("batch_id", batch_id);  
+			    	  %>
+				    	 <%= util.getHTML(3049, conditions1) %>
+				    	 <%
+			      }
+			      
+			      if(request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
+			    	  conditions1.put("course_id", course_id); 
+			    	  %>
+				    	 <%= util.getHTML(3051, conditions1) %>
+				    	 <%
+			      }
+			      
+			      
+				%>
 					</div>
 				</div>
 
@@ -150,38 +201,43 @@
 			<div class="col-lg-12">
 				<div class="col-lg-7">
 					<div class="ibox-content" style="height: 672px !important;">
-						<div id="container" style="height: 641px !important;"
-							class="p-xs b-r-lg border-left-right border-top-bottom border-size-sm"></div>
-
-						<table id="datatable" style="display: none;">
-							<thead>
-								<tr>
-
-									<th>Time</th>
-									<th><%=request.getParameter("headname")%></th>
-								</tr>
-							</thead>
-							<tbody>
-								<%=attendanceData%>
-							</tbody>
-						</table>
+						<%ReportUtils repUtils = new ReportUtils();
+						if(request.getParameterMap().containsKey("course_id") && !request.getParameter("course_id").toString().equalsIgnoreCase("null"))
+						{
+							HashMap<String, String> conditions3 = new HashMap();
+							conditions3.put("course_id", request.getParameter("course_id").toString());
+							conditions3.put("college_id", college_id+"");
+							%>
+							<%=repUtils.getHTML(3053, conditions3) %>	
+							<% 
+						}
+						else
+						{
+							HashMap<String, String> conditions3 = new HashMap();
+							conditions3.put("batch_id", request.getParameter("batch_id").toString());
+						%>
+						<%=repUtils.getHTML(3054, conditions3) %>	
+						<% 
+						}	
+							%>				
 					</div>
 				</div>
 				<div class="col-lg-5">
-				<div class="ibox white-bg" style="padding-top: 5px; height: 672px !important;"">
+				<div class="ibox white-bg" style="padding-top: 5px;    height: 672px !important;">
 				<%=new ColourCodeUitls().getColourCodeForReports() %>
 					<div class="ibox-content">
 						<%
-							CalenderUtils calUtil = new CalenderUtils();
-							HashMap<String, String> input_params = new HashMap();
-							input_params.put("org_id", college_id + "");
-							if (request.getParameterMap().containsKey("course_id")
-									&& !request.getParameter("course_id").toString().equalsIgnoreCase("null")) {
-								input_params.put("course_id", request.getParameter("course_id"));
-							} else if (request.getParameterMap().containsKey("batch_id")
-									&& !request.getParameter("batch_id").toString().equalsIgnoreCase("null")) {
-								input_params.put("batch_id", request.getParameter("batch_id"));
-							}
+						CalenderUtils  calUtil = new CalenderUtils();
+						HashMap<String, String> input_params = new HashMap();
+						input_params.put("org_id",college_id+"");
+						if(request.getParameterMap().containsKey("course_id") && !request.getParameter("course_id").toString().equalsIgnoreCase("null"))
+						{
+							input_params.put("course_id",request.getParameter("course_id"));
+						}
+						else if(request.getParameterMap().containsKey("batch_id") && !request.getParameter("batch_id").toString().equalsIgnoreCase("null"))
+						{
+							input_params.put("batch_id",request.getParameter("batch_id"));
+						}
 						%>
 						<%=calUtil.getCalender(input_params).toString()%>
 					</div></div>
@@ -213,14 +269,15 @@
 											src="<%=item.get("profile_image").toString()%>" />
 										<p class="m-r-sm m-t-sm"><%=item.get("first_name").toString()!= null ?item.get("first_name").toString():""%></p>
 									</div>
-									<div class="modal inmodal"
+									
+
+								</div>
+								<div class="modal inmodal"
 									id="student_card_modal"	data-student_id="<%=item.get("student_id").toString()%>" tabindex="-1"
 										role="dialog" aria-hidden="true">
 
 
-</div>
-
-								</div>
+                                 </div>
 
 							</div>
 
@@ -309,13 +366,5 @@
 
 		</div>
 		<!-- row4 end -->
-
-
-
-	</div>
-	<!-- page wrapper end -->
-
-</div>
-<!-- Mainly scripts -->
 
 
