@@ -52,6 +52,7 @@
 						trainerID = (int)dd.get("userid");
 						classroomID =(int)dd.get("classroomid");
 						batchID =(int)dd.get("batch_id");
+						orgID = (int)dd.get("organization_id");
 						associate_trainee =(String)dd.get("associate_trainee");
 						if(associate_trainee != null && !associate_trainee.equalsIgnoreCase("")){
 							selectedTrainerString=associate_trainee;

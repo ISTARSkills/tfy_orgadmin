@@ -409,8 +409,8 @@ public class UIUtils {
 
 	public List<HashMap<String, Object>> getEventDetails(String eventID) {
 		DBUTILS util = new DBUTILS();
-		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch WHERE 	batch_schedule_event. ID = '"
-				+ eventID + "' AND batch_schedule_event.batch_id = batch. ID";
+		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee,classroom_details.organization_id FROM 	batch_schedule_event, 	batch,classroom_details WHERE 	batch_schedule_event. ID = '"
+				+ eventID + "' AND batch_schedule_event.batch_id = batch. ID AND classroom_details.id = batch_schedule_event.classroom_id";
 		// System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		return res;
@@ -494,6 +494,7 @@ public class UIUtils {
 			out.append("<option value='" + item.get("id") + "'>" + item.get("classroom_identifier") + "</option>");
 		}
 		out.append("");
+
 		return out;
 	}
 

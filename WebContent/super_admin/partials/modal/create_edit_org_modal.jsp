@@ -114,7 +114,16 @@ DBUTILS util = new DBUTILS();
 								value='<%=(college != null)? college.getMaxStudent() : ""%>'>
 						</div>
 						<br> <br>
-
+                      <div class="col-lg-6">
+							<label class="control-label">Select Organization Type</label> <select
+								class="form-control m-b" name="org_type">
+								<option value="COLLEGE"
+									<%=college.getOrgType() == "COLLEGE" ? "selected" : ""%>>COLLEGE</option>
+								<option value="COMPANY"
+									<%=college.getOrgType() == "COMPANY" ? "selected" : ""%>>COMPANY</option>
+							</select>
+						</div> 
+						<br> <br>
 						<div class="col-lg-12">
 							<label class="control-label">Organization Profile</label>
 							<textarea class="form-control" id="org_profile" placeholder="Organization Profile..."
@@ -125,8 +134,7 @@ DBUTILS util = new DBUTILS();
 						<input type="hidden" value='<%=(college != null && college.getProfile()!=null && !college.getProfile().equalsIgnoreCase("null"))? college.getProfile() : ""%>'
 							name="org_profile"/>
 							
-						 <input type="hidden" value="COLLEGE"
-							name="org_type" />
+						<!--  <input type="hidden" value="COLLEGE" name="org_type" /> -->
 							
 							<input type="hidden" value="<%=orgAdminId%>"
 							name="org_admin_id"/>

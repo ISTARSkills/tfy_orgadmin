@@ -58,7 +58,7 @@ function readyFn(jQuery) {
 
 		$('.tree1').treed();
 	    
-		$('#wizard').steps();
+		//$('#wizard').steps();
 	
 	initiateGraphFilter();
 	createGraphs();
@@ -214,7 +214,7 @@ function initTicket()
 	});
 	
 	
-$('#create_new_ticket').unbind().on('click', function(e) {	
+/*$('#create_new_ticket').unbind().on('click', function(e) {	
 		 e.preventDefault();
 		 $("#new_ticket_form").validate({
 		        rules: {
@@ -244,7 +244,7 @@ $('#create_new_ticket').unbind().on('click', function(e) {
 		        	location.reload();
 		        }
 		    });
-	});
+	});*/
 	
 	
 	$('.ticket_summary_button').unbind().on('click', function() {	 
@@ -253,12 +253,16 @@ $('#create_new_ticket').unbind().on('click', function(e) {
 		$.post(your_jsp_page_to_request,{ticket_id:ticket_id},		     
 		     function(data){			
 			//alert(data);
-				$("#ticket_summary_body").empty();
-				$("#ticket_summary_body").append(data);		  			
+				$(".ticket_summary_body").empty();
+				$(".ticket_summary_body").append(data);		  			
   		  		$('#ticket_summary_modal').modal();
-  		  		
+  		  	 $('#ticket_summary_modal').on('hidden.bs.modal', function () {
+  		    	
+  		  		location.reload();
+  		    	  
+  		    	});
   		  		$('.ticket_status_change').unbind().on('click', function() {
-  				alert("asdas");
+  				//alert("asdas");
   				var ticketId= $(this).data("ticket_id");
   				var status = $(this).data("status");
   				$.ajax({
@@ -269,19 +273,22 @@ $('#create_new_ticket').unbind().on('click', function(e) {
   		            	var res = data;
   		            	if(res==='CLOSED')
   		            	{
-  		            		$(this).data("status","REOPENED");
-  	  		            	$(this).text("Re Opren Ticket");
+  		            		//$(this).data("status","REOPENED");
+  		            		$('.ticket_status_change').attr("data-status","REOPENED");
+  	  		            	$('.ticket_status_change').html("Re Opren Ticket");
   		            	}
   		            	else if(res==='REOPENED')
   		            	{
-  		            		$(this).data("status","CLOSED");
-  	  		            	$(this).text("Close Ticket");
+  		            		//$(this).data("status","CLOSED");
+  		            		$('.ticket_status_change').attr("data-status","CLOSED");
+  	  		            	$('.ticket_status_change').html("Close Ticket");
   		            	}	
   		            	
   		            }
   		        });
   				
   			});
+  		  		
 		     }
 		 );
 		
@@ -403,6 +410,7 @@ function initStudentProfileHandler()
 					$('.tree1').treed();					
 					$('#admin_page_loader').hide()
 					$('#admin_student_card_modal').modal();
+					userValidation();
 					
 		});
 	 });		
@@ -525,7 +533,29 @@ function initEditGroupModalCall()
 	    });
 }
 
-
+function userValidation(){
+	
+	 $("#formUser").validate({
+	        rules: {
+	        	user_f_name: {
+	                required: true,
+	               
+	            },
+	            user_gender: {
+	            	 selectcheck: true,
+	               
+	            },
+	            user_mobile: {
+	                required: true,
+	               
+	            },
+	            user_email: {
+	                required: true,
+	               
+	            }
+	        }
+	    });
+}
 function initEditUserModalCall()
 {
 	 $(".user-edit-popup").unbind().on("click",function(){
@@ -538,7 +568,9 @@ function initEditUserModalCall()
 	    		  $( "body" ).append(data);
 	    		  $('select').select2();
 	    		  admin_edit_modal_create();
-	    		  $('#edit_user_model_'+user_id).modal();	    		 
+	    		  $('#edit_user_model_'+user_id).modal();	
+	    		  userValidation();
+	    		 
 	    		});
 	    	// open modal using js now 
 	    	// action goes here!!
@@ -1483,7 +1515,7 @@ function mark_as_read_notification(){
 	//$('.notification_read').unbind().on("click", function() {
        var notificationEventID = $(this).attr('id');
        var parentID = $('#'+notificationEventID).parent().parent().attr('id');;
-      
+       var notice_count = $('#admin_notice_count').text();
 		var url = '../event_utility_controller'
 		    $.post(url, {
 		    	notificationEventID : notificationEventID,
@@ -1493,6 +1525,10 @@ function mark_as_read_notification(){
 		        	//location.reload();	
 		        	
 		        	$("#"+parentID ).remove();
+		        	if(notice_count != 0){
+		        		notice_count = notice_count -1;
+		        		$("#admin_notice_count").html(notice_count);
+		        	}
 
 	
 		        });
@@ -1536,6 +1572,8 @@ function init_orgadmin_admin() {
 	createDataTables();
 	user_filter_by_course_batch();
 	$('#admin_user_tab').tab('show');
+	  
+	
 	});
     
     
@@ -1832,6 +1870,7 @@ function init_section_pagination_in_section_tab()
 
 function user_filter_by_course_batch() {
 	$('.dataTables_info').hide();
+	var tableID = $('.datatable_istar').attr('id');
 	
     $('#admin_page_course').on('change', function() {
         var key = $('#admin_page_course').val();
@@ -1866,7 +1905,7 @@ function user_filter_by_course_batch() {
                 }
             });
         }
-        filter_user_table(searchKey);
+        filter_user_table(searchKey,tableID);
     });
     
     
@@ -1899,15 +1938,43 @@ function user_filter_by_course_batch() {
                 }
             });
         }
-        filter_user_table(searchKey);
+        filter_user_table(searchKey,tableID);
     });
+    
+    $('#admin_page_orgs').on('change', function() {
+		var key = $('#admin_page_orgs').val();
+		var selectBox = $($('#admin_page_orgs >option'));
+		var searchArray = [];
+		if (key != null) {
+			$.each(key, function(index, value) {
+				selectBox.each(function() {
+					if ($(this).val() == value) {
+						searchArray.push($(this).text());
+					}
+				});
+			});
+		}
+		var searchKey = "";
+		key = searchArray;
+		if (key != null) {
+			$.each(key, function(index, value) {
+				if (index != 0) {
+					searchKey = searchKey + "," + value;
+				} else {
+					searchKey = searchKey + value;
+				}
+			});
+		}
+		filter_user_table(searchKey,tableID);
+	});
 }
 
-function filter_user_table(key) {
+function filter_user_table(key,tableID) {
     if (key == null) {
         key = '';
     }
-    var table = $('#chart_datatable_3042').DataTable();
+    var table_id =tableID;
+    var table = $('#'+tableID).DataTable();
     table.search(key).draw();
 }
 
@@ -2301,6 +2368,18 @@ function init_orgadmin_report_detail(){
             });
     });
 	
+	  $('#myModal2').on('shown.bs.modal', function() {
+			var otherEventData = []
+			//$('#myModal5').modal('toggle');
+			 scheduler_createOldEvent();
+			 scheduler_DeleteEvent();
+			 scheduler_init_edit_new_trainer_associated();
+			 scheduler_init_edit_old_trainer_associated();
+			 scheduler_ClockDate(false);
+			$('select').select2();
+			
+
+		});
 	//session
 	$('#session-page-selection').bootpag({
         total: parseInt($('#session-page-selection').data('size')/3)+1,
@@ -3938,45 +4017,98 @@ function accountmanagment_card_init() {
         });
     });
     
+ $('#account_managment_model').on('hidden.bs.modal', function () {
+    	
+    	var url = '../orgadmin_login'
+		    $.post(url, {delete_session : true },
+		        function(data) {
+                      console.log('session ended');
+		        });
+    	  
+    	});
+ 
     $('.edit_organization').unbind().on("click",function(e){
     	var orgId=$(this).data('org');	
     	init_create_edit_organization(true,orgId);
     });
 }
 
+function set_batchgroup_data(){
+
+	$('#main_batch_group_holder').on('change', function(){
+		var setOfBatchGroup = []
+		var batchGroup = $(this).val();
+		
+		
+		setOfBatchGroup.push(batchGroup);
+		
+		$('#batch_groups').val(setOfBatchGroup);
+		
+	});
+	
+}
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
-	admin_course_batch_init();
-	admin_choosen_init();
-	admin_edit_modal_create();
 	
-	$('#admin_page_orgs').on('change', function() {
-		var key = $('#admin_page_orgs').val();
-		var selectBox = $($('#admin_page_orgs >option'));
-		var searchArray = [];
-		if (key != null) {
-			$.each(key, function(index, value) {
-				selectBox.each(function() {
-					if ($(this).val() == value) {
-						searchArray.push($(this).text());
-					}
-				});
-			});
-		}
-		var searchKey = "";
-		key = searchArray;
-		if (key != null) {
-			$.each(key, function(index, value) {
-				if (index != 0) {
-					searchKey = searchKey + "," + value;
-				} else {
-					searchKey = searchKey + value;
-				}
-			});
-		}
-		filter_user_table(searchKey);
+	user_filter_by_course_batch();
+	admin_edit_modal_create();
+	set_batchgroup_data();
+	
+$('#college_id').on('change', function(){
+		
+		var college_id = $(this).val();
+		var url = '../event_utility_controller'
+		    $.post(url, {
+		    	college_id : college_id,
+		    	type : "userOrgfilter"
+		        },
+		        function(data) {
+
+		      $('#batch_group_holder').html(data);
+		      set_batchgroup_data();
+		      $('#main_batch_group_holder').select2();
+		     
+	
+		        });
+		
+		
 	});
+	
+	$('.userType').on('change', function(){
+		var user_type = $(this).val();
+		if(user_type === 'TRAINER'){
+			$('#hide_college_holder').hide();
+			//$('#hide_group_holder').hide();
+			$('#hide_role_holder').hide();
+			$('#user_type').val('TRAINER');
+			$('#college_id').val('2').trigger('change');
+			var url = '../event_utility_controller'
+			    $.post(url, {
+			    	college_id : '2',
+			    	type : "userOrgfilter"
+			        },
+			        function(data) {
+
+			      $('#batch_group_holder').html(data);
+			      set_batchgroup_data();
+			      $('#main_batch_group_holder').select2();
+			     
+		
+			        });
+			
+			
+		}else{
+			$('#hide_college_holder').show();
+			//$('#hide_group_holder').show();
+			$('#hide_role_holder').show();
+			$('#user_type').val('STUDENT');
+		}
+		 set_batchgroup_data();
+		
+	});
+	
+	
 }
 
 function init_super_admin_scheduler(){
@@ -4051,7 +4183,6 @@ function init_super_admin_analytics() {
     trainerLevelGraph();
     trainerSkillGraph();
     studentFeedBackGraph();
-   // trainerDetailsTable();
     studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
@@ -4078,6 +4209,8 @@ function init_super_admin_analytics() {
         programGraph(courseID, orgID);
         $('#program_spiner').css('cssText', 'display:block !important');
     });
+    
+  
 }
 
 function accountsUtils() {

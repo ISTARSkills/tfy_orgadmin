@@ -33,8 +33,8 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 		<ul class="nav nav-tabs">
 			<li class="active"><a data-toggle="tab" href="#tab-1">Todays
 					Events</a></li>
-			<li class=""><a data-toggle="tab" href="#tab-2">Notifications&nbsp;&nbsp;<span
-					class="label label-warning pull-right"><%=data.size() %></span></a></li>
+			<li class=""><a data-toggle="tab"  href="#tab-2">Notifications&nbsp;&nbsp;<span
+				id="admin_notice_count"	class="label label-warning pull-right"><%=data.size() %></span></a></li>
 		</ul>
 		<div class="tab-content dash_main_tab">
 			<div id="tab-1" class="tab-pane active">

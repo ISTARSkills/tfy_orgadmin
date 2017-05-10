@@ -124,7 +124,7 @@
 							<div class="form-group">
 								<div class="col-lg-6">
 									<label class="control-label">First Name</label> <input type="text"
-										placeholder="First Name.." name="user_f_name"
+										placeholder="First Name.." required name="user_f_name"
 										class="form-control">
 								</div>
 								<div class="col-lg-6">
@@ -138,7 +138,7 @@
 
 								<div class="col-lg-6">
 									<label class="control-label">Mobile No</label> <input
-										type="number" name="user_mobile" class="form-control"
+										type="number" name="user_mobile" required class="form-control"
 										placeholder="Mobile Number">
 
 								</div>
@@ -147,7 +147,7 @@
 
 								<div class="col-lg-6">
 									<label class="control-label">Email</label> <input type="email"
-										placeholder="joe@schmoe.com" name="user_email"
+										placeholder="joe@schmoe.com" required name="user_email"
 										class="form-control">
 								</div>
 
@@ -178,7 +178,7 @@
 									<div class="col-lg-6">
 										<label class="control-label">Organization</label>
 										<div>
-											<select name="college_id" id="college_id"
+											<select name="college_id" id="college_id" required
 												class="form-control m-b college_id">
 												<%=adminUiServcies.getAllOrganizations()%>
 											</select>
@@ -205,7 +205,7 @@
 										</div>
 									</div>
 								</div>
-
+                               </div>
 
 
 								<div id="hide_role_holder">
@@ -225,7 +225,7 @@
 											</div>
 										</div>
 									</div>
-								</div></div>
+								</div>
 							</div>
 							<div class="modal-footer">
 								<div class="form-group">

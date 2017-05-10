@@ -73,13 +73,24 @@ public class ReportDetailService {
 
 		String userChoice = "";
 		if (optionItem != null && optionItem.size() > 0) {
-			if ((boolean) optionItem.get(0).get("correct")) {
-				userChoice = "<span style='margin-top: -36px;' class='label  label-success pull-right m-r-sm'>Correct</span>";
-			} else {
-				userChoice = "<span style='margin-top: -36px;' class='label  label  label-danger pull-right m-r-sm'>Incorrect</span>";
+			
+			if((boolean)optionItem.get(0).get("option1") || (boolean)optionItem.get(0).get("option2") || (boolean)optionItem.get(0).get("option3") || (boolean)optionItem.get(0).get("option4") || (boolean)optionItem.get(0).get("option5")){
+				
+				if ((boolean) optionItem.get(0).get("correct")) {
+					userChoice = "<span style='margin-top: -36px;' class='label  label-success pull-right m-r-sm'>Correct</span>";
+				} else {
+					userChoice = "<span style='margin-top: -36px;' class='label  label  label-danger pull-right m-r-sm'>Incorrect</span>";
+				}
+				
+			}else{
+				
+				userChoice = "<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Skipped</span>";
+				
 			}
+			
 		} else {
-			userChoice = "<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Skipped</span>";
+			
+			userChoice = "<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Absent</span>";
 		}
 
 		StringBuffer out = new StringBuffer();

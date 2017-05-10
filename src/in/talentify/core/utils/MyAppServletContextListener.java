@@ -33,9 +33,9 @@ public class MyAppServletContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		try {
-			System.out.println("ServletContextListener starting OrgAdmin");
+			System.out.println("ServletContextListener starting ArgAdmin");
 			InputStream targetStream = MyAppServletContextListener.class.getClassLoader().getResourceAsStream("Viksit-ac716147c574.json");
-			FirebaseOptions options = new FirebaseOptions.Builder().setDatabaseUrl("https://fir-viksit.firebaseio.com/").setServiceAccount(targetStream).build();	
+			FirebaseOptions options = new FirebaseOptions.Builder().setDatabaseUrl("https://fir-viksit.firebaseio.com").setServiceAccount(targetStream).build();
 			FirebaseApp.initializeApp(options);
 			System.out.println("ServletContextListener started OrgAdmin");
 		} catch (Exception e) {

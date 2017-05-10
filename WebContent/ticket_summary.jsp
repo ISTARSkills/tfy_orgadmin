@@ -20,12 +20,23 @@ PrettyTime pt = new PrettyTime();
 
 Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at"); 
 %>	
-<h2>Ticket Summary</h2>	
+<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+                                        <div class="panel-heading custom-theme-panal-color">
+	<button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+	</button>
+	<h4 class="modal-title text-center">Ticket Summary</h4>
+
+</div>
 
 
-<div class="row">
+ <div class="modal-body">
+                                        
+                                        
+                                        
+                                       
 
-	<div class="col-md-12">
+
 	<h2><%=ticketData.get(0).get("title")%></h2>
 	<h3><%=ticketData.get(0).get("description")%></h3>
 	<div style="margin-bottom: 23px;">
@@ -87,4 +98,4 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
                                 
 
                             </div>
-</div>
+</div> 

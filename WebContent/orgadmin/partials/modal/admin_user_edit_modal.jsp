@@ -44,8 +44,9 @@
 			</div>
 			<div class="modal-body" style="padding-bottom: 0px;">
 
-				<form class="form-horizontal"
-					action="<%=baseURL%>createOrUpdateUser" method="post">
+				<form id="formUser" class="form-horizontal"
+					action="<%=baseURL%>createOrUpdateUser " method="post">
+					<!-- < -->
 
 					<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input
 						type="hidden" value="<%=user_id%>" name="user_id" />
@@ -55,7 +56,7 @@
 
 							<label class="control-label">First Name</label> <input type="text"
 								placeholder="First Name.." name="user_f_name"
-								class="form-control" value="<%=stuProfileData.getFirstName()%>">
+								class="form-control" required value="<%=stuProfileData.getFirstName()%>">
 						</div>
 
 						<div class="col-lg-6">
@@ -70,7 +71,7 @@
 						<div class="col-lg-6">
 							<label class="control-label">Mobile No</label> <input type="number"
 								name="user_mobile" class="form-control"
-								value="<%=user.getMobile()%>" placeholder="Mobile Number">
+								value="<%=user.getMobile()%>" required placeholder="Mobile Number">
 
 						</div>
 						<br>
@@ -78,13 +79,13 @@
 						<div class="col-lg-6">
 							<label class="control-label">Email</label> <input type="email"
 								placeholder="joe@schmoe.com" name="user_email"
-								class="form-control" value="<%=user.getEmail()%>">
+								class="form-control" required value="<%=user.getEmail()%>">
 						</div>
 						
 						
 						 <div class="col-lg-2">
 							<label class="control-label">Gender</label> <select
-								class="form-control m-b" name="user_gender">
+								class="form-control m-b" required name="user_gender">
 								<option value="MALE"
 									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
 								<option value="FEMALE"
