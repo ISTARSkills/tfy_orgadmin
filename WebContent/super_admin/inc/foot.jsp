@@ -52,6 +52,9 @@
 	src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js"
 	type="text/javascript"></script>
  <script type="text/javascript" src="<%=basePath %>js/timepicki.js"></script>
+ 
+   <!-- Tags Input -->
+    <script src="<%=basePath %>js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
 
 <!-- highcharts -->
 <%-- <script src="<%=basePath %>js/highcharts-custom.js"></script>

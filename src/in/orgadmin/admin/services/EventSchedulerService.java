@@ -394,7 +394,8 @@ public class EventSchedulerService {
 
 		out.append("" + "<div class='panel-body'>" + "<h3>New-Session</h3>" + "<p>Course: " + data.get("courseName")
 				+ ".</p>" + "<p class='trainer_id_holder' data-trainer_id=''>Trainer : " + data.get("trainerName")
-				+ "</p>" + "<hr>" + "<p class=''><i class='fa fa-calendar'> Date: " + data.get("eventDate") + "</i>"
+				+ "</p>" + "<p class='current_session_holder' >Current Session : " + data.get("CurrentSession") + "</p>"
+				+ "<hr>" + "<p class=''><i class='fa fa-calendar'> Date: " + data.get("eventDate") + "</i>"
 				+ "<i class='fa fa-clock-o pull-right '> Time: " + data.get("startTime") + "</i> </p> </div> "
 				+ "<div class='panel-heading custom-theme-panal-color text-center'> 	" + "<button "
 				+ "' class='btn btn-block btn-outline btn-default modify-modal-newSchedular' id='" + id
@@ -447,6 +448,7 @@ public class EventSchedulerService {
 		hashMap.put("orgID", orgID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
 		hashMap.put("uType", uType);
+		hashMap.put("CurrentSession", getCurrentSession(batchID));
 
 		StringBuffer out = new StringBuffer();
 		String qdate = null;
@@ -502,7 +504,7 @@ public class EventSchedulerService {
 			int hours = Integer.parseInt((String) jsonObject.get("hours"));
 			String eventDate = (String) jsonObject.get("eventDate");
 			String associateTrainerID = (String) jsonObject.get("associateTrainerID");
-
+			String CurrentSession = (String) jsonObject.get("CurrentSession");
 			IstarUserDAO dao = new IstarUserDAO();
 			IstarUser user = new IstarUser();
 
@@ -535,6 +537,7 @@ public class EventSchedulerService {
 			hashMap.put("orgID", orgID + "");
 			hashMap.put("associateTrainerID", associateTrainerID);
 			hashMap.put("uType", uType);
+			hashMap.put("CurrentSession", CurrentSession);
 			try {
 				qdate = dateformatto.format(dateformatfrom.parse(eventDate));
 				qdatelist.add(qdate);
@@ -604,7 +607,7 @@ public class EventSchedulerService {
 		hashMap.put("orgID", orgID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
 		hashMap.put("uType", uType);
-
+		hashMap.put("CurrentSession", getCurrentSession(batchID));
 		StringBuffer out = new StringBuffer();
 		String qdate = null;
 		ArrayList<String> list = new ArrayList<>();
@@ -681,6 +684,7 @@ public class EventSchedulerService {
 		hashMap.put("orgID", orgID + "");
 		hashMap.put("associateTrainerID", associateTrainerID);
 		hashMap.put("uType", uType);
+		hashMap.put("CurrentSession", getCurrentSession(batchID));
 		StringBuffer out = new StringBuffer();
 		String qdate = null;
 		ArrayList<String> list = new ArrayList<>();
@@ -756,7 +760,8 @@ public class EventSchedulerService {
 			}
 
 			out.append("<div class='panel-body'>" + "<h3>Existing Session</h3>" + "<p>Course: " + courseName + ".</p>"
-					+ "<p>Trainer : " + item.get("name") + "</p>" + "<hr>" + "<p><i class='fa fa-calendar'> Date: "
+					+ "<p>Trainer : " + item.get("name") + "</p><p class='current_session_holder' >Current Session : " + getCurrentSession(batchId) + "</p>"
+					+ "<hr>" + "<p><i class='fa fa-calendar'> Date: "
 					+ evdate + "</i>" + "<i class='fa fa-clock-o pull-right'> Time: " + evetime + "</i> </p> </div> "
 					+ "<div class='panel-heading text-center'> 	" + "<button id='" + item.get("eventid")
 					+ "' class='btn btn-block btn-outline btn-default modify-modal' type='button'> "
@@ -941,5 +946,22 @@ public class EventSchedulerService {
 		return days;
 
 	}
+	public String getCurrentSession(int batchID) {
+		String SessionName = "";
+		DBUTILS db = new DBUTILS();
+		String sql = "select cmsession.title from cmsession, event_log where event_log.cmsession_id = cmsession.id and event_log.batch_id = "
+				+ batchID + " order by event_log.id desc limit 1";
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		if (data.size() > 0) {
+			SessionName = (String) data.get(0).get("title");
+		} else {
+			sql = "SELECT 	cmsession.title FROM   module_course,   cmsession_module, 	cmsession, 	MODULE, 	batch WHERE module_course.course_id = batch.course_id AND module_course.module_id = MODULE.id AND MODULE.id = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession.id AND MODULE .order_id = 1 AND cmsession.order_id = 1 AND batch. ID ="
+					+ batchID;
+			data = db.executeQuery(sql);
+			SessionName = (String) data.get(0).get("title");
+		}
 
+		return SessionName;
+
+	}
 }

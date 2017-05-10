@@ -13,15 +13,17 @@
 			+ request.getContextPath() + "/";
 
 	int user_id = 2;
+	IstarUser user = null;
+	UserProfile stuProfileData = null;
 	if (request.getParameter("user_id") != null) {
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 	}
 
 	int colegeID = (int) request.getSession().getAttribute("orgId");
 
-	IstarUser user = new IstarUserDAO().findById(user_id);
+	 user = new IstarUserDAO().findById(user_id);
 	ArrayList<Integer> selectedBG = new OrgAdminBatchGroupService().getSelectedBatchBgoups(user_id);
-	UserProfile stuProfileData = user.getUserProfile();
+	 stuProfileData = user.getUserProfile();
 	String lastName = "";
 	if (stuProfileData != null) {
 		lastName = stuProfileData.getLastName();
@@ -86,10 +88,8 @@
 						 <div class="col-lg-2">
 							<label class="control-label">Gender</label> <select
 								class="form-control m-b" required name="user_gender">
-								<option value="MALE"
-									<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
-								<option value="FEMALE"
-									<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
+									<option value="MALE" <%if(stuProfileData.getGender().equalsIgnoreCase("MALE")) {	%>selected	<% } %>>Male</option>
+									<option value="FEMALE" <%if(stuProfileData.getGender().equalsIgnoreCase("FEMALE")) {	%>selected	<% } %>>Female</option>
 							</select>
 						</div> 
 

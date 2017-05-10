@@ -27,7 +27,7 @@ public class UIUtils {
 		HashMap<String, String> hashMap  = new HashMap<String, String>();
 		String listOfassociateTrainer = "NONE";
 		hashMap.put("asoctraineremail", listOfassociateTrainer);
-		hashMap.put("asoctrainername", listOfassociateTrainer);
+	//	hashMap.put("asoctrainername", listOfassociateTrainer);
 		
 		 
 		String sessionsCovered="none";
@@ -72,23 +72,27 @@ public class UIUtils {
 				
 				listOfassociateTrainer = res.get(0).get("associate_trainee").toString();
 				 if (listOfassociateTrainer.contains(",")) {
+					 String asoctraineremail = "";
 					 for (String retval: listOfassociateTrainer.split(",")) {
 						
 						 
 						 sql = "SELECT 	istar_user.email AS asoctraineremail, 	user_profile.first_name AS asoctrainername FROM 	istar_user, 	user_profile WHERE 	istar_user.ID = user_profile.user_id AND istar_user.ID ="+Integer.parseInt(retval);
 						 List<HashMap<String, Object>> res2 = util.executeQuery(sql);
 						 
-						 hashMap.put("asoctraineremail", res2.get(0).get("asoctraineremail").toString());
-						 hashMap.put("asoctrainername", res2.get(0).get("asoctrainername").toString());
+						
+						 asoctraineremail +=  res2.get(0).get("asoctraineremail").toString()+",";
+						// hashMap.put("asoctrainername", res2.get(0).get("asoctrainername").toString());
 						 
 				      }
+					 
+					 hashMap.put("asoctraineremail", asoctraineremail.substring(0, asoctraineremail.length()-1));
 					 
 				 }else{
 					 
 					 sql = "SELECT 	istar_user.email AS asoctraineremail, 	user_profile.first_name AS asoctrainername FROM 	istar_user, 	user_profile WHERE 	istar_user.ID = user_profile.user_id AND istar_user.ID  ="+Integer.parseInt(listOfassociateTrainer);
 					 List<HashMap<String, Object>> res3 = util.executeQuery(sql);
 					 hashMap.put("asoctraineremail", res3.get(0).get("asoctraineremail").toString());
-					 hashMap.put("asoctrainername", res3.get(0).get("asoctrainername").toString());
+					 //hashMap.put("asoctrainername", res3.get(0).get("asoctrainername").toString());
 				 }
 				
 			}else{

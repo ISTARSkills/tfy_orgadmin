@@ -170,6 +170,11 @@ function initTicket()
 	$('#open_ticket').unbind().on('click', function(e) {
 		$('#create_new_ticket_modal').modal();
 		
+		$('.tagsinput').tagsinput({
+            tagClass: 'label label-primary'
+        });
+
+		
 	});
 	
 	
@@ -220,10 +225,13 @@ function initTicket()
   		  		location.reload();
   		    	  
   		    	});
-  		  		$('.ticket_status_change').unbind().on('click', function() {
+  		  		$('.ticket_status_change').on('click', function() {
   				//alert("asdas");
-  				var ticketId= $(this).data("ticket_id");
-  				var status = $(this).data("status");
+  		  		var ticketId = null;
+  		  	    var status = null;
+  		  	    var ticket_status= $(this);
+  				 ticketId= $(this).data("ticket_id");
+  				 status = $(this).data("status");
   				$.ajax({
   		            type: "POST",
   		            url: "/change_ticket_status",
@@ -233,15 +241,19 @@ function initTicket()
   		            	if(res==='CLOSED')
   		            	{
   		            		//$(this).data("status","REOPENED");
-  		            		$('.ticket_status_change').attr("data-status","REOPENED");
-  	  		            	$('.ticket_status_change').html("Re Opren Ticket");
+  		            		$(ticket_status).data("status","REOPENED");
+  	  		            	$(ticket_status).html("Re Opren Ticket");
+  	  		                $('#ticket_modal_status').html("CLOSED");
+  	  		              //  $('#ticket_table_status').html("CLOSED");
   		            	}
   		            	else if(res==='REOPENED')
   		            	{
   		            		//$(this).data("status","CLOSED");
-  		            		$('.ticket_status_change').attr("data-status","CLOSED");
-  	  		            	$('.ticket_status_change').html("Close Ticket");
-  		            	}	
+  		            		 $(ticket_status).data("status","CLOSED");
+  	  		            	 $(ticket_status).html("Close Ticket");
+  	  		                 $('#ticket_modal_status').html("REOPENED");
+  	  		               //  $('#ticket_table_status').html("REOPENED");
+  		            	}  	
   		            	
   		            }
   		        });
@@ -1564,6 +1576,11 @@ function init_orgadmin_admin() {
 
         $this.tab('show');
         return false;
+    });
+    
+    $('.click_loader').click(function(){
+    	$('#spinner_holder').show();
+    	
     });
     
 }
@@ -3620,7 +3637,7 @@ function scheduler_newSchedularmodifyModal() {
 		var tabType = $('#new_schedule_parent_'+$(this).attr('id')).data('trainer_data').tabType;
 		var associateTrainerID = $('#new_schedule_parent_'+$(this).attr('id')).data('trainer_data').associateTrainerID;
 		var uType = $('#new_schedule_parent_'+$(this).attr('id')).data('trainer_data').uType;
-		
+		var CurrentSession = $('#new_schedule_parent_'+$(this).attr('id')).data('trainer_data').CurrentSession;
 		
 		$(".new_schedule").each(function(){
 			if(($(this).attr('id')) != newEventID){
@@ -3654,7 +3671,8 @@ function scheduler_newSchedularmodifyModal() {
    	       eventType:eventType,
    	       eventDate:eventDate,
    	       startTime:startTime,
-   	       tabType:tabType}, 
+   	       tabType:tabType,
+   	      CurrentSession:CurrentSession}, 
 				function(data) {
 					
 					          

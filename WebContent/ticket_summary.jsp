@@ -25,7 +25,7 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
 	<button type="button" class="close" data-dismiss="modal">
 		<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 	</button>
-	<h4 class="modal-title text-center">Ticket Summary</h4>
+	<h2 class="modal-title text-center">Ticket Summary</h2>
 
 </div>
 
@@ -41,7 +41,7 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
 	<h3><%=ticketData.get(0).get("description")%></h3>
 	<div style="margin-bottom: 23px;">
 	<span class="label label-primary">Created By: </span> &nbsp;<%=dao.findById(Integer.parseInt(ticketData.get(0).get("creator_id").toString())).getUserProfile().getFirstName()%>
-	<span class="label label-primary">Status : </span>&nbsp;<%=ticketData.get(0).get("status")%> (last updated <%=pt.format(updetdat)%>)
+	<span class="label label-primary" >Status : </span>&nbsp;<span id="ticket_modal_status"><%=ticketData.get(0).get("status")%></span> (last updated <%=pt.format(updetdat)%>)
 	<%if(ticketData.get(0).get("status").toString().equalsIgnoreCase(TicketStates.CLOSED)) 
 	{
 	%>

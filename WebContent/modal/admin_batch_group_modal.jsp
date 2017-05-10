@@ -14,11 +14,13 @@
 			+ request.getContextPath() + "/";
 				
 	int groupId = 2;
+	BatchGroup bg = null;
 	if(request.getParameter("bg_id")!=null)
 	{
 		groupId= Integer.parseInt(request.getParameter("bg_id"));
+		 bg = new BatchGroupDAO().findById(groupId);
 	}	
-	BatchGroup bg = new BatchGroupDAO().findById(groupId);
+	
 
 	ArrayList<Integer> selectedStudents=new OrgAdminBatchGroupService().getSelectedStudents(groupId);
 	
@@ -63,7 +65,7 @@
 							<h3 class="m-b-n-md">Type</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
-							
+							<% System.out.println("----------------->"+bg.getType()); %>
 								<select
 									class="form-control" name="group_type">
 									<option value="ROLE" <%if(bg.getType().equalsIgnoreCase("ROLE")) {	%>selected	<% } %>>ROLE</option>
