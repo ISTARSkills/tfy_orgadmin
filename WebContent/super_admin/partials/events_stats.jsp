@@ -30,11 +30,11 @@
 		<div class='custom-colum-grid'>
 			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
-					<div class='col-xs-2'>
+					<div class='col-xs-2' style="float: right;">
 						<i class='fa fa-calendar fa-2x'></i>
 					</div>
-					<div class='col-xs-9 text-right'>
-						<span> Events Today </span>
+					<div class='col-xs-9 text-right' style="text-align: left !important;">
+						<span> Events Scheduled</span>
 						<h2 class='font-bold'><%=totalEvents%></h2>
 					</div>
 				</div>
@@ -44,11 +44,11 @@
 		<div class='custom-colum-grid'>
 			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
-					<div class='col-xs-2'>
-						<i class='fa fa-calendar fa-2x'></i>
+					<div class='col-xs-2' style="float: right;">
+						<i class='fa fa-pause fa-2x'></i>
 					</div>
-					<div class='col-xs-9 text-right'>
-						<span> Events Scheduled </span>
+					<div class='col-xs-9 text-right' style="text-align: left !important;">
+						<span> Events Pending </span>
 						<h2 class='font-bold'>
 							<%=schedule%></h2>
 					</div>
@@ -59,10 +59,10 @@
 		<div class='custom-colum-grid'>
 			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
-					<div class='col-xs-2'>
-						<i class='fa fa-calendar fa-2x'></i>
+					<div class='col-xs-2' style="float: right;">
+						<i class='fa fa-play fa-2x'></i>
 					</div>
-					<div class='col-xs-9 text-right'>
+					<div class='col-xs-9 text-right' style="text-align: left !important;">
 						<span>Events In Progress</span>
 						<h2 class='font-bold'><%=teaching%></h2>
 					</div>
@@ -74,10 +74,10 @@
 		<div class='custom-colum-grid'>
 			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
-					<div class='col-xs-2'>
-						<i class='fa fa-calendar fa-2x'></i>
+					<div class='col-xs-2' style="float: right;">
+						<i class='fa fa-check-square-o fa-2x'></i>
 					</div>
-					<div class='col-xs-9 text-right'>
+					<div class='col-xs-9 text-right' style="text-align: left !important;">
 						<span>Events Completed</span>
 						<h2 class='font-bold'><%=completed%></h2>
 					</div>
@@ -88,10 +88,10 @@
 		<div class='custom-colum-grid'>
 			<div class='widget style1 navy-bg custom-theme-color'>
 				<div class='row'>
-					<div class='col-xs-2'>
-						<i class='fa fa-calendar fa-2x'></i>
+					<div class='col-xs-2' style="float: right;">
+						<i class='fa fa-trash fa-2x'></i>
 					</div>
-					<div class='col-xs-9 text-right'>
+					<div class='col-xs-9 text-right' style="text-align: left !important;">
 						<span> Events Cancelled </span>
 						<h2 class='font-bold'>
 							<%=cancelled%>

@@ -482,7 +482,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 										data-toggle="tooltip" data-placement="top"
 										title="Feedback Info"><a data-toggle="tab"
 										href="#child<%="tab5" + eventId%>"><i
-											class="fa fa-database"></i></a></li>
+											class="fa fa-thumbs-up"></i></a></li>
 								</ul>
 
 							</div>

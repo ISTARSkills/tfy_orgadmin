@@ -6,9 +6,7 @@
 <%
 int colegeID = (int)request.getSession().getAttribute("orgId");
 %>
-
 					<div class="ibox float-e-margins no-margins bg-muted">
-
 						<div class="ibox-content">
 						<div class="row show-grid white-bg">
 								<div class="col-lg-3 white-bg no-borders whit-bg-schedular">

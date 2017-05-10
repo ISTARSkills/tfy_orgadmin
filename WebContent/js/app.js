@@ -58,7 +58,7 @@ function readyFn(jQuery) {
 
 		$('.tree1').treed();
 	    
-		//$('#wizard').steps();
+		$('#wizard').steps();
 	
 	initiateGraphFilter();
 	createGraphs();
@@ -2055,10 +2055,6 @@ function initCreateSectionCall()
     });	
  }
 
-function init_autoscheduler(){
-	
-	
-}
 
 function init_orgadmin_scheduler() {
     console.log('intiliazing scheduler');    	
@@ -2105,6 +2101,16 @@ function init_orgadmin_scheduler() {
 
 function init_auto_scheduler()
 {
+	$('#org_selector').unbind().on('change', function(){
+		var orgId = $(this).val();
+		$('#entity_type_selector').data('college_id',orgId);
+		$('#entity_type_selector').select2();
+		$('#entity_list_holder').empty();
+		$('#entity_course_holder').empty();
+		$('#auto_scheduler_edit_course').empty();
+	});
+	
+	
 	$('#entity_type_selector').unbind().on('change', function(){
 		$('#admin_page_loader').show();
 		var entityType = $(this).val();
@@ -4130,6 +4136,7 @@ $('#college_id').on('change', function(){
 }
 
 function init_super_admin_scheduler(){
+	init_auto_scheduler();
 	
 	   $('.org_holder').change(function() {
 			 var orgID =  this.value;

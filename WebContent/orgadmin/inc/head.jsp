@@ -34,7 +34,7 @@
 
 <link href="<%=basePath%>css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <link href="<%=basePath%>css/plugins/steps/jquery.steps.css" rel="stylesheet">
-  <link href="<%=basePath%>css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+ <link href="<%=basePath%>css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 
 
 </head>
