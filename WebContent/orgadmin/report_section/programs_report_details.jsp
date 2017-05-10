@@ -212,6 +212,31 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 						%>
 						<%=calUtil.getCalender(input_params).toString()%>
 					</div></div>
+					<!-- event details modal -->
+
+								<div class="modal inmodal" id="event_details" tabindex="-1"
+									role="dialog" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content animated flipInY event_details">
+
+										</div>
+									</div>
+								</div>
+
+
+		<!--  -->
+		<!-- modal -->
+
+								<div class="modal inmodal" id="myModal2" tabindex="-1"
+									role="dialog" aria-hidden="true">
+									<%-- <input id="orgID" type="hidden" value="<%=colegeID %>" /> --%>
+									<div class="modal-dialog">
+										<div class="modal-content animated flipInY event-edit-modal">
+
+										</div>
+									</div>
+								</div>
+								<!--  -->
 				</div>
 
 			</div>

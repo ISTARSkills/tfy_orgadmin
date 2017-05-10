@@ -65,7 +65,7 @@
                                 	Timestamp updated_at = (Timestamp)row.get("updated_at");
                                 %>
 							<tr>
-								<td><span class="label label-primary"><%=row.get("status") %></span>
+								<td><span class="label label-primary" id="ticket_table_status"><%=row.get("status") %></span>
 								</td>
 								<td class="issue-info"><a href="#"> <%=row.get("title") %>
 								</a> <small> <%=row.get("description") %>
@@ -190,6 +190,14 @@
 										<option value="<%=TicketTypes.PROJECTOR_ISSUE%>"><%=TicketTypes.PROJECTOR_ISSUE%></option>
 									</select>
 								</div>
+								
+								<div class="form-group">
+									<label>Other Members</label> 
+									<input class="tagsinput form-control" type="text" value="" name="other_members"/>
+
+								</div>
+								 
+								
 								<div>
 									<br>
 									<div class="form-group">

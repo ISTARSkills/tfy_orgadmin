@@ -1,3 +1,4 @@
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -17,10 +18,12 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 				DateFormat dateformatter = new SimpleDateFormat("yyyy-MM-dd");
 				DateFormat timeformatter = new SimpleDateFormat("hh:mm a");
 				String status = null;
+				OrgAdminDashboardServices dashboardServices = new OrgAdminDashboardServices();
+				 List<HashMap<String, Object>> slideCount = new  ArrayList<HashMap<String, Object>>();
 				if(request.getParameterMap().containsKey("eventid") && request.getParameter("eventid") !=null ){
 					
 					 data = new UIUtils().getALLEventDetails(request.getParameter("eventid"));
-					
+					  slideCount = dashboardServices.getSlideCount(request.getParameter("eventid"));
 					 status = request.getParameter("status");
 				
 					
@@ -50,6 +53,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 		%>
 		<p><strong>Sessions Covered: </strong> <%=data.get("sessions_covered") %></p>
 		<p><strong>Next Session: </strong> <%=data.get("next_session") %></p>
+		<p><strong>Slides Covered: </strong> <%=slideCount.get(0).get("slide_count")%></p>
 		<% 
 	}
 }else{
@@ -59,7 +63,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	<% 
 } %>
 
-<p><strong>Associate Trainer: </strong><%=data.get("asoctrainername") %> (<%=data.get("asoctraineremail") %>)</p>
+<p><strong>Associate Trainer: </strong><%=data.get("asoctraineremail") %></p>
 
 
                                         </div>

@@ -49,6 +49,7 @@ public class CreateNewTicketController extends IStarBaseServelet {
 			String ticketType=request.getParameter("ticket_type");
 			String receivers [] = request.getParameterValues("receivers");
 			String createdBy = request.getParameter("created_by");
+			String otherMembers =request.getParameter("other_members");
 			NotificationAndTicketServices serv = new NotificationAndTicketServices();
 			System.out.println(receivers.length);
 			IstarUser user = new IstarUserDAO().findById(Integer.parseInt(createdBy));

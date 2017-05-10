@@ -49,6 +49,11 @@
 <script src="<%=basePath %>js/plugins/toastr/toastr.min.js"></script>
 
 
+    <!-- Tags Input -->
+    <script src="<%=basePath %>js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+
+
 <!-- Jquery Validate -->
 <script src="<%=basePath %>js/plugins/validate/jquery.validate.min.js"></script>
 <script
