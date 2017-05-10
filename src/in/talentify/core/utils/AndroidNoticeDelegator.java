@@ -91,7 +91,52 @@ public class AndroidNoticeDelegator {
 			}			
 			System.out.println("Notification sent to all the users");
 		}
+	}
+	
+	public void sendNotificationToUser(String istarUserId, String message, String type, HashMap<String, Object> item){
+		if(deployment_type.equalsIgnoreCase("production")){
+			
+				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification").child(istarUserId);
+				
+				//databaseReferenceForUser.child(istarUserId);
+				Map<String, Object> hopperUpdates = new HashMap<String, Object>();
+				hopperUpdates.put("item", item);
+				hopperUpdates.put("message", message);
+				hopperUpdates.put("type", type);
+				hopperUpdates.put("time", dateFormat.format(new Date()));
+				//hopperUpdates.put("eventDate", eventDate);
+				//databaseReferenceForUser.setValue(hopperUpdates);
+				databaseReferenceForUser.push().setValue(hopperUpdates);
+			
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				System.out.println("error in sending notification");
+			}			
+			System.out.println("Notification sent to all the users");
+		}else{
+			System.out.println("DEV SERVER");
+
+				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification-dev").child(istarUserId);
+
+				Map<String, Object> hopperUpdates = new HashMap<String, Object>();
+				hopperUpdates.put("item", item);
+				hopperUpdates.put("message", message);
+				hopperUpdates.put("type", type);
+				hopperUpdates.put("time", dateFormat.format(new Date()));
+				//hopperUpdates.put("eventDate", eventDate);
+				//databaseReferenceForUser.setValue(hopperUpdates);
+				databaseReferenceForUser.push().setValue(hopperUpdates);
+
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				System.out.println("error in sending notification");
+			}			
+			System.out.println("Notification sent to all the users");
+		}
 	}	
+	
 	
 /*	public void sendAndroidNotification(String type,ArrayList<String> studentIDs, String message,String hidden_id) {
 
