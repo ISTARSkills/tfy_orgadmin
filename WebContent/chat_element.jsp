@@ -62,7 +62,7 @@ data-receiver_id="" data-receiver_name="" data-receiver_image="">
 		<div class="heading" draggable="true">
            Welcome <%=user.getUserProfile().getFirstName() %>
         </div>
-        <div class="tabs-container">
+        <div class="tabs-container" style="background-color: #f3f3f4;">
         <ul class="nav nav-tabs">
         <%if(userRole.equalsIgnoreCase("SUPER_ADMIN") || userRole.equalsIgnoreCase("ORG_ADMIN"))
         	{

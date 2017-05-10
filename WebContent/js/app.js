@@ -75,6 +75,7 @@ function readyFn(jQuery) {
 		init_orgadmin_dashboard();
 		$('#Dashboard').css('color','  #eb384f');
 		initChat();	
+		initUnreadChatAndNotification();
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
@@ -162,6 +163,46 @@ function readyFn(jQuery) {
 	loadTables();
 	
 
+}
+
+function initUnreadChatAndNotification()
+{
+	//here last 8 unread notifications will be displayed in screen   
+	var userId = $('#current_user_id').val();
+		$('.notification_item').delay(8000).fadeOut('slow', function () {
+		$(this).remove();
+		var notice_id = $(this).data("notice_id");
+		var group_code = $(this).data("group_code");
+		var notice_type = $(this).data("notice_type");
+		var url = "/mark_notice_as_read";
+		 $.ajax({
+		        type: "POST",
+		        url: url,
+		        data: {notice_id:notice_id,group_code:group_code,notice_type:notice_type},
+		        success: function(data) {	
+		        	
+		        }
+		    });
+	});
+	
+	$('.notification_close').unbind().on('click',function(){
+		var notice_id = $(this).data("notice_id");
+		var group_code = $(this).data("group_code");
+		var notice_type = $(this).data("notice_type");
+		$(this).closest('.notification_item').transition('fade') ;	
+		$(this).remove();	
+		
+		 var url = "/mark_notice_as_read";
+		 $.ajax({
+		        type: "POST",
+		        url: url,
+		        data: {notice_id:notice_id,group_code:group_code,notice_type:notice_type},
+		        success: function(data) {		        	
+		        }
+		    });
+
+	});
+	
 }
 
 function initTicket()

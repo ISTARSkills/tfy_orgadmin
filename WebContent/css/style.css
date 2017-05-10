@@ -11199,5 +11199,9 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
   hr{
       border-top: 1px solid #f8fafb;
   }
-  
+.chat_notification{
+	z-index:6 !important;
+	right: 6px !important;
+	position: absolute !important;
+}
   

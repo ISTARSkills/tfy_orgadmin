@@ -368,4 +368,36 @@ ORDER BY
 
 </sql>
 </custom_report>
+<custom_report id="25">
+<sql>
+SELECT
+	istar_notification.ID,
+	istar_notification.created_at,
+	TYPE,
+	title, 
+user_profile.first_name
+FROM
+	istar_notification,
+	user_profile
+WHERE
+istar_notification.sender_id = user_profile.user_id
+and istar_notification.receiver_id = :user_id
+AND istar_notification.status = 'UNREAD'
+ORDER BY
+	created_at DESC
+LIMIT 8
+</sql>
+</custom_report>
+<custom_report id="26">
+<sql>
+select id, created_at, type, title, first_name, group_code, notice_type from (WITH summary AS (    SELECT 		P.ID, 		P.created_at, 		TYPE, 		title,  cast ('You' as varchar) as first_name, group_code,         
+   ROW_NUMBER() OVER(PARTITION BY p.group_code                                  ORDER BY p.created_at DESC) AS rk     FROM 	
+   	istar_notification p 	WHERE P.sender_id = :user_id   and p.read_by_admin != 't' ) SELECT s.id, s.created_at,s.type, s.title, s.first_name,s.group_code,
+   	 cast('GROUP_NOTICE' as varchar) as notice_type FROM summary s WHERE s.rk = 1 ORDER BY s.created_at desc  ) 
+   	 T1 union (	SELECT 		istar_notification.ID, 		istar_notification.created_at, 		TYPE, 		title, 	 
+   	  user_profile.first_name, group_code, 		cast ('SINGLE_NOTICE' as varchar) as notice_type	 	FROM 	
+   	  	istar_notification, 		user_profile 	WHERE 	istar_notification.sender_id = user_profile.user_id 	
+   	  	and istar_notification.receiver_id = :user_id 	AND istar_notification.status = 'UNREAD' 	ORDER BY 		created_at DESC	 ) order by created_at desc
+</sql>
+</custom_report>
 </custom_report_list>

@@ -508,7 +508,7 @@
 										String id = row.get("id").toString();
 										String time =p.format((Timestamp)row.get("created_at"));
 										%>
-										<div class="alert alert-danger" id ="notice_<%=id%>">
+										<%-- <div class="alert alert-danger" id ="notice_<%=id%>">
 										<%=title %>
 										<%if(row.get("details")!=null){ %>
 										<p><%=row.get("details").toString() %></p>
@@ -520,8 +520,17 @@
 											<% 
 										}
 										%>
-									</div>
-										
+									</div> --%>
+									
+								<%-- <div class="alert alert-info alert-dismissable notification_item">
+                                <button aria-hidden="true" data-dismiss="alert" class="close notification_close" data-notice_id="<%=id%>" data-group_code="<%=groupCode%>" data-notice_type="SINGLE_NOTICE" type="button">×</button>
+                                 <a class="alert-link" style="color: #2b542c; font-weight:700"> <%=firstName %> </a>
+											<span class="message-date" style="color: #2b542c; font-weight:700 ">&nbsp;posted <%=time %> </span>
+                                            <span class="message-content">
+											<%=title%>	
+											</span>
+                            </div>
+										 --%>
 										<% 
 									}
 								%>
@@ -583,7 +592,7 @@
 		</div>
 	</div>
 
-<jsp:include page="../chat_element.jsp"></jsp:include>
+
 
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>

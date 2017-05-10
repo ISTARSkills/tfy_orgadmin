@@ -2,6 +2,8 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -57,11 +59,45 @@ public class MAIN {
 		//nosense();
 */
 		
-		dapoooo();
-		asdas();
+		//dapoooo();
+		//asdas();
+		datlooper();
 	}
 	
 	
+	private static void datlooper() {
+		// TODO Auto-generated method stub
+		Calendar startCal = Calendar.getInstance();
+	    startCal.setTime(new Date());      
+    	/* if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK)) && currentOrderId< lessons.size()) {
+	        	Date taskDate = new Date(startCal.getInstance().getTimeInMillis());
+	        	System.out.println("creatting task for date+"+taskDate);		        	
+	        	for(int stid : users)
+	        	{
+	        		int cid=Integer.parseInt(scheduler_course_id);
+	        		for(int i=0;i<freq;i++){
+	        			int orderId = currentOrderId+i;
+		        		if(orderId<lessons.size()){
+		        			int mid = modules.get(orderId);
+			        		int cms = cmsessions.get(orderId);
+			        		int lid = lessons.get(orderId);
+			        		scheduleTask(stid, cid, mid, cms, lid, taskDate);
+		        		}
+	        		}
+	        	}		            
+	            currentOrderId = currentOrderId+freq;
+	            daysCount++;
+	        }*/
+			startCal.add(Calendar.DATE, 4);
+    	 System.out.println("checkig for "+startCal.getTime());
+    	 
+		/*for(int daysCount=0; daysCount< 10; )
+	    {
+			
+	    }*/
+	}
+
+
 	private static void asdas() {
 		// TODO Auto-generated method stub
 		Organization org = new OrganizationDAO().findById(2);
