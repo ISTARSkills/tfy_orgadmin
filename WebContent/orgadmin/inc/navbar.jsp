@@ -79,7 +79,7 @@
 		</div>
 	</nav>
 <jsp:include page="/chat_element.jsp"></jsp:include>
-<jsp:include page="/notifications.jsp"></jsp:include>
+<jsp:include page="/alert_notifications.jsp"></jsp:include>
 <div style="display: none" id="admin_page_loader">
 				<div style="width: 100%; z-index: 6; position: fixed;"
 					class="spiner-example">

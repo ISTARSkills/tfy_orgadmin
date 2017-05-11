@@ -390,14 +390,493 @@ LIMIT 8
 </custom_report>
 <custom_report id="26">
 <sql>
-select id, created_at, type, title, first_name, group_code, notice_type from (WITH summary AS (    SELECT 		P.ID, 		P.created_at, 		TYPE, 		title,  cast ('You' as varchar) as first_name, group_code,         
-   ROW_NUMBER() OVER(PARTITION BY p.group_code                                  ORDER BY p.created_at DESC) AS rk     FROM 	
-   	istar_notification p 	WHERE P.sender_id = :user_id   and p.read_by_admin != 't' ) SELECT s.id, s.created_at,s.type, s.title, s.first_name,s.group_code,
-   	 cast('GROUP_NOTICE' as varchar) as notice_type FROM summary s WHERE s.rk = 1 ORDER BY s.created_at desc  ) 
-   	 T1 union (	SELECT 		istar_notification.ID, 		istar_notification.created_at, 		TYPE, 		title, 	 
-   	  user_profile.first_name, group_code, 		cast ('SINGLE_NOTICE' as varchar) as notice_type	 	FROM 	
-   	  	istar_notification, 		user_profile 	WHERE 	istar_notification.sender_id = user_profile.user_id 	
-   	  	and istar_notification.receiver_id = :user_id 	AND istar_notification.status = 'UNREAD' 	ORDER BY 		created_at DESC	 ) order by created_at desc
+select TF.id, TF.created_at, TF.type, TF.action, TF.title, TF.first_name, TF.group_code, TF.notice_type, cast (count(*) over() as integer) as total_rows from (select id, created_at, type, action, title, first_name, group_code, notice_type from (WITH summary AS (
+   SELECT
+		P.ID,
+		P.created_at,
+		TYPE,action,
+		title,  cast ('You' as varchar) as first_name, group_code,
+           ROW_NUMBER() OVER(PARTITION BY p.group_code 
+                                 ORDER BY p.created_at DESC) AS rk
+    FROM
+		istar_notification p
+	WHERE P.sender_id = :user_id
+  and p.read_by_admin != 't'
+)
+SELECT s.id, s.created_at,s.type,s.action, s.title, s.first_name,s.group_code, cast('GROUP_NOTICE' as varchar) as notice_type
+FROM summary s
+WHERE s.rk = 1
+ORDER BY s.created_at desc
+
+) T1
+union 
+(
+	SELECT
+		istar_notification.ID,
+		istar_notification.created_at,
+		TYPE,action,
+		title, 
+	  user_profile.first_name, group_code, 
+		cast ('SINGLE_NOTICE' as varchar) as notice_type	
+	FROM
+		istar_notification,
+		user_profile
+	WHERE
+	istar_notification.sender_id = user_profile.user_id
+	and istar_notification.receiver_id = :user_id
+	AND istar_notification.status = 'UNREAD'
+	ORDER BY
+		created_at DESC	
+)
+)TF
+
+order by TF.created_at desc
+limit :limit offset :offset</sql>
+</custom_report>
+<custom_report id="27">
+<sql>
+select TOTAL_ADMIN.id ,TOTAL_ADMIN.name, TOTAL_ADMIN.role_name, TOTAL_ADMIN.org_type,TOTAL_ADMIN.image, cast(count(*)filter(where sent='f') as INTEGER) as chat_count   from (SELECT
+	user_role.user_id AS ID,
+	ROLE .role_name,
+	organization. NAME,
+	org_type,
+	(
+		CASE
+		WHEN image IS NULL THEN
+			'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+		ELSE
+			image
+		END
+	) AS image
+FROM
+	organization,
+	user_org_mapping,
+	user_role,
+	ROLE, chat_messages
+WHERE
+	user_role.role_id = ROLE . ID
+AND organization. ID = user_org_mapping.organization_id
+AND user_org_mapping.user_id = user_role.user_id
+AND user_role.role_id IN (8, 15)
+GROUP BY
+	user_role.user_id,
+	organization. NAME,
+	org_type,
+	image,
+	role_name
+ORDER BY
+	NAME
+)TOTAL_ADMIN 
+, chat_messages where ((TOTAL_ADMIN.id = chat_messages.receiver_id and chat_messages.user_id=:user_id) 
+OR (TOTAL_ADMIN.id = chat_messages.user_id and chat_messages.receiver_id=:user_id))
+group by TOTAL_ADMIN.id , TOTAL_ADMIN.name, TOTAL_ADMIN.role_name, TOTAL_ADMIN.org_type,TOTAL_ADMIN.image
+having (count(*)filter(where sent='f') > 0)
+</sql>
+</custom_report>
+<custom_report id="28">
+<sql>
+SELECT
+	batch_group. ID,
+	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+	'video/android_images/' || SUBSTRING (
+		TRIM (batch_group. NAME)
+		FROM
+			1 FOR 1
+	) || '.png' AS image
+FROM
+	batch_group, batch_group_messages
+where batch_group.id = batch_group_messages.batch_group_id
+and batch_group_messages.sender_id=:user_id
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	image
+ORDER BY
+	TRIM (batch_group. NAME)
+</sql>
+</custom_report>
+<custom_report id="29">
+<sql>
+SELECT
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email,
+	cast (COUNT (chat_messages)as integer) AS chat_count
+FROM
+	chat_messages,
+	istar_user,
+	user_profile
+WHERE
+	istar_user. ID = user_profile.user_id
+and istar_user.id in (select user_role.user_id from user_role where role_id not in (select id from role where role_name in ('SUPER_ADMIN','COORDINATOR','ORG_ADMIN')))
+AND ((chat_messages.receiver_id = istar_user. ID
+AND chat_messages.user_id = :user_id) OR (chat_messages.receiver_id = :user_id
+AND chat_messages.user_id = istar_user. ID))
+AND sent = 'f'
+GROUP BY
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email
+having (COUNT (chat_messages)>0)	 
+</sql>
+</custom_report>
+<custom_report id="30">
+<sql>
+SELECT
+	user_role.user_id AS ID,
+	ROLE .role_name,
+	organization. NAME,
+	org_type,
+	(
+		CASE
+		WHEN image IS NULL THEN
+			'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+		ELSE
+			image
+		END
+	) AS image
+FROM
+	organization,
+	user_org_mapping,
+	user_role,
+	ROLE
+WHERE
+	user_role.role_id = ROLE . ID
+AND organization. ID = user_org_mapping.organization_id
+AND user_org_mapping.user_id = user_role.user_id
+AND user_role.role_id IN (8, 15)
+and  lower(name) like '%:search_term%'
+GROUP BY
+	user_role.user_id,
+	organization. NAME,
+	org_type,
+	image,
+	role_name
+ORDER BY
+	NAME
+</sql>
+</custom_report>
+<custom_report id="31">
+<sql>
+SELECT
+	batch_group. ID,
+	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+	'video/android_images/' || SUBSTRING (
+		TRIM (batch_group. NAME)
+		FROM
+			1 FOR 1
+	) || '.png' AS image
+FROM
+	batch_group
+where lower(batch_group.name) like '%:search_term%'
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	image
+ORDER BY
+	TRIM (batch_group. NAME)
+</sql>
+</custom_report>
+<custom_report id="32">
+<sql>
+SELECT
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email
+FROM	
+	istar_user,
+	user_profile
+WHERE
+	istar_user. ID = user_profile.user_id
+and istar_user.id in (select user_role.user_id from user_role where role_id not in (select id from role where role_name in ('SUPER_ADMIN','COORDINATOR','ORG_ADMIN')))
+and lower(istar_user.email) like '%:search_term%'
+GROUP BY
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email
+</sql>
+</custom_report>
+<custom_report id ="33">
+<sql>
+select TOTAL_ADMIN.id , TOTAL_ADMIN.name, TOTAL_ADMIN.role_name, TOTAL_ADMIN.org_type,TOTAL_ADMIN.image,  cast(count(*)filter(where sent='f') as INTEGER) as chat_count  from (SELECT
+	id, role_name, name, org_type, image
+FROM
+	(
+		SELECT
+			user_role.user_id AS ID,
+			ROLE .role_name,
+			organization. NAME,
+			org_type,
+			(
+				CASE
+				WHEN image IS NULL THEN
+					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+				ELSE
+					image
+				END
+			) AS image
+		FROM
+			organization,
+			user_org_mapping,
+			user_role,
+			ROLE
+		WHERE
+			user_role.role_id = ROLE . ID
+		AND organization. ID = user_org_mapping.organization_id
+		AND user_org_mapping.user_id = user_role.user_id
+		AND user_role.role_id IN (13)
+		GROUP BY
+			user_role.user_id,
+			organization. NAME,
+			org_type,
+			image,
+			role_name
+		ORDER BY
+			NAME
+	) TT
+UNION
+	(
+		SELECT
+			user_role.user_id AS ID,
+			ROLE .role_name,
+			organization. NAME,
+			org_type,
+			(
+				CASE
+				WHEN image IS NULL THEN
+					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+				ELSE
+					image
+				END
+			) AS image
+		FROM
+			organization,
+			user_org_mapping,
+			user_role,
+			ROLE
+		WHERE
+			user_role.role_id = ROLE . ID
+		AND organization. ID = user_org_mapping.organization_id
+		AND user_org_mapping.user_id = user_role.user_id
+		AND user_role.role_id IN (15)
+		and organization.id in (select user_org_mapping.organization_id from user_org_mapping where user_id = :user_id)
+		GROUP BY
+			user_role.user_id,
+			organization. NAME,
+			org_type,
+			image,
+			role_name
+		ORDER BY
+			NAME
+	)
+)TOTAL_ADMIN , chat_messages
+where ((TOTAL_ADMIN.id = chat_messages.receiver_id AND chat_messages.user_id=:user_id) OR (TOTAL_ADMIN.id = :user_id AND chat_messages.user_id=chat_messages.receiver_id))
+group by TOTAL_ADMIN.id , TOTAL_ADMIN.name, TOTAL_ADMIN.role_name, TOTAL_ADMIN.org_type,TOTAL_ADMIN.image
+order by chat_count desc
+</sql>
+</custom_report>
+<custom_report id ="34">
+<sql>
+SELECT
+	batch_group. ID,
+	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+	'video/android_images/' || SUBSTRING (
+		TRIM (batch_group. NAME)
+		FROM
+			1 FOR 1
+	) || '.png' AS image
+FROM
+	batch_group, batch_group_messages
+where batch_group.id = batch_group_messages.batch_group_id
+and batch_group_messages.sender_id=:user_id
+and batch_group.college_id in (select user_org_mapping.organization_id from user_org_mapping where  user_org_mapping.user_id = :user_id)
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	image
+ORDER BY
+	TRIM (batch_group. NAME)
+</sql>
+</custom_report>
+<custom_report id ="35">
+<sql>
+SELECT
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email,
+	cast (COUNT (chat_messages) as integer) AS chat_count
+FROM
+	chat_messages,
+	istar_user,
+	user_profile,
+	user_org_mapping
+WHERE
+	istar_user. ID = user_profile.user_id
+AND istar_user. ID = user_org_mapping.user_id
+AND user_org_mapping.organization_id IN (
+	SELECT
+		organization_id
+	FROM
+		user_org_mapping
+	WHERE
+		user_id = :user_id
+)
+AND (
+	(
+		chat_messages.receiver_id = :user_id
+		AND chat_messages.user_id = istar_user. ID
+	)
+	OR (
+		chat_messages.receiver_id = istar_user. ID
+		AND chat_messages.user_id = :user_id
+	)
+)
+AND sent = 'f'
+GROUP BY
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email 
+order by chat_count desc
+</sql>
+</custom_report>
+<custom_report id="36">
+<sql>
+select * from (SELECT
+	*
+FROM
+	(
+		SELECT
+			user_role.user_id AS ID,
+			ROLE .role_name,
+			organization. NAME,
+			org_type,
+			(
+				CASE
+				WHEN image IS NULL THEN
+					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+				ELSE
+					image
+				END
+			) AS image
+		FROM
+			organization,
+			user_org_mapping,
+			user_role,
+			ROLE
+		WHERE
+			user_role.role_id = ROLE . ID
+		AND organization. ID = user_org_mapping.organization_id
+		AND user_org_mapping.user_id = user_role.user_id
+		AND user_role.role_id IN (13)
+		GROUP BY
+			user_role.user_id,
+			organization. NAME,
+			org_type,
+			image,
+			role_name
+		ORDER BY
+			NAME
+	) TT
+UNION
+	(
+		SELECT
+			user_role.user_id AS ID,
+			ROLE .role_name,
+			organization. NAME,
+			org_type,
+			(
+				CASE
+				WHEN image IS NULL THEN
+					'video/android_images/' || SUBSTRING (TRIM(NAME) FROM 1 FOR 1) || '.png'
+				ELSE
+					image
+				END
+			) AS image
+		FROM
+			organization,
+			user_org_mapping,
+			user_role,
+			ROLE
+		WHERE
+			user_role.role_id = ROLE . ID
+		AND organization. ID = user_org_mapping.organization_id
+		AND user_org_mapping.user_id = user_role.user_id
+		AND user_role.role_id IN (15)
+		and organization.id in (select user_org_mapping.organization_id from user_org_mapping where user_id = :user_id)
+		GROUP BY
+			user_role.user_id,
+			organization. NAME,
+			org_type,
+			image,
+			role_name
+		ORDER BY
+			NAME
+	)
+)TF
+where lower(TF.name) like '%:search_term%'
+and TF.id !=:user_id
+</sql>
+</custom_report>
+<custom_report id="37">
+<sql>
+SELECT
+	batch_group. ID,
+	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+	'video/android_images/' || SUBSTRING (
+		TRIM (batch_group. NAME)
+		FROM
+			1 FOR 1
+	) || '.png' AS image
+FROM
+	batch_group
+where 
+lower(batch_group.name) like '%:search_term%'
+and batch_group.college_id in (select user_org_mapping.organization_id from user_org_mapping where  user_org_mapping.user_id = :user_id)
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	image
+ORDER BY
+	TRIM (batch_group. NAME)
+</sql>
+</custom_report>
+<custom_report id="38">
+<sql>
+SELECT
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email
+FROM
+	
+	istar_user,
+	user_profile,
+	user_org_mapping
+WHERE
+
+istar_user. ID = user_profile.user_id
+AND istar_user. ID = user_org_mapping.user_id
+AND user_org_mapping.organization_id IN (
+	SELECT
+		organization_id
+	FROM
+		user_org_mapping
+	WHERE
+		user_id = :user_id
+)
+and lower(istar_user.email) like '%:search_term%'
+GROUP BY
+	istar_user. ID,
+	user_profile.first_name,
+	user_profile.profile_image,
+	istar_user.email 
+
 </sql>
 </custom_report>
 </custom_report_list>

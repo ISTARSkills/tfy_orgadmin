@@ -55,7 +55,7 @@ else if (type.equalsIgnoreCase("USER")){
 }	
 
 %>   
-        <div class="heading" draggable="true">
+        <div class="heading" draggable="true" id="chatter_heading" style="cursor:pointer">
             <!-- <small class="chat-date pull-right">
                 02.19.2015
             </small> -->
@@ -72,14 +72,14 @@ else if (type.equalsIgnoreCase("USER")){
 					{
 						%>						
 				<div class="chat_comment">
-				<div class="right">
+				<div class="left">
                 <div class="author-name">
                     <%=currentUserName%>
                     <small class="chat-date">
                         <%=ptime.format(created_at)%>
                     </small>
                 </div>
-                <div class="chat-message">
+                <div class="chat-message active">
                    <%=row.get("message") %>
                 </div>
             </div>
@@ -90,13 +90,13 @@ else if (type.equalsIgnoreCase("USER")){
 					{
 						%>
 						<div class="chat_comment">
-						<div class="left">
+						<div class="right">
                 <div class="author-name">
                     <%=row.get("name") %> <small class="chat-date">
                      <%=ptime.format(created_at)%>
                 </small>
                 </div>
-                <div class="chat-message active">
+                <div class="chat-message">
                    <%=row.get("message") %>
                 </div>
 

@@ -23,10 +23,10 @@ public class AndroidNoticeDelegator {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	public AndroidNoticeDelegator() {
 		super();
-		initPublishDelegator();
+		initAndroidNoticeDelegator();
 	}
 
-	private void initPublishDelegator() {
+	private void initAndroidNoticeDelegator() {
 		try {
 			Properties properties = new Properties();
 			String propertyFileName = "app.properties";

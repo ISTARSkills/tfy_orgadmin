@@ -82,8 +82,7 @@ function readyFn(jQuery) {
 		$('#Admin').css('color','  #eb384f');
 		break;
 	case 'orgadmin_scheduler':
-		init_orgadmin_scheduler();
-		
+		init_orgadmin_scheduler();		
 		$('#Scheduler').css('color','  #eb384f');
 		break;
 		
@@ -99,6 +98,7 @@ function readyFn(jQuery) {
 	case 'superadmin_dashboard':
 		init_super_admin_dashboard();
 		initChat();
+		initUnreadChatAndNotification();
 		$('#Dashboard').css('color','  #eb384f');
 		break;
 	case 'super_admin_account_managment':
@@ -128,25 +128,22 @@ function readyFn(jQuery) {
 		break;
 	case 'super_admin_classroom':
 		init_superadmin_class_room();
-		initChat();
+
 		$('#Classrooms').css('color','  #eb384f');
 		break;
 	case 'super_admin_report':
 		init_super_admin_report();
-		initChat();
+
 		$('#StudentsReports').css('color','  #eb384f');
 		break;
 	case 'istar_notification':
 		init_istar_notification();
-		initChat();
 		$('#Notification').css('color',' #eb384f');
 		break;
 	case 'super_admin_tickets':	
-		initChat();
 		initTicket();
 		$('#Tickets').css('color',' #eb384f');
 	case 'org_admin_tickets':	
-		initChat();
 		initTicket();
 		$('#Tickets').css('color','  #eb384f');
 	default:
@@ -156,53 +153,108 @@ function readyFn(jQuery) {
 	createCalender();
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
-	
-	
-
 	$('select').select2();
-	loadTables();
-	
-
+	loadTables();	
 }
 
 function initUnreadChatAndNotification()
 {
-	//here last 8 unread notifications will be displayed in screen   
-	var userId = $('#current_user_id').val();
+	//here last 8 unread notifications will be displayed in screen in the form of alert notification.
+	//apart from top 8 other messages will be available in notification tab.
+		
+		//alert message will disappear automatically and can be removed manually
 		$('.notification_item').delay(8000).fadeOut('slow', function () {
-		$(this).remove();
-		var notice_id = $(this).data("notice_id");
-		var group_code = $(this).data("group_code");
-		var notice_type = $(this).data("notice_type");
-		var url = "/mark_notice_as_read";
-		 $.ajax({
-		        type: "POST",
-		        url: url,
-		        data: {notice_id:notice_id,group_code:group_code,notice_type:notice_type},
-		        success: function(data) {	
-		        	
-		        }
-		    });
-	});
+		     $(this).remove();	
+		});
 	
+	//if notification is removed manually it will be marked as read.	
 	$('.notification_close').unbind().on('click',function(){
 		var notice_id = $(this).data("notice_id");
 		var group_code = $(this).data("group_code");
-		var notice_type = $(this).data("notice_type");
-		$(this).closest('.notification_item').transition('fade') ;	
-		$(this).remove();	
-		
+		var notice_type = $(this).data("notice_type");		
 		 var url = "/mark_notice_as_read";
 		 $.ajax({
 		        type: "POST",
 		        url: url,
 		        data: {notice_id:notice_id,group_code:group_code,notice_type:notice_type},
 		        success: function(data) {		        	
-		        }
+		        
+		        	var noticeCountPrev = $('#dashboard_notice_count').text();
+		        	if(noticeCountPrev!=null && noticeCountPrev!=0)
+		        	{
+		        		
+		        		var newNoticeCount = noticeCountPrev-1;		        		
+		        		$('#dashboard_notice_count').text(newNoticeCount);
+		        		if(newNoticeCount==0)
+		        		{
+		        			$('#no_notice_available').show();
+		        		}else if(newNoticeCount <8)
+		        		{
+		        			$('.read_more_notification').hide();
+		        			$('#no_notice_available').hide();
+		        		}else
+		        		{
+		        			$('.read_more_notification').show();
+		        			$('#no_notice_available').hide();
+		        		}	
+		        		
+		        	}
+		        	else 
+		        	{
+		        		$('.read_more_notification').hide();
+		        		$('#no_notice_available').show();
+		        	}	
+		        }		        
 		    });
-
 	});
 	
+	//update notification count in notification tab
+	//hidden id defined in dashboard_notification.jsp 
+	var notice_count = $('#total_unread_notice').val();
+	if(notice_count==0){
+		$('.read_more_notification').hide();
+		$('#no_notice_available').show();
+	}	
+	else{
+		if(notice_count<8)
+			{
+				$('.read_more_notification').hide();
+				$('#no_notice_available').hide();
+				$('#dashboard_notice_count').text(notice_count);
+			}
+		else {
+			$('.read_more_notification').show();
+			$('#no_notice_available').hide();
+			$('#dashboard_notice_count').text(notice_count);
+		}		
+	}
+	//get more notoification and append to notification tab 
+	$('.read_more_notification').unbind().on('click',function(){
+		var prevOffset = $('.alert-dismissable').length;
+		var newOffset = prevOffset+8;
+		var not_count = $('#total_unread_notice').val();
+		if(newOffset <= notice_count){
+			var url = "/dashboard_notification.jsp";
+			 $.ajax({
+			        type: "POST",
+			        url: url,
+			        data: {offset:newOffset},
+			        success: function(data) {
+			        	if(data!=null)
+			        		{
+			        			if($('#admin_notifications .alert-dismissable').length===0)
+			        			{
+			        				$(data).insertBefore( $('.read_more_notification'));
+			        			}
+			        			else
+			        			{
+			        				$(data).insertAfter( $('#admin_notifications .alert-dismissable').last() );
+			        			}				        						        						        			
+			        		}
+			        }
+			    });
+		}				
+	});
 }
 
 function initTicket()
@@ -928,10 +980,121 @@ function create_column_graph(tableID) {
 	    });
 }
 
+function initChatEntitySearch()
+{
+	$('.search_chat_entity').unbind().on('keyup',function(){
+		console.log($(this).val());
+		var search_term = $(this).val();
+		var report_id = $(this).data('report_id');
+		var user_id = $(this).data('user_id');
+		var default_report_id = $(this).data('default_report_id');
+		var id = $(this).attr('id');
+		if(search_term!=null && search_term!='')
+		{
+			var your_jsp_page_to_request = "chat/search_entity.jsp";			 			 
+			$.post(your_jsp_page_to_request,{search_term:search_term,user_id:user_id, report_id:report_id},		     
+			     function(data){
+					$('#'+id).parent('.panel-body').find('.users-list').empty();
+					$('#'+id).parent('.panel-body').find('.users-list').prepend(data);
+					initChatEntityClick();
+			     }
+			 );	
+		}
+		else
+		{
+			var your_jsp_page_to_request = "chat/search_entity.jsp";			 			 
+			$.post(your_jsp_page_to_request,{report_id	:default_report_id,user_id:user_id},		     
+			     function(data){
+					$('#'+id).parent('.panel-body').find('.users-list').empty();
+					$('#'+id).parent('.panel-body').find('.users-list').prepend(data);
+					initChatEntityClick();
+			     }
+			 );	
+		}	
+	});
+}
 
+function initChatEntityClick()
+{
+	$('.chat-user').unbind().on('click', function() {	
+		alert('clicked');
+		var user_type = $(this).data("user_type");
+		var user_id = $(this).data("user_id");
+		var user_name = $(this).data("user_name");	   
+		var user_image= $(this).data("user_image");
+		
+		if(user_type==='ORG')
+		{
+			$('#org_tab').css("background", "#fff");
+			$('#entity_user_'+user_id).css("background", "#fff");
+			
+		}
+		else if(user_type==='BG_GROUP')
+		{
+			$('#group_tab').css("background", "#fff");
+			$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
+			
+		}
+		else if(user_type==='USER')
+		{
+			$('#user_tab').css("background", "#fff");
+			$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
+			
+		}
+		
+		
+		var your_jsp_page_to_request = "chat_box.jsp";			 			 
+		$.post(your_jsp_page_to_request,{user_type:user_type,user_id:user_id, user_name:user_name},		     
+		     function(data){				
+			 $('#chat_holder').empty().append(data);	
+			 $('#chat_holder').data('receiver_id',user_id);
+			 $('#chat_holder').data('receiver_name',user_name);
+			 $('#chat_holder').data('receiver_image',user_image);
+			 $('#chat_holder').data('receiver_type',user_type);
+			 $('#chat_holder').show();
+			 $('#chatter_heading').unbind().on('click', function() {
+					$('#chat_holder').empty();
+					$('#chat_holder').hide();
+				});
+			 
+		     }
+		 );			
+		});	
+}
 function initChat()
 {			
+	$('#small-chat').on('click', function() {
+		$('#chat_element_holder').show();
+		if($('#chat_holder').hasClass('active'))
+		{
+			$('#chat_holder').removeClass("active")
+		}
+	});
 	
+	
+	$('#chat_element_heading').unbind().on('click', function() {
+		$('#chat_element_holder').toggle();
+		if($('#chat_holder').hasClass('active'))
+		{
+			$('#chat_holder').removeClass("active")
+		}
+	});
+	
+	
+		
+$('[data-toggle="tab_chat"]').click(function(e) {
+	    var $this = $(this),
+	        loadurl = $this.attr('href'),
+	        targ = $this.attr('data-target');
+	    $.get(loadurl, function(data) {
+	        $(targ).html(data);
+	        initChatEntityClick();
+	        initChatEntitySearch();
+	    });
+	    $this.tab('show');
+	    return false;
+	});
+
 	function connect() {
 		try {
 			//variables defined in foot.jsp
@@ -985,12 +1148,40 @@ function initChat()
 			if(type === 'USER_CHAT')
 			{
 				var senderId = data.senderId;
+				var senderName = data.currUserName;
 				//chat window is not open then need to highlight incoming messages 
 				if(($('#chat_holder').data('receiver_id')!= senderId) && ($('#chat_holder').data('receiver_type')!= 'USER'))
 				{
 					//highlight the tab
 					$('#user_tab').css("background", "antiquewhite");
-					//highlight the user
+					//create a chat user tab and append to list on top
+					if($('#entity_user_'+senderId).length!=0)
+					{
+						//unread user tab already exist 
+						var alreadyUnreadMessageCount = 0;
+						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
+						{
+							alreadyUnreadMessageCount= $('#entity_user_'+senderId+'_chat_count').text();
+						}
+						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
+						$('#entity_user_'+senderId+'_chat_count').text(alreadyUnreadMessageCount);
+						var html = $('#entity_user_'+senderId).html();
+						$('#entity_user_'+senderId).remove();
+						$('#tab-users .users-list').prepend(html);
+					}	
+					else{
+						
+						//add tab
+						var alreadyUnreadMessageCount = 1;
+						var htmlDiv ="<div class='chat-user' id='entity_user_"+senderId+"' data-user_id='"+senderId+"' data-user_type='USER' " +
+						"data-user_name='"+senderName+"' data-user_image='"+data.currUserImage+"'>" +
+								"<img class='chat-avatar' src='http://api.talentify.in"+data.currUserImage+"' " +
+										"alt='' style='width:36px ; height:36px'><div class='chat-user-name'><a href='#'>"+senderName+"</a>" +
+												"<span class='label label-primary' style='float:right' id='entity_user_"+senderId+"_chat_count'>"+alreadyUnreadMessageCount+"</span></div></div>";
+						$('#tab-users .users-list').prepend(htmlDiv);
+						
+					}
+					initChatEntityClick();
 					$('#entity_user_'+senderId).css("background", "antiquewhite");
 					var audio = new Audio('/assets/sound/stuffed-and-dropped.mp3');
 					audio.play();
@@ -998,7 +1189,8 @@ function initChat()
 				else 
 				{
 					var message = data.message;
-					var chatMessage = createMessageHtml(message,senderId,'user');
+					var senderName = data.currUserName;		
+					var chatMessage = createMessageHtml(message,senderId,senderName,'user');
 					var commentsCount = $('#'+senderUserID).children('.comment').length;
 					if(commentsCount >6)
 					{							
@@ -1016,6 +1208,34 @@ function initChat()
 				{
 					//highlight the tab
 					$('#org_tab').css("background", "antiquewhite");
+					if($('#entity_user_'+senderId).length!=0)
+					{
+						//unread user tab already exist 
+						var alreadyUnreadMessageCount = 0;
+						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
+						{
+							alreadyUnreadMessageCount= $('#entity_user_'+senderId+'_chat_count').text();
+						}
+						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
+						$('#entity_user_'+senderId+'_chat_count').text(alreadyUnreadMessageCount);
+						var html = $('#entity_user_'+senderId).html();
+						$('#entity_user_'+senderId).remove();
+						$('#tab-orgs .users-list').prepend(html);
+					}	
+					else{						
+						//add tab
+						var alreadyUnreadMessageCount = 1;
+						
+						var htmlDiv ="<div class='chat-user' id='entity_user_"+senderId+"' data-user_id='"+senderId+"' data-user_type='ORG' " +
+						"data-user_name='"+senderName+"' data-user_image='"+data.currUserImage+"'>" +
+								"<img class='chat-avatar' src='http://api.talentify.in"+data.currUserImage+"' " +
+										"alt='' style='width:36px ; height:36px'><div class='chat-user-name'><a href='#'>"+senderName+"</a>" +
+												"<span class='label label-primary' style='float:right' id='entity_user_"+senderId+"_chat_count'>"+alreadyUnreadMessageCount+"</span></div></div>";
+						console.log(htmlDiv);
+						$('#tab-orgs .users-list').prepend(htmlDiv);
+						
+					}
+					initChatEntityClick();
 					//highlight the user
 					$('#entity_user_'+senderId).css("background", "antiquewhite");
 					var audio = new Audio('/assets/sound/stuffed-and-dropped.mp3');
@@ -1024,7 +1244,8 @@ function initChat()
 				else 
 				{
 					var message = data.message;
-					var chatMessage = createMessageHtml(message,senderId,'user');
+					var senderName = data.currUserName;		
+					var chatMessage = createMessageHtml(message,senderId,senderName,'user');
 					var commentsCount = $('#chat_content').children('.chat_comment').length;
 					if(commentsCount >6)
 					{							
@@ -1046,14 +1267,41 @@ function initChat()
 					//highlight the tab
 					$('#group_tab').css("background", "antiquewhite");
 					//highlight the entity_bg_group_15
+					if($('#entity_bg_group_'+groupId).length!=0)
+					{
+						//unread user tab already exist 
+						var alreadyUnreadMessageCount = 0;
+						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
+						{
+							alreadyUnreadMessageCount= $('#entity_bg_group_'+groupId+'_chat_count').text();
+						}
+						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
+						$('#entity_bg_group_'+groupId+'_chat_count').text(alreadyUnreadMessageCount);
+						var html = $('#entity_bg_group_'+groupId).html();
+						$('#entity_bg_group_'+groupId).remove();
+						$('#tab-groups .users-list').prepend(html);
+					}	
+					else{
+						
+						//add tab
+						var alreadyUnreadMessageCount = 1;
+						var htmlDiv ="<div class='chat-user' id='entity_bg_group_"+groupId+"' data-user_id='"+groupId+"' data-user_type='BG_GROUP' " +
+						"data-user_name='"+senderName+"' data-user_image='"+data.currUserImage+"'>" +
+								"<img class='chat-avatar' src='http://api.talentify.in"+data.currUserImage+"' " +
+										"alt='' style='width:36px ; height:36px'><div class='chat-user-name'><a href='#'>"+senderName+"</a>" +
+												"<span class='label label-primary' style='float:right' id='entity_bg_group_"+senderId+"_chat_count'>"+alreadyUnreadMessageCount+"</span></div></div>";
+						$('#tab-groups .users-list').prepend(htmlDiv);
+						
+					}
+					initChatEntityClick();
+					
 					$('#entity_bg_group_'+groupId).css("background", "antiquewhite");
 					var audio = new Audio('/assets/sound/stuffed-and-dropped.mp3');
 					audio.play();
 				}
 				var message = data.message;
-										
-				var chatMessage = createMessageHtml(message, senderId, 'user');
-				
+				var senderName = data.currUserName;						
+				var chatMessage = createMessageHtml(message, senderId,senderName, 'user');				
 				var commentsCount = $('#chat_content').children('.comment').length;
 				//console.log('commentsCount>>>'+commentsCount);
 				if(commentsCount >6)
@@ -1080,8 +1328,9 @@ function initChat()
 				}
 				
 				var message = data.message;
-				var targetId = 'convo_wrap_group_' + groupId;								
-				var chatMessage = createMessageHtml(message, senderId, 'user');
+				var targetId = 'convo_wrap_group_' + groupId;
+				var senderName = data.currUserName;		
+				var chatMessage = createMessageHtml(message, senderId,senderName, 'user');
 				
 				var commentsCount = $('#'+targetId).children('.comment').length;
 				//console.log('commentsCount>>>'+commentsCount);
@@ -1143,48 +1392,10 @@ function initChat()
 	
 	
 	
-	    	$('.chat-user').unbind().on('click', function() {	 
-	    	var user_type = $(this).data("user_type");
-	    	var user_id = $(this).data("user_id");
-	    	var user_name = $(this).data("user_name");	   
-	    	var user_image= $(this).data("user_image");
 	    	
-	    	if(user_type==='ORG')
-	    	{
-	    		$('#org_tab').css("background", "#fff");
-	    		$('#entity_user_'+user_id).css("background", "#fff");
-	    	}
-	    	else if(user_type==='BG_GROUP')
-	    	{
-	    		$('#group_tab').css("background", "#fff");
-	    		$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
-	    	}
-	    	else if(user_type==='USER')
-	    	{
-	    		$('#user_tab').css("background", "#fff");
-	    		$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
-	    	}
-	    	
-	    	
-	    	
-	    	var your_jsp_page_to_request = "chat_box.jsp";			 			 
-			$.post(your_jsp_page_to_request,{user_type:user_type,user_id:user_id, user_name:user_name},
-			     
-			     function(data){
-					
-				 $('#chat_holder').empty().append(data);	
-				 $('#chat_holder').data('receiver_id',user_id);
-				 $('#chat_holder').data('receiver_name',user_name);
-				 $('#chat_holder').data('receiver_image',user_image);
-				 $('#chat_holder').data('receiver_type',user_type);
-				 $('#chat_holder').show();
-			     }
-			 );	
-	    	
-	  	});
 	    
 	    	
-	    	function createMessageHtml(message, senderId, user_type)
+	    	function createMessageHtml(message, senderId,senderName, user_type)
 	      	{
 	      		var profileImage='';
 	      		var userName ='';
@@ -1209,13 +1420,12 @@ function initChat()
 	    		{
 	    			 
 	    			 var senderUserID = 'entity_'+user_type+'_' + senderId;
-	    	  		 userName = $('#'+senderUserID).data('user_name');
-	    			 profileImage = $('#'+senderUserID).data('user_image');
-	    			 
+	    	  		 userName = senderName;	    	  		 
+	    			 //profileImage = $('#'+senderUserID).data('user_image');	    			 
 	    			 messageHTML="<div class='right'> <div class='author-name'>"+userName+"<small class='chat-date'> moments ago</small>   " +
 	       	 		"              </div>                 <div class='chat-message'>                    "+message+"                </div>    </div>"	;
-	    		}
 	      		
+	    		}
 	    		//console.log('username'+userName);
 	    		//console.log('profileImage'+profileImage);
 	      	
@@ -1233,14 +1443,14 @@ function initChat()
 	      		if (e.keyCode === 13) {
 	      			//sendMessage(e.target.value); 
 	      			var buttonId = $(this).attr('id');
-	      		//	console.log('button id is '+buttonId);
-	      			var message = $(this).val();
-	      			
+	      			//console.log('button id is '+buttonId);
+	      			var message = $(this).val();	      			
 	      			//these varible defined in chat_element.jsp
 	      			var currUserId  = $('#current_user_id').val();
 	      			var currUserOrgId = $('#current_user_org_id').val();
 	      			var currUserType = $('#current_user_type').val();
-	      			
+	      			var currUserName = $('#current_user_name').val();
+	      			var currUserImage = $('#current_user_image').val();
 	      			var jsonMessage = '';
 	      			if (buttonId.indexOf('user') != -1) {
 	      				//it is user to user chat
@@ -1252,7 +1462,8 @@ function initChat()
 	      						message : message,
 	      						type : "USER_CHAT",
 	      						senderId : currUserId,
-	      						sessionId: null
+	      						sessionId: null,
+	      						currUserName :currUserName, currUserImage: currUserImage
 	      					});
 	      				}
 	      				var chatMessage = createMessageHtml(message, currUserId, 'user');  				
@@ -1262,8 +1473,7 @@ function initChat()
 	      				var commentsCount = $('#chat_content').children('.chat_comment').length;
 	    			//	console.log('commentsCount>>>'+commentsCount);
 	    				if(commentsCount >8)
-	    					{
-	    						
+	    					{	    						
 	    						$('#chat_content > .chat_comment').slice(0,1).remove();
 	    					}
 	    				
@@ -1283,7 +1493,7 @@ function initChat()
 	      						message : message,
 	      						type : "ORG_CHAT",
 	      						senderId : currUserId,
-	      						sessionId: null
+	      						sessionId: null, currUserName: currUserName,currUserImage:currUserImage
 	      					});
 	      				}
 	      				var chatMessage = createMessageHtml(message, currUserId, 'org');  				
@@ -1296,11 +1506,8 @@ function initChat()
 	    					{
 	    						
 	    						$('#chat_content > .chat_comment').slice(0,1).remove();
-	    					}
-	    				
-	    				
-	    				$('#chat_content').append(chatMessage);
-	      				
+	    					}	    					    				
+	    				$('#chat_content').append(chatMessage);	      				
 	      				var d = $('#chat_content');
 	      				d.scrollTop(d.prop("scrollHeight"));
 	      			}
@@ -1314,7 +1521,7 @@ function initChat()
 	      						type : "BG_CHAT",
 	      						sessionId:null,
 	      						senderType: currUserType,
-	      						senderId : currUserId
+	      						senderId : currUserId, currUserName: currUserName, currUserImage:currUserImage
 	      					});
 	      				}
 	      				/*var chatMessage = createMessageHtml(message, currUserId, 'bg_group');  				
@@ -1339,7 +1546,7 @@ function initChat()
 	      						message : message,
 	      						type : "CUSTOM_CHAT",
 	      						sessionId:null,
-	      						senderId : currUserId
+	      						senderId : currUserId, currUserName: currUserName,currUserImage:currUserImage
 	      					});
 	      				}
 	      			}
@@ -1807,8 +2014,7 @@ function init_user_search_in_user_tab()
 				    });
 				    $('#admin_page_loader').hide();
 				});
-			}
-		
+			}		
 		});
 
 }

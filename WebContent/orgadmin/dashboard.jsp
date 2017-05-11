@@ -36,8 +36,8 @@
 	}
 	DBUTILS dbutils = new DBUTILS();
 	
-	NotificationAndTicketServices serv = new NotificationAndTicketServices();
-	List<HashMap<String, Object>> data = serv.getNotificationAndTicket(u.getId());
+	//NotificationAndTicketServices serv = new NotificationAndTicketServices();
+	//List<HashMap<String, Object>> data = serv.getNotificationAndTicket(u.getId());
 	
 %>
 <body class="top-navigation" id="orgadmin_dashboard">
@@ -56,7 +56,7 @@
 							<li class="active"><a data-toggle="tab" href="#tab-1">Todays
 									Events</a></li>
 							<li class=""><a data-toggle="tab" href="#tab-2">Notifications&nbsp;&nbsp;<span
-									class="label label-warning pull-right"><%=data.size()%></span></a></li>
+									class="label label-info pull-right" id="dashboard_notice_count"></span></a></li>
 						</ul>
 						<div class="tab-content dash_main_tab">
 							<div id="tab-1" class="tab-pane active">
@@ -479,7 +479,7 @@
 														data-toggle="tooltip" data-placement="top"
 														title="Feedback Info"><a data-toggle="tab"
 														href="#child<%="tab5" + eventId%>"><i
-															class="fa fa-database"></i></a></li>
+															class="fa fa-thumbs-up"></i></a></li>
 												</ul>
 
 											</div>
@@ -499,59 +499,17 @@
 								</div>
 							</div>
 							<div id="tab-2" class="tab-pane">
-								<div class="panel-body" id="orgadmin_notifications">
-								<%
-									PrettyTime p = new PrettyTime();
-									for(HashMap<String, Object> row: data)
-									{
-										String title =row.get("title").toString();
-										String id = row.get("id").toString();
-										String time =p.format((Timestamp)row.get("created_at"));
-										%>
-										<%-- <div class="alert alert-danger" id ="notice_<%=id%>">
-										<%=title %>
-										<%if(row.get("details")!=null){ %>
-										<p><%=row.get("details").toString() %></p>
-										<%}
-										if(row.get("first_name")!=null && !row.get("first_name").toString().equalsIgnoreCase("NA"))
-										{											
-											%>
-											<p><span class="label label-danger"><%=row.get("first_name").toString() %> (<%=time%>)</span></p>
-											<% 
-										}
-										%>
-									</div> --%>
-									
-								<%-- <div class="alert alert-info alert-dismissable notification_item">
-                                <button aria-hidden="true" data-dismiss="alert" class="close notification_close" data-notice_id="<%=id%>" data-group_code="<%=groupCode%>" data-notice_type="SINGLE_NOTICE" type="button">×</button>
-                                 <a class="alert-link" style="color: #2b542c; font-weight:700"> <%=firstName %> </a>
-											<span class="message-date" style="color: #2b542c; font-weight:700 ">&nbsp;posted <%=time %> </span>
-                                            <span class="message-content">
-											<%=title%>	
-											</span>
-                            </div>
-										 --%>
-										<% 
-									}
-								%>
-								
-									<!-- <div class="alert alert-danger">
-										Scheduled class of Asset Management cancelled.
-										<p>Reason: Unavailability of classroom</p>
-									</div>
-									<div class="alert alert-success">Benchmarking test
-										conducted for Final Year UI Developer Batch.</div>
-
-									<div class="alert alert-warning">Poor attendence in Final
-										Year BCOM Batch</div> -->
-										
-
-
-								</div>
+							<div class="panel-body" id="admin_notifications" style="height: 525px !important;    overflow-y: scroll;">
+								<jsp:include page="../dashboard_notification.jsp">
+								<jsp:param value="<%=u.getId()%>" name="user_id"/>
+								</jsp:include>
+							<button type="button" class="btn btn-block btn-outline btn-primary read_more_notification">Read More</button>
+							<div id="no_notice_available"><h2>No Notification To Show
+                           
+                        </h2></div>
+							</div>	
 							</div>
 						</div>
-
-
 					</div>
 				</div>
 				<!---------------------------------------Today Events and Notifications Ends ---------------------------------------------------->

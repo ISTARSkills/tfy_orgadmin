@@ -35,7 +35,9 @@ import com.viksitpro.core.utilities.EmailUtils;
 import in.orgadmin.admin.services.EmailService;
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportList;
+import in.orgadmin.utils.report.CustomReportUtils;
 import in.orgadmin.utils.report.ReportUtils;
+import in.talentify.core.services.NotificationAndTicketServices;
 import in.talentify.core.utils.CMSRegistry;
 import in.talentify.core.utils.EmailSendingUtility;
 
@@ -61,10 +63,34 @@ public class MAIN {
 		
 		//dapoooo();
 		//asdas();
-		datlooper();
+		//datlooper();
+		//reportUtilTesting();
+		ss();
 	}
 	
 	
+	private static void ss() {
+		// TODO Auto-generated method stub
+		CustomReportUtils repUtils = new CustomReportUtils();
+		CustomReport report = repUtils.getReport(26);
+		String sql=report.getSql();
+		System.out.println(sql);
+		sql = sql.replaceAll(":user_id", "6044").replaceAll(":limit","10").replaceAll(":offset", "20");
+		System.out.println(sql);
+		
+		
+	}
+
+
+	private static void reportUtilTesting() {
+		// TODO Auto-generated method stub
+		CustomReportUtils repUtils = new CustomReportUtils();
+		CustomReport report = repUtils.getReport(26);
+		String sql=report.getSql().replace(":user_id", "6044");
+		System.out.println(sql);
+	}
+
+
 	private static void datlooper() {
 		// TODO Auto-generated method stub
 		Calendar startCal = Calendar.getInstance();

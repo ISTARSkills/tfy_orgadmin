@@ -191,7 +191,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 	if(students.size()>0)
 	{			HashMap<String, Object> item = new HashMap<String, Object>();
 	
-	noticeDelegator.sendNotificationToGroup(students, title, NotificationType.MESSAGE, item);		
+	noticeDelegator.sendNotificationToGroup(students, title, NotificationType.GENERIC, item);		
 	//noticeDelegator.sendAndroidNotification(NotificationType.MESSAGE, students, title,"NO_ID");
 	}	
 }		

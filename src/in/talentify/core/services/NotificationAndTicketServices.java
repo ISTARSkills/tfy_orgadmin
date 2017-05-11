@@ -10,14 +10,39 @@ import java.util.List;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 
+import in.orgadmin.utils.report.CustomReport;
+import in.orgadmin.utils.report.CustomReportUtils;
+
 /**
  * @author mayank
  *
  */
 public class NotificationAndTicketServices {
 
+	public void markGroupNotificationAsRead(String groupCode){
+		System.out.println(groupCode);
+		DBUTILS util = new DBUTILS();
+		String sql = "UPDATE istar_notification SET read_by_admin = 't'  WHERE 	( 		cast(group_code as varchar) = '"+groupCode+"' 	)"; 
+		util.executeUpdate(sql);
+		System.out.println(sql);
+		
+		
+	}
 	
-	
+	public List<HashMap<String, Object>> getUnreadNotificationForAdmins(String userId, String limit, String offset)
+	{
+		System.out.println("limit>>"+limit+" offset>>>"+offset+" userid>>>"+userId);
+		CustomReportUtils repUtils = new CustomReportUtils();
+		CustomReport report = repUtils.getReport(26);
+		String sql=report.getSql();
+		System.out.println(sql);
+		sql = sql.replaceAll(":user_id", userId);
+				sql= sql.replaceAll(":limit",limit);
+				sql=sql.replaceAll(":offset", offset);
+		DBUTILS util = new DBUTILS();
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		return data;
+	}
 	
 	public List<HashMap<String, Object>> getNotificationAndTicket(int userId)
 	{

@@ -37,8 +37,8 @@ for(HashMap<String, Object> row: notificationData)
 	%>    	                                        
      <div class="alert alert-info alert-dismissable notification_item animated tada">
                                 <button aria-hidden="true" data-dismiss="alert" class="close notification_close" data-notice_id="<%=id%>" data-group_code="<%=groupCode%>" data-notice_type="SINGLE_NOTICE" type="button">×</button>
-                                 <a class="alert-link" style="color: #2b542c; font-weight:700"> <%=firstName %> </a>
-											<span class="message-date" style="color: #2b542c; font-weight:700 ">&nbsp;posted <%=time %> </span>
+                                 <a class="alert-link" > <%=firstName %> </a>
+											<span class="message-date" >&nbsp;posted <%=time %> </span>
                                             <span class="message-content">
 											<%=title%>	
 											</span>

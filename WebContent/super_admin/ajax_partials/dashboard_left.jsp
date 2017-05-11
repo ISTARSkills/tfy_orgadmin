@@ -25,8 +25,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	
 	DBUTILS util = new DBUTILS();
 	IstarUser u = (IstarUser)session.getAttribute("user");
-	NotificationAndTicketServices serv = new NotificationAndTicketServices();
-	List<HashMap<String, Object>> data = serv.getNotificationAndTicket(u.getId());
+
 %>
 <div class="col-lg-6" id="dashboard_left_holder">
 	<div class="tabs-container">
@@ -34,7 +33,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			<li class="active"><a data-toggle="tab" href="#tab-1">Todays
 					Events</a></li>
 			<li class=""><a data-toggle="tab"  href="#tab-2">Notifications&nbsp;&nbsp;<span
-				id="admin_notice_count"	class="label label-warning pull-right"><%=data.size() %></span></a></li>
+					class="label label-info pull-right" id="dashboard_notice_count"></span></a></li>
 		</ul>
 		<div class="tab-content dash_main_tab">
 			<div id="tab-1" class="tab-pane active">
@@ -502,49 +501,15 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 				</div>
 			</div>
 			<div id="tab-2" class="tab-pane">
-			<div class="panel-body">
-			<%
-									PrettyTime p = new PrettyTime();
-			                           NotificationColor col = new NotificationColor();
-									for(HashMap<String, Object> row: data)
-									{
-										String title =row.get("title").toString();
-										int id = (int)row.get("id"); 
-										String time =p.format((Date)row.get("created_at"));
-										String details = "";
-										int sender_id = (int) row.get("sender_id");
-										if(row.get("details")!=null){
-										
-										details = row.get("details").toString();
-										String getdetails[] = details.split(";");		
-										details = getdetails[0];
-										}
-										String colorLabel =	col.getColor(row.get("type").toString());
-										%>
-										<div class="alert alert-<%=colorLabel %>" id ="notice_<%=id %>">
-										<div class="ibox-tools pull-right">
-
-											<a id="<%=id %>" class="close-link notification_read"> <i class="fa fa-times"></i>
-											</a>
-										</div>
-										<%=title %>
-										
-									<% 	
-									IstarUser sender = new IstarUserDAO().findById(sender_id);					
-									%>
-									<p><span class="label label-<%=colorLabel%>">Sender : <%=sender.getEmail() %> (<%=time%>)</span></p>	
-									<% 
-										%>
-									</div>
-										
-										<% 
-									}
-								%>
-				
-					
-
-
-				</div>
+			<div class="panel-body" id="admin_notifications" style="height: 525px !important;    overflow-y: scroll;">
+								<jsp:include page="../../dashboard_notification.jsp">
+								<jsp:param value="<%=u.getId()%>" name="user_id"/>
+								</jsp:include>
+							<button type="button" class="btn btn-block btn-outline btn-primary read_more_notification">Read More</button>
+							<div id="no_notice_available"><h3 class="m-b-xxs">
+								No unread notification
+							</h3></div>
+							</div>	
 			</div>
 		</div>
 
