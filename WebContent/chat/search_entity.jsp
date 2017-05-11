@@ -33,7 +33,8 @@ if(reportID==30 || reportID==36)
 		data-user_type="ORG" data-user_name="<%=org.get("name")%>" data-user_image="<%=image%>">
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
-                    <a href="#"><%=org.get("name")%></a>                                                             
+                    <a href="#"><%=org.get("name")%></a>
+                    <span class="label label-primary" style="float:right" id='entity_user_<%=org.get("id") %>_chat_count'></span>                                                              
                 </div>
             </div>
 		<%
@@ -62,7 +63,14 @@ else if(reportID==31 || reportID==37)
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
                     <a href="#"><%=group.get("name")%></a>
-                    
+                    <%
+                    if(group.get("chat_count")!=null && (int)group.get("chat_count")!=0)
+                    {
+                    %>
+                    <span class="label label-primary" style="float:right" id='entity_bg_group_<%=group.get("id") %>_chat_count'><%=group.get("chat_count") %></span> 
+                    <%
+                    }
+                    %>
                 </div>
             </div>
 		<%
@@ -99,6 +107,7 @@ else if(reportID==32 || reportID==38)
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
                     <a href="#"><%=name%></a>
+                     <span class="label label-primary" style="float:right" id='entity_user_<%=users.get("id") %>_chat_count'></span> 
                 </div>
             </div>
 		<%
@@ -129,7 +138,7 @@ else if(reportID==27 || reportID==33)
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
                     <a href="#"><%=org.get("name")%></a>
-                    <span class="label label-primary" style="float:right"><%=org.get("chat_count")%></span>                                            
+                    <span class="label label-primary" style="float:right" id='entity_user_<%=org.get("id") %>_chat_count'><%=org.get("chat_count")%></span>                                            
                 </div>
             </div>
 		<%
@@ -157,7 +166,10 @@ else if(reportID==28 || reportID==34)
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
                     <a href="#"><%=group.get("name")%>
-                    <%-- <span class="label label-primary" style="float:right"><%=group.get("chat_count")%></span> --%></a>
+                    <%if(group.get("chat_count")!=null && (int)group.get("chat_count")!=0){ %>
+                     <span class="label label-primary" style="float:right"><%=group.get("chat_count")%></span>
+                     <%} %>
+                     </a>
                 </div>
             </div>
 		<%
@@ -193,7 +205,7 @@ else if(reportID==29 || reportID==35)
                 <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                 <div class="chat-user-name">
                     <a href="#"><%=name%>
-                    <span class="label label-primary" style="float:right"><%=users.get("chat_count")%></span></a>
+                    <span class="label label-primary" style="float:right" id='entity_user_<%=users.get("id") %>_chat_count'><%=users.get("chat_count")%></span></a>
                 </div>
             </div>
 		<%

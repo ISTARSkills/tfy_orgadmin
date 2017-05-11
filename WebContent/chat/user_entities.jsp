@@ -34,7 +34,7 @@ List<HashMap<String, Object>> userList = util.executeQuery(sql);
 <input type="text" placeholder="Search User" class="form-control search_chat_entity" id="<%=UUID.randomUUID()%>" data-default_report_id="<%=defaultReportID%>" data-report_id="<%=searchReportID	 %>" data-user_id="<%=user.getId()%>" style="width: 289px;
     margin-left: -18px;
     margin-top: -17px;
-    margin-bottom: 6px;"> 
+    margin-bottom: 6px;border-radius: 6px;"> 
                                 <div class="chat-users" style="height: 441px; margin-left: -24px; width: 296px;">
 								<div class="users-list">
 								<%								 

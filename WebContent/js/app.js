@@ -1027,19 +1027,49 @@ function initChatEntityClick()
 		{
 			$('#org_tab').css("background", "#fff");
 			$('#entity_user_'+user_id).css("background", "#fff");
+			var receiverId = $('#current_user_id').val();
+			var jsonMessage = JSON.stringify({
+			      receiverId : receiverId+"",      
+			      type : "MARK_CHAT_AS_SENT",
+			      senderId : user_id+"",      
+			      });					
+			if (jsonMessage !== ""){
+				webSocket.send(jsonMessage);	      				
+			}
 			
+			$('#entity_user_'+user_id+'_chat_count').hide();
 		}
 		else if(user_type==='BG_GROUP')
 		{
 			$('#group_tab').css("background", "#fff");
-			$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
+			$('#entity_bg_group_'+user_id).css("background", "#fff");
+			var receiverId = $('#current_user_id').val();
+			var jsonMessage = JSON.stringify({
+			      receiverId : receiverId+"",      
+			      type : "MARK_GROUP_CHAT_AS_READ",
+			      groupId : user_id+"",      
+			      });					
+			if (jsonMessage !== ""){
+				webSocket.send(jsonMessage);	      				
+			}
 			
+			$('#entity_bg_group_'+user_id+'_chat_count').hide();
 		}
 		else if(user_type==='USER')
 		{
 			$('#user_tab').css("background", "#fff");
-			$('#entity_'+user_type+'_'+user_id).css("background", "#fff");
+			$('#entity_user_'+user_id).css("background", "#fff");
+			var receiverId = $('#current_user_id').val();
+			var jsonMessage = JSON.stringify({
+			      receiverId : receiverId+"",      
+			      type : "MARK_CHAT_AS_SENT",
+			      senderId : user_id+"",      
+			      });					
+			if (jsonMessage !== ""){
+				webSocket.send(jsonMessage);	      				
+			}
 			
+			$('#entity_user_'+user_id+'_chat_count').hide();
 		}
 		
 		
@@ -1058,31 +1088,48 @@ function initChatEntityClick()
 				});
 			 
 		     }
-		 );			
+		 );
+		
+		
 		});	
 }
 function initChat()
 {			
 	$('#small-chat').on('click', function() {
 		$('#chat_element_holder').show();
-		if($('#chat_holder').hasClass('active'))
+		if($('#chat_holder').length >0)
 		{
-			$('#chat_holder').removeClass("active")
+			//$('#chat_holder').removeClass("active")
+			$('#chat_holder').empty();
+			$('#chat_holder').hide();
 		}
 	});
 	
 	
 	$('#chat_element_heading').unbind().on('click', function() {
 		$('#chat_element_holder').toggle();
-		if($('#chat_holder').hasClass('active'))
+		if($('#chat_holder').length >0)
 		{
-			$('#chat_holder').removeClass("active")
+			//$('#chat_holder').removeClass("active")
+			$('#chat_holder').empty();
+			$('#chat_holder').hide();
 		}
 	});
 	
+//load first tabe by default
 	
+	var $firstTab = $('[data-toggle="tab_chat"]').first();
+	var urll = $firstTab.attr('href');
+	var targett = $firstTab.attr('data-target');
+	 $.get(urll, function(data) {
+	        $(targett).html(data);
+	        initChatEntityClick();
+	        initChatEntitySearch();
+	    });
+	 $firstTab.tab('show');
 		
 $('[data-toggle="tab_chat"]').click(function(e) {
+	$(this).css("background", "#fff");
 	    var $this = $(this),
 	        loadurl = $this.attr('href'),
 	        targ = $this.attr('data-target');
@@ -1157,15 +1204,18 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					//create a chat user tab and append to list on top
 					if($('#entity_user_'+senderId).length!=0)
 					{
-						//unread user tab already exist 
+						//unread user tab already exist
+						
+						
 						var alreadyUnreadMessageCount = 0;
 						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
 						{
 							alreadyUnreadMessageCount= $('#entity_user_'+senderId+'_chat_count').text();
+							alreadyUnreadMessageCount= parseInt(alreadyUnreadMessageCount,10);
 						}
 						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
 						$('#entity_user_'+senderId+'_chat_count').text(alreadyUnreadMessageCount);
-						var html = $('#entity_user_'+senderId).html();
+						var html = $('#entity_user_'+senderId);
 						$('#entity_user_'+senderId).remove();
 						$('#tab-users .users-list').prepend(html);
 					}	
@@ -1189,7 +1239,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 				else 
 				{
 					var message = data.message;
-					var senderName = data.currUserName;		
+					var senderName = data.currUserName;	
+					var receiverId =  $('#current_user_id').val();
 					var chatMessage = createMessageHtml(message,senderId,senderName,'user');
 					var commentsCount = $('#'+senderUserID).children('.comment').length;
 					if(commentsCount >6)
@@ -1197,9 +1248,17 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 						$('#'+senderUserID+' > .comment').slice(0,1).remove();
 					}										
 					$('#'+senderUserID).append(chatMessage);
-				}	
-			
-				
+					
+					var jsonMessage = JSON.stringify({
+					      receiverId : receiverId+"",      
+					      type : "MARK_CHAT_AS_SENT",
+					      senderId : senderId+"",      
+					      });					
+					if (jsonMessage !== ""){
+	      				webSocket.send(jsonMessage);	      				
+	      			}
+					$('#entity_user_'+senderId+'_chat_count').hide();
+				}					
 			}else if(type === 'ORG_CHAT')
 			{
 				var senderId = data.senderId;				
@@ -1215,10 +1274,11 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
 						{
 							alreadyUnreadMessageCount= $('#entity_user_'+senderId+'_chat_count').text();
+							alreadyUnreadMessageCount= parseInt(alreadyUnreadMessageCount,10);
 						}
 						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
 						$('#entity_user_'+senderId+'_chat_count').text(alreadyUnreadMessageCount);
-						var html = $('#entity_user_'+senderId).html();
+						var html = $('#entity_user_'+senderId);
 						$('#entity_user_'+senderId).remove();
 						$('#tab-orgs .users-list').prepend(html);
 					}	
@@ -1254,15 +1314,27 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					$('#chat_content').append(chatMessage);
 					var d = $('#chat_content');
 	  				d.scrollTop(d.prop("scrollHeight"));
+	  				
+	  				var receiverId =  $('#current_user_id').val();
+	  				var jsonMessage = JSON.stringify({
+					      receiverId : receiverId+"",      
+					      type : "MARK_CHAT_AS_SENT",
+					      senderId : senderId+"",      
+					      });					
+					if (jsonMessage !== ""){
+	      				webSocket.send(jsonMessage);	      				
+	      			}
+					$('#entity_user_'+senderId+'_chat_count').hide();
 				}
 			}
 			else if (type === 'BG_CHAT')
-			{
-				
+			{				
 				var senderId = data.senderId;
 				var groupId = data.groupId;
+				//alert(senderId);
+				//alert(groupId);
 				//chat window is not open then need to highlight incoming messages 
-				if(($('#chat_holder').data('receiver_id')!= senderId) && ($('#chat_holder').data('receiver_type')!= 'BG_GROUP'))
+				if(($('#chat_holder').data('receiver_id')!= groupId) && ($('#chat_holder').data('receiver_type')!= 'BG_GROUP'))
 				{
 					//highlight the tab
 					$('#group_tab').css("background", "antiquewhite");
@@ -1271,18 +1343,20 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					{
 						//unread user tab already exist 
 						var alreadyUnreadMessageCount = 0;
-						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
+						if($('#entity_bg_group_'+groupId+'_chat_count').text()!=null)
 						{
 							alreadyUnreadMessageCount= $('#entity_bg_group_'+groupId+'_chat_count').text();
+							alreadyUnreadMessageCount = parseInt(alreadyUnreadMessageCount,10);
 						}
 						alreadyUnreadMessageCount = alreadyUnreadMessageCount+1;
 						$('#entity_bg_group_'+groupId+'_chat_count').text(alreadyUnreadMessageCount);
-						var html = $('#entity_bg_group_'+groupId).html();
+						var html = $('#entity_bg_group_'+groupId);
 						$('#entity_bg_group_'+groupId).remove();
 						$('#tab-groups .users-list').prepend(html);
+						$('#entity_bg_group_'+groupId).css("background", "antiquewhite");
 					}	
-					else{
-						
+					else
+					{						
 						//add tab
 						var alreadyUnreadMessageCount = 1;
 						var htmlDiv ="<div class='chat-user' id='entity_bg_group_"+groupId+"' data-user_id='"+groupId+"' data-user_type='BG_GROUP' " +
@@ -1290,15 +1364,13 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 								"<img class='chat-avatar' src='http://api.talentify.in"+data.currUserImage+"' " +
 										"alt='' style='width:36px ; height:36px'><div class='chat-user-name'><a href='#'>"+senderName+"</a>" +
 												"<span class='label label-primary' style='float:right' id='entity_bg_group_"+senderId+"_chat_count'>"+alreadyUnreadMessageCount+"</span></div></div>";
-						$('#tab-groups .users-list').prepend(htmlDiv);
-						
-					}
-					initChatEntityClick();
-					
-					$('#entity_bg_group_'+groupId).css("background", "antiquewhite");
+						$('#tab-groups .users-list').prepend(htmlDiv);						
+						$('#entity_bg_group_'+groupId).css("background", "antiquewhite");
+					}			
+					initChatEntityClick();										
 					var audio = new Audio('/assets/sound/stuffed-and-dropped.mp3');
 					audio.play();
-				}
+				}				
 				var message = data.message;
 				var senderName = data.currUserName;						
 				var chatMessage = createMessageHtml(message, senderId,senderName, 'user');				
@@ -1309,11 +1381,9 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					$('#chat_content > .chat_comment').slice(0,1).remove();
 					}
 				
-				$('#chat_content').append(chatMessage);
-  				
+				$('#chat_content').append(chatMessage);  				
   				var d = $('#chat_content');
   				d.scrollTop(d.prop("scrollHeight"));				
-
 			}
 			else if(type === 'GROUP_CHAT')
 			{
@@ -1444,7 +1514,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      			//sendMessage(e.target.value); 
 	      			var buttonId = $(this).attr('id');
 	      			//console.log('button id is '+buttonId);
-	      			var message = $(this).val();	      			
+	      			var message = $(this).val();
+	      			if(message !=''){
 	      			//these varible defined in chat_element.jsp
 	      			var currUserId  = $('#current_user_id').val();
 	      			var currUserOrgId = $('#current_user_org_id').val();
@@ -1555,6 +1626,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      				webSocket.send(jsonMessage);
 	      				getElement(buttonId).value = "";
 	      				$('#'+buttonId).focus();
+	      			}
+	      			
 	      			}
 	      		}
 	      	});   	

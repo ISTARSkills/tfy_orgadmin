@@ -118,9 +118,9 @@ else if (type.equalsIgnoreCase("USER")){
             if(Arrays.asList(allowedRoleToSendNotification).contains(user.getUserRoles().iterator().next().getRole().getRoleName())) 
             {
             	%>
-            	<span class="input-group-btn"> <button
-                    class="btn btn-primary" type="button" id="send_notification" data-user_id="<%=user.getId()%>" data-user_type="<%=user.getUserRoles().iterator().next().getRole().getRoleName()%>">Notice
-            	</button> </span>
+            	<span class="input-group-btn"> <%-- <button
+                    class="btn btn-primary" type="button" id="send_notification" data-user_id="<%=user.getId()%>" data-user_type="<%=user.getUserRoles().iterator().next().getRole().getRoleName()%>">
+            	</button>  --%></span>
             	<% 
             }%>
             

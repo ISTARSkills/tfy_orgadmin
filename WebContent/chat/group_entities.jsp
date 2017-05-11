@@ -34,7 +34,7 @@ List<HashMap<String, Object>> groupList = util.executeQuery(sql);
 <input type="text" placeholder="Search Group" class="form-control search_chat_entity" id="<%=UUID.randomUUID()%>" data-default_report_id="<%=defaultReportID%>" data-report_id="<%=searchReportID	 %>" data-user_id="<%=user.getId()%>" style="width: 289px;
     margin-left: -18px;
     margin-top: -17px;
-    margin-bottom: 6px;">                                
+    margin-bottom: 6px;border-radius: 6px;">                                
                                 <div class="chat-users" style="height: 441px; margin-left: -24px; width: 296px;">
 								<div class="users-list">
 								<%								 
@@ -47,14 +47,16 @@ List<HashMap<String, Object>> groupList = util.executeQuery(sql);
 									else
 									{
 										image = "/video/android_images/"+group.get("name").toString().substring(0, 1)+".png";
-									}	
-									
+									}										
 									%>
 									<div class="chat-user" id="entity_bg_group_<%=group.get("id") %>" data-user_id="<%=group.get("id") %>" data-user_type="BG_GROUP" data-user_name="<%=group.get("name")%>" data-user_image="<%=image%>">
                                             <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
                                                 <a href="#"><%=group.get("name")%>
-                                                <%-- <span class="label label-primary" style="float:right"><%=group.get("chat_count")%></span> --%></a>
+                                                <%if(group.get("chat_count")!=null && (int)group.get("chat_count")!=0){ %>
+                                                 <span class="label label-primary" style="float:right" id="entity_bg_group_<%=group.get("id")%>_chat_count"><%=group.get("chat_count")%></span>
+                                                <%} %> 
+                                                 </a>
                                             </div>
                                         </div>
 									<%

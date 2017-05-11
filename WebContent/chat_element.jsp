@@ -48,14 +48,9 @@ data-receiver_id="" data-receiver_name="" data-receiver_image="">
               %>                                                              
 <div id="tab-users" class="tab-pane"></div></div>
                     </div>
-               
-        
-       
         
     </div>
-    
-    
-    
+   
     <div id="small-chat">
         <span class="badge badge-warning pull-right" id="unread_chat_count"></span>
         <a class="open-small-chat">

@@ -482,17 +482,17 @@ SELECT
 		TRIM (batch_group. NAME)
 		FROM
 			1 FOR 1
-	) || '.png' AS image
+	) || '.png' AS image, cast (count(batch_group_messages.id) as integer) as chat_count
 FROM
 	batch_group, batch_group_messages
 where batch_group.id = batch_group_messages.batch_group_id
-and batch_group_messages.sender_id=:user_id
+and (batch_group_messages.read_by not like '%!#:user_id#!%' or  batch_group_messages.read_by is null)
 GROUP BY
 	batch_group. ID,
 	batch_group. NAME,
 	image
 ORDER BY
-	TRIM (batch_group. NAME)
+	chat_count desc
 </sql>
 </custom_report>
 <custom_report id="29">
@@ -510,8 +510,7 @@ FROM
 WHERE
 	istar_user. ID = user_profile.user_id
 and istar_user.id in (select user_role.user_id from user_role where role_id not in (select id from role where role_name in ('SUPER_ADMIN','COORDINATOR','ORG_ADMIN')))
-AND ((chat_messages.receiver_id = istar_user. ID
-AND chat_messages.user_id = :user_id) OR (chat_messages.receiver_id = :user_id
+AND ((chat_messages.receiver_id = :user_id
 AND chat_messages.user_id = istar_user. ID))
 AND sent = 'f'
 GROUP BY
@@ -561,22 +560,43 @@ ORDER BY
 <custom_report id="31">
 <sql>
 SELECT
-	batch_group. ID,
-	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
-	'video/android_images/' || SUBSTRING (
-		TRIM (batch_group. NAME)
-		FROM
-			1 FOR 1
-	) || '.png' AS image
+	TF. ID,
+	TF. NAME,
+	TF.image,
+
+cast (	COUNT (*) FILTER ( where
+		batch_group_messages.read_by IS NULL
+		OR batch_group_messages.read_by NOT LIKE '%!#:user_id#!%'
+	) as integer) as chat_count
 FROM
-	batch_group
-where lower(batch_group.name) like '%:search_term%'
+	(
+		SELECT
+			batch_group. ID,
+			TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+			'video/android_images/' || SUBSTRING (
+				TRIM (batch_group. NAME)
+				FROM
+					1 FOR 1
+			) || '.png' AS image
+		FROM
+			batch_group
+		WHERE
+			LOWER (batch_group. NAME) LIKE '%:search_term%'
+		GROUP BY
+			batch_group. ID,
+			batch_group. NAME,
+			image
+		ORDER BY
+			TRIM (batch_group. NAME)
+	) TF
+LEFT JOIN batch_group_messages ON (
+	batch_group_messages.batch_group_id = TF. ID
+)
 GROUP BY
-	batch_group. ID,
-	batch_group. NAME,
-	image
-ORDER BY
-	TRIM (batch_group. NAME)
+	TF. ID,
+	TF. NAME,
+	TF.image
+order by chat_count desc
 </sql>
 </custom_report>
 <custom_report id="32">
@@ -674,7 +694,7 @@ UNION
 			NAME
 	)
 )TOTAL_ADMIN , chat_messages
-where ((TOTAL_ADMIN.id = chat_messages.receiver_id AND chat_messages.user_id=:user_id) OR (TOTAL_ADMIN.id = :user_id AND chat_messages.user_id=chat_messages.receiver_id))
+where ((TOTAL_ADMIN.id = chat_messages.receiver_id AND chat_messages.user_id=6044) OR (chat_messages.receiver_id = 6044 AND chat_messages.user_id=TOTAL_ADMIN.id))
 group by TOTAL_ADMIN.id , TOTAL_ADMIN.name, TOTAL_ADMIN.role_name, TOTAL_ADMIN.org_type,TOTAL_ADMIN.image
 order by chat_count desc
 </sql>
@@ -688,18 +708,18 @@ SELECT
 		TRIM (batch_group. NAME)
 		FROM
 			1 FOR 1
-	) || '.png' AS image
+	) || '.png' AS image, cast (count(batch_group_messages.id) as integer) as chat_count
 FROM
 	batch_group, batch_group_messages
 where batch_group.id = batch_group_messages.batch_group_id
-and batch_group_messages.sender_id=:user_id
 and batch_group.college_id in (select user_org_mapping.organization_id from user_org_mapping where  user_org_mapping.user_id = :user_id)
+and (batch_group_messages.read_by not like '%!#:user_id#!%' or  batch_group_messages.read_by is null)
 GROUP BY
 	batch_group. ID,
 	batch_group. NAME,
 	image
 ORDER BY
-	TRIM (batch_group. NAME)
+	chat_count desc
 </sql>
 </custom_report>
 <custom_report id ="35">
@@ -731,10 +751,7 @@ AND (
 		chat_messages.receiver_id = :user_id
 		AND chat_messages.user_id = istar_user. ID
 	)
-	OR (
-		chat_messages.receiver_id = istar_user. ID
-		AND chat_messages.user_id = :user_id
-	)
+	
 )
 AND sent = 'f'
 GROUP BY
@@ -826,24 +843,45 @@ and TF.id !=:user_id
 <custom_report id="37">
 <sql>
 SELECT
-	batch_group. ID,
-	TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
-	'video/android_images/' || SUBSTRING (
-		TRIM (batch_group. NAME)
-		FROM
-			1 FOR 1
-	) || '.png' AS image
+	TF. ID,
+	TF. NAME,
+	TF.image,
+
+cast (	COUNT (*) FILTER ( where
+		batch_group_messages.read_by IS NULL
+		OR batch_group_messages.read_by NOT LIKE '%!#:user_id#!%'
+	) as integer) as chat_count
 FROM
-	batch_group
-where 
-lower(batch_group.name) like '%:search_term%'
-and batch_group.college_id in (select user_org_mapping.organization_id from user_org_mapping where  user_org_mapping.user_id = :user_id)
+	(
+		SELECT
+			batch_group. ID,
+			TRIM (batch_group. NAME) || ' (' || batch_group. TYPE || ')' AS NAME,
+			'video/android_images/' || SUBSTRING (
+				TRIM (batch_group. NAME)
+				FROM
+					1 FOR 1
+			) || '.png' AS image
+		FROM
+			batch_group
+		WHERE
+batch_group.college_id in (select user_org_mapping.organization_id from user_org_mapping where  user_org_mapping.user_id = :user_id)
+		and LOWER (batch_group. NAME) LIKE '%:search_term%'
+
+		GROUP BY
+			batch_group. ID,
+			batch_group. NAME,
+			image
+		ORDER BY
+			TRIM (batch_group. NAME)
+	) TF
+LEFT JOIN batch_group_messages ON (
+	batch_group_messages.batch_group_id = TF. ID
+)
 GROUP BY
-	batch_group. ID,
-	batch_group. NAME,
-	image
-ORDER BY
-	TRIM (batch_group. NAME)
+	TF. ID,
+	TF. NAME,
+	TF.image
+order by chat_count desc
 </sql>
 </custom_report>
 <custom_report id="38">
