@@ -1,5 +1,6 @@
-package in.orgadmin.admin.services;
+package tfy.admin.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -12,6 +13,11 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailService {
 	
+	
+	public void emailTicketToTargetUsers(ArrayList<String>emails, int ticketId)
+	{
+		
+	}
 	
 public void sendInviteMail(String email, String name, String password) {
 		
@@ -74,6 +80,11 @@ public void sendInviteMail(String email, String name, String password) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void emailTicketStatusChange(ArrayList<String> receiverEmails, int parseInt, String status) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

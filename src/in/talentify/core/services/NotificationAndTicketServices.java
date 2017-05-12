@@ -3,9 +3,12 @@
  */
 package in.talentify.core.services;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
@@ -19,6 +22,38 @@ import in.orgadmin.utils.report.CustomReportUtils;
  */
 public class NotificationAndTicketServices {
 
+	
+	public ArrayList<String> getDepartments()
+	{
+		ArrayList<String> data = new ArrayList<>();
+		
+		try {
+			Properties properties = new Properties();
+			String propertyFileName = "app.properties";
+			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+			if (inputStream != null) {
+				properties.load(inputStream);
+			} else {
+				throw new FileNotFoundException("property file '" + propertyFileName + "' not found in the classpath");
+			}
+			
+			String departmentNames = properties.getProperty("ticket_departments");
+			if(departmentNames!=null)
+			{
+				for(String str: departmentNames.split("!#"))
+				{
+					data.add(str);
+				}
+			}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		return data;
+	}
+	
 	public void markGroupNotificationAsRead(String groupCode){
 		System.out.println(groupCode);
 		DBUTILS util = new DBUTILS();
@@ -84,11 +119,11 @@ public class NotificationAndTicketServices {
 		return data;
 	}
 	
-	public void createTicket(String title, String description,String creatorId, String receiverId, String status, String ticketType)
+	public int createTicket(String title, String description,String creatorId, String receiverId, String status, String ticketType,String associated_emails, String departments)
 	{
 		DBUTILS util = new DBUTILS();
-		String createTicket="INSERT INTO ticket (id, title, description, creator_id, receiver_id, created_at, status, ticket_type, updated_at) VALUES "
-				+ "((select COALESCE(max(id),0)+1 from ticket), '"+title+"', '"+description+"', "+creatorId+", "+receiverId+", now(), '"+status+"', '"+ticketType+"', now());";
-		util.executeUpdate(createTicket);
+		String createTicket="INSERT INTO ticket (id, title, description, creator_id, receiver_id, created_at, status, ticket_type, updated_at,accociated_user_email, department) VALUES "
+				+ "((select COALESCE(max(id),0)+1 from ticket), '"+title+"', '"+description+"', "+creatorId+", "+receiverId+", now(), '"+status+"', '"+ticketType+"', now(),'"+associated_emails+"','"+departments+"') returning id;";
+		return util.executeUpdateReturn(createTicket);
 	}
 }

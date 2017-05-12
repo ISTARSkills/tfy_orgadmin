@@ -63,7 +63,8 @@ function readyFn(jQuery) {
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
-	
+	initChat();	
+	initUnreadChatAndNotification();
 	/*
 	 * Page specific js
 	 */
@@ -74,8 +75,7 @@ function readyFn(jQuery) {
 	case 'orgadmin_dashboard':
 		init_orgadmin_dashboard();
 		$('#Dashboard').css('color','  #eb384f');
-		initChat();	
-		initUnreadChatAndNotification();
+		
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
@@ -96,9 +96,7 @@ function readyFn(jQuery) {
 		$('#Reports').css('color','  #eb384f');
 		break;
 	case 'superadmin_dashboard':
-		init_super_admin_dashboard();
-		initChat();
-		initUnreadChatAndNotification();
+		init_super_admin_dashboard();		
 		$('#Dashboard').css('color','  #eb384f');
 		break;
 	case 'super_admin_account_managment':
@@ -262,9 +260,15 @@ function initTicket()
 	
 	$('#open_ticket').unbind().on('click', function(e) {
 		$('#create_new_ticket_modal').modal();
+		$("#new_ticket_form").bind("keypress", function(e) {
+            if (e.keyCode == 13) {
+               return false;
+            }
+         });
 		
 		$('.tagsinput').tagsinput({
-            tagClass: 'label label-primary'
+            tagClass: 'label label-primary',
+            confirmKeys: [32,13,188]
         });
 
 		
@@ -325,6 +329,7 @@ function initTicket()
   		  	    var ticket_status= $(this);
   				 ticketId= $(this).data("ticket_id");
   				 status = $(this).data("status");
+  				 $('#admin_page_loader').show();
   				$.ajax({
   		            type: "POST",
   		            url: "/change_ticket_status",
@@ -335,7 +340,7 @@ function initTicket()
   		            	{
   		            		//$(this).data("status","REOPENED");
   		            		$(ticket_status).data("status","REOPENED");
-  	  		            	$(ticket_status).html("Re Opren Ticket");
+  	  		            	$(ticket_status).html("Re Open Ticket");
   	  		                $('#ticket_modal_status').html("CLOSED");
   	  		              //  $('#ticket_table_status').html("CLOSED");
   		            	}
@@ -347,7 +352,7 @@ function initTicket()
   	  		                 $('#ticket_modal_status').html("REOPENED");
   	  		               //  $('#ticket_table_status').html("REOPENED");
   		            	}  	
-  		            	
+  		            	$('#admin_page_loader').hide();
   		            }
   		        });
   				
@@ -991,7 +996,7 @@ function initChatEntitySearch()
 		var id = $(this).attr('id');
 		if(search_term!=null && search_term!='')
 		{
-			var your_jsp_page_to_request = "chat/search_entity.jsp";			 			 
+			var your_jsp_page_to_request = "/chat/search_entity.jsp";			 			 
 			$.post(your_jsp_page_to_request,{search_term:search_term,user_id:user_id, report_id:report_id},		     
 			     function(data){
 					$('#'+id).parent('.panel-body').find('.users-list').empty();
@@ -1073,7 +1078,7 @@ function initChatEntityClick()
 		}
 		
 		
-		var your_jsp_page_to_request = "chat_box.jsp";			 			 
+		var your_jsp_page_to_request = "/chat_box.jsp";			 			 
 		$.post(your_jsp_page_to_request,{user_type:user_type,user_id:user_id, user_name:user_name},		     
 		     function(data){				
 			 $('#chat_holder').empty().append(data);	

@@ -32,7 +32,6 @@ import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.EmailUtils;
 
-import in.orgadmin.admin.services.EmailService;
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportList;
 import in.orgadmin.utils.report.CustomReportUtils;
@@ -40,6 +39,7 @@ import in.orgadmin.utils.report.ReportUtils;
 import in.talentify.core.services.NotificationAndTicketServices;
 import in.talentify.core.utils.CMSRegistry;
 import in.talentify.core.utils.EmailSendingUtility;
+import tfy.admin.services.EmailService;
 
 
 public class MAIN {

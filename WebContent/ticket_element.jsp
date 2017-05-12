@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.UserRole"%>
 <%@page import="com.viksitpro.core.dao.entities.RoleDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Role"%>
@@ -26,6 +27,7 @@
 	 List<HashMap<String, Object>> tickets = serv.getTickets(user.getId()); 
 	 IstarUserDAO dao = new IstarUserDAO();
 	 
+	 ArrayList<String> departments = serv.getDepartments();
 	 //  user.getUserRoles().iterator().next().getRole().getUserRoles();
 	 
 %>
@@ -139,11 +141,10 @@
 									<label>Description *</label> <input type="text"
 										placeholder="Enter Description"
 										class="form-control ticket_filed" required name="description">
-
 								</div>
 								<div class="form-group">
 									<select data-placeholder="Select Administration" multiple
-										tabindex="4" name="receivers" id="receivers" required
+										tabindex="8" name="receivers" id="receivers" required
 										class="ticket_filed">
 										<%
 						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN"))
@@ -152,16 +153,20 @@
 							
 							for(UserRole ur : r.getUserRoles())
 							{
+								if(ur.getIstarUser().getUserProfile()!=null){
 								%>
 										<option value="<%=ur.getIstarUser().getId()%>"><%=ur.getIstarUser().getUserProfile().getFirstName()%></option>
 										<%
+								}		
 							}
 							Role sr= new RoleDAO().findByRoleName("SUPER_ADMIN").get(0);
 							for(UserRole ur : sr.getUserRoles())
 							{
+								if(ur.getIstarUser().getUserProfile()!=null){
 								%>
 										<option value="<%=ur.getIstarUser().getId()%>"><%=ur.getIstarUser().getUserProfile().getFirstName()%></option>
 										<%
+								}	
 							}
 						}
 						else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN"))
@@ -169,19 +174,33 @@
 							Role sr= new RoleDAO().findByRoleName("SUPER_ADMIN").get(0);
 							for(UserRole ur : sr.getUserRoles())
 							{
+								if(ur.getIstarUser().getUserProfile()!=null){
 								%>
 										<option value="<%=ur.getIstarUser().getId()%>"><%=ur.getIstarUser().getUserProfile().getFirstName()%></option>
 										<%
+								}
 							}
 						}	
 						%>
 									</select>
 								</div>
+						<div class="form-group">
+									<select data-placeholder="Select Department" multiple
+										tabindex="8" name="department" id="department" required
+										class="ticket_filed">
+										<%
+										for(String department: departments)
+										{
+											%>
+											<option value="<%=department%>"><%=department%></option>
+											<% 
+										}
+										%>
+										</select></div>										
 								<div class="form-group">
 									<select data-placeholder="Select Ticket Type" tabindex="8"
-										name="ticket_type" id="ticket_type" required
-										class="ticket_filed">
-										<option id="">Select Ticket Type</option>
+										name="ticket_type" id="ticket_type" required multiple
+										class="ticket_filed">										
 										<option value="<%=TicketTypes.EARLY_FINISH_CLASS%>"><%=TicketTypes.EARLY_FINISH_CLASS%></option>
 										<option value="<%=TicketTypes.INTERNET_ISSUE%>"><%=TicketTypes.INTERNET_ISSUE%></option>
 										<option value="<%=TicketTypes.LATE_START_CLASS%>"><%=TicketTypes.LATE_START_CLASS%></option>
@@ -192,12 +211,9 @@
 								</div>
 								
 								<div class="form-group">
-									<label>Other Members</label> 
-									<input class="tagsinput form-control" type="text" value="" name="other_members"/>
-
-								</div>
-								 
-								
+									<label>Other Receiver Emails</label> 
+									<input placeholder="Enter Email" class="tagsinput form-control" type="text" value="" name="other_members"/>
+								</div>								 								
 								<div>
 									<br>
 									<div class="form-group">
