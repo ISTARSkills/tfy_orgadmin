@@ -17,6 +17,7 @@ import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
+import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -82,17 +83,17 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 		 for(String studentId: studentIds.split(","))
 			{
 			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, lessonId, "LESSON");
-			  notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
+			  IstarNotification istarNotification = notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
 			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId));	
 			  
 			  HashMap<String, Object> item = new HashMap<String, Object>();
-				
+
 				item.put("lessonId", Integer.parseInt(lessonId));
 				item.put("cmsessionId", Integer.parseInt(cmsession_id));
 				item.put("moduleId", Integer.parseInt(module_id));
 				item.put("courseId", Integer.parseInt(courseId));
 				item.put("taskId", taskId);
-				noticeDelegator.sendNotificationToUser(studentId, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
+				noticeDelegator.sendNotificationToUser(istarNotification.getId(), studentId, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
 			}
 		 /*List<String> students = new ArrayList<>();
 			students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
@@ -135,7 +136,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	for(String studentId: studentIds.split(","))
 	{	
 		int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, assessmentID, "ASSESSMENT");
-		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
+		IstarNotification istarNotification = notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
 		
 		HashMap<String, Object> item = new HashMap<String, Object>();
 		
@@ -143,7 +144,7 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 		item.put("courseId", course.getId());
 		item.put("taskId", taskId);
 		
-		noticeDelegator.sendNotificationToUser(studentId, notificationTitle.trim().replace("'", ""), NotificationType.ASSESSMENT, item);		
+		noticeDelegator.sendNotificationToUser(istarNotification.getId(), studentId, notificationTitle.trim().replace("'", ""), NotificationType.ASSESSMENT, item);		
 		//noticeDelegator.sendAndroidNotification(NotificationType.ASSESSMENT, students, notificationTitle.trim().replace("'", ""),assessmentID);
 	}
 /*	ArrayList<String> students = new ArrayList<>();

@@ -93,13 +93,14 @@ public class AndroidNoticeDelegator {
 		}
 	}
 	
-	public void sendNotificationToUser(String istarUserId, String message, String type, HashMap<String, Object> item){
+	public void sendNotificationToUser(int notificationId, String istarUserId, String message, String type, HashMap<String, Object> item){
 		if(deployment_type.equalsIgnoreCase("production")){
 			
 				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification").child(istarUserId);
 				
 				//databaseReferenceForUser.child(istarUserId);
 				Map<String, Object> hopperUpdates = new HashMap<String, Object>();
+				hopperUpdates.put("id", notificationId);
 				hopperUpdates.put("item", item);
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
@@ -120,6 +121,7 @@ public class AndroidNoticeDelegator {
 				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance().getReference("istar-notification-dev").child(istarUserId);
 
 				Map<String, Object> hopperUpdates = new HashMap<String, Object>();
+				hopperUpdates.put("id", notificationId);
 				hopperUpdates.put("item", item);
 				hopperUpdates.put("message", message);
 				hopperUpdates.put("type", type);
