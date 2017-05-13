@@ -44,7 +44,7 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
                         </div>
                         <div>
                             <div class="ibox-content no-padding border-left-right">
-                                <img alt="image" class="img-responsive" style="    width: 120px;" src="http://api.talentify.in/video/android_images/<%=fname.trim().toUpperCase().charAt(0)%>.png">
+                                <img alt="image" class="img-responsive" style="    width: 120px;" src="http://cdn.talentify.in/video/android_images/<%=fname.trim().toUpperCase().charAt(0)%>.png">
                             </div>
                             <div class="ibox-content profile-content">
                                 <h4><strong><%=fname %></strong></h4>
@@ -184,7 +184,7 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
                                 
                             </div>
                         	 <div class="col-md-4">
-                                <img alt="image" class="img-responsive" src="http://api.talentify.in/video/android_images/<%=fname.toUpperCase().charAt(0)%>.png">
+                                <img alt="image" class="img-responsive" src="http://cdn.talentify.in/video/android_images/<%=fname.toUpperCase().charAt(0)%>.png">
                             </div>
                             
                             

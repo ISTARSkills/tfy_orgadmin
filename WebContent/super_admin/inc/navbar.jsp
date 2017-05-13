@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%><div class="row border-bottom white-bg">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%><div class="row border-bottom white-bg">
 	<%@page import="in.talentify.core.utils.*"%>
 	<%@page import="in.talentify.core.xmlbeans.*"%>
 	<%@page import="com.viksitpro.core.dao.entities.*"%>

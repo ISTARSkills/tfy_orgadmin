@@ -1,3 +1,6 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <div class="row border-bottom white-bg">
 <%@page import="in.talentify.core.utils.*"%>
 <%@page import="in.talentify.core.xmlbeans.*"%>
@@ -54,6 +57,35 @@
 							System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}
+				
+				DBUTILS utils = new DBUTILS();
+				String sql="select * from org_custom_report where organization_id="+college.getId();
+				List<HashMap<String, Object>> data = utils.executeQuery(sql);
+				if(data.size()>0)
+				{
+					%>
+					<li class="dropdown"><a aria-expanded="true" role="button"
+					href="" class="dropdown-toggle"
+					data-toggle="dropdown">Custom Reports<span
+						class="caret"></span> </a>
+					<ul role="menu" class="dropdown-menu">
+					<% 
+					for(HashMap<String, Object> row: data){
+						String reportId = row.get("report_id").toString();
+						String organizationId = row.get("organization_id").toString();
+						String reportName = row.get("report_name").toString();
+							%>
+							<li><a href="/orgadmin/custom_report.jsp?report_name=<%=reportName%>&organziation_id=<%=organizationId%>&report_id=<%=reportId%>"><i class="fa fa-sign-out"></i>
+							<%=reportName %>
+							</a></li>
+							<%	
+					}
+					%>
+					</ul>
+					</li>
+					<% 
+				}	
+				
 				%>
 			</ul>
 			<%if(request.getSession().getAttribute("not_auth")!=null){
@@ -75,7 +107,9 @@
 				</a></li>
 			</ul>
 			
-			<%} %>
+			<%}
+			
+			%>
 		</div>
 	</nav>
 <jsp:include page="/chat_element.jsp"></jsp:include>

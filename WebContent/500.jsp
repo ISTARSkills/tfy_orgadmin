@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"	pageEncoding="ISO-8859-1"%><%@page import="com.viksitpro.core.dao.entities.*"%><%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%><%@page import="com.viksitpro.core.dao.entities.*"%><%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <!DOCTYPE html><html><head><title>Error Page | iStar CMS</title><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <% String url = request.getRequestURL().toString();
@@ -29,9 +29,9 @@ System.out.println(message.toString());
 <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'/>
 
 <!-- CSS Global Compulsory -->
-<link rel="stylesheet" href="<%=baseURL %>assets/plugins/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="<%=baseURL %>assets/plugins/bootstrap/assets/css/bootstrap.min.css"/>
 
-<link rel="stylesheet" href="<%=baseURL %>assets/css/500.css"/>
+<link rel="stylesheet" href="<%=baseURL %>assets/assets/css/500.css"/>
 </head>
 
 <body>
@@ -52,15 +52,15 @@ System.out.println(message.toString());
 	<!-- JS Global Compulsory -->
 	<script type="text/javascript" src="<%=baseURL %>assets/plugins/jquery/jquery.min.js?a=1"></script>
 	<script type="text/javascript" src="<%=baseURL %>assets/plugins/jquery/jquery-migrate.min.js?a=1"></script>
-	<script type="text/javascript" src="<%=baseURL %>assets/plugins/bootstrap/js/bootstrap.min.js?a=1"></script>
+	<script type="text/javascript" src="<%=baseURL %>assets/plugins/bootstrap/assets/js/bootstrap.min.js?a=1"></script>
 	<!-- JS Implementing Plugins -->
 	<script type="text/javascript" src="<%=baseURL %>assets/plugins/back-to-top.js?a=1"></script>
 	<script type="text/javascript" src="<%=baseURL %>assets/plugins/smoothScroll.js?a=1"></script>
 	<!-- JS Customization -->
-	<script type="text/javascript" src="<%=baseURL %>assets/js/custom.js?a=1"></script>
+	<script type="text/javascript" src="<%=baseURL %>assets/assets/js/custom.js?a=1"></script>
 	<!-- JS Page Level -->
-	<script type="text/javascript" src="<%=baseURL %>assets/js/app.js?a=1"></script>
-	<script type="text/javascript" src="<%=baseURL %>assets/js/plugins/style-switcher.js?a=1"></script>
+	<script type="text/javascript" src="<%=baseURL %>assets/assets/js/app.js?a=1"></script>
+	<script type="text/javascript" src="<%=baseURL %>assets/assets/js/plugins/style-switcher.js?a=1"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			App.init();

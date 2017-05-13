@@ -8,7 +8,7 @@
 <%@page import="in.orgadmin.utils.report.CustomReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 String limit = "8";
@@ -57,7 +57,7 @@ for(HashMap<String, Object> row: data)
 										}											
 										%>
 <div class="alert alert-<%=color%> alert-dismissable" style="padding-bottom: 26px;">
-		<button aria-hidden="true" data-dismiss="alert" class="close notification_close" data-notice_id="<%=id%>" data-group_code="<%=groupCode%>" data-notice_type="<%=noticeType%>" type="button">×</button>
+		<button aria-hidden="true" data-dismiss="alert" class="close notification_close" data-notice_id="<%=id%>" data-group_code="<%=groupCode%>" data-notice_type="<%=noticeType%>" type="button">Ã—</button>
 		<a class="alert-link" >Posted By: <%=firstName%>
 		</a> <span class="message-date" >&nbsp;posted <%=time %>
 		</span> <span class="message-content"> <%=title%>		

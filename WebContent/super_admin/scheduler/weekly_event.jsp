@@ -1,8 +1,8 @@
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())

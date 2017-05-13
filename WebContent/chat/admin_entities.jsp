@@ -5,8 +5,8 @@
 <%@page import="in.orgadmin.utils.report.CustomReport"%>
 <%@page import="in.orgadmin.utils.report.CustomReportUtils"%>
 <%@page import="java.util.HashMap"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 CustomReportUtils repUtils = new CustomReportUtils();
@@ -52,7 +52,7 @@ List<HashMap<String, Object>> orgList = util.executeQuery(sql);
 									%>
 									<div class="chat-user" id="entity_user_<%=org.get("id")%>" data-user_id="<%=org.get("id") %>" 
 									data-user_type="ORG" data-user_name="<%=org.get("name")%>" data-user_image="<%=image%>">
-                                            <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
+                                            <img class="chat-avatar" src="http://cdn.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
                                                 <a href="#"><%=org.get("name")%></a>
                                                 <%if(org.get("chat_count")!=null && (int)org.get("chat_count")!=0){ %>

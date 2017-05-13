@@ -43,7 +43,7 @@ public class ReportDetailService {
 	}
 
 	public List<HashMap<String, Object>> getAllStudents(int batch_id) {
-		String sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name AS NAME, 	s.email, 	CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	'http://api.talentify.in/video/android_images/' || UPPER (SUBSTRING(sp.first_name FROM 1 FOR 1)) || '.png' ELSE 	'http://api.talentify.in/' || sp.profile_image END AS profile_image FROM 	batch b, 	batch_students bs, 	batch_group bg, 	istar_user s, 	user_profile sp WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND sp.user_id = s. ID AND b. ID = "
+		String sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name AS NAME, 	s.email, 	CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	'http://cdn.talentify.in/video/android_images/' || UPPER (SUBSTRING(sp.first_name FROM 1 FOR 1)) || '.png' ELSE 	'http://cdn.talentify.in/' || sp.profile_image END AS profile_image FROM 	batch b, 	batch_students bs, 	batch_group bg, 	istar_user s, 	user_profile sp WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND sp.user_id = s. ID AND b. ID = "
 				+ batch_id + " ORDER BY 	sp.first_name";
 
 		// System.err.println(sql);

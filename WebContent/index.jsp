@@ -1,6 +1,6 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +8,7 @@
 <head>
 <% 
 	String url = request.getRequestURL().toString();
-	String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
+	String baseURL = "http://cdn.talentify.in/";
 	System.out.println(request.getSession().getAttribute("user"));
 
 	
@@ -62,11 +62,11 @@
 
     <title>  EMPTY PAGE </title>
 
-    <link href="<%=baseURL%>css/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=baseURL%>font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<%=baseURL%>assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=baseURL%>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="<%=baseURL%>css/animate.css" rel="stylesheet">
-    <link href="<%=baseURL%>css/style.css" rel="stylesheet">
+    <link href="<%=baseURL%>assets/css/animate.css" rel="stylesheet">
+    <link href="<%=baseURL%>assets/css/style.css" rel="stylesheet">
 
 </head>
 

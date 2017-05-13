@@ -88,8 +88,8 @@ public class AdminUIServices {
 	/*public StringBuffer getAllStudents(int orgId) {
 		// <option value="">Data Analytics</option>
 		String sql = "SELECT * FROM ( SELECT student. ID, student. NAME, student.email,student.organization_id, case when student_profile_data.profile_image like 'null'"
-				+ " OR student_profile_data.profile_image is null then 'http://api.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
-				+ "ELSE 'http://api.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
+				+ " OR student_profile_data.profile_image is null then 'http://cdn.talentify.in/video/android_images/'||upper( substring(student. NAME from 1 for 1))||'.png' "
+				+ "ELSE 'http://cdn.talentify.in/'||student_profile_data.profile_image end as profile_image, string_agg ( distinct (batch_group. NAME), ', ') AS batch_groups,"
 				+ " string_agg ( DISTINCT (course_name), ', ') AS courses, string_agg ( distinct (CAST ( batch_group. ID AS VARCHAR)), ', ' ) AS batch_group_ids,"
 				+ " string_agg ( distinct (CAST (course. ID AS VARCHAR)), ', ' ) AS course_ids FROM course, batch, batch_group, student, batch_students,"
 				+ " student_profile_data WHERE student.organization_id = " + orgId

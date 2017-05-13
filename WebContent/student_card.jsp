@@ -5,7 +5,7 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
 /*tree related  */
 .tree1>li {
@@ -118,7 +118,7 @@ if(request.getParameterMap().containsKey("course_id"))
 }
 
 IstarUser stu = new IstarUserDAO().findById(studentId);
-String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfileImage() : "video/android_images/"+stu.getUserProfile().getFirstName().toUpperCase().charAt(0)+".png";
+String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfileImage() : "video/android_images/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
 %>
 <div class="modal-dialog">
 	<div class="modal-content animated flipInY">

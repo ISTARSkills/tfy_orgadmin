@@ -11,8 +11,8 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 String entityType = request.getParameter("entity_type");
 String entityId = request.getParameter("entity_id");

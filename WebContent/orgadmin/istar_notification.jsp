@@ -187,6 +187,8 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 			</div>
 
 		</div>
+		
 	</div>
+	
 <jsp:include page="inc/foot.jsp"></jsp:include>
 </body>

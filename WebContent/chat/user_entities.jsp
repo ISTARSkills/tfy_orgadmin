@@ -5,8 +5,8 @@
 <%@page import="in.orgadmin.utils.report.CustomReport"%>
 <%@page import="in.orgadmin.utils.report.CustomReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 CustomReportUtils repUtils = new CustomReportUtils();
@@ -59,7 +59,7 @@ List<HashMap<String, Object>> userList = util.executeQuery(sql);
 									}										
 									%>
 									<div class="chat-user" id="entity_user_<%=users.get("id")%>" data-user_id="<%=users.get("id") %>" data-user_type="USER" data-user_name="<%=name%>" data-user_image="<%=image%>" >
-                                            <img class="chat-avatar" src="http://api.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
+                                            <img class="chat-avatar" src="http://cdn.talentify.in<%=image%>" alt="" style="width:36px ; height:36px">
                                             <div class="chat-user-name">
                                                 <a href="#"><%=name%>
                                                 <%if(users.get("chat_count")!=null && (int)users.get("chat_count")!=0){ %>

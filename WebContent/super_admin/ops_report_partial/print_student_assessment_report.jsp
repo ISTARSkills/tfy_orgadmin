@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="in.superadmin.ops.service.OpsReportSevices"%>
 <%
 	OpsReportSevices opsReport = new OpsReportSevices();
@@ -174,8 +174,8 @@
 		}
 	</script>
 </body>
-</html><%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+</html><%-- <%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="in.superadmin.ops.service.OpsReportSevices"%>
 <%
 	OpsReportSevices opsReport = new OpsReportSevices();

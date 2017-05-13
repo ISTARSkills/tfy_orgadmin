@@ -6,8 +6,8 @@
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 	
 <%
 IstarUser user = (IstarUser) request.getSession().getAttribute("user");
@@ -78,7 +78,7 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
                                     	Timestamp commentedAt = (Timestamp)row.get("comment_created_at");
                                     	%>
                                     	<div class="chat-message <%=align%>">
-                                        <img class="message-avatar" src="http://api.talentify.in/video/android_images/<%=commentor.getUserProfile().getFirstName().toUpperCase().substring(0, 1)%>.png" alt="">
+                                        <img class="message-avatar" src="http://cdn.talentify.in/video/android_images/<%=commentor.getUserProfile().getFirstName().toUpperCase().substring(0, 1)%>.png" alt="">
                                         <div class="message">
                                             <a class="message-author" href="#"> <%=commentor.getUserProfile().getFirstName()%> </a>
                                             <span class="message-date"><%= pt.format(commentedAt)%></span>

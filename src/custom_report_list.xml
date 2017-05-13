@@ -305,7 +305,7 @@ select id , name from batch_group where parent_group_id = :parent_group_id
 </custom_report>
 <custom_report id ="21">
 <sql>
-select lesson_cmsession.lesson_id, lesson_cmsession.cmsession_id, cmsession_module.module_id, module_course.course_id, lesson.title as lesson_title, course.course_name as course_name from lesson_cmsession, cmsession_module, module_course, lesson, course
+select lesson_cmsession.lesson_id, lesson_cmsession.cmsession_id, cmsession_module.module_id, module_course.course_id, lesson.title as lesson_title, course.course_name as course_name, course.course_description from lesson_cmsession, cmsession_module, module_course, lesson, course
 where 
 lesson_cmsession.cmsession_id =  cmsession_module.cmsession_id
 and cmsession_module.module_id = module_course.module_id

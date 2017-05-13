@@ -5,13 +5,13 @@
 <%@page import="java.util.List"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Organization"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%
 IstarUser user = (IstarUser) session.getAttribute("user");
 String userRole = user.getUserRoles().iterator().next().getRole().getRoleName();	
 String userImage = user.getUserProfile().getProfileImage()!=null ?user.getUserProfile().getProfileImage() : "/video/android_images/"+user.getUserProfile().getFirstName().substring(0, 1).toUpperCase()+".png"; 
-		userImage="http://api.talentify.in"+userImage;
+		userImage="http://cdn.talentify.in"+userImage;
 %>    
 <input type="hidden" id ="current_user_id" value="<%=user.getId()%>">
 <input type="hidden" id ="current_user_type" value="<%=userRole%>">

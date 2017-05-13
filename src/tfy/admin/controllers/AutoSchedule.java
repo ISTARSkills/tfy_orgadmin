@@ -149,7 +149,7 @@ Parameter Name - type, Value - checking*/
 				List<HashMap<String, Object>> data = util.executeQuery(sql);
 				for(HashMap<String, Object> row: data)
 				{
-					int stuId = (int) row.get("studnet_id");
+					int stuId = (int) row.get("student_id");
 					users.add(stuId);
 					stuCount++;
 				}

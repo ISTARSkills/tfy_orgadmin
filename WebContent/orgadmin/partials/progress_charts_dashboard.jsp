@@ -1,8 +1,8 @@
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%><div class="row">
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%><div class="row">
 						<div class="col-lg-12 no-padding bg-muted">
 							<div class="tabs-container">
 								<ul class="nav nav-tabs">

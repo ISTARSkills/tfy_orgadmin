@@ -5,7 +5,7 @@
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 ReportUtils util = new ReportUtils();
 

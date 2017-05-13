@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 
 <!DOCTYPE html>
@@ -8,6 +8,7 @@
 <head>
 <% 
 	String url = request.getRequestURL().toString();
+	String cdnUrl = "http://cdn.talentify.in/";
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
 
 	if(request.getSession().getAttribute("user")!=null) {
@@ -18,24 +19,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon"
-	href="img/user_images/new_talentify_logo.png" />
+	href="<%=cdnUrl%>assets/img/user_images/new_talentify_logo.png" />
 <title>Talentify | Login</title>
 
-<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
   <!-- Sweet Alert -->
-    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-
-
-<link href="css/animate.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/custom.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/css/animate.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/css/style.css" rel="stylesheet">
+<link href="<%=cdnUrl%>assets/css/custom.css" rel="stylesheet">
 
 </head>
 
 <body class="gray-bg"
-	style="background-size: cover; background-repeat: no-repeat; background-image: url('assets/images/demo.png')">
+	style="background-size: cover; background-repeat: no-repeat; background-image: url('<%=baseURL%>assets/images/demo.png')">
 	
 	<% String errormsg=""; 
 	Boolean flag = false;%>
@@ -53,7 +52,7 @@
 		<div class="login-screen-box">
 			<div>
 				<img alt="Talentify"
-					src="img/user_images/new_talentify_logo.png" width="60%"
+					src="<%=cdnUrl%>assets/img/user_images/new_talentify_logo.png" width="60%"
 					height="60%">
 			</div>
 
@@ -90,10 +89,10 @@
 	</div>
 
 	<!-- Mainly scripts -->
-	<script src="js/jquery-2.1.1.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<script src="<%=cdnUrl%>assets/js/jquery-2.1.1.js"></script>
+	<script src="<%=cdnUrl%>assets/js/bootstrap.min.js"></script>
 	 <!-- Sweet alert -->
-    <script src="js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="<%=cdnUrl%>assets/js/plugins/sweetalert/sweetalert.min.js"></script>
 	
 	<script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
