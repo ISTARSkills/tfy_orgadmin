@@ -84,7 +84,7 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 			{
 			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, lessonId, "LESSON");
 			  IstarNotification istarNotification = notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
-			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId));	
+			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId),taskId);	
 			  
 			  HashMap<String, Object> item = new HashMap<String, Object>();
 
@@ -185,16 +185,11 @@ else if(notificationType.equalsIgnoreCase(NotificationType.MESSAGE))
 	String groupNotificationCode = UUID.randomUUID().toString();
 	for(String studentId: studentIds.split(","))
 	{
-		notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title.trim().replace("'", ""), comments.trim().replace("'", ""), "UNREAD", null, NotificationType.GENERIC, true, null, groupNotificationCode);
+		HashMap<String, Object> item = new HashMap<String, Object>();
+		IstarNotification notice = notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), title.trim().replace("'", ""), comments.trim().replace("'", ""), "UNREAD", null, NotificationType.GENERIC, true, null, groupNotificationCode);
+		noticeDelegator.sendNotificationToUser(notice.getId(), studentId, title, NotificationType.GENERIC, item);
 	}
-	ArrayList<String> students = new ArrayList<>();
-	students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
-	if(students.size()>0)
-	{			HashMap<String, Object> item = new HashMap<String, Object>();
-	
-	noticeDelegator.sendNotificationToGroup(students, title, NotificationType.GENERIC, item);		
-	//noticeDelegator.sendAndroidNotification(NotificationType.MESSAGE, students, title,"NO_ID");
-	}	
+		
 }		
 		
 		

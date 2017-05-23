@@ -18,6 +18,7 @@ import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
+import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -218,25 +219,28 @@ public class AddContentToEntity extends IStarBaseServelet {
 			String lessonTitle = (String)content.get("lesson_title");
 			String lessonDescription = content.get("lesson_desc")!=null ? content.get("lesson_desc").toString().trim():"No Description Available";
 			
-			playListService.createStudentPlayList(studentId, courseId, moduleId, sessionId, lessonId);				
+						
 			String notificationTitle = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
 			String notificationDescription =  lessonDescription;
 			String taskTitle = lessonTitle;
 			String taskDescription = notificationDescription;				
 			
 			int tasId = taskService.createTodaysTask(taskTitle, taskDescription, adminId+"", studentId+"", lessonId+"", "LESSON");
+			
+			playListService.createStudentPlayList(studentId, courseId, moduleId, sessionId, lessonId, tasId);	
 			String groupNotificationCode = UUID.randomUUID().toString();
-			notificationService.createIstarNotification(adminId, studentId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, tasId, groupNotificationCode);
+			
+			
+			IstarNotification notice = notificationService.createIstarNotification(adminId, studentId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, tasId, groupNotificationCode);
 			HashMap<String, Object> item = new HashMap<String, Object>();
 			
 			item.put("lessonId", lessonId);
 			item.put("cmsessionId", sessionId);
 			item.put("moduleId", moduleId);
 			item.put("courseId", courseId);
+			item.put("taskId", tasId);
 			
-			List<String> students = new ArrayList<>();
-			students.add(studentId+"");
-			noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
+			noticeDelegator.sendNotificationToUser(notice.getId(),studentId+"", notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
 			
 			
 		}

@@ -1,6 +1,22 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.util.Properties"%>
 <%
 	String path = request.getContextPath();
 String basePath = "http://cdn.talentify.in/";
+
+try{
+	Properties properties = new Properties();
+	String propertyFileName = "app.properties";
+	InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+		if (inputStream != null) {
+			properties.load(inputStream);
+			basePath =  properties.getProperty("cdn_path");
+			System.out.println("basePath"+basePath);
+		}
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
 	
 %>
 <script

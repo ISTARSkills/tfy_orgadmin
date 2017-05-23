@@ -2090,8 +2090,12 @@ function init_user_search_in_user_tab()
 				    $('.full-height-scroll').each(function(){
 				    	$(this).slimscroll({height:$(this).parent().height()});
 				    });
+				    init_child_entity_tabs();
 				    $('#admin_page_loader').hide();
-				});
+				    
+				    
+				}).done(function() {
+				  });
 			}		
 		});
 
@@ -2630,7 +2634,7 @@ function init_edit_course_changes()
 		}
 		else
 			{
-			alert('null ');
+			//alert('null ');
 			}
 	});
 }
@@ -3384,6 +3388,9 @@ function admin_load_resources(){
 			    	$(this).slimscroll({height:$(this).parent().height()});
 			    });
 			    
+			    
+			    
+			    init_child_entity_tabs();
 			});
 		});
 	
@@ -5870,4 +5877,11 @@ function ValidateIPaddress(ipaddress)
     return (true)  
   }  
 return (false)  
+}
+
+
+
+yes_js_login = function() {
+    // Your code here
+    return false;
 }

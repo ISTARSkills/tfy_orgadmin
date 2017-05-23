@@ -72,7 +72,6 @@ public class CMSRegistry {
 			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("custom_report_list.xml");
 			File file = new File(url.toURI());
 			JAXBContext jaxbContext = JAXBContext.newInstance(CustomReportList.class);
-
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			customReportList = (CustomReportList) jaxbUnmarshaller.unmarshal(file);
 			

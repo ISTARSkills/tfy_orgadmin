@@ -41,8 +41,12 @@
 				for (HashMap<String, Object> item : list) {
 			%>
 
-			<li class="<%=i == 0 ? "active" : ""%> no-padding bg-muted"><a	data-target="#admin_content_inner_tab_<%=i+type%>" 
-			data-toggle="tabajax_admin_child" href="partials/available_mapped_content.jsp" data-entity_type="<%=type%>" data-entity_id="<%=item.get("id") %>" data-college_id="<%=colegeID %>"
+			<li class="<%=i == 0 ? "active" : ""%> no-padding bg-muted">
+			
+			
+			<a	onclick="return yes_js_login();" data-target="#admin_content_inner_tab_<%=i+type%>" 
+			data-toggle="tabajax_admin_child" href="partials/available_mapped_content.jsp" data-entity_type="<%=type%>" 
+			data-entity_id="<%=item.get("id") %>" data-college_id="<%=colegeID %>"
 				aria-expanded="false"><%=item.get("email")%> <span class="label" id="role_skill_count_<%=type+item.get("id")%>"><%=item.get("count")%></span>
 			</a></li>
 			<%

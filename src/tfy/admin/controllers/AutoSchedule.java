@@ -306,7 +306,7 @@ Parameter Name - type, Value - checking*/
 			
 			//TaskServices taskService = new TaskServices();
 			StudentPlayListServicesAdmin playListService = new StudentPlayListServicesAdmin();
-			playListService.createStudentPlayList(stid,cid, mid, cms,  lid);
+			playListService.createStudentPlayList(stid,cid, mid, cms,  lid,taskId);
 		}
 					
 		

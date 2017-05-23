@@ -1,61 +1,44 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
-
 <head>
 <% 
 	String url = request.getRequestURL().toString();
 	String baseURL = "http://cdn.talentify.in/";
 	System.out.println(request.getSession().getAttribute("user"));
-
-	
-	
-	
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+		System.out.println("user email"+user.getEmail());
 		String url1 = baseURL + "dashboard.jsp";
 		if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
 			url1 = "/super_admin/dashboard.jsp";
+			System.out.println("super amdin");
 		}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
 			System.out.println("---------vfvfvfv--------------------->"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
 			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
-		}else{
-			
+		}else{			
 			String errorResponse="";
-			if(request.getAttribute("msg")!=null){
-				
+			if(request.getAttribute("msg")!=null){				
 				errorResponse=request.getAttribute("msg").toString();
 				System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
-			}
-			
+			}			
 			request.setAttribute("msg", errorResponse);
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-			
-			
-		}
-		
-		//response.sendRedirect(url1);
-		
+			request.getRequestDispatcher("/login.jsp").forward(request, response);			
+		}		
+		response.sendRedirect(url1);		
 	} else {
-		
-		
-		
 		String errorResponse="";
-		if(request.getAttribute("msg")!=null){
-			
+		if(request.getAttribute("msg")!=null){			
 			errorResponse=request.getAttribute("msg").toString();
 			System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
-		}
-		
+		}		
 		/* request.setAttribute("msg", errorResponse);
 		request.getRequestDispatcher("/login.jsp").forward(request, response); */
 		request.setAttribute("msg", errorResponse);
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
-
 %>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

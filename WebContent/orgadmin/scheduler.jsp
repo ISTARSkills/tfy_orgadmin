@@ -4,7 +4,6 @@
 <%@page import="java.util.*"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <jsp:include page="inc/head.jsp"></jsp:include>
-
 <body class="top-navigation" id="orgadmin_scheduler">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
