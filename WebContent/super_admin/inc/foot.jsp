@@ -21,8 +21,7 @@ try{
 	}
 	
 %>
-<script
-	src='//cdnjs.cloudflare.com/ajax/libs/moment.assets/js/2.9.0/moment.min.js'></script>
+<script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>
 
 <script src="<%=basePath %>assets/js/jquery-2.1.1.js"></script>
 

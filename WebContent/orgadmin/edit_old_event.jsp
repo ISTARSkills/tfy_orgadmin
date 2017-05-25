@@ -18,13 +18,13 @@
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
-	/* OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user"); */
+IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 
 int colegeID = (int) request.getSession().getAttribute("orgId");
 	 
 	 IstarUser istarUser = new IstarUser();
 
-	int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+	int user_id = istarUser.getId();
 
 	Organization college = new OrganizationDAO().findById(colegeID);
 	

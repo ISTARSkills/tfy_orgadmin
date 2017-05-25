@@ -3284,117 +3284,7 @@ function admin_course_batch_init() {
 }
 
 
-function admin_load_resources(){
-	var count=0;
-	$('.content-map-ajax-request').each(function(){
-		var tab=$(this);
-		var type=$(this).data('type');
-		var id=$(this).data('org');
-		var usercount =$(this).data('size');
-		var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
-		if(type=='User'){
-			url=url+'&offset=0'
-		}
-	
-		//console.log(url);
-		$.get(url, function( data ) {
-			  $(".result").html(data);
-			  
-			  $('.spinner-animation-holder_'+type).css("cssText","display:none !important;");
-			  tab.empty();
-			  tab.append(data);
-			  count++;
-			  if(count==3){
-			  
-			    //initilize and event handling of skills search box
-			   admin_skill_content_search_init();
-			    
-			    //removeing conetent skills event handling and ajax calls
-			  // admin_skill_alertBinding();
-			    
-			   
-			    $('.full-height-scroll').each(function(){
-			    	$(this).slimscroll({height:$(this).parent().height()});
-			    });
-			    
-			  }
-			  
-			});
-	});
-	
-	$('#page-selection').bootpag({
-        total: parseInt($('#page-selection').data('size')/10+1),
-        maxVisible: 10
-    }).on("page", function(event, /* page number  here */ num){
-			var offset=(num*10)-10;
-						
-			var tab=$(this);			
-			var type=$(this).data('type');
-			var id=$(this).data('org');
-			var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
-			if(type=='User'){
-				url=url+'&offset='+offset
-			}
-		
-			//console.log(url);
-			$.get(url, function( data ) {
-				 
-				  
-				  $(tab).parent().parent().find('.tabs-container').remove();
-				 
-				  $(tab).parent().parent().append(data);					  
-				  
-				    //initilize and event handling of skills search box
-				   admin_skill_content_search_init();
-				    
-				    //removeing conetent skills event handling and ajax calls
-				   //admin_skill_alertBinding();
-				    
-				    $('.full-height-scroll').each(function(){
-				    	$(this).slimscroll({height:$(this).parent().height()});
-				    });
-				    
-				});
-    });
-	
-	$('#content-user-search').on('change', function() {
-		var searchkey=$(this).val().replace(' ','%20');
-		var tab=$(this);
-		var type=$(this).data('type');
-		var id=$(this).data('org');
-		var url=$(this).data('url')+'?colegeID='+id+'&type='+type;
-		
-		if(searchkey.length!=0){
-		 url=url+'&searchkey='+searchkey;
-		}else{
-			url=url+'&offset=0';
-		}
-			
-		console.log(url);
-		$.get(url, function( data ) {
-			  $(".result").html(data);
-			  
-			  $(tab).parent().parent().parent().find('.tabs-container').remove();
-			  
-			  $(tab).parent().parent().parent().append(data);					  
-			  
-			    //initilize and event handling of skills search box
-			   admin_skill_content_search_init();
-			    
-			    //removeing conetent skills event handling and ajax calls
-			   //admin_skill_alertBinding();
-			    
-			    $('.full-height-scroll').each(function(){
-			    	$(this).slimscroll({height:$(this).parent().height()});
-			    });
-			    
-			    
-			    
-			    init_child_entity_tabs();
-			});
-		});
-	
-	}
+
 
 function admin_skill_content_search_init() {
     $('input[name=input-role-skill]').keyup(function(e) {
@@ -3915,7 +3805,8 @@ $(".edit-submit-btn").unbind().click(function(){
 		       url: url,
 		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
 		       success: function(data)
-		       { $('#myModal2').modal('toggle');}
+		       { $('#myModal2').modal('toggle');
+		       }
 		     });
       
    });
@@ -4432,11 +4323,11 @@ function init_super_admin_scheduler(){
 	   $('.org_holder').change(function() {
 			 var orgID =  this.value;
 			 
-			 var target = $('.nav-tabs>li.active').find('a').attr('id');
+			 var target = $('.super_admin_scheduler.nav-tabs>li.active').find('a').attr('id');
 						 
 			 var url = '../super_admin/scheduler.jsp?orgID='+ orgID+'&target='+target;
 											window.location.href = url;
-});
+	   });
 	   
 	   $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
 	    	$('.associateTrainer').select2();

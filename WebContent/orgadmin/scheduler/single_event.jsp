@@ -22,9 +22,9 @@
                     System.out.println("------colegeID------->"+colegeID);
  
  
- IstarUser istarUser = new IstarUser();
+ IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");
 
-int user_id = new IstarUserDAO().findByEmail("principal_ep@istarindia.com").get(0).getId();
+int user_id =istarUser.getId();
 
 Organization college = new OrganizationDAO().findById(colegeID);
 

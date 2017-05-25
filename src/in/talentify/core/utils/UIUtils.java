@@ -12,6 +12,8 @@ import org.json.JSONArray;
 
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
+import com.viksitpro.core.dao.entities.Batch;
+import com.viksitpro.core.dao.entities.BatchDAO;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -38,10 +40,7 @@ public class UIUtils {
 		hashMap.put("next_session", nextSession);
 		
 		hashMap.put("assessment_title", assessmentTitle);
-		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch. ID AS batchid, 	batch. NAME AS batchname,   course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom,  "
-				+ " organization.name AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail,  CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, "
-				+ "	 batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch, 	user_profile,   istar_user, 	organization, 	classroom_details, 	course "
-				+ "WHERE 	batch_schedule_event.batch_id = batch. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch.course_id AND istar_user.id = user_profile.user_id AND batch_schedule_event. ID = '"+ eventID +"'";
+		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch_group. ID AS batch_group_id, 	batch_group. NAME AS batch_group_name, 	course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom, 	organization. NAME AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail, 	CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, 	batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch_group, 	user_profile, 	istar_user, 	organization, 	classroom_details, 	course WHERE 	batch_schedule_event.batch_group_id = batch_group. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch_schedule_event.course_id AND istar_user. ID = user_profile.user_id AND batch_schedule_event. ID = '"+eventID+"'";
 		
 		
 		
@@ -51,7 +50,7 @@ public class UIUtils {
 		 System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		if(res.size() > 0){
-			hashMap.put("batchname", res.get(0).get("batchname").toString());
+			hashMap.put("batch_group_name", res.get(0).get("batch_group_name").toString());
 			hashMap.put("coursename", res.get(0).get("coursename").toString());
 			hashMap.put("classroom", res.get(0).get("classroom").toString());
 			hashMap.put("trainername", res.get(0).get("trainername").toString());
@@ -64,7 +63,7 @@ public class UIUtils {
 			
 			
 			
-			sql = "SELECT 	COUNT(batch_students.student_id) as totstudent FROM 	batch, 	batch_group, 	batch_students WHERE 	batch_group. ID = batch.batch_group_id AND batch_group. ID = batch_students.batch_group_id AND batch.id = "+res.get(0).get("batchid")+" AND batch_students.user_type = 'STUDENT'";
+			sql = "SELECT 	COUNT(batch_students.student_id) as totstudent FROM 	 		batch_students WHERE 	batch_group_id ="+res.get(0).get("batch_group_id")+" AND batch_students.user_type = 'STUDENT'";
 			List<HashMap<String, Object>> res1 = util.executeQuery(sql);
 			hashMap.put("totstudent", res1.get(0).get("totstudent").toString());
 			
@@ -101,15 +100,15 @@ public class UIUtils {
 				
 			}
 			
-			String batch_id = res.get(0).get("batchid").toString();
-			String getLastSessionId = "select cmsession_id from event_session_log where batch_id= "+batch_id+" ORDER BY id desc limit 1";
+			String batch_id = res.get(0).get("batch_group_id").toString();
+			String getLastSessionId = "select cmsession_id from slide_change_log where batch_group_id= "+batch_id+" and course_id = "+res.get(0).get("course_id")+" ORDER BY id desc limit 1";
 			List<HashMap<String, Object>> lastSessionData = util.executeQuery(getLastSessionId);
 			int  lastSessionId = -1;
 			if(lastSessionData.size()>0)
 			{
 				lastSessionId = (int)lastSessionData.get(0).get("cmsession_id");
 			}
-			String orderedLessonInCourse ="SELECT 	cmsession_module.cmsession_id AS cm_id FROM 	lesson_cmsession, 	task, 	cmsession_module,   module_course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND lesson_cmsession.lesson_id = task.item_id AND module_course .course_id = ( 	SELECT 		course_id 	FROM 		batch 	WHERE 		ID = "+batch_id+" )";
+			String orderedLessonInCourse ="SELECT 	cmsession_module.cmsession_id AS cm_id FROM 	lesson_cmsession,	cmsession_module,   module_course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND module_course .course_id = "+res.get(0).get("course_id")+"";
 			 System.out.println(orderedLessonInCourse);
 			List<HashMap<String, Object>> orderLessonData = util.executeQuery(orderedLessonInCourse); 
 			int nextSesionId= -1;
@@ -136,8 +135,10 @@ public class UIUtils {
 			else
 			{
 				//not yet started
+				if(orderLessonData.size()>0){
 				nextSesionId = (int)orderLessonData.get(0).get("cm_id");
 				nextSession = new CmsessionDAO().findById(nextSesionId).getTitle();
+				}
 			}	
 			
 			
@@ -160,7 +161,7 @@ public class UIUtils {
 				String getAssessmentId[] = action.split("__");		
 				int assessment_id = Integer.parseInt(getAssessmentId[1]);
 				Assessment assess = new AssessmentDAO().findById(assessment_id);
-				sql = "SELECT COUNT(actor_id) as totstudent FROM istar_assessment_event WHERE batch_id ="+res.get(0).get("batchid")+" AND assessment_id = "+assessment_id+" AND CAST (eventdate as VARCHAR) ='"+res.get(0).get("evedate")+"'";
+				sql = "SELECT COUNT(actor_id) as totstudent FROM istar_assessment_event WHERE batch_group_id ="+res.get(0).get("batch_group_id")+" AND assessment_id = "+assessment_id+" AND CAST (eventdate as VARCHAR) ='"+res.get(0).get("evedate")+"'";
 				System.out.println(sql); 
 				List<HashMap<String, Object>> res4 = util.executeQuery(sql);
 				hashMap.put("totstudent", res4.get(0).get("totstudent").toString());
@@ -379,7 +380,7 @@ public class UIUtils {
 
 	public StringBuffer getBatchGroups(int orgId, ArrayList<Integer> selectedBg) {
 		// <option value="">Data Analytics</option>
-		String sql = "select batch_group.id, batch_group.name from batch_group " + "where batch_group.college_id="
+		String sql = "select batch_group.id, batch_group.name from batch_group " + "where batch_group.is_historical_group='f' and  batch_group.college_id="
 				+ orgId;
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -399,7 +400,7 @@ public class UIUtils {
 
 	public StringBuffer getBatchs(int orgId) {
 		// <option value="">Data Analytics</option>
-		String sql = "SELECT id,name FROM batch WHERE batch_group_id in (SELECT id FROM batch_group WHERE college_id ="
+		String sql = "SELECT id,name FROM batch WHERE batch_group_id in (SELECT id FROM batch_group WHERE is_historical_group='f' and college_id ="
 				+ orgId + ")";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -413,8 +414,9 @@ public class UIUtils {
 
 	public List<HashMap<String, Object>> getEventDetails(String eventID) {
 		DBUTILS util = new DBUTILS();
-		String sql = "SELECT 	batch_schedule_event.batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee,classroom_details.organization_id FROM 	batch_schedule_event, 	batch,classroom_details WHERE 	batch_schedule_event. ID = '"
-				+ eventID + "' AND batch_schedule_event.batch_id = batch. ID AND classroom_details.id = batch_schedule_event.classroom_id";
+		String sql = "SELECT 	batch.id as batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee,classroom_details.organization_id "
+				+ "FROM 	batch_schedule_event, 	batch,classroom_details WHERE 	batch_schedule_event. ID = '"
+				+ eventID + "' AND batch_schedule_event.batch_group_id = batch.batch_group_id and batch_schedule_event.course_id = batch.course_id AND classroom_details.id = batch_schedule_event.classroom_id";
 		// System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		return res;
@@ -429,7 +431,6 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 
 		for (HashMap<String, Object> item : data) {
-
 			if (selectedTrainer != null) {
 				out.append("<option " + checkAlreadyExist(selectedTrainer, (int) item.get("id")) + "  value='"
 						+ item.get("id") + "'>" + item.get("email") + " (" + item.get("id") + ")</option>");
@@ -456,31 +457,26 @@ public class UIUtils {
 
 	public StringBuffer getLessons(int batch_id, int course_id) {
 		DBUTILS util = new DBUTILS();
-
+		Batch b = new BatchDAO().findById(batch_id);
 		StringBuffer out = new StringBuffer();
-
-		String sql1 = "SELECT DISTINCT	lesson. ID AS ID, 	lesson.title AS title, 	task.state AS status FROM 	event_log, 	lesson, 	task WHERE 	event_log.lesson_id = lesson. ID AND task.item_id = lesson. ID AND batch_id = "
-				+ batch_id + " ORDER BY 	ID DESC LIMIT 1;";
+		
+		String sql1 = "SELECT DISTINCT	lesson. ID AS ID, cmsession.id as cmsession_id ,cmsession.title as cmsesion_title,	lesson.title AS title, 	task.state AS status FROM 	event_log, 	lesson, 	task , lesson_cmsession, cmsession WHERE 	event_log.cmsession_id = cmsession. ID AND task.item_id = lesson. ID AND task.item_type='LESSON' and task.name='CREATE_LESSON'  and batch_group_id = "+b.getBatchGroup().getId()+" and course_id = "+b.getCourse().getId()+" and lesson.id = lesson_cmsession.lesson_id and lesson_cmsession.cmsession_id = cmsession.id ORDER BY 	ID DESC LIMIT 1";
 		List<HashMap<String, Object>> res1 = util.executeQuery(sql1);
 		if (res1.size() > 0) {
-			for (HashMap<String, Object> item : res1) {
-				out.append("<option value='" + item.get("id") + "'>" + item.get("title") + "--" + item.get("status")
-						+ "</option>");
-			}
+			out.append("<option value='" + res1.get(0).get("id") + "' selected>"+res1.get(0).get("cmsesion_title")+" --" + res1.get(0).get("title") + "--" + res1.get(0).get("status")
+			+ "</option>");
 
-		} else {
-
-			String sql2 = "SELECT 	l. ID AS ID, 	l.title AS title, 	tsk.state AS status FROM 	module_course mc, 	cmsession_module cm, 	lesson_cmsession lcms, 	task tsk, 	lesson l WHERE 	mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id AND lcms.lesson_id = l. ID AND tsk.item_id = l. ID AND  mc.course_id = "
-					+ course_id + " ORDER BY 	l.title";
-
+		}
+		
+		String sql2 = "SELECT l. ID AS ID, l.title AS title, cmsession.title as cmsession_title, cmsession.id as cms_id, tsk. STATE AS status FROM module_course mc, cmsession_module cm, lesson_cmsession lcms,  task tsk, lesson l, cmsession WHERE mc.course_id = "+b.getCourse().getId()+" and mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id and lcms.cmsession_id = cmsession.id AND lcms.lesson_id = l. ID AND tsk.item_id = l. ID AND tsk.item_type ='LESSON' and tsk.name ='CREATE_LESSON' ORDER BY l.title";
 			List<HashMap<String, Object>> res2 = util.executeQuery(sql2);
 			if (res2.size() > 0) {
 				for (HashMap<String, Object> item : res2) {
-					out.append("<option value='" + item.get("id") + "'>" + item.get("title") + "--" + item.get("status")
+					out.append("<option value='" + item.get("cms_id") + "'>"+item.get("cmsession_title")+" -- " + item.get("title") + "--" + item.get("status")
 							+ "</option>");
 				}
 			}
-		}
+		
 
 		out.append("");
 		return out;
@@ -566,12 +562,12 @@ public class UIUtils {
 		String sql = "";
 		if (type.equalsIgnoreCase("Program")) {
 
-			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND  org. ID = "
-					+ org_id + " AND B.course_id = " + course_id
+			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_group_id AS batch_group_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_group_id = BG. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND  org. ID = "
+					+ org_id + " AND BSE.course_id = " + course_id
 					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		} else {
-			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
-					+ " org. ID = " + org_id + " AND B.course_id = " + course_id
+			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_group_id AS batch_group_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_group_id = BG. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
+					+ " org. ID = " + org_id + " AND BSE.course_id = " + course_id
 					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		}
 		// System.out.println("101 -> " + sql);
@@ -607,7 +603,7 @@ public class UIUtils {
 		StringBuffer out = new StringBuffer();
 		String sql = "";
 
-		sql = "select T1.course_name, T1.course_description, COALESCE(course_stats.attendance_perc,0) as attendance_perc, COALESCE(course_stats.avg_feedback,0 ) as avg_feedback, COALESCE(course_stats.completion_perc,0) as completion_perc, COALESCE(course_stats.stu_enrolled,0) as stu_enrolled, COALESCE(course_stats.college_id,0) as college_id, T1.course_id from (select distinct course.id as course_id, course_name, course_description, batch_group.college_id from batch_group, batch, course where batch.course_id = course.id and  batch_group.id = batch.batch_group_id and batch_group.college_id = "
+		sql = "select T1.course_name, T1.course_description, COALESCE(course_stats.attendance_perc,0) as attendance_perc, COALESCE(course_stats.avg_feedback,0 ) as avg_feedback, COALESCE(course_stats.completion_perc,0) as completion_perc, COALESCE(course_stats.stu_enrolled,0) as stu_enrolled, COALESCE(course_stats.college_id,0) as college_id, T1.course_id from (select distinct course.id as course_id, course_name, course_description, batch_group.college_id from batch_group, batch, course where batch.course_id = course.id and  batch_group.id = batch.batch_group_id and batch_group.is_historical_group='f'  and batch_group.college_id = "
 				+ college_id
 				+ ")T1 left join course_stats on (T1.course_id = course_stats.course_id and course_stats.college_id = T1.college_id)";
 
@@ -686,7 +682,7 @@ public class UIUtils {
 
 		sql = "select T1.name as batch_name, 	COALESCE (batch_stats.stu_enrolled, 0) AS stu_enrolled, 	COALESCE (batch_stats.completion_perc, 0) AS completion_perc, 	COALESCE (batch_stats.avg_feedback, 0) AS avg_feedback, 	COALESCE (batch_stats.attendance_perc, 0) AS attendance_perc, 	T1.id as batch_id   from (select distinct batch.id, batch.name  from batch_group, batch where batch_group.college_id = "
 				+ college_id
-				+ " and batch.batch_group_id = batch_group.id ) T1 left join batch_stats on (T1.id = batch_stats.batch_id)";
+				+ " and batch.batch_group_id = batch_group.id and batch_group.is_historical_group='f') T1 left join batch_stats on (T1.id = batch_stats.batch_id)";
 
 		// System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();

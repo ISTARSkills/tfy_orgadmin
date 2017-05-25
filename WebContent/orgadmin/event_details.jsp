@@ -37,7 +37,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                         </div>
                                         <div class="panel-body">
                                     <p><strong>Organization Name: </strong> <%=data.get("colname") %></p>    
-                                           <p><strong>Batch Name: </strong> <%=data.get("batchname") %></p>
+                                           <p><strong>Group Name: </strong> <%=data.get("batch_group_name") %></p>
 <p><strong>Course Name: </strong> <%=data.get("coursename") %></p>
 <p><strong>Class Room: </strong> <%=data.get("classroom") %></p>
 

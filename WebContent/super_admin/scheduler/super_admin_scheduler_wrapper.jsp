@@ -26,16 +26,12 @@
 				
 			%>
 <div class="ibox float-e-margins no-margins bg-muted">
-
 						<div class="ibox-content">
-							
-							
-
 							<div class="row show-grid white-bg">
 								<div class="col-lg-3 white-bg no-borders whit-bg-schedular">
 									<h1 class="text-danger font-bold">Create A New Event</h1>
 									<div class="tabs-container">
-										<ul class="nav nav-tabs gray-bg-schedular">
+										<ul class="nav nav-tabs gray-bg-schedular super_admin_scheduler">
 											<li class="<%=target.equalsIgnoreCase("tab_1")? "active":"" %>"><a id="tab_1" data-toggle="tab" href="#tab-1">Single Event</a></li>
 											<li class="<%=target.equalsIgnoreCase("tab_2")? "active":"" %>"><a id="tab_2" data-toggle="tab" href="#tab-2">Daily</a></li>
 											<li class="<%=target.equalsIgnoreCase("tab_3")? "active":"" %>"><a id="tab_3" data-toggle="tab" href="#tab-3">Weekly</a></li>

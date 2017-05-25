@@ -110,31 +110,19 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 		
 		
 		if (request.getParameterMap().containsKey("eventID")) {
-
 			EventSchedulerService ess = new EventSchedulerService();
-
-			
-
 			eventID = request.getParameter("eventID") != "" ? request.getParameter("eventID") : "";
-
 			ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
 					classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
-
 		} 
 
 			// singleEvent
 			if (request.getParameterMap().containsKey("tabType")
 					&& request.getParameter("tabType").equalsIgnoreCase("singleEvent")) {
 
-
-				
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = new IstarUser();
-				
-
 				EventSchedulerService ess = new EventSchedulerService();
-				
-				
 				if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("session")){
 					
 					if (request.getParameterMap().containsKey("eventValue")) {
@@ -148,9 +136,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 								
 								for (int i = 0; i < array.size(); i++) {
 								
-									JSONObject jsonObject = (JSONObject) array.get(i);
-									
-									
+									JSONObject jsonObject = (JSONObject) array.get(i);																		
 									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
 											hours = Integer.parseInt((String) jsonObject.get("hours"));
 											minute = Integer.parseInt((String) jsonObject.get("minute"));
@@ -167,10 +153,7 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
 									        
 									        ess.insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
-													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);
-									        
-									
-									
+													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);									
 								}
 								
 									
@@ -183,19 +166,11 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
 							response.sendRedirect("super_admin/scheduler.jsp");
 						}else{
-							response.sendRedirect("orgadmin/scheduler.jsp");
-							
+							response.sendRedirect("orgadmin/scheduler.jsp");							
 						}
-
-						
-
 					} else {
-						
-						
-
 						response.getWriter().print(ess.singleEvent(trainerID, hours, minute, batchID, eventType, eventDate,
 								startTime,  classroomID, AdminUserID,orgID,associateTrainerID));
-
 					}
 					
 				}

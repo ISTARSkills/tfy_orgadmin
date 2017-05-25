@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="in.talentify.core.services.NotificationColor"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="java.sql.Timestamp"%>
@@ -50,10 +52,13 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 								//i++;
 								String eventId = (String) item.get("event_id");
-								int batch_id = (int) item.get("batch_id");
+								int batch_group_id = (int) item.get("batch_group_id");
+								int course_id = (int) item.get("course_id");
 								int trainerId = (int) item.get("actor_id");
+								
+								
 								List<HashMap<String, Object>> slideCount = dashboardServices.getSlideCount(eventId);
-								List<HashMap<String, Object>> currentCMsession = dashboardServices.getCurrentCMSession(batch_id);
+								List<HashMap<String, Object>> currentCMsession = dashboardServices.getCurrentCMSession(batch_group_id, course_id);
 					%>
 					<div
 						class="col-lg-12 white-bg p-xs border-top-bottom border-left-right border-size-sm p-xs b-r-md dash_notification_holder">
@@ -218,7 +223,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 														</p>
 														<%
 															List<HashMap<String, Object>> trainerhours = dashboardServices
-																			.getSessionsCompletedByTrainerInBatch(trainerId, batch_id);
+																			.getSessionsCompletedByTrainerInBatch(trainerId, batch_group_id, course_id);
 														%>
 														<p>
 															Sessions Taught:

@@ -27,11 +27,11 @@ public class OrgAdminDashboardServices {
 		return data;
 	}
 	
-	public List<HashMap<String, Object >> getCurrentCMSession(int batch_id)
+	public List<HashMap<String, Object >> getCurrentCMSession(int batch_group_id, int course_id)
 	{
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object >> data = new ArrayList<>();
-		String sql =" select cmsession.title from cmsession, event_log where event_log.cmsession_id = cmsession.id and event_log.batch_id = "+batch_id+" order by event_log.id desc limit 1";
+		String sql =" select cmsession.title from cmsession, event_log where event_log.cmsession_id = cmsession.id and event_log.course_id = "+course_id+" and event_log.batch_group_id = "+batch_group_id+" order by event_log.id desc limit 1";
 		data = util.executeQuery(sql);
 		if(data.size()>0 && data.get(0).get("title")!=null)
 		{
@@ -39,7 +39,7 @@ public class OrgAdminDashboardServices {
 		}
 		else
 		{
-			String sql2 ="SELECT 	cmsession.title FROM course, module_course, cmsession_module, 	cmsession, 	MODULE, 	batch WHERE course.id = module_course.course_id AND module_course.module_id = MODULE.id AND MODULE.id = cmsession_module.module_id AND cmsession.id = cmsession_module.cmsession_id AND batch.course_id = course.id AND batch. ID ="+batch_id;
+			String sql2 ="SELECT 	cmsession.title FROM course, module_course, cmsession_module, 	cmsession, 	MODULE  WHERE course.id = module_course.course_id AND module_course.module_id = MODULE.id AND MODULE.id = cmsession_module.module_id AND cmsession.id = cmsession_module.cmsession_id  AND course. ID ="+course_id;
 			data = util.executeQuery(sql2);
 			return data;
 		}
@@ -77,13 +77,10 @@ public class OrgAdminDashboardServices {
 		String aajKiDate = dateformatto.format(new Date(System.currentTimeMillis())).toString();
 		System.out.println(aajKiDate);
 		DBUTILS dbutils = new DBUTILS();
-		String sql1 = "SELECT DISTINCT 	batch_schedule_event.batch_id, 	course.course_name AS title, 	batch_schedule_event.actor_id, 	CAST ( 		batch_schedule_event. ID AS VARCHAR 	) AS event_id, 	batch_schedule_event.eventdate, 	batch_schedule_event.eventhour, 	batch_schedule_event.status, 	batch. NAME AS batchname, 	batch_schedule_event.cmsession_id, 	classroom_details.classroom_identifier, 	user_profile.first_name AS trainername, 	CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN 	'http://cdn.talentify.in/video/android_images/' || UPPER ( 		SUBSTRING (user_profile. first_name FROM 1 FOR 1) 	) || '.png' ELSE 	'http://cdn.talentify.in/' || user_profile.profile_image END AS trainer_image FROM 	batch_schedule_event JOIN batch ON ( 	batch_schedule_event.batch_id = batch. ID ) JOIN course ON (batch.course_id = course. ID) JOIN classroom_details ON ( 	batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( 	batch_schedule_event.actor_id = user_profile.user_id ) WHERE 	batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' AND batch_schedule_event.batch_id IN ( 	SELECT DISTINCT 		ID 	FROM 		PUBLIC .batch 	WHERE 		batch_group_id IN ( 			SELECT DISTINCT 				ID 			FROM 				batch_group 			WHERE 				college_id = "
-				+ collegeId + " 		) ) AND CAST ( 	batch_schedule_event.eventdate AS VARCHAR ) LIKE '%" + aajKiDate
-				+ "%'";
+		String sql1 = "SELECT DISTINCT batch_schedule_event.batch_group_id,batch_schedule_event.course_id, course.course_name AS title, batch_schedule_event.actor_id, CAST ( batch_schedule_event. ID AS VARCHAR ) AS event_id, batch_schedule_event.eventdate, batch_schedule_event.eventhour, batch_schedule_event.status, batch_group. NAME AS batchname, batch_schedule_event.cmsession_id, classroom_details.classroom_identifier, user_profile.first_name AS trainername, CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN 'http://cdn.talentify.in/video/android_images/' || UPPER ( SUBSTRING ( user_profile.first_name FROM 1 FOR 1 ) ) || '.png' ELSE 'http://cdn.talentify.in/' || user_profile.profile_image END AS trainer_image FROM batch_schedule_event JOIN batch_group ON ( batch_schedule_event.batch_group_id = batch_group. ID ) JOIN course ON (batch_schedule_event.course_id = course. ID) JOIN classroom_details ON ( batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( batch_schedule_event.actor_id = user_profile.user_id ) WHERE batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' AND batch_schedule_event.batch_group_id IN ( SELECT DISTINCT ID FROM batch_group WHERE college_id = "+collegeId+" ) AND CAST ( batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"+aajKiDate+"%'";
 
 		if (collegeId == -3) {
-			sql1 = "SELECT DISTINCT 	batch_schedule_event.batch_id, 	course.course_name AS title, 	batch_schedule_event.actor_id, 	CAST ( 		batch_schedule_event. ID AS VARCHAR 	) AS event_id, 	batch_schedule_event.eventdate, 	batch_schedule_event.eventhour, 	batch_schedule_event.status, 	batch. NAME AS batchname, 	batch_schedule_event.cmsession_id, 	classroom_details.classroom_identifier, 	user_profile.first_name AS trainername, 	CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN 	'http://cdn.talentify.in/video/android_images/' || UPPER ( 		SUBSTRING (user_profile. first_name FROM 1 FOR 1) 	) || '.png' ELSE 	'http://cdn.talentify.in/' || user_profile.profile_image END AS trainer_image FROM 	batch_schedule_event JOIN batch ON ( 	batch_schedule_event.batch_id = batch. ID ) JOIN course ON (batch.course_id = course. ID) JOIN classroom_details ON ( 	batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( 	batch_schedule_event.actor_id = user_profile.user_id ) WHERE 	batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' AND batch_schedule_event.batch_id IN ( 	SELECT DISTINCT 		ID 	FROM 		PUBLIC .batch 	WHERE 		batch_group_id IN ( 			SELECT DISTINCT 				ID 			FROM 				batch_group ) ) AND CAST ( 	batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"
-					+ aajKiDate + "%'";
+			sql1 = "SELECT DISTINCT batch_schedule_event.batch_group_id,batch_schedule_event.course_id, course.course_name AS title, batch_schedule_event.actor_id, CAST ( batch_schedule_event. ID AS VARCHAR ) AS event_id, batch_schedule_event.eventdate, batch_schedule_event.eventhour, batch_schedule_event.status, batch_group. NAME AS batchname, batch_schedule_event.cmsession_id, classroom_details.classroom_identifier, user_profile.first_name AS trainername, CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN 'http://cdn.talentify.in/video/android_images/' || UPPER ( SUBSTRING ( user_profile.first_name FROM 1 FOR 1 ) ) || '.png' ELSE 'http://cdn.talentify.in/' || user_profile.profile_image END AS trainer_image FROM batch_schedule_event JOIN batch_group ON ( batch_schedule_event.batch_group_id = batch_group. ID ) JOIN course ON (batch_schedule_event.course_id = course. ID) JOIN classroom_details ON ( batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( batch_schedule_event.actor_id = user_profile.user_id ) WHERE batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT'  AND CAST ( batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"+aajKiDate+"%'";
 		}
 
 		System.out.println(sql1);
@@ -107,9 +104,9 @@ public class OrgAdminDashboardServices {
 		return logs;
 	}
 
-	public List<HashMap<String, Object>> getSessionsCompletedByTrainerInBatch(int trainerId, int batchId) {
-		String sql2 = "select COALESCE(count(*),0) as sessions from event_session_log where trainer_id= " + trainerId
-				+ " and batch_id= " + batchId;
+	public List<HashMap<String, Object>> getSessionsCompletedByTrainerInBatch(int trainerId, int batchGroupId, int courseId) {
+		String sql2 = "select COALESCE(count(*),0) as sessions from event_log where trainer_id= " + trainerId
+				+ " and batch_group_id= " + batchGroupId+ "and course_id="+courseId;
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
