@@ -934,8 +934,7 @@ public class EventSchedulerService {
 		if (data.size() > 0) {
 			SessionName = (String) data.get(0).get("title");
 		} else {
-			sql = "SELECT 	cmsession.title FROM   module_course,   cmsession_module, 	cmsession, 	MODULE, 	batch WHERE module_course.course_id = batch.course_id AND module_course.module_id = MODULE.id AND MODULE.id = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession.id AND MODULE .order_id = 1 AND cmsession.order_id = 1 AND batch. ID ="
-					+ batchID;
+			sql = "SELECT cmsession.title FROM module_course, cmsession_module, cmsession, MODULE, batch WHERE module_course.course_id = batch.course_id AND module_course.module_id = MODULE . ID AND MODULE . ID = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession. ID AND module_course .oid = 1 AND cmsession_module.oid = 1 AND batch. ID ="+batchID;
 			data = db.executeQuery(sql);
 			SessionName = (String) data.get(0).get("title");
 		}
