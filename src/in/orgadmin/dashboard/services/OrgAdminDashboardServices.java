@@ -106,7 +106,7 @@ public class OrgAdminDashboardServices {
 
 	public List<HashMap<String, Object>> getSessionsCompletedByTrainerInBatch(int trainerId, int batchGroupId, int courseId) {
 		String sql2 = "select COALESCE(count(*),0) as sessions from event_log where trainer_id= " + trainerId
-				+ " and batch_group_id= " + batchGroupId+ "and course_id="+courseId;
+				+ " and batch_group_id= " + batchGroupId+ " and course_id="+courseId;
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;

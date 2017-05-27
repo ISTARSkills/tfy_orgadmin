@@ -22,9 +22,9 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 
 int colegeID = (int) request.getSession().getAttribute("orgId");
 	 
-	 IstarUser istarUser = new IstarUser();
 
-	int user_id = istarUser.getId();
+
+	int user_id = user.getId();
 
 	Organization college = new OrganizationDAO().findById(colegeID);
 	
@@ -83,7 +83,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				}
 						
 		}
-		istarUser = new IstarUserDAO().findById(trainerID);
+		IstarUser istarUser = new IstarUserDAO().findById(trainerID);
 				trainerEmail = istarUser.getEmail();
 				ClassroomDetails classroomDetails = new ClassroomDetailsDAO().findById(classroomID);
 				classroomName = classroomDetails.getClassroomIdentifier();
