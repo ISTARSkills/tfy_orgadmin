@@ -87,6 +87,7 @@ public class EventSchedulerService {
 			presentorID = (int)presentorData.get(0).get("presentor_id");
 		}
 		
+
 		String groupNotificationCode = UUID.randomUUID().toString();
 		HashMap<Integer,Integer> userToEventMap = new HashMap<>();
 		String eventQueueName ="Queue for Group "+b.getBatchGroup().getName().trim().replace("'", "")+" and course "+c.getCourseName().trim().replace("'", "")+"";
@@ -94,13 +95,16 @@ public class EventSchedulerService {
 		String notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in "+org.getName()+" at "+eventDate;
 		String notificationDescription =  notificationTitle;
 		
+		String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0+1) from project), '"+eventQueueName+"', now(), now(),  "+AdminUserID+", 't') returning id;";
+		int projectId = db.executeUpdateReturn(insertIntoProject);
+		
 		int masterEventQueueId = db.executeUpdateReturn(createMasterEventQueue);		
 		
 		String insertTrainerEvent ="INSERT INTO batch_schedule_event ( actor_id, created_at, creator_id, eventdate, eventhour, eventminute, isactive, TYPE, updated_at, ID, status, ACTION, cmsession_id, batch_group_id, course_id, event_name, classroom_id, associate_trainee, batch_group_code ) "
 				+ "VALUES ( "+trainerID+", now(), "+AdminUserID+", '"+eventDate+"', "+hours+", "+minute+", 't', 'BATCH_SCHEDULE_EVENT_TRAINER', now(), ( SELECT COALESCE (MAX(ID) + 1, 1) FROM batch_schedule_event ), 'SCHEDULED', 'cmsession_id__-1', - 1, "+b.getBatchGroup().getId()+", "+c.getId()+", '"+evnetName+"', "+classroomID+", '"+associateTrainerID+"','"+groupNotificationCode+"' ) RETURNING ID";
 		int trainerEventId = db.executeUpdateReturn(insertTrainerEvent) ;
 		userToEventMap.put(trainerID, trainerEventId);
-		String createTaskForTrainer ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+trainerID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+trainerEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"') returning id ;";
+		String createTaskForTrainer ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+trainerID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+trainerEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"', "+projectId+") returning id ;";
 		int taskIdForTrainer = db.executeUpdateReturn(createTaskForTrainer);
 		
 		
@@ -115,7 +119,8 @@ public class EventSchedulerService {
 		int presentorEventId = db.executeUpdateReturn(insertPresentorEvent) ; 
 			userToEventMap.put(presentorID, presentorEventId);
 		}
-		
+		String createTaskForPresentor ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type , project_id) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+presentorID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+presentorID+", '"+TaskItemCategory.CLASSROOM_SESSION+"',"+projectId+") returning id ;";
+		int taskIdForPresentor = db.executeUpdateReturn(createTaskForPresentor);				
 		
 		String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
 		List<HashMap<String, Object>> studentsInBatch = db.executeQuery(findStudentInBatch);
@@ -127,7 +132,7 @@ public class EventSchedulerService {
 			int studentEventId =db.executeUpdateReturn(createEventForStudent);
 			userToEventMap.put(stuId, studentEventId);
 			
-			String createTaskForStudent ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+stuId+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+studentEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"') returning id ;";
+			String createTaskForStudent ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+stuId+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+studentEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"',"+projectId+") returning id ;";
 			int taskIdForStudent =db.executeUpdateReturn(createTaskForStudent);						
 			notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in classroom "+classRoom.getClassroomIdentifier().trim().replace("'", "")+" at "+eventDate;
 			notificationDescription =  notificationTitle;
