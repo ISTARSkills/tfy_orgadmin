@@ -95,7 +95,7 @@ public class EventSchedulerService {
 		String notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in "+org.getName()+" at "+eventDate;
 		String notificationDescription =  notificationTitle;
 		
-		String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0+1) from project), '"+eventQueueName+"', now(), now(),  "+AdminUserID+", 't') returning id;";
+		String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), '"+eventQueueName+"', now(), now(),  "+AdminUserID+", 't') returning id;";
 		int projectId = db.executeUpdateReturn(insertIntoProject);
 		
 		int masterEventQueueId = db.executeUpdateReturn(createMasterEventQueue);		
@@ -118,9 +118,10 @@ public class EventSchedulerService {
 				+ "VALUES ( "+presentorID+", now(), "+AdminUserID+", '"+eventDate+"', "+hours+", "+minute+", 't', 'BATCH_SCHEDULE_EVENT_PRESENTOR', now(), ( SELECT COALESCE (MAX(ID) + 1, 1) FROM batch_schedule_event ), 'SCHEDULED', 'cmsession_id__-1', - 1, "+b.getBatchGroup().getId()+", "+c.getId()+", '"+evnetName+"', "+classroomID+", '"+associateTrainerID+"','"+groupNotificationCode+"' ) RETURNING ID";		
 		int presentorEventId = db.executeUpdateReturn(insertPresentorEvent) ; 
 			userToEventMap.put(presentorID, presentorEventId);
+			String createTaskForPresentor ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type , project_id) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+presentorID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+presentorEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"',"+projectId+") returning id ;";
+			int taskIdForPresentor = db.executeUpdateReturn(createTaskForPresentor);				
+			
 		}
-		String createTaskForPresentor ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type , project_id) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+presentorID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+presentorID+", '"+TaskItemCategory.CLASSROOM_SESSION+"',"+projectId+") returning id ;";
-		int taskIdForPresentor = db.executeUpdateReturn(createTaskForPresentor);				
 		
 		String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
 		List<HashMap<String, Object>> studentsInBatch = db.executeQuery(findStudentInBatch);
@@ -934,7 +935,7 @@ public class EventSchedulerService {
 		if (data.size() > 0) {
 			SessionName = (String) data.get(0).get("title");
 		} else {
-			sql = "SELECT cmsession.title FROM module_course, cmsession_module, cmsession, MODULE, batch WHERE module_course.course_id = batch.course_id AND module_course.module_id = MODULE . ID AND MODULE . ID = cmsession_module.module_id AND cmsession_module.cmsession_id = cmsession. ID AND module_course .oid = 1 AND cmsession_module.oid = 1 AND batch. ID ="+batchID;
+			sql="SELECT 	cmsession.title FROM 	module_course, 	cmsession_module, 	cmsession, 	 	batch WHERE 	module_course.course_id = batch.course_id and module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = cmsession.id and batch.id = "+batchID+" order by module_course.oid, cmsession_module.oid limit 1";
 			data = db.executeQuery(sql);
 			SessionName = (String) data.get(0).get("title");
 		}
