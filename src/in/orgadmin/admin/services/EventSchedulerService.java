@@ -140,7 +140,8 @@ public class EventSchedulerService {
 		
 			IstarNotification istarNotificationForStudent = notificationService.createIstarNotification(AdminUserID, stuId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.CLASSROOM_SESSION, true, taskIdForStudent, groupNotificationCode);
 			HashMap<String, Object> itemForStudent = new HashMap<String, Object>();
-			item.put("taskId", taskIdForStudent);
+			
+			itemForStudent.put("taskId", taskIdForStudent);
 			noticeDelegator.sendNotificationToUser(istarNotificationForStudent.getId(), stuId+"", notificationTitle.trim().replace("'", ""), NotificationType.CLASSROOM_SESSION, itemForStudent);  						
 		}
 		

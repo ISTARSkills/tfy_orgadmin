@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
+<%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.sql.Date"%>
 <%@page
@@ -29,7 +31,9 @@
 					List<HashMap<String, Object>> items = dashboardServices.getEvenetDetailsFromEvent(eventId);
 					for (HashMap<String, Object> item : items) {
 						int batch_id = (int) item.get("batch_id");
+						Batch bb = new BatchDAO().findById(batch_id);
 						int trainerId = (int) item.get("actor_id");
+						int courseId = (int)item.get("course_id");
 				%>
 
 				<div
@@ -206,7 +210,7 @@
 													</p>
 													<%
 														List<HashMap<String, Object>> trainerhours = dashboardServices
-																	.getSessionsCompletedByTrainerInBatch(trainerId, batch_id);
+																	.getSessionsCompletedByTrainerInBatch(trainerId, bb.getBatchGroup().getId(), bb.getCourse().getId());
 													%>
 													<p>
 														Sessions Taught:

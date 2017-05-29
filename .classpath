@@ -42,7 +42,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/joda-time-2.3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.12.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/tika-server-1.13.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-api-client-1.22.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-api-client-gson-1.22.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-http-client-1.22.0.jar"/>

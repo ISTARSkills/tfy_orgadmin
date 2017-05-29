@@ -1154,8 +1154,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 			//console.log('>>>>>>>' + userEmail);
 			if (userEmail != undefined && userEmail != null) {
 				var host_name = location.hostname;
-				console.log("ws://" + host_name + ":" + "4567" + "/chat/" + userEmail);
-				webSocket = new ReconnectingWebSocket("ws://" + host_name + ":" + "4567" + "/chat/" + userEmail);
+				console.log("ws://" + host_name + ":" + "4568" + "/chat/" + userEmail);
+				webSocket = new ReconnectingWebSocket("ws://" + host_name + ":" + "4568" + "/chat/" + userEmail);
 			}
 
 		} catch (err) {

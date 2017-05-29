@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.BatchDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.sql.Date"%>
 <%@page
@@ -30,7 +32,7 @@
 					for (HashMap<String, Object> item : items) {
 						int batch_id = (int) item.get("batch_id");
 						int trainerId = (int) item.get("actor_id");
-				%>
+						Batch bb = new BatchDAO().findById(batch_id);%>
 
 				<div
 					class="col-lg-12 white-bg p-xs border-top-bottom border-left-right border-size-sm p-xs b-r-md dash_notification_holder">
@@ -199,7 +201,7 @@
 													</p>
 													<%
 														List<HashMap<String, Object>> trainerhours = dashboardServices
-																	.getSessionsCompletedByTrainerInBatch(trainerId, batch_id);
+																	.getSessionsCompletedByTrainerInBatch(trainerId, bb.getBatchGroup().getId(), bb.getCourse().getId());
 													%>
 													<p>
 														Sessions Taught:
