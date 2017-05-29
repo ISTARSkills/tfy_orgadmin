@@ -217,33 +217,43 @@ public class AddContentToEntity extends IStarBaseServelet {
 			int lessonId=(int)content.get("lesson_id");
 			String courseTitle = (String)content.get("course_name");
 			String lessonTitle = (String)content.get("lesson_title");
+			String lessonType="LESSON";
+			if(content.get("lesson_type")!=null)
+			{
+				lessonType=(String)content.get("lesson_type");
+			}
 			String lessonDescription = content.get("lesson_desc")!=null ? content.get("lesson_desc").toString().trim():"No Description Available";
-			
-						
-			String notificationTitle = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
-			String notificationDescription =  lessonDescription;
 			String taskTitle = lessonTitle;
-			String taskDescription = notificationDescription;				
-			
-			int tasId = taskService.createTodaysTask(taskTitle, taskDescription, adminId+"", studentId+"", lessonId+"", "LESSON");
-			
-			playListService.createStudentPlayList(studentId, courseId, moduleId, sessionId, lessonId, tasId);	
-			String groupNotificationCode = UUID.randomUUID().toString();
-			
-			
-			IstarNotification notice = notificationService.createIstarNotification(adminId, studentId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, tasId, groupNotificationCode);
-			HashMap<String, Object> item = new HashMap<String, Object>();
-			
-			item.put("lessonId", lessonId);
-			item.put("cmsessionId", sessionId);
-			item.put("moduleId", moduleId);
-			item.put("courseId", courseId);
-			item.put("taskId", tasId);
-			
-			noticeDelegator.sendNotificationToUser(notice.getId(),studentId+"", notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
-			
-			
+			String taskDescription = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
+			int tasId = taskService.createTodaysTask(taskTitle, taskDescription, adminId+"", studentId+"", lessonId+"", lessonType);
+			playListService.createStudentPlayList(studentId, courseId, moduleId, sessionId, lessonId, tasId);			
 		}
+		
+		if(contentRelatedToSkill.size()>0)
+		{
+			HashMap<String, Object> content = contentRelatedToSkill.get(0);
+			int courseId =(int)content.get("course_id");
+			int moduleId=(int)content.get("module_id");
+			int sessionId =(int)content.get("cmsession_id");
+			int lessonId=(int)content.get("lesson_id");
+			String courseTitle = (String)content.get("course_name");
+			String lessonTitle = (String)content.get("lesson_title");
+			String lessonDescription = content.get("lesson_desc")!=null ? content.get("lesson_desc").toString().trim():"No Description Available";
+			String taskTitle = lessonTitle;
+			String taskDescription = "Lessons added to playlist of course "+courseTitle+".";
+			
+			
+			String notificationTitle = "Lessons added to playlist of course "+courseTitle+".";
+			String notificationDescription =  lessonDescription;
+									
+			String groupNotificationCode = UUID.randomUUID().toString();						
+			IstarNotification notice = notificationService.createIstarNotification(adminId, studentId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.CONTENT_ASSIGNED, true, null, groupNotificationCode);
+			HashMap<String, Object> item = new HashMap<String, Object>();			
+			
+			item.put("courseId", courseId);						
+			noticeDelegator.sendNotificationToUser(notice.getId(),studentId+"", notificationTitle.trim().replace("'", ""), NotificationType.CONTENT_ASSIGNED, item);
+		}
+		
 
 	}
 

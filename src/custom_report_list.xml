@@ -261,7 +261,7 @@ ORDER BY
 <custom_report id="15">
 <sql>
 SELECT
-	distinct lesson.id as lesson_id, cmsession.id as cmsession_id, module.id as module_id, course.id as course_id, lesson.title as lesson_title, lesson.description as lesson_desc, course.course_name as course_name
+	distinct lesson.id as lesson_id, cmsession.id as cmsession_id, module.id as module_id, course.id as course_id, lesson.title as lesson_title,lesson.type as lesson_type, lesson.description as lesson_desc, course.course_name as course_name
 FROM
 	cmsession_skill_objective,
 	lesson_cmsession,
