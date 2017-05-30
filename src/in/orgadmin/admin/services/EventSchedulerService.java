@@ -133,7 +133,7 @@ public class EventSchedulerService {
 			int studentEventId =db.executeUpdateReturn(createEventForStudent);
 			userToEventMap.put(stuId, studentEventId);
 			
-			String createTaskForStudent ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+stuId+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+studentEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"',"+projectId+") returning id ;";
+			String createTaskForStudent ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+stuId+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+studentEventId+", '"+TaskItemCategory.CLASSROOM_SESSION_STUDENT+"',"+projectId+") returning id ;";
 			int taskIdForStudent =db.executeUpdateReturn(createTaskForStudent);						
 			notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in classroom "+classRoom.getClassroomIdentifier().trim().replace("'", "")+" at "+eventDate;
 			notificationDescription =  notificationTitle;
