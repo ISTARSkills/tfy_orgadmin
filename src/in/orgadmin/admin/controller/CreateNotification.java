@@ -18,6 +18,8 @@ import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarNotification;
+import com.viksitpro.core.dao.entities.Lesson;
+import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -82,7 +84,15 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 		}
 		 for(String studentId: studentIds.split(","))
 			{
-			  int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, lessonId, "LESSON");
+			 int itemId = Integer.parseInt(lessonId);
+			 String itemType = "LESSON";
+			 Lesson lesson = new LessonDAO().findById(itemId);
+			 if(lesson.getType().equalsIgnoreCase("ASSESSMENT"))
+			 {
+				 itemId = Integer.parseInt(lesson.getLessonXml());
+				 itemType ="ASSESSMENT";
+			 }
+			 int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), adminId, studentId, itemId+"", itemType);
 			  IstarNotification istarNotification = notificationService.createIstarNotification(Integer.parseInt(adminId), Integer.parseInt(studentId), notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.LESSON, true, taskId, groupNotificationCode);
 			  playListService.createStudentPlayList(Integer.parseInt(studentId),Integer.parseInt(courseId), Integer.parseInt(module_id), Integer.parseInt(cmsession_id),  Integer.parseInt(lessonId),taskId);	
 			  
@@ -95,20 +105,7 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 				item.put("taskId", taskId);
 				noticeDelegator.sendNotificationToUser(istarNotification.getId(), studentId, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
 			}
-		 /*List<String> students = new ArrayList<>();
-			students = new ArrayList<String>(Arrays.asList(studentIds.split(",")));
-			if(students.size()>0)
-			{	
-				 HashMap<String, Object> item = new HashMap<String, Object>();
-					
-					item.put("lessonId", Integer.parseInt(lessonId));
-					item.put("cmsessionId", Integer.parseInt(cmsession_id));
-					item.put("moduleId", Integer.parseInt(module_id));
-					item.put("courseId", Integer.parseInt(courseId));
-					
-					noticeDelegator.sendNotificationToGroup(students, notificationTitle.trim().replace("'", ""), NotificationType.LESSON, item);
-				//noticeDelegator.sendAndroidNotification(NotificationType.LESSON, students, notificationTitle.trim().replace("'", ""),courseId+"!#"+module_id+"!#"+cmsession_id+"!#"+lessonId);
-			}*/	
+		
 	}	
 	
 	

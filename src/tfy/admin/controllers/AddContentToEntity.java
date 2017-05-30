@@ -19,6 +19,8 @@ import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarNotification;
+import com.viksitpro.core.dao.entities.Lesson;
+import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -214,18 +216,21 @@ public class AddContentToEntity extends IStarBaseServelet {
 			int courseId =(int)content.get("course_id");
 			int moduleId=(int)content.get("module_id");
 			int sessionId =(int)content.get("cmsession_id");
-			int lessonId=(int)content.get("lesson_id");
+			int itemId=(int)content.get("lesson_id");
+			int lessonId = (int)content.get("lesson_id");
 			String courseTitle = (String)content.get("course_name");
 			String lessonTitle = (String)content.get("lesson_title");
 			String lessonType="LESSON";
-			if(content.get("lesson_type")!=null)
+			if(content.get("lesson_type")!=null && content.get("lesson_type").toString().equalsIgnoreCase("ASSESSMENT"))
 			{
 				lessonType=(String)content.get("lesson_type");
+				Lesson lesson = new LessonDAO().findById(lessonId);
+				itemId = Integer.parseInt(lesson.getLessonXml());
 			}
 			String lessonDescription = content.get("lesson_desc")!=null ? content.get("lesson_desc").toString().trim():"No Description Available";
 			String taskTitle = lessonTitle;
 			String taskDescription = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
-			int tasId = taskService.createTodaysTask(taskTitle, taskDescription, adminId+"", studentId+"", lessonId+"", lessonType);
+			int tasId = taskService.createTodaysTask(taskTitle, taskDescription, adminId+"", studentId+"", itemId+"", lessonType);
 			playListService.createStudentPlayList(studentId, courseId, moduleId, sessionId, lessonId, tasId);			
 		}
 		
