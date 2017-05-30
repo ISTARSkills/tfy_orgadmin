@@ -298,13 +298,17 @@ Parameter Name - type, Value - checking*/
 		Lesson lesson = new LessonDAO().findById(lid);
 		String taskTitle = lesson.getTitle().toString();
 		String taskDescription = lesson.getDescription()!=null ? lesson.getDescription(): "NA";
-		
-		String checkIfTaskExist ="select id from task where item_id="+lid+" and item_type='"+lesson.getType()+"' and cast (start_date  as date) = cast (now() as date)";
+		String lessonType = "LESSON";
+		if(lesson.getType().equalsIgnoreCase("ASSESSMENT"))
+		{
+			lessonType = "ASSESSMENT";
+		}
+		String checkIfTaskExist ="select id from task where item_id="+lid+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
 		List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
 		if(alreadyAvailbleTask.size()==0)
 		{
 			String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
-					+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+lid+", '"+lesson.getType()+"', "+projectId+") returning id;";
+					+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+lid+", '"+lessonType+"', "+projectId+") returning id;";
 			System.out.println(">>>"+sql);
 			taskId = util.executeUpdateReturn(sql); 
 			
