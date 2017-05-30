@@ -1868,6 +1868,15 @@ function init_orgadmin_admin() {
     $('select').select2();
 	createDataTables();
 	user_filter_by_course_batch();
+		
+	$('#data_2 .input-group.date').datepicker({
+		startView : 1,
+		todayBtn : "linked",
+		keyboardNavigation : false,
+		forceParse : false,
+		autoclose : true,
+		format : "dd/mm/yyyy"
+	});
 	$('#admin_user_tab').tab('show');
 	  
 	
@@ -1898,8 +1907,19 @@ function init_orgadmin_admin() {
                             .toLowerCase()) >= 0;
                 }
             });
+            
+            $('#data_2 .input-group.date').datepicker({
+        		startView : 1,
+        		todayBtn : "linked",
+        		keyboardNavigation : false,
+        		forceParse : false,
+        		autoclose : true,
+        		format : "dd/mm/yyyy"
+        	});
         });
 
+        	
+        	
         $this.tab('show');
         return false;
     });

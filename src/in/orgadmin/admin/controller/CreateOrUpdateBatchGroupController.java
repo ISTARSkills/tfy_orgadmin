@@ -1,12 +1,18 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
 
@@ -45,15 +53,17 @@ public class CreateOrUpdateBatchGroupController extends IStarBaseServelet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		printParams(request);
-		/*Param -> user_id : Value ->
-Param -> college_id : Value ->3
-Param -> group_name : Value ->eeee
-Param -> group_desc : Value ->eeee
-Param -> group_type : Value ->ROLE
+		/*Param -> college_id : Value ->2
+Param -> group_name : Value ->asdasd
+Param -> group_desc : Value ->asdasd
+Param -> mode_type : Value ->ELT
+Param -> group_type : Value ->SECTION
 Param -> parent_group_id : Value ->-1
-Param -> filer_by : Value ->SECTION, ROLE, "", ORG
-Param -> role_section_id : Value ->17
-Param -> student_list : Value ->2037*/
+Param -> filter_by : Value ->ROLE
+Param -> role_section_id : Value ->217
+Param -> student_list : Value ->450
+Param -> eventDate : Value ->22/05/2017
+Param -> course_ids : Value ->1*/
 		CustomReportUtils repprttil = new CustomReportUtils();
 		Integer college_id = Integer.parseInt(request.getParameter("college_id"));
 		if (request.getParameterMap().containsKey("group_name")
@@ -62,7 +72,38 @@ Param -> student_list : Value ->2037*/
 			List<Integer> list = new ArrayList<Integer>();
 
 			String group_name = request.getParameter("group_name");
-			String group_desc = request.getParameter("group_desc");
+			String group_desc = request.getParameter("group_desc");			
+			
+			Boolean isHistorical = false;
+			Boolean isPrimary = false;
+			if(request.getParameterMap().containsKey("is_historical") && request.getParameter("is_historical").toString().equalsIgnoreCase("on"))
+			{
+				isHistorical  = true;
+			}
+			if(request.getParameterMap().containsKey("is_primary") && request.getParameter("is_primary").toString().equalsIgnoreCase("on"))
+			{
+				isPrimary  = true;
+			}
+						
+			
+			String modeType = request.getParameter("mode_type");
+			
+			Date startDateInDateFormats = new Date();
+			if(request.getParameterMap().containsKey("startDate"))
+			{
+				String startDate = request.getParameter("startDate");
+				SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				try {
+					 startDateInDateFormats = df.parse(startDate);
+					
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
 			String groupType = "SCHEDULED";
 			groupType = request.getParameter("group_type");
 			int parentGroupId = Integer.parseInt(request.getParameter("parent_group_id"));			
@@ -128,15 +169,54 @@ Param -> student_list : Value ->2037*/
 			if(request.getParameterMap().containsKey("bg_id") && !request.getParameter("bg_id").equalsIgnoreCase("")){
 				//update
 				int bg_id=Integer.parseInt(request.getParameter("bg_id"));
-				batchGroup=batchGroupService.updateBatchGroup(bg_id,group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType);
+				batchGroup=batchGroupService.updateBatchGroup(bg_id,group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType,modeType,startDateInDateFormats, isPrimary, isHistorical);
 			}else{
 				
 				//create
-				batchGroup= batchGroupService.createBatchGroup(group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType);
+				batchGroup= batchGroupService.createBatchGroup(group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType, modeType,startDateInDateFormats, isPrimary, isHistorical);
 			}
 			
 			if (batchGroup != null) {
 				batchGroupService.createBGStudents(batchGroup.getId(), list);
+				DBUTILS util = new  DBUTILS();
+				String deleteOldBatch ="delete from batch where batch_group_id ="+batchGroup.getId();
+				util.executeUpdate(deleteOldBatch);
+				if(request.getParameterMap().containsKey("course_ids"))
+				{					
+					String courseIds[] = request.getParameterValues("course_ids");					
+					for(String str : courseIds)
+					{
+						Course c = new CourseDAO().findById(Integer.parseInt(str));
+						String insertBatch ="INSERT INTO batch ( ID, createdat, NAME, updatedat, batch_group_id, course_id, order_id, YEAR ) VALUES "
+								+ "( (select COALESCE(max(id),0)+1 from batch), now(), '"+batchGroup.getName()+" - "+c.getCourseName()+"', now(), '"+batchGroup.getId()+"', '"+c.getId()+"', (select cast (COALESCE(max(id),0)+1 as integer) from batch), "+Calendar.getInstance().get(Calendar.YEAR)+" );";
+						util.executeUpdate(insertBatch);
+					}
+					
+					if(request.getParameterMap().containsKey("startDate") && request.getParameter("startDate")!=null)
+					{
+						int tasksPerDay = 5;
+						try{
+							Properties properties = new Properties();
+							String propertyFileName = "app.properties";
+							InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+								if (inputStream != null) {
+									properties.load(inputStream);
+									
+									tasksPerDay = Integer.parseInt(properties.getProperty("tasks_per_day"));
+									
+									
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							
+						}
+						
+						
+						
+						
+					}
+				}
+				
 			}
 		}
 	

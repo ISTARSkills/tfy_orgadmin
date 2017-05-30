@@ -1,3 +1,7 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="com.viksitpro.core.dao.entities.Batch"%>
+<%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="in.orgadmin.admin.services.OrgAdminBatchGroupService"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="java.util.ArrayList"%>
@@ -61,7 +65,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 							<h3 class="m-b-n-md">Type</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
@@ -73,7 +77,22 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-lg-9">
+							<div class="col-lg-2">
+										<h3 class="m-b-n-md">Is Primary</h3>
+										<hr class="m-b-xs">
+										<div class="col-lg-12">
+											<input type="checkbox" name="is_primary" class="js-switch" <%if(bg.getIsPrimary()!=null && bg.getIsPrimary()){%>checked<%} %>/>
+										</div>
+									</div>
+									
+									<div class="col-lg-2">
+										<h3 class="m-b-n-md">Is Historical</h3>
+										<hr class="m-b-xs">
+										<div class="col-lg-12">
+											<input type="checkbox" name="is_historical" class="js-switch" <%if(bg.getIsHistorical()!=null && bg.getIsHistorical()){%>checked<%} %>/>
+										</div>
+									</div>
+						<div class="col-lg-4">
 							<h3 class="m-b-n-md">Parent Role / Section</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
@@ -109,14 +128,7 @@
 									</select>
 								</div>
 							</div>
-							<!-- <div class="col-lg-4" id="edit_role_section_holder" style="display:none">								
-								<div>
-									<select data-placeholder="Role/Section Name" class="select2-dropdown" multiple tabindex="8" name="role_section_id" id="edit_role_section_options">
-									
-											
-									</select>
-								</div>
-							</div> -->
+							
 							<div class="col-lg-10">								
 								<div>
 									<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list" id="edit_student_list_holder">
@@ -132,6 +144,50 @@
 								all users within East Point College to this group</label>
 						</div>
 					</div>
+					
+					
+					<!-- course selector starts here -->
+					<div class="form-group">
+							<h3 class="m-b-n-md">Add Courses</h3>
+							<hr class="m-b-xs">
+							<div class="col-lg-2">								
+							<!-- <div class="input-group" id="datepicker">
+                                    <input id ="sd" type="text" class="input-sm form-control" name="start" placeholder ="Select Start Date"/>
+                            </div>   -->
+                            <div class="form-group" id="data_2">
+				<%SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy"); %>
+				<div class="input-group date">
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
+						name="startDate" type="text" class="form-control date_holder"
+						value="<%=df.format(bg.getStartDate())%>">
+				</div>
+			</div>
+                                
+							</div>
+							<div class="col-lg-4" id="course_holder">								
+								<div>
+									<select data-placeholder="Course Name" class="select2-dropdown" multiple tabindex="8" name="course_ids" id="course_options">									
+									<%												
+									ArrayList<Integer> alreadyMappedCourses = new ArrayList();
+									for(Batch batch : bg.getBatchs())
+									{
+										alreadyMappedCourses.add(batch.getCourse().getId());
+									}
+									for(Course  c : (List<Course>)new CourseDAO().findAll())
+										{
+											%>											
+											<option value="<%=c.getId()%>" <%if(alreadyMappedCourses.contains(c.getId())) {%>selected<%} %>><%=c.getCourseName()%></option>
+											<% 
+										}%>
+											
+									</select>
+								</div>
+							</div>
+							
+						</div>
+					
+					<!-- course selector end here -->
+					
 <div class="modal-footer" style="padding-bottom: 0px;">
 					<div class="form-group">
 						<button type="submit" class="btn btn-danger">Save

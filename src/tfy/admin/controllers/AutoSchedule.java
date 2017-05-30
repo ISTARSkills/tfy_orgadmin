@@ -217,6 +217,10 @@ Parameter Name - type, Value - checking*/
 	        endCal.setTime(startDate);
 	    }
 	    int daysCount=0;
+	    DBUTILS util = new DBUTILS();
+	    String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), 'Auto Schedule of Course with id "+scheduler_course_id+"', now(), now(),  300, 't') returning id;";
+		int projectId = util.executeUpdateReturn(insertIntoProject);
+	    
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
 	    	System.out.println("chedking for "+sd);
@@ -234,7 +238,7 @@ Parameter Name - type, Value - checking*/
 			        			int mid = modules.get(orderId);
 				        		int cms = cmsessions.get(orderId);
 				        		int lid = lessons.get(orderId);
-				        		scheduleTask(stid, cid, mid, cms, lid, taskDate);
+				        		scheduleTask(stid, cid, mid, cms, lid, taskDate,projectId);
 			        		}
 			        			
 		        		}
@@ -282,7 +286,7 @@ Parameter Name - type, Value - checking*/
 	   
 	}
 
-	private void scheduleTask(int stid, int cid, int mid, int cms, int lid, Date taskDate) {
+	private void scheduleTask(int stid, int cid, int mid, int cms, int lid, Date taskDate, int projectId) {
 		Date endate = new Date();
 		Calendar c = Calendar.getInstance(); 
 		c.setTime(taskDate); 
@@ -295,12 +299,12 @@ Parameter Name - type, Value - checking*/
 		String taskTitle = lesson.getTitle().toString();
 		String taskDescription = lesson.getDescription()!=null ? lesson.getDescription(): "NA";
 		
-		String checkIfTaskExist ="select id from task where item_id="+lid+" and item_type='LESSON' and cast (start_date  as date) = cast (now() as date)";
+		String checkIfTaskExist ="select id from task where item_id="+lid+" and item_type='"+lesson.getType()+"' and cast (start_date  as date) = cast (now() as date)";
 		List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
 		if(alreadyAvailbleTask.size()==0)
 		{
-			String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
-					+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+lid+", 'LESSON') returning id;";
+			String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
+					+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+lid+", '"+lesson.getType()+"', "+projectId+") returning id;";
 			System.out.println(">>>"+sql);
 			taskId = util.executeUpdateReturn(sql); 
 			

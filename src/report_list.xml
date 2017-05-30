@@ -686,13 +686,45 @@ order by :order_by_column :order_type limit :limit offset :offset
 <column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
 <column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />
 <sql>
-select distinct istar_user.id , istar_user.email, cast (count(DISTINCT student_playlist.lesson_id) as INTEGER) as tasks, cast (count(DISTINCT student_playlist.course_id) as INTEGER) as courses,
- count(*) over() as total_rows 
-from istar_user  
-join user_org_mapping on (istar_user.id = user_org_mapping.user_id and user_org_mapping.organization_id = :college_id) 
-join user_role on (istar_user.id = user_role.user_id and user_role.role_id=(select id from role where role_name='STUDENT'))
-left join student_playlist on (istar_user.id = student_playlist.student_id)
-group by istar_user.id , istar_user.email
+SELECT DISTINCT
+	istar_user. ID,
+	istar_user.email,
+	CAST (
+		COUNT (
+			DISTINCT student_playlist.lesson_id
+		) AS INTEGER
+	) AS tasks,
+	CAST (
+		COALESCE(COUNT (
+			DISTINCT batch.course_id
+		),0 )AS INTEGER
+	) AS courses,
+	COUNT (*) OVER () AS total_rows
+FROM
+	istar_user
+JOIN user_org_mapping ON (
+	istar_user. ID = user_org_mapping.user_id
+	AND user_org_mapping.organization_id = :college_id
+)
+JOIN user_role ON (
+	istar_user. ID = user_role.user_id
+	AND user_role.role_id = (
+		SELECT
+			ID
+		FROM
+			ROLE
+		WHERE
+			role_name = 'STUDENT'
+	)
+)
+left join batch_students on (batch_students.student_id = user_role.user_id)
+left join batch on (batch_students.batch_group_id = batch.batch_group_id)
+LEFT JOIN student_playlist ON (
+	istar_user. ID = student_playlist.student_id
+)
+GROUP BY
+	istar_user. ID,
+	istar_user.email
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
@@ -702,20 +734,35 @@ order by :order_by_column :order_type limit :limit offset :offset
 <column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
 <column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />	
 <sql>
-select DISTINCT TF.id, TF.name , 
+select  TFINAL.id , TFINAL.name, TFINAL.tasks, cast (COALESCE(count(DISTINCT batch.course_id),0) as integer) as courses, count(*) over() as total_rows from  (select DISTINCT TF.id, TF.name , 
 cast (min (TF.stu_tasks) as integer) as tasks,
-min(TF.courses) as courses,
 count(*) over() as total_rows  from (
-select DISTINCT batch_group.id , batch_group.name, student_playlist.student_id, 
-count(distinct student_playlist.lesson_id)as stu_tasks, cast (count(DISTINCT course_id) as integer)  as courses from student_playlist, batch_students, batch_group
-where student_playlist.student_id = batch_students.student_id
-and batch_students.batch_group_id = batch_group.id
-and batch_group.college_id = :college_id
-and batch_group.type = 'SECTION'
-group by batch_group.id , batch_group.name, student_playlist.student_id
-order by batch_group.id,batch_group.name, student_playlist.student_id
+SELECT DISTINCT
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id,
+	COUNT (
+		DISTINCT student_playlist.lesson_id
+	) AS stu_tasks
+FROM
+batch_group
+left join batch_students on (batch_students.batch_group_id = batch_group.id )
+left join student_playlist on (batch_students.student_id = student_playlist.student_id)
+where 
+batch_group.college_id = :college_id AND batch_group. TYPE = 'SECTION' and batch_group.is_historical_group='f'
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id
+ORDER BY
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id
 ) TF
 group by TF.id, TF.name
+)TFINAL 
+left join batch on (TFINAL.id = batch.batch_group_id)
+group by TFINAL.id , TFINAL.name, TFINAL.tasks
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
@@ -725,20 +772,35 @@ order by :order_by_column :order_type limit :limit offset :offset
 <column columnHandler="NONE" display_name="# Tasks" isVisible="true" name="tasks" />
 <column columnHandler="NONE" display_name="# Courses" isVisible="true" name="courses" />
 <sql>
-select DISTINCT TF.id, TF.name , 
+select  TFINAL.id , TFINAL.name, TFINAL.tasks, cast (COALESCE(count(DISTINCT batch.course_id),0) as integer) as courses, count(*) over() as total_rows from  (select DISTINCT TF.id, TF.name , 
 cast (min (TF.stu_tasks) as integer) as tasks,
-min(TF.courses) as courses,
 count(*) over() as total_rows  from (
-select DISTINCT batch_group.id , batch_group.name, student_playlist.student_id, 
-count(distinct student_playlist.lesson_id)as stu_tasks, cast (count(DISTINCT course_id) as integer)  as courses from student_playlist, batch_students, batch_group
-where student_playlist.student_id = batch_students.student_id
-and batch_students.batch_group_id = batch_group.id
-and batch_group.college_id = :college_id
-and batch_group.type = 'ROLE'
-group by batch_group.id , batch_group.name, student_playlist.student_id
-order by batch_group.id,batch_group.name, student_playlist.student_id
+SELECT DISTINCT
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id,
+	COUNT (
+		DISTINCT student_playlist.lesson_id
+	) AS stu_tasks
+FROM
+batch_group
+left join batch_students on (batch_students.batch_group_id = batch_group.id )
+left join student_playlist on (batch_students.student_id = student_playlist.student_id)
+where 
+batch_group.college_id = :college_id AND batch_group. TYPE = 'ROLE' and batch_group.is_historical_group='f'
+GROUP BY
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id
+ORDER BY
+	batch_group. ID,
+	batch_group. NAME,
+	student_playlist.student_id
 ) TF
 group by TF.id, TF.name
+)TFINAL 
+left join batch on (TFINAL.id = batch.batch_group_id)
+group by TFINAL.id , TFINAL.name, TFINAL.tasks
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>

@@ -125,7 +125,7 @@ public class AssessmentSchedulerService {
 
 	}
 
-	public void createAssessmentNewEntryInBG(int batchGrpId) {
+	public void createAssessmentNewEntryInBG(int batchGrpId) {/*
 
 		BatchGroup batchGroup = new BatchGroupDAO().findById(batchGrpId);
 		int batch_group_code = Integer.parseInt(batchGroup.getBatchCode());
@@ -159,7 +159,7 @@ public class AssessmentSchedulerService {
 				createAssessment(0, batch_id, assessment_id, event_date, time, AdminUserID, 0, "0");
 
 			}
-		}
+		}*/
 	}
 
 	public void createAssessmentEntryInBse(int trainerID, int hours, int minute, int batchID, String eventDate,String time,

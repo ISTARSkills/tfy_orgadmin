@@ -71,7 +71,7 @@ public class OrgAdminBatchGroupService {
 					"th", "st" };
 
 	public BatchGroup createBatchGroup(String groupName, String bg_desc, int studentCount, int org_id,
-			int assessmentId, int parentGroupId, String groupType) {
+			int assessmentId, int parentGroupId, String groupType, String modeType,Date startDateInDateFormats, Boolean isPrimary, Boolean isHistorical) {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = new BatchGroup();
 		batchGroup.setName(groupName);
@@ -82,8 +82,13 @@ public class OrgAdminBatchGroupService {
 		batchGroup.setBgDesc(bg_desc);
 		batchGroup.setParentGroupId(parentGroupId);
 		batchGroup.setType(groupType);
+		batchGroup.setIsHistorical(isHistorical);
+		batchGroup.setIsPrimary(isPrimary);
+		java.sql.Date sqlDate =  new java.sql.Date(startDateInDateFormats.getTime());
+		batchGroup.setStartDate(sqlDate);
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		batchGroup.setYear(year);
+		batchGroup.setModeType(modeType);
 		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;
@@ -103,7 +108,7 @@ public class OrgAdminBatchGroupService {
 	}
 
 	public BatchGroup updateBatchGroup(int bg_id, String groupName, String bg_desc, int studentCount, int org_id,
-			int assessmentId, int parentGroupId, String groupType) {
+			int assessmentId, int parentGroupId, String groupType, String modeType, Date startDateInDateFormats, Boolean isPrimary, Boolean isHistorical) {
 		BatchGroupDAO batchGroupDAO = new BatchGroupDAO();
 		BatchGroup batchGroup = batchGroupDAO.findById(bg_id);
 		batchGroup.setName(groupName);
@@ -113,6 +118,12 @@ public class OrgAdminBatchGroupService {
 		batchGroup.setType(groupType);
 		batchGroup.setParentGroupId(parentGroupId);
 		batchGroup.setAssessmentId(assessmentId);
+		batchGroup.setModeType(modeType);
+		batchGroup.setIsHistorical(isHistorical);
+		batchGroup.setIsPrimary(isPrimary);
+		batchGroup.setModeType(modeType);
+		java.sql.Date sqlDate =  new java.sql.Date(startDateInDateFormats.getTime());
+		batchGroup.setStartDate(sqlDate);
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		batchGroup.setYear(year);
 		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
@@ -279,5 +290,7 @@ public class OrgAdminBatchGroupService {
 	public static int getRandomInteger(int maximum, int minimum) {
 		return ((int) (Math.random() * (maximum - minimum))) + minimum;
 	}
+
+	
 
 }
