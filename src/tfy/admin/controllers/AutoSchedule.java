@@ -175,14 +175,7 @@ Parameter Name - type, Value - checking*/
 			{
 				freq = (int)Math.ceil((double)scheduler_total_lessons/workingDays);
 				
-				if(scheduler_total_lessons<workingDays)
-				{
-					total_scheduled_days = scheduler_total_lessons%workingDays;
-				}
-				else 
-				{	
-					total_scheduled_days = (int)Math.ceil((double)workingDays/freq);
-				}
+				total_scheduled_days = (int)Math.ceil((double)scheduler_total_lessons/freq);
 				System.out.println("freq>>"+freq);
 				String autoData ="INSERT INTO auto_scheduler_data (id, entity_type, entity_id, course_id, student_count, start_date, end_date, scheduled_days, scheduled_days_count,tasks_per_day) VALUES "
 						+ "((select COALESCE(max(id),0)+1 from auto_scheduler_data), '"+scheduler_entity_type+"', "+scheduler_entity_id+", "+scheduler_course_id+", "+stuCount+", '"+new Timestamp(startDate.getTime())+"', '"+new Timestamp(endDate.getTime())+"', '"+ String.join(",", days)+"', "+total_scheduled_days+","+freq+");";
@@ -216,11 +209,18 @@ Parameter Name - type, Value - checking*/
 	        startCal.setTime(endDate);
 	        endCal.setTime(startDate);
 	    }
+	    
+	    
+	    endCal.add(Calendar.DATE, 1);
+	    
+	    
+	    
 	    int daysCount=0;
 	    DBUTILS util = new DBUTILS();
 	    String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), 'Auto Schedule of Course with id "+scheduler_course_id+"', now(), now(),  300, 't') returning id;";
-		int projectId = util.executeUpdateReturn(insertIntoProject);
+		 int projectId = util.executeUpdateReturn(insertIntoProject);
 	    
+		 
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
 	    	System.out.println("chedking for "+sd);
@@ -305,7 +305,7 @@ Parameter Name - type, Value - checking*/
 			lessonType = "ASSESSMENT";
 			itemId = Integer.parseInt(lesson.getLessonXml());
 		}
-		String checkIfTaskExist ="select id from task where item_id="+itemId+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
+		String checkIfTaskExist ="select id from task where actor="+stid+" and item_id="+itemId+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
 		List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
 		if(alreadyAvailbleTask.size()==0)
 		{
@@ -344,6 +344,7 @@ Parameter Name - type, Value - checking*/
 	        endCal.setTime(startDate);
 	    }
 	    
+	    endCal.add(Calendar.DATE, 1);
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
 	    	if (days.contains(startCal.get(Calendar.DAY_OF_WEEK))) {

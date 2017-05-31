@@ -192,29 +192,7 @@ Param -> course_ids : Value ->1*/
 						util.executeUpdate(insertBatch);
 					}
 					
-					if(request.getParameterMap().containsKey("startDate") && request.getParameter("startDate")!=null)
-					{
-						int tasksPerDay = 5;
-						try{
-							Properties properties = new Properties();
-							String propertyFileName = "app.properties";
-							InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-								if (inputStream != null) {
-									properties.load(inputStream);
-									
-									tasksPerDay = Integer.parseInt(properties.getProperty("tasks_per_day"));
-									
-									
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-							
-						}
-						
-						
-						
-						
-					}
+				
 				}
 				
 			}

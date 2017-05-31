@@ -20,7 +20,7 @@ public class StudentPlayListServicesAdmin {
 		if(util.executeQuery(sql).size()==0)
 		{
 			String insertSql = "INSERT INTO student_playlist (id, student_id, course_id, lesson_id,module_id, cmsession_id, status,task_id) VALUES ((select COALESCE(max(id),0)+1 from student_playlist), '"
-					+ student_id + "', '" + course_id + "', '" + lesson_id + "',"+module_id+","+cmsession_id+",'INCOMPLETE', "+task_id+")";	
+					+ student_id + "', '" + course_id + "', '" + lesson_id + "',"+module_id+","+cmsession_id+",'SCHEDULED', "+task_id+")";	
 			util.executeUpdate(insertSql);
 		}
 		
