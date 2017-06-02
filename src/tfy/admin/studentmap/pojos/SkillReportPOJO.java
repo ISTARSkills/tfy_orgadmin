@@ -23,6 +23,7 @@ public class SkillReportPOJO{
 	private Double userPoints = 0.0;
 	private Double percentage = 0.0;
 	private List<SkillReportPOJO> skills;
+	private Boolean accessedFirstTime = true;
 	
 	public SkillReportPOJO(){
 		
@@ -138,4 +139,18 @@ public class SkillReportPOJO{
 			this.percentage = 0.0;
 		}
 	}
+
+	public Boolean getAccessedFirstTime() {
+		return accessedFirstTime;
+	}
+
+	public void setAccessedFirstTime(Boolean accessedFirstTime) {
+		this.accessedFirstTime = accessedFirstTime;
+	}
+	
+	
+	
+	
+	
+	
 }

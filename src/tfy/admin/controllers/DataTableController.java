@@ -100,6 +100,7 @@ public class DataTableController extends IStarBaseServelet {
 						else
 						{
 							ColumnHandler handler= ReportColumnHandlerFactory.getInstance().getHandler(iterable_element.getColumnHandler());
+							
 							String val= handler.getHTML(item.get(iterable_element.getName()).toString(), reportId).toString();
 							tableRowsdata.put(val);
 						}	

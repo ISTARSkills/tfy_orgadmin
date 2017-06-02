@@ -118,7 +118,7 @@ if(request.getParameterMap().containsKey("course_id"))
 }
 
 IstarUser stu = new IstarUserDAO().findById(studentId);
-String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfileImage() : "video/android_images/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
+String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfileImage() : "/users/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
 %>
 <div class="modal-dialog">
 	<div class="modal-content animated flipInY">

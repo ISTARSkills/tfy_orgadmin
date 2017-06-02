@@ -1192,7 +1192,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	function updateChat(msg) {
 		try {
 			var str = JSON.stringify(msg, null, 2);
-			console.log('got message in js'+msg);
+			console.log('got message in js'+str);
 			//console.log('got message in js'+str);
 			var data = JSON.parse(msg.data);
 			var type = data.type;
