@@ -8,8 +8,9 @@ int colegeID = (int)request.getSession().getAttribute("orgId");
 %>
 					<div class="ibox float-e-margins no-margins bg-muted">
 						<div class="ibox-content">
-						<div class="row show-grid white-bg">
-								<div class="col-lg-3 white-bg no-borders whit-bg-schedular">
+						<div class="row show-grid white-bg" style="    margin: 0px;">
+								<div class="col-lg-3 white-bg no-borders whit-bg-schedular" style="    padding-left: 1px;
+    padding-top: 0px;">
 									<h1 class="text-danger font-bold">Create A New Event</h1>
 									<div class="tabs-container">
 										<ul class="nav nav-tabs gray-bg-schedular">
