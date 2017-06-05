@@ -70,10 +70,12 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                         </div>
                                         <div class="modal-footer">
                                           <button type="button" class="btn btn-primary custom-theme-btn-primary" data-dismiss="modal">Close</button>
-                                          <%if(!status.equalsIgnoreCase("ASSESSMENT")){ %>
+                                          <%if(!status.equalsIgnoreCase("ASSESSMENT")  && (status.equalsIgnoreCase("SCHEDULED"))){ %>
                                            <button type="button" class="btn btn-primary custom-theme-btn-primary  key" data-status="<%=status%>" id="edit" data-dismiss="modal">Edit Event</button>
-                                           <%} %>
+                                           <%} 
+                                          if(status.equalsIgnoreCase("SCHEDULED")){
+                                           %>
                                             <button type="button" class="btn btn-primary custom-theme-btn-primary key" data-status="<%=status%>" id="delete" data-dismiss="modal">Delete Event</button>
-                                            
+                                            <% }%>
                                         </div>
                                     </div>
