@@ -19,6 +19,7 @@ import com.viksitpro.core.dao.entities.Notification;
 import com.viksitpro.core.dao.utils.user.IstarUserServices;
 import com.viksitpro.core.utilities.ChatUtility;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.PortHostUtility;
 
 
 public class Chat {
@@ -31,10 +32,15 @@ public class Chat {
     public static void main(String[] args) {
         //staticFiles.location("/"); //index.html is served at localhost:4567 (default port)
         //staticFiles.expireTime(600);
-
+    PortHostUtility psu = new PortHostUtility();
+    if(!psu.isLocalPortInUse(4568))
+    {
     	spark.Spark.port(4568);
     	webSocket("/chat/*", ChatWebSocketHandler.class);
         init();
+    	
+    }
+    	
     }
 
     

@@ -17,9 +17,14 @@ public class ChatServerStarter extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		System.out.println("starting chat server");		
-		Chat.main(null);
-		System.out.println("chat server started");
+		try {
+			System.out.println("starting chat server");		
+			Chat.main(null);
+			System.out.println("chat server started");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
     /**
      * @see HttpServlet#HttpServlet()
