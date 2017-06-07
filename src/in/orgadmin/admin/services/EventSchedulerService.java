@@ -170,7 +170,7 @@ public class EventSchedulerService {
 			String deletefromNotification="DELETE FROM istar_notification WHERE group_code ='"+groupCode+"'";
 			db.executeUpdate(deletefromNotification);
 			
-			String deleteFromTask ="DELETE FROM task WHERE  item_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"') AND item_type = 'CLASSROOM_SESSION' ";
+			String deleteFromTask ="DELETE FROM task WHERE  item_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"') AND item_type like '%CLASSROOM_SESSION%' ";
 			db.executeUpdate(deleteFromTask);
 			
 			String deleteMapping ="delete from event_queue_event_mapping where event_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"')";
