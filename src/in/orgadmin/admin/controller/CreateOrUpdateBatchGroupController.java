@@ -187,9 +187,13 @@ Param -> course_ids : Value ->1*/
 					for(String str : courseIds)
 					{
 						Course c = new CourseDAO().findById(Integer.parseInt(str));
-						String insertBatch ="INSERT INTO batch ( ID, createdat, NAME, updatedat, batch_group_id, course_id, order_id, YEAR ) VALUES "
+						String checkIfBatchExist = "select cast (count(*) as integer) as tot_batch from batch where batch_group_id ="+batchGroup.getId()+" and course_id="+c.getId();
+						List<HashMap<String, Object>> existingData = util.executeQuery(checkIfBatchExist);
+						if(existingData.size()>0 && (int)existingData.get(0).get("tot_batch")==0){
+							String insertBatch ="INSERT INTO batch ( ID, createdat, NAME, updatedat, batch_group_id, course_id, order_id, YEAR ) VALUES "
 								+ "( (select COALESCE(max(id),0)+1 from batch), now(), '"+batchGroup.getName()+" - "+c.getCourseName()+"', now(), '"+batchGroup.getId()+"', '"+c.getId()+"', (select cast (COALESCE(max(id),0)+1 as integer) from batch), "+Calendar.getInstance().get(Calendar.YEAR)+" );";
-						util.executeUpdate(insertBatch);
+							util.executeUpdate(insertBatch);
+						}
 					}
 					
 				
