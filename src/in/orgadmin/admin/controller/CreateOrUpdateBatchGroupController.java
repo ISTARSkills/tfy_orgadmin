@@ -179,6 +179,8 @@ Param -> course_ids : Value ->1*/
 			if (batchGroup != null) {
 				batchGroupService.createBGStudents(batchGroup.getId(), list);
 				DBUTILS util = new  DBUTILS();
+				String deleteTrainerBatch = "delete from trainer_batch where batch_id in (select id from batch where batch_group_id = "+batchGroup.getId()+")";
+				util.executeUpdate(deleteTrainerBatch);	
 				String deleteOldBatch ="delete from batch where batch_group_id ="+batchGroup.getId();
 				util.executeUpdate(deleteOldBatch);
 				if(request.getParameterMap().containsKey("course_ids"))

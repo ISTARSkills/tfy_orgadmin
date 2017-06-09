@@ -149,7 +149,7 @@ public class OrgAdminBatchGroupService {
 		boolean flag = false;
 		DBUTILS util = new DBUTILS();
 
-		updateStudentPlayList(batchGrpId,studentList);
+		//updateStudentPlayList(batchGrpId,studentList);
 		String sql1 = "delete from batch_students where batch_group_id = " + batchGrpId;
 		util.executeUpdate(sql1);
 		

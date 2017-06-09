@@ -83,7 +83,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 				
 					
 	<h2>				
-<ol class="breadcrumb">
+<ol class="breadcrumb" style="padding-left: 14px !important;">
             <li>
                 <%if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){ %>
                 <a href="<%=baseURL %>orgadmin/report.jsp">Batch</a>
@@ -91,13 +91,13 @@ int college_id = (int)request.getSession().getAttribute("orgId");
                 else
                 {
                 	%>
-                   <a href="<%=baseURL %>orgadmin/report.jsp">Programs</a>
+                   <a href="<%=baseURL %>orgadmin/report.jsp">Program</a>
                     <%
                 	
                 }%>
             </li>
             <li class="active">
-                <strong><%=request.getParameter("headname").toString()%></strong>
+                <%=request.getParameter("headname").toString()%>
             </li>
         </ol>
         </h2>
