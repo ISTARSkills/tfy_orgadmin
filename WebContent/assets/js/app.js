@@ -5184,7 +5184,15 @@ function init_istar_notification(){
 			
 		}else if($(this).val() === 'ASSESSMENT' ){
 			$('#play_presentation_holder').hide();
-			$('#play_assessment_holder').show();	
+			init_courseFilterForAssessment();
+			
+			$('#play_assessment_holder').show();
+			
+			
+			
+			
+			
+			
 			var entity_id = '0';
 			var entity_type = 'ASSESSMENT';
 			$.ajax({
@@ -5297,6 +5305,29 @@ function init_istar_notification(){
 		}
 	});
 	}
+	
+	
+	function init_courseFilterForAssessment() {
+		$('#notification_assessment_course_holder').on("change", function() {
+			var course = $(this).val();
+			var type = 'ASSESSMENT_COURSE';
+
+			if (course != 'null') {
+				$.ajax({
+					type : "POST",
+					url : '../get_notification_data',
+					data : {
+						entity_type : type,
+						entity_id : course
+					},
+					success : function(data) {
+						$('#notification_assessment_holder').html(data);
+						$('#notification_assessment_holder').select2();
+					}
+				});
+			}
+		});
+		}
 	
 	function init_cmsessionFilter() {
 		$('#notification_cmsession_holder').on("change", function() {

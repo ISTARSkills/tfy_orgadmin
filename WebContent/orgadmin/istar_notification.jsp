@@ -1,3 +1,8 @@
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
+<%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.viksitpro.core.dao.entities.AssessmentDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Assessment"%>
 <%@page import="tfy.admin.services.AdminServices"%>
 <%@page import="com.viksitpro.core.dao.entities.BatchGroup"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
@@ -104,7 +109,37 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 						</div>
 					</div>
 				</div>
+				
+				
 				<div id="play_assessment_holder" style="display: none;">
+					<div class="col-lg-2">
+						<div class="form-group">
+							<label class="font-bold">Choose Course</label>
+							<div>
+								<select data-placeholder="Select Course" tabindex="4"
+									data-url='' id='notification_assessment_course_holder'>
+									<%
+									List<Assessment> assessments = (List<Assessment>)new AssessmentDAO().findAll();
+									ArrayList<Integer>courseIds = new ArrayList();
+									for(Assessment assess : assessments) 
+									{
+										if(!courseIds.contains(assess.getCourse()))
+										{
+											courseIds.add(assess.getCourse());
+											Course cc = new CourseDAO().findById(assess.getCourse());
+											%>
+											<option value="<%=cc.getId()%>"><%=cc.getCourseName() %></option>
+											<%
+										}
+									}
+									%>
+									
+									
+								</select>
+							</div>
+						</div>
+					</div>
+					
 					<div class="col-lg-2">
 						<div class="form-group">
 							<label class="font-bold">Choose Assessment</label>

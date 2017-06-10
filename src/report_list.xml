@@ -328,6 +328,9 @@ FROM
 						1 FOR 1
 				)
 			) || '.png'
+		WHEN user_profile.profile_image LIKE '%graph.facebook.com%'
+		ThEN
+			user_profile.profile_image
 		ELSE
 			'http://cdn.talentify.in/' || user_profile.profile_image
 		END AS profile_image,

@@ -49,6 +49,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 	} else if (request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){
 		flag = false;
 		Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
+		course_id = batch.getCourse().getId()+"";
 		courseName = batch.getCourse().getCourseName();
 		System.out.println("batch_id--------"+request.getParameter("batch_id").toString());
 		batch_id =request.getParameter("batch_id");		
@@ -82,9 +83,10 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 				<% if(request.getParameter("headname") != null && !request.getParameter("headname").toString().equalsIgnoreCase("null")){
 				 %>
 				
-					
+
 <h2>					
 <ol class="breadcrumb" style="margin-left: 14px;     color: rgb(235, 56, 79);">
+
             <li>
                 <%if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){ %>
                 <a href="<%=baseURL %>orgadmin/report.jsp">Batches</a>
@@ -92,14 +94,16 @@ int college_id = (int)request.getSession().getAttribute("orgId");
                 else
                 {
                 	%>
-                   <a href="<%=baseURL %>orgadmin/report.jsp">Programs</a>
+                   <a href="<%=baseURL %>orgadmin/report.jsp">Program</a>
                     <%
                 	
                 }%>
             </li>
             <li class="active">
                 <%=request.getParameter("headname").toString()%>
+
           </li>
+
         </ol>
         </h2>	
        

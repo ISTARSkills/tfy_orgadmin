@@ -4,7 +4,6 @@
 <%
 	String path = request.getContextPath();
 String basePath = "http://cdn.talentify.in/";
-
 try{
 	Properties properties = new Properties();
 	String propertyFileName = "app.properties";
@@ -16,8 +15,7 @@ try{
 		}
 	} catch (IOException e) {
 		e.printStackTrace();
-	}
-	
+	}	
 %>
 <script
 	src='<%=basePath %>assets/js/moment.min.js'></script>

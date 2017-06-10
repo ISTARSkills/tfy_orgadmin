@@ -118,7 +118,7 @@ if(request.getParameterMap().containsKey("course_id"))
 }
 
 IstarUser stu = new IstarUserDAO().findById(studentId);
-String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfileImage() : "/users/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
+String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProfileImage()!=null ?stu.getUserProfile().getProfileImage(): "/users/"+stu.getEmail().toUpperCase().charAt(0)+".png") : "/users/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
 %>
 <div class="modal-dialog">
 	<div class="modal-content animated flipInY">
@@ -205,7 +205,7 @@ String profileImage = stu.getUserProfile()!=null ? stu.getUserProfile().getProfi
 										</h3>
 									</div>
 									<div class="col-md-4" style="height: 98px;     margin-top: 11px;">
-										<img src="<%=profileImage%>" class="img-circle circle-border m-b-md" alt="profile" style="width: 98px;
+										<img src="http://cdn.talentify.in/<%=profileImage%>" class="img-circle circle-border m-b-md" alt="profile" style="width: 98px;
     height: 98px;">
 
 									</div>

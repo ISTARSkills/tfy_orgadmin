@@ -43,6 +43,7 @@ public class GetNotificationData extends IStarBaseServelet {
 				String sql = "SELECT id,name, type FROM batch_group WHERE college_id = "+entityId;
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Section / Roles</option>");
+				sb.append("<option value='ALL_GROUP_OF_ORG_"+entityId+"'>Select All</option>");
 				for(HashMap<String, Object> row: groups)
 				{
 					sb.append("<option value="+row.get("id")+">"+row.get("name")+" ("+row.get("type")+")</option>");
@@ -64,8 +65,20 @@ public class GetNotificationData extends IStarBaseServelet {
 			else if(entityType.equalsIgnoreCase("GROUP"))
 			{
 				//return all students
-				String sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT','TRAINER') );";
-				System.out.println("Get NotificationData 54>>sql"+sql);
+				String sql="";
+				if(entityId.contains("ALL_GROUP_OF_ORG_"))
+				{
+					entityId = entityId.replace("ALL_GROUP_OF_ORG_", "");
+					sql = "select distinct istar_user. ID, 	istar_user.email from istar_user, user_org_mapping, user_role where istar_user.id = user_org_mapping.user_id and user_org_mapping.user_id = user_role.user_id and  user_role.role_id in (SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT', 'TRAINER')) and user_org_mapping.organization_id = "+entityId+" order by email";
+					System.out.println("Get NotificationData 54>>sql"+sql);
+				}
+				else
+				{
+					 sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT','TRAINER') );";
+					System.out.println("Get NotificationData 54>>sql"+sql);
+				}	
+				
+				
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				for(HashMap<String, Object> row: groups)
 				{
@@ -79,8 +92,18 @@ public class GetNotificationData extends IStarBaseServelet {
 			{
 				//this is one of value of drop down "lesson", "assessment", "message"
 				// return courses
-				//entity id is groupID 
-				String sql="select course.id , course_name from batch_group, batch, course where batch_group.id = "+entityId+" and batch_group.id = batch.batch_group_id and batch.course_id = course.id ";
+				//entity id is groupID in case select all is not selected
+				String sql="";
+				if(entityId.contains("ALL_GROUP_OF_ORG_"))
+				{
+					entityId = entityId.replace("ALL_GROUP_OF_ORG_", "");
+					sql ="SELECT distinct 	course. ID, 	course_name FROM 	batch_group, 	batch, 	course WHERE  batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID and batch_group.college_id = "+entityId;
+				}
+				else
+				{
+					 sql="select course.id , course_name from batch_group, batch, course where batch_group.id = "+entityId+" and batch_group.id = batch.batch_group_id and batch.course_id = course.id ";
+
+				}	
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Course</option>");
 				for(HashMap<String, Object> row: groups)
@@ -111,6 +134,17 @@ public class GetNotificationData extends IStarBaseServelet {
 					sb.append("<option value="+row.get("id")+">"+row.get("title")+"</option>");
 				}
 			}
+			else if(entityType.equalsIgnoreCase("ASSESSMENT_COURSE"))
+			{
+				//assessment from course
+				String sql ="select distinct id, assessmenttitle from assessment where course_id="+entityId;
+				List<HashMap<String, Object>> groups = util.executeQuery(sql);
+				sb.append("<option value='null'>Select Assessment</option>");
+				for(HashMap<String, Object> row: groups)
+				{
+					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"</option>");
+				}
+			}			
 			else if(entityType.equalsIgnoreCase("CMSESSION"))
 			{
 				//return lessons

@@ -35,7 +35,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			<li class="active"><a data-toggle="tab" href="#tab-1">Todays
 					Events</a></li>
 			<li class=""><a data-toggle="tab"  href="#tab-2">Notifications&nbsp;&nbsp;<span
-					class="label label-info pull-right" id="dashboard_notice_count"></span></a></li>
+					class="label label-info pull-right" id="dashboard_notice_count" style="background-color: #eb384f !important;"></span></a></li>
 		</ul>
 		<div class="tab-content dash_main_tab">
 			<div id="tab-1" class="tab-pane active">

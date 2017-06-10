@@ -468,7 +468,7 @@ public class UIUtils {
 
 		}
 		
-		String sql2 = "SELECT l. ID AS ID, l.title AS title, cmsession.title as cmsession_title, cmsession.id as cms_id, tsk. STATE AS status FROM module_course mc, cmsession_module cm, lesson_cmsession lcms,  task tsk, lesson l, cmsession WHERE mc.course_id = "+b.getCourse().getId()+" and mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id and lcms.cmsession_id = cmsession.id AND lcms.lesson_id = l. ID AND tsk.item_id = l. ID AND tsk.item_type ='LESSON' and tsk.name ='CREATE_LESSON' ORDER BY l.title";
+		String sql2 = "SELECT 	l. ID AS ID, 	l.title AS title, 	cmsession.title AS cmsession_title, 	cmsession. ID AS cms_id, 	(case  when l.is_published  is null then  'UNPUBLISHED' 	      when l.is_published = 'f' then 'UNPUBLISHED' 				when l.is_published = 't' then 'PUBLISHED' 	end 	)  AS status FROM 	module_course mc, 	cmsession_module cm, 	lesson_cmsession lcms, 	lesson l, 	cmsession WHERE 	mc.course_id = "+course_id+" AND mc.module_id = cm.module_id AND cm.cmsession_id = lcms.cmsession_id AND lcms.cmsession_id = cmsession. ID AND lcms.lesson_id = l. ID ORDER BY 	l.title";
 			List<HashMap<String, Object>> res2 = util.executeQuery(sql2);
 			if (res2.size() > 0) {
 				for (HashMap<String, Object> item : res2) {
