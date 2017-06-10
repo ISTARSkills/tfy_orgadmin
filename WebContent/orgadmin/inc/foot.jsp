@@ -82,6 +82,7 @@ try{
 <script src="<%=basePath %>assets/js/plugins/highchart/no-data-to-display.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/data.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/exporting.js"></script>
+
 <script src="<%=basePath %>assets/js/reconnecting-websocket.min.js"></script>
 <script src="<%=basePath %>assets/js/websocket.js"></script>
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>

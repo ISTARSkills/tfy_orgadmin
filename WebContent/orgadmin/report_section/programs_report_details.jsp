@@ -37,9 +37,10 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 		String courseName="";
 	if (request.getParameter("course_id") != null && !request.getParameter("course_id").toString().equalsIgnoreCase("null")){
 		flag = true;
+		System.out.println("course_id -------"+request.getParameter("course_id").toString());
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id").toString()));
 		courseName = course.getCourseName();
-		System.out.println("course_id -------"+request.getParameter("course_id").toString());
+		
 		course_id =request.getParameter("course_id");		
 		studentcount = jsonUIUtils.getStudentCountfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
 		student_list = jsonUIUtils.getStudentlistfromCourse(Integer.parseInt(request.getParameter("course_id").toString()), college_id,"Program");
@@ -82,11 +83,11 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 				 %>
 				
 					
-	<h2>				
-<ol class="breadcrumb">
+<h2>					
+<ol class="breadcrumb" style="margin-left: 14px;     color: rgb(235, 56, 79);">
             <li>
                 <%if(request.getParameter("batch_id") != null && !request.getParameter("batch_id").toString().equalsIgnoreCase("null")){ %>
-                <a href="<%=baseURL %>orgadmin/report.jsp">Batch</a>
+                <a href="<%=baseURL %>orgadmin/report.jsp">Batches</a>
                 <%}
                 else
                 {
@@ -97,10 +98,10 @@ int college_id = (int)request.getSession().getAttribute("orgId");
                 }%>
             </li>
             <li class="active">
-                <strong><%=request.getParameter("headname").toString()%></strong>
-            </li>
+                <%=request.getParameter("headname").toString()%>
+          </li>
         </ol>
-        </h2>
+        </h2>	
        
 			</div>
 			<% } %>
@@ -152,10 +153,8 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 			    	  %>
 				    	 <%= util.getHTML(3051, conditions1) %>
 				    	 <%
-			      }
-			      
-			      
-				%>
+			      }			      			      
+				%>								
 					</div>
 				</div>
 
@@ -168,10 +167,10 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 
 
 		<!-- row3 start -->
-		<div class="row">
+		<div class="row" style="margin-top: 15px;">
 			<div class="col-lg-12">
 				<div class="col-lg-7">
-					<div class="ibox-content" style="height: 672px !important;">
+					<div class="ibox-content" style="height: 582px !important;">
 						<%ReportUtils repUtils = new ReportUtils();
 						if(request.getParameterMap().containsKey("course_id") && !request.getParameter("course_id").toString().equalsIgnoreCase("null"))
 						{
@@ -194,7 +193,7 @@ int college_id = (int)request.getSession().getAttribute("orgId");
 					</div>
 				</div>
 				<div class="col-lg-5">
-				<div class="ibox white-bg" style="padding-top: 5px;    height: 672px !important;">
+				<div class="ibox white-bg" style="padding-top: 5px;    height: 582px !important;">
 				<%=new ColourCodeUitls().getColourCodeForReports() %>
 					<div class="ibox-content">
 						<%

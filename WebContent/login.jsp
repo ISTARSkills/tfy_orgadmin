@@ -66,11 +66,11 @@
 
 			<form class="m-t" role="form" action="<%=baseURL%>login" method="get">
 				<div class="form-group">
-					<input type="email" name="email" value="vaibhav@istarindia.com"
+					<input type="email" name="email" 
 						class="form-control" placeholder="Username" required="">
 				</div>
 				<div class="form-group">
-					<input type="password" name="password" value="test123"
+					<input type="password" name="password" 
 						class="form-control" placeholder="Password" required="">
 				</div>
 

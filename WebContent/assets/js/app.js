@@ -88,6 +88,7 @@ function readyFn(jQuery) {
 		
 	case 'orgadmin_report':
 		init_orgadmin_report();
+		
 		$('#Reports').css('color','  #eb384f');
 		break;
 	
@@ -1722,7 +1723,7 @@ $('.fc-event').unbind().on('click', function() {
 				
 			}else{
 				
-				url= "../super_admin/event_details.jsp";
+				url= "../orgadmin/event_details.jsp";
 			}
 			
 			
