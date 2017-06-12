@@ -563,6 +563,7 @@ function initEditGroupModalCall()
 	    	            $.get(urls, function(data) {
 	    	            	$('#edit_role_section_options').empty();
 	    	            	$('#edit_role_section_options').append(data);
+	    	            	$('#edit_role_section_options').select2();
 	    	            });
 	    	    		$('#edit_role_section_holder').show();
 	    	    	}
@@ -572,6 +573,7 @@ function initEditGroupModalCall()
 	    	            $.get(urls, function(data) {
 	    	            	$('#edit_role_section_options').empty();
 	    	            	$('#edit_role_section_options').append(data);
+	    	            	$('#edit_role_section_options').select2();
 	    	            });
 	    	    		$('#edit_role_section_holder').show();
 	    	    	}
@@ -582,6 +584,7 @@ function initEditGroupModalCall()
 	    	            $.get(urls, function(data) {
 	    	            	$('#edit_student_list_holder').empty();
 	    	            	$('#edit_student_list_holder').append(data);
+	    	            	$('#edit_student_list_holder').select2();
 	    	            });
 	    	    	}    	 
 	    	    });
@@ -592,6 +595,7 @@ function initEditGroupModalCall()
 	    	        $.get(urls, function(data) {
 	    	        	$('#edit_student_list_holder').empty();
 	    	        	$('#edit_student_list_holder').append(data);
+	    	        	$('#edit_student_list_holder').select2();
 	    	        });        
 	    	    });
 	    		
@@ -2308,6 +2312,11 @@ function filter_user_table(key,tableID) {
 function initCreateSectionCall()
 {
 	
+	$("#create_group_model" ).on('shown', function(){
+		$('#member_filter_by').select2();
+	});
+
+	
 		var cid = $('#member_filter_by').data("college_id");
 		var urls = '../get_filtered_students?entity_id='+cid+'&filter_by=ORG';
 		if(cid!=null)
@@ -2315,7 +2324,7 @@ function initCreateSectionCall()
 	    $.get(urls, function(data) {
 	    	$('#student_list_holder').empty();
 	    	$('#student_list_holder').append(data);
-	    	
+	    	$('#student_list_holder').select2();
 	    });
 	    
 			}
@@ -2331,6 +2340,7 @@ function initCreateSectionCall()
             $.get(urls, function(data) {
             	$('#role_section_options').empty();
             	$('#role_section_options').append(data);
+            	$('#role_section_options').select2();
             });
     		$('#role_section_holder').show();
     	}
@@ -2340,6 +2350,7 @@ function initCreateSectionCall()
             $.get(urls, function(data) {
             	$('#role_section_options').empty();
             	$('#role_section_options').append(data);
+            	$('#role_section_options').select2();
             });
     		$('#role_section_holder').show();
     	}
@@ -2350,8 +2361,11 @@ function initCreateSectionCall()
             $.get(urls, function(data) {
             	$('#student_list_holder').empty();
             	$('#student_list_holder').append(data);
+            	$('#student_list_holder').select2();
             });
-    	}    	 
+    	}   
+    	
+    	$('#member_filter_by').select2();
     });
     
     $('#role_section_options').unbind().on("change",function (){
@@ -2360,6 +2374,7 @@ function initCreateSectionCall()
         $.get(urls, function(data) {
         	$('#student_list_holder').empty();
         	$('#student_list_holder').append(data);
+        	$('#student_list_holder').select2();
         });        
     });	
  }

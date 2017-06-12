@@ -379,7 +379,7 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 														HashMap<String, Object> feedback = feedbackData.get(0);
 														for (String feedback_key : feedback.keySet()) {
 															
-															if (!feedback_key.equalsIgnoreCase("rating") && (float)feedback.get(feedback_key)>3 ) {
+															if (!feedback_key.equalsIgnoreCase("rating") && (float)feedback.get(feedback_key)>2.5 ) {
 											%>
 											<span class="badge"> <%=feedback_key%>
 											</span> &nbsp;
@@ -429,7 +429,7 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 														HashMap<String, Object> feedback = studentFeedbackData.get(0);
 														for (String feedback_key : feedback.keySet()) {
 															double keyData = (double)feedback.get(feedback_key);
-															if (keyData>3) {
+															if (keyData>2.5) {
 															
 											%>
 											<span class="badge"> <%=feedback_key.replace("_", " ")%>

@@ -73,7 +73,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<h3 class="m-b-n-md">Mode</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
@@ -83,7 +83,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 											</select>
 										</div>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<h3 class="m-b-n-md">Type</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
@@ -93,7 +93,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 											</select>
 										</div>
 									</div>
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<h3 class="m-b-n-md">Is Primary</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
@@ -101,13 +101,16 @@ Organization college=new OrganizationDAO().findById(colegeID);
 										</div>
 									</div>
 									
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<h3 class="m-b-n-md">Is Historical</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
 											<input type="checkbox" name="is_historical" class="js-switch" />
 										</div>
 									</div>
+									
+								</div>
+									<div class="form-group">	
 									<div class="col-lg-4">
 										<h3 class="m-b-n-md">Parent Role / Section</h3>
 										<hr class="m-b-xs">
@@ -123,26 +126,24 @@ Organization college=new OrganizationDAO().findById(colegeID);
 												<% 	
 									}
 									%>
-
 											</select>
 										</div>
 									</div>
-								</div>
-
-								<div class="form-group">
-									<h3 class="m-b-n-md">Members</h3>
-									<hr class="m-b-xs">
-									<div class="col-lg-2">
+									<div class="col-lg-4">
+									<h3 class="m-b-n-md">Filter Students</h3>
+										<hr class="m-b-xs">
 										<div>
-											<select data-placeholder="Filter By" class="select2-dropdown" tabindex="4" name="filter_by" id="member_filter_by" data-college_id="<%=colegeID%>">
-												<option value=""></option>
-												<option value="ORG">ORG</option>
-												<option value="ROLE">ROLE</option>
-												<option value="SECTION">SECTION</option>
+											<select data-placeholder="Filter By" class="select2-dropdown" tabindex="4" name="filter_by" id="member_filter_by" data-college_id="<%=colegeID%>">												
+												
+												<option value="ORG">By Org</option>
+												<option value="ROLE">By Role</option>
+												<option value="SECTION">By Section</option>
 											</select>
 										</div>
 									</div>
 									<div class="col-lg-4" id="role_section_holder" style="display: none">
+									<h3 class="m-b-n-md">Select Section/Role</h3>
+										<hr class="m-b-xs">
 										<div>
 											<select data-placeholder="Role/Section Name" class="select2-dropdown" multiple tabindex="8" name="role_section_id" id="role_section_options">
 
@@ -150,11 +151,18 @@ Organization college=new OrganizationDAO().findById(colegeID);
 											</select>
 										</div>
 									</div>
-									<div class="col-lg-6">
+								</div>
+							<div class="form-group">	
+								<h3 class="m-b-n-md">Filtered Students</h3>
+									<hr class="m-b-xs">
+									
+									<div class="col-lg-12">
+									<div id="entity_actual_holder">				
 										<div>
 											<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list" id="student_list_holder">
 
 											</select>
+										</div>
 										</div>
 									</div>
 								</div>

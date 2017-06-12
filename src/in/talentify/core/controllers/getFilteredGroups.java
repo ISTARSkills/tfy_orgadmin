@@ -52,6 +52,7 @@ public class getFilteredGroups extends IStarBaseServelet {
 		
 		List<HashMap<String,Object>> groups =util.executeQuery(sql);
 		StringBuffer sb = new StringBuffer();
+		sb.append("<option value='null'>Select Section/Role</option>");
 		for(HashMap<String, Object> row: groups)
 		{
 			sb.append("<option value='"+row.get("id").toString()+"'>"+row.get("name").toString()+"</option>");

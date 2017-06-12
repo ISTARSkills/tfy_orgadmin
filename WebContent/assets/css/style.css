@@ -11204,4 +11204,8 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
 	right: 6px !important;
 	position: absolute !important;
 }
+
+#entity_actual_holder .select2.select2-container{
+	    width: 100% !important;
+}
   

@@ -65,8 +65,8 @@
 						</div>
 					</div>
 					<div class="form-group">
-					<div class="col-lg-2">
-							<h3 class="m-b-n-md">Type</h3>
+					<div class="col-lg-3">
+							<h3 class="m-b-n-md">Mode</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
 							<% System.out.println("----------------->"+bg.getType()); %>
@@ -77,7 +77,7 @@
 								</select>
 							</div>
 						</div>
-							<div class="col-lg-2">
+							<div class="col-lg-3">
 										<h3 class="m-b-n-md">Is Primary</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
@@ -85,13 +85,16 @@
 										</div>
 									</div>
 									
-									<div class="col-lg-2">
+									<div class="col-lg-3">
 										<h3 class="m-b-n-md">Is Historical</h3>
 										<hr class="m-b-xs">
 										<div class="col-lg-12">
 											<input type="checkbox" name="is_historical" class="js-switch" <%if(bg.getIsHistorical()!=null && bg.getIsHistorical()){%>checked<%} %>/>
 										</div>
 									</div>
+							</div>
+							
+						<div class="form-group">			
 						<div class="col-lg-4">
 							<h3 class="m-b-n-md">Parent Role / Section</h3>
 							<hr class="m-b-xs">
@@ -112,30 +115,56 @@
 									%>
 									
 								</select>
-							</div></div>
-						</div>
-					
-					<div class="form-group">
-							<h3 class="m-b-n-md">Members</h3>
-							<hr class="m-b-xs">
-							<div class="col-lg-2">								
-								<div>
+							</div>
+							</div>
+							<div class="col-lg-4">
+									<h3 class="m-b-n-md">Filter Students</h3>
+										<hr class="m-b-xs">
+										
+										<div>
 									<select data-placeholder="Filter By" class="select2-dropdown" tabindex="4" name="filter_by" id="edit_member_filter_by" data-batch_group_id="<%=bg.getId()%>" data-college_id="<%=bg.getOrganization().getId()%>">
 										<option value=""></option>
-										<option value="ORG">ORG</option>
-										<option value="ROLE">ROLE</option>	
-										<option value="SECTION">SECTION</option>	
+										<option value="ORG">By Org</option>
+										<option value="ROLE">By Role</option>	
+										<option value="SECTION">By Section</option>	
 									</select>
 								</div>
-							</div>
+										
+										</div>
+										
+						<div class="col-lg-4" id="edit_role_section_holder" style="display: none">
+									<h3 class="m-b-n-md">Select Section/Role</h3>
+										<hr class="m-b-xs">
+										<div>
+											<select data-placeholder="Role/Section Name" class="select2-dropdown" multiple tabindex="8" name="role_section_id" id="edit_role_section_options">
+
+
+											</select>
+										</div>
+									</div>
 							
-							<div class="col-lg-10">								
+							
+							
+							
+							
+							
+							
+						</div>
+					
+					
+							
+							<div class="form-group">
+							<h3 class="m-b-n-md">Filtered Members</h3>
+							<hr class="m-b-xs">
+							<div class="col-lg-12">
+							<div id="entity_actual_holder">								
 								<div>
 									<select data-placeholder="Students..." class="select2-dropdown" multiple tabindex="4" name="student_list" id="edit_student_list_holder">
 										
 									</select>
 								</div>
 							</div>
+						</div>
 						</div>
 					<!-- <input type="hidden" name="student_list"> -->
 					<div class="form-group" >

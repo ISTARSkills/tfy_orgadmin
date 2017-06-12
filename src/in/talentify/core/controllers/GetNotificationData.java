@@ -126,7 +126,10 @@ public class GetNotificationData extends IStarBaseServelet {
 					int assessmentId = (int)row.get("id");
 					
 					Double maxPoints = serv.getMaxPointsOfAssessment(assessmentId)!=null?serv.getMaxPointsOfAssessment(assessmentId) : 0d ;
+					if(maxPoints!=null &&(double)maxPoints!=0)
+					{
 					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"(Max Points: "+maxPoints +" )</option>");
+					}
 				}
 			}	
 			else if(entityType.equalsIgnoreCase("COURSE"))
@@ -157,7 +160,10 @@ public class GetNotificationData extends IStarBaseServelet {
 						int assessmentId = (int)row.get("id");
 					
 					Double maxPoints = serv.getMaxPointsOfAssessment(assessmentId)!=null?serv.getMaxPointsOfAssessment(assessmentId) : 0d ;
-					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"(Max Points: "+maxPoints+" )</option>");
+					if(maxPoints!=null && (double)maxPoints!=0)
+					{
+						sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"(Max Points: "+maxPoints+" )</option>");
+					}
 				}
 			}			
 			else if(entityType.equalsIgnoreCase("CMSESSION"))

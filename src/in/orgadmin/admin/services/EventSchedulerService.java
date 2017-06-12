@@ -710,7 +710,7 @@ public class EventSchedulerService {
 		String sql = "SELECT 	batch.id AS bid, 	batch_schedule_event.eventhour AS eventhour, 	batch_schedule_event.eventminute AS eventminute, 	batch_schedule_event.actor_id AS userid, 	batch_schedule_event.classroom_id AS classroomid, 	CAST ( 		batch_schedule_event. ID AS VARCHAR (50) 	) AS eventid, 	batch_schedule_event.eventdate AS eventdate, 	user_profile.first_name AS NAME "
 				+ "FROM 	batch_schedule_event, batch,  user_profile, user_role WHERE batch.batch_group_id = batch_schedule_event.batch_group_id and batch.course_id = batch_schedule_event.course_id and"
 				+ " 	batch_schedule_event.batch_group_id IN ( SELECT 	ID 	FROM batch_group WHERE 	college_id ="+ orgID + " ) 	 " + "AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate
-				+ "%' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
+				+ "%' and batch_schedule_event.type = 'BATCH_SCHEDULE_EVENT_TRAINER' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
 				+ "AND user_role.role_id = 14";
 		System.out.println("erronous sql>>>>>    "+sql);
 		DBUTILS db = new DBUTILS();
