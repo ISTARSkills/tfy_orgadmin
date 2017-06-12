@@ -11,4 +11,4 @@
 		eventId = request.getParameter("eventId");
 	}
 %>
-<%=dashboardServices.getEventSessionLog(eventId)%>
+<%-- <%=dashboardServices.getEventSessionLog(eventId)%> --%>

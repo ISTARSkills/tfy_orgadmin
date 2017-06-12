@@ -44,6 +44,7 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 							<select data-placeholder="Select Section" tabindex="4"
 								id='notification_batchgroup_holder'>
 								<option value="null">Select Section / Role</option>
+								<option value="ALL_GROUP_OF_ORG_<%=collegeID%>">Select All</option>
 								<%
 								
 								for(BatchGroup bg : organization.getBatchGroups())

@@ -30,6 +30,46 @@ public class OrgAdminSkillService {
 		return data;
 	}
 
+	public List<HashMap<String, Object>>  getAllMappedSkills(int orgId, int entityId, String entityType)
+	{
+		CustomReportUtils repUtils   = new CustomReportUtils();
+		String sql = "";
+		if(entityType.equalsIgnoreCase("USER"))
+		{
+			sql = repUtils.getReport(42).getSql();
+		}
+		else
+		{
+			sql = repUtils.getReport(41).getSql();
+		}	
+		sql = sql.replaceAll(":college_id", orgId+"");
+		sql = sql.replaceAll(":entity_id", entityId+"");
+		sql = sql.replaceAll(":entity_type", entityType.toUpperCase());
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		return data;
+	}
+	
+	
+	public List<HashMap<String, Object>> getAllSkillsForEntity(int orgId, int entityId, String entityType)
+	{
+		CustomReportUtils repUtils   = new CustomReportUtils();
+		String sql = "";
+		if(entityType.equalsIgnoreCase("USER"))
+		{
+			sql = repUtils.getReport(40).getSql();
+		}
+		else
+		{
+			sql = repUtils.getReport(39).getSql();
+		}	
+		sql = sql.replaceAll(":college_id", orgId+"");
+		sql = sql.replaceAll(":entity_id", entityId+"");
+		sql = sql.replaceAll(":entity_type", entityType.toUpperCase());
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		return data;
+	}
 	public List<HashMap<String, Object>> getAllSkills(int orgId) {
 		CustomReportUtils repUtils   = new CustomReportUtils();
 		String sql = repUtils.getReport(12).getSql();

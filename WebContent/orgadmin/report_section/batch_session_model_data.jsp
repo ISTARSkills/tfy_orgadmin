@@ -34,9 +34,9 @@ SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 				<small><span class="label label-info">DATE : <%=format.format(item.get("eventdate"))%></span></small>
 			</p>
 			<p class="m-r-sm m-t-sm">
-				Session:
+				Sessions Covered:
 				</p>
-			<p class="m-r-sm m-t-sm"><%=item.get("title")%>(<%=item.get("cmsession_id")%>)</p>
+			<p class="m-r-sm m-t-sm"><%=item.get("cmsessions")%></p>
 		</div>
 	</div>
 </div>

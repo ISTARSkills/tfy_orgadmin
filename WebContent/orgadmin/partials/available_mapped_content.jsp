@@ -15,7 +15,6 @@ String entityId = request.getParameter("entity_id");
 							<jsp:param value='<%=collegeId%>' name="college_id" />
 						</jsp:include>
 					</div>
-
 					<div class="col-lg-6" style="padding: 0px;
     margin-top: -15px;
     margin-left: 4px;">

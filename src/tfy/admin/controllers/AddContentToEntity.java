@@ -57,17 +57,27 @@ public class AddContentToEntity extends IStarBaseServelet {
 		int entityId = Integer.parseInt(request.getParameter("entity_id"));
 		String entityType = request.getParameter("entity_type");
 		Integer adminId = Integer.parseInt(request.getParameter("admin_id")); 
-		CustomReportUtils repUtils = new CustomReportUtils();
+		DBUTILS db = new  DBUTILS();
+		
+		String checkIfExist ="select cast(count(*) as integer) as cc  from entity_skill_mapping where entity_id="+entityId+" and entity_type='"+entityType.toUpperCase()+"' and skill_objective_id="+skillId+"";
+		List<HashMap<String, Object>> result = db.executeQuery(checkIfExist);
+		if(result.size()>0 && (int)result.get(0).get("cc")==0)
+		{
+			String insertMapping="INSERT INTO entity_skill_mapping (id, entity_id, skill_objective_id, entity_type) VALUES ((select COALESCE(max(id),0)+1 from entity_skill_mapping), "+entityId+", "+skillId+", '"+entityType.toUpperCase()+"');";
+			db.executeUpdate(insertMapping);
+		}
+		
+		/*CustomReportUtils repUtils = new CustomReportUtils();
 		CustomReport rep = repUtils.getReport(15); 				
 		String sql = rep.getSql();
 		sql = sql.replaceAll(":skill_objective_id", skillId+"");
 		System.err.println(sql);
-		DBUTILS db = new  DBUTILS();
-		List<HashMap<String, Object>> contentRelatedToSkill = db.executeQuery(sql);
-		if(entityType.equalsIgnoreCase("User"))
+		*/
+		//List<HashMap<String, Object>> contentRelatedToSkill = db.executeQuery(sql);
+		/*if(entityType.equalsIgnoreCase("User"))
 		{
 			int studentId = entityId;
-			mapContent(contentRelatedToSkill, studentId,adminId);
+			//mapContent(contentRelatedToSkill, studentId,adminId);
 		}
 		else if(entityType.equalsIgnoreCase("group"))
 		{
@@ -95,7 +105,7 @@ public class AddContentToEntity extends IStarBaseServelet {
 				mapContent(contentRelatedToSkill, studentId,adminId);
 			}
 			handleBatchCreation(contentRelatedToSkill,entityType, entityId);
-		}
+		}*/
 	}
 
 	private void handleBatchCreation(List<HashMap<String, Object>> contentRelatedToSkill, String entityType, int entityId) {

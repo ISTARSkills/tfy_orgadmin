@@ -9,15 +9,14 @@
 String collegeID = request.getParameter("college_id");
 String entityType = request.getParameter("entity_type");
 String entityId = request.getParameter("entity_id");
-List<HashMap<String, Object>> listSkills = new OrgAdminSkillService().getAllSkills(Integer.parseInt(collegeID));
+//List<HashMap<String, Object>> listSkills = new OrgAdminSkillService().getAllSkills(Integer.parseInt(collegeID));
+List<HashMap<String, Object>> listSkills = new OrgAdminSkillService().getAllSkillsForEntity(Integer.parseInt(collegeID), Integer.parseInt(entityId), entityType);
 IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 %>
 <div
 		class="col-lg-12 p-xs  b-r-lg border-left-right border-top-bottom border-size-small div-height">
-
 		<div class="col-lg-6 m-b-md" >
 			<h3>Skills Available</h3>
-
 			<div class="input-group">
 				<input type="text" name="input-role-skill"
 					data-entity_id="<%=entityId %>" data-entity_type="<%=entityType%>" placeholder="Search Skill..."
@@ -27,10 +26,7 @@ IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 					</button>
 				</span>
 			</div>
-
 		</div>
-
-
 		<div class="col-lg-12">
 			<div class="full-height div-scroll-height-2">
 				<div class="full-height-scroll" id="skill_<%=entityType%>_<%=entityId%>">

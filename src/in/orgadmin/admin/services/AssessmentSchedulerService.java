@@ -82,12 +82,12 @@ public class AssessmentSchedulerService {
 		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
 			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getIstarUser().getId())) {
 				students.add(bstudent.getIstarUser().getId()+"");
-				String assessmentEventsql = "INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	id, 	status, 	action, 	assessment_id, 	batch_group_id ) VALUES 	( 		'"
+				String assessmentEventsql = "INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	id, 	status, 	action, 	assessment_id, 	batch_group_id, course_id ) VALUES 	( 		'"
 						+ bstudent.getIstarUser().getId() + "', 		now(), 		" + AdminUserID + ", 		'"
 						+ event_date + "', 		'1', 		'"
 						+ 60
 						+ "', 		't', 		'ASSESSMENT_EVENT', 		now(), 		(SELECT COALESCE (MAX(ID) + 1, 1) 	FROM 	istar_assessment_event), 		'SCHEDULED', 		NULL, 		"
-						+ assessment_id + ", 		" + batch.getBatchGroup().getId() + "	) RETURNING ID; ";
+						+ assessment_id + ", 		" + batch.getBatchGroup().getId() + ", "+batch.getCourse().getId()+"	) RETURNING ID; ";
 
 				int istarAssessmentEventId = db.executeUpdateReturn(assessmentEventsql);
 

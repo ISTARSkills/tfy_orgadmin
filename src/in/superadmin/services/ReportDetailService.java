@@ -3,38 +3,35 @@ package in.superadmin.services;
 import java.util.HashMap;
 import java.util.List;
 
+import com.viksitpro.core.dao.entities.Batch;
+import com.viksitpro.core.dao.entities.BatchDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class ReportDetailService {
 	DBUTILS dbutils = new DBUTILS();
 
 	public List<HashMap<String, Object>> getAllSessions(int batch_id, int offset, boolean flag) {
-
-		String sql = "SELECT 	CAST ( 		event_log.event_id AS VARCHAR 	), 	event_log.cmsession_id, 	cmsession.title, 	bse.eventdate FROM 	event_log, 	cmsession, 	batch_schedule_event bse WHERE 	event_id IN ( 		SELECT 			ID 		FROM 			batch_schedule_event 		WHERE 			batch_id = "
-				+ batch_id
-				+ " 	) AND event_log.cmsession_id = cmsession. ID AND bse. ID = event_log.event_id GROUP BY 	event_log.event_id, 	event_log.cmsession_id, 	cmsession.title, 	bse.eventdate ORDER BY 	bse.eventdate DESC LIMIT 3 OFFSET "
-				+ offset;
-
+		Batch batch = new BatchDAO().findById(batch_id);
+		
+		String sql ="select event_id, batch_schedule_event.eventdate,string_agg(distinct cmsession.title,', ') as cmsessions from slide_change_log , cmsession, batch_schedule_event where cmsession.id = slide_change_log.cmsession_id and slide_change_log.event_id = batch_schedule_event.id and batch_schedule_event.batch_group_id = "+batch.getBatchGroup().getId()+" and batch_schedule_event.course_id = "+batch.getCourse().getId()+" group by event_id, batch_schedule_event.eventdate order by batch_schedule_event.eventdate limit 3 offset "+offset;
 		if (flag) {
-			sql = "SELECT 	CAST ( 		event_log.event_id AS VARCHAR 	), 	event_log.cmsession_id, 	cmsession.title, 	bse.eventdate FROM 	event_log, 	cmsession, 	batch_schedule_event bse WHERE 	event_id IN ( 		SELECT 			ID 		FROM 			batch_schedule_event 		WHERE 			batch_id = "
-					+ batch_id
-					+ " 	) AND event_log.cmsession_id = cmsession. ID AND bse. ID = event_log.event_id GROUP BY 	event_log.event_id, 	event_log.cmsession_id, 	cmsession.title, 	bse.eventdate ORDER BY 	bse.eventdate DESC";
-		}
+			sql = "select event_id, batch_schedule_event.eventdate,string_agg(distinct cmsession.title,', ') as cmsessions from slide_change_log , cmsession, batch_schedule_event where cmsession.id = slide_change_log.cmsession_id and slide_change_log.event_id = batch_schedule_event.id and batch_schedule_event.batch_group_id = "+batch.getBatchGroup().getId()+" and batch_schedule_event.course_id = "+batch.getCourse().getId()+" group by event_id, batch_schedule_event.eventdate order by batch_schedule_event.eventdate ";
+		}		
 		System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}
 
 	public List<HashMap<String, Object>> getAllAssessments(int batch_id, int offset, boolean flag) {
-		String sql = "SELECT 	ass. ID as assessment_id, 	asse.batch_id, 	ass.assessmenttitle, 	asse.eventdate FROM 	istar_assessment_event asse, 	assessment ass WHERE 	asse.batch_id = "
-				+ batch_id
-				+ " AND ass. ID = asse.assessment_id GROUP BY 	ass. ID, 	asse.batch_id, 	asse.eventdate ORDER BY 	asse.eventdate DESC LIMIT 3 OFFSET "
+		String sql = "SELECT 	ass. ID as assessment_id, 	batch.id as batch_id, 	ass.assessmenttitle, 	asse.eventdate FROM 	istar_assessment_event asse, 	assessment ass, batch  WHERE 	asse.batch_group_id = batch.batch_group_id and batch.course_id = asse.course_id"
+				
+				+ " AND ass. ID = asse.assessment_id and batch.id ="+batch_id+" GROUP BY 	ass. ID, 	batch.id, 	asse.eventdate ORDER BY 	asse.eventdate DESC LIMIT 3 OFFSET "
 				+ offset;
 
 		if (flag) {
-			sql = "SELECT 	ass. ID, 	asse.batch_id, 	ass.assessmenttitle, 	asse.eventdate FROM 	istar_assessment_event asse, 	assessment ass WHERE 	asse.batch_id = "
-					+ batch_id
-					+ " AND ass. ID = asse.assessment_id GROUP BY 	ass. ID, 	asse.batch_id, 	asse.eventdate ORDER BY 	asse.eventdate DESC";
+			sql = "SELECT 	ass. ID as assessment_id, 	batch.id as batch_id, 	ass.assessmenttitle, 	asse.eventdate FROM 	istar_assessment_event asse, 	assessment ass, batch  WHERE 	asse.batch_group_id = batch.batch_group_id and batch.course_id = asse.course_id"
+				
+				+ " AND ass. ID = asse.assessment_id and batch.id ="+batch_id+" GROUP BY 	ass. ID, 	batch.id, 	asse.eventdate ORDER BY 	asse.eventdate DESC";
 		}
 
 		System.err.println(sql);

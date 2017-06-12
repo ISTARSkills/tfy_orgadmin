@@ -9,7 +9,8 @@ String collegeID = request.getParameter("college_id");
 String entityType = request.getParameter("entity_type");
 String entityId = request.getParameter("entity_id");
 
-List<HashMap<String, Object>> list = new AdminServices().getAllContentAssosicatedSkills(Integer.parseInt(collegeID),Integer.parseInt(entityId),entityType);
+//List<HashMap<String, Object>> list = new AdminServices().getAllContentAssosicatedSkills(Integer.parseInt(collegeID),Integer.parseInt(entityId),entityType);
+List<HashMap<String, Object>> list = new OrgAdminSkillService().getAllMappedSkills(Integer.parseInt(collegeID),Integer.parseInt(entityId),entityType);
 %>
 
 	<div
@@ -21,7 +22,7 @@ List<HashMap<String, Object>> list = new AdminServices().getAllContentAssosicate
 				<div class="alert alert-dismissable gray-bg">
 				
 				
-					<%=item.get("content_title")%>
+					<%=item.get("name")%>
 				</div>
 				<% } if (list.size() == 0) {
 				%>

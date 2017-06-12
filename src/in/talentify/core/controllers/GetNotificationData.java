@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.utilities.DBUTILS;
 
+import tfy.admin.services.StudentSkillMapService;
+
 /**
  * Servlet implementation class GetNotificationData
  */
@@ -118,9 +120,13 @@ public class GetNotificationData extends IStarBaseServelet {
 				String sql= "select id, assessmenttitle from assessment";
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Assessment</option>");
+				StudentSkillMapService serv= new StudentSkillMapService();
 				for(HashMap<String, Object> row: groups)
 				{
-					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"</option>");
+					int assessmentId = (int)row.get("id");
+					
+					Double maxPoints = serv.getMaxPointsOfAssessment(assessmentId)!=null?serv.getMaxPointsOfAssessment(assessmentId) : 0d ;
+					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"(Max Points: "+maxPoints +" )</option>");
 				}
 			}	
 			else if(entityType.equalsIgnoreCase("COURSE"))
@@ -129,8 +135,11 @@ public class GetNotificationData extends IStarBaseServelet {
 				String sql ="select distinct cmsession.id , cmsession.title from module_course, cmsession_module, cmsession where module_course.course_id = "+entityId+" and module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = cmsession.id ";		
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select CMSession</option>");
+				StudentSkillMapService serv= new StudentSkillMapService();
+
 				for(HashMap<String, Object> row: groups)
 				{
+					
 					sb.append("<option value="+row.get("id")+">"+row.get("title")+"</option>");
 				}
 			}
@@ -139,10 +148,16 @@ public class GetNotificationData extends IStarBaseServelet {
 				//assessment from course
 				String sql ="select distinct id, assessmenttitle from assessment where course_id="+entityId;
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
+				StudentSkillMapService serv= new StudentSkillMapService();
 				sb.append("<option value='null'>Select Assessment</option>");
+				
+				
 				for(HashMap<String, Object> row: groups)
 				{
-					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"</option>");
+						int assessmentId = (int)row.get("id");
+					
+					Double maxPoints = serv.getMaxPointsOfAssessment(assessmentId)!=null?serv.getMaxPointsOfAssessment(assessmentId) : 0d ;
+					sb.append("<option value="+row.get("id")+">"+row.get("assessmenttitle")+"(Max Points: "+maxPoints+" )</option>");
 				}
 			}			
 			else if(entityType.equalsIgnoreCase("CMSESSION"))
@@ -152,9 +167,12 @@ public class GetNotificationData extends IStarBaseServelet {
 				System.out.println("GetNotification 98"+sql);
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Lesson</option>");
+				StudentSkillMapService serv= new StudentSkillMapService();
 				for(HashMap<String, Object> row: groups)
 				{
-					sb.append("<option value="+row.get("id")+">"+row.get("title")+"</option>");
+					int lessonId = (int)row.get("id");
+					Double maxPoints = serv.getMaxPointsOfLesson(lessonId)!=null?serv.getMaxPointsOfLesson(lessonId) : 0d ;
+					sb.append("<option value="+row.get("id")+">"+row.get("title")+" (Max Points: "+maxPoints+")</option>");
 				}
 			}
 		}		

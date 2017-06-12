@@ -46,7 +46,8 @@ public class EventSchedulerService {
 
 	public void createEvent(int trainerID, int hours, int minute, int batchID, String eventDate, String startTime,
 			int AdminUserID, int classroomID, int cmsessionID, String associateTrainerID) {
-		if(associateTrainerID.equalsIgnoreCase("[0]"))
+		
+		if(associateTrainerID==null || associateTrainerID.equalsIgnoreCase("[0]"))
 		{
 			associateTrainerID="";
 		}

@@ -25,6 +25,8 @@ import in.orgadmin.utils.report.CustomReportUtils;
  */
 public class AdminServices {
 
+	
+	
 	public ArrayList<Course> getCoursesInCollege(int college_id)
 	{
 		CourseDAO dao = new CourseDAO();

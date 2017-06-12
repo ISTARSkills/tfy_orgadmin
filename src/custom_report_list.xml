@@ -147,14 +147,14 @@ SELECT
 	istar_user.email,
 	CAST (
 		COUNT (
-			DISTINCT student_playlist.lesson_id
+			DISTINCT entity_skill_mapping.id
 		) AS INTEGER
 	) AS COUNT,
 	cast (COUNT (*) OVER () as integer) as total_user
 FROM
 	istar_user left join user_org_mapping on (istar_user. ID = user_org_mapping.user_id)	
 	 left join user_role on (user_org_mapping.user_id = user_role.user_id)
-	left join student_playlist on (student_playlist.student_id = istar_user. ID)
+	left join entity_skill_mapping on (entity_skill_mapping.entity_id = istar_user. ID and entity_skill_mapping.entity_type='USER')
 WHERE
 user_role.role_id = (
 	SELECT
@@ -177,18 +177,13 @@ SELECT
 	batch_group. ID,
 	batch_group. NAME AS NAME,
 	cast (COUNT (
-		DISTINCT student_playlist.lesson_id
+		DISTINCT entity_skill_mapping.id
 	)
 as integer) as count,
 	cast (COUNT (*) OVER () as integer) as total_user
 FROM
 	batch_group
-LEFT JOIN batch_students ON (
-	batch_students.batch_group_id = batch_group. ID
-)
-LEFT JOIN student_playlist ON (
-	student_playlist.student_id = batch_students.student_id
-)
+left join entity_skill_mapping on (entity_skill_mapping.entity_id = batch_group. ID and entity_skill_mapping.entity_type='GROUP')
 WHERE
 	batch_group.college_id = :college_id
 and batch_group.type =':type' 
@@ -916,5 +911,99 @@ GROUP BY
 	istar_user.email 
 
 </sql>
+</custom_report>
+<custom_report id="39">
+<sql>
+SELECT
+	distinct id, name
+FROM
+	skill_objective
+WHERE
+	skill_level_type = 'CMSESSION'
+AND ID NOT IN (
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  =  :entity_id and entity_type = ':entity_type'
+)
+
+order by name
+
+</sql>
+</custom_report>
+
+<custom_report id="40">
+<sql>
+SELECT
+	distinct id, name
+FROM
+	skill_objective
+WHERE
+	skill_level_type = 'CMSESSION'
+AND ID NOT IN (
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  =  :entity_id and entity_type = ':entity_type' 
+	UNION 
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  in (select distinct batch_group_id from batch_students where student_id = :entity_id)  and entity_type in ('GROUP')
+)
+order by name</sql>
+</custom_report>
+<custom_report id="41">
+<sql>
+SELECT
+	distinct id, name
+FROM
+	skill_objective
+WHERE
+	skill_level_type = 'CMSESSION'
+AND ID  IN (
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  =  :entity_id and entity_type = ':entity_type'
+)
+
+order by name
+
+</sql>
+</custom_report>
+
+<custom_report id="42">
+<sql>
+SELECT
+	distinct id, name
+FROM
+	skill_objective
+WHERE
+	skill_level_type = 'CMSESSION'
+AND ID  IN (
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  =  :entity_id and entity_type = ':entity_type' 
+	UNION 
+	SELECT
+		skill_objective_id
+	FROM
+		entity_skill_mapping
+	WHERE
+		entity_id  in (select distinct batch_group_id from batch_students where student_id = :entity_id)  and entity_type in ('GROUP')
+)
+order by name</sql>
 </custom_report>
 </custom_report_list>
