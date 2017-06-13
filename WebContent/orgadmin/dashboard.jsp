@@ -50,7 +50,7 @@
 			<!-- End Table -->
 			<div class="row">
 				<!-------------------------------------------Today Events and Notifications  -------------------------------------------------------->
-				<div class="col-lg-6">
+				<div class="col-lg-6" id="dashboard_left_box">
 					<div class="tabs-container">
 						<ul class="nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#tab-1">Todays

@@ -7,7 +7,8 @@
 
 
 <%
-SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy hh:mm a");
+
 	int batch_id = 0;
 	if (request.getParameter("batch_id") != null) {
 		batch_id = Integer.parseInt(request.getParameter("batch_id"));
@@ -27,16 +28,17 @@ SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 <div class="col-lg-4">
 	<div
 		class="product-box p-xl b-r-lg border-left-right border-top-bottom text-center batch-session-button"
-		data-event-id="<%=item.get("event_id")%>">
+		data-event-id="<%=item.get("event_id")%>" style="padding-left: 11px;
+    padding-right: 11px;">
 		<div>
 
 			<p class="m-r-sm m-t-sm">
-				<small><span class="label label-info">DATE : <%=format.format(item.get("eventdate"))%></span></small>
+				<small><span class="label label-info" style="background-color: #eb384f;">DATE : <%=format.format(item.get("eventdate"))%></span></small>
 			</p>
 			<p class="m-r-sm m-t-sm">
-				Sessions Covered:
+				<b>Sessions Covered</b>:
 				</p>
-			<p class="m-r-sm m-t-sm"><%=item.get("cmsessions")%></p>
+			<p class="m-r-sm m-t-sm"><%=item.get("cmsessions")!=null ? item.get("cmsessions") : "Not yet Covered"%></p>
 		</div>
 	</div>
 </div>

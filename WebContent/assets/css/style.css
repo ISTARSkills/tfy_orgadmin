@@ -11003,7 +11003,7 @@ width: 150px;height: 150px;
 /* dashboard.jsp  starts*/
 
 #orgadmin_dashboard .dash_main_tab{
-max-height: 100vh; overflow: overlay;
+overflow: overlay;
 }
 
 #orgadmin_dashboard .dash_notification_holder{

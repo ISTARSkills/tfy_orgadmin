@@ -40,7 +40,7 @@ public class UIUtils {
 		hashMap.put("next_session", nextSession);
 		
 		hashMap.put("assessment_title", assessmentTitle);
-		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch_group. ID AS batch_group_id, 	batch_group. NAME AS batch_group_name, 	course.course_name AS coursename, 	classroom_details.classroom_identifier AS classroom, 	organization. NAME AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail, 	CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, 	batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch_group, 	user_profile, 	istar_user, 	organization, 	classroom_details, 	course WHERE 	batch_schedule_event.batch_group_id = batch_group. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch_schedule_event.course_id AND istar_user. ID = user_profile.user_id AND batch_schedule_event. ID = '"+eventID+"'";
+		String sql = "SELECT 	batch_schedule_event. ACTION, 	batch_group. ID AS batch_group_id, 	batch_group. NAME AS batch_group_name, 	course.course_name AS coursename, course.id as course_id, classroom_details.id as class_id,	classroom_details.classroom_identifier AS classroom, 	organization. NAME AS colname, 	user_profile.first_name AS trainername, 	istar_user.email AS traineremail,  istar_user.id as trainer_id,	CAST ( 		batch_schedule_event.eventdate AS VARCHAR 	) AS evedate, 	batch_schedule_event.eventhour AS hours, 	batch_schedule_event.eventminute AS MINUTE, 	batch_schedule_event.status, 	batch_schedule_event.associate_trainee FROM 	batch_schedule_event, 	batch_group, 	user_profile, 	istar_user, 	organization, 	classroom_details, 	course WHERE 	batch_schedule_event.batch_group_id = batch_group. ID AND batch_schedule_event.classroom_id = classroom_details. ID AND classroom_details.organization_id = organization. ID AND istar_user. ID = batch_schedule_event.actor_id AND course. ID = batch_schedule_event.course_id AND istar_user. ID = user_profile.user_id AND batch_schedule_event. ID = '"+eventID+"'";
 		
 		
 		
@@ -51,7 +51,14 @@ public class UIUtils {
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		if(res.size() > 0){
 			hashMap.put("batch_group_name", res.get(0).get("batch_group_name").toString());
+			
+			hashMap.put("batch_group_id", res.get(0).get("batch_group_id").toString());
+			hashMap.put("class_id", res.get(0).get("class_id").toString());
+			hashMap.put("trainer_id", res.get(0).get("trainer_id").toString());
+			hashMap.put("course_id", res.get(0).get("course_id").toString());
+			
 			hashMap.put("coursename", res.get(0).get("coursename").toString());
+			
 			hashMap.put("classroom", res.get(0).get("classroom").toString());
 			hashMap.put("trainername", res.get(0).get("trainername").toString());
 			hashMap.put("traineremail", res.get(0).get("traineremail").toString());

@@ -18,6 +18,15 @@ import com.viksitpro.core.utilities.DBUTILS;
  */
 public class OrgAdminDashboardServices {
 	
+	
+	public List<HashMap<String, Object>> getSessionsCoveredInEvent(int eventId)
+	{
+		DBUTILS util = new DBUTILS();
+		List<HashMap<String, Object >> data = new ArrayList<>();
+		String sql="select COALESCE(string_agg (DISTINCT cmsession.title ||'('||cmsession.id ||')',', '), 'No Session Covered') as sessions  from slide_change_log, cmsession where slide_change_log.cmsession_id = cmsession.id and slide_change_log.event_id = "+eventId;
+		data = util.executeQuery(sql);	
+		return data;
+	}
 	public List<HashMap<String, Object>> getStundentFeedbackDataForEvent(int eventId)
 	{
 		DBUTILS util = new DBUTILS();
@@ -27,12 +36,20 @@ public class OrgAdminDashboardServices {
 		return data;
 	}
 	
-	public List<HashMap<String, Object>> learningObjectiveCoveredInEvent(int eventId)
+	public List<HashMap<String, Object>> learningObjectiveCoveredInEvent(int eventId, String status)
 	{
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object >> data = new ArrayList<>();
-		String sql="select distinct skill_objective.name  as skills from assessment_benchmark, skill_objective, slide_change_log where slide_change_log.event_id = "+eventId+" and slide_change_log.lesson_id = assessment_benchmark.item_id and assessment_benchmark.item_type = 'LESSON' and assessment_benchmark.skill_objective_id = skill_objective.id order by skills";
-		data = util.executeQuery(sql);	
+		if(status!=null && status.equalsIgnoreCase("ASSESSMENT"))
+		{	
+			String sql ="select string_agg(DISTINCT COALESCE(skill_objective.name,'No Learning Objective Covered'),', ') as lobs from skill_objective where parent_skill in (SELECT 	distinct assessment_benchmark.skill_objective_id FROM 	assessment_benchmark, 	batch_schedule_event WHERE 	batch_schedule_event.id = "+eventId+" AND  cast (split_part(batch_schedule_event.action, '__', 2) as integer) = assessment_benchmark.item_id AND assessment_benchmark.item_type = 'ASSESSMENT') and skill_objective.type = 'LEARNING_OBJECTIVE' " ;
+			data = util.executeQuery(sql);
+		}
+		else
+		{
+			String sql="select string_agg(DISTINCT COALESCE(skill_objective.name,'No Learning Objective Covered'),', ') as lobs from skill_objective where parent_skill in (SELECT DISTINCT 	skill_objective. id FROM 	assessment_benchmark, 	skill_objective, 	slide_change_log WHERE 	slide_change_log.event_id = "+eventId+" AND slide_change_log.lesson_id = assessment_benchmark.item_id AND assessment_benchmark.item_type = 'LESSON' AND assessment_benchmark.skill_objective_id = skill_objective. ID ) and skill_objective.type = 'LEARNING_OBJECTIVE' ";
+			data = util.executeQuery(sql);
+		}	
 		return data;
 	}
 	public List<HashMap<String, Object >> getSlideCount(String event_id)
@@ -107,7 +124,7 @@ public class OrgAdminDashboardServices {
 	}
 
 	public List<HashMap<String, Object>> getSlideLogs(String EventId) {
-		String sql2 = "SELECT 	slide_id AS slide_id, 	created_at AS created_at FROM 	slide_change_log  WHERE 	event_id = "+EventId+" ORDER BY 	created_at";
+		String sql2 = "select distinct slide_id, lesson.title as lesson_title, cmsession.id as cmsession_id, lesson.id as lesson_id,  cmsession.title as cmsession_title, slide_change_log.url as slide_title , slide_change_log.created_at from slide_change_log, cmsession, lesson where slide_change_log.cmsession_id = cmsession.id and slide_change_log.lesson_id = lesson.id and slide_change_log.event_id = "+EventId+" order by slide_change_log.created_at desc ;";
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
@@ -115,7 +132,7 @@ public class OrgAdminDashboardServices {
 	}
 
 	public List<HashMap<String, Object>> getSkillsForTrainer(int trainerId) {
-		String sql2 = "select distinct skill_objective.name from trainer_skill_distrubution_stats, skill_objective where trainer_skill_distrubution_stats.skill_objective_id =  skill_objective.id and trainer_skill_distrubution_stats.trainer_id = 449 order by skill_objective.name ";
+		String sql2 = "SELECT DISTINCT 	COALESCE(string_agg(course.course_name,', '), 'NA') as courses FROM 	trainer_skill_distrubution_stats, 	course WHERE 	trainer_skill_distrubution_stats.course_id = course. ID AND trainer_skill_distrubution_stats.trainer_id ="+trainerId;
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;

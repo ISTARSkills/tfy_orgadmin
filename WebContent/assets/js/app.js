@@ -1841,6 +1841,7 @@ function mark_as_read_notification(){
 function init_orgadmin_dashboard() {
     console.log('intiliazing Dashboard');
     
+   
     $('#myModal2').on('shown.bs.modal', function() {
 		var otherEventData = []
 		//$('#myModal5').modal('toggle');
@@ -1862,6 +1863,8 @@ function init_orgadmin_dashboard() {
     scheduler_createOldEvent();
 
     mark_as_read_notification();
+  
+    
 }
 
 function init_orgadmin_admin() {
@@ -2691,6 +2694,14 @@ function init_orgadmin_report(){
 }
 
 function init_orgadmin_report_detail(){
+	
+	var maxHeight = Math.max.apply(null, $(".batch-session-button").map(function ()
+			{
+			    return $(this).height();
+			}).get());
+	
+	$(".batch-session-button").css('height',maxHeight);
+	
 	$('#page-selection').bootpag({
         total: $('#nosofpages').data('content'),
         maxVisible: 10
@@ -2747,6 +2758,12 @@ function init_orgadmin_report_detail(){
             function(data) {
                 $("#batch_session_content").html(data);
                 bind_report_session_clicks();
+                var maxHeight = Math.max.apply(null, $(".batch-session-button").map(function ()
+            			{
+            			    return $(this).height();
+            			}).get());
+            	
+            	$(".batch-session-button").css('height',maxHeight);
             });
     });
 	
@@ -2955,8 +2972,16 @@ function createCalender()
 							element.draggable = false;
 							event.editable = false;
 						}
-						
+						 var rigt_box_height = $('#dashboard_right_box').css('height');
+			        	    $('#dashboard_left_box').css('height',rigt_box_height);
+			        	    $('#dashboard_left_box').css('overflow-y','scroll');
 						},
+						complete: function() {
+				        	  var rigt_box_height = $('#dashboard_right_box').css('height');
+				        	    $('#dashboard_left_box').css('height',rigt_box_height);
+				        	    $('#dashboard_left_box').css('overflow-y','scroll');
+				        	    alert('rezied'+rigt_box_height);
+				         },
 						
 						
 						eventDrop: function (event, delta, revertFunc) {
@@ -3043,11 +3068,16 @@ function create_dashboard_calendar() {
              center: 'title',
              right: 'month,agendaWeek,agendaDay,listWeek'
          },
-         defaultDate: '2016-12-12',
+         //defaultDate: '2016-12-12',
          navLinks: true, // can click day/week names to navigate views
          editable: true,
          eventLimit: true, // allow "more" link when too many events
-         events: null
+         events: null,
+         complete: function() {
+        	  var rigt_box_height = $('#dashboard_right_box').css('height');
+        	    $('#dashboard_left_box').css('height',rigt_box_height);
+        	    $('#dashboard_left_box').css('overflow-y','scroll');
+         },
      });
 }
 

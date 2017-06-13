@@ -1,3 +1,6 @@
+<%@page import="java.util.Properties"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.io.IOException"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -7,6 +10,19 @@
 <% 
 	String url = request.getRequestURL().toString();
 	String baseURL = "http://cdn.talentify.in/";
+
+
+try {
+	Properties properties = new Properties();
+	String propertyFileName = "app.properties";
+	InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+	if (inputStream != null) {
+		properties.load(inputStream);
+		baseURL = properties.getProperty("cdn_path");
+	}
+} catch (IOException e) {
+	e.printStackTrace();
+}
 	System.out.println(request.getSession().getAttribute("user"));
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");

@@ -25,7 +25,7 @@
 
 	}
 %>
-<div class="col-lg-6">
+<div class="col-lg-6" id="dashboard_right_box">
 	<div class="row">
 		<div class="col-lg-12 no-padding bg-muted">
 			<div class="tabs-container">

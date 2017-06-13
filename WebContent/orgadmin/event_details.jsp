@@ -37,11 +37,11 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                         </div>
                                         <div class="panel-body">
                                     <p><strong>Organization Name: </strong> <%=data.get("colname") %></p>    
-                                           <p><strong>Group Name: </strong> <%=data.get("batch_group_name") %></p>
-<p><strong>Course Name: </strong> <%=data.get("coursename") %></p>
-<p><strong>Class Room: </strong> <%=data.get("classroom") %></p>
+                                           <p><strong>Group Name: </strong> <%=data.get("batch_group_name") %>(<%=data.get("batch_group_id") %>)</p>
+<p><strong>Course Name: </strong> <%=data.get("coursename") %>(<%=data.get("course_id") %>)</p>
+<p><strong>Class Room: </strong> <%=data.get("classroom") %>(<%=data.get("class_id") %>)</p>
 
-<p><strong>Trainer Name: </strong> <%=data.get("trainername") %> (<%=data.get("traineremail") %>)</p>
+<p><strong>Trainer Name: </strong> <%=data.get("trainername") %> (<%=data.get("traineremail") %>) (<%=data.get("trainer_id") %>)</p>
 <p><strong>Date/Time: </strong> <%=dateformatter.format(todate.parse(data.get("evedate"))) %> - <%=timeformatter.format(todate.parse(data.get("evedate"))) %></p>
 <p><strong>Duration: </strong> <%=data.get("duration") %></p>
 <%if(!data.get("status").equalsIgnoreCase("ASSESSMENT")){%>

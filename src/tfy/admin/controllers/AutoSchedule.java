@@ -24,6 +24,7 @@ import com.viksitpro.core.utilities.NotificationType;
 
 import in.talentify.core.controllers.IStarBaseServelet;
 import tfy.admin.services.StudentPlayListServicesAdmin;
+import tfy.admin.services.StudentSkillMapService;
 
 /**
  * Servlet implementation class AutoSchedule
@@ -218,7 +219,7 @@ Parameter Name - type, Value - checking*/
 	    int daysCount=0;
 	    DBUTILS util = new DBUTILS();
 	    String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), 'Auto Schedule of Course with id "+scheduler_course_id+"', now(), now(),  300, 't') returning id;";
-		 int projectId = util.executeUpdateReturn(insertIntoProject);
+		int projectId = util.executeUpdateReturn(insertIntoProject);
 	    
 		 
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
@@ -300,25 +301,35 @@ Parameter Name - type, Value - checking*/
 		String taskDescription = lesson.getDescription()!=null ? lesson.getDescription(): "NA";
 		String lessonType = "LESSON";
 		int itemId = lesson.getId();
+		Double maxPointsForItem = 0d;
+		StudentSkillMapService serv = new StudentSkillMapService();
 		if(lesson.getType().equalsIgnoreCase("ASSESSMENT"))
 		{
 			lessonType = "ASSESSMENT";
 			itemId = Integer.parseInt(lesson.getLessonXml());
+			maxPointsForItem = serv.getMaxPointsOfAssessment(itemId);
 		}
-		String checkIfTaskExist ="select id from task where actor="+stid+" and item_id="+itemId+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
-		List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
-		if(alreadyAvailbleTask.size()==0)
+		else
 		{
-			String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
-					+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
-			System.out.println(">>>"+sql);
-			taskId = util.executeUpdateReturn(sql); 
-			
-			//TaskServices taskService = new TaskServices();
-			StudentPlayListServicesAdmin playListService = new StudentPlayListServicesAdmin();
-			playListService.createStudentPlayList(stid,cid, mid, cms,  lid,taskId);
-		}
-					
+			maxPointsForItem =  serv.getMaxPointsOfLesson(itemId);
+		}	
+		
+		if(maxPointsForItem!=null && maxPointsForItem>0)
+		{
+			String checkIfTaskExist ="select id from task where actor="+stid+" and item_id="+itemId+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
+			List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
+			if(alreadyAvailbleTask.size()==0)
+			{
+				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
+						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
+				System.out.println(">>>"+sql);
+				taskId = util.executeUpdateReturn(sql); 
+				
+				//TaskServices taskService = new TaskServices();
+				StudentPlayListServicesAdmin playListService = new StudentPlayListServicesAdmin();
+				playListService.createStudentPlayList(stid,cid, mid, cms,  lid,taskId);
+			}
+		}			
 		
 		
 		
