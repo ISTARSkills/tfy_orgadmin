@@ -110,10 +110,10 @@
 										<%
 										ArrayList<BatchGroup> batchGroups = serv.getBatchGroupInCollege(colegeID);
 										for(BatchGroup batchGroup : batchGroups)
-										{
+										{ if (batchGroup.getType().equalsIgnoreCase("SECTION")){
 										%>
 										<option value="<%=batchGroup.getId()%>"><%=batchGroup.getName().trim()%></option>
-										<%
+										<%}
 										} %>
 									</select>
 									

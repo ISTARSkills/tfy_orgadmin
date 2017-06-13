@@ -106,7 +106,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 				<div class="input-group date">
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
 						name="eventDate" type="text" class="form-control date_holder"
-						value="08/03/2017">
+						value="">
 				</div>
 			</div>
 			<div class="form-group">

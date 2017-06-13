@@ -178,10 +178,10 @@ public class GetNotificationData extends IStarBaseServelet {
 				{
 					int lessonId = (int)row.get("id");
 					Double maxPoints = serv.getMaxPointsOfLesson(lessonId)!=null?serv.getMaxPointsOfLesson(lessonId) : 0d ;
-					if(maxPoints!=null && (double)maxPoints!=0)
-					{
+					//if(maxPoints!=null && (double)maxPoints!=0)
+					//{
 						sb.append("<option value="+row.get("id")+">"+row.get("title")+" (Max Points: "+maxPoints+")</option>");
-					}	
+					//}	
 				}
 			}
 		}		

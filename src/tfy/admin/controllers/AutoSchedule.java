@@ -301,20 +301,25 @@ Parameter Name - type, Value - checking*/
 		String taskDescription = lesson.getDescription()!=null ? lesson.getDescription(): "NA";
 		String lessonType = "LESSON";
 		int itemId = lesson.getId();
-		Double maxPointsForItem = 0d;
+		boolean createEvent = false;;
 		StudentSkillMapService serv = new StudentSkillMapService();
+		
 		if(lesson.getType().equalsIgnoreCase("ASSESSMENT"))
 		{
 			lessonType = "ASSESSMENT";
 			itemId = Integer.parseInt(lesson.getLessonXml());
-			maxPointsForItem = serv.getMaxPointsOfAssessment(itemId);
+			Double maxPointsForItem = serv.getMaxPointsOfAssessment(itemId);
+			if(maxPointsForItem!=null && maxPointsForItem>0)
+			{
+				createEvent = true;
+			}
 		}
 		else
 		{
-			maxPointsForItem =  serv.getMaxPointsOfLesson(itemId);
+			createEvent= true;
 		}	
 		
-		if(maxPointsForItem!=null && maxPointsForItem>0)
+		if(createEvent)
 		{
 			String checkIfTaskExist ="select id from task where actor="+stid+" and item_id="+itemId+" and item_type='"+lessonType+"' and cast (start_date  as date) = cast (now() as date)";
 			List<HashMap<String, Object>> alreadyAvailbleTask = util.executeQuery(checkIfTaskExist);
