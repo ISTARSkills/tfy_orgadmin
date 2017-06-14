@@ -124,7 +124,7 @@ public class EventSchedulerService {
 			
 		}
 		
-		String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
+		/*String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
 		List<HashMap<String, Object>> studentsInBatch = db.executeQuery(findStudentInBatch);
 		for(HashMap<String, Object> row: studentsInBatch)
 		{
@@ -144,7 +144,7 @@ public class EventSchedulerService {
 			
 			itemForStudent.put("taskId", taskIdForStudent);
 			noticeDelegator.sendNotificationToUser(istarNotificationForStudent.getId(), stuId+"", notificationTitle.trim().replace("'", ""), NotificationType.CLASSROOM_SESSION, itemForStudent);  						
-		}
+		}*/
 		
 		
 		for(Integer userKey : userToEventMap.keySet())
