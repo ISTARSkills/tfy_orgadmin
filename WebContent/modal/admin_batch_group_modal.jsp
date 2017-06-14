@@ -170,7 +170,7 @@
 					<div class="form-group" >
 						<div class="col-lg-12">
 							<input type="checkbox" name="select_all" class="js-switch" /> <label>Select
-								all users within East Point College to this group</label>
+								all users filtered by above criteria to this group</label>
 						</div>
 					</div>
 					

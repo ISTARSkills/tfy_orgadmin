@@ -23,6 +23,8 @@ try {
 } catch (IOException e) {
 	e.printStackTrace();
 }
+
+
 	System.out.println(request.getSession().getAttribute("user"));
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
