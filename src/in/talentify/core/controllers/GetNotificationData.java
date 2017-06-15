@@ -117,7 +117,7 @@ public class GetNotificationData extends IStarBaseServelet {
 			else if(entityType.equalsIgnoreCase("ASSESSMENT"))
 			{
 				//return assessments
-				String sql= "select id, assessmenttitle from assessment";
+				String sql= "select id, assessmenttitle from assessment where is_published='t'";
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Assessment</option>");
 				StudentSkillMapService serv= new StudentSkillMapService();
@@ -149,7 +149,7 @@ public class GetNotificationData extends IStarBaseServelet {
 			else if(entityType.equalsIgnoreCase("ASSESSMENT_COURSE"))
 			{
 				//assessment from course
-				String sql ="select distinct id, assessmenttitle from assessment where course_id="+entityId;
+				String sql ="select distinct id, assessmenttitle from assessment where is_published='t' and course_id="+entityId;
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				StudentSkillMapService serv= new StudentSkillMapService();
 				sb.append("<option value='null'>Select Assessment</option>");
@@ -169,7 +169,7 @@ public class GetNotificationData extends IStarBaseServelet {
 			else if(entityType.equalsIgnoreCase("CMSESSION"))
 			{
 				//return lessons
-				String sql="select distinct lesson.id , lesson.title from lesson_cmsession, lesson where lesson.id = lesson_cmsession.lesson_id and lesson_cmsession.cmsession_id = "+entityId;
+				String sql="select distinct lesson.id , lesson.title from lesson_cmsession, lesson where lesson.is_published='t' and lesson.id = lesson_cmsession.lesson_id and lesson_cmsession.cmsession_id = "+entityId;
 				System.out.println("GetNotification 98"+sql);
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Lesson</option>");

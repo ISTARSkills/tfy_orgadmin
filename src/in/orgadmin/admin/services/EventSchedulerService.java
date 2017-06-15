@@ -195,6 +195,9 @@ public class EventSchedulerService {
 
 		updateEventSessionLog(trainerID, hours, minute, batchID, eventDate, startTime, AdminUserID, classroomID, sessionID,
 				associateTrainerID);
+		
+		//sending complexObject update notification here 
+		
 	}
 
 	private void updateEventSessionLog(int trainerID, int hours, int minute, int batchID, String eventDate, String startTime, int adminUserID, int classroomID, int sessionID, String associateTrainerID) {
@@ -932,7 +935,7 @@ public class EventSchedulerService {
 	public String getCurrentSession(int batchID) {
 		String SessionName = "";
 		DBUTILS db = new DBUTILS();
-		String sql = "select cmsession.title from cmsession, event_log where event_log.cmsession_id = cmsession.id and event_log.batch_group_id = (select batch_group_id from batch where id="+batchID+" ) order by event_log.id desc limit 1";
+		String sql = "select cmsession.title from cmsession, slide_change_log where slide_change_log.cmsession_id = cmsession.id and slide_change_log.batch_group_id = (select batch_group_id from batch where id="+batchID+") and slide_change_log.course_id = (select course_id from batch where id="+batchID+") order by slide_change_log.id desc limit 1";
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		if (data.size() > 0) {
 			SessionName = (String) data.get(0).get("title");
