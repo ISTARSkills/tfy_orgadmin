@@ -2751,7 +2751,7 @@ function init_orgadmin_report_detail(){
         	num=(num*3)-3;
         }
         
-        $.post("./report_section/batch_session_model_data.jsp", {
+        $.post("../batch_session_model_data.jsp", {
         	      offset: num,
         	      batch_id:$('#session-page-selection').data('batch')
             },
@@ -2838,7 +2838,7 @@ function bind_report_session_clicks() {
     $('.batch-session-button').unbind().on("click", function() {
         var event_id = $(this).data('event-id');
 
-        var urls = './report_section/modal_session.jsp?event_id=' + event_id;
+        var urls = 'modal_session.jsp?event_id=' + event_id;
         $.get(urls, function(data) {
             $(".result").html(data);
 
@@ -2881,7 +2881,7 @@ function bind_report_session_clicks() {
         var assessment_id = $(this).data('assessment-id');
         var batch_id = $(this).data('batch-id');
 
-        var urls = './report_section/modal_assessment.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id;
+        var urls = './modal_assessment.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id;
         $.get(urls, function(data) {
             $(".result").html(data);
 
@@ -2898,7 +2898,7 @@ function bind_report_session_clicks() {
                     var batch_id = $(this).data('batch');
                     var user_id = $(this).data('user');
 
-                    var urls = './report_section/moadl_question_data.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id + '&user_id=' + user_id;
+                    var urls = './moadl_question_data.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id + '&user_id=' + user_id;
                     $('#'+$(this).attr('id')).css('border-color','  #eb384f');
                     $.get(urls, function(data) {
                         $(".result").html(data);
@@ -2918,7 +2918,7 @@ function bind_report_session_clicks() {
                     var batch_id = $($('.modal-student')[0]).data('batch');
                     var user_id = $($('.modal-student')[0]).data('user');
 
-                    var urls = './report_section/moadl_question_data.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id + '&user_id=' + user_id;
+                    var urls = './moadl_question_data.jsp?assessment_id=' + assessment_id + '&batch_id=' + batch_id + '&user_id=' + user_id;
                     $.get(urls, function(data) {
                         $(".result").html(data);
                         $('#modal_question_holder').html(data);
@@ -2975,6 +2975,10 @@ function createCalender()
 						 var rigt_box_height = $('#dashboard_right_box').css('height');
 			        	    $('#dashboard_left_box').css('height',rigt_box_height);
 			        	    $('#dashboard_left_box').css('overflow-y','scroll');
+			         var right_box_height_in_super_admin = $('#dashboard_right_holder').css('height');
+			        	    $('#dashboard_left_holder').css('height',right_box_height_in_super_admin);
+			        	    $('#dashboard_left_holder').css('overflow-y','scroll');	    
+			        	    
 						},
 						complete: function() {
 				        	  var rigt_box_height = $('#dashboard_right_box').css('height');
@@ -4505,14 +4509,14 @@ function accountsUtils() {
 
 
 function accountsData(orgID) {
-    var url = '../program_graphs'
+    var url = '/common_jsps/batch_programs_cards.jsp'
     $.post(url, {
-            account_tab_orgID: orgID
+            college_id: orgID
         },
         function(data) {
 
-            $('#course_event_card').html($(data)[0]);
-            $('#batch_event_card').html($(data)[1]);
+            $('#super_admin_batch_programs').html(data);
+            
             accountsUtils();
         });
 }

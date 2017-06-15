@@ -14,7 +14,7 @@
 		colegeID = Integer.parseInt(request.getParameter("colegeID"));
 	}
 %>
-<div class="col-lg-6">
+<div class="col-lg-6" id="dashboard_right_holder">
 	<div class="row">
 		<jsp:include page="./dashboard_calendar.jsp" />
 	</div>

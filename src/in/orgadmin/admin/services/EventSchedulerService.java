@@ -913,24 +913,30 @@ public class EventSchedulerService {
 		org.joda.time.format.DateTimeFormatter pattern = DateTimeFormat.forPattern("dd/MM/yyyy");
 		DateTime startDate = pattern.parseDateTime(startEventDate);
 		DateTime endDate = pattern.parseDateTime(endEventDate);
-
+		Calendar endCal = Calendar.getInstance();
+	   endCal.setTime(endDate.toDate());
+	   endCal.add(Calendar.DATE, 1);
+	   
+	   Calendar startCal = Calendar.getInstance();
+	   startCal.setTime(startDate.toDate());     
+	   
+	   
 		List<String> days = new ArrayList<>();
 
 		String[] selectedDayssplit = selectedDays.split(",");
 
 		for (String value : selectedDayssplit) {
 
-			while (startDate.isBefore(endDate)) {
-				if (startDate.getDayOfWeek() == Integer.parseInt(value)) {
+			for (Date sd = startCal.getTime(); sd.before(endCal.getTime());) {
+				if (sd.getDay() == Integer.parseInt(value)) {
 
-					days.add(dateformatfrom.format(startDate.toDate()).toString());
+					days.add(dateformatfrom.format(sd).toString());
 				}
-				startDate = startDate.plusDays(1);
+				startCal.add(Calendar.DATE, 1);
+		    	sd = startCal.getTime();
 			}
 		}
-
 		return days;
-
 	}
 	public String getCurrentSession(int batchID) {
 		String SessionName = "";

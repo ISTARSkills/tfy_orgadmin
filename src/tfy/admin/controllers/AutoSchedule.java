@@ -158,7 +158,7 @@ Parameter Name - type, Value - checking*/
 			ArrayList<Integer> modules = new ArrayList<>();
 			ArrayList<Integer> cmsessions = new ArrayList<>();
 			ArrayList<Integer> lessons = new ArrayList<>();
-			String playListData = "select lesson_cmsession.lesson_id, lesson_cmsession.cmsession_id, cmsession_module.module_id, module_course.course_id from module_course, cmsession_module, lesson_cmsession where module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id and module_course.course_id ="+scheduler_course_id+" order by module_course.oid , cmsession_module.oid, lesson_cmsession.oid ";
+			String playListData = "SELECT 	lesson_cmsession.lesson_id, 	lesson_cmsession.cmsession_id, 	cmsession_module.module_id, 	module_course.course_id FROM 	module_course, 	cmsession_module, 	lesson_cmsession, lesson WHERE lesson.is_published = 't' and lesson.id = lesson_cmsession.lesson_id AND module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND module_course.course_id = "+scheduler_course_id+" ORDER BY 	module_course.oid, 	cmsession_module.oid, 	lesson_cmsession.oid";
 			List<HashMap<String, Object>>  pldata = util.executeQuery(playListData);
 			for(HashMap<String, Object> cdata : pldata)
 			{
@@ -219,7 +219,7 @@ Parameter Name - type, Value - checking*/
 	    int daysCount=0;
 	    DBUTILS util = new DBUTILS();
 	    String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), 'Auto Schedule of Course with id "+scheduler_course_id+"', now(), now(),  300, 't') returning id;";
-		int projectId = util.executeUpdateReturn(insertIntoProject);
+		 int projectId = util.executeUpdateReturn(insertIntoProject);
 	    
 		 
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )

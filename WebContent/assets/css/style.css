@@ -11024,7 +11024,7 @@ width: 150px;height: 150px;
 }
 
 #superadmin_dashboard .dash_main_tab{
-max-height: 100vh; overflow: overlay;
+/* max-height: 100vh; overflow: overlay; */
 }
 
 #superadmin_dashboard .dash_notification_holder{

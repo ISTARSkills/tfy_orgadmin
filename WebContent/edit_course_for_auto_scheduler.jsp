@@ -23,7 +23,7 @@ int total_session = 0 ;
 int total_lessons = 0;
 int stuCount=0;
 DBUTILS util = new DBUTILS();
-String courseSQl ="select cast (count(DISTINCT cmsession_module.cmsession_id) as integer) as cmsessions, cast (count(DISTINCT lesson_cmsession.lesson_id) as integer) as lessons from module_course, cmsession_module, lesson_cmsession where module_course.course_id = "+courseId+" and module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = lesson_cmsession.cmsession_id";
+String courseSQl ="SELECT 	CAST ( 		COUNT ( 			DISTINCT cmsession_module.cmsession_id 		) AS INTEGER 	) AS cmsessions, 	CAST ( 		COUNT ( 			DISTINCT lesson_cmsession.lesson_id 		) AS INTEGER 	) AS lessons FROM 	module_course, 	cmsession_module, 	lesson_cmsession, lesson WHERE lesson.is_published ='t' and lesson.id = lesson_cmsession.lesson_id and 	module_course.course_id = "+courseId+" AND module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id ";
 List<HashMap<String, Object>> courseData = util.executeQuery(courseSQl);
 if(courseData.size()>0)
 {	for(HashMap<String, Object> row: courseData)
@@ -140,7 +140,7 @@ if(data.size()>0)
 										</div>
 								<%if(data.size()==0){ %>
 								<div class="form-group">
-                                    <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button>
+                                    <!-- <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button> -->
                                 </div>
                                 <%} %>
 									</div>

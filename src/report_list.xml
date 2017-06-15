@@ -700,7 +700,7 @@ FROM
 	left join batch_group on (batch_students.batch_group_id = batch_group. ID)
 	left join batch on (batch_group. ID = batch.batch_group_id)
 	left join course on (batch.course_id = course. ID)
-
+	where  user_role.role_id in (12,14)
 	GROUP BY
 		istar_user. ID,
 		user_profile.first_name,
@@ -1369,13 +1369,13 @@ JOIN user_org_mapping ON (
 )
 JOIN user_role ON (
 	istar_user. ID = user_role.user_id
-	AND user_role.role_id = (
+	AND user_role.role_id in (
 		SELECT
 			ID
 		FROM
 			ROLE
 		WHERE
-			role_name = 'STUDENT'
+			role_name in ( 'STUDENT','TRAINER')
 	)
 )
 left join batch_students on (batch_students.student_id = user_role.user_id)

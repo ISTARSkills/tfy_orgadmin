@@ -24,34 +24,7 @@ UIUtils ui_Util = new UIUtils();
 		</div>
 	</div> 
 
-	
-	
-	<div class="row border-bottom white-bg ">
-		<div class="ibox no-margins no-padding bg-muted p-xs">
-			<div class="ibox-title">
-				<h2 class="text-center">PROGRAMS</h2>
-			</div>
-			<div class="ibox-content " style="overflow: auto;">
-			
-				<div class="row " style="display: flex;" id="course_event_card" >
-					
-				</div>
-				
-			</div>
-		</div>
-	</div>
-	<div class="row border-bottom white-bg ">
-	
-		<div class="ibox no-margins no-padding bg-muted p-xs">
-			<div class="ibox-title">
-				<h2 class="text-center">BATCHES</h2>
-			</div>
-			<div class="ibox-content " style="overflow: auto;">
-				<div class="row " style="display: flex;" id="batch_event_card">
-					
-				</div>
-			</div>
-		</div>
+	<div id="super_admin_batch_programs">
 	</div>
 	<br>
 	<br>
