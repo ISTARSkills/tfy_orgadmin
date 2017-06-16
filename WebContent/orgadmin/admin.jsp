@@ -54,5 +54,6 @@
 	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>	
+	
 </body>
 </html>

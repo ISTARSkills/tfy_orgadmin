@@ -4459,8 +4459,8 @@ function init_super_admin_analytics() {
     trainerRatingGraph();
     trainerLevelGraph();
     trainerSkillGraph();
-    studentFeedBackGraph();
-    studentFeedbackDetailsTable();
+    //studentFeedBackGraph();
+    //studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
 
@@ -4471,7 +4471,7 @@ function init_super_admin_analytics() {
 
     });
 
-    coursesData($('.org_holder_programTab').val());
+   /* coursesData($('.org_holder_programTab').val());
     $('.course_holder').change(function() {
         var courseID = this.value;
         var orgID = $('.org_holder_programTab').val();
@@ -4485,7 +4485,7 @@ function init_super_admin_analytics() {
         var courseID = $('.course_holder').val();
         programGraph(courseID, orgID);
         $('#program_spiner').css('cssText', 'display:block !important');
-    });
+    });*/
     
   
 }

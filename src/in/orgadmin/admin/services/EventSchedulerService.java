@@ -93,7 +93,7 @@ public class EventSchedulerService {
 		HashMap<Integer,Integer> userToEventMap = new HashMap<>();
 		String eventQueueName ="Queue for Group "+b.getBatchGroup().getName().trim().replace("'", "")+" and course "+c.getCourseName().trim().replace("'", "")+"";
 		String createMasterEventQueue ="INSERT INTO event_queue (id, event_name, batch_group_id, course_id, group_code) VALUES (( SELECT COALESCE (MAX(ID) + 1, 1) FROM event_queue ), '"+eventQueueName+"', "+b.getBatchGroup().getId()+", "+c.getId()+",'"+groupNotificationCode+"') returning id;";
-		String notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in "+org.getName()+" at "+eventDate;
+		String notificationTitle = "A class has been scheduled for the course <b>"+c.getCourseName()+ "</b> in <b>"+org.getName()+"</b> at <b>"+eventDate+"</b>";
 		String notificationDescription =  notificationTitle;
 		
 		String insertIntoProject ="INSERT INTO project (id, name, created_at, updated_at, creator, active) VALUES ((select COALESCE(max(id),0)+1 from project), '"+eventQueueName+"', now(), now(),  "+AdminUserID+", 't') returning id;";
@@ -183,6 +183,12 @@ public class EventSchedulerService {
 			String deteleEventQueue ="delete from event_queue where group_code ='"+groupCode+"'";
 			db.executeUpdate(deteleEventQueue);
 		}
+		
+		
+		
+		
+		
+		
 	}
 
 	public void updateEvent(String eventID, int trainerID, int hours, int minute, int batchID, String eventDate,

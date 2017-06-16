@@ -204,7 +204,7 @@ else if(roleName.equalsIgnoreCase("SUPER_ADMIN"))
 
 				<div class="col-lg-9 no-paddings bg-muted">
 					<div class="ibox-content">
-						 <%
+						 <%-- <%
 						 HashMap<String, String> conditions1 = new HashMap();
 			      
 			      conditions1.put("college_id", college_id+"");
@@ -221,7 +221,9 @@ else if(roleName.equalsIgnoreCase("SUPER_ADMIN"))
 				    	 <%= util.getHTML(3051, conditions1) %>
 				    	 <%
 			      }			      			      
-				%>								
+				%>				 --%>
+				
+				<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>				
 					</div>
 				</div>
 
@@ -458,6 +460,113 @@ else if(roleName.equalsIgnoreCase("SUPER_ADMIN"))
 	
 	}	
 %>
+<script>
+$(document).ready(function(){
+	$(function () {
+
+		var flag = <%=flag%>;
+		var queryString ='';
+		if(flag)
+		{
+			var course_id = <%=course_id%>;
+			var college_id = <%=college_id%>;
+			queryString ='course_id='+course_id+'&college_id='+college_id;
+		}
+		else
+		{
+			var batch_id = <%=batch_id%>;
+			var college_id = <%=college_id%>;
+			queryString ='batch_id='+batch_id+'&college_id='+college_id;
+		}	
+		var moduleLevelData = [];  
+		var sessionLevelData ={} ;  
+		 $.ajax({
+	          url: "http://localhost:8080/get_admin_skill_graph",
+	          cache: false,
+	          type:  "POST",
+	          data:  "type=MODULE_LEVEL&"+queryString,
+	          success: function(data){
+	        	  var data = JSON.parse(data);
+	        	  moduleLevelData = data;
+	        	  
+	        	  $.ajax({
+	    	          url: "http://localhost:8080/get_admin_skill_graph",
+	    	          cache: false,
+	    	          type:  "POST",
+	    	          data:  "type=SESSION_LEVEL&"+queryString,
+	    	          success: function(data2){
+	    	        	  var data = JSON.parse(data2);
+	    	        	  sessionLevelData = data2;
+	    	        	  loadSkillChart(moduleLevelData,sessionLevelData);
+	    	          }
+	    	        });
+	        	  
+	        	  
+	          }
+	        });
+		 
+		
+		
+		 
+
+	});
+	
+});
+
+function loadSkillChart(moduleLevelData,sessionLevelData)
+{
+	
+	
+	  $('#container').highcharts({
+	        chart: {
+	            type: 'column',
+	            events: {
+	                drilldown: function (e) {
+	                    if (!e.seriesOptions) {
+	                        var chart = this,	                            
+	                            
+	                            drilldowns = JSON.parse(sessionLevelData),
+	                            series = drilldowns[e.point.name];	                	        
+	                	      	for(var i=0; i< series.length; i++){ 	
+	                        chart.addSingleSeriesAsDrilldown(e.point, series[i]);	                       
+	                	      	}
+	                        chart.applyDrilldown();
+	                    }
+
+	                }
+	            }
+	        },
+	        title: {
+	            text: 'Mastery Level Per Skill'
+	        },
+	        xAxis: {
+	            type: 'category'
+	        },
+
+	        legend: {
+	            enabled: false
+	        },
+
+	        plotOptions: {
+	            series: {
+	                stacking: 'normal',
+	                borderWidth: 0,
+	                dataLabels: {
+	                    enabled: true
+	                }
+	            }
+	        },
+
+	        series: moduleLevelData,
+
+	        drilldown: {
+	            series: []
+	        }
+	    });
+	
+	}
+
+</script>
+
 </body>
 
-	

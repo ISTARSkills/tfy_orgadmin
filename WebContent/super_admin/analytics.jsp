@@ -75,7 +75,7 @@
 							<div id="tab4"
 								class=" tab-pane div-min-height">
 								<div class="panel-body">
-									<%--  <jsp:include page="feedback_partials/student_feedback.jsp" />   --%>
+								  <jsp:include page="feedback_partials/student_feedback.jsp" />   
 								</div>
 							</div>
 
