@@ -536,6 +536,9 @@ function loadSkillChart(moduleLevelData,sessionLevelData)
 	                }
 	            }
 	        },
+	        credits: {
+	            enabled: false
+	          },
 	        title: {
 	            text: 'Mastery Level Per Skill'
 	        },
@@ -544,16 +547,20 @@ function loadSkillChart(moduleLevelData,sessionLevelData)
 	        },
 
 	        legend: {
-	            enabled: false
+	            enabled: true
 	        },
 
 	        plotOptions: {
 	            series: {
-	                stacking: 'normal',
+	                stacking: 'percent	',
 	                borderWidth: 0,
 	                dataLabels: {
-	                    enabled: true
+	                    enabled: false
 	                }
+	            }, 
+	            dataLabels: {
+	                enabled: false,
+	                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
 	            }
 	        },
 
@@ -561,7 +568,21 @@ function loadSkillChart(moduleLevelData,sessionLevelData)
 
 	        drilldown: {
 	            series: []
-	        }
+	        }, 
+	        
+	        yAxis: {
+	            min: 0,
+	            title: {
+	                text: 'Percentage'
+	            },
+	            stackLabels: {
+	                enabled: false,
+	                style: {
+	                    fontWeight: 'bold',
+	                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+	                }
+	            }
+	        },
 	    });
 	
 	}

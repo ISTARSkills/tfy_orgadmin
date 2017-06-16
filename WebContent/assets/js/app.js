@@ -757,6 +757,9 @@ $(containerID).highcharts({
                 alpha: 45
             }
         },
+        credits: {
+            enabled: false
+          },
        title : {
 			text : graph_title
 		},
@@ -806,6 +809,9 @@ $(containerID).highcharts({
             plotShadow: false,
             type: 'pie'
         },
+        credits: {
+            enabled: false
+          },
        title : {
 			text : graph_title
 		},
@@ -855,6 +861,9 @@ $(containerID).highcharts({
                 alpha: 45
             }
         },
+        credits: {
+            enabled: false
+          },
        title : {
 			text : graph_title
 		},
@@ -906,6 +915,9 @@ $(containerID).highcharts({
                 alpha: 45
             }
         },
+        credits: {
+            enabled: false
+          },
        title : {
 			text : graph_title
 		},
@@ -958,6 +970,9 @@ function create_column_graph(tableID) {
 	                alpha: 45
 	            }
 	        },
+	        credits: {
+	            enabled: false
+	          },
 	       title : {
 				text : graph_title
 			},
@@ -3045,6 +3060,9 @@ function create_progress_view_chart(flag) {
              title: {
                  text: 'Monthly Average Performance'
              },
+             credits: {
+            	    enabled: false
+            	  },
              yAxis: {
                  allowDecimals: false,
                  title: {
@@ -3111,6 +3129,9 @@ function create_competetion_view_calendar(flag) {
              title: {
                  text: 'Monthly Average Performance'
              },
+             credits: {
+            	    enabled: false
+            	  },
              yAxis: {
                  allowDecimals: false,
                  title: {
@@ -3170,6 +3191,9 @@ function create_course_view_datatable(flag){
              title: {
                  text: 'Monthly Average Performance'
              },
+             credits: {
+            	    enabled: false
+            	  },
              yAxis: {
                  allowDecimals: false,
                  title: {
@@ -3230,6 +3254,9 @@ function  create_program_view_datatable(flag) {
 				title : {
 					text : 'Monthly Average Performance'
 				},
+				 credits: {
+					    enabled: false
+					  },
 				yAxis : {
 					allowDecimals : false,
 					title : {
@@ -4552,6 +4579,9 @@ function programGraph(cID, oID) {
             title: {
                 text: 'Program Statistics'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4615,6 +4645,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Projector Issue'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4651,6 +4684,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Internet Issue'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4686,6 +4722,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Trainer Knowledge'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4722,6 +4761,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Trainer Pace'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4758,6 +4800,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Class Control By Trainer'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4794,6 +4839,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Content Toughness'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4829,6 +4877,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Content Theory Balance'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4865,6 +4916,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Class Fun'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4900,6 +4954,9 @@ function studentFeedBackGraph()
             title: {
                 text: 'Examples related To Content'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4939,6 +4996,9 @@ function trainerSkillGraph() {
             title: {
                 text: 'Trainer Skill Distribution'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
@@ -4984,6 +5044,9 @@ function trainerLevelGraph() {
             title: {
                 text: 'Trainer Level Distribution'
             },
+            credits: {
+                enabled: false
+              },
             yAxis: {
                 allowDecimals: false,
                 title: {
