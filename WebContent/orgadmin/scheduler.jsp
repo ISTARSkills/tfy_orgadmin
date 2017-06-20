@@ -26,10 +26,16 @@
 				<div class="col-lg-12">
 				<div class="tabs-container">
                         <ul class="nav nav-tabs">
+                          <!-- <li class="active"><a data-toggle="tab" href="#tab-ac" aria-expanded="true"> Academic Calendar</a></li> -->
                             <li class="active"><a data-toggle="tab" href="#tab-m" aria-expanded="true"> Manual Scheduler</a></li>
                             <li class=""><a data-toggle="tab" href="#tab-a" aria-expanded="false" id="dddddddd">Auto Scheduler</a></li>
                         </ul>
                         <div class="tab-content">
+                            <%-- <div id="tab-ac" class="tab-pane active">
+                                <div class="panel-body">
+                                   <jsp:include page="scheduler/acad_calendar.jsp"></jsp:include>
+                                </div>
+                            </div> --%>
                             <div id="tab-m" class="tab-pane active">
                                 <div class="panel-body">
                                    <jsp:include page="scheduler/scheduler_wrapper.jsp"></jsp:include>

@@ -1533,4 +1533,23 @@ organization.id = classroom_details.organization_id
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
+<reports id="3065" type_of_report="table">
+ <column columnHandler="NONE" display_name="Id" isVisible="true" name="id" />		
+		<column columnHandler="TRAINER_PROFILE_HANDLER" display_name="Email" isVisible="true" name="email" />
+		<column columnHandler="NONE" display_name="Name" isVisible="true" name="first_name" />
+		<column columnHandler="TRAINER_ASSESSMENT_LIST_HANDLER" display_name="Assessment List" isVisible="true" name="assessment_list" />					
+<sql>
+select TrainerDeatils.*,string_agg(TrainerDeatils.id ||'!#'||assessment.id ||'!#'|| assessment.assessmenttitle,'!ASSESS!')  as assessment_list, count(*) over() as total_rows from (select istar_user.id, istar_user.email, user_profile.first_name from 
+istar_user , user_role, user_profile 
+where 
+istar_user.id = user_role.user_id 
+and istar_user.id = user_profile.user_id 
+and user_role.role_id in (select id from role where role_name in ('TRAINER')) 
+)TrainerDeatils
+left join task on (TrainerDeatils.id = task.actor and task.item_type='ASSESSMENT') 
+join assessment on (task.item_id = assessment.id )
+group by TrainerDeatils.id, email, first_name
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
 </istar_reports>

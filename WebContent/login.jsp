@@ -93,12 +93,16 @@
 
 				<button type="submit" style="font-weight: 600; font-size: 16px"
 					class="btn btn-danger custom-theme-btn-primary block full-width m-b login-button">Login</button>
-
-				<%--  <a href="<%=baseURL%>forgot_password.jsp">Forgot password?</a> --%>
+				<p class="text-muted text-center">
+                            <small>Do not have an account?</small>
+                        </p>
+                 <div class="row">       
+				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Sign up as Trainer</a></div>
+				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="student_signup.jsp">Sign up as Student</a></div>
+				</div>
+				
 			</form>
-          <%--    <p class="m-t">
-				<small><%=errormsg %></small>
-			</p> --%>
+          
 			<p class="m-t">
 				<small>ISTAR Skill Development Pvt. Ltd. &copy; 2017</small>
 			</p>

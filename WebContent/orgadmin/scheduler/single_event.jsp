@@ -118,9 +118,7 @@ user_id = ui.getOrgPrincipal(colegeID);
 					</span><!-- <input type="text" style="width: 100%; height: 28px;" name="startTime" class="timepicker"/> -->
 					<input type="text" style="width: 100%; height: 28px;" name="startTime" class="time_element"/>
 				</div> 
-               
-
-			</div>
+	</div>
 			<div class="form-group form-inline">
 				<label class="font-bold">Duration</label> <label class="sr-only">Hours</label>
 				<input type="number" value="1" name="hours" placeholder="Hours"

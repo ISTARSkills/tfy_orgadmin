@@ -34,6 +34,10 @@ public class ReportColumnHandlerFactory {
 			return (new BGRoleHandler());
 		case "CHECKBOX_HANDLER":
 			return (new RadiButtonHandler());
+		case "TRAINER_PROFILE_HANDLER":
+			return (new TRAINER_PROFILE_HANDLER());
+		case "TRAINER_ASSESSMENT_LIST_HANDLER":
+			return (new TRAINER_ASSESSMENT_LIST_HANDLER());
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":

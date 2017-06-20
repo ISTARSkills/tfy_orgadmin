@@ -1,3 +1,6 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="java.util.Properties"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.io.IOException"%>
@@ -30,17 +33,41 @@ try {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 		System.out.println("user email"+user.getEmail());
 		String url1 = baseURL + "dashboard.jsp";
-		if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
+		
+		DBUTILS util = new DBUTILS();
+		
+		String findUserRole ="SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "+user.getId()+" order by ROLE . ID  limit 1";
+		List<HashMap<String, Object>> roles = util.executeQuery(findUserRole);
+		String userRole = "";
+		if(roles.size()>0 && roles.get(0).get("role_name")!=null )
+		{
+			userRole = roles.get(0).get("role_name").toString();
+		}
+		
+		System.out.println("user role in index"+userRole);
+		if (userRole.equalsIgnoreCase("SUPER_ADMIN")) { 
 			url1 = "/super_admin/dashboard.jsp";
 			System.out.println("super amdin");
-		}else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
-			System.out.println("---------vfvfvfv--------------------->"+user.getUserOrgMappings().iterator().next().getOrganization().getId());
+		}else if (userRole.equalsIgnoreCase("ORG_ADMIN")) {
+			
 			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
-		}else{			
+		}
+		else if (userRole.equalsIgnoreCase("COORDINATOR"))
+		{
+			url = "/coordinator/dashboard.jsp";
+		}else if(userRole.equalsIgnoreCase("TRAINER"))
+		{
+			url = "/trainer/dashboard.jsp";
+		}
+		else if (userRole.equalsIgnoreCase("STUDENT"))
+		{
+			url = "/student/dashboard.jsp";
+		}
+		else{			
 			String errorResponse="";
 			if(request.getAttribute("msg")!=null){				
 				errorResponse=request.getAttribute("msg").toString();
-				System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
+				System.out.println("error-- redirecting to index.jsp 55555555"+ request.getAttribute("msg").toString()) ;
 			}			
 			request.setAttribute("msg", errorResponse);
 			request.getRequestDispatcher("/login.jsp").forward(request, response);			

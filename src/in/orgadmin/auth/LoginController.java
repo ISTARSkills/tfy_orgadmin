@@ -1,6 +1,8 @@
 package in.orgadmin.auth;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 
 /**
@@ -40,7 +43,6 @@ public class LoginController extends HttpServlet {
 			System.out.println("Password -> " + request.getParameter("password"));
 			
 			try {
-				request.getSession().setMaxInactiveInterval(2000000);
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = dao.findByEmail(request.getParameter("email").toLowerCase()).get(0);
 				if (user.getPassword().equals(request.getParameter("password"))) {
@@ -49,16 +51,23 @@ public class LoginController extends HttpServlet {
 					//request.getSession().setMaxInactiveInterval(2000);
 					request.getSession().setAttribute("user", user);
 										
-					
+					DBUTILS util = new DBUTILS();
 					String url = "";
-					if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { 
+					String findUserRole ="SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "+user.getId()+" order by ROLE . ID  limit 1";
+					List<HashMap<String, Object>> roles = util.executeQuery(findUserRole);
+					String userRole = "";
+					if(roles.size()>0 && roles.get(0).get("role_name")!=null )
+					{
+						userRole = roles.get(0).get("role_name").toString();
+					}
+					if (userRole.equalsIgnoreCase("SUPER_ADMIN")) { 
 						
 						System.out.println("User logged in. ID -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
 						System.out.println("User logged in. ID -> " + user.getId());
 						System.out.println("User logged in. Type -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
 						url = "/super_admin/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
-					} else if (user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN")) {
+					} else if (userRole.equalsIgnoreCase("ORG_ADMIN")) {
 						
 						System.out.println("User logged in. ID -> " + user.getUserRoles().iterator().next().getRole().getRoleName());
 						System.out.println("User logged in. ID -> " + user.getId());
@@ -69,7 +78,26 @@ public class LoginController extends HttpServlet {
 						
 						url = "/orgadmin/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
-					} else if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("STUDENT") || user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("TRAINER")) {
+					}
+					else if (userRole.equalsIgnoreCase("COORDINATOR"))
+					{
+						request.getSession().setAttribute("user", user);
+						url = "/coordinator/dashboard.jsp";
+						request.getRequestDispatcher(url).forward(request, response);
+					}
+					else if (userRole.equalsIgnoreCase("MASTER_TRAINER"))
+					{
+						request.getSession().setAttribute("user", user);
+						url = "/trainer/dashboard.jsp";
+						request.getRequestDispatcher(url).forward(request, response);
+					}
+					else if (userRole.equalsIgnoreCase("TRAINER"))
+					{
+						url = "/trainer/dashboard.jsp";
+						request.getRequestDispatcher(url).forward(request, response);
+					}
+					else if (userRole.equalsIgnoreCase("STUDENT"))
+					{
 						url = "/student/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
 					}

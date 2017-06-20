@@ -58,7 +58,19 @@ public class AuthenticationFilter implements Filter {
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("index.jsp")) {
 			isStarticrequest = true;
 		}
-
+		
+		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("signup.jsp")) {
+			isStarticrequest = true;
+		}
+		
+		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("user_signup")) {
+			isStarticrequest = true;
+		}
+		
+		if (((HttpServletRequest) request).getRequestURL().toString().contains("PinCodeController")) {
+			isStarticrequest = true;
+		}
+		
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("login.jsp")) {
 			isStarticrequest = true;
 		}

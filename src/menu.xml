@@ -28,16 +28,38 @@
 	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin"/>	
 <!-- 	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
  -->
- 	<parent_links display_name="Tasks" is_visible_in_menu="true" jsp_file="/student/dashboard.jsp" url="/student/dashboard.jsp" valid_role="student" />
-	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="student" />
-	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/calendar/calendar.jsp" valid_role="student" />
-	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="student" />
+ 	
 	<!-- <parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/student/notification.jsp.jsp" url="/student/notification.jsp" valid_role="student" /> -->
 	
 	
 	
+
+	<!-- coordinator starts here-->
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/coordinator/dashboard.jsp" url="/coordinator/dashboard.jsp" valid_role="coordinator" />
+	<parent_links display_name="Trianer Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/trainer_wise_details.jsp" url="/coordinator/trainer_wise_details.jsp" valid_role="coordinator" />
+	<parent_links display_name="Course and City Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/course_city_wise_details.jsp" url="/coordinator/course_city_wise_details.jsp" valid_role="coordinator" />	
+	<!-- coordinator ends here-->
+	
+	<!--student specific starts here -->
+		<parent_links display_name="Tasks" is_visible_in_menu="true" jsp_file="/student/dashboard.jsp" url="/student/dashboard.jsp" valid_role="student" />
+	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="student" />
+	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/calendar/calendar.jsp" valid_role="student" />
+	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="student" />
+	<!-- student specific ends here-->
+	
+	
+	<!--trainer specific starts here -->
 	<parent_links display_name="Tasks" is_visible_in_menu="true" jsp_file="/student/task/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
 	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="trainer" />
 	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
 	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="trainer" />
+	
+	<!-- trainer specific ends here-->
+	
+	<!--master trainer specific starts here -->
+		<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/trainer/dashboard.jsp" url="/trainer/dashboard.jsp" valid_role="master_trainer" />
+		<parent_links display_name="Trainer Assessment Details" is_visible_in_menu="true" jsp_file="/trainer/trainer_assessment_details.jsp" url="/trainer/trainer_assessment_details.jsp" valid_role="master_trainer" />
+	<!--master trainer specific ends here-->
+	
+	
 </menu>

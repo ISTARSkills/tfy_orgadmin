@@ -58,13 +58,12 @@ function readyFn(jQuery) {
 
 		$('.tree1').treed();
 	    
-		$('#wizard').steps();
+		//
 	
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
-	initChat();	
-	initUnreadChatAndNotification();
+	
 	/*
 	 * Page specific js
 	 */
@@ -75,7 +74,9 @@ function readyFn(jQuery) {
 	case 'orgadmin_dashboard':
 		init_orgadmin_dashboard();
 		$('#Dashboard').css('color','  #eb384f');
-		
+		initChat();	
+		initUnreadChatAndNotification();
+		$('#wizard').steps();
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
@@ -97,7 +98,10 @@ function readyFn(jQuery) {
 		$('#Reports').css('color','  #eb384f');
 		break;
 	case 'superadmin_dashboard':
-		init_super_admin_dashboard();		
+		init_super_admin_dashboard();
+		initChat();	
+		initUnreadChatAndNotification();
+		$('#wizard').steps();
 		$('#Dashboard').css('color','  #eb384f');
 		break;
 	case 'super_admin_account_managment':
