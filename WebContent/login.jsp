@@ -81,7 +81,7 @@
 
 			<br>
 
-			<form class="m-t" role="form" action="<%=baseURL%>login" method="get">
+			<form class="m-t" role="form" action="<%=baseURL%>login" method="post">
 				<div class="form-group">
 					<input type="email" name="email" 
 						class="form-control" placeholder="Username" required="">

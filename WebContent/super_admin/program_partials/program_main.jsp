@@ -32,7 +32,7 @@ UIUtils ui_Util = new UIUtils();
 						<label>Choose Program</label> <select
 							class="form-control m-b course_holder " name="courseID">
 							
-							<%-- <%= ui_Util.getCourses(colegeID) %> --%>
+							<%= ui_Util.getCourses(colegeID) %>
 
 						</select>
 					</div>

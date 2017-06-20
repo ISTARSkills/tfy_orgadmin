@@ -70,8 +70,8 @@ if(notificationType.equalsIgnoreCase(NotificationType.LESSON))
 		String lessonTitle = lessonData.get(0).get("lesson_title").toString();
 		String courseTitle = lessonData.get(0).get("course_name").toString();
 		String module_id = lessonData.get(0).get("module_id").toString();
-		String notificationTitle = "A lesson with title "+lessonTitle+" of course "+courseTitle+" has been added to task list.";
-		String notificationDescription =  lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
+		String notificationTitle = "A lesson with title <b>"+lessonTitle+"</b> of course <b>"+courseTitle+"</b> has been added to task list.";
+		String notificationDescription =  notificationTitle;
 		String taskTitle = lessonData.get(0).get("lesson_title").toString();
 		String taskDescription = lessonData.get(0).get("description")!=null ? lessonData.get(0).get("description").toString(): "NA";
 		if(request.getParameterMap().containsKey("title") && !request.getParameter("title").toString().isEmpty())
@@ -115,8 +115,8 @@ else if(notificationType.equalsIgnoreCase(NotificationType.ASSESSMENT))
 	String assessmentID = request.getParameter("assessment_id");
 	Assessment assessment = new AssessmentDAO().findById(Integer.parseInt(assessmentID));
 	Course course = new CourseDAO().findById(assessment.getCourse());
-	String notificationTitle = "An assessment with title "+assessment.getAssessmenttitle()+" of course "+course.getCourseName()+" has been added to task list.";
-	String notificationDescription =  assessment.getDescription()!=null ? assessment.getDescription(): "NA";
+	String notificationTitle = "An assessment with title <b>"+assessment.getAssessmenttitle()+"</b> of course <b>"+course.getCourseName()+"</b> has been added to task list.";
+	String notificationDescription =  notificationTitle;
 	String taskTitle = assessment.getAssessmenttitle();
 	String taskDescription = notificationDescription;
 	String studentIds = request.getParameter("studentlist_id");

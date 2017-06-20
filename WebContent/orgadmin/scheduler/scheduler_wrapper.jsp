@@ -117,4 +117,3 @@ int colegeID = (int)request.getSession().getAttribute("orgId");
 
 
 					</div>
-				

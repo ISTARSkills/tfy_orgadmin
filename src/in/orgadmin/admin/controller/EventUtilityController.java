@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +17,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.NotificationType;
 
 import in.orgadmin.admin.services.AssessmentSchedulerService;
 import in.orgadmin.admin.services.EventSchedulerService;
+import in.talentify.core.utils.AndroidNoticeDelegator;
 import in.talentify.core.utils.UIUtils;
 
 @WebServlet("/event_utility_controller")
@@ -141,6 +145,25 @@ public class EventUtilityController extends HttpServlet {
 
 				EventSchedulerService ess = new EventSchedulerService();
 				ess.deleteEvent(deleteEventid);
+				
+				IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+				String adminId = user.getId()+"";
+				
+				ArrayList<String> students = new ArrayList<>();
+				String findStu ="select distinct student_id from batch_students where batch_group_id = (select batch_group_id from batch_schedule_event where id = "+deleteEventid+")";
+				List<HashMap<String, Object>> stussss = new DBUTILS().executeQuery(findStu);
+				for(HashMap<String, Object> st : stussss)
+				{
+					students.add(st.get("student_id").toString());
+				}
+				AndroidNoticeDelegator noticeDelegator = new AndroidNoticeDelegator();
+				if(students.size()>0)
+				{	
+					HashMap<String, Object> item = new HashMap<String, Object>();
+					
+					noticeDelegator.sendNotificationToGroup(students, "NO_MESSAGE", NotificationType.COMPLEX_UPDATE, item);	
+				}
+				
 			}
 
 			// response.getWriter().print();
