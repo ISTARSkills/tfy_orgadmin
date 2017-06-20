@@ -83,7 +83,7 @@ padding: 15px !important;
 
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(449);
+	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	String course_id = request.getParameter("course_id");
 	System.out.println("course id =========> " + course_id);
@@ -103,29 +103,26 @@ padding: 15px !important;
 
 					<%
 						int i = 0;
+					
 					if(cp != null && cp.getCourses() != null){
 						for (CoursePOJO course : cp.getCourses()) {
 							if (course.getId() == Integer.parseInt(course_id) && course.getModules() != null) {
 								for (ModulePOJO modulePOJO : course.getModules()) {
+									String className="";
+									if(!modulePOJO.getStatus().equalsIgnoreCase("COMPLETED")){
+										className=" background-color: #cbcbcd !important";
+									}
 					%>
 					<a href="/student/roles/roles_lesson.jsp?course_id=<%=course.getId() %>&module_id=<%=modulePOJO.getId() %>" style="color: black;"><div class="col-md-3 ">
-							<div class="ibox">
-								<div class="ibox-content product-box h-370">
-									<h3 class="p-xxs m-l-xs"><%=modulePOJO.getName()%></h3>
+							<div class="ibox" >
+								<div class="ibox-content product-box h-370 "  style= " <%=className %> ; min-height: 267px !important">
+									<div style="    min-height: 60px;"><h3 class="p-xxs m-l-xs"><%=modulePOJO.getName()%></h3></div>
+									
 									<div class="product-imitation" style="padding: 0px !important;">
 										<img alt="" src="<%=modulePOJO.getImageURL()%>"
-											style="width: 100%; height: 190px;">
+											style="width: 100%;">
 									</div>
-									<div class="product-desc">
-
-
-										<div class="medium m-t-xs">
-										<% for(String skillLabel : modulePOJO.getSkillObjectives()){ %>
-										<span class="badge m-b-xs font-normal" style="background: #eb384f;color: white;"><%=skillLabel %></span>
-										<%} %>
-										</div>
-
-									</div>
+									
 								</div>
 
 							</div>

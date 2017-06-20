@@ -1,3 +1,9 @@
+<%@page import="com.istarindia.android.pojo.ConcreteItemPOJO"%>
+<%@page import="com.istarindia.android.pojo.ModulePOJO"%>
+<%@page import="com.istarindia.android.pojo.CoursePOJO"%>
+<%@page import="com.istarindia.android.pojo.RestClient"%>
+<%@page import="com.istarindia.android.pojo.ComplexObject"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="tfy.webapp.ui.LessonServices"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%><!doctype html>
 <html lang="en">
@@ -6,11 +12,24 @@
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 		+ path + "/";
 	int lesson_id =6020;
+	int playlist_id = -1;
 	LessonServices lessonServices = new LessonServices();
 	if(request.getParameter("lesson_id")!=null){
 		 lesson_id = Integer.parseInt(request.getParameter("lesson_id"));
 	}
-	
+	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
+	RestClient rc = new RestClient();
+
+	ComplexObject cp = rc.getComplexObject(user.getId());
+	for(CoursePOJO coursePOJO:cp.getCourses()){
+		for(ModulePOJO modulePOJO:coursePOJO.getModules()){
+			for(ConcreteItemPOJO concreteItemPOJO:modulePOJO.getLessons()){
+				if(concreteItemPOJO.getLesson().getId().intValue() == lesson_id){
+					 playlist_id = concreteItemPOJO.getLesson().getPlaylistId();			
+				}
+			}
+		}
+	}
 %>
 <head>
 <meta charset="utf-8">
@@ -163,9 +182,18 @@
 
 			document.getElementsByClassName("present")[0].style.height = height;
 			document.getElementsByClassName("present")[0].style.width = width;
-			
-		
+			var slideID = document.getElementsByClassName("present")[0].id;
+			//lessons/user/{userId}/add_log/lesson/{lesson_id}/{slide_id}/{slide_title} 
+								var HtmlElementSlideHolder =  document.getElementById('slide_'+slideID);
+								var title =HtmlElementSlideHolder.dataset.title;
 
+								$.ajax({
+			        type: "GET",
+			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/add_log/lesson/<%=lesson_id%>/'+slideID+'/'+title+'/'+document.getElementsByTagName("section").length,
+			        success: function(result) {
+			           
+			        }
+			    });
 			var x = document.getElementsByTagName("section");
 			var i;
 			for (i = 0; i < x.length; i++) {			    
@@ -202,14 +230,9 @@
 				console.log('PPT ENDED '+Reveal.getProgress());
 				
 				$.ajax({
-			        type: "POST",
-			        url: '<%=basePath%>switch_lesson',
-			        data: { lesson_id:<%=lesson_id%>},
+			        type: "GET",
+			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=playlist_id%>/COMPLETED',
 			        success: function(result) {
-			           var  input= location.href;
-			           var fields = input.split('=');
-                       var url = fields[0];
-			           window.location.replace(url+'='+result);
 			           
 			        }
 			    });
@@ -217,25 +240,7 @@
 			}
 
 		});
-	<%-- 	
-		 
-		 $('.edit').editable('<%=basePath%>edit_ppt', {
-		    	indicator : 'Saving...', 
-		        tooltip:'Click to edit...',
-		        submitdata : function(value, settings) {
-		            return {
-		            	slide_id: $(this).attr("data-slide_id"),
-		            	element_type: $(this).attr("data-element_type"),
-		            	lesson_id:<%=lesson_id%>,
-		            	fragment_index:$(this).attr("data-fragment-index"),
-		            	child_fragment_index:$(this).attr("data-child-fragment-index")
-		            	};
-		        },callback:function(value, settings) {
-		        	 console.log(value);
-		             return(value);
-		        }
-		    });
-		  --%>
+
 		
 		 
 	

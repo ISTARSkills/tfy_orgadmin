@@ -1,3 +1,4 @@
+<%@page import="java.util.Enumeration"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.util.Properties"%>

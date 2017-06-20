@@ -21,6 +21,8 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
@@ -40,6 +42,9 @@ import in.talentify.core.services.NotificationAndTicketServices;
 import in.talentify.core.utils.CMSRegistry;
 import in.talentify.core.utils.EmailSendingUtility;
 import tfy.admin.services.EmailService;
+
+import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
+import tfy.admin.studentmap.pojos.AdminCMSessionSkillGraph;
 
 
 public class MAIN {
@@ -65,10 +70,59 @@ public class MAIN {
 		//asdas();
 		//datlooper();
 		//reportUtilTesting();
-		ss();
+		//ss();
+		jsontesting();
 	}
 	
 	
+	private static void jsontesting() {
+		// TODO Auto-generated method stub
+		AdminCMSessionSkillGraph graph = new AdminCMSessionSkillGraph();
+		HashMap<String, ArrayList<AdminCMSessionSkillData>> data = new HashMap<>();
+		
+		ArrayList<AdminCMSessionSkillData> list = new ArrayList<>();
+		{	
+		AdminCMSessionSkillData dd= new AdminCMSessionSkillData();
+		dd.setName("ROOKIE");
+		
+		ArrayList<ArrayList<Object>> data2 = new ArrayList<>(); 
+		ArrayList<Object> kv = new ArrayList<>();
+		kv.add("ASDasd");
+		kv.add(2);
+		data2.add(kv);
+		
+		dd.setData(data2);
+		list.add(dd);
+		
+	}
+		{
+			AdminCMSessionSkillData dd= new AdminCMSessionSkillData();
+			dd.setName("MAster");
+			
+
+			ArrayList<ArrayList<Object>>data2 = new ArrayList<>(); 
+			ArrayList<Object> kv = new ArrayList<>();
+			kv.add("sfsdfwrew");
+			kv.add(2);
+			data2.add(kv);
+			
+			dd.setData(data2);
+			list.add(dd);
+			
+		}
+		
+		data.put("MOB", list);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+		String result="";
+		result = gson.toJson(data);
+		
+		System.out.println(result);
+		
+		
+		
+	}
+
+
 	private static void ss() {
 		// TODO Auto-generated method stub
 		CustomReportUtils repUtils = new CustomReportUtils();

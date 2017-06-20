@@ -1,39 +1,55 @@
 package tfy.webapp.ui;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
+import com.istarindia.android.pojo.ComplexObject;
+import com.istarindia.android.pojo.ConcreteItemPOJO;
+import com.istarindia.android.pojo.CoursePOJO;
+import com.istarindia.android.pojo.DailyTaskPOJO;
+import com.istarindia.android.pojo.ModulePOJO;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 public class TaskCardFactory {
 
-	public StringBuffer showSummaryCard(List<TaskSummaryPOJO> filterTaskList ) {
+	public StringBuffer showSummaryCard(ComplexObject cp) {
+		if(cp.getTaskForTodayCompleted().size()==0) {
+			return new StringBuffer();
+		} else {
 		
 		StringBuffer sb = new StringBuffer();
-	
+		Integer taskRemaining = cp.getTaskForToday().size() - cp.getTaskForTodayCompleted().size();
 		sb.append("<div class='col-md-3 '>                                        ");
 		sb.append(" <div class='ibox'>                                            ");
-		sb.append(" <div class='ibox-content product-box h-370'>                  ");
+		sb.append(" <div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
 		sb.append(" <h6 class='p-xxs font-normal bg-muted m-l-xs m-t-none'>TODAY'S ");
 		sb.append(" ACTIVITY</h6>                                                 ");
-		sb.append(" <h3 class='p-xxs m-l-xs'>4 Tasks Completed</h3>               ");
+		sb.append(" <h3 class='p-xxs m-l-xs'>"+cp.getTaskForTodayCompleted().size()+" Tasks Completed</h3>               ");
 		sb.append(" </div>                                                        ");
 		sb.append(" <div class='product-desc no-padding'>                         ");
 		sb.append("                                                               ");
 		sb.append("                                                               ");
 		sb.append(" <div class='ibox-content no-padding content-border'           ");
 		sb.append(" id='ibox-content'>                                            ");
-		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline left-orientation'>");
+		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline left-orientation'style=' margin-bottom: 10px !important;'>");
 		//iterate
-		for(TaskSummaryPOJO taskSummaryPOJO :filterTaskList ){
-			 sb.append("<div class='vertical-timeline-block no-padding'>   ");
+		String taskIcon = "fa fa-desktop";
+		for(TaskSummaryPOJO taskSummaryPOJO :cp.getTaskForTodayCompleted() ){
+			if(taskSummaryPOJO.getItemType().equalsIgnoreCase("ASSESSMENT")){
+				taskIcon = "fa fa-houzz";
+			}
+			 sb.append("<div class='vertical-timeline-block no-padding' style='margin: 1em 0 !important;'>   ");
 			 sb.append("<div class='vertical-timeline-icon navy-bg'>       ");
 			 sb.append("<i class='fa fa-briefcase'></i>                    ");
 			 sb.append("</div>                                             ");
 			 sb.append("                                                   ");
 			 sb.append("<div class='vertical-timeline-content p-xxs'>      ");
-			 sb.append("<p>Introduction to Written Communication</p>       ");
+			 sb.append("<p>"+taskSummaryPOJO.getTitle()+"</p>       ");
 			 sb.append("                                                   ");
 			 sb.append("                                                   ");
 			 sb.append("<span class='vertical-date'> <small>00:00 AM</small>");
@@ -47,7 +63,7 @@ public class TaskCardFactory {
 		sb.append("                                                               ");
 		sb.append("                                                               ");
 		sb.append(" <div class='m-l-lg'>                                          ");
-		sb.append(" <i class='fa fa-circle-thin m-r-md'></i>16 tasks remaining    ");
+		sb.append(" <i class='fa fa-circle-thin m-r-md'></i>"+taskRemaining+" tasks remaining    ");
 		sb.append(" for the day                                                   ");
 		sb.append(" </div>                                                        ");
 		sb.append(" </div>                                                        ");
@@ -59,7 +75,7 @@ public class TaskCardFactory {
 		sb.append(" </div>                                                        ");	
 		
 		return sb;
-
+		}
 	}
 
 	public StringBuffer showcard(TaskSummaryPOJO task) {
@@ -70,9 +86,8 @@ public class TaskCardFactory {
 			return showAssessmentCard(task);
 		case TaskItemCategory.CLASSROOM_SESSION:
 			return showCLASSROOM_SESSIONCard(task);
-	case TaskItemCategory.LESSON_PRESENTATION:
+		case TaskItemCategory.LESSON_PRESENTATION:
 				return showLessonPresenationCard(task);
-		
 		default:
 			break;
 		}
@@ -88,7 +103,7 @@ public class TaskCardFactory {
 		
 		sb.append("<div class='col-md-3 '>												");
 		sb.append("<div class='ibox'>                                                   ");
-		sb.append("<div class='ibox-content product-box h-370'>                         ");
+		sb.append("<div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                         ");
 		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
 		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
 		sb.append("<div class='product-imitation' style='padding: 0px !important;'>     ");
@@ -105,7 +120,7 @@ public class TaskCardFactory {
 		sb.append("</div>                                                               ");
 		sb.append("<div class='m-t text-center button-top'>                             ");
 		sb.append("                                                                     ");
-		sb.append("<a target='_blank' class='btn btn-rounded' href='/student/presentation.jsp?lesson_id="+task.getItemId()+"'>START                 ");
+		sb.append("<a target='_blank' class='banner btn btn-rounded' href='/student/presentation.jsp?lesson_id="+task.getItemId()+"'>START                 ");
 		sb.append("PRESENTATION</a>                                                     ");
 		sb.append("</div>                                                               ");
 		sb.append("</div>                                                               ");
@@ -120,7 +135,7 @@ public class TaskCardFactory {
 		}
 		sb.append("<div class='col-md-3 '>													");
 		sb.append("<div class='ibox'>														");
-		sb.append("<div class='ibox-content product-box h-370'>                             ");
+		sb.append("<div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                             ");
 		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
 		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
 		sb.append("<div class='product-imitation'                                           ");
@@ -155,7 +170,7 @@ public class TaskCardFactory {
 		sb.append("</div>                                                                   ");
 		sb.append("<div class='m-t text-center button-top'>                                 ");
 		sb.append("                                                                         ");
-		sb.append("<a class='btn btn-rounded' href='#'>START CLASS</a>           ");
+		sb.append("<a class='banner btn btn-rounded' href='#'>START CLASS</a>           ");
 		sb.append("</div>                                                                   ");
 		sb.append("</div>                                                                   ");
 		sb.append("</div>                                                                   ");
@@ -172,22 +187,62 @@ public class TaskCardFactory {
 		if(task.getImageURL() == null){
 			task.setImageURL("http://cdn.talentify.in//course_images/assessment.png");
 		}
-		sb.append(
-				"<div class='col-md-3 '> 						<div class='ibox'> 							<div class='ibox-content product-box h-370'> 								<h6 class='p-xxs font-normal bg-muted m-l-xs'>"
-						+ task.getHeader() + "</h6> 								<h3 class='p-xxs m-l-xs'>"
-						+ task.getTitle()
-						+ "</h3> 								<div class='product-imitation' 									style='padding: 0px !important; background: transparent;'> 									<img alt='' class='img-circle assessment-circle-img' 										src='"
-						+ task.getImageURL()
-						+ "'> 								</div> 								<div class='product-desc'>   									<div class='medium m-t-xs'>"
-						+ "Many desktop publishing 										packages and web page editors now.Many desktop publishing 										packages and web page editors now."
-						+ "</div> 									<br /> 									<div class='row text-center font-bold medium'> 										<div class='col-xs-4 col-md-4'>"
-						+ task.getNumberOfQuestions()
-						+ "</div> 										<div class='col-xs-4 col-md-4'>"
-						+ task.getItemPoints()
-						+ "</div> 										<div class='col-xs-4 col-md-4'>"
-						+ task.getDuration()
-						+ "</div> 									</div> 									<div class='row text-center font-normal bg-muted small'> 										<div class='col-xs-4 col-md-4'>Questions</div> 										<div class='col-xs-4 col-md-4'>Experience</div> 										<div class='col-xs-4 col-md-4'>Time Limit</div> 									</div>  								</div> 							</div> 							<div class='m-t text-center button-top'>  								<a class='btn btn-rounded' href='#'>START 									ASSESSMENT</a> 							</div> 						</div> 					</div>");
+		sb.append("<div class='col-md-3 '>                                            ");
+		sb.append("<div class='ibox'>                                                 ");
+		sb.append("<div style='' class='ibox-content product-box h-370'>              ");
+		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getItemType()+"</h6>          ");
+		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>      ");
+		sb.append("<div class='product-imitation'                                     ");
+		sb.append("style='padding: 0px !important; background: transparent;'>         ");
+		sb.append("<img alt='' style='width: 100%;'                                   ");
+		sb.append("src='"+task.getImageURL()+"'>       ");
+		sb.append("</div>                                                             ");
+		sb.append("<div class='product-desc'>                                         ");
+		sb.append("<div class='medium m-t-xs' style='min-height: 59px;'>"+task.getDescription()+"</div>                                            ");
+		sb.append("<div class='row text-center font-bold medium' '>                     ");
+		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: -19px;'>"+task.getNumberOfQuestions()+"</div>                             ");
+		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: 22px;'>"+task.getItemPoints()+"</div>                             ");
+		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: -3px;'>"+task.getDuration()+"</div>                            ");
+		sb.append("</div>                                                             ");
+		sb.append("<div class='row text-center font-normal bg-muted small' style='margin-left: -27px !important;    margin-right: -28px !important;'>           ");
+		sb.append("<div class='col-xs-4 col-md-4'>Questions</div>                     ");
+		sb.append("<div class='col-xs-4 col-md-4'>Experience</div>                    ");
+		sb.append("<div class='col-xs-4 col-md-4' style='    margin-left: -16px;'>Time Limit</div>                    ");
+		sb.append("</div>                                                             ");
+		sb.append("</div>                                                             ");
+		sb.append("</div>                                                             ");
+		sb.append("<div class='m-t text-center button-top'>                           ");
+		sb.append("<a class='banner btn btn-rounded' href='#'>START ASSESSMENT</a>           ");
+		sb.append("</div>                                                             ");
+		sb.append("</div>                                                             ");
+		sb.append("</div>                                                             ");
 		return sb;
 	}
 
+	
+	public StringBuffer showSummaryEvents(ComplexObject cp) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div class='col-md-3 ' style='max-height: 370px !important;    overflow-y: auto;'>				<div class='ibox'> <div class='ibox-content ' > ");			
+		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");
+		sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
+		sb.append("<ul class='list-group clear-list m-t'>  ");
+		String[] class1={"primary","information","success","warning","danger"};
+		
+		int i=0;
+		for (DailyTaskPOJO event : cp.getEventsToday()) {
+			DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+			String dateString = dateFormat.format(event.getStartDate());
+			int rnd = (new Random()).nextInt(4);
+		sb.append("<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
+		sb.append("<div class='row'><div class='col-md-1  no-padding' style='    margin-top: 8px;'><span class='label label-"+class1[rnd]+"'>"+(i++)+"</span></div>"
+				+ "<div class='col-md-1  no-padding'></div><div class='col-md-7 no-padding'>"+event.getName()+"</div>"
+				+ "<div class='col-md-3	 no-padding'>"+dateString+"</div></div>");
+		sb.append("</li>                                                                                    ");
+		}                                                                              
+		sb.append("</ul>                                                                                    ");
+		sb.append("</div> </div> </div>                                                                                   ");
+
+		return sb;
+	}
 }
+

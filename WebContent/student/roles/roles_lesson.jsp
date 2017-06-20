@@ -1,3 +1,4 @@
+<%@page import="tfy.webapp.ui.OrgAdminPropData"%>
 <%@page import="com.istarindia.android.pojo.LessonPOJO"%>
 <%@page import="com.istarindia.android.pojo.ConcreteItemPOJO"%>
 <%@page import="com.istarindia.android.pojo.ModulePOJO"%>
@@ -33,9 +34,9 @@
 
 .btn-rounded {
 	min-width: 200px;
-    margin-top: -16px;
-    background: #eb384f;
-    color: white;
+	margin-top: -16px;
+	background: #eb384f;
+	color: white;
 }
 
 .task-complete-header {
@@ -65,9 +66,22 @@
 .product-desc {
 	padding: 15px !important;
 }
+
 h2 small {
 	font-size: 61% !important;
 	line-height: normal;
+}
+
+.btn:hover {
+	color: white !important
+}
+
+.nav-tabs>li.active>a:hover, a:focus, a:active {
+	border-radius: 50px !important;
+}
+
+.btn.focus, .btn:focus, .btn:hover {
+	color: white !important;
 }
 </style>
 <jsp:include page="../inc/head.jsp"></jsp:include>
@@ -78,7 +92,7 @@ h2 small {
 
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(449);
+	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	String course_id = request.getParameter("course_id");
 	System.out.println("course id =========> " + course_id);
@@ -100,34 +114,73 @@ h2 small {
 
 					<%
 						int i = 0;
-					if(cp != null && cp.getCourses() != null){
-						for (CoursePOJO course : cp.getCourses()) {
-							if (course.getId() == Integer.parseInt(course_id) && course.getModules() != null) {
-								for (ModulePOJO modulePOJO : course.getModules()) {
-									if(modulePOJO.getId() == Integer.parseInt(module_id) && modulePOJO.getLessons() != null){
-									for(ConcreteItemPOJO lesson : modulePOJO.getLessons()){
-										LessonPOJO less = lesson.getLesson();
+						if (cp != null && cp.getCourses() != null) {
+							for (CoursePOJO course : cp.getCourses()) {
+								if (course.getId() == Integer.parseInt(course_id) && course.getModules() != null) {
+									for (ModulePOJO modulePOJO : course.getModules()) {
+										if (modulePOJO.getId() == Integer.parseInt(module_id) && modulePOJO.getLessons() != null) {
+											for (ConcreteItemPOJO lesson : modulePOJO.getLessons()) {
+												LessonPOJO less = lesson.getLesson();
+												
+												if(less.getImageUrl() == null){
+													less.setImageUrl("/course_images/l_"+less.getId()+".png");
+												}
+												
+												String classname="";
+												if(less.getStatus().equalsIgnoreCase("COMPLETED")){
+													 classname="<div class='ribbon'><span>COMPLETED </span>									                            </div>";
+												}
 					%>
-					<div class="col-md-3 ">
+					
+					<div class="col-md-3 "><%=classname %>
 						<div class="ibox">
-							<div class="ibox-content product-box h-370">
-								<div class="product-desc m-t-md">
+						<% String bg_status= ""; 
+						if(less.isFuture(cp)) {
+							bg_status = "background-color: #cbcbcd !important;";
+						}%>
+							<div class="ibox-content product-box h-370"
+								style="min-height: 360px !important; <%=bg_status %>;">
+								<div class="product-imitation" style="padding: 0px !important;">
+									<img alt=""
+										src="<%=OrgAdminPropData.get("media_url_path") %><%=less.getImageUrl() %>"
+										style="width: 100%;max-height: 145px;">
+								</div>
+								<div class="product-desc m-t-md" style="padding: 0px  !important;">
 									<div class="medium m-t-xs">
-										<div class="text-center font-bold m-t-sm"><h2><%=less.getTitle()%></h2></div>
-										<div class="text-center font-normal m-t-md" style="line-height: normal;"><h2><small><%=less.getDescription()%></small></h2></div>
+										<div class="text-center font-bold m-t-sm">
+											<h2><%=less.getTitle()%></h2>
+										</div>
+										<div class="text-center font-normal m-t-md"
+											style="line-height: normal;">
+											<h2>
+												<small style="line-height: 1.3 !important"><%=less.getDescription()%></small>
+											</h2>
+										</div>
 									</div>
-
+									
 								</div>
 							</div>
 							<div class="text-center button-top">
-								<a class="btn btn-rounded" href="#">BEGIN SKILL</a>
+							
+							<% if(!less.isFuture(cp)) { %>
+								<a class="btn btn-rounded" target="_blank"
+									href="/student/presentation.jsp?lesson_id=<%=less.getId()%>">BEGIN
+									SKILL</a>
+									<% } else { %>
+									<a class="btn btn-rounded" 
+									href="#">CONTENT LOCKED</a>
+									
+									<% } %>
 							</div>
 						</div>
 					</div>
 					<%
-									}}}
+						}
+										}
+									}
+								}
 							}
-						}}
+						}
 					%>
 
 

@@ -1,3 +1,4 @@
+<%@page import="java.util.Enumeration"%>
 <%@page import="com.istarindia.android.pojo.CoursePOJO"%>
 <%@page import="tfy.webapp.ui.TaskCardFactory"%>
 <%@page import="com.istarindia.android.pojo.TaskSummaryPOJO"%>
@@ -79,7 +80,7 @@
 	
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(449);
+	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 
 %>
@@ -105,12 +106,12 @@
 				%>
 					<a href="/student/roles/roles_module.jsp?course_id=<%=course.getId() %>" style="color: black;"><div class="col-md-3 ">
 						<div class="ibox">
-								<div class="ibox-content product-box h-370">
+								<div class="ibox-content product-box h-370" style="min-height: 466px !important;">
 									<h6 class="p-xxs font-normal text-muted m-l-xs"><%=course.getCategory()%></h6>
 									<h3 class="p-xxs m-l-xs"><%=course.getName()%></h3>
 									<div class="product-imitation" style="padding: 0px !important;">
 										<img alt="" src="<%=course.getImageURL()%>"
-											style="width: 100%; height: 190px;">
+											style="width: 100%;">
 									</div>
 									<div class="progress progress-mini m-t-none">
 											<div style="width: <%=course.getProgress() %>%" aria-valuemax="100" aria-valuemin="0"

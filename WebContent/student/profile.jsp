@@ -207,7 +207,7 @@ ul>p {
 
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-	ComplexObject co = rc.getComplexObject(449);
+	ComplexObject co = rc.getComplexObject(user.getId());
 	StudentProfile studentProfile = co.getStudentProfile();
 	SimpleDateFormat sd = new SimpleDateFormat("dd-MMM-YYYY");
 	Integer batch_rank = studentProfile.getBatchRank() !=null ? studentProfile.getBatchRank() : 0;

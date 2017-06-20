@@ -1,29 +1,35 @@
 package com.istarindia.android.pojo;
 
+import java.beans.Transient;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "module")
 public class ComplexObject {
 
 	private Integer id;
-	
+
 	private StudentProfile studentProfile;
 	private List<SkillReportPOJO> skills;
 	private List<TaskSummaryPOJO> tasks;
 	private List<AssessmentPOJO> assessments;
 	private List<AssessmentReportPOJO> assessmentReports;
-	//private List<AssessmentResponsePOJO> assessmentResponses;
+	// private List<AssessmentResponsePOJO> assessmentResponses;
 	private List<CoursePOJO> courses;
 	private List<CourseRankPOJO> leaderboards;
 	private List<DailyTaskPOJO> events;
 	private List<NotificationPOJO> notifications;
-	
-	public ComplexObject(){
-		
+
+	public ComplexObject() {
+
 	}
 
 	@XmlAttribute(name = "id", required = false)
@@ -80,14 +86,14 @@ public class ComplexObject {
 		this.assessmentReports = assessmentReports;
 	}
 
-/*	@XmlElement(name = "assessmentResponses", required = false)
-	public List<AssessmentResponsePOJO> getAssessmentResponses() {
-		return assessmentResponses;
-	}
-
-	public void setAssessmentResponses(List<AssessmentResponsePOJO> assessmentResponses) {
-		this.assessmentResponses = assessmentResponses;
-	}*/
+	/*
+	 * @XmlElement(name = "assessmentResponses", required = false) public
+	 * List<AssessmentResponsePOJO> getAssessmentResponses() { return
+	 * assessmentResponses; }
+	 * 
+	 * public void setAssessmentResponses(List<AssessmentResponsePOJO>
+	 * assessmentResponses) { this.assessmentResponses = assessmentResponses; }
+	 */
 
 	@XmlElement(name = "courses", required = false)
 	public List<CoursePOJO> getCourses() {
@@ -125,9 +131,72 @@ public class ComplexObject {
 		this.notifications = notifications;
 	}
 
+	@XmlTransient
+	public List<TaskSummaryPOJO> getTaskForToday() {
+		List<TaskSummaryPOJO> items = new ArrayList<>();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String todaysDate = dateFormat.format(date);
 
+		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
+			if (assessmentReportPOJO.getDate().toString().startsWith(todaysDate)) {
+				items.add(assessmentReportPOJO);
+			}
+			// System.err.println(assessmentReportPOJO.getDate());
+		}
+		return items;
+	}
+
+	@XmlTransient
+	public List<TaskSummaryPOJO> getTaskForTodayCompleted() {
+		List<TaskSummaryPOJO> items = new ArrayList<>();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String todaysDate = dateFormat.format(date);
+
+		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
+			if (assessmentReportPOJO.getDate().toString().startsWith(todaysDate)
+					&& assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
+				items.add(assessmentReportPOJO);
+			}
+		}
+		return items;
+	}
+
+	@XmlTransient
+
+	public int getNotificationsValid() {
+		int count = 0;
+		for (NotificationPOJO notification : notifications) {
+
+			if (notification.getStatus().equalsIgnoreCase("UNREAD")) {
+			
+			if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
+					|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
+					|| notification.getItemType().equalsIgnoreCase("LESSON")
+					|| notification.getItemType().equalsIgnoreCase("MESSAGE")) {
+				count++;
+			}
+
+		}}
+		return count;
+	}
 	
-	
-	
-	
+	@XmlTransient
+
+	public List<DailyTaskPOJO> getEventsToday() {
+		List<DailyTaskPOJO> items = new ArrayList<>();
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String todaysDate = dateFormat.format(date);
+		for (DailyTaskPOJO event : events) {
+			System.err.println(event.getEndDate());
+			if(event.getStartDate().toString().startsWith(todaysDate)){
+				items.add(event);
+			}
+
+		}
+		return items;
+	}
 }

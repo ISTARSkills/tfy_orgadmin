@@ -1,3 +1,4 @@
+<%@page import="java.util.Enumeration"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="tfy.webapp.ui.TaskCardFactory"%>
@@ -25,8 +26,8 @@
 }
 
 .h-370 {
-	min-height: 400px !important;
-	max-height: 400px !important;
+	min-height: 375px !important;
+	max-height: 375px !important;
 }
 
 .button-top {
@@ -45,8 +46,8 @@
 
 .btn-rounded {
 	min-width: 200px;
-    background: #eb384f;
-    color: white;
+	background: #eb384f;
+	color: white;
 }
 
 .task-complete-header {
@@ -72,6 +73,18 @@
 .content-border {
 	border: none !important;
 }
+
+.btn.banner:hover {
+	color: white !important
+}
+
+.nav-tabs>li.active>a:hover, a:focus, a:active {
+	border-radius: 50px !important;
+}
+
+.btn.banner.focus, .btn.banner:focus, .btn.banner:hover {
+	color: white !important;
+}
 </style>
 <jsp:include page="inc/head.jsp"></jsp:include>
 <%
@@ -86,65 +99,22 @@
 	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	boolean flag = false;
-	
-	
-	
 %>
-
-
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"/>
-
-			<!-- Start Table -->
-
-			<!-- End Table -->
-			<div class="wrapper wrapper-content animated fadeInRight">
+			<jsp:include page="inc/navbar.jsp" />
+			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;">
 				
-				<% 
-				List<TaskSummaryPOJO> filterTaskList = new ArrayList<>();
-				if(cp!=null && cp.getTasks()!=null){
-					for(TaskSummaryPOJO task : cp.getTasks()){
-					if(task!= null && task.getStatus()!= null && task.getDate() != null && !task.getStatus().equalsIgnoreCase("COMPLETED")){
-						
-						if(sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0){
-							filterTaskList.add(task);
-						}
-						
-					}else{
-						if(task!= null && task.getStatus()!= null  && task.getDate() != null){
-							if(sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
-						flag =true;
-						}
-					}
-				}
-					
-					System.out.println("filterTaskList------------"+filterTaskList.size());
-				}
-				
-				int i=0;
-				if(flag){
-				(new TaskCardFactory()).showSummaryCard(filterTaskList).toString() ;
-
-				}
-				for(TaskSummaryPOJO task :filterTaskList) { 
-				
-				%>
-
+			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
+				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
+			<% 	for(TaskSummaryPOJO task :cp.getTaskForToday()) { %>
 				<%=(new TaskCardFactory()).showcard(task).toString() %>
 				
-				<%  } %>
-
-
+				<% } %>
 			</div>
 		</div>
 	</div>
-
-
-
-	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>
 </body>
-
 </html>

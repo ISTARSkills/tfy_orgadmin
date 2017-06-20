@@ -1,7 +1,10 @@
 package com.istarindia.android.pojo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +12,7 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "module")
 public class ModulePOJO implements Comparable<ModulePOJO>{
@@ -109,5 +113,26 @@ public class ModulePOJO implements Comparable<ModulePOJO>{
 	@Override
 	public int compareTo(ModulePOJO o) {
 		return this.orderId -o.orderId;
+	}
+	
+	
+	@XmlTransient
+	public boolean isFuture(ComplexObject cp) {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String todaysDate = dateFormat.format(date);
+		
+		boolean isFuture = false;
+		for (ConcreteItemPOJO concreteItemPOJO : lessons) {
+			for (TaskSummaryPOJO task : cp.getTasks()) {
+				if(task.getItemId()==concreteItemPOJO.getLesson().getId()){
+					if(task.getDate().getTime() - date.getTime() > 0){
+						isFuture = true;
+						return true;
+					}
+				}
+			}
+		}
+		return true;
 	}
 }
