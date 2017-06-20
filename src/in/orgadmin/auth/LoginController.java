@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getSession().removeAttribute("user");
+		//request.getSession().removeAttribute("user");
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 		
 			System.out.println("Email -> " + request.getParameter("email"));
@@ -50,7 +50,7 @@ public class LoginController extends HttpServlet {
 					System.out.println("-------------------Email -> " +	user.getEmail());
 					//request.getSession().setMaxInactiveInterval(2000);
 					request.getSession().setAttribute("user", user);
-										
+											
 					DBUTILS util = new DBUTILS();
 					String url = "";
 					String findUserRole ="SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "+user.getId()+" order by ROLE . ID  limit 1";

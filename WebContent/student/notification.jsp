@@ -33,7 +33,7 @@
 			+ request.getContextPath() + "/";
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(449);
+	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	
 %>

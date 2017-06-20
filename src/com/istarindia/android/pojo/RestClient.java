@@ -24,6 +24,7 @@ public class RestClient {
 		ComplexObject covertedObject = new ComplexObject();
 		try {
 			URL url = new URL("http://elt.talentify.in:8080/t2c/user/"+userID+"/complex");
+			System.err.println("http://elt.talentify.in:8080/t2c/user/"+userID+"/complex");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
