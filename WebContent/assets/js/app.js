@@ -76,14 +76,15 @@ function readyFn(jQuery) {
 		$('#Dashboard').css('color','  #eb384f');
 		initChat();	
 		initUnreadChatAndNotification();
-		$('#wizard').steps();
+		
 		break;
 	case 'orgadmin_admin':
 		init_orgadmin_admin();
 		$('#Admin').css('color','  #eb384f');
 		break;
 	case 'orgadmin_scheduler':
-		init_orgadmin_scheduler();		
+		init_orgadmin_scheduler();
+		
 		$('#Scheduler').css('color','  #eb384f');
 		break;
 		
@@ -114,6 +115,7 @@ function readyFn(jQuery) {
 		break;
 	case 'super_admin_scheduler':
 		init_super_admin_scheduler();
+		
 		$('#Scheduler').css('color','  #eb384f');
 		break;	
 	case 'super_admin_analytics':
@@ -2447,6 +2449,7 @@ function init_orgadmin_scheduler() {
 
 function init_auto_scheduler()
 {
+	$('#wizard').steps();
 	$('#org_selector').unbind().on('change', function(){
 		var orgId = $(this).val();
 		$('#entity_type_selector').data('college_id',orgId);
@@ -4428,6 +4431,7 @@ function init_super_admin_scheduler(){
 						 
 			 var url = '../super_admin/scheduler.jsp?orgID='+ orgID+'&target='+target;
 											window.location.href = url;
+											
 	   });
 	   
 	   $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
