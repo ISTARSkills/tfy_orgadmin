@@ -24,8 +24,8 @@
 String userRole = istarUser.getUserRoles().iterator().next().getRole().getRoleName();
 System.out.println("user role  "+userRole);
 
-//ComplexObject cp  = (ComplexObject)request.getAttribute("cp");
-//request.setAttribute("cp", cp);
+ComplexObject cp  = (ComplexObject)request.getAttribute("cp");
+request.setAttribute("cp", cp);
 
 	%>
 	<nav class="navbar navbar-static-top" role="navigation">

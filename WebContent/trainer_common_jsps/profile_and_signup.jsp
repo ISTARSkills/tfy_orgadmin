@@ -273,7 +273,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 									</div>
 								</div>
 								<div class="col-lg-12">
-									<label class="col control-label">Available Time Sloat:</label> <input type="hidden" id="avaiable_time" name="avaiable_time" value=""><br />
+									<label class="col control-label">Available Time Slots:</label> <input type="hidden" id="avaiable_time" name="avaiable_time" value=""><br />
 									<br />
 									<%
 									HashMap<String, HashMap<Integer, Boolean>> slotData = new HashMap();

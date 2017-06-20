@@ -43,6 +43,9 @@ try{
 <script src="<%=basePath %>assets/js/plugins/clockpicker/clockpicker.js"></script>
 <script src="<%=basePath %>assets/js/plugins/select2/select2.full.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/validate/jquery.validate.min.js"></script>
+ <!-- Sweet alert -->
+    <script src="<%=basePath %>assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+
 <%-- 
 <!-- Flot -->
 <script src="<%=basePath %>assets/js/plugins/flot/jquery.flot.js"></script>
