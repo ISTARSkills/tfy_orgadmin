@@ -140,7 +140,7 @@ if(data.size()>0)
 										</div>
 								<%if(data.size()==0){ %>
 								<div class="form-group">
-                                    <!-- <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button> -->
+                                    <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button> 
                                 </div>
                                 <%} %>
 									</div>

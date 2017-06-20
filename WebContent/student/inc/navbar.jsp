@@ -24,8 +24,8 @@
 String userRole = istarUser.getUserRoles().iterator().next().getRole().getRoleName();
 System.out.println("user role  "+userRole);
 
-ComplexObject cp  = (ComplexObject)request.getAttribute("cp");
-request.setAttribute("cp", cp);
+//ComplexObject cp  = (ComplexObject)request.getAttribute("cp");
+//request.setAttribute("cp", cp);
 
 	%>
 	<nav class="navbar navbar-static-top" role="navigation">
@@ -65,78 +65,35 @@ request.setAttribute("cp", cp);
 			<%} else {%>
 		     	
 			<ul class="nav navbar-top-links navbar-right">
-			<li class="dropdown">
-			<%
-			ArrayList<NotificationPOJO> unreadArraylist = new ArrayList<NotificationPOJO>();
-            if(cp != null && cp.getNotifications() != null){
-            	
-           
-            Collections.sort(cp.getNotifications(),new Comparator<NotificationPOJO>() {
-                public int compare(NotificationPOJO o1, NotificationPOJO o2) {
-                    if (o1.getTime() == null) {
-                        return (o2.getTime() == null) ? 0 : -1;
-                    }
-                    if (o2.getTime() == null) {
-                        return 1;
-                    }
-                    return o2.getTime().compareTo(o1.getTime());
-                }
-            });
-            for(NotificationPOJO notificationPojo:cp.getNotifications()){ 
-            if(notificationPojo.getStatus() == "UNREAD"){
-        		unreadArraylist.add(notificationPojo);
-        	}}
-            if(unreadArraylist.size() ==0){
-            	int i=0;
-                for(NotificationPOJO notificationPojo:cp.getNotifications()){ 
-                	if(i<3){
-                		unreadArraylist.add(notificationPojo);
-                	}
-                	i++;
-                }
-            }
-            }
-			%>
-                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell"></i>  <span class="label label-primary"><%=unreadArraylist.size() %></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        
-                        <%  
-                        if(cp !=null && cp.getNotifications() != null && unreadArraylist.size() > 0){
-                        for(NotificationPOJO notificationPojo:unreadArraylist){ 
-                        	
-                        %>
-                        <li>
-                            <div class="feed-element no-padding"  >
-                                                    <a href="profile.html" class="pull-left">
-                                                        <img alt="image" class="img-circle" src="<%=notificationPojo.getImageURL()%>">
-                                                    </a>
-                                                    <div class="media-body ">
-                                                    	<%
-										PrettyTime p = new PrettyTime();
-											Timestamp createdAt = (Timestamp) notificationPojo.getTime();
-											String time = p.format(createdAt);
-									%>
-                                                     <strong>  <%=notificationPojo.getMessage() %></strong><br>
-                                                        <small class="text-muted"><%=time %></small>
-
-                                                    </div>
-                                                </div>
-                        </li>
-                        <li class="divider"></li>
-                        <%} }%>
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="/student/notification.jsp">
-                                    <strong>See All Alerts</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
+			
+<li class="dropdown open">
+                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                    <i class="fa fa-cog"></i> Account Settings <!-- <span class="label label-primary">8</span> -->
+                </a>
+                <ul class="dropdown-menu dropdown-alerts" style="    width: 151px;">
+                    <li>
+                        <a href="/student/edit_profile.jsp" style="padding:0px">
+                            <div>
+                                <i class="fa fa-user fa-fw"></i> Profile
+                                
                             </div>
-                        </li>
-                    </ul>
-                </li>
-
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/student/update_batch_code_wrapper.jsp" style="padding:0px">
+                            <div>
+                                <i class="fa fa-user fa-fw"></i> Update Batch Code
+                                
+                            </div>
+                        </a>
+                    </li>
+                    
+                    
+                   
+                    
+                    
+                </ul>
+            </li>
 		
 				<li><a href="/auth/logout"> <i class="fa fa-sign-out"></i>
 						Log out

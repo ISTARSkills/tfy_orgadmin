@@ -18,7 +18,7 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 					</div>
 				</div>
 				<jsp:include page="/trainer_common_jsps/profile_and_signup.jsp">
-				<jsp:param value="TRAINER" name="user_type"/>
+				<jsp:param value="STUDENT" name="user_type"/>
 				<jsp:param value="<%=trainer.getId()%>" name="user_id"/>
 				</jsp:include>
 			</div>
