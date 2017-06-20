@@ -40,6 +40,7 @@ public class LoginController extends HttpServlet {
 			System.out.println("Password -> " + request.getParameter("password"));
 			
 			try {
+				request.getSession().setMaxInactiveInterval(2000000);
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = dao.findByEmail(request.getParameter("email").toLowerCase()).get(0);
 				if (user.getPassword().equals(request.getParameter("password"))) {
@@ -67,6 +68,9 @@ public class LoginController extends HttpServlet {
 						request.getSession().setAttribute("orgId", user.getUserOrgMappings().iterator().next().getOrganization().getId());
 						
 						url = "/orgadmin/dashboard.jsp";
+						request.getRequestDispatcher(url).forward(request, response);
+					} else if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("STUDENT") || user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("TRAINER")) {
+						url = "/student/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
 					}
 					else {

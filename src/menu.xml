@@ -28,5 +28,16 @@
 	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin"/>	
 <!-- 	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
  -->
-
+ 	<parent_links display_name="Tasks" is_visible_in_menu="true" jsp_file="/student/dashboard.jsp" url="/student/dashboard.jsp" valid_role="student" />
+	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="student" />
+	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/calendar/calendar.jsp" valid_role="student" />
+	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="student" />
+	<!-- <parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/student/notification.jsp.jsp" url="/student/notification.jsp" valid_role="student" /> -->
+	
+	
+	
+	<parent_links display_name="Tasks" is_visible_in_menu="true" jsp_file="/student/task/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
+	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="trainer" />
+	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
+	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="trainer" />
 </menu>

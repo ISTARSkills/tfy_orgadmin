@@ -154,6 +154,8 @@ function readyFn(jQuery) {
 	setInterval(init_session_logs, 10000);
 	$('select').select2();
 	loadTables();	
+	
+	
 }
 
 function initUnreadChatAndNotification()
