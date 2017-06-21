@@ -1,3 +1,7 @@
+<%@page import="com.istarindia.android.pojo.OptionPOJO"%>
+<%@page import="org.apache.commons.collections.CollectionUtils"%>
+<%@page import="com.istarindia.android.pojo.QuestionPOJO"%>
+<%@page import="com.istarindia.android.pojo.AssessmentPOJO"%>
 <%@page import="com.istarindia.android.pojo.SkillReportPOJO"%>
 <%@page import="com.viksitpro.core.dao.entities.Question"%>
 <%@page import="com.viksitpro.core.dao.entities.QuestionDAO"%>
@@ -106,14 +110,30 @@
 	request.setAttribute("cp", cp);
 	boolean flag = false;
 	int assessmentID = Integer.parseInt(request.getParameter("assessment_id"));
+	AssessmentPOJO assessment = rc.getAssessment(assessmentID, user.getId());
+	ArrayList<QuestionPOJO> questions = (ArrayList<QuestionPOJO>)assessment.getQuestions();
+	HashMap<Integer, QuestionPOJO> actualQuestions = new HashMap();
+	for(QuestionPOJO que : questions)
+	{
+		actualQuestions.put(que.getId(), que);		
+	}
+	
+	HashMap<Integer, QuestionResponsePOJO> answersByUser = new HashMap();
+	
+	
 %>
-<body class="top-navigation" id="orgadmin_dashboard">
+<body class="top-navigation" >
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp" />
 			<%
 for(AssessmentReportPOJO ass :  cp.getAssessmentReports()) { 
 												if(ass.getId() == assessmentID) {
+													
+													for(QuestionResponsePOJO resp : ass.getAssessmentResponse().getResponse())
+													{
+														answersByUser.put(resp.getQuestionId(), resp);
+													}
 													%><div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2><small>Assessment Report for</small> <strong><%=ass.getName() %></strong> </h2>
@@ -132,7 +152,7 @@ for(AssessmentReportPOJO ass :  cp.getAssessmentReports()) {
                         </div>
                         <div class="col-xs-8 text-right">
                             <span> Points </span>
-                            <h2 class="font-bold">26'C</h2>
+                            <h2 class="font-bold"><%=ass.getUserScore()%></h2>
                         </div>
                     </div>
                 </div>
@@ -145,7 +165,7 @@ for(AssessmentReportPOJO ass :  cp.getAssessmentReports()) {
                         </div>
                         <div class="col-xs-8 text-right">
                             <span> Accuracy </span>
-                            <h2 class="font-bold">26'C</h2>
+                            <h2 class="font-bold"><%=ass.getAccuracy()%></h2>
                         </div>
                     </div>
                 </div>
@@ -158,7 +178,7 @@ for(AssessmentReportPOJO ass :  cp.getAssessmentReports()) {
                         </div>
                         <div class="col-xs-8 text-right">
                             <span> Batch Average </span>
-                            <h2 class="font-bold">26'C</h2>
+                            <h2 class="font-bold"><%=ass.getBatchAverage() %></h2>
                         </div>
                     </div>
                 </div>	
@@ -180,33 +200,80 @@ for(AssessmentReportPOJO ass :  cp.getAssessmentReports()) {
 
 								<div class="table-responsive">
 									<table class="table table-hover issue-tracker">
+									
+										<thead>
+										<tr>
+										<th>Question</th>
+										<th>Correct Answer</th>
+										<th>Selected Answer</th>
+										<th>Time Taken</th>
+										<th>Marking</th>
+										</tr>
+										</thead>
 										<tbody>
 											<% 
-												for(QuestionResponsePOJO pojo : ass.getAssessmentResponse().getResponse()) {
-												QuestionDAO dao = new QuestionDAO();
-												Question question = dao.findById(pojo.getQuestionId());
+											for(QuestionPOJO que : questions){
 												
+												String mark = "";
+												String labelStyle= "";
+												String correctAnswer ="";
+												String userAnswer ="";
+												String timeTookToAnswer ="0 sec";
+												for(OptionPOJO option : que.getOptions())
+												{
+													correctAnswer = option.getText()+", ";
+												}
+												correctAnswer = correctAnswer.replaceAll(", $", "");
+												if(answersByUser.get(que.getId())!=null && answersByUser.get(que.getId()).getOptions()!=null && answersByUser.get(que.getId()).getOptions().size()>0)
+												{
+													//atleast not skipped
+													
+													
+													QuestionResponsePOJO queByUser = answersByUser.get(que.getId());
+													ArrayList<Integer> realAnswers = (ArrayList<Integer>) que.getAnswers();
+													ArrayList<Integer> selectByUser = (ArrayList<Integer>) queByUser.getOptions();
+													Boolean isEqual = CollectionUtils.isEqualCollection(realAnswers,selectByUser);
+													timeTookToAnswer = queByUser.getDuration()+" sec";
+													
+													if(isEqual)
+													{
+														mark = "Correct";
+														labelStyle="style='background-color: #1ab394; color: white;';";
+														
+														userAnswer = correctAnswer;
+													}
+													else
+													{
+														mark ="Incorrect";
+														labelStyle="style='background-color: #eb384f; color: #FFFFFF;';";
+														
+														for(OptionPOJO option : que.getOptions())
+														{
+															if(selectByUser.contains(option.getId()))
+															{
+																userAnswer = option.getText()+", ";
+															}
+														}
+														userAnswer = userAnswer.replaceAll(", $", "");
+													}	
+												}
+												else
+												{
+													mark ="Skipped";
+													labelStyle="style='    background-color: #d1dade;color: #5e5e5e;';";
+													userAnswer ="Skipped";
+												}	
 												%>
 											
 											<tr>
-												<td><span class="label label-primary">Added</span></td>
+												
 												<td class="issue-info"><small>
-														<%=question.getQuestionText() %></small></td>
-												<td>Your Answer</td>
-												<td>Right Answer</td>
-												<td><span class="pie" style="display: none;">0.52,1.041</span>
-												<svg class="peity" height="16" width="16">
-														<path
-															d="M 8 8 L 8 0 A 8 8 0 0 1 14.933563796318165 11.990700825968545 Z"
-															fill="#1ab394"></path>
-														<path
-															d="M 8 8 L 14.933563796318165 11.990700825968545 A 8 8 0 1 1 7.999999999999998 0 Z"
-															fill="#d7d7d7"></path></svg> 2d</td>
-												<td class="text-right">
-													<button class="btn btn-white btn-xs">Tag</button>
-													<button class="btn btn-white btn-xs">Mag</button>
-													<button class="btn btn-white btn-xs">Rag</button>
-												</td>
+														<%=que.getText()%></small></td>
+													<td><small><%=correctAnswer %></small></td>	
+												<td><small><%=userAnswer %></small></td>
+												
+												<td><span class="label"><%=timeTookToAnswer%></span>																								
+												<td><span class="label" <%=labelStyle%>><%=mark %></span></td>
 											</tr>
 											
 											<% } }  } %>
