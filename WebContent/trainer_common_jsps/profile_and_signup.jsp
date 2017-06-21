@@ -239,7 +239,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 
 											<%
-											String course_sql = "select id, course_name from course;";
+											String course_sql = "select distinct  course.id, course_name from course, course_assessment_mapping		where course_assessment_mapping.course_id = course.id ";
 
 											List<HashMap<String, Object>> data1 = db.executeQuery(course_sql);
 											ArrayList<Integer> alreadyIntrestedCouorse = new ArrayList();

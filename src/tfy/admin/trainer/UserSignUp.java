@@ -118,7 +118,7 @@ public class UserSignUp extends IStarBaseServelet {
 		 if(!userType.equalsIgnoreCase(""))
 		 {			 
 			 TaskServices taskService = new TaskServices();
-	           String sql = "INSERT INTO address ( 	ID, 	addressline1, 	addressline2, 	pincode_id, 	address_geo_longitude, 	address_geo_latitude ) VALUES 	( 		(SELECT max(id)+1 FROM address), 		'"+addressLine1+"', 		'"+addressLine2+"', 		 (select id from pincode where pin="+pincode+"), 		 NULL, 		 NULL 	)RETURNING ID;";
+	           String sql = "INSERT INTO address ( 	ID, 	addressline1, 	addressline2, 	pincode_id, 	address_geo_longitude, 	address_geo_latitude ) VALUES 	( 		(SELECT max(id)+1 FROM address), 		'"+addressLine1+"', 		'"+addressLine2+"', 		 (select id from pincode where pin="+pincode+" limit 1), 		 NULL, 		 NULL 	)RETURNING ID;";
 	            
 	            System.err.println(sql);
 	            int address_id = db.executeUpdateReturn(sql);
