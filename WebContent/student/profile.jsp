@@ -1,3 +1,4 @@
+<%@page import="com.istarindia.android.pojo.SkillReportPOJO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.istarindia.android.pojo.StudentProfile"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
@@ -208,6 +209,12 @@ ul>p {
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
 	ComplexObject co = rc.getComplexObject(user.getId());
+	
+
+
+	request.setAttribute("cp", co	);
+	
+	
 	StudentProfile studentProfile = co.getStudentProfile();
 	SimpleDateFormat sd = new SimpleDateFormat("dd-MMM-YYYY");
 	Integer batch_rank = studentProfile.getBatchRank() !=null ? studentProfile.getBatchRank() : 0;
@@ -220,7 +227,73 @@ ul>p {
 	String mobile = studentProfile.getMobile() != null ? studentProfile.getMobile()+"":"";
 %>
 
+<style>
+.row {
+	margin-right: 0px !important;
+	margin-left: 0px !important;
+}
 
+.h-370 {
+	min-height: 375px !important;
+	max-height: 375px !important;
+}
+
+.button-top {
+	margin-top: -12px !important;
+}
+
+.assessment-circle-img {
+	width: 50%;
+	height: 40%;
+}
+
+.session-square-img {
+	width: 160px;
+	height: 160px;
+}
+
+.btn-rounded {
+	min-width: 200px;
+	background: #eb384f;
+	color: white;
+}
+
+.task-complete-header {
+	background: #23b6f9 !important;
+}
+
+#vertical-timeline {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 250px;
+}
+
+.vertical-container {
+	width: 99% !important;
+}
+
+.vertical-timeline-content p {
+	margin-bottom: 2px !important;
+	margin-top: 0 !important;
+	line-height: 1.6 !important;
+}
+
+.content-border {
+	border: none !important;
+}
+
+.btn.banner:hover {
+	color: white !important
+}
+
+.nav-tabs>li.active>a:hover, a:focus, a:active {
+	border-radius: 50px !important;
+}
+
+.btn.banner.focus, .btn.banner:focus, .btn.banner:hover {
+	color: white !important;
+}
+</style>
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
@@ -228,42 +301,32 @@ ul>p {
 
 			<!-- Start Table -->
 			<div class="row">
-				<div class="tabs-container">
-					<ul class="nav nav-tabs text-center">
-						<li class="active" style="float: left !important; width: 50%;"><a
-							data-toggle="tab" href="#tab-1" aria-expanded="true">Performance</a></li>
-						<li class="" style="float: left !important; width: 50%;"><a
-							data-toggle="tab" href="#tab-2" aria-expanded="false">Account
-								Settings</a></li>
-					</ul>
-					<div class="tab-content">
-						<div id="tab-1" class="tab-pane active">
-							<div class="panel-body">
-								<div class="row text-center font-normal p-xxs">
-									<div class="col-xs-4 col-md-4 rank">
-										<strong>#<%=batch_rank %></strong> <br /> <small class="text-muted">Batch
-											Rank</small>
-									</div>
-									<div class="col-xs-4 col-md-4">
-										<img
-											src="<%=profileImage %>"
-											class="img-circle"
-											style="width: 120px !important; height: 120px !important;">
-										<span class="position-no"> <i class="fa fa-camera"></i></span>
-										<br /> <br /> <%=fname %>
-									</div>
-									<div class="col-xs-4 col-md-4 rank">
-										<strong><%=exp_points %></strong> <br /> <small class="text-muted">XP
-											Earned</small>
-									</div>
-								</div>
-								<div class="row">
-									<div class="tabs-container">
-										<div id="container2" style="overflow: hidden;">
+				<div class="panel-body">
+					<div class="row text-center font-normal p-xxs">
+						<div class="col-xs-4 col-md-4 rank">
+							<strong style="font-size: 68px;">#<%=batch_rank %></strong> <br /> <small
+								class="text-muted"  style="    font-size: 30px;">Batch Rank</small>
+						</div>
+						<div class="col-xs-4 col-md-4">
+							<img src="<%=profileImage %>" class="img-circle"
+								style="width: 120px !important; height: 120px !important;">
+							<span class="position-no"> <i class="fa fa-camera"></i></span> <br />
+							<br />
+							<%=fname %>
+						</div>
+						<div class="col-xs-4 col-md-4 rank">
+							<strong  style="font-size: 68px;"><%=exp_points %></strong> <br /> <small
+								class="text-muted" style="    font-size: 30px;">XP Earned</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="tabs-container">
+							<div id="container2" style="overflow: hidden;">
 
-											<ul class="nav nav-tabs scroll-horizontally-div">
-												<%
-													for (int i = 1; i <= 20; i++) {
+								<ul class="nav nav-tabs scroll-horizontally-div" style="overflow: visible !important; ">
+									<%
+									int min  = Math.min(5, co.getSkills().size());
+									for (int i = 0; i < min; i++) {
 														String class_tag = "";
 														if (i == 1) {
 															class_tag = "active";
@@ -271,23 +334,24 @@ ul>p {
 															class_tag = "";
 														}
 												%>
-												<li class="<%=class_tag%> text-center"><a data-toggle="tab"
-													href="#course<%=i%>" aria-expanded="true"><img
-														src="http://cdn.talentify.in//course_images/6.png"
-														class="img-circle"
-														style="width: 120px !important; height: 120px !important;">
-														<br/>
-														<h3><small>Course Name</small></h3>
-														</a></li>
-												<%
+									<li class="<%=class_tag%> text-center" style="    width: 97px;"><a
+										data-toggle="tab" href="#course<%=i%>" aria-expanded="true"><img
+											src="<%=co.getSkills().get(i).getImageURL() %>"
+											class="img-circle"
+											style="width: 65px !important; height: 65px !important;">
+											<br />
+											<h3 sty>
+												<small><%=co.getSkills().get(i).getName() %></small>
+											</h3> </a></li>
+									<%
 													}
 												%>
-											</ul>
-										</div>
+								</ul>
+							</div>
 
-										<div class="tab-content">
-											<%
-												for (int i = 1; i <= 20; i++) {
+							<div class="tab-content">
+								<%
+								for (int i = 0; i < min; i++) {
 													String class_tag1 = "";
 													if (i == 1) {
 														class_tag1 = "active";
@@ -295,137 +359,63 @@ ul>p {
 														class_tag1 = "";
 													}
 											%>
-											<div id="course<%=i%>" class="tab-pane <%=class_tag1%>">
-												<div class="panel-body">
-													<div class="ibox ">
-														<div class="ibox-title">
-															<h2>
-																Skill Profile
-																<%=i%></h2>
-														</div>
-														<div class="ibox-content">
-															<div class="full-height div-scroll-height-2"
-																style="height: 232px !important;">
-																<div class="full-height-scroll">
+								<div id="course<%=i%>" class="tab-pane <%=class_tag1%>">
+									<div class="panel-body">
+										<div class="ibox ">
+											<div class="ibox-title">
+												<h2><%=co.getSkills().get(i).getName() %></h2>
+											</div>
+											<div class="ibox-content">
+												<div class=" " >
+													<div class="">
 
-																	<div class="col-md-12"
-																		style="padding-left: 0px !important;">
-																		<ul class="tree1">
-																			<li>Differentiate various taxes
-																				<div class=" progress"
-																					style="height: 5px !important; display: block;">
-																					<div style="width: 1.0%; padding: 20px;"
-																						aria-valuemax="100" aria-valuemin="0"
-																						aria-valuenow="1.0" role="progressbar"
-																						class="progress-bar "></div>
-																				</div>
-																				<p>0.0 / 10.0 Points.</p>
-
-																				<ul>
-																					<li>Types of Taxes
-																						<div class="progress"
-																							style="height: 5px !important;">
-																							<div style="width: 1.0%; padding: 20px;"
-																								aria-valuemax="100" aria-valuemin="0"
-																								aria-valuenow="1.0" role="progressbar"
-																								class="progress-bar"></div>
-																						</div>
-
-																					</li>
-																				</ul>
-
-
-
-																			</li>
-
-																		</ul>
+														<div class="col-md-12"
+															style="padding-left: 0px !important;">
+															<ul class="tree1">
+																
+																<% for(SkillReportPOJO subSkill :  co.getSkills().get(i).getSkills()) {%>
+																<li><%=subSkill.getName() %>
+																	<div class=" progress"
+																		style="height: 5px !important; display: block;">
+																		<div style="width: <%=subSkill.getPercentage() %>%; padding: 20px;"
+																			aria-valuemax="100" aria-valuemin="0"
+																			aria-valuenow="1.0" role="progressbar"
+																			class="progress-bar "></div>
 																	</div>
-																</div>
-															</div>
+																	<p><%=subSkill.getUserPoints() %> / <%=subSkill.getUserPoints() %> Points.</p>
+
+																	<ul>
+																		
+																		<% for(SkillReportPOJO subsubSkill :  subSkill.getSkills()) { %>
+																		<li><%=subsubSkill.getName() %>
+																			<div class="progress" style="height: 5px !important;">
+																				<div style="width: <%=subsubSkill.getPercentage() %>%; padding: 20px;"
+																					aria-valuemax="100" aria-valuemin="0"
+																					aria-valuenow="1.0" role="progressbar"
+																					class="progress-bar"></div>
+																			</div>
+
+																		</li>
+																		<% } %>
+																	</ul>
+
+
+
+																</li>
+<% } %>
+															</ul>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>
+									</div>
+								</div>
 
 
-											<%
+								<%
 												}
 											%>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="tab-2" class="tab-pane">
-							<div class="panel-body">
-								<div class="row text-center font-normal p-xxs">
-									<div class="col-xs-6">
-										<img
-											src="<%=profileImage %>"
-											class="img-circle"
-											style="width: 120px !important; height: 120px !important;">
-										<span class="account-setting-camera-position"> <i class="fa fa-camera"></i></span>
-										<br> <br> <%=fname %>
-									</div>
-									<div class="col-xs-6 my-progress-bar">
-										
-									</div>
-									
-								</div>
-								<div class="profile-header m-b-md">
-								PROFILE
-								</div>
-								<div class="form-group">
-                                    <div class="col-sm-6">
-										<label>Name</label>
-										<div class="input-group m-b">
-											<input type="text" name="f_name" class="form-control" disabled value="<%=fname %>">
-											<div class="input-group-btn">
-												<button tabindex="-1" class="btn btn-white" type="button" style="padding: 9.2px !important;"><i class="fa fa-pencil"></i></button>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-									  <div class="form-group" id="data_2">
-									
-									<label>Date of Birth</label>
-										<div class="input-group m-b date">
-											<input type="text" name="dob" class="form-control" disabled value="<%=dob%>">
-
-											<div class="input-group-btn">
-												<button tabindex="-1" class="btn btn-white" type="button" style="padding: 9.2px !important;"><i class="fa fa-pencil"></i></button>
-											</div>
-										</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<label>Email</label>
-										<div class="input-group m-b">
-											<input type="text" name="email" class="form-control" disabled value="<%=email %>">
-											<div class="input-group-btn">
-												<button tabindex="-1" class="btn btn-white" type="button" style="padding: 9.2px !important;"><i class="fa fa-pencil"></i></button>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-									<label>Mobile number</label>
-										<div class="input-group m-b">
-											<input type="text" name="mobile" class="form-control" disabled value="<%=mobile %>">
-											<div class="input-group-btn">
-												<button tabindex="-1" class="btn btn-white" type="button" style="padding: 9.2px !important;"><i class="fa fa-pencil"></i></button>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-									<label>Password</label>
-										<div class="input-group m-b">
-											<input type="password" name="password" class="form-control" disabled value="<%=pass %>">
-											<div class="input-group-btn">
-												<button tabindex="-1" class="btn btn-white" type="button" style="padding: 9.2px !important;"><i class="fa fa-pencil"></i></button>
-											</div>
-										</div>
-									</div>
-                                </div>
 							</div>
 						</div>
 					</div>
@@ -437,12 +427,12 @@ ul>p {
 
 
 	</div>
-<div id="progress-nos" va="50"></div>
+	<div id="progress-nos" va="50"></div>
 
 
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>
-	
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#data_2 .input-group.date').datepicker({

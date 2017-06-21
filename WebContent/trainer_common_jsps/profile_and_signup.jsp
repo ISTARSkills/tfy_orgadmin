@@ -34,8 +34,8 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								<%} %>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">First Name:</label>
-										<div class="col-sm-5">
+										<label class="col-sm-4 control-label">First Name:</label>
+										<div class="col-sm-8">
 											<input type="text" placeholder="First Name" name="f_name" value ="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getFirstName()!=null){%><%=user.getUserProfile().getFirstName() %><%} %>" required class="form-control">
 										</div>
 									</div>
@@ -44,18 +44,18 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Last Name:</label>
+										<label class="col-sm-4 control-label">Last Name:</label>
 
-										<div class="col-sm-5">
+										<div class="col-sm-8">
 											<input type="text" required placeholder="Last Name" name="l_name" value ="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getLastName()!=null){%><%=user.getUserProfile().getLastName() %><%} %>" class="form-control">
 										</div>
 									</div>
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Gender:</label>
+										<label class="col-sm-4 control-label">Gender:</label>
 
-										<div class="col-sm-5">
+										<div class="col-sm-8">
 											<select class="form-control m-b" required name="gender">
 												<option value="FEMALE" <%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getGender()!=null && user.getUserProfile().getGender().equalsIgnoreCase("FEMALE")){%>selected<%}%>>FEMALE</option>
 												<option value="MALE" <%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getGender()!=null && user.getUserProfile().getGender().equalsIgnoreCase("MALE")){%>selected<%}%>>MALE</option>
@@ -71,8 +71,8 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
  
  <div class="form-group" id="data_2">
-				<label class="col-sm-2 control-label">Date of Birth</label>
-				<div class="input-group date col-sm-5">
+				<label class="col-sm-4 control-label">Date of Birth</label>
+				<div class="input-group date col-sm-8">
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
 						name="dob" type="text" class="form-control date_holder"
 						value ="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getDob()!=null){%><%=df.format(user.getUserProfile().getDob()) %><%}%>">
@@ -81,7 +81,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-lg-2 control-label">Email:</label>
+										<label class="col-lg-4 control-label">Email:</label>
 										<%
 										String dis ="";
 										if(user!=null)
@@ -89,16 +89,16 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 											dis ="disabled";
 										}	
 										%>
-										<div class="col-lg-5">
-											<input type="email" <%=dis %> required placeholder="Email" name="email" class="form-control" value="<%if(user!=null && user.getEmail()!=null){%><%=user.getEmail() %><%}%>">
+										<div class="col-lg-8">
+											<input type="email"  required placeholder="Email" name="email" class="form-control" value="<%if(user!=null && user.getEmail()!=null){%><%=user.getEmail() %><%}%>">
 										</div>
 									</div>
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-lg-2 control-label">Password:</label>
+										<label class="col-lg-4 control-label">Password:</label>
 
-										<div class="col-lg-5">
+										<div class="col-lg-8">
 											<input type="password" required name="password" placeholder="Password" class="form-control" value="<%if(user!=null && user.getPassword()!=null){%><%=user.getPassword()
 											%><%}%>">
 										</div>
@@ -107,9 +107,9 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Mobile Number:</label>
+										<label class="col-sm-4 control-label">Mobile Number:</label>
 
-										<div class="col-sm-5">
+										<div class="col-sm-8">
 											<input type="number" required placeholder="Mobile Number" name="mobile" class="form-control" value="<%if(user!=null && user.getMobile()!=null){%><%=user.getMobile()
 											%><%}%>">
 										</div>
@@ -118,9 +118,9 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Address Line 1:</label>
+										<label class="col-sm-4 control-label">Address Line 1:</label>
 
-										<div class="col-sm-7">
+										<div class="col-sm-8">
 											<input type="text" required placeholder="Address Line 1" name="address_line1" class="form-control" value="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getAddress()!=null && user.getUserProfile().getAddress().getAddressline1()!=null){%><%=user.getUserProfile().getAddress().getAddressline1() %>   <%} %>">
 										</div>
 									</div>
@@ -128,9 +128,9 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Address Line 2:</label>
+										<label class="col-sm-4 control-label">Address Line 2:</label>
 
-										<div class="col-sm-7">
+										<div class="col-sm-8">
 											<input type="text" required placeholder="Address Line 2" name="address_line2" class="form-control" value="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getAddress()!=null && user.getUserProfile().getAddress().getAddressline2()!=null){%><%=user.getUserProfile().getAddress().getAddressline2() %>   <%} %>">
 										</div>
 									</div>
@@ -138,10 +138,10 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">PinCode:</label>
+										<label class="col-sm-4 control-label">PinCode:</label>
 
 
-										<div class="col-sm-5">
+										<div class="col-sm-8">
 											<select class="js-data-example-ajax  form-control" data-pin_uri="<%=baseURL%>" name="pincode" data-validation="required" required>
 												<option value="">Select Pincode</option>
 												<%
@@ -159,8 +159,8 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">UG Degree Name:</label>
-										<div class="col-sm-5">
+										<label class="col-sm-4 control-label">UG Degree Name:</label>
+										<div class="col-sm-8">
 											<select class="form-control m-b" required name="ug_degree">
 												<option value="">Select UG Degree</option>
 												<%
@@ -189,9 +189,9 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 								</div>
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">PG Degree Name:</label>
+										<label class="col-sm-4 control-label">PG Degree Name:</label>
 
-										<div class="col-sm-5">
+										<div class="col-sm-8">
 											<select class="form-control m-b" name="pg_degree">
 												<option value="">Select PG Degree</option>
 												<%
@@ -220,7 +220,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 <%if(userType.equalsIgnoreCase("TRAINER")){ %>
 								<div class="col-lg-12">
 									<div class="form-group form-inline">
-										<label class="col-sm-2 control-label">Experience:</label>
+										<label class="col-sm-4 control-label">Experience:</label>
 
 										<div class="col-sm-3 ">
 											<input type="number" placeholder="year" name="experince_years" class="form-control" value="<%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExpereinceInYears()!=null ){%><%=user.getProfessionalProfile().getExpereinceInYears().trim()%><%}%>">
@@ -234,8 +234,8 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Interested Course:</label> <input type="hidden" id="session_id" name="session_id" value="">
-										<div class="col-lg-offset-2 col-lg-10" style="margin-left: 0px">
+										<label class="col-sm-4 control-label">Interested Course:</label> <input type="hidden" id="session_id" name="session_id" value="">
+										<div class="col-sm-8" style="margin-left: 0px">
 
 
 											<%
@@ -300,7 +300,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 									}
 									%>
 									
-									<table class="table table-bordered" id='mytable'>
+									<table class="table table-bordered" id='mytable' style="    margin-left: -20px;">
 										<thead>
 											<tr>
 												<th>Days</th>
@@ -405,8 +405,8 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 }
 %>
 								<div class="form-group">
-									<div class="col-lg-offset-2 col-lg-10">
-										<button class="btn btn-sm btn-primary m-t-n-xs" type="submit">Sign in</button>
+									<div class="" style="float: right;margin-right: 20px">
+										<button class="btn btn-sm btn-primary m-t-n-xs" type="submit">Update Details</button>
 									</div>
 								</div>
 							</form>

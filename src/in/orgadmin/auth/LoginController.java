@@ -93,7 +93,7 @@ public class LoginController extends HttpServlet {
 					}
 					else if (userRole.equalsIgnoreCase("TRAINER"))
 					{
-						url = "/trainer/dashboard.jsp";
+						url = "/student/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
 					}
 					else if (userRole.equalsIgnoreCase("STUDENT"))

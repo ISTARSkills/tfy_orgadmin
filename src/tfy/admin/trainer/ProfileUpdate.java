@@ -286,7 +286,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		    			}
 		            }
 		            
-		            response.sendRedirect("/"+userType.toLowerCase()+"/edit_profile.jsp");
+		            response.sendRedirect("/student/dashboard.jsp");
 		 }
 		 
 	}

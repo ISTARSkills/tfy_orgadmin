@@ -1,3 +1,4 @@
+<%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.OptionPOJO"%>
 <%@page import="com.istarindia.android.pojo.QuestionPOJO"%>
 <%@page import="com.istarindia.android.pojo.AssessmentPOJO"%>
@@ -17,13 +18,86 @@ String userId = request.getParameter("user_id");
 String assessmentId = request.getParameter("assessment_id");
 String taskId = request.getParameter("task_id");
 RestClient client = new  RestClient();
+IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");		
+
+ComplexObject cp  = client.getComplexObject(istarUser.getId());
+
+request.setAttribute("cp", cp);
 AssessmentPOJO assessment = client.getAssessment(Integer.parseInt(assessmentId), Integer.parseInt(userId));
 DBUTILS db = new DBUTILS();
 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 ArrayList<QuestionPOJO> questions = (ArrayList<QuestionPOJO>)assessment.getQuestions();
 int queCount = questions.size();
 int assessmentMinutes = assessment.getDurationInMinutes();
-%>
+
+
+%><style>
+.row {
+	margin-right: 0px !important;
+	margin-left: 0px !important;
+}
+
+.h-370 {
+	min-height: 375px !important;
+	max-height: 375px !important;
+}
+
+.button-top {
+	margin-top: -12px !important;
+}
+
+.assessment-circle-img {
+	width: 50%;
+	height: 40%;
+}
+
+.session-square-img {
+	width: 160px;
+	height: 160px;
+}
+
+.btn-rounded {
+	min-width: 200px;
+	background: #eb384f;
+	color: white;
+}
+
+.task-complete-header {
+	background: #23b6f9 !important;
+}
+
+#vertical-timeline {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 250px;
+}
+
+.vertical-container {
+	width: 99% !important;
+}
+
+.vertical-timeline-content p {
+	margin-bottom: 2px !important;
+	margin-top: 0 !important;
+	line-height: 1.6 !important;
+}
+
+.content-border {
+	border: none !important;
+}
+
+.btn.banner:hover {
+	color: white !important
+}
+
+.nav-tabs>li.active>a:hover, a:focus, a:active {
+	border-radius: 50px !important;
+}
+
+.btn.banner.focus, .btn.banner:focus, .btn.banner:hover {
+	color: white !important;
+}
+</style>
 <body class="top-navigation" id="user_assessment">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
@@ -75,12 +149,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                         <div class="panel-heading" style="font-size: 17px;
     font-weight: bold;color:#ed5565; ">
                                             Question #<%=i%>
-									 <button type="button" class="btn btn-primary btn-xs" style="    font-size: 17px;
-    float: right;
-    z-index: 5;
-    position: absolute;
-    margin-top: -2px;
-    margin-left: 76%;"><i class="fa fa-clock-o"></i> &nbsp;&nbsp;
+									 <button type="button" class="btn btn-primary btn-xs" style="    font-size: 17px;    float: right;"><i class="fa fa-clock-o"></i> &nbsp;&nbsp;
 					<span class="bold" id="que_clock_<%=i%>"> </span></button> 
 								</div>
                                         <div class="panel-body">
@@ -134,7 +203,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                     <button type="button" class="btn btn-w-m btn-danger next" id="next_<%=i%>" >Next Question</button>
                                      &nbsp;
                                     &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-w-m btn-danger"  style="float:right">Submit Assessment</button>                                  
+                                    <button type="submit" class="btn btn-w-m btn-danger"  style="float:right;    margin-top: 50px;">Submit Assessment</button>                                  
                                 </div>
                                
              </div>  

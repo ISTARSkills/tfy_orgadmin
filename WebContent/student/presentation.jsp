@@ -189,7 +189,7 @@
 
 								$.ajax({
 			        type: "GET",
-			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/add_log/lesson/<%=lesson_id%>/'+slideID+'/'+title+'/'+document.getElementsByTagName("section").length,
+			        url: '<%=basePath%>t2c/LessonProgressService?user_id<%=user.getId()%>&lesson_id=<%=lesson_id%>&slide_id='+slideID+'&itle='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
 			        success: function(result) {
 			           
 			        }
@@ -231,7 +231,7 @@
 				
 				$.ajax({
 			        type: "GET",
-			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=playlist_id%>/COMPLETED',
+			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=lesson_id%>/update_lesson_status',
 			        success: function(result) {
 			           
 			        }

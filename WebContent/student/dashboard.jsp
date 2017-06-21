@@ -108,10 +108,12 @@
 				
 			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
 				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
-			<% 	for(TaskSummaryPOJO task :cp.getTaskForToday()) { %>
+			<% 	for(TaskSummaryPOJO task :cp.getTaskForToday()) { 
+			if(!task.getStatus().equalsIgnoreCase("COMPLETED")) {
+			%>
 				<%=(new TaskCardFactory()).showcard(task).toString() %>
 				
-				<% } %>
+				<% } } %>
 			</div>
 		</div>
 	</div>

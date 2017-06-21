@@ -54,14 +54,14 @@ try {
 		}
 		else if (userRole.equalsIgnoreCase("COORDINATOR"))
 		{
-			url = "/coordinator/dashboard.jsp";
+			url1 = "/coordinator/dashboard.jsp";
 		}else if(userRole.equalsIgnoreCase("TRAINER"))
 		{
-			url = "/trainer/dashboard.jsp";
+			url1 = "/student/dashboard.jsp";
 		}
 		else if (userRole.equalsIgnoreCase("STUDENT"))
 		{
-			url = "/student/dashboard.jsp";
+			url1 = "/student/dashboard.jsp";
 		}
 		else{			
 			String errorResponse="";

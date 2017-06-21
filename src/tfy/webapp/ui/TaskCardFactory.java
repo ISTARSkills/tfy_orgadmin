@@ -12,6 +12,8 @@ import com.istarindia.android.pojo.CoursePOJO;
 import com.istarindia.android.pojo.DailyTaskPOJO;
 import com.istarindia.android.pojo.ModulePOJO;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
+import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 public class TaskCardFactory {
@@ -25,7 +27,7 @@ public class TaskCardFactory {
 		Integer taskRemaining = cp.getTaskForToday().size() - cp.getTaskForTodayCompleted().size();
 		sb.append("<div class='col-md-3 '>                                        ");
 		sb.append(" <div class='ibox'>                                            ");
-		sb.append(" <div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                  ");
+		sb.append(" <div class='ibox-content product-box h-370' style='min-height: 375px !important;max-height: 375px !important;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
 		sb.append(" <h6 class='p-xxs font-normal bg-muted m-l-xs m-t-none'>TODAY'S ");
 		sb.append(" ACTIVITY</h6>                                                 ");
@@ -179,6 +181,9 @@ public class TaskCardFactory {
 
 	private StringBuffer showAssessmentCard(TaskSummaryPOJO task) {
 		// TODO Auto-generated method stub
+		Task taskObject = new TaskDAO().findById(task.getId());
+
+		String url = "/student/user_assessment.jsp?task_id="+task.getId()+"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId();
 		StringBuffer sb = new StringBuffer();
 		if (task.getHeader() == null) {
 			task.setHeader("");
@@ -198,7 +203,7 @@ public class TaskCardFactory {
 		sb.append("src='"+task.getImageURL()+"'>       ");
 		sb.append("</div>                                                             ");
 		sb.append("<div class='product-desc'>                                         ");
-		sb.append("<div class='medium m-t-xs' style='min-height: 59px;'>"+task.getDescription()+"</div>                                            ");
+		sb.append("<div class='medium m-t-xs' style='min-height: 45px;'>"+task.getDescription()+"</div>                                            ");
 		sb.append("<div class='row text-center font-bold medium' '>                     ");
 		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: -19px;'>"+task.getNumberOfQuestions()+"</div>                             ");
 		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: 22px;'>"+task.getItemPoints()+"</div>                             ");
@@ -212,7 +217,7 @@ public class TaskCardFactory {
 		sb.append("</div>                                                             ");
 		sb.append("</div>                                                             ");
 		sb.append("<div class='m-t text-center button-top'>                           ");
-		sb.append("<a class='banner btn btn-rounded' href='#'>START ASSESSMENT</a>           ");
+		sb.append("<a class='banner btn btn-rounded' href='"+url+"' target='_blank'>START ASSESSMENT</a>           ");
 		sb.append("</div>                                                             ");
 		sb.append("</div>                                                             ");
 		sb.append("</div>                                                             ");

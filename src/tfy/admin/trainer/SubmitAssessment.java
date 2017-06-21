@@ -75,7 +75,7 @@ Param -> question_time_taken_3 : Value ->-11*/
 			asses_response.add(queResponse);						
 		}				
 		client.SubmitAssessment(Integer.parseInt(taskId),user.getId(), asses_response, Integer.parseInt(assessmentId));
-		response.sendRedirect("/index.jsp");
+		response.sendRedirect("/student/dashboard.jsp");
 		
 	}
 
