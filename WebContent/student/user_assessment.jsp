@@ -382,6 +382,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 
 		  // Find the distance between now an the count down date
 		 var timeTookToAnswer = now - assessmentStartTime;
+		 assessmentStartTime = new Date().getTime();
 		 var timeTookToAnswerInseconds = Math.floor((timeTookToAnswer % (1000 * 60)) / 1000); 
 		 $('#question_time_taken_'+queNo).val(timeTookToAnswerInseconds);
 	});

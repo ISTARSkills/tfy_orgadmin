@@ -137,7 +137,8 @@ public class ProfileUpdate extends IStarBaseServelet {
 		         System.err.println(sql);
 		         address_id = db.executeUpdateReturn(sql);
 			 }	 
-			 
+			 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"',WHERE id="+user.getId();
+			 util.executeUpdate(updateUserPassword);
 			 String updateUserProfile ="update user_profile set address_id="+address_id+", first_name='"+firstName+"', last_name='"+lastName+"', dob='"+dob+"', gender='"+gender+"' where user_id ="+userId;
 			 util.executeUpdate(updateUserProfile);
 			 

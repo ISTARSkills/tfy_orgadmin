@@ -33,6 +33,8 @@ import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
 import com.viksitpro.core.utilities.NotificationType;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStageTypes;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes;
 
 
 
@@ -140,7 +142,11 @@ public class UserSignUp extends IStarBaseServelet {
 	    		db.executeUpdate(insertIntoProfessionalProfile);
 	    		
 	    		if(userType.equalsIgnoreCase("TRAINER"))
-	    		{	
+	    		{
+	    			
+	    			String insertIntoTrainerEmpanelmentStatus ="insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", '"+TrainerEmpanelmentStatusTypes.SELECTED+"',now(), '"+TrainerEmpanelmentStageTypes.SIGNED_UP+"')";
+	    			db.executeUpdate(insertIntoTrainerEmpanelmentStatus);
+	    			
 		    		String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+urseId+", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
 		    		db.executeUpdate(insertIntoUserOrg); 
 		    		String groupNotificationCode = UUID.randomUUID().toString();

@@ -104,9 +104,6 @@ request.setAttribute("cp", cp);
 							</div>
 						</li>						<li class="divider"></li>
 						<% } }} %>
-						
-
-						
 					</ul></li>
 
 
