@@ -6084,8 +6084,9 @@ del {
 }
 
 .product-desc {
-	padding: 20px;
+	padding: 5px;
 	position: relative;
+	font-size: 12px;
 }
 
 .ecommerce .tag-list {
@@ -11255,4 +11256,72 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
   border-right: 3px solid #79A70A;
   border-bottom: 3px solid transparent;
   border-top: 3px solid #79A70A;
+}
+
+
+
+
+
+.student_pages .row {
+	margin-right: 0px !important;
+	margin-left: 0px !important;
+}
+
+
+.student_pages  .button-top {
+	margin-top: -12px !important;
+}
+
+.student_pages  .assessment-circle-img {
+	width: 50%;
+	height: 40%;
+}
+
+.student_pages  .session-square-img {
+	width: 160px;
+	height: 160px;
+}
+
+.student_pages  .btn-rounded {
+	min-width: 200px;
+	background: #eb384f;
+	color: white;
+}
+
+.student_pages  .task-complete-header {
+	background: #23b6f9 !important;
+}
+
+.student_pages  #vertical-timeline {
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 250px;
+}
+
+.student_pages  .vertical-container {
+	width: 99% !important;
+}
+
+.student_pages  .vertical-timeline-content p {
+	margin-bottom: 2px !important;
+	margin-top: 0 !important;
+	line-height: 1.6 !important;
+}
+
+.student_pages  .content-border {
+	border: none !important;
+}
+
+.student_pages  .btn.banner:hover {
+	color: white !important
+}
+
+
+
+.student_pages .wrapper.wrapper-content {
+    padding: 5px;
+}
+
+.student_pages .medium.m-t-xs {
+	padding: 10px;
 }

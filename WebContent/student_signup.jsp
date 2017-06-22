@@ -50,7 +50,11 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 <body class="top-navigation" id="">
 	<div id="wrapper">
 <div id="page-wrapper" class="white-bg">
-			<div class="row">
+			<% if(request.getParameterMap().containsKey("msg")) { %>
+			<div class="alert alert-danger">
+                                <%=request.getParameter("msg") %>
+                            </div>
+			<% }  %>	<div class="row">
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
 						<h2 style="margin-left: 31px;">Sign Up Form</h2>
@@ -152,7 +156,7 @@ $(document)
 		                 rules: {
 		                     password: {
 		                         required: true,
-		                         minlength: 8
+		                         minlength: 6
 		                     },
 		                    
 		                   

@@ -18,60 +18,6 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<style>
-.row {
-	margin-right: 0px !important;
-	margin-left: 0px !important;
-}
-
-.h-370 {
-	min-height: 400px !important;
-	max-height: 400px !important;
-}
-
-.button-top {
-	margin-top: -12px !important;
-}
-
-.assessment-circle-img {
-	width: 50%;
-	height: 40%;
-}
-
-.session-square-img {
-	width: 160px;
-	height: 160px;
-}
-
-.btn-rounded {
-	min-width: 200px;
-}
-
-.task-complete-header {
-	background: #23b6f9 !important;
-}
-
-#vertical-timeline {
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-height: 250px;
-}
-
-.vertical-container {
-	width: 99% !important;
-}
-
-.vertical-timeline-content p {
-	margin-bottom: 2px !important;
-	margin-top: 0 !important;
-	line-height: 1.6 !important;
-}
-
-.content-border {
-	border: none !important;
-}
-
-</style>
 <jsp:include page="../inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
@@ -86,7 +32,7 @@
 %>
 
 
-<body class="top-navigation" id="orgadmin_dashboard">
+<body class="top-navigation student_pages" id="student_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
@@ -95,7 +41,7 @@
 
 			<!-- End Table -->
 			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row">
+				<div class="row" id='equalheight'>
 
 					<% 
 				int i=0;
@@ -104,13 +50,15 @@
 				
 				if(i<10) {
 				%>
-					<a href="/student/roles/roles_module.jsp?course_id=<%=course.getId() %>" style="color: black;"><div class="col-md-3 ">
+										<a href="/student/roles/roles_module.jsp?course_id=<%=course.getId() %>" style="color: black;">
+										
+					<div class="col-md-3 prod123">
 						<div class="ibox">
-								<div class="ibox-content product-box h-370" style="min-height: 466px !important;">
+								<div class="ibox-content product-box h-370">
 									<h6 class="p-xxs font-normal text-muted m-l-xs"><%=course.getCategory()%></h6>
 									<h3 class="p-xxs m-l-xs"><%=course.getName()%></h3>
 									<div class="product-imitation" style="padding: 0px !important;">
-										<img alt="" src="<%=course.getImageURL()%>"
+										<img alt="<%=course.getName()%>" src="<%=course.getImageURL()%>"
 											style="width: 100%;">
 									</div>
 									<div class="progress progress-mini m-t-none">
@@ -122,13 +70,13 @@
 										
 										<%
 											String courseDescription = "";
-														if (course.getDescription().trim().length() > 70) {
-															courseDescription = course.getDescription().trim().substring(0, 70) + "...";
+														if (course.getDescription().trim().length() > 200) {
+															courseDescription = course.getDescription().trim().substring(0, 200) + "...";
 														} else {
 															courseDescription = course.getDescription();
 														}
 										%>
-										<div class="medium m-t-xs m-b-xs"><%=courseDescription%></div>
+										<div class="medium m-t-xs m-b-xs" ><%=courseDescription%></div>
 										<div class="font-normal text-muted m-t-xs"><h6><%=course.getMessage()%></h6></div>
 									</div>
 								</div>

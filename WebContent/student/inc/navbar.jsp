@@ -1,3 +1,4 @@
+<%@page import="tfy.webapp.ui.NotificationLinkFactory"%>
 <%@page import="java.util.Collections"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.ArrayList"%>
@@ -67,6 +68,7 @@ request.setAttribute("cp", cp);
 				
 				%>
 			</ul>
+			
 			<%if(request.getSession().getAttribute("not_auth")!=null){
 			
 			System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
@@ -76,13 +78,19 @@ request.setAttribute("cp", cp);
 			<%} else {%>
 
 			<ul class="nav navbar-top-links navbar-right">
+			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><img alt="" src="../assets/img/user_images/coins_icon.png" style=" width: 14px;"> <%=cp.getStudentProfile().getCoins() %></span>
+			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><%=cp.getStudentProfile().getExperiencePoints() %>&nbsp;&nbsp; XP </span>
 				<li class="dropdown"><a class="dropdown-toggle count-info"
 					data-toggle="dropdown" href="#" aria-expanded="true"> <i
 						class="fa fa-envelope"></i> <span class="label label-warning"><%=cp.getNotificationsValid() %></span>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
-						<% for(NotificationPOJO notification:  cp.getNotifications()) { 
+						<% 
 						
+						List<NotificationPOJO> items = cp.getNotifications();
+				        Collections.reverse(items);
+						for(NotificationPOJO notification: items) { 
+							
 							PrettyTime p = new PrettyTime();
 							Timestamp createdAt = (Timestamp) notification.getTime();
 							String time = p.format(createdAt);
@@ -91,15 +99,22 @@ request.setAttribute("cp", cp);
 							if(notification.getItemType().equalsIgnoreCase("ASSESSMENT") 
 									||  notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 									|| notification.getItemType().equalsIgnoreCase("LESSON")
-									|| notification.getItemType().equalsIgnoreCase("MESSAGE")){
+									|| notification.getItemType().equalsIgnoreCase("MESSAGE")
+									|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")){
+								
+								String url = NotificationLinkFactory.getURL(notification, istarUser.getId());
 							%>
 						<li style="    margin-left: -31px;min-height: 38px;	">
 							<div class="dropdown-messages-box">
-								<a href="#" class="pull-left"> <img alt="image" class='' style="width: 45px;" src="<%=notification.getImageURL() %>">
+								<a href="<%=url %>" class="pull-left"> <img alt="image" class='' style="width: 45px;" src="<%=notification.getImageURL() %>">
 								</a>
 								<div class="media-body">
-									<small class="pull-right"><%=time %></small><%=notification.getMessage() %><br>
-								
+									<small class="pull-right"><%=time %></small>
+									<%if(!url.equalsIgnoreCase("#")){ %>	
+																	<a href="<%=url%>" target="_blank" class="pull-left"> <%=notification.getMessage().trim() %></a><br>
+																	<%}else{ %>
+												<a class="pull-left"><%=notification.getMessage().trim() %></a><br>					
+								<%} %>
 								</div>
 							</div>
 						</li>						<li class="divider"></li>

@@ -25,9 +25,9 @@ public class TaskCardFactory {
 		
 		StringBuffer sb = new StringBuffer();
 		Integer taskRemaining = cp.getTaskForToday().size() - cp.getTaskForTodayCompleted().size();
-		sb.append("<div class='col-md-3 '>                                        ");
-		sb.append(" <div class='ibox'>                                            ");
-		sb.append(" <div class='ibox-content product-box h-370' style='min-height: 375px !important;max-height: 375px !important;'>                  ");
+		sb.append("<div class='col-md-3 product-box' style='height: 100%;' >                                        ");
+		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
+		sb.append(" <div class='ibox-content product-box h-370' style='height: 100%;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
 		sb.append(" <h6 class='p-xxs font-normal bg-muted m-l-xs m-t-none'>TODAY'S ");
 		sb.append(" ACTIVITY</h6>                                                 ");
@@ -45,6 +45,8 @@ public class TaskCardFactory {
 			if(taskSummaryPOJO.getItemType().equalsIgnoreCase("ASSESSMENT")){
 				taskIcon = "fa fa-houzz";
 			}
+			DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+			String dateString = dateFormat.format(taskSummaryPOJO.getDate());
 			 sb.append("<div class='vertical-timeline-block no-padding' style='margin: 1em 0 !important;'>   ");
 			 sb.append("<div class='vertical-timeline-icon navy-bg'>       ");
 			 sb.append("<i class='fa fa-briefcase'></i>                    ");
@@ -54,8 +56,12 @@ public class TaskCardFactory {
 			 sb.append("<p>"+taskSummaryPOJO.getTitle()+"</p>       ");
 			 sb.append("                                                   ");
 			 sb.append("                                                   ");
-			 sb.append("<span class='vertical-date'> <small>00:00 AM</small>");
+			 sb.append("<span class='vertical-date'> <small>"+dateString+"</small>");
 			 sb.append("</span>                                            ");
+			 if(taskSummaryPOJO.getItemType().equalsIgnoreCase("ASSESSMENT")) {
+			 sb.append("<span class='vertical-date pull-right'> <small><a href='/student/assessment_report.jsp?assessment_id="+taskSummaryPOJO.getItemId()+"&user_id="+cp.getId()+"'>View Report</a></small>");
+			 sb.append("</span>                                            ");
+			 }
 			 sb.append("</div>                                             ");
 			 sb.append("</div>                                             ");
 			 
@@ -105,7 +111,7 @@ public class TaskCardFactory {
 		
 		sb.append("<div class='col-md-3 '>												");
 		sb.append("<div class='ibox'>                                                   ");
-		sb.append("<div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                         ");
+		sb.append("<div class='ibox-content product-box h-370'>                         ");
 		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
 		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
 		sb.append("<div class='product-imitation' style='padding: 0px !important;'>     ");
@@ -122,7 +128,7 @@ public class TaskCardFactory {
 		sb.append("</div>                                                               ");
 		sb.append("<div class='m-t text-center button-top'>                             ");
 		sb.append("                                                                     ");
-		sb.append("<a target='_blank' class='banner btn btn-rounded' href='/student/presentation.jsp?lesson_id="+task.getItemId()+"'>START                 ");
+		sb.append("<a target='_blank' class='banner btn btn-rounded' href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'>START                 ");
 		sb.append("PRESENTATION</a>                                                     ");
 		sb.append("</div>                                                               ");
 		sb.append("</div>                                                               ");
@@ -137,7 +143,7 @@ public class TaskCardFactory {
 		}
 		sb.append("<div class='col-md-3 '>													");
 		sb.append("<div class='ibox'>														");
-		sb.append("<div class='ibox-content product-box h-370' style='min-height: 375px !important;'>                             ");
+		sb.append("<div class='ibox-content product-box h-370'>                             ");
 		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
 		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
 		sb.append("<div class='product-imitation'                                           ");
@@ -199,20 +205,19 @@ public class TaskCardFactory {
 		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>      ");
 		sb.append("<div class='product-imitation'                                     ");
 		sb.append("style='padding: 0px !important; background: transparent;'>         ");
-		sb.append("<img alt='' style='width: 100%;'                                   ");
+		sb.append("<img alt='' style='width: 75%;'                                   ");
 		sb.append("src='"+task.getImageURL()+"'>       ");
 		sb.append("</div>                                                             ");
 		sb.append("<div class='product-desc'>                                         ");
-		sb.append("<div class='medium m-t-xs' style='min-height: 45px;'>"+task.getDescription()+"</div>                                            ");
 		sb.append("<div class='row text-center font-bold medium' '>                     ");
-		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: -19px;'>"+task.getNumberOfQuestions()+"</div>                             ");
-		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: 22px;'>"+task.getItemPoints()+"</div>                             ");
-		sb.append("<div class='col-xs-4 col-md-4' style='font-size: 23px;margin-left: -3px;'>"+task.getDuration()+"</div>                            ");
+		sb.append("<div class='col-xs-4 col-md-4' '>"+task.getNumberOfQuestions()+"</div>                             ");
+		sb.append("<div class='col-xs-4 col-md-4'>"+task.getItemPoints()+"</div>                             ");
+		sb.append("<div class='col-xs-4 col-md-4' >"+task.getDuration()+"</div>                            ");
 		sb.append("</div>                                                             ");
-		sb.append("<div class='row text-center font-normal bg-muted small' style='margin-left: -27px !important;    margin-right: -28px !important;'>           ");
+		sb.append("<div class='row text-center font-normal bg-muted small' >           ");
 		sb.append("<div class='col-xs-4 col-md-4'>Questions</div>                     ");
 		sb.append("<div class='col-xs-4 col-md-4'>Experience</div>                    ");
-		sb.append("<div class='col-xs-4 col-md-4' style='    margin-left: -16px;'>Time Limit</div>                    ");
+		sb.append("<div class='col-xs-4 col-md-4' >Time Limit</div>                    ");
 		sb.append("</div>                                                             ");
 		sb.append("</div>                                                             ");
 		sb.append("</div>                                                             ");
@@ -227,7 +232,9 @@ public class TaskCardFactory {
 	
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-3 ' style='max-height: 370px !important;    overflow-y: auto;'>				<div class='ibox'> <div class='ibox-content ' > ");			
+		sb.append("<div class='col-md-3 product-box ' style='max-height: 370px !important;    overflow-y: auto;'>			"
+				+ "	<div class='ibox' style='height: 100%;'> "
+				+ "<div class='ibox-content ' style='height: 100%; min-height:500px'> ");			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");
 		sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");

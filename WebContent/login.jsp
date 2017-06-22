@@ -76,10 +76,7 @@
 			<br>
 
 			<h2 style="font-weight: 700;">Welcome</h2>
-			<p style="font-size: 16px">Revolutionizing education through
-				engaging, creative content and immersive gamified experiences.</p>
-
-			<br>
+			
 
 			<form class="m-t" role="form" action="<%=baseURL%>login" method="post">
 				<div class="form-group">

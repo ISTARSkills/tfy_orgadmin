@@ -18,63 +18,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<style>
-.row {
-	margin-right: 0px !important;
-	margin-left: 0px !important;
-}
 
-.h-370 {
-	min-height: 400px !important;
-	max-height: 400px !important;
-}
-
-.button-top {
-	margin-top: -12px !important;
-}
-
-.assessment-circle-img {
-	width: 50%;
-	height: 40%;
-}
-
-.session-square-img {
-	width: 160px;
-	height: 160px;
-}
-
-.btn-rounded {
-	min-width: 200px;
-}
-
-.task-complete-header {
-	background: #23b6f9 !important;
-}
-
-#vertical-timeline {
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-height: 250px;
-}
-
-.vertical-container {
-	width: 99% !important;
-}
-
-.vertical-timeline-content p {
-	margin-bottom: 2px !important;
-	margin-top: 0 !important;
-	line-height: 1.6 !important;
-}
-
-.content-border {
-	border: none !important;
-}
-
-.product-desc {
-padding: 15px !important;
-}
-</style>
 <jsp:include page="../inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
@@ -89,8 +33,8 @@ padding: 15px !important;
 	System.out.println("course id =========> " + course_id);
 %>
 
-
-<body class="top-navigation" id="orgadmin_dashboard">
+ 
+<body class="top-navigation student_pages" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>

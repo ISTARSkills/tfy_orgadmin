@@ -1,7 +1,7 @@
 
 var webSocket ;
 function readyFn(jQuery) {
-
+	 
 	$.fn.extend({
 	    treed: function (o) {
 	        
@@ -37,12 +37,15 @@ function readyFn(jQuery) {
 	        tree.find('.branch .indicator').each(function(){
 	          $(this).on('click', function () {
 	              $(this).closest('li').click();
+	              $('.fa').show();
+	              $('div.progress div').show();
 	          });
 	        });
 	          //fire event to open branch if the li contains an anchor instead of text
 	          tree.find('.branch>a').each(function () {
 	              $(this).on('click', function (e) {
 	                  $(this).closest('li').click();
+	                
 	                  e.preventDefault();
 	              });
 	          });
@@ -50,6 +53,7 @@ function readyFn(jQuery) {
 	          tree.find('.branch>button').each(function () {
 	              $(this).on('click', function (e) {
 	                  $(this).closest('li').click();
+	                  $('.fa').show();
 	                  e.preventDefault();
 	              });
 	          });
@@ -63,6 +67,9 @@ function readyFn(jQuery) {
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
+	
+	 $('.fa').show();
+     $('div.progress div').show();
 	
 	/*
 	 * Page specific js
@@ -151,6 +158,8 @@ function readyFn(jQuery) {
 	case 'org_admin_tickets':	
 		initTicket();
 		$('#Tickets').css('color','  #eb384f');
+	case 'student_dashboard':	
+		$('#equalheight div.product-box').equalHeights();
 	default:
 		init_orgadmin_none();
 	}
@@ -160,6 +169,7 @@ function readyFn(jQuery) {
 	setInterval(init_session_logs, 10000);
 	$('select').select2();
 	loadTables();	
+	$('#equalheight div.product-box').equalHeights();
 }
 
 function initUnreadChatAndNotification()

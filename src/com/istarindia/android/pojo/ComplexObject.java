@@ -174,7 +174,7 @@ public class ComplexObject {
 			if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
 					|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 					|| notification.getItemType().equalsIgnoreCase("LESSON")
-					|| notification.getItemType().equalsIgnoreCase("MESSAGE")) {
+					|| notification.getItemType().equalsIgnoreCase("MESSAGE") || notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")) {
 				count++;
 			}
 

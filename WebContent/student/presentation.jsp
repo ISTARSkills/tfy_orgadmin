@@ -13,6 +13,11 @@
 		+ path + "/";
 	int lesson_id =6020;
 	int playlist_id = -1;
+	
+	int task_id =0;
+	if(request.getParameter("task_id")!=null){
+		task_id = Integer.parseInt(request.getParameter("task_id"));
+	}
 	LessonServices lessonServices = new LessonServices();
 	if(request.getParameter("lesson_id")!=null){
 		 lesson_id = Integer.parseInt(request.getParameter("lesson_id"));
@@ -231,7 +236,7 @@
 				
 				$.ajax({
 			        type: "GET",
-			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=lesson_id%>/update_lesson_status',
+			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=lesson_id%>/<%=task_id%>/update_lesson_status22',
 			        success: function(result) {
 			           
 			        }

@@ -50,6 +50,13 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 <body class="top-navigation" id="">
 	<div id="wrapper">
 <div id="page-wrapper" class="white-bg">
+			
+			
+			<% if(request.getParameterMap().containsKey("msg")) { %>
+			<div class="alert alert-danger">
+                                <%=request.getParameter("msg") %>
+                            </div>
+			<% }  %>
 			<div class="row">
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
@@ -151,7 +158,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			                 rules: {
 			                     password: {
 			                         required: true,
-			                         minlength: 8
+			                         minlength: 6
 			                     },
 			                    
 			                   

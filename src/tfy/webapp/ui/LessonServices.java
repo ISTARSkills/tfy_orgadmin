@@ -64,7 +64,7 @@ public class LessonServices {
 		
 		path += "/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml";
 	
-		File file = new File("http://cdn.talentify.in/lessonXMLs/"+lessonID+"/"+lessonID+"/"+lessonID+".xml");
+		URL file = new URL("http://cdn.talentify.in/lessonXMLs/"+lessonID+"/"+lessonID+"/"+lessonID+".xml");
 
 		try {
 			JAXBContext jaxbcontext = JAXBContext.newInstance(CMSLesson.class);
@@ -201,7 +201,7 @@ public class LessonServices {
 				
 			}
 		} catch (JAXBException e) {
-			// TODO: handle exception
+			System.out.println("file name ->"+ file);
 			e.printStackTrace();
 		}
 		return stringBuffer.toString();

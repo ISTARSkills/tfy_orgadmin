@@ -21,69 +21,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<style>
-.row {
-	margin-right: 0px !important;
-	margin-left: 0px !important;
-}
 
-.h-370 {
-	min-height: 220px !important;
-	max-height: 220px !important;
-}
-
-.btn-rounded {
-	min-width: 200px;
-	margin-top: -16px;
-	background: #eb384f;
-	color: white;
-}
-
-.task-complete-header {
-	background: #23b6f9 !important;
-}
-
-#vertical-timeline {
-	overflow-x: hidden;
-	overflow-y: auto;
-	max-height: 250px;
-}
-
-.vertical-container {
-	width: 99% !important;
-}
-
-.vertical-timeline-content p {
-	margin-bottom: 2px !important;
-	margin-top: 0 !important;
-	line-height: 1.6 !important;
-}
-
-.content-border {
-	border: none !important;
-}
-
-.product-desc {
-	padding: 15px !important;
-}
-
-h2 small {
-	font-size: 61% !important;
-	line-height: normal;
-}
-
-.btn:hover {
-	color: white !important
-}
-
-.nav-tabs>li.active>a:hover, a:focus, a:active {
-	border-radius: 50px !important;
-}
-
-.btn.focus, .btn:focus, .btn:hover {
-	color: white !important;
-}
-</style>
 <jsp:include page="../inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
@@ -101,7 +39,7 @@ h2 small {
 %>
 
 
-<body class="top-navigation" id="orgadmin_dashboard">
+<body class="top-navigation student_pages" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
@@ -110,7 +48,7 @@ h2 small {
 
 			<!-- End Table -->
 			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row">
+				<div class="row" id='equalheight'>
 
 					<%
 						int i = 0;
@@ -141,20 +79,18 @@ h2 small {
 							<div class="ibox-content product-box h-370"
 								style="min-height: 360px !important; <%=bg_status %>;">
 								<div class="product-imitation" style="padding: 0px !important;">
-									<img alt=""
+									<img alt="<%=less.getTitle()%>"
 										src="<%=OrgAdminPropData.get("media_url_path") %><%=less.getImageUrl() %>"
 										style="width: 100%;max-height: 145px;">
 								</div>
 								<div class="product-desc m-t-md" style="padding: 0px  !important;">
 									<div class="medium m-t-xs">
-										<div class="text-center font-bold m-t-sm">
-											<h2><%=less.getTitle()%></h2>
+										<div class="m-t-sm">
+											<h3><%=less.getTitle()%></h3>
 										</div>
-										<div class="text-center font-normal m-t-md"
+										<div class="font-normal m-t-md"
 											style="line-height: normal;">
-											<h2>
-												<small style="line-height: 1.3 !important"><%=less.getDescription()%></small>
-											</h2>
+											<p><%=less.getDescription()%></p>
 										</div>
 									</div>
 									

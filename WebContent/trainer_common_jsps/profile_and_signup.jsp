@@ -90,7 +90,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 										}	
 										%>
 										<div class="col-lg-8">
-											<input type="email"  required placeholder="Email" name="email" class="form-control" value="<%if(user!=null && user.getEmail()!=null){%><%=user.getEmail() %><%}%>">
+											<input type="email"  <%=dis%> required placeholder="Email" name="email" class="form-control" value="<%if(user!=null && user.getEmail()!=null){%><%=user.getEmail() %><%}%>">
 										</div>
 									</div>
 								</div>
@@ -99,7 +99,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 										<label class="col-lg-4 control-label">Password:</label>
 
 										<div class="col-lg-8">
-											<input type="password" required name="password" placeholder="Password" class="form-control" value="<%if(user!=null && user.getPassword()!=null){%><%=user.getPassword()
+											<input type="password"  <%=dis%> required name="password" placeholder="Password" class="form-control" value="<%if(user!=null && user.getPassword()!=null){%><%=user.getPassword()
 											%><%}%>">
 										</div>
 									</div>
@@ -110,7 +110,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 										<label class="col-sm-4 control-label">Mobile Number:</label>
 
 										<div class="col-sm-8">
-											<input type="number" required placeholder="Mobile Number" name="mobile" class="form-control" value="<%if(user!=null && user.getMobile()!=null){%><%=user.getMobile()
+											<input type="number" <%=dis%> required placeholder="Mobile Number" name="mobile" class="form-control" value="<%if(user!=null && user.getMobile()!=null){%><%=user.getMobile()
 											%><%}%>">
 										</div>
 									</div>
@@ -358,7 +358,7 @@ SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 												<td style="text-align: center;"><input class="chechbox" id="wednesday10" type="checkbox" value="wednesday#&5:00 PM-6:00 PM!&" <%if(slotData.get("WEDNESDAY")!=null && slotData.get("WEDNESDAY").get(10)){%>checked<%} %>></td>
 											</tr>
 											<tr>
-												<td>Thrusday</td>
+												<td>THURSDAY</td>
 												<td style="text-align: center;"><input class="chechbox" id="thrusday1" type="checkbox" value="thrusday#&8:00 AM-9:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(1)){%>checked<%} %>></td>
 												<td style="text-align: center;"><input class="chechbox" id="thrusday2" type="checkbox" value="thrusday#&9:00 AM-10:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(2)){%>checked<%} %>></td>
 												<td style="text-align: center;"><input class="chechbox" id="thrusday3" type="checkbox" value="thrusday#&10:00 AM-11:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(3)){%>checked<%} %>></td>

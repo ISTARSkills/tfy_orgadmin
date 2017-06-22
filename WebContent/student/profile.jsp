@@ -5,15 +5,13 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@page
-	import="in.talentify.core.services.NotificationAndTicketServices"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -209,22 +207,23 @@ ul>p {
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
 	ComplexObject co = rc.getComplexObject(user.getId());
-	
 
+	request.setAttribute("cp", co);
 
-	request.setAttribute("cp", co	);
-	
-	
 	StudentProfile studentProfile = co.getStudentProfile();
 	SimpleDateFormat sd = new SimpleDateFormat("dd-MMM-YYYY");
-	Integer batch_rank = studentProfile.getBatchRank() !=null ? studentProfile.getBatchRank() : 0;
-	String fname = studentProfile.getFirstName() !=null ? studentProfile.getFirstName() : "";
-	String email = studentProfile.getEmail() !=null ? studentProfile.getEmail() : "";
-	String profileImage = studentProfile.getProfileImage() !=null ? studentProfile.getProfileImage() : "../assets/img/user_images/student.png";
-	Integer exp_points = studentProfile.getExperiencePoints() !=null ? studentProfile.getExperiencePoints() : 0;
-	String pass = studentProfile.getPassword() !=null ? studentProfile.getPassword() : "";
-	String dob = studentProfile.getDateOfBirth() !=null ? sd.format(studentProfile.getDateOfBirth()) : "";
-	String mobile = studentProfile.getMobile() != null ? studentProfile.getMobile()+"":"";
+	Integer batch_rank = studentProfile.getBatchRank() != null ? studentProfile.getBatchRank() : 0;
+	String fname = studentProfile.getFirstName() != null ? studentProfile.getFirstName() : "";
+	String email = studentProfile.getEmail() != null ? studentProfile.getEmail() : "";
+	String profileImage = studentProfile.getProfileImage() != null
+			? studentProfile.getProfileImage()
+			: "../assets/img/user_images/student.png";
+	Integer exp_points = studentProfile.getExperiencePoints() != null
+			? studentProfile.getExperiencePoints()
+			: 0;
+	String pass = studentProfile.getPassword() != null ? studentProfile.getPassword() : "";
+	String dob = studentProfile.getDateOfBirth() != null ? sd.format(studentProfile.getDateOfBirth()) : "";
+	String mobile = studentProfile.getMobile() != null ? studentProfile.getMobile() + "" : "";
 %>
 
 <style>
@@ -304,105 +303,101 @@ ul>p {
 				<div class="panel-body">
 					<div class="row text-center font-normal p-xxs">
 						<div class="col-xs-4 col-md-4 rank">
-							<strong style="font-size: 68px;">#<%=batch_rank %></strong> <br /> <small
-								class="text-muted"  style="    font-size: 30px;">Batch Rank</small>
+							<strong style="font-size: 68px;">#<%=batch_rank%></strong> <br /> <small class="text-muted" style="font-size: 30px;">Batch Rank</small>
 						</div>
 						<div class="col-xs-4 col-md-4">
-							<img src="<%=profileImage %>" class="img-circle"
-								style="width: 120px !important; height: 120px !important;">
-							<span class="position-no"> <i class="fa fa-camera"></i></span> <br />
-							<br />
-							<%=fname %>
+							<img src="<%=profileImage%>" class="img-circle" style="width: 120px !important; height: 120px !important;"> <span class="position-no"> <i class="fa fa-camera"></i></span> <br /> <br />
+							<%=fname%>
 						</div>
 						<div class="col-xs-4 col-md-4 rank">
-							<strong  style="font-size: 68px;"><%=exp_points %></strong> <br /> <small
-								class="text-muted" style="    font-size: 30px;">XP Earned</small>
+							<strong style="font-size: 68px;"><%=exp_points%></strong> <br /> <small class="text-muted" style="font-size: 30px;">XP Earned</small>
 						</div>
 					</div>
 					<div class="row">
 						<div class="tabs-container">
 							<div id="container2" style="overflow: hidden;">
 
-								<ul class="nav nav-tabs scroll-horizontally-div" style="overflow: visible !important; ">
+								<ul class="nav nav-tabs scroll-horizontally-div" style="overflow: visible !important;">
 									<%
-									int min  = Math.min(5, co.getSkills().size());
-									for (int i = 0; i < min; i++) {
-														String class_tag = "";
-														if (i == 1) {
-															class_tag = "active";
-														} else {
-															class_tag = "";
-														}
-												%>
-									<li class="<%=class_tag%> text-center" style="    width: 97px;"><a
-										data-toggle="tab" href="#course<%=i%>" aria-expanded="true"><img
-											src="<%=co.getSkills().get(i).getImageURL() %>"
-											class="img-circle"
-											style="width: 65px !important; height: 65px !important;">
-											<br />
+										int min = Math.min(5, co.getSkills().size());
+										for (int i = 0; i < co.getSkills().size(); i++) {
+											String class_tag = "";
+											if (i == 1) {
+												class_tag = "active";
+											} else {
+												class_tag = "";
+											}
+											if (co.getSkills().get(i).getSkills().size() > 0) {
+									%>
+									<li class="<%=class_tag%> text-center" style="width: 97px;"><a data-toggle="tab" href="#course<%=i%>" aria-expanded="true"><img src="<%=co.getSkills().get(i).getImageURL()%>" class="img-circle" style="width: 65px !important; height: 65px !important;"> <br />
 											<h3 sty>
-												<small><%=co.getSkills().get(i).getName() %></small>
+												<small><%=co.getSkills().get(i).getName()%></small>
 											</h3> </a></li>
 									<%
-													}
-												%>
+										}
+										}
+									%>
 								</ul>
 							</div>
 
 							<div class="tab-content">
 								<%
-								for (int i = 0; i < min; i++) {
-													String class_tag1 = "";
-													if (i == 1) {
-														class_tag1 = "active";
-													} else {
-														class_tag1 = "";
-													}
-											%>
+									for (int i = 0; i < co.getSkills().size(); i++) {
+										String class_tag1 = "";
+										if (i == 1) {
+											class_tag1 = "active";
+										} else {
+											class_tag1 = "";
+										}
+								%>
 								<div id="course<%=i%>" class="tab-pane <%=class_tag1%>">
 									<div class="panel-body">
 										<div class="ibox ">
 											<div class="ibox-title">
-												<h2><%=co.getSkills().get(i).getName() %></h2>
+												<h2><%=co.getSkills().get(i).getName()%></h2>
 											</div>
 											<div class="ibox-content">
-												<div class=" " >
+												<div class=" ">
 													<div class="">
 
-														<div class="col-md-12"
-															style="padding-left: 0px !important;">
+														<div class="col-md-12" style="padding-left: 0px !important;">
 															<ul class="tree1">
-																
-																<% for(SkillReportPOJO subSkill :  co.getSkills().get(i).getSkills()) {%>
-																<li><%=subSkill.getName() %>
-																	<div class=" progress"
-																		style="height: 5px !important; display: block;">
-																		<div style="width: <%=subSkill.getPercentage() %>%; padding: 20px;"
-																			aria-valuemax="100" aria-valuemin="0"
-																			aria-valuenow="1.0" role="progressbar"
-																			class="progress-bar "></div>
+
+																<%
+																	for (SkillReportPOJO subSkill : co.getSkills().get(i).getSkills()) {
+																%>
+																<li><%=subSkill.getName()%>
+																	<div class="progress" style="height: 5px !important; display: block;">
+																		<div id='skill_<%=subSkill.getId()%>' style="width: <%=subSkill.getPercentage()%>%;" aria-valuemax="<%=subSkill.getTotalPoints()%>" aria-valuemin="0" aria-valuenow="<%=subSkill.getUserPoints()%>" role="progressbar" class="progress-bar "></div>
 																	</div>
-																	<p><%=subSkill.getUserPoints() %> / <%=subSkill.getUserPoints() %> Points.</p>
+																	<p><%=subSkill.getUserPoints().intValue()%>
+																		/
+																		<%=subSkill.getTotalPoints().intValue()%> 
+																		XP  &nbsp;  <%=subSkill.getSkills().size() %> SubSkills
+
+																	</p>
 
 																	<ul>
-																		
-																		<% for(SkillReportPOJO subsubSkill :  subSkill.getSkills()) { %>
-																		<li><%=subsubSkill.getName() %>
+
+																		<%
+																			for (SkillReportPOJO subsubSkill : subSkill.getSkills()) {
+																		%>
+																		<li><%=subsubSkill.getName()%>
 																			<div class="progress" style="height: 5px !important;">
-																				<div style="width: <%=subsubSkill.getPercentage() %>%; padding: 20px;"
-																					aria-valuemax="100" aria-valuemin="0"
-																					aria-valuenow="1.0" role="progressbar"
-																					class="progress-bar"></div>
+																				<div style="width: <%=subsubSkill.getPercentage()%>%;" aria-valuemax="<%=subsubSkill.getTotalPoints()%>" aria-valuemin="0" aria-valuenow="<%=subsubSkill.getUserPoints()%>0" role="progressbar" class="progress-bar"></div>
 																			</div>
-
-																		</li>
-																		<% } %>
-																	</ul>
-
-
-
-																</li>
-<% } %>
+																			<p><%=subsubSkill.getUserPoints().intValue()%>
+																				/
+																				<%=subsubSkill.getTotalPoints().intValue()%>
+																				XP 
+																			</p></li>
+																		<%
+																			}
+																		%>
+																	</ul></li>
+																<%
+																	}
+																%>
 															</ul>
 														</div>
 													</div>
@@ -414,8 +409,8 @@ ul>p {
 
 
 								<%
-												}
-											%>
+									}
+								%>
 							</div>
 						</div>
 					</div>

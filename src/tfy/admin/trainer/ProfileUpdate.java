@@ -97,13 +97,23 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 experinceMonths =  request.getParameter("experince_months")!=null?request.getParameter("experince_months"):"";
 		 experinceYears = request.getParameter("experince_years")!=null?request.getParameter("experince_years"):"";
 		 userType = request.getParameter("user_type");
-		 String presentor[] = email.split("@");
-		 String part1 = presentor[0];
-		 String part2 = presentor[1];
-		 String presentor_email = part1+"_presenter@"+part2;		
 		 JSONParser parser = new JSONParser();
 		 JSONObject obj;
+		 String presentor_email = "";
+		 if(request.getParameterMap().containsKey("email")){
+			 String presentor[] = email.split("@");
+			 String part1 = presentor[0];
+			 String part2 = presentor[1];
+			 presentor_email = part1+"_presenter@"+part2;		
 		
+		 } else {
+			 int userID = Integer.parseInt(request.getParameter("user_id"));
+			 IstarUserDAO dao = new IstarUserDAO();
+			 IstarUser user = dao.findById(userID);
+			 
+			
+		 }
+
 	  try {
 			dob =dateformatto.format(dateformatfrom.parse(dob));
 		} catch (ParseException e) {
@@ -126,7 +136,8 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 if(user.getUserProfile().getAddress()!=null)
 			 {
 				 Address add = user.getUserProfile().getAddress();
-				 String updateAddress ="update address set addressline1 = '"+addressLine1+"', addressline2='"+addressLine2+"', pincode_id =(select id from pincode where pin="+pincode+") where id = "+add.getId();
+				 String updateAddress ="update address set addressline1 = '"+addressLine1+"', addressline2='"+addressLine2+"', pincode_id =(select id from pincode where pin="+pincode+"  limit 1 ) where id = "+add.getId();
+				System.err.println("140 updateAddress -> "+ updateAddress);
 				 util.executeUpdate(updateAddress);
 				 address_id = add.getId();
 			 }
@@ -137,8 +148,11 @@ public class ProfileUpdate extends IStarBaseServelet {
 		         System.err.println(sql);
 		         address_id = db.executeUpdateReturn(sql);
 			 }	 
-			 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"',WHERE id="+user.getId();
-			 util.executeUpdate(updateUserPassword);
+			 
+			 if(request.getParameterMap().containsKey("email")) {
+				 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"',WHERE id="+user.getId();
+				 util.executeUpdate(updateUserPassword);
+			 } 
 			 String updateUserProfile ="update user_profile set address_id="+address_id+", first_name='"+firstName+"', last_name='"+lastName+"', dob='"+dob+"', gender='"+gender+"' where user_id ="+userId;
 			 util.executeUpdate(updateUserProfile);
 			 

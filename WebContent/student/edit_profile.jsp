@@ -111,6 +111,53 @@ request.setAttribute("cp", co	);
 
 <script type="text/javascript">
 	var map = {};
+	
+var sThisVal = {};
+	
+	function getAllcheckeddata(){
+		var sThisVal1;
+		$('input[type=checkbox]').each(function () {
+		   // yourArray.push($(this).val());
+		 //  console.log('>>>>>'+$(this).val());
+	 if (this.checked) {
+		    
+		    
+ var row = $(this).parent().parent().children().index($(this).parent());
+	var th = $("#mytable thead tr th")
+			.eq(row);
+	var time = th.text();
+	var day = $(this).parent().closest('tr').children('td:first').text();
+	if (this.checked) {
+
+		if (sThisVal.hasOwnProperty(day))
+			sThisVal[day] = sThisVal[day]+ '##' + time;
+		else
+			sThisVal[day] = time;
+		//console.log(th.text());
+		//console.log($(this).parent().closest('tr').children('td:first').text());
+	} else {
+		if (sThisVal.hasOwnProperty(day)) {
+			var list_of_values = sThisVal[day].split('##');
+			var index = list_of_values.indexOf(time);
+			list_of_values.splice(index, 1);
+			if (list_of_values.length > 0)
+				sThisVal[day] = list_of_values.join('##');
+			else
+				delete sThisVal[day];
+		}
+
+	}
+	
+	 sThisVal1 = JSON.stringify(sThisVal);
+	
+	 $('#avaiable_time').val(sThisVal1);
+	 }
+	});
+		
+
+		    
+	}
+	
 	function formatRepo(repo) {
 		if (repo.loading)
 			return repo.text;
@@ -131,7 +178,7 @@ request.setAttribute("cp", co	);
 	$(document)
 			.ready(
 					function() {
-						
+						getAllcheckeddata();
 						//$('select').select2();
 						$('#data_2 .input-group.date').datepicker({
 		startView : 1,
@@ -218,7 +265,7 @@ request.setAttribute("cp", co	);
 
 							$('#session_id').val($(this).val());
 						});
-						var sThisVal = {};
+						
 
 						$('.chechbox')
 								.change(
