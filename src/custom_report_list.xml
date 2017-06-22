@@ -1006,4 +1006,82 @@ AND ID  IN (
 )
 order by name</sql>
 </custom_report>
+<custom_report id="43">
+<sql>
+select 
+T1.id, 
+T1.email, 
+T1.first_name,
+T1.cities,
+T1.pincodes,
+T6.clusters,
+T1.courses, 
+T1.days,
+T2.slots
+from (select istar_user.id , istar_user.email, COALESCE(user_profile.first_name,'NA') as first_name , string_agg(distinct pincode.city,', ') as cities,
+string_agg(distinct course.course_name,',&lt;br&gt;') as courses,
+string_agg(DISTINCT cast ( pincode.pin as varchar),', ') as pincodes,
+string_agg(DISTINCT trainer_available_time_sloat.day,'&lt;br&gt;') as days
+from 
+istar_user
+join user_profile on (istar_user.id = user_profile.user_id) 
+left join trainer_prefred_location on (istar_user.id = trainer_prefred_location.trainer_id)
+left join pincode on (trainer_prefred_location.pincode = pincode.pin)
+left join trainer_available_time_sloat on (trainer_available_time_sloat.trainer_id =  istar_user.id)
+left join trainer_intrested_course on(istar_user.id = trainer_intrested_course.trainer_id)
+join course on (trainer_intrested_course.course_id = course.id)
+where istar_user.id in (select DISTINCT trainer_id from trainer_empanelment_status)
+group by istar_user.id , istar_user.email, user_profile.first_name
+)T1
+left join (
+select trainer_id, replace(string_agg( time_slots,'&lt;br&gt;'),', &lt;br&gt;','&lt;br&gt;')  as slots from (select trainer_available_time_sloat.trainer_id, '&lt;b&gt;'||
+trainer_available_time_sloat.day || '&lt;/b&gt; - '||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t8am_9am ='t' )) &gt; 0 then '8am - 9am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t9am_10am ='t' )) &gt; 0  then '9am - 10am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t10am_11am ='t' )) &gt; 0  then '10am - 11am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t11am_12pm ='t' )) &gt; 0  then '11am - 12pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t12pm_1pm ='t' )) &gt; 0  then '12pm - 1pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t1pm_2pm ='t' )) &gt; 0  then '1pm - 2pm, ' else '' end )||		 	
+(case when (count(*) filter ( where  trainer_available_time_sloat.t2pm_3pm ='t' )) &gt; 0  then '2pm - 3pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t3pm_4pm ='t' )) &gt; 0  then '3pm - 4pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t4pm_5pm ='t' )) &gt; 0  then '4pm - 5pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t5pm_6pm ='t' )) &gt; 0  then '5pm - 6pm ' else '' end )||'' as time_slots
+from trainer_available_time_sloat
+where trainer_available_time_sloat.trainer_id in (select DISTINCT trainer_id from trainer_empanelment_status)
+group by trainer_available_time_sloat.trainer_id,
+trainer_available_time_sloat.day
+)TDAYS
+group by trainer_id
+)T2 on (T1.id = T2.trainer_id)
+left join (
+select distinct trainer_empanelment_status.trainer_id, string_agg(distinct cluster_name,', ') as clusters from 
+trainer_empanelment_status 
+left join trainer_prefred_location on (trainer_empanelment_status.trainer_id =  trainer_prefred_location.trainer_id)
+left join pincode on (pincode.pin =  trainer_prefred_location.pincode)
+left join cluster_pincode_mapping on (cluster_pincode_mapping.pincode_id = pincode.id)
+left join cluster on (cluster.id = cluster_pincode_mapping.cluster_id)
+group by trainer_empanelment_status.trainer_id
+)T6 on (T6.trainer_id = T1.id)
+</sql>
+</custom_report>
+<custom_report id="44">
+<sql>
+select trainer_available_time_sloat.trainer_id, 
+trainer_available_time_sloat.day ,
+(case when (count(*) filter ( where  trainer_available_time_sloat.t8am_9am ='t' )) > 0 then '8am - 9am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t9am_10am ='t' )) > 0  then '9am - 10am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t10am_11am ='t' )) > 0  then '10am - 11am, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t11am_12pm ='t' )) > 0  then '11am - 12pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t12pm_1pm ='t' )) > 0  then '12pm - 1pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t1pm_2pm ='t' )) > 0  then '1pm - 2pm, ' else '' end )||		 	
+(case when (count(*) filter ( where  trainer_available_time_sloat.t2pm_3pm ='t' )) > 0  then '2pm - 3pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t3pm_4pm ='t' )) > 0  then '3pm - 4pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t4pm_5pm ='t' )) > 0  then '4pm - 5pm, ' else '' end )||
+(case when (count(*) filter ( where  trainer_available_time_sloat.t5pm_6pm ='t' )) > 0  then '5pm - 6pm ' else '' end )||'' as time_slots
+from trainer_available_time_sloat
+where trainer_available_time_sloat.trainer_id = :trainer_id
+group by trainer_available_time_sloat.trainer_id,
+trainer_available_time_sloat.day
+</sql>
+</custom_report>
 </custom_report_list>
