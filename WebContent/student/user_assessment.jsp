@@ -352,7 +352,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 	  document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
 
 	  // If the count down is finished, write some text
-	  if(minutes===3)
+	  if(minutes===3 && seconds ===0)
 		{
 		  //remind for end of assessment
 		  swal({
