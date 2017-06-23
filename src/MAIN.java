@@ -1,11 +1,15 @@
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -14,6 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -23,16 +28,31 @@ import org.hibernate.Transaction;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.istarindia.android.pojo.AssessmentPOJO;
+import com.istarindia.android.pojo.OptionPOJO;
+import com.istarindia.android.pojo.QuestionPOJO;
+import com.istarindia.android.pojo.QuestionResponsePOJO;
+import com.istarindia.android.pojo.RestClient;
+import com.viksitpro.core.dao.entities.Assessment;
+import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.Course;
+import com.viksitpro.core.dao.entities.CourseDAO;
+import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserRole;
+import com.viksitpro.core.dao.utils.task.TaskServices;
+import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.EmailUtils;
+import com.viksitpro.core.utilities.NotificationType;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStageTypes;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes;
 
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportList;
@@ -41,6 +61,7 @@ import in.orgadmin.utils.report.ReportUtils;
 import in.talentify.core.services.NotificationAndTicketServices;
 import in.talentify.core.utils.CMSRegistry;
 import in.talentify.core.utils.EmailSendingUtility;
+
 import tfy.admin.services.EmailService;
 
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
@@ -50,7 +71,7 @@ import tfy.admin.studentmap.pojos.AdminCMSessionSkillGraph;
 public class MAIN {
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		/*ReportUtils util = new ReportUtils();
 		HashMap<String, String> conditions = new HashMap();
@@ -71,9 +92,338 @@ public class MAIN {
 		//datlooper();
 		//reportUtilTesting();
 		//ss();
-		jsontesting();
+		//jsontesting();
+		System.out.println("start");
+		//createInterviewSkill();
+		createFarziData();
+		/*for(int i=0;i<15;i++)
+		{
+			createFarziData();
+		}*/
+		System.out.println("end");
 	}
 	
+	private static void createInterviewSkill() {
+		// TODO Auto-generated method stub
+		DBUTILS db = new DBUTILS();
+		String selectCourse = "select distinct course_id from cluster_requirement where course_id in (select DISTINCT course_id from   cluster_requirement)";
+		List<HashMap<String, Object>> cc = db.executeQuery(selectCourse);
+		for(HashMap<String, Object> row: cc)
+		{
+			int cid = (int)row.get("course_id");
+			
+			for(int j=0;j<10;j++)
+			{
+				String skillNAme = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+				String insertIntoIntervieSkill ="INSERT INTO interview_skill (id, interview_skill_name, course_id, stage_type) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_skill), '"+skillNAme+"', "+cid+", 'L4');"; 
+				db.executeUpdate(insertIntoIntervieSkill);
+			}						
+		}
+		
+		for(int j=0;j<10;j++)
+		{
+			String skillNAme = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+			String insertIntoIntervieSkill ="INSERT INTO interview_skill (id, interview_skill_name,  stage_type) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from interview_skill), '"+skillNAme+"',  'L5');"; 
+			db.executeUpdate(insertIntoIntervieSkill);
+		}
+		
+		for(int j=0;j<10;j++)
+		{
+			String skillNAme = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+			String insertIntoIntervieSkill ="INSERT INTO interview_skill (id, interview_skill_name,  stage_type) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from interview_skill), '"+skillNAme+"',  'L6');"; 
+			db.executeUpdate(insertIntoIntervieSkill);
+		}
+	}
+
+	private static void createFarziData() throws IOException {
+		// TODO Auto-generated method stub
+		IstarNotificationServices notificationService = new IstarNotificationServices();
+		DBUTILS db = new DBUTILS();
+		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat dateformatfrom = new SimpleDateFormat("dd/MM/yyyy");
+		String firstName = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+		String lastName = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+		String email = RandomStringUtils.randomAlphanumeric(5).toUpperCase()+"@"+RandomStringUtils.randomAlphanumeric(5).toUpperCase()+".com";;
+		String password = "test123";
+		String mobile = "789654123";
+		String ugDegree = "BA";
+		String pgDegree = "MA";
+		String gender = "MALE";
+		String dob = "28/03/1991";
+		String courseIds = "";
+		String avaiableTime = "";
+		String experinceYears = "1";
+		String experinceMonths = "0";
+		String teachingAddress = "";
+		String addressLine1 = RandomStringUtils.randomAlphanumeric(10).toUpperCase();;
+		String addressLine2 = RandomStringUtils.randomAlphanumeric(10).toUpperCase();;
+		String userType = "";
+		int pincode = 560066;
+		boolean hasUgDegree = false;
+		boolean hasPgDegree = false;
+		userType = "TRAINER";
+		String presentor[] = email.split("@");
+		String part1 = presentor[0];
+		String part2 = presentor[1];
+		String presentor_email = part1 + "_presenter@" + part2;
+		TaskServices taskService = new TaskServices();
+		String sql = "INSERT INTO address ( 	ID, 	addressline1, 	addressline2, 	pincode_id, 	address_geo_longitude, 	address_geo_latitude ) VALUES 	( 		(SELECT max(id)+1 FROM address), 		'"
+				+ addressLine1 + "', 		'" + addressLine2 + "', 		 (select id from pincode where pin="
+				+ pincode + " limit 1), 		 NULL, 		 NULL 	)RETURNING ID;";
+
+		System.err.println(sql);
+		int address_id = db.executeUpdateReturn(sql);
+
+		String insertIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
+				+ email + "', '" + password + "', now(), " + mobile + ", NULL, NULL, 't') returning id;";
+		int urseId = db.executeUpdateReturn(insertIntoIstarUser);
+		if (userType.equalsIgnoreCase("TRAINER")) {
+			String insertPresentorIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
+					+ presentor_email + "', '" + password + "', now(), " + mobile
+					+ ", NULL, NULL, 't') returning id;";
+			int presentorId = db.executeUpdateReturn(insertPresentorIntoIstarUser);
+		}
+
+		String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"
+				+ firstName + "', '" + lastName + "', '" + gender + "'," + urseId + "," + address_id + " , '"
+				+ dob + "');";
+		db.executeUpdate(createUserProfile);
+
+		String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + urseId
+				+ ", (select id from role where role_name='" + userType
+				+ "'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
+		db.executeUpdate(insertIntoUserRole);
+
+		String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
+				+ urseId + ", '" + Boolean.toString(hasUgDegree).charAt(0) + "','"
+				+ Boolean.toString(hasPgDegree).charAt(0) + "','" + ugDegree + "','" + pgDegree + "','"
+				+ experinceYears + "','" + experinceMonths + "'); ";
+		db.executeUpdate(insertIntoProfessionalProfile);
+
+		if (userType.equalsIgnoreCase("TRAINER")) {
+
+			String insertIntoTrainerEmpanelmentStatus = "insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "
+					+ urseId + ", '" + TrainerEmpanelmentStatusTypes.SELECTED + "',now(), '"
+					+ TrainerEmpanelmentStageTypes.SIGNED_UP + "')";
+			db.executeUpdate(insertIntoTrainerEmpanelmentStatus);
+
+			String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
+					+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
+			db.executeUpdate(insertIntoUserOrg);
+			String groupNotificationCode = UUID.randomUUID().toString();
+			String selectCourse = "select distinct course_id from cluster_requirement where course_id in (select DISTINCT course_id from   cluster_requirement)";
+			List<HashMap<String, Object>> cc = db.executeQuery(selectCourse);			
+			
+			for(int i=0 ; i<3;i++)
+			{
+				HashMap<String, Object> row = cc.get(i);
+				int course_id =(int) row.get("course_id");
+				String insertInIntrestedTable = "insert into trainer_intrested_course (id, trainer_id, course_id) values((select COALESCE(max(id),0)+1 from trainer_intrested_course),"
+						+ urseId + "," + course_id + ")";
+				db.executeUpdate(insertInIntrestedTable);
+
+				Course course = new CourseDAO().findById(course_id);
+				String getAssessmentForCourse = "select distinct assessment_id from  course_assessment_mapping where course_id="
+						+ course_id;
+				List<HashMap<String, Object>> assessments = db.executeQuery(getAssessmentForCourse);
+				for (HashMap<String, Object> assess : assessments) {
+					int assessmentId = (int) assess.get("assessment_id");
+					Assessment assessment = new AssessmentDAO().findById(assessmentId);
+					String notificationTitle = "An assessment with title <b>"
+							+ assessment.getAssessmenttitle() + "</b> of course <b>"
+							+ course.getCourseName() + "</b> has been added to task list.";
+					String notificationDescription = notificationTitle;
+					String taskTitle = assessment.getAssessmenttitle();
+					String taskDescription = notificationDescription;
+					int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""),
+							taskDescription.trim().replace("'", ""), 300 + "", urseId + "",
+							assessmentId + "", "ASSESSMENT");
+					IstarNotification istarNotification = notificationService.createIstarNotification(300,
+							urseId, notificationTitle, notificationDescription, "UNREAD", null,
+							NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
+				}
+			}
+			
+			String findDefaultAssessment = "select property_value from constant_properties where property_name ='default_assessment_for_trainer'";
+			List<HashMap<String, Object>> defaultAssessment = db.executeQuery(findDefaultAssessment);
+			if (defaultAssessment.size() > 0) {
+				String defAssessments = defaultAssessment.get(0).get("property_value").toString();
+				if (defAssessments != null) {
+					for (String defAssess : defAssessments.split(",")) {
+						int aid = Integer.parseInt(defAssess);
+						Assessment assessment = new AssessmentDAO().findById(aid);
+						if (assessment != null) {
+							String notificationTitle = "An assessment with title <b>"
+									+ assessment.getAssessmenttitle() + "</b> has been added to task list.";
+							String notificationDescription = notificationTitle;
+							String taskTitle = assessment.getAssessmenttitle();
+							String taskDescription = notificationDescription;
+							int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""),
+									taskDescription.trim().replace("'", ""), 300 + "", urseId + "",
+									aid + "", "ASSESSMENT");
+							IstarNotification istarNotification = notificationService
+									.createIstarNotification(300, urseId, notificationTitle,
+											notificationDescription, "UNREAD", null,
+											NotificationType.ASSESSMENT, true, taskId,
+											groupNotificationCode);
+						}
+
+					}
+				}
+			}
+			
+			String selectPincode ="select pin from pincode where id in (select pincode_id from cluster_pincode_mapping)";
+			List<HashMap<String, Object>> pincodeData = db.executeQuery(selectPincode);
+			for(int i=0;i<5;i++)
+			{
+				
+				String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location, pincode ) "
+						+ "VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "
+						+ urseId + ", '" + UUID.randomUUID().toString() + "', '" + UUID.randomUUID().toString() + "',"+pincodeData.get(i).get("pin")+");";
+				System.err.println(ssql);
+				db.executeUpdate(ssql);
+			}
+
+			ArrayList<String>days = new ArrayList<>();
+			days.add("Monday");
+			days.add("Tuesday");
+			days.add("Wednesday");
+			days.add("Thursday");
+			days.add("Friday");
+			days.add("Saturday");
+			for(int i=0;i<5;i++)
+			{
+				String ssql = "INSERT INTO trainer_available_time_sloat ( 	ID, 	trainer_id, 	DAY, 	t8am_9am, 	t9am_10am, 	t10am_11am, 	t11am_12pm, 	t12pm_1pm, 	t1pm_2pm, 	t2pm_3pm, 	t3pm_4pm, 	t4pm_5pm, 	t5pm_6pm ) VALUES 	( 		(SELECT COALESCE(max(id)+1,1) FROM trainer_available_time_sloat), 	  "
+						+ urseId + ", 		'" + days.get(i) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'"
+						+ Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0)
+						+ "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'"
+						+ Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0)
+						+ "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "' 	);";
+
+				System.err.println(ssql);
+				db.executeUpdate(ssql);
+			}
+
+		}
+		
+		giveAllAssessment(urseId);
+		giveL4Iterview(urseId);
+		giveL5Interview(urseId);
+		giveL6Interview(urseId);
+	}
+
+
+
+
+
+
+	private static void giveL6Interview(int urseId) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				DBUTILS util = new DBUTILS();
+				String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L5'";
+				List<HashMap<String, Object>> data = util.executeQuery(findAllCoursesTrainerAppliedFor);
+				for(HashMap<String, Object> row: data)
+				{
+					
+					String findskills = "select id from interview_skill where  stage_type='L6'";
+					List<HashMap<String, Object>> data111 = util.executeQuery(findskills);
+					for(HashMap<String, Object> skll : data111)
+					{
+						String insert="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
+								+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), "+urseId+", "+skll.get("id")+", 4.5, '300', 'L6', "+row.get("course_id")+");";
+						util.executeUpdate(insert);
+					}
+					
+					String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+							+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L6', "+row.get("course_id")+");";
+					util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
+				}
+	}
+
+	private static void giveL5Interview(int urseId) {
+		// TODO Auto-generated method stub
+		DBUTILS util = new DBUTILS();
+		String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L4'";
+		List<HashMap<String, Object>> data = util.executeQuery(findAllCoursesTrainerAppliedFor);
+		for(HashMap<String, Object> row: data)
+		{
+			
+			String findskills = "select id from interview_skill where  stage_type='L5'";
+			List<HashMap<String, Object>> data111 = util.executeQuery(findskills);
+			for(HashMap<String, Object> skll : data111)
+			{
+				String insert="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), "+urseId+", "+skll.get("id")+", 4.5, '300', 'L5', "+row.get("course_id")+");";
+				util.executeUpdate(insert);
+			}
+			String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L5', "+row.get("course_id")+");";
+			util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
+		}
+	}
+
+	private static void giveL4Iterview(int urseId) {
+		DBUTILS util = new DBUTILS();
+		String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L3'";
+		List<HashMap<String, Object>> data = util.executeQuery(findAllCoursesTrainerAppliedFor);
+		for(HashMap<String, Object> row: data)
+		{
+			
+			String findskills = "select id from interview_skill where course_id = 5 and stage_type='L4'";
+			List<HashMap<String, Object>> data111 = util.executeQuery(findskills);
+			for(HashMap<String, Object> skll : data111)
+			{
+				String insert="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), "+urseId+", "+skll.get("id")+", 4.5, '300', 'L4', "+row.get("course_id")+");";
+				util.executeUpdate(insert);
+			}
+			
+			String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L4', "+row.get("course_id")+");";
+			util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
+		}
+	}
+
+	private static void giveAllAssessment(int urseId) throws IOException {
+		DBUTILS util = new DBUTILS();
+		String findAssessmentTasks = "select id, item_id from task where item_type='ASSESSMENT' and actor="+urseId;
+		List<HashMap<String, Object>> data = util.executeQuery(findAssessmentTasks);
+		for(HashMap<String, Object> row: data)
+		{
+			int assessmentId = (int)row.get("item_id");
+			int taskId = (int)row.get("id");
+			RestClient client = new  RestClient();
+
+			AssessmentPOJO assessment = client.getAssessment(assessmentId, urseId);
+			ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
+			for(QuestionPOJO que : assessment.getQuestions())
+			{
+				QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+				queResponse.setQuestionId(que.getId());	
+				
+				ArrayList<Integer>options = new ArrayList<>();
+				for(OptionPOJO op :que.getOptions())
+				{
+					options.add(op.getId());				
+					queResponse.setOptions(options);
+				}
+				
+				queResponse.setDuration(2);				
+				asses_response.add(queResponse);						
+			}				
+			client.SubmitAssessment(taskId,urseId, asses_response, assessmentId);
+			String selectCourseForAssessment ="select course_id from course_assessment_mapping where assessment_id = "+assessmentId+" limit 1";
+			List<HashMap<String, Object>> cc = util.executeQuery(selectCourseForAssessment);
+			String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L3', "+cc.get(0).get("course_id")+");";
+			util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
+		}
+	}
+
 	
 	private static void jsontesting() {
 		// TODO Auto-generated method stub
