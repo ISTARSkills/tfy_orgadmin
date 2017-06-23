@@ -1,5 +1,18 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+<style>
+.btn-default.cluster-btn:hover , .btn-default.cluster-btn:focus , .btn-default.cluster-btn:active{
+    background-color: white;
+}
+.btn-default.cluster-btn:active{
+-webkit-box-shadow : none !important;
+}
+.btn-primary.cluster-btn.active{
+background-color: #1ab394;
+color: white !important;
+}
+</style>
 <jsp:include page="inc/head.jsp"></jsp:include>
+
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -56,6 +69,29 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 			.ready(
 					function() {
 						
+						var selected_cluster = [];
+						//selected_cluster = $('#cluster-table button.active').attr('id');
+						//console.log("selected_cluster   "+selected_cluster);
+						$('.cluster_button').unbind().click(function() {
+							//alert('abc');
+							 if($(this).hasClass('btn-default')){
+								 
+								selected_cluster.push($(this).data('id'));
+								$(this).addClass('btn-primary');
+								$(this).removeClass('btn-default');
+							}else{
+								$(this).removeClass('btn-primary');
+								$(this).addClass('btn-default');
+								var i = selected_cluster.indexOf($(this).data('id'));
+								if(i != -1) {
+									selected_cluster.splice(i, 1);
+								}
+
+							} 
+							console.log('idssss--- '+selected_cluster.join(','));
+							
+							$('#submit_cluster').val(selected_cluster.join(','));
+						});
 						//$('select').select2();
 						$('#data_2 .input-group.date').datepicker({
 		startView : 1,
