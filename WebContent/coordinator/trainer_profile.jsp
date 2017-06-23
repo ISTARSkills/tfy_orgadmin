@@ -38,8 +38,8 @@
 
 			<!-- End Table -->
 			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 8px">
-				<div class="row">
-				<div class='col-md-6'><%=(new TaskCardFactoryRecruitment()).showTrainerProfileCard(trainerId).toString()%></div>
+				<div class="row" id="main_block_rec">
+				<div class='col-md-6 kamini'><%=(new TaskCardFactoryRecruitment()).showTrainerProfileCard(trainerId).toString()%></div>
 				<div class="col-md-6" style="    margin-top: 10px;">
 				<%=(new TaskCardFactoryRecruitment()).showSummaryCard(trainerId).toString()%>
 				</div>

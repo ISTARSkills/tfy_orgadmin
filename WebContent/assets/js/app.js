@@ -204,8 +204,13 @@ function readyFn(jQuery) {
 	case 'coordinator_trainer_details':
 		init_coordinator_trainer_details();
 		break;
-	case 'coordinator_trainer_profile':
-		$(".card1").flip();
+	case 'coordinator_trainer_profile':	
+		$(".card1").flip({
+			  axis: 'x',
+			  trigger: 'hover',
+			  reverse: true
+			});
+		
 		$(".rateYo").rateYo({
 		    rating: 0.0
 		  });
@@ -228,6 +233,8 @@ function readyFn(jQuery) {
 	} catch (err) {
 		// TODO: handle exception
 	}
+	
+
 	
 	try {
 		$('#equalheight div.product-box').equalHeights();
