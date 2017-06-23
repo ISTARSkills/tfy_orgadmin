@@ -51,7 +51,7 @@ th {
 				</div>
 				<div class="col-lg-2"></div>
 			</div>
-			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;">
+			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;margin-left: 5px">
 				<div class="row" id="filters">
 
 					<div class=" col-lg-2 input-group pull-right">
@@ -61,7 +61,7 @@ th {
 					</div>	
 					<%
 						DBUTILS utils = new DBUTILS();
-						String sql = "select course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
+						String sql = "select distinct course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
 						List<HashMap<String, Object>> items = utils.executeQuery(sql);
 					%>
 					<div class="big-demo go-wide" data-js="filtering-demo">
@@ -82,7 +82,7 @@ th {
 						String sql1 = "select * from cluster";
 						List<HashMap<String, Object>> items1 = utils.executeQuery(sql1);
 					%>
-					<div class="row" style="margin-top: 20px">
+					<div class="row" style="margin-top: 20px;margin-left: 15px;">
 						<div class="big-demo go-wide" data-js="filtering-demo">
 							<div class="filter-button-group button-group js-radio-button-group">
 								<span class="badge badge-info">Filter by Cluster</span>
@@ -98,7 +98,7 @@ th {
 
 						</div>
 					</div>
-					<div class="row grid" id="searchable_grid" style="margin-top: 30px">
+					<div class="row grid" id="searchable_grid" style="margin: 10px" id='equalheight'>
 
 
 						<%
@@ -107,13 +107,12 @@ th {
 							List<HashMap<String, Object>> data = util.executeQuery(sql2);
 
 							for (int i = 0; i < data.size(); i++) {
-						%>
-						<a href='trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
-						
-						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_")%>' 
-						 class="col-lg-5 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
+								try{
+						%>						
+						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>'  data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>'
+						 class="trainerprofile_holder product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
-							<div class="contact-box">
+							<div class="contact-box" style="height: 100% !important;">
 								<div class="col-sm-4">
 									<div class="text-center">
 										<img style="width: 80px !important; height: 80px !important;" alt="image"
@@ -142,21 +141,95 @@ th {
 											<th>Level 2</th>
 											<th>Level 3</th>
 											<th>Level 4</th>
+											<th>Level 5</th>
+											<th>Level 6</th>
 										</tr>
 									</thead>
 									<tbody>
 
 										<%
-											if (data.get(i).get("courses") != null && !data.get(i).get("courses").toString().equalsIgnoreCase("")) {
-													String[] courses = data.get(i).get("courses").toString().split(",<br>");
-													for (String course : courses) {
+										
+										String findInterestedCourse = "select course.id , course.course_name from  trainer_intrested_course, course where trainer_intrested_course.trainer_id = "+data.get(i).get("id")+" and  course.id = trainer_intrested_course.course_id";
+										List<HashMap<String, Object>> courseData = util.executeQuery(findInterestedCourse);
+										if (courseData.size()>0) {
+													
+										for (HashMap<String, Object> courseRow : courseData) {
+										
+										String L1="<i class='fa fa-check text-navy'>";
+										String L2="<i class='fa fa-check text-navy'>";
+										String L3="NA"+"&nbsp;<i class='fa fa-hourglass-end'>";
+										String L4="NA"+"&nbsp;<i class='fa fa-hourglass-end'>";
+										String L5="NA"+"&nbsp;<i class='fa fa-hourglass-end'>";
+										String L6="NA"+"&nbsp;<i class='fa fa-hourglass-end'>";
+										Boolean courseCleared =false;
+										String getL3Result ="select cast (sum(score) as integer) as user_score, (select cast (count(assessment_question.id) as integer) as total from assessment_question where assessmentid in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+courseRow.get("id")+"))   from report where user_id = "+data.get(i).get("id")+" and assessment_id in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+courseRow.get("id")+")";
+										List<HashMap<String, Object>> scoreL3 = util.executeQuery(getL3Result);
+										if(scoreL3.size()>0)
+										{
+											if(scoreL3.get(0).get("user_score")!=null)
+											{
+												L3 = scoreL3.get(0).get("user_score").toString()+"/"+scoreL3.get(0).get("total").toString();
+											}
+										}
+										else
+										{
+											L3="NA"+"&nbsp;<i class='fa fa-hourglass-end'>";
+										}	
+										
+										String result ="select  stage_type, cast (avg(rating) as integer) as rating from interview_rating where trainer_id = "+data.get(i).get("id")+" and course_id = "+courseRow.get("id")+" group by  stage_type";
+										List<HashMap<String, Object>> scoreData = util.executeQuery(result);
+										for(HashMap<String, Object>levelScore : scoreData)
+										{
+											if(levelScore.get("stage_type").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW))
+											{
+												L4 = levelScore.get("rating").toString()+"/5";
+											}else if(levelScore.get("stage_type").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO))
+											{
+												L5 = levelScore.get("rating").toString()+"/5";
+											}
+											else if(levelScore.get("stage_type").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW))
+											{
+												L6 = levelScore.get("rating").toString()+"/5";
+											}																							
+										}
+										String getStatus = "SELECT trainer_id, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L2') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L2' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l2, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L3') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L3' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l3, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L4') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L4' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l4, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L5') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L5' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l5, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L6') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L6' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l6 FROM trainer_empanelment_status  where trainer_id = "+data.get(i).get("id")+" and course_id = "+courseRow.get("id")+" group by trainer_id";				
+										List<HashMap<String, Object>> statusData = util.executeQuery(getStatus);
+										HashMap<String,String> statusIconMap = new HashMap();
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.SELECTED, "<i class='fa fa-check text-navy'>");
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.REJECTED, "<i class='fa fa-times'>");
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.NOT_REACHED, "<i class='fa fa-hourglass-end'>");
+										for(HashMap<String, Object>statusRow : statusData)
+										{
+											
+											L3 +="&nbsp;"+ statusIconMap.get(statusRow.get("l3").toString());
+											L4 +="&nbsp;"+ statusIconMap.get(statusRow.get("l4").toString());
+											L5 +="&nbsp;"+ statusIconMap.get(statusRow.get("l5").toString());
+											L6 +="&nbsp;"+ statusIconMap.get(statusRow.get("l6").toString());
+											if(statusRow.get("l6").toString().equalsIgnoreCase(TrainerEmpanelmentStatusTypes.SELECTED))
+											{
+												courseCleared = true;
+											}
+										}
 										%>
 										<tr>
-											<td><%=course%>&nbsp; <i class="fa fa-check text-navy"></i></td>
-											<td>12/36 &nbsp; <i class="fa fa-times"></i></td>
-											<td>12/33 &nbsp; <i class="fa fa-check text-navy"></i></td>
-											<td>38 &nbsp; <i class="fa fa-times"></i></td>
-											<td>40 &nbsp; <i class="fa fa-check text-navy"></i></td>
+											<td><%=courseRow.get("course_name")%>&nbsp; 
+											<%
+											if(courseCleared)
+											{
+											%>
+											<i class="fa fa-check text-navy"></i>
+											<% 
+											}
+											%>
+											
+											
+											</td>
+											<td><%=L1 %></td>
+											<td><%=L2 %></td>
+											<td><%=L3 %></td>
+											<td><%=L4 %></td>
+											<td><%=L5 %></td>
+											<td><%=L6 %></td>
 										</tr>
 										<%
 											}
@@ -227,8 +300,12 @@ th {
 									}
 								%>
 							</div>
-						</div></a>
+						</div>
 						<%
+							}catch(Exception e)
+							{
+								
+							}
 							}
 						%>
 					</div>
