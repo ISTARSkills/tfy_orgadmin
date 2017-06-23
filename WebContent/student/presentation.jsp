@@ -1,3 +1,6 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.istarindia.android.pojo.ConcreteItemPOJO"%>
 <%@page import="com.istarindia.android.pojo.ModulePOJO"%>
 <%@page import="com.istarindia.android.pojo.CoursePOJO"%>
@@ -13,7 +16,8 @@
 		+ path + "/";
 	int lesson_id =6020;
 	int playlist_id = -1;
-	
+	int slide_id = 0;
+	DBUTILS util = new DBUTILS();
 	int task_id =0;
 	if(request.getParameter("task_id")!=null){
 		task_id = Integer.parseInt(request.getParameter("task_id"));
@@ -35,6 +39,16 @@
 			}
 		}
 	}
+
+String sql = "select slide_id from user_session_log where user_id="+user.getId()+" and lesson_id="+lesson_id+" order by created_at desc limit 1";
+
+List<HashMap<String, Object>> data = util.executeQuery(sql);
+if(data.size()!=0){
+	slide_id = (int)data.get(0).get("slide_id");
+	System.out.println(">>>>>>>redirecting"+slide_id);
+}
+	
+
 %>
 <head>
 <meta charset="utf-8">
@@ -98,7 +112,12 @@
 			history : false,
 			center : true,
 			autoPlayMedia : false,
+			<% if(cp.getStudentProfile().getUserType().equalsIgnoreCase("TRAINER")) {%>
+			showNotes:true,
+			<% }  else {%>
 			showNotes:false,
+
+			<% } %>
 			margin: 0,
 			width: "90%",
 			height: "100%",
@@ -140,25 +159,23 @@
 	
 		Reveal.addEventListener( 'ready', function( event ) {
 		//	console.log('ready slide chnagd');
+					console.log('found my slide ->>>> <%=slide_id%>'+ <%=slide_id%>);
+
 			var height = document.getElementsByClassName("slides")[0].style.height;
 			var width =	document.getElementsByClassName("slides")[0].style.width;
-			
+			var slidetojump = 0;
 			document.getElementsByClassName("present")[0].style.height = height;
 			document.getElementsByClassName("present")[0].style.width = width;
 			document.getElementsByClassName("slides")[0].style.display = 'table';
-			var x = document.getElementsByClassName("section");
+			var x = document.getElementsByTagName("section");
 			var i;
 			for (i = 0; i < x.length; i++) {
-				    x[i].style.height = height;
+				   x[i].style.height = height;
 					x[i].style.width = width;
 					var slide_id=x[i].id;
 					var HtmlElementSlideHolder =  document.getElementById('slide_'+slide_id);
 					var size =HtmlElementSlideHolder.dataset.length;
 					var templateName =HtmlElementSlideHolder.dataset.template;
-					//console.log(templateName);
-					//console.log(size);
-					
-					
 					if(templateName ==='only_title'){
 						x[i].style.fontSize = size+'%';
 						 x[i].style.top = window.innerHeight/3+'px';;
@@ -168,12 +185,17 @@
 						x[i].style.top = null;
 					}
 					else{
-						//x[i].style.top = null;
 						x[i].style.top = '5%';
+					}
+					if(slide_id == <%=slide_id%>) {
+						console.log('found my slide ->>>>'+ i);
+						slidetojump = i;
 					}
 					
 
 			}
+			var indices = Reveal.getIndices( document.getElementById( '<%=slide_id%>' ) );
+			Reveal.slide( indices.h, indices.v );
 			
 		} );
 		
@@ -194,7 +216,7 @@
 
 								$.ajax({
 			        type: "GET",
-			        url: '<%=basePath%>t2c/LessonProgressService?user_id<%=user.getId()%>&lesson_id=<%=lesson_id%>&slide_id='+slideID+'&itle='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
+			        url: '<%=basePath%>t2c/LessonProgressService?user_id=<%=user.getId()%>&lesson_id=<%=lesson_id%>&slide_id='+slideID+'&itle='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
 			        success: function(result) {
 			           
 			        }
@@ -254,3 +276,4 @@
 
 </body>
 </html>
+	

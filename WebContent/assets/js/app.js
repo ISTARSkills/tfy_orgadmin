@@ -61,7 +61,48 @@ function readyFn(jQuery) {
 	  });
 
 		$('.tree1').treed();
-	    
+	    try {
+	    	var $grid = $('.grid').isotope({
+	    		  itemSelector: '.element-item',
+	    		  layoutMode: 'fitRows',
+	    		  getSortData: {
+	    		    name: '.name',
+	    		    symbol: '.symbol',
+	    		    number: '.number parseInt',
+	    		    category: '[data-category]',
+	    		    weight: function( itemElem ) {
+	    		      var weight = $( itemElem ).find('.weight').text();
+	    		      return parseFloat( weight.replace( /[\(\)]/g, '') );
+	    		    }
+	    		  }
+	    		});
+	    	
+	    	
+	    	var filterFns = {
+	    			  // show if number is greater than 50
+	    			  numberGreaterThan50: function() {
+	    			    var number = $(this).find('.number').text();
+	    			    return parseInt( number, 10 ) > 50;
+	    			  },
+	    			  // show if name ends with -ium
+	    			  ium: function() {
+	    			    var name = $(this).find('.name').text();
+	    			    return name.match( /ium$/ );
+	    			  }
+	    			};
+
+	    			// bind filter button click
+	    			$('#filters').on( 'click', 'button', function() {
+	    			  var filterValue = $( this ).attr('data-filter');
+	    			  // use filterFn if matches value
+	    			  filterValue = filterFns[ filterValue ] || filterValue;
+	    			  $grid.isotope({ filter: filterValue });
+	    			});
+	    			
+	    			
+	    } catch (err) {
+	    	console.log('71->'+err);
+		}
 		//
 	
 	initiateGraphFilter();
@@ -160,6 +201,9 @@ function readyFn(jQuery) {
 		$('#Tickets').css('color','  #eb384f');
 	case 'student_dashboard':	
 		$('#equalheight div.product-box').equalHeights();
+	case 'coordinator_trainer_details':
+		init_coordinator_trainer_details();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -169,7 +213,11 @@ function readyFn(jQuery) {
 	setInterval(init_session_logs, 10000);
 	$('select').select2();
 	loadTables();	
+	try {
 	$('#equalheight div.product-box').equalHeights();
+	} catch (err) {
+		// TODO: handle exception
+	}
 }
 
 function initUnreadChatAndNotification()
@@ -5957,4 +6005,26 @@ return (false)
 yes_js_login = function() {
     // Your code here
     return false;
+}
+
+function init_coordinator_trainer_details(){
+	$("#user_keyword").on("change paste keyup", function() {
+		var keyword=$(this).val().replace(" ","_");
+		init_coordinatortrainr_search(keyword);
+		});
+	
+	$('#user_search_button').unbind().on('click',function(){
+		var keyword=$("#user_keyword").val().replace(" ","_");
+		init_coordinatortrainr_search(keyword);
+	});
+	
+}
+
+function init_coordinatortrainr_search(keyword){
+	if(keyword.length==0){
+		$("#searchable_grid").children().show();
+	}else{
+	$("#searchable_grid").children().hide();
+	$("#searchable_grid").find("[data-name*='" + keyword + "']").show();
+	}	
 }

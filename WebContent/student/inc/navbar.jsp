@@ -81,8 +81,8 @@ request.setAttribute("cp", cp);
 			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><img alt="" src="/assets/img/user_images/coins_icon.png" style=" width: 14px;"> <%=cp.getStudentProfile().getCoins() %></span>
 			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><%=cp.getStudentProfile().getExperiencePoints() %>&nbsp;&nbsp; XP </span>
 				<li class="dropdown"><a class="dropdown-toggle count-info"
-					data-toggle="dropdown" href="#" aria-expanded="true"> <i
-						class="fa fa-envelope"></i> <span class="label label-warning"><%=cp.getNotificationsValid() %></span>
+					data-toggle="dropdown" href="#" aria-expanded="true"> <i style="color:#eb384f" " 
+						class="fa fa-bell"></i> <span class="label label-warning"><%=cp.getNotificationsValid() %></span>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
 						<% 

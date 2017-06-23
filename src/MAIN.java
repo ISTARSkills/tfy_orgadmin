@@ -96,10 +96,10 @@ public class MAIN {
 		System.out.println("start");
 		//createInterviewSkill();
 		createFarziData();
-		/*for(int i=0;i<15;i++)
+		for(int i=0;i<15;i++)
 		{
 			createFarziData();
-		}*/
+		}
 		System.out.println("end");
 	}
 	
@@ -214,7 +214,7 @@ public class MAIN {
 					+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
 			db.executeUpdate(insertIntoUserOrg);
 			String groupNotificationCode = UUID.randomUUID().toString();
-			String selectCourse = "select distinct course_id from cluster_requirement where course_id in (select DISTINCT course_id from   cluster_requirement)";
+			String selectCourse = "select distinct course_id from cluster_requirement where course_id in (select DISTINCT course_id from   cluster_requirement) and course_id in (select DISTINCT course_id from course_assessment_mapping)";
 			List<HashMap<String, Object>> cc = db.executeQuery(selectCourse);			
 			
 			for(int i=0 ; i<3;i++)
@@ -247,7 +247,7 @@ public class MAIN {
 				}
 			}
 			
-			String findDefaultAssessment = "select property_value from constant_properties where property_name ='default_assessment_for_trainer'";
+			/*String findDefaultAssessment = "select property_value from constant_properties where property_name ='default_assessment_for_trainer'";
 			List<HashMap<String, Object>> defaultAssessment = db.executeQuery(findDefaultAssessment);
 			if (defaultAssessment.size() > 0) {
 				String defAssessments = defaultAssessment.get(0).get("property_value").toString();
@@ -273,7 +273,7 @@ public class MAIN {
 
 					}
 				}
-			}
+			}*/
 			
 			String selectPincode ="select pin from pincode where id in (select pincode_id from cluster_pincode_mapping)";
 			List<HashMap<String, Object>> pincodeData = db.executeQuery(selectPincode);
@@ -324,7 +324,7 @@ public class MAIN {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 				DBUTILS util = new DBUTILS();
-				String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L5'";
+				String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L5' and empanelment_status='SELECTED'";
 				List<HashMap<String, Object>> data = util.executeQuery(findAllCoursesTrainerAppliedFor);
 				for(HashMap<String, Object> row: data)
 				{
@@ -338,8 +338,12 @@ public class MAIN {
 						util.executeUpdate(insert);
 					}
 					
+					ArrayList<String> selected = new ArrayList<>();
+					selected.add("SELECTED");
+					selected.add("REJECTED");
+					int i =  new Random().nextInt(2);
 					String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
-							+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L6', "+row.get("course_id")+");";
+							+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", '"+selected.get(i)+"', now(), 'L6', "+row.get("course_id")+");";
 					util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
 				}
 	}
@@ -347,7 +351,7 @@ public class MAIN {
 	private static void giveL5Interview(int urseId) {
 		// TODO Auto-generated method stub
 		DBUTILS util = new DBUTILS();
-		String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L4'";
+		String findAllCoursesTrainerAppliedFor ="select course_id from trainer_empanelment_status where trainer_id = "+urseId+" and stage ='L4' and empanelment_status='SELECTED'";
 		List<HashMap<String, Object>> data = util.executeQuery(findAllCoursesTrainerAppliedFor);
 		for(HashMap<String, Object> row: data)
 		{
@@ -360,8 +364,13 @@ public class MAIN {
 						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), "+urseId+", "+skll.get("id")+", 4.5, '300', 'L5', "+row.get("course_id")+");";
 				util.executeUpdate(insert);
 			}
+			
+			ArrayList<String> selected = new ArrayList<>();
+			selected.add("SELECTED");
+			selected.add("REJECTED");
+			int i =  new Random().nextInt(2);
 			String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
-					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L5', "+row.get("course_id")+");";
+					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", '"+selected.get(i)+"', now(), 'L5', "+row.get("course_id")+");";
 			util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
 		}
 	}
@@ -382,8 +391,12 @@ public class MAIN {
 				util.executeUpdate(insert);
 			}
 			
+			ArrayList<String> selected = new ArrayList<>();
+			selected.add("SELECTED");
+			selected.add("REJECTED");
+			int i =  new Random().nextInt(2);
 			String insertIntoTrainerEmpanelMentStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
-					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", 'SELECTED', now(), 'L4', "+row.get("course_id")+");";
+					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+urseId+", '"+selected.get(i)+"', now(), 'L4', "+row.get("course_id")+");";
 			util.executeUpdate(insertIntoTrainerEmpanelMentStatus);
 		}
 	}

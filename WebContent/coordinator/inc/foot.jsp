@@ -85,6 +85,9 @@ try{
 <script src="<%=basePath %>assets/js/websocket.js"></script>
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>
  --%>
+ 
+ 			<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+ 
 <script src="<%=basePath %>assets/js/app.js"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -80,7 +80,7 @@ public class TaskCardFactoryRecruitment {
 		sb.append("<div class='row'>"
 				+ "<div class='col-md-1  no-padding'></div>"
 				+ "<div class='col-md-3 no-padding'><b>Interested  Courses</b></div>"
-				+ "<div class='col-md-8	 no-padding'>"+interestedCourses+"</div></div>");
+				+ "<div class='col-md-7	 no-padding'>"+interestedCourses+"</div></div>");
 		sb.append("</li>");
 		
 		sb.append("<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
@@ -188,5 +188,64 @@ public class TaskCardFactoryRecruitment {
 		return sb;
 		}
 	
+	public StringBuffer showCourseCard(int trainerID, int courseID){
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div class='col-lg-6'>				");
+		sb.append("<div id='card'>                                                                          ");
+		sb.append("<div class='front'>                                                                      ");
+		sb.append("<div class='ibox-content product-box' id='ibox-content'>                                             ");
+		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline '>                   ");
+		sb.append("<div class='vertical-timeline-block'>                                                    ");
+		sb.append("<div class='vertical-timeline-icon blue-bg'>                                             ");
+		sb.append("<i class='fa fa-file-text'></i>                                                          ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='vertical-timeline-content'>                                                  ");
+		sb.append("<h2>Send documents to Mike</h2>                                                          ");
+		sb.append("<span class='vertical-date'>                                                             ");
+		sb.append("Today <br>                                                                               ");
+		sb.append("<small>Dec 24</small>                                                                    ");
+		sb.append("</span>                                                                                  ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='vertical-timeline-block'>                                                    ");
+		sb.append("<div class='vertical-timeline-icon blue-bg'>                                             ");
+		sb.append("<i class='fa fa-file-text'></i>                                                          ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='vertical-timeline-content'>                                                  ");
+		sb.append("<h2>Send documents to Mike</h2>                                                          ");
+		sb.append("<span class='vertical-date'>                                                             ");
+		sb.append("Today <br>                                                                               ");
+		sb.append("<small>Dec 24</small>                                                                    ");
+		sb.append("</span>                                                                                  ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='vertical-timeline-block'>                                                    ");
+		sb.append("<div class='vertical-timeline-icon blue-bg'>                                             ");
+		sb.append("<i class='fa fa-file-text'></i>                                                          ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='vertical-timeline-content'>                                                  ");
+		sb.append("<h2>Send documents to Mike</h2>                                                          ");
+		sb.append("<span class='vertical-date'>                                                             ");
+		sb.append("Today <br>                                                                               ");
+		sb.append("<small>Dec 24</small>                                                                    ");
+		sb.append("</span>                                                                                  ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("<div class='back'>                                                                       ");
+		sb.append("<div class='ibox-content' id='ibox-content'>                                             ");
+		sb.append("Back content                                                                             ");
+		sb.append("                                                                                         ");
+		sb.append("<div id='rateYo'></div>                                                                  ");
+		sb.append("<textarea rows='4' cols='50'>At w3schools.com you will learn how to make a website. We o ");
+		sb.append("</textarea>                                                                              ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		sb.append("</div>                                                                                   ");
+		return sb;
+	}
 	
 }

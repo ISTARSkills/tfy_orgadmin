@@ -10,232 +10,228 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@page
-	import="in.talentify.core.services.NotificationAndTicketServices"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 
 <jsp:include page="inc/head.jsp"></jsp:include>
 <style>
-
-th{
-text-align:center
+th {
+	text-align: center
 }
-.label
-{
-    line-height: 22px;
+
+.label {
+	line-height: 22px;
 }
 </style>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
-	
-	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+
+	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	DBUTILS util = new DBUTILS();
 %>
-<body class="top-navigation">
+<body class="top-navigation" id="coordinator_trainer_details">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
-					<h2><strong>Trainer Wise Details</strong> </h2>
+					<h2>
+						<strong>Trainer Dashboard</strong>
+					</h2>
 				</div>
 				<div class="col-lg-2"></div>
 			</div>
-			<div class="wrapper wrapper-content animated fadeInRight"
-				style="padding: 10px;">
-				<div class="row">
-			<div class="col-lg-2">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> Signed Up(L2) </span>
-                            <h2 class="font-bold">50</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-				<div class="col-lg-2">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span>  Assessment(L3) </span>
-                            <h2 class="font-bold">10</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-				<div class="col-lg-3">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> SME Interview (L4) </span>
-                            <h2 class="font-bold">15</h2>
-                        </div>
-                    </div>
-                </div>	
-            </div>
-            <div class="col-lg-2">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> Demo (L5) </span>
-                            <h2 class="font-bold">15</h2>
-                        </div>
-                    </div>
-                </div>	
-            </div>
-                        
-            <div class="col-lg-3">
-                <div class="widget style1 navy-bg">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <i class="fa fa-cloud fa-5x"></i>
-                        </div>
-                        <div class="col-xs-8 text-right">
-                            <span> Fitement Interview (L6) </span>
-                            <h2 class="font-bold">15</h2>
-                        </div>
-                    </div>
-                </div>	
-            </div>
-            </div>
-					<div class="col-lg-12">
-						<div class="ibox">
-							<div class="ibox-content">
-							<% 
-							CustomReportUtils reportUtil = new CustomReportUtils();
-							String sql = reportUtil.getReport(43).getSql();
-							List<HashMap<String, Object>> data = util.executeQuery(sql);
-							%>
-							<div class="table-responsive">
-                <table class="table table-striped table table-bordered">
-                    <thead>
-                   <tr align=center>
-										<th>Id</th>
-										<th>First Name</th>
-										<th>Clusters</th>
-										<th>Courses</th>
-										<th>Cities</th>
-										<!-- <th>Pincodes</th> -->
-										<!-- <th>Days</th> -->
-										<th>Time Slots</th>
-										<th style="white-space: nowrap;">L2<br>
-										<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;">Selected</span>&nbsp;
-										<span class="label label-warning">Pending</span>&nbsp;
-										<span class="label label-danger">Rejected</span></th>
-										<th style="white-space: nowrap;">L3<br>
-										<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;">Selected</span>&nbsp;
-										<span class="label label-warning">Pending</span>&nbsp;
-										<span class="label label-danger">Rejected</span></th>
-										<th style="white-space: nowrap;">L4<br>
-										<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;">Selected</span>&nbsp;
-										<span class="label label-warning">Pending</span>&nbsp;
-										<span class="label label-danger">Rejected</span></th>
-										<th style="white-space: nowrap;">L5<br>
-										<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;">Selected</span>&nbsp;
-										<span class="label label-warning">Pending</span>&nbsp;
-										<span class="label label-danger">Rejected</span></th>
-										<th style="white-space: nowrap;">L6<br>
-										<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;">Selected</span>&nbsp;
-										<span class="label label-warning">Pending</span>&nbsp;
-										<span class="label label-danger">Rejected</span></th>
-										<th>L3 Score</th>
-										<th>L4 Avg Score</th>
-										<th>L5 Avg Score</th>
-										<th>L6 Avg Score</th>
-										</tr>
-                    </thead>
-                    <tbody>
-                    <%
-										for(HashMap<String, Object> row: data){
-											int trainerId = (int)row.get("id");
-											String findCourses = "select distinct course.id , course_name from trainer_intrested_course, course where trainer_intrested_course.course_id = course.id and trainer_intrested_course.trainer_id = "+trainerId+"  order by course_name ";
-											List<HashMap<String, Object>> courseData = util.executeQuery(findCourses);
-										%>
-										<tr>
-										<td><%=row.get("id")%></td>
-										<td><a href='trainer_profile.jsp?trainer_id=<%=row.get("id")%>'><%=row.get("first_name")%><br/>[<%=row.get("email")%>]</a></td>
-										
-										<td style="white-space: nowrap;"><%=row.get("clusters")%></td>
-										<td style="white-space: nowrap;"><%=row.get("courses")%></td>
-										<td><%=row.get("cities")%></td>
-										
-										<td style="white-space: nowrap;" ><%=row.get("slots").toString().replaceAll("- 9am, 9am -","-").replaceAll("- 10am, 10am -","-").replaceAll("- 11am, 11am -","-").replaceAll("- 12pm, 12pm -","-").replaceAll("- 1pm, 1pm -","-").replaceAll("- 2pm, 2pm -","-").replaceAll("- 3pm, 3pm -","-").replaceAll("- 4pm, 4pm -","-").replaceAll("- 5pm, 5pm -","-")%></td>
-										<td>
-										<%
-										for(int i=0 ;i< courseData.size(); i++)
-										{
-											HashMap<String, Object> perCourse= courseData.get(i);
-											String getStatusForCourse = "select empanelment_status from trainer_empanelment_status where course_id= "+perCourse.get("id")+" and trainer_id = "+trainerId+" and stage='"+TrainerEmpanelmentStageTypes.SIGNED_UP+"'";
-											List<HashMap<String, Object>> dataForL2 = util.executeQuery(getStatusForCourse);
-											if(dataForL2.size()>0)
-											{
-												if(dataForL2.get(0).get("empanelment_status").toString().equalsIgnoreCase(TrainerEmpanelmentStatusTypes.SELECTED))
-												{
-													%>
-													<span class="label label-primary" style="background-color: #1ab394;    color: #FFFFFF;"><%=perCourse.get("course_name") %></span><br>
-													<% 
-												}
-												else
-												{
-													%>
-													<span class="label label-danger"><%=perCourse.get("course_name") %></span><br>
-													<% 
-												}	
-											}
-											else
-											{
-												%>
-												<span class="label label-warning"><%=perCourse.get("course_name") %></span>
-												<% 
-											}	
-										}
-										%>
-										</td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td style="white-space: nowrap;"></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										</tr>
-										<%
-										}%>
-                    </tbody>
-                </table>
-            </div>
+			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;">
+				<div class="row" id="filters">
 
-								
+					<div class=" col-lg-2 input-group pull-right">
+						<input type="text" id="user_keyword" name="user_keyword" class="form-control"> <span class="input-group-btn">
+							<button type="button" id="user_search_button" class="btn btn-primary">search</button>
+						</span>
+					</div>	
+					<%
+						DBUTILS utils = new DBUTILS();
+						String sql = "select course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
+						List<HashMap<String, Object>> items = utils.executeQuery(sql);
+					%>
+					<div class="big-demo go-wide" data-js="filtering-demo">
+						<div class="filter-button-group button-group js-radio-button-group">
+							<span class="badge badge-info">Course</span>
+							<button class="button is-checked" data-filter="*">show all</button>
+							<%
+								for (HashMap<String, Object> item : items) {
+							%>
+							<button class="button" data-filter=".course_<%=item.get("course_name").toString().replaceAll(" ", "_").replaceAll("/", "___")%>"><%=item.get("course_name").toString()%></button>
+							<%
+								}
+							%>
+						</div>
+
+					</div>
+					<%
+						String sql1 = "select * from cluster";
+						List<HashMap<String, Object>> items1 = utils.executeQuery(sql1);
+					%>
+					<div class="row" style="margin-top: 20px">
+						<div class="big-demo go-wide" data-js="filtering-demo">
+							<div class="filter-button-group button-group js-radio-button-group">
+								<span class="badge badge-info">Filter by Cluster</span>
+								<button class="button is-checked" data-filter="*">show all</button>
+								<%
+									for (HashMap<String, Object> item : items1) {
+								%>
+								<button class="button" data-filter=".cluster_<%=item.get("cluster_name").toString().replaceAll(" ", "_").replaceAll("/", "___")%>"><%=item.get("cluster_name").toString()%></button>
+								<%
+									}
+								%>
 							</div>
 
 						</div>
 					</div>
+					<div class="row grid" id="searchable_grid" style="margin-top: 30px">
+
+
+						<%
+							CustomReportUtils reportUtil = new CustomReportUtils();
+							String sql2 = reportUtil.getReport(43).getSql();
+							List<HashMap<String, Object>> data = util.executeQuery(sql2);
+
+							for (int i = 0; i < data.size(); i++) {
+						%>
+						<a href='trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
+						
+						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_")%>' 
+						 class="col-lg-5 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
+						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
+							<div class="contact-box">
+								<div class="col-sm-4">
+									<div class="text-center">
+										<img style="width: 80px !important; height: 80px !important;" alt="image" class="img-circle m-t-xs img-responsive" src="https://s-media-cache-ak0.pinimg.com/736x/d4/e4/ea/d4e4ea4504747a5207814334b8232fcd.jpg">
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<h3>
+										<strong><%=data.get(i).get("first_name")%></strong>
+									</h3>
+									<p>
+										<i class="fa fa-envelope"></i>&nbsp;
+										<%=data.get(i).get("email")%></p>
+									<address>
+										<p>
+											<i class="fa fa-phone"></i>&nbsp;
+											<%=data.get(i).get("mobile")%></p>
+									</address>
+								</div>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Course</th>
+											<th>Level 1</th>
+											<th>Level 2</th>
+											<th>Level 3</th>
+											<th>Level 4</th>
+										</tr>
+									</thead>
+									<tbody>
+
+										<%
+											if (data.get(i).get("courses") != null && !data.get(i).get("courses").toString().equalsIgnoreCase("")) {
+													String[] courses = data.get(i).get("courses").toString().split(",<br>");
+													for (String course : courses) {
+										%>
+										<tr>
+											<td><%=course%>&nbsp; <i class="fa fa-check text-navy"></i></td>
+											<td>12/36 &nbsp; <i class="fa fa-times"></i></td>
+											<td>12/33 &nbsp; <i class="fa fa-check text-navy"></i></td>
+											<td>38 &nbsp; <i class="fa fa-times"></i></td>
+											<td>40 &nbsp; <i class="fa fa-check text-navy"></i></td>
+										</tr>
+										<%
+											}
+												}
+										%>
+									</tbody>
+								</table>
+								<%
+									if (data.get(i).get("slots") != null && !data.get(i).get("slots").toString().equalsIgnoreCase("")) {
+								%>
+								<div class="row">
+									<div class="col-lg-12">
+										<h5>Slots:</h5>
+
+										<%
+											String[] slots = data.get(i).get("slots").toString().split("<br>");
+													for (String slot : slots) {
+										%>
+										<button class="btn btn-white btn-xs" type="button"><%=slot.replaceAll("- 9am, 9am -","-").replaceAll("- 10am, 10am -","-").replaceAll("- 11am, 11am -","-").replaceAll("- 12pm, 12pm -","-").replaceAll("- 1pm, 1pm -","-").replaceAll("- 2pm, 2pm -","-").replaceAll("- 3pm, 3pm -","-").replaceAll("- 4pm, 4pm -","-").replaceAll("- 5pm, 5pm -","-")%></button>
+										<br />
+										<%
+											}
+										%>
+									</div>
+								</div>
+								<%
+									}
+								%>
+
+								<%
+									if (data.get(i).get("cities") != null && !data.get(i).get("cities").toString().equalsIgnoreCase("")) {
+								%>
+								<div class="row">
+									<div class="col-lg-12">
+										<h5>Cities:</h5>
+										<%
+											String[] cities = data.get(i).get("cities").toString().split(",");
+													for (String city : cities) {
+										%>
+										<button class="btn btn-white btn-xs" type="button"><%=city%></button>
+										<%
+											}
+										%>
+									</div>
+								</div>
+								<%
+									}
+								%>
+
+								<%
+									if (data.get(i).get("clusters") != null
+												&& !data.get(i).get("clusters").toString().equalsIgnoreCase("")) {
+								%>
+								<div class="row">
+									<div class="col-lg-12">
+										<h5>Cluster:</h5>
+										<%
+											String[] clusters = data.get(i).get("clusters").toString().split(",");
+													for (String cluster : clusters) {
+										%>
+										<button class="btn btn-white btn-xs" type="button"><%=cluster%></button>
+										<%
+											}
+										%>
+									</div>
+								</div>
+								<%
+									}
+								%>
+							</div>
+						</div></a>
+						<%
+							}
+						%>
+					</div>
 				</div>
+			</div>
 		</div>
 	</div>
 	<jsp:include page="inc/foot.jsp"></jsp:include>

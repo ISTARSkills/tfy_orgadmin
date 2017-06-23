@@ -26,7 +26,6 @@
 	
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	int trainerId = Integer.parseInt(request.getParameter("trainer_id"));
-	trainerId = 6077;
 %>
 
 
@@ -42,8 +41,12 @@
 				<div class="row">
 				<div class='col-md-4'><%=(new TaskCardFactoryRecruitment()).showTrainerProfileCard(trainerId).toString()%></div>
 				<div class="col-md-8">
-				<div class="row">
+				<div class="row equalheight">
 				<%=(new TaskCardFactoryRecruitment()).showSummaryCard(trainerId).toString()%>
+				
+				<% for(int i=0; i< 5; i++) { %>
+								<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,3).toString()%>
+				<% } %>
 				</div>
 				</div>
 				

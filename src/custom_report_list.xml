@@ -1010,7 +1010,8 @@ order by name</sql>
 <sql>
 select 
 T1.id, 
-T1.email, 
+T1.email,
+t1.mobile, 
 T1.first_name,
 T1.cities,
 T1.pincodes,
@@ -1018,7 +1019,7 @@ T6.clusters,
 T1.courses, 
 T1.days,
 T2.slots
-from (select istar_user.id , istar_user.email, COALESCE(user_profile.first_name,'NA') as first_name , string_agg(distinct pincode.city,', ') as cities,
+from (select istar_user.id , istar_user.email,istar_user.mobile, COALESCE(user_profile.first_name,'NA') as first_name , string_agg(distinct pincode.city,', ') as cities,
 string_agg(distinct course.course_name,',&lt;br&gt;') as courses,
 string_agg(DISTINCT cast ( pincode.pin as varchar),', ') as pincodes,
 string_agg(DISTINCT trainer_available_time_sloat.day,'&lt;br&gt;') as days

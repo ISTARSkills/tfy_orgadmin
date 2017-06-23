@@ -780,4 +780,35 @@ public class UIUtils {
 		}
 	}
 
+	
+	public static String createClassNameCLuster(String string) {
+		String returnData = "";
+		for (String iterable_element : string.split(",")) {
+			try {
+				returnData = returnData+ "cluster_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("/", "___") +" ";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+		}
+		return returnData;
+		
+	}
+	
+	public static String createClassNameCourse(String string) {
+		//Asset Management ,<br>Career Prep GD/PI,<br>Data Analytics,<br>Direct Tax Theory,<br>Finance and Accounting Analysis,<br>UI Developer
+		String returnData = "";
+		for (String iterable_element : string.split(",<br>")) {
+			try {
+				returnData = returnData+ "course_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("/", "___") +" ";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+		}
+		return returnData;
+		
+	}
 }
+
+
