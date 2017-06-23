@@ -1,7 +1,11 @@
 package tfy.admin.trainer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +18,10 @@ import com.istarindia.android.pojo.QuestionPOJO;
 import com.istarindia.android.pojo.QuestionResponsePOJO;
 import com.istarindia.android.pojo.RestClient;
 import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.dao.entities.UserRole;
+import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes;
 
 /**
  * Servlet implementation class SubmitAssessment
@@ -41,6 +48,7 @@ Param -> option_for_question_385 : Value ->1695
 Param -> question_time_taken_2 : Value ->-8
 Param -> option_for_question_386 : Value ->1700
 Param -> question_time_taken_3 : Value ->-11*/
+		DBUTILS util = new DBUTILS();
 		String assessmentId = request.getParameter("assessment_id");
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user"); 
 		String taskId = request.getParameter("task_id");
@@ -75,6 +83,46 @@ Param -> question_time_taken_3 : Value ->-11*/
 			asses_response.add(queResponse);						
 		}				
 		client.SubmitAssessment(Integer.parseInt(taskId),user.getId(), asses_response, Integer.parseInt(assessmentId));
+		for(UserRole userRole :user.getUserRoles())
+		{
+			if(userRole.getRole().getRoleName().equalsIgnoreCase("TRAINER"))
+			{
+				String getAssessment ="select course_id, assessment_id from course_assessment_mapping where assessment_id = "+assessmentId;
+				List<HashMap<String, Object>>courseAssessment = util.executeQuery(getAssessment);
+				for(HashMap<String, Object> row: courseAssessment)
+				{
+					String courseId = row.get("course_id").toString();
+					String findPercentage="select (case when count(*) >0  then cast (((count(*) filter(where correct='t'))*100)/(count(*)) as integer)  else 0 end) as percentage from student_assessment where assessment_id= "+assessmentId+" and student_id = "+user.getId();
+					List<HashMap<String, Object>> percentageData = util.executeQuery(findPercentage);
+					if(percentageData.size()>0 && percentageData.get(0).get("percentage")!=null)
+					{
+						int perc = (int)percentageData.get(0).get("percentage");
+						int percBenchMark = 0; 
+						try {
+							Properties  properties = new Properties();
+							String propertyFileName = "app.properties";
+							InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+							if (inputStream != null) {
+								properties.load(inputStream);
+								percBenchMark = Integer.parseInt(properties.getProperty("percentage_benchmark"));
+							}
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						String status =TrainerEmpanelmentStatusTypes.REJECTED;
+						if(perc>=percBenchMark)
+						{
+							status = TrainerEmpanelmentStatusTypes.SELECTED;
+						}
+						String insertIntoEmpanelMentStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+								+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+user.getId()+", '"+status+"', now(), 'L3', "+courseId+");";
+						util.executeUpdate(insertIntoEmpanelMentStatus);
+					}
+					
+				}
+				break;
+			}
+		}
 		response.sendRedirect("/student/dashboard.jsp");
 		
 	}
