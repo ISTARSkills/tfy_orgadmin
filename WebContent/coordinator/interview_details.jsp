@@ -107,26 +107,11 @@
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	
-	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
-	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(user.getId());
-	request.setAttribute("cp", cp);
-	boolean flag = false;
-	int assessmentID = Integer.parseInt(request.getParameter("assessment_id"));
-	int trainerId  = Integer.parseInt(request.getParameter("user_id"));
-	AssessmentPOJO assessment = rc.getAssessment(assessmentID, trainerId);
-	ArrayList<QuestionPOJO> questions = (ArrayList<QuestionPOJO>)assessment.getQuestions();
-	HashMap<Integer, QuestionPOJO> actualQuestions = new HashMap();
-	for(QuestionPOJO que : questions)
-	{
-		actualQuestions.put(que.getId(), que);		
-	}
+	String trainerId = request.getParameter("user_id");
+	String courseId =  request.getParameter("course_id");
+	String stage = request.getParameter("stage");
 	
-	
-	TrainerReportService reportService = new TrainerReportService();
-	AssessmentResponsePOJO resp = reportService.getAssessmentResponseOfUser(assessmentID, trainerId);
-	
-	
+	String findRatings ="select * from "
 	
 %>
 <body class="top-navigation" >
@@ -136,11 +121,7 @@
 			<%
 												if(resp!=null) {
 													
-													HashMap<Integer, QuestionResponsePOJO> answersByUser  = new HashMap();
-													for(QuestionResponsePOJO qresp : resp.getResponse())
-													{
-														answersByUser.put(qresp.getQuestionId(), qresp);
-													}
+													
 													%><div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2><small>Assessment Report for</small> <strong><%=assessment.getName() %></strong> </h2>

@@ -238,7 +238,12 @@ public class TaskCardFactoryRecruitment {
 					title = "Candidate successfully cleared stage L2 on " + format.format(date) + "";
 					taskIcon = "fa fa-check";
 					bgStyle = " style='    background-color: #18a689  !important;     color: white !important;' ";
-				}
+				}else
+				{
+					title = "Candidate successfully cleared stage L2.";
+					taskIcon = "fa fa-check";
+					bgStyle = " style='    background-color: #18a689  !important;     color: white !important;' ";
+				}	
 
 			} else {
 
@@ -266,7 +271,7 @@ public class TaskCardFactoryRecruitment {
 								{
 									userScore =  userScore+ ((int)row.get("user_score"));
 									totalScore =userScore+ ((int)row.get("total"));
-									details +="<a href='/assessment_report?user_id="+trainerID+"&assessment_id="+row.get("id")+"' class='btn btn-sm btn-success'> "+row.get("assessmenttitle")+" </a>&nbsp;&nbsp;";
+									details +="<a href='/coordinator/assessment_report.jsp?user_id="+trainerID+"&assessment_id="+row.get("id")+"' class='btn btn-sm btn-success'> "+row.get("assessmenttitle")+" </a>&nbsp;&nbsp;";
 								} 
 							}
 							//&& scoreL3.get(0).get("user_score")!=null
@@ -283,6 +288,7 @@ public class TaskCardFactoryRecruitment {
 						List<HashMap<String, Object>> scoreL3Plus = util.executeQuery(getScore);
 						if (scoreL3Plus.size() > 0) {
 							score = "with the score " + scoreL3Plus.get(0).get("rating").toString() + "/5";
+							details="<a href='/coordinator/interview_details.jsp?user_id="+trainerID+"&course_id="+courseID+"&stage="+stages.get(i)+"' class='btn btn-sm btn-success'> Details </a>";
 						}
 						String getComments = "select trainer_comments.comments, user_profile.first_name from trainer_comments, user_profile where trainer_comments.interviewer_id = user_profile.user_id and trainer_comments.course_id = "
 								+ courseID + " and trainer_comments.stage = '" + stages.get(i)
@@ -295,7 +301,6 @@ public class TaskCardFactoryRecruitment {
 							}
 						}
 						
-						//details="<a href='/interview_details?user_id="+trainerID+"&course_id="+courseID+"&stage="+stages.get(i)+"' class='btn btn-sm btn-success'> Details </a>";
 					}
 
 					if (statusData.size() > 0) {
@@ -328,6 +333,7 @@ public class TaskCardFactoryRecruitment {
 					title = "This candidate was rejected.";
 					taskIcon = "fa fa-times";
 					bgStyle = " style='    background-color: #ec4758 !important;     color: white !important;' ";
+					details ="";
 				}
 
 			}
