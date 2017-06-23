@@ -1,3 +1,17 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
+<%@page import="com.istarindia.android.pojo.AssessmentResponsePOJO"%>
+<%@page import="tfy.admin.trainer.TrainerReportService"%>
+<%@page import="in.orgadmin.admin.services.AdminUIServices"%>
+<%@page import="com.istarindia.android.pojo.OptionPOJO"%>
+<%@page import="org.apache.commons.collections.CollectionUtils"%>
+<%@page import="com.istarindia.android.pojo.QuestionPOJO"%>
+<%@page import="com.istarindia.android.pojo.AssessmentPOJO"%>
+<%@page import="com.istarindia.android.pojo.SkillReportPOJO"%>
+<%@page import="com.viksitpro.core.dao.entities.Question"%>
+<%@page import="com.viksitpro.core.dao.entities.QuestionDAO"%>
+<%@page import="com.istarindia.android.pojo.QuestionResponsePOJO"%>
+<%@page import="com.istarindia.android.pojo.AssessmentReportPOJO"%>
+<%@page import="org.omg.CosNaming.IstringHelper"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -88,22 +102,53 @@
 </style>
 <jsp:include page="inc/head.jsp"></jsp:include>
 <%
+ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+	
 %>
-<body class="top-navigation">
+<body class="top-navigation" >
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp" />
-			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;">
-				
+			<div class="row wrapper border-bottom white-bg page-heading">
+				<div class="col-lg-10">
+					<h2><small>Over All Hiring Report</small></strong> </h2>
+
+				</div>
+				<div class="col-lg-2"></div>
+			</div>
+			<div class="wrapper wrapper-content animated fadeInRight"
+				style="padding: 10px;">
+				<div class="row">
 			
+				</div>
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-content">
+
+<div class="row">
+					<%
+				ReportUtils util = new ReportUtils();
+				HashMap<String, String> conditions = new HashMap();
+				conditions.put("limit", "12");
+				conditions.put("offset", "0");							
+				%>				
+				<%=util.getTableOuterHTML(3066, conditions)%>
+				</div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
+	
 	<jsp:include page="inc/foot.jsp"></jsp:include>
 </body>
 </html>

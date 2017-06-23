@@ -43,7 +43,7 @@
 	<parent_links display_name="L5" is_visible_in_menu="true" jsp_file="/coordinator/l5.jsp" url="/coordinator/l5.jsp" valid_role="coordinator" />
 	<parent_links display_name="L5" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />
  -->	<parent_links display_name="Trianer Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/trainer_wise_details.jsp" url="/coordinator/trainer_wise_details.jsp" valid_role="coordinator" />
-	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/course_city_wise_details.jsp" url="/coordinator/course_city_wise_details.jsp" valid_role="coordinator" />	
+	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />	
 	<!-- coordinator ends here-->
 	
 	<!--student specific starts here -->

@@ -75,8 +75,8 @@ ratingSkill:
 			
 			}
 			
-			String insertComments ="INSERT INTO trainer_comments (id, trainer_id, interviewer_id, stage, course_id, comments)"
-					+ " VALUES ((select COALESCE(max(id),0)+1 from trainer_comments), "+trainerId+", "+interviewerId+", '"+stage+"', "+courseId+", '"+comments+"')";
+			String insertComments ="INSERT INTO trainer_comments (id, trainer_id, interviewer_id, stage, course_id, comments,created_at)"
+					+ " VALUES ((select COALESCE(max(id),0)+1 from trainer_comments), "+trainerId+", "+interviewerId+", '"+stage+"', "+courseId+", '"+comments+"', now())";
 			util.executeUpdate(insertComments);
 			String status = TrainerEmpanelmentStatusTypes.REJECTED;
 			if(isSelected!=null && Boolean.parseBoolean(isSelected))

@@ -1552,4 +1552,99 @@ group by TrainerDeatils.id, email, first_name
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
+<reports id="3066" type_of_report="table">
+ <column columnHandler="NONE" display_name="Course Id" isVisible="false" name="course_id" />		
+		<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" display_name="Cluster Id" isVisible="false" name="cluster_id" />
+		<column columnHandler="NONE" display_name="Cluster Name" isVisible="true" name="cluster_name" />			
+		<column columnHandler="NONE" display_name="Requirement" isVisible="true" name="req" />		
+		<column columnHandler="NONE" display_name="Cities" isVisible="true" name="cities" />
+		<column columnHandler="NONE" display_name="L2" isVisible="true" name="l2count" />
+		<column columnHandler="NONE" display_name="L3" isVisible="true" name="l3count" />			
+		<column columnHandler="NONE" display_name="L4" isVisible="true" name="l4count" />		
+		<column columnHandler="NONE" display_name="L5" isVisible="true" name="l5count" />
+		<column columnHandler="NONE" display_name="L6" isVisible="true" name="l6count" />
+		<column columnHandler="NONE" display_name="Net Requirement" isVisible="true" name="net" />						
+<sql>
+select STATIC_TAB.course_id,
+STATIC_TAB.course_name,
+STATIC_TAB.cluster_id,
+STATIC_TAB.cluster_name,
+STATIC_TAB.req,
+STATIC_TAB.cities,
+COALESCE(FINAL_L2.l2count,0) as l2count,
+COALESCE(FINAL_L3.l3count,0) as l3count,
+COALESCE(FINAL_L4.l4count,0) as l4count,
+COALESCE(FINAL_L5.l5count,0) as l5count,
+COALESCE(FINAL_L6.l6count,0) as l6count,
+STATIC_TAB.req - COALESCE(FINAL_L6.l6count,0) as net, count(*)over() as total_rows
+from (select COURSE_TAB.course_id, COURSE_TAB.course_name, cluster.id as cluster_id, cluster.cluster_name,
+COURSE_TAB.trainer_count as req, COALESCE(string_agg(distinct pincode.city,', '),'') as cities   
+from (select DISTINCT course_id, course_name, cluster_id, trainer_count from  cluster_requirement , course
+where cluster_requirement.course_id = course.id
+)COURSE_TAB
+left join cluster on (COURSE_TAB.cluster_id = cluster.id)
+left join cluster_pincode_mapping cpm on (cpm.cluster_id = cluster.id)
+left join pincode on (pincode.id = cpm.pincode_id)
+group by COURSE_TAB.course_id, COURSE_TAB.course_name, cluster.id, cluster.cluster_name,
+COURSE_TAB.trainer_count
+)STATIC_TAB 
+left join (
+select course_id, cluster_id, l4count from (select count(DISTINCT tes.trainer_id) as l4count, tes.course_id,  cpm.cluster_id
+from trainer_empanelment_status tes , trainer_prefred_location tpl, pincode, cluster_pincode_mapping cpm
+where 
+tes.trainer_id = tpl.trainer_id
+and tpl.pincode = pincode.pin
+and pincode.id = cpm.pincode_id
+and tes.stage = 'L4' and tes.empanelment_status ='SELECTED'
+group by course_id , cluster_id
+)L4_TAB
+)FINAL_L4 on (FINAL_L4.course_id= STATIC_TAB.course_id and FINAL_L4.cluster_id=STATIC_TAB.cluster_id)
+left join (
+select course_id, cluster_id, l5count from (select count(DISTINCT tes.trainer_id) as l5count, tes.course_id,  cpm.cluster_id
+from trainer_empanelment_status tes , trainer_prefred_location tpl, pincode, cluster_pincode_mapping cpm
+where 
+tes.trainer_id = tpl.trainer_id
+and tpl.pincode = pincode.pin
+and pincode.id = cpm.pincode_id
+and tes.stage = 'L5' and tes.empanelment_status ='SELECTED'
+group by course_id , cluster_id
+)L5_TAB
+)FINAL_L5 on (FINAL_L5.course_id= STATIC_TAB.course_id and FINAL_L5.cluster_id=STATIC_TAB.cluster_id)
+left join (
+select course_id, cluster_id, l6count from (select count(DISTINCT tes.trainer_id) as l6count, tes.course_id,  cpm.cluster_id
+from trainer_empanelment_status tes , trainer_prefred_location tpl, pincode, cluster_pincode_mapping cpm
+where 
+tes.trainer_id = tpl.trainer_id
+and tpl.pincode = pincode.pin
+and pincode.id = cpm.pincode_id
+and tes.stage = 'L6' and tes.empanelment_status ='SELECTED'
+group by course_id , cluster_id
+)L6_TAB
+)FINAL_L6 on (FINAL_L6.course_id= STATIC_TAB.course_id and FINAL_L6.cluster_id=STATIC_TAB.cluster_id)
+left join (
+select course_id, cluster_id, l3count from (select count(DISTINCT tes.trainer_id) as l3count, tes.course_id,  cpm.cluster_id
+from trainer_empanelment_status tes , trainer_prefred_location tpl, pincode, cluster_pincode_mapping cpm
+where 
+tes.trainer_id = tpl.trainer_id
+and tpl.pincode = pincode.pin
+and pincode.id = cpm.pincode_id
+and tes.stage = 'L3' and tes.empanelment_status ='SELECTED'
+group by course_id , cluster_id
+)L3_TAB
+)FINAL_L3 on (FINAL_L3.course_id= STATIC_TAB.course_id and FINAL_L3.cluster_id=STATIC_TAB.cluster_id)
+left join (
+select course_id, cluster_id, l2count from (select count(DISTINCT tes.trainer_id) as l2count, tes.course_id,  cpm.cluster_id
+from trainer_empanelment_status tes , trainer_prefred_location tpl, pincode, cluster_pincode_mapping cpm
+where 
+tes.trainer_id = tpl.trainer_id
+and tpl.pincode = pincode.pin
+and pincode.id = cpm.pincode_id
+and tes.stage = 'L2' and tes.empanelment_status ='SELECTED'
+group by course_id , cluster_id
+)L2_TAB
+)FINAL_L2 on (FINAL_L2.course_id= STATIC_TAB.course_id and FINAL_L2.cluster_id=STATIC_TAB.cluster_id)
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
 </istar_reports>
