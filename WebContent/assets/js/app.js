@@ -1,7 +1,7 @@
 
 var webSocket ;
 function readyFn(jQuery) {
-	 
+
 	$.fn.extend({
 	    treed: function (o) {
 	        
@@ -204,6 +204,16 @@ function readyFn(jQuery) {
 	case 'coordinator_trainer_details':
 		init_coordinator_trainer_details();
 		break;
+	case 'coordinator_trainer_profile':
+		$(".card1").flip();
+		$(".rateYo").rateYo({
+		    rating: 0.0
+		  });
+		$(".rateYo").on("click",function(e){
+			e.preventDefault();
+		});
+		
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -214,7 +224,14 @@ function readyFn(jQuery) {
 	$('select').select2();
 	loadTables();	
 	try {
-	$('#equalheight div.product-box').equalHeights();
+		$('#searchable_grid  div.product-box').equalHeights();
+	} catch (err) {
+		// TODO: handle exception
+	}
+	
+	try {
+		$('#equalheight div.product-box').equalHeights();
+	
 	} catch (err) {
 		// TODO: handle exception
 	}
@@ -6028,3 +6045,24 @@ function init_coordinatortrainr_search(keyword){
 	$("#searchable_grid").find("[data-name*='" + keyword + "']").show();
 	}	
 }
+
+
+$.fn.equalHeights = function() {
+    var maxHeight = 0,
+        $this = $(this);
+
+    $this.each( function() {
+        var height = $(this).innerHeight();
+
+        if ( height > maxHeight ) { maxHeight = height; }
+    });
+
+    return $this.css('height', maxHeight);
+};
+
+// auto-initialize plugin
+$('[data-equal]').each(function(){
+    var $this = $(this),
+        target = $this.data('equal');
+    $this.find(target).equalHeights();
+});

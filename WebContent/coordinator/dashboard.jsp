@@ -51,7 +51,7 @@ th {
 				</div>
 				<div class="col-lg-2"></div>
 			</div>
-			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;">
+			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;margin-left: 5px">
 				<div class="row" id="filters">
 
 					<div class=" col-lg-2 input-group pull-right">
@@ -61,7 +61,7 @@ th {
 					</div>	
 					<%
 						DBUTILS utils = new DBUTILS();
-						String sql = "select course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
+						String sql = "select distinct course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
 						List<HashMap<String, Object>> items = utils.executeQuery(sql);
 					%>
 					<div class="big-demo go-wide" data-js="filtering-demo">
@@ -71,7 +71,7 @@ th {
 							<%
 								for (HashMap<String, Object> item : items) {
 							%>
-							<button class="button" data-filter=".course_<%=item.get("course_name").toString().replaceAll(" ", "_").replaceAll("/", "___")%>"><%=item.get("course_name").toString()%></button>
+							<button class="button" data-filter=".course_<%=item.get("course_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("course_name").toString()%></button>
 							<%
 								}
 							%>
@@ -90,7 +90,7 @@ th {
 								<%
 									for (HashMap<String, Object> item : items1) {
 								%>
-								<button class="button" data-filter=".cluster_<%=item.get("cluster_name").toString().replaceAll(" ", "_").replaceAll("/", "___")%>"><%=item.get("cluster_name").toString()%></button>
+								<button class="button" data-filter=".cluster_<%=item.get("cluster_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("cluster_name").toString()%></button>
 								<%
 									}
 								%>
@@ -98,7 +98,7 @@ th {
 
 						</div>
 					</div>
-					<div class="row grid" id="searchable_grid" style="margin-top: 30px">
+					<div class="row grid" id="searchable_grid" style="margin-top: 30px" id='equalheight'>
 
 
 						<%
@@ -108,15 +108,17 @@ th {
 
 							for (int i = 0; i < data.size(); i++) {
 						%>
-						<a href='trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
+						<a class='product-box' href='/coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
 						
 						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_")%>' 
-						 class="col-lg-5 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
+						 class="product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
 							<div class="contact-box">
 								<div class="col-sm-4">
 									<div class="text-center">
-										<img style="width: 80px !important; height: 80px !important;" alt="image" class="img-circle m-t-xs img-responsive" src="https://s-media-cache-ak0.pinimg.com/736x/d4/e4/ea/d4e4ea4504747a5207814334b8232fcd.jpg">
+										<img style="width: 80px !important; height: 80px !important;" alt="image"
+										 class="img-circle m-t-xs img-responsive" 
+										 src="<%=user.getUserProfile().getProfileImage() %>">
 									</div>
 								</div>
 								<div class="col-sm-8">

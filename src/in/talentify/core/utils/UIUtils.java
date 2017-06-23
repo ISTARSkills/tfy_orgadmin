@@ -785,7 +785,7 @@ public class UIUtils {
 		String returnData = "";
 		for (String iterable_element : string.split(",")) {
 			try {
-				returnData = returnData+ "cluster_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("/", "___") +" ";
+				returnData = returnData+ "cluster_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("/", "___").replaceAll("-", "_") +" ";
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
@@ -800,7 +800,7 @@ public class UIUtils {
 		String returnData = "";
 		for (String iterable_element : string.split(",<br>")) {
 			try {
-				returnData = returnData+ "course_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("/", "___") +" ";
+				returnData = returnData+ "course_"+iterable_element.replaceAll(" ", "_").trim().replaceAll("-", "_").replaceAll("/", "___").replaceAll("-", "_") +" ";
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
