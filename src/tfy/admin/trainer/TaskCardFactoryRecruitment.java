@@ -1,10 +1,13 @@
 package tfy.admin.trainer;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.istarindia.android.pojo.ComplexObject;
 import com.istarindia.android.pojo.DailyTaskPOJO;
@@ -14,6 +17,7 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.TrainerEmpanelmentStageTypes;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes;
 
 import in.orgadmin.utils.report.CustomReportUtils;
 
@@ -37,7 +41,7 @@ public class TaskCardFactoryRecruitment {
 		sb.append("</div>                                                                            ");
 		sb.append("</div>");
 		sb.append("<div class='product-box ' style='    margin-bottom: 20px;'>			"
-				+ "	<div class='ibox' style='height: 100%;margin-bottom: 25px !important; '> "
+				+ "	<div class='ibox' style='height: 100%;margin-bottom: 0px !important; '> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:500px'> ");			
 		//sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");
@@ -111,20 +115,20 @@ public class TaskCardFactoryRecruitment {
 	
 	
 	public StringBuffer showSummaryCard(int trainerID) {
-		
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 		DBUTILS util = new  DBUTILS();
-		String empanelmentData ="select course.id , course_name, stage, empanelment_status from (WITH summary AS ( SELECT p.trainer_id,p.course_id, p.stage,p.empanelment_status ,    ROW_NUMBER() OVER(PARTITION BY  p.trainer_id,p.course_id  ORDER BY p.id DESC) AS rk   FROM trainer_empanelment_status p where 			 p.trainer_id = "+trainerID+" ) SELECT s.*   FROM summary s  WHERE s.rk = 1 )T1 left join course on (course.id = T1.course_id)";
+		String empanelmentData ="SELECT course. ID, course.course_name FROM trainer_intrested_course, course WHERE trainer_intrested_course.trainer_id = "+trainerID+" AND course. ID = trainer_intrested_course.course_id ";
 		List<HashMap<String, Object>> data = util.executeQuery(empanelmentData);
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='product-box' style='height: 100%;' >                                        ");
-		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
-		sb.append(" <div class='ibox-content h-370' style='height: 100%;'>                  ");
+		sb.append("<div class='product-box' style='height: 100%' >                                        ");
+		sb.append(" <div class='ibox' style='height: 100%;margin-bottom: -10px;>                                            ");
+		sb.append(" <div class='ibox-content h-370 no-padding' style='height: 100%;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
 		sb.append(" <h6 class='p-xxs font-normal bg-muted m-l-xs m-t-none'>TODAY'S ");
-		sb.append(" ACTIVITY</h6>                                                 ");
+		sb.append(" Placement Summary</h6>                                                 ");
 		sb.append(" <h3 class='p-xxs m-l-xs'>"+data.size()+" courses applied.</h3>               ");
 		sb.append(" </div>                                                        ");
-		sb.append(" <div class='product-desc no-padding'>                         ");
+		sb.append(" <div class='product-desc no-padding' style='margin-top: -10px;'>                         ");
 		sb.append("                                                               ");
 		sb.append("                                                               ");
 		sb.append(" <div class='ibox-content no-padding content-border'           ");
@@ -133,37 +137,64 @@ public class TaskCardFactoryRecruitment {
 		//iterate
 		
 		for(HashMap<String, Object> row: data ){
+			
+			String getstatus ="select stage, empanelment_status, TP.first_name as trainer_name, IP.first_name as interviewer_name, created_at  from (select created_at, stage, empanelment_status, course_id, trainer_id from trainer_empanelment_status where course_id = "+row.get("id")+" and trainer_id ="+trainerID+" order by id desc limit 1 )T1 left join interview_rating on (interview_rating.trainer_id =T1.trainer_id and T1.course_id =interview_rating.course_id) left join user_profile TP on (interview_rating.trainer_id = TP.user_id) left join user_profile IP on (interview_rating.interviewer_id = IP.user_id) limit 1";
+			List<HashMap<String, Object>> statusData = util.executeQuery(getstatus);
 			String taskIcon = "fa fa-desktop";
-			String status =row.get("empanelment_status").toString();
-			if(row.get("stage").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.SIGNED_UP)){
-				taskIcon = "fa fa-houzz";
-			}else if(row.get("stage").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.ASSESSMENT_DONE)){
-				taskIcon = "fa fa-houzz";
+			String bgStyle = " style='    background-color: #eb384f;' ";
+			String status =statusData.get(0).get("empanelment_status").toString();
+			String stage = statusData.get(0).get("stage").toString();
+			String interviewerName ="";
+			Timestamp date = (Timestamp)statusData.get(0).get("created_at");
+			if(statusData.get(0).get("interviewer_name")!=null)
+			{
+				interviewerName = "by "+statusData.get(0).get("interviewer_name").toString();
 			}
-			else if(row.get("stage").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW)){
-				taskIcon = "fa fa-houzz";
+			String score ="";
+			if(stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.ASSESSMENT_DONE))
+			{
+				String getScore ="select cast (sum(score) as integer) as user_score, (select cast (count(assessment_question.id) as integer) as total from assessment_question where assessmentid in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+row.get("id")+"))   from report where user_id = "+trainerID+" and assessment_id in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+row.get("id")+")";
+				List<HashMap<String, Object>> scoreL3 = util.executeQuery(getScore);
+				if(scoreL3.size()>0 && scoreL3.get(0).get("user_score")!=null)
+				{
+					score = "with the score " +  scoreL3.get(0).get("user_score").toString()+"/"+scoreL3.get(0).get("total").toString();
+				}
 			}
-			else if(row.get("stage").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO)){
-				taskIcon = "fa fa-houzz";
+			else 	if(stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW) || stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO) ||stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW))
+			{
+				String getScore ="SELECT  CAST (AVG(rating) AS INTEGER) AS rating FROM interview_rating WHERE trainer_id = "+trainerID+" AND course_id = "+row.get("id")+" and stage_type = '"+stage+"'";
+				List<HashMap<String, Object>> scoreL3Plus = util.executeQuery(getScore);
+				if(scoreL3Plus.size()>0)
+				{
+					score = "with the score " + scoreL3Plus.get(0).get("rating").toString()+"/5";
+				}			
 			}
-			else if(row.get("stage").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW)){
-				taskIcon = "fa fa-houzz";
+			
+			
+			String title="The Candidate was <strong>"+StringUtils.capitalize(status)+"</strong>  in stage "+stage+" for the position of "
+					+ "Trainer - <strong>"+StringUtils.capitalize(row.get("course_name").toString())+" "+score +" "+ interviewerName+"</strong>  on "+format.format(date)+" </p";
+		
+			if(status.equalsIgnoreCase(TrainerEmpanelmentStatusTypes.SELECTED)){
+				taskIcon = "fa fa-check";
+				bgStyle = " style='    background-color: #18a689  !important;     color: white !important;' ";
+			}else if(status.equalsIgnoreCase(TrainerEmpanelmentStatusTypes.REJECTED)){
+				taskIcon = "fa fa-times";
+				bgStyle = " style='    background-color: #ec4758 !important;     color: white !important;' ";
+			}
+			else {
+				taskIcon = "fa fa-hourglass-end";
+				bgStyle = " style='    background-color: #f8ac59 !important;     color: white !important;' ";
 			}
 			
 			 sb.append("<div class='vertical-timeline-block no-padding' style='margin: 1em 0 !important;'>   ");
-			 sb.append("<div class='vertical-timeline-icon navy-bg'>       ");
-			 sb.append("<i class='fa fa-briefcase'></i>                    ");
+			 sb.append("<div class='vertical-timeline-icon' "+bgStyle+" >       ");
+			 sb.append("<i class='"+taskIcon+"'></i>                    ");
 			 sb.append("</div>                                             ");
 			 sb.append("                                                   ");
 			 sb.append("<div class='vertical-timeline-content p-xxs'>      ");
-			 sb.append("<p>"+row.get("course_name")+"</p>       ");
+			 sb.append("<p>"+title+" </p>       ");
 			 sb.append("                                                   ");
 			 sb.append("                                                   ");
-			 sb.append("<span class='vertical-date'> <small>"+row.get("stage")+"</small>");
-			 sb.append("</span>                                            ");
-			 
-			 sb.append("<span class='vertical-date pull-right'> <small>"+row.get("empanelment_status")+"</small>");
-			 sb.append("</span>                                            ");
 			 
 			 sb.append("</div>                                             ");
 			 sb.append("</div>                                             ");
