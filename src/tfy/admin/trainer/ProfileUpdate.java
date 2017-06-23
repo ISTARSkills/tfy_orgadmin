@@ -73,6 +73,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 String teachingAddress="";
 		 String addressLine1 = "";
 		 String addressLine2 = "";
+		 String cluster = "";
 		 String userType="";
 		 int pincode =0;
 		 boolean hasUgDegree = false;
@@ -91,6 +92,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 mobile = request.getParameter("mobile")!=null?request.getParameter("mobile"):"0";
 		 avaiableTime = request.getParameter("avaiable_time")!=null?request.getParameter("avaiable_time"):"";
 		 teachingAddress = request.getParameter("teaching_address")!=null?request.getParameter("teaching_address"):"";
+		 cluster = request.getParameter("cluster") != null ? request.getParameter("cluster") : "";
 		 addressLine1 = request.getParameter("address_line1")!=null?request.getParameter("address_line1"):"";
 		 addressLine2 = request.getParameter("address_line2")!=null?request.getParameter("address_line2"):"";
 		 pincode = request.getParameter("pincode")!=null?Integer.parseInt(request.getParameter("pincode")):0;
@@ -198,31 +200,32 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 }
 			 
 			 
-			  if(!teachingAddress.equalsIgnoreCase("")){
-				  
-				  String deleteOldLocations = "delete from trainer_prefred_location where trainer_id="+userId;
-				  util.executeUpdate(deleteOldLocations);
-				  
-		            try {
-		    				obj = (JSONObject) parser.parse(teachingAddress);
-		    				
-		    				for(Object obja:obj.keySet()){
-		    					System.out.println(obja+"--->"+obj.get(obja).toString());
-		    					
-		    					String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location ) VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "+userId+", '"+obja.toString()+"', '"+obj.get(obja).toString()+"');";
-		    					
-		    					System.err.println(ssql);
-		    		    		 db.executeUpdate(ssql);
-		    				}
-		    				 
-		    				 
-		    			} catch (Exception e1) {
-		    				
-		    				e1.printStackTrace();
-		    			}
-		    		 
-		            
-		            }
+			if (!cluster.equalsIgnoreCase("")) {
+
+				String deleteOldLocations = "delete from trainer_prefred_location where trainer_id=" + userId;
+				util.executeUpdate(deleteOldLocations);
+
+				try {
+
+					for (String clusterId : cluster.split(",")) {
+						String getPincodes = "select DISTINCT pin from pincode where id in (SELECT pincode_id FROM cluster_pincode_mapping where cluster_id = "
+								+ clusterId + ")";
+						List<HashMap<String, Object>> pincodeData = db.executeQuery(getPincodes);
+						for (HashMap<String, Object> row : pincodeData) {
+							String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location , pincode)"
+									+ " VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "
+									+ userId + ", 'nn', 'jj'," + row.get("pin") + ");";
+							db.executeUpdate(ssql);
+						}
+
+					}
+
+				} catch (Exception e1) {
+
+					e1.printStackTrace();
+				}
+
+			}
 		            
 		            if(!avaiableTime.equalsIgnoreCase("")){
 		            	

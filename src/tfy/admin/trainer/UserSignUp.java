@@ -70,6 +70,7 @@ public class UserSignUp extends IStarBaseServelet {
 		String teachingAddress = "";
 		String addressLine1 = "";
 		String addressLine2 = "";
+		String cluster = "";
 		String userType = "";
 		int pincode = 0;
 		boolean hasUgDegree = false;
@@ -88,6 +89,7 @@ public class UserSignUp extends IStarBaseServelet {
 		avaiableTime = request.getParameter("avaiable_time") != null ? request.getParameter("avaiable_time") : "";
 		teachingAddress = request.getParameter("teaching_address") != null ? request.getParameter("teaching_address")
 				: "";
+		cluster = request.getParameter("cluster") != null ? request.getParameter("cluster") : "";
 		addressLine1 = request.getParameter("address_line1") != null ? request.getParameter("address_line1") : "";
 		addressLine2 = request.getParameter("address_line2") != null ? request.getParameter("address_line2") : "";
 		pincode = request.getParameter("pincode") != null ? Integer.parseInt(request.getParameter("pincode")) : 0;
@@ -244,18 +246,29 @@ public class UserSignUp extends IStarBaseServelet {
 							}
 						}
 					}
-					if (!teachingAddress.equalsIgnoreCase("")) {
+					if (!cluster.equalsIgnoreCase("")) {
 						try {
-							obj = (JSONObject) parser.parse(teachingAddress);
 
-							for (Object obja : obj.keySet()) {
-								System.out.println(obja + "--->" + obj.get(obja).toString());
+							for (String clusterId : cluster.split(",")) {
 
-								String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location ) VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "
-										+ urseId + ", '" + obja.toString() + "', '" + obj.get(obja).toString() + "');";
+								String getPincodes = "select DISTINCT pin from pincode where id in (SELECT pincode_id FROM cluster_pincode_mapping where cluster_id = "+clusterId+")";
+								List<HashMap<String, Object>> pincodeData = db.executeQuery(getPincodes);
+								if(pincodeData.size()>0)
+								{
+									for(HashMap<String, Object> row: pincodeData)
+									{
+										
+										String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location , pincode)"
+												+ " VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "
+												+ urseId + ", 'nn', 'jj',"+row.get("pin")+");";
+										db.executeUpdate(ssql);
+									}
+									
+									
+								}
+								
 
-								System.err.println(ssql);
-								db.executeUpdate(ssql);
+								
 							}
 
 						} catch (Exception e1) {

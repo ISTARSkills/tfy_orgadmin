@@ -111,7 +111,29 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 			.ready(
 					function() {
 						
-						//$('select').select2();
+						var selected_cluster = [];
+						//selected_cluster = $('#cluster-table button.active').attr('id');
+						//console.log("selected_cluster   "+selected_cluster);
+						$('.cluster_button').unbind().click(function() {
+							//alert('abc');
+							 if($(this).hasClass('btn-default')){
+								 
+								selected_cluster.push($(this).data('id'));
+								$(this).addClass('btn-primary');
+								$(this).removeClass('btn-default');
+							}else{
+								$(this).removeClass('btn-primary');
+								$(this).addClass('btn-default');
+								var i = selected_cluster.indexOf($(this).data('id'));
+								if(i != -1) {
+									selected_cluster.splice(i, 1);
+								}
+
+							} 
+							console.log('idssss--- '+selected_cluster.join(','));
+							
+							$('#submit_cluster').val(selected_cluster.join(','));
+						});
 						$('#data_2 .input-group.date').datepicker({
 		startView : 1,
 		todayBtn : "linked",
@@ -251,136 +273,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 
 					});
 
-	function trainerPlace(markerId, formatted_address) {
 
-		if (formatted_address === undefined) {
-			delete map[markerId];
-			$("#id_"+markerId.replace('.','_').replace('.','_')).remove();
-		} else {
-			map[markerId] = formatted_address;
-			
-			var txt = "<p id='id_"+markerId.replace('.','_').replace('.','_')+"'><b>Address:</b> "+formatted_address+"</p>"; 
-			 $("#address_view").append(txt);
-		}
-
-		var map1 = JSON.stringify(map);
-		$('#teaching_address').val(map1);
-		
-		
-		
-	}
-	function myMap() {
-		var map;
-
-		var myOptions = {
-			zoom : 7,
-			center : new google.maps.LatLng(12.97, 77.59),
-			mapTypeId : 'roadmap'
-		};
-		map = new google.maps.Map($('#googleMap')[0], myOptions);
-
-		var markers = {};
-		var getMarkerUniqueId = function(lat, lng) {
-			return lat + '_' + lng;
-		}
-
-		/**
-		 * Creates an instance of google.maps.LatLng by given lat and lng values and returns it.
-		 * This function can be useful for getting new coordinates quickly.
-		 * @param {!number} lat Latitude.
-		 * @param {!number} lng Longitude.
-		 * @return {google.maps.LatLng} An instance of google.maps.LatLng object
-		 */
-		var geocoder = new google.maps.Geocoder();
-
-		function coordinates_to_address(lat, lng) {
-			var latlng = new google.maps.LatLng(lat, lng);
-
-			geocoder.geocode({
-				'latLng' : latlng
-			}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					// alert('result '+results[0].formatted_address);
-
-					var markerId = getMarkerUniqueId(lat, lng);
-					var formatted_address = results[0].formatted_address;
-
-					trainerPlace(markerId, formatted_address);
-
-					//  $('#teaching_address').val(markerId+':'+formatted_address);
-
-				} else {
-					//alert('error --> ');
-
-				}
-			});
-		}
-		var getLatLng = function(lat, lng) {
-			//alert('lat --> '+lat +' long --> '+lng);
-			coordinates_to_address(lat, lng);
-			return new google.maps.LatLng(lat, lng);
-		};
-
-		var addMarker = google.maps.event.addListener(map, 'click',
-				function(e) {
-					var lat = e.latLng.lat(); // lat of clicked point
-					var lng = e.latLng.lng(); // lng of clicked point
-					var markerId = getMarkerUniqueId(lat, lng); // an that will be used to cache this marker in markers object.
-					var marker = new google.maps.Marker({
-						position : getLatLng(lat, lng),
-						map : map,
-						id : 'marker_' + markerId
-					});
-					markers[markerId] = marker; // cache marker in markers object
-					bindMarkerEvents(marker); // bind right click event to marker
-				});
-		var bindMarkerEvents = function(marker) {
-			google.maps.event.addListener(marker, "rightclick",
-					function(point) {
-						var markerId = getMarkerUniqueId(point.latLng.lat(),
-								point.latLng.lng()); // get marker id by using clicked point's coordinate
-						var marker = markers[markerId]; // find marker
-						removeMarker(marker, markerId); // remove it
-					});
-		};
-
-		/**
-		 * Removes given marker from map.
-		 * @param {!google.maps.Marker} marker A google.maps.Marker instance that will be removed.
-		 * @param {!string} markerId Id of marker.
-		 */
-		var removeMarker = function(marker, markerId) {
-
-			trainerPlace(markerId);
-			marker.setMap(null); // set markers setMap to null to remove it from map
-			delete markers[markerId]; // delete marker instance from markers object
-
-		};
-		document.getElementById('submit').addEventListener('click', function() {
-	          geocodeAddress(geocoder, map);
-	        });
-		
-		 function geocodeAddress(geocoder, resultsMap) {
-		        var address = document.getElementById('address').value;
-		        geocoder.geocode({'address': address}, function(results, status) {
-		          if (status === 'OK') {
-		            resultsMap.setCenter(results[0].geometry.location);
-		            var marker = new google.maps.Marker({
-		              map: resultsMap,
-		              position: results[0].geometry.location
-		            });
-		            
-		            var markerId = getMarkerUniqueId(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-		            coordinates_to_address(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-		            markers[markerId] = marker; 
-		            bindMarkerEvents(marker);
-		          } else {
-		            alert('Geocode was not successful for the following reason: ' + status);
-		          }
-		        });
-		      }
-
-	}
 	
 	
 </script>
