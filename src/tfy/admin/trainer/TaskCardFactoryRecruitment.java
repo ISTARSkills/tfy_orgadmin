@@ -257,6 +257,7 @@ public class TaskCardFactoryRecruitment {
 		stagesCleared.put(3, false);
 		stagesCleared.put(4, false);
 		stagesCleared.put(5, false);
+		String details ="";
 		for(int i=0; i< stages.size(); i++)
 		{
 			String taskIcon = "fa fa-desktop";
@@ -309,11 +310,24 @@ public class TaskCardFactoryRecruitment {
 					
 					if(stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.ASSESSMENT_DONE))
 					{
-						String getScore ="select cast (sum(score) as integer) as user_score, (select cast (count(assessment_question.id) as integer) as total from assessment_question where assessmentid in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+courseID+"))   from report where user_id = "+trainerID+" and assessment_id in (select DISTINCT assessment_id from course_assessment_mapping where course_id ="+courseID+")";
+						String getScore ="SELECT assessment.id , assessmenttitle, CAST (SUM(score) AS INTEGER) AS user_score, ( SELECT CAST ( COUNT (assessment_question. ID) AS INTEGER ) AS total FROM assessment_question WHERE assessmentid IN ( SELECT DISTINCT assessment_id FROM course_assessment_mapping WHERE course_id = "+courseID+" ) ) FROM report, assessment WHERE assessment.id = report.assessment_id  and user_id = "+trainerID+" AND assessment_id IN ( SELECT DISTINCT assessment_id FROM course_assessment_mapping WHERE course_id = "+courseID+" ) group by assessment.id , assessmenttitle";
 						List<HashMap<String, Object>> scoreL3 = util.executeQuery(getScore);
-						if(scoreL3.size()>0 && scoreL3.get(0).get("user_score")!=null)
+						int userScore = 0;
+						int totalScore = 0;
+						if(scoreL3.size()>0 )
 						{
-							score = "with the score " +  scoreL3.get(0).get("user_score").toString()+"/"+scoreL3.get(0).get("total").toString();
+							for(HashMap<String, Object> row: scoreL3)
+							{
+								if(row.get("user_score")!=null)
+								{
+									userScore =  userScore+ ((int)row.get("user_score"));
+									totalScore =userScore+ ((int)row.get("total"));
+									details +="<a href='/assessment_report?user_id="+trainerID+"&assessment_id="+row.get("id")+"' class='btn btn-sm btn-success'> "+row.get("assessmenttitle")+" </a>&nbsp;&nbsp;";
+								} 
+							}
+							//&& scoreL3.get(0).get("user_score")!=null
+							score = "with the score " +  userScore+"/"+totalScore;
+							
 						}
 					}
 					else if(stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW) || stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO) ||stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW))
@@ -334,6 +348,8 @@ public class TaskCardFactoryRecruitment {
 								interviewerName = "by "+commentsData.get(0).get("first_name").toString();
 							}							
 						}
+						
+						//details="<a href='/interview_details?user_id="+trainerID+"&course_id="+courseID+"&stage="+stages.get(i)+"' class='btn btn-sm btn-success'> Details </a>";
 					}
 					
 					if(statusData.size()>0)
@@ -371,7 +387,12 @@ public class TaskCardFactoryRecruitment {
 				 if(!interviewerComments.equalsIgnoreCase(""))
 				 { 
 				 sb.append("<p><strong>Comments&nbsp;&nbsp;</strong>"+interviewerComments+" </p>       ");
+				 	
 				 }
+				 if(!details.equalsIgnoreCase(""))
+				 	{ 
+				 		sb.append(details);
+				 	}
 				 sb.append("                                                   ");
 				 sb.append("                                                   ");			 
 				 sb.append("</div>                                             ");

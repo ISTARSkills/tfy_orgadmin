@@ -146,6 +146,10 @@ public class UserSignUp extends IStarBaseServelet {
 							+ presentor_email + "', '" + password + "', now(), " + mobile
 							+ ", NULL, NULL, 't') returning id;";
 					int presentorId = db.executeUpdateReturn(insertPresentorIntoIstarUser);
+					
+					String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + presentorId
+							+ ", (select id from role where role_name='PRESENTOR'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
+					db.executeUpdate(insertIntoUserRole);
 				}
 
 				String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"

@@ -107,6 +107,7 @@ th {
 							List<HashMap<String, Object>> data = util.executeQuery(sql2);
 
 							for (int i = 0; i < data.size(); i++) {
+								try{
 						%>
 						<a class='product-box' href='/coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
 						
@@ -303,6 +304,10 @@ th {
 							</div>
 						</div></a>
 						<%
+							}catch(Exception e)
+							{
+								
+							}
 							}
 						%>
 					</div>
