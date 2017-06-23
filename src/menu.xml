@@ -36,14 +36,9 @@
 
 	<!-- coordinator starts here-->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/coordinator/dashboard.jsp" url="/coordinator/dashboard.jsp" valid_role="coordinator" />
-	<parent_links display_name="Requirement" is_visible_in_menu="true" jsp_file="/coordinator/requirement.jsp" url="/coordinator/requirement.jsp" valid_role="coordinator" />
-	<!-- <parent_links display_name="L2" is_visible_in_menu="true" jsp_file="/coordinator/l2.jsp" url="/coordinator/l2.jsp" valid_role="coordinator" />
-	<parent_links display_name="L3" is_visible_in_menu="true" jsp_file="/coordinator/l3.jsp" url="/coordinator/l3.jsp" valid_role="coordinator" />
-	<parent_links display_name="L4" is_visible_in_menu="true" jsp_file="/coordinator/l4.jsp" url="/coordinator/l4.jsp" valid_role="coordinator" />
-	<parent_links display_name="L5" is_visible_in_menu="true" jsp_file="/coordinator/l5.jsp" url="/coordinator/l5.jsp" valid_role="coordinator" />
-	<parent_links display_name="L5" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />
- -->	<parent_links display_name="Trianer Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/trainer_wise_details.jsp" url="/coordinator/trainer_wise_details.jsp" valid_role="coordinator" />
-	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />	
+<!-- 	<parent_links display_name="Requirement" is_visible_in_menu="true" jsp_file="/coordinator/requirement.jsp" url="/coordinator/requirement.jsp" valid_role="coordinator" />
+ -->	
+ 	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />	
 	<!-- coordinator ends here-->
 	
 	<!--student specific starts here -->
