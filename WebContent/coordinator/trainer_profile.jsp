@@ -46,9 +46,18 @@
 				</div>
 								<div class="row equalheight">
 				
-				<% for(int i=0; i< 5; i++) { %>
-								<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,3).toString()%>
-				<% } %>
+				<% 
+				DBUTILS util = new DBUTILS();
+				String findInterestedCourse = "select course.id , course.course_name from  trainer_intrested_course, course where trainer_intrested_course.trainer_id = "+trainerId+" and  course.id = trainer_intrested_course.course_id";
+				List<HashMap<String, Object>> courseData = util.executeQuery(findInterestedCourse);
+				if (courseData.size()>0) {
+					for(HashMap<String, Object> row: courseData) { 
+					int courseId = (int)row.get("id");
+					%>
+					<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,courseId).toString()%>
+				<% }
+				}
+				%>
 				</div>
 				</div>
 				

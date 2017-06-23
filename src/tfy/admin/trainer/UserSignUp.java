@@ -166,10 +166,7 @@ public class UserSignUp extends IStarBaseServelet {
 
 				if (userType.equalsIgnoreCase("TRAINER")) {
 
-					String insertIntoTrainerEmpanelmentStatus = "insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "
-							+ urseId + ", '" + TrainerEmpanelmentStatusTypes.SELECTED + "',now(), '"
-							+ TrainerEmpanelmentStageTypes.SIGNED_UP + "')";
-					db.executeUpdate(insertIntoTrainerEmpanelmentStatus);
+					
 
 					String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
 							+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
@@ -178,6 +175,17 @@ public class UserSignUp extends IStarBaseServelet {
 					if (!courseIds.equalsIgnoreCase("")) {
 						String[] courses = courseIds.split(",");
 						for (String course_id : courses) {
+							
+							String insertIntoTrainerEmpanelmentStatus = "insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage, course_id) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "
+									+ urseId + ", '" + TrainerEmpanelmentStatusTypes.SELECTED + "',now(), '"
+									+ TrainerEmpanelmentStageTypes.SIGNED_UP + "',"+course_id+")";
+							db.executeUpdate(insertIntoTrainerEmpanelmentStatus);
+							
+							String insertIntoTrainerEmpanelmentStatus2 = "insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage, course_id) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "
+									+ urseId + ", '" + TrainerEmpanelmentStatusTypes.SELECTED + "',now(), '"
+									+ TrainerEmpanelmentStageTypes.TELEPHONIC_INTERVIEW + "', "+course_id+")";
+							db.executeUpdate(insertIntoTrainerEmpanelmentStatus2);
+							
 							String insertInIntrestedTable = "insert into trainer_intrested_course (id, trainer_id, course_id) values((select COALESCE(max(id),0)+1 from trainer_intrested_course),"
 									+ urseId + "," + course_id + ")";
 							db.executeUpdate(insertInIntrestedTable);
