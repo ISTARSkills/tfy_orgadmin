@@ -82,7 +82,7 @@ th {
 						String sql1 = "select * from cluster";
 						List<HashMap<String, Object>> items1 = utils.executeQuery(sql1);
 					%>
-					<div class="row" style="margin-top: 20px">
+					<div class="row" style="margin-top: 20px;margin-left: 15px;">
 						<div class="big-demo go-wide" data-js="filtering-demo">
 							<div class="filter-button-group button-group js-radio-button-group">
 								<span class="badge badge-info">Filter by Cluster</span>
@@ -98,7 +98,7 @@ th {
 
 						</div>
 					</div>
-					<div class="row grid" id="searchable_grid" style="margin-top: 30px" id='equalheight'>
+					<div class="row grid" id="searchable_grid" style="margin: 10px" id='equalheight'>
 
 
 						<%
@@ -108,13 +108,11 @@ th {
 
 							for (int i = 0; i < data.size(); i++) {
 								try{
-						%>
-						<a class='product-box' href='/coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' >
-						
-						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_")%>' 
-						 class="product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
+						%>						
+						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>'  data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>'
+						 class="trainerprofile_holder product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
-							<div class="contact-box">
+							<div class="contact-box" style="height: 100% !important;">
 								<div class="col-sm-4">
 									<div class="text-center">
 										<img style="width: 80px !important; height: 80px !important;" alt="image"
@@ -302,7 +300,7 @@ th {
 									}
 								%>
 							</div>
-						</div></a>
+						</div>
 						<%
 							}catch(Exception e)
 							{

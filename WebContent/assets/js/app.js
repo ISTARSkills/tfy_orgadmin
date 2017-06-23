@@ -6033,12 +6033,19 @@ function init_coordinator_trainer_details(){
 		init_coordinatortrainr_search(keyword);
 	});
 	
+	$('.trainerprofile_holder').unbind().on('click',function(){
+		var url=$(this).data('url');
+		window.location.href = url;
+		
+	});
+	
 }
 
 function init_coordinatortrainr_search(keyword){
 	if(keyword.length==0){
 		$("#searchable_grid").children().show();
-	}else{
+	}else{	
+		keyword=keyword.toLowerCase();
 	$("#searchable_grid").children().hide();
 	$("#searchable_grid").find("[data-name*='" + keyword + "']").show();
 	}	
