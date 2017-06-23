@@ -196,28 +196,19 @@ function readyFn(jQuery) {
 	case 'super_admin_tickets':	
 		initTicket();
 		$('#Tickets').css('color',' #eb384f');
+		break;
 	case 'org_admin_tickets':	
 		initTicket();
 		$('#Tickets').css('color','  #eb384f');
+		break;
 	case 'student_dashboard':	
 		$('#equalheight div.product-box').equalHeights();
+		break;
 	case 'coordinator_trainer_details':
 		init_coordinator_trainer_details();
 		break;
 	case 'coordinator_trainer_profile':	
-		$(".card1").flip({
-			  axis: 'x',
-			  trigger: 'hover',
-			  reverse: true
-			});
-		
-		$(".rateYo").rateYo({
-		    rating: 0.0
-		  });
-		$(".rateYo").on("click",function(e){
-			e.preventDefault();
-		});
-		
+		init_coordinator_trainer_profile();
 		break;
 	default:
 		init_orgadmin_none();
@@ -6066,6 +6057,68 @@ $.fn.equalHeights = function() {
 
     return $this.css('height', maxHeight);
 };
+
+
+function init_coordinator_trainer_profile(){
+	$(".card1").flip({
+		  trigger: 'mannual'
+		});
+	
+	$('#equalheight2 div.product-box').equalHeights();
+
+	
+	$('.reverse_view').unbind().on('click',function(){
+		var card=$(this).closest('div[class="card1"]');
+		$(card).flip('toggle');			
+	});
+	
+	$(".rateYo").rateYo({
+	    rating: 0.0, 
+	    starWidth: "10px"   
+
+	  });
+	
+	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height()
+
+$('.back').each(function(e){
+	$(this).find('#ibox-content').height(733)
+});
+	
+	$('.submit_feedback').unbind().on("click",function(){
+		//var holder_id='#trainer_rating_7035_14';
+		
+		var course_id=$(this).data('course_id');
+		var user_id=$(this).data('user_id');
+		var interviewer_id=$(this).data('interviewer_id');
+		var comments=$('#comments_'+user_id+'_'+course_id+'').val();
+		var isSlected=$('#selected_'+user_id+'_'+course_id+'').prop('checked');
+		
+		var rate_list=$('#rate_list_'+course_id+'_'+user_id);
+		
+		var ratingSkill="";
+		
+		$(rate_list).find('.rateYo').each(function(){	
+			var rating=$(this).rateYo("option", "rating");
+			var skill_id=$(this).data('skill_id');
+			ratingSkill=ratingSkill+skill_id+":"+rating+",";
+		});
+		
+		if(ratingSkill.endsWith(",")){
+			ratingSkill=ratingSkill.substring(0,ratingSkill.length-1);
+		}
+		
+		 $.ajax({
+		        type: "POST",
+		        url: "/",
+		        data: {course_id:course_id,user_id:user_id,interviewer_id:interviewer_id,comments:comments,is_selected:isSlected,rating_skill:ratingSkill},
+		        success: function(data) {
+		        	
+		        }});		  
+		
+		
+	});
+	
+}
 
 // auto-initialize plugin
 $('[data-equal]').each(function(){
