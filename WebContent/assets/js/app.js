@@ -6096,10 +6096,12 @@ $('.back').each(function(e){
 		var rate_list=$('#rate_list_'+course_id+'_'+user_id);
 		
 		var ratingSkill="";
+		var stage ="";
 		
 		$(rate_list).find('.rateYo').each(function(){	
 			var rating=$(this).rateYo("option", "rating");
 			var skill_id=$(this).data('skill_id');
+			 stage =  $(this).data('stage');
 			ratingSkill=ratingSkill+skill_id+":"+rating+",";
 		});
 		
@@ -6110,7 +6112,7 @@ $('.back').each(function(e){
 		 $.ajax({
 		        type: "POST",
 		        url: "/",
-		        data: {course_id:course_id,user_id:user_id,interviewer_id:interviewer_id,comments:comments,is_selected:isSlected,rating_skill:ratingSkill},
+		        data: {course_id:course_id,user_id:user_id,interviewer_id:interviewer_id,comments:comments,is_selected:isSlected,rating_skill:ratingSkill,stage:stage},
 		        success: function(data) {
 		        	
 		        }});		  
