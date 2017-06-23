@@ -36,8 +36,8 @@ public class TaskCardFactoryRecruitment {
 		sb.append("                                                                                  ");
 		sb.append("</div>                                                                            ");
 		sb.append("</div>");
-		sb.append("<div class='product-box '>			"
-				+ "	<div class='ibox' style='height: 100%;'> "
+		sb.append("<div class='product-box ' style='    margin-bottom: 20px;'>			"
+				+ "	<div class='ibox' style='height: 100%;margin-bottom: 25px !important; '> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:500px'> ");			
 		//sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");
@@ -116,9 +116,9 @@ public class TaskCardFactoryRecruitment {
 		String empanelmentData ="select course.id , course_name, stage, empanelment_status from (WITH summary AS ( SELECT p.trainer_id,p.course_id, p.stage,p.empanelment_status ,    ROW_NUMBER() OVER(PARTITION BY  p.trainer_id,p.course_id  ORDER BY p.id DESC) AS rk   FROM trainer_empanelment_status p where 			 p.trainer_id = "+trainerID+" ) SELECT s.*   FROM summary s  WHERE s.rk = 1 )T1 left join course on (course.id = T1.course_id)";
 		List<HashMap<String, Object>> data = util.executeQuery(empanelmentData);
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-6 product-box' style='height: 100%;' >                                        ");
+		sb.append("<div class='product-box' style='height: 100%;' >                                        ");
 		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
-		sb.append(" <div class='ibox-content product-box h-370' style='height: 100%;'>                  ");
+		sb.append(" <div class='ibox-content h-370' style='height: 100%;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
 		sb.append(" <h6 class='p-xxs font-normal bg-muted m-l-xs m-t-none'>TODAY'S ");
 		sb.append(" ACTIVITY</h6>                                                 ");
@@ -190,10 +190,10 @@ public class TaskCardFactoryRecruitment {
 	
 	public StringBuffer showCourseCard(int trainerID, int courseID){
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-lg-6'>				");
-		sb.append("<div id='card'>                                                                          ");
-		sb.append("<div class='front'>                                                                      ");
-		sb.append("<div class='ibox-content product-box' id='ibox-content'>                                             ");
+		sb.append("<div class='col-lg-4'>				");
+		sb.append("<div class='card1' style='max-height:400px;'>                                                                          ");
+		sb.append("<div class='front' >                                                                      ");
+		sb.append("<div class='ibox-content product-box' id='ibox-content' style='max-height:400px;min-height:400px; overflow-y: auto;'>                                             ");
 		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline '>                   ");
 		sb.append("<div class='vertical-timeline-block'>                                                    ");
 		sb.append("<div class='vertical-timeline-icon blue-bg'>                                             ");
@@ -234,11 +234,11 @@ public class TaskCardFactoryRecruitment {
 		sb.append("</div>                                                                                   ");
 		sb.append("</div>                                                                                   ");
 		sb.append("</div>                                                                                   ");
-		sb.append("<div class='back'>                                                                       ");
-		sb.append("<div class='ibox-content' id='ibox-content'>                                             ");
+		sb.append("<div class='back' >                                                                       ");
+		sb.append("<div class='ibox-content' id='ibox-content' style='max-height:400px;min-height:400px;'>                                             ");
 		sb.append("Back content                                                                             ");
 		sb.append("                                                                                         ");
-		sb.append("<div id='rateYo'></div>                                                                  ");
+		sb.append("<div class='rateYo'></div>                                                                  ");
 		sb.append("<textarea rows='4' cols='50'>At w3schools.com you will learn how to make a website. We o ");
 		sb.append("</textarea>                                                                              ");
 		sb.append("</div>                                                                                   ");

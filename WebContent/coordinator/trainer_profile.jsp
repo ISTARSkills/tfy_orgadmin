@@ -22,14 +22,14 @@
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
-			+ request.getContextPath() + "/";
+				+ request.getContextPath() + "/";
 	
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	int trainerId = Integer.parseInt(request.getParameter("trainer_id"));
 %>
 
 
-<body class="top-navigation" id="orgadmin_dashboard">
+<body class="top-navigation" id="coordinator_trainer_profile">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
@@ -37,12 +37,14 @@
 			<!-- Start Table -->
 
 			<!-- End Table -->
-			<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 8px">
 				<div class="row">
-				<div class='col-md-4'><%=(new TaskCardFactoryRecruitment()).showTrainerProfileCard(trainerId).toString()%></div>
-				<div class="col-md-8">
-				<div class="row equalheight">
+				<div class='col-md-6'><%=(new TaskCardFactoryRecruitment()).showTrainerProfileCard(trainerId).toString()%></div>
+				<div class="col-md-6" style="    margin-top: 10px;">
 				<%=(new TaskCardFactoryRecruitment()).showSummaryCard(trainerId).toString()%>
+				</div>
+				</div>
+								<div class="row equalheight">
 				
 				<% for(int i=0; i< 5; i++) { %>
 								<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,3).toString()%>
