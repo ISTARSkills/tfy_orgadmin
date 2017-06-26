@@ -33,7 +33,7 @@
    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
    
    %>
-<div class="col-lg-6">
+<div class="col-lg-5">
    <div class="ibox float-e-margins">
       <div class="ibox-content">
          <form class="form-horizontal" id="signup_form" action="<%=baseURL%><%=actionUrl%>" method="post">
@@ -394,7 +394,7 @@
 </div>
 <%if(userType.equalsIgnoreCase("TRAINER"))
    {%>
-<div class="col-lg-6">
+<div class="col-lg-7">
    <!-- </br> <label class="col-sm-6 control-label">Mark the preferred College or Center locations:</label>
       <div id="floating-panel">
       	<input id="address" type="textbox" value=""> <input id="submit" type="button" value="Search">
