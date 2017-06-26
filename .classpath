@@ -86,5 +86,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javaee-api-7.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jtidy-r938.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/ehcache-2.10.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

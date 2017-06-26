@@ -92,7 +92,7 @@
 				<%=(new TaskCardFactoryRecruitment()).showSummaryCard(trainerId).toString()%>
 				</div>
 				</div>
-								<div class="row" id="equalheight2">
+								<div class="row p-xs" id="equalheight2">
 				
 				<% 
 				DBUTILS util = new DBUTILS();
@@ -120,11 +120,7 @@
 				
 				</div>
 			</div>
-		</div>
-	</div>
-
-
-
+		
 	<!-- Mainly scripts -->
 	<jsp:include page="inc/foot.jsp"></jsp:include>
 </body>

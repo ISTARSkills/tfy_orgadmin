@@ -16,7 +16,7 @@ String url = request.getRequestURL().toString();
 String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";	
 String userId = request.getParameter("user_id");
 String assessmentId = request.getParameter("assessment_id");
-String taskId = request.getParameter("task_id");
+int  taskId = Integer.parseInt(request.getParameter("task_id"));
 RestClient client = new  RestClient();
 IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");		
 

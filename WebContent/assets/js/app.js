@@ -6090,7 +6090,7 @@ function init_coordinator_trainer_profile(){
 		  trigger: 'mannual'
 		});
 	
-	$('#equalheight2 div.product-box').equalHeights();
+	$('#equalheight2 .ibox-content').equalHeights();
 
 	
 	$('.reverse_view').unbind().on('click',function(){
@@ -6104,11 +6104,15 @@ function init_coordinator_trainer_profile(){
 
 	  });
 	
-	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height()
-
-$('.back').each(function(e){
-	$(this).find('#ibox-content').height(733)
-});
+	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height();
+	
+	console.log('productBoxHeight---'+productBoxHeight);
+	$('.back').each(function(e){
+		$(this).find('#ibox-content').height(productBoxHeight)
+	});
+	$('.front').each(function(e){
+	$(this).find('#ibox-content').height(productBoxHeight)
+	});
 	
 	$('.submit_feedback').unbind().on("click",function(){
 		//var holder_id='#trainer_rating_7035_14';
@@ -6116,18 +6120,19 @@ $('.back').each(function(e){
 		var course_id=$(this).data('course_id');
 		var user_id=$(this).data('user_id');
 		var interviewer_id=$(this).data('interviewer_id');
+		var stage =$(this).data('stage');
+		
 		var comments=$('#comments_'+user_id+'_'+course_id+'').val();
 		var isSlected=$('#selected_'+user_id+'_'+course_id+'').prop('checked');
 		
 		var rate_list=$('#rate_list_'+course_id+'_'+user_id);
 		
 		var ratingSkill="";
-		var stage ="";
+		
 		
 		$(rate_list).find('.rateYo').each(function(){	
 			var rating=$(this).rateYo("option", "rating");
 			var skill_id=$(this).data('skill_id');
-			 stage =  $(this).data('stage');
 			ratingSkill=ratingSkill+skill_id+":"+rating+",";
 		});
 		
@@ -6137,15 +6142,19 @@ $('.back').each(function(e){
 		
 		 $.ajax({
 		        type: "POST",
-		        url: "/",
+		        url: "/submit_interview",
 		        data: {course_id:course_id,user_id:user_id,interviewer_id:interviewer_id,comments:comments,is_selected:isSlected,rating_skill:ratingSkill,stage:stage},
 		        success: function(data) {
-		        	
+		        	location.reload();
 		        }});		  
 		
 		
 	});
 	
+	$('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
 }
 
 // auto-initialize plugin
