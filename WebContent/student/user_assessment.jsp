@@ -170,7 +170,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                         </div>
                                         <div class="panel-body">
                                         <input type="hidden" name="question_time_taken_<%=quePojo.getId()%>" value="" id="question_time_taken_<%=i%>">
-                                            <p>
+                                            <p style='margin-top: -22px;margin-left: 22px;'>
                                             <%
                                             ArrayList<OptionPOJO> options = ( ArrayList<OptionPOJO>)quePojo.getOptions();
                                             
