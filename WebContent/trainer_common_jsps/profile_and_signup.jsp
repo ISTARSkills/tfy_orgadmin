@@ -407,9 +407,10 @@
    </div>
    <%String clusterSql = "SELECT id,cluster_name from cluster WHERE id in (SELECT cluster_id from cluster_pincode_mapping);";
       List<HashMap<String, Object>> clusters = db.executeQuery(clusterSql);
-      
-      
-      String clusterOfUser="SELECT distinct cluster_id FROM cluster_pincode_mapping WHERE pincode_id IN ( select id from pincode where pin in (SELECT trainer_prefred_location.pincode FROM trainer_prefred_location WHERE trainer_id = "+user.getId()+") );";
+      String clusterOfUser ="SELECT DISTINCT cluster_id FROM cluster_pincode_mapping WHERE pincode_id IN ( SELECT ID FROM pincode );";
+      if(user != null) {
+           clusterOfUser="SELECT distinct cluster_id FROM cluster_pincode_mapping WHERE pincode_id IN ( select id from pincode where pin in (SELECT trainer_prefred_location.pincode FROM trainer_prefred_location WHERE trainer_id = "+user.getId()+") );";
+      } 
       List<HashMap<String, Object>> userCluster = db.executeQuery(clusterOfUser);
       ArrayList<Integer> clusterIds = new ArrayList();
       for(HashMap<String, Object> row: userCluster)

@@ -240,7 +240,7 @@ public class TaskCardFactory {
 		sb.append("<ul class='list-group clear-list m-t'>  ");
 		String[] class1={"primary","information","success","warning","danger"};
 		
-		int i=0;
+		int i=1;
 		for (DailyTaskPOJO event : cp.getEventsToday()) {
 			DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 			String dateString = dateFormat.format(event.getStartDate());
