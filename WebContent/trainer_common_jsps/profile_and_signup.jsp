@@ -33,7 +33,7 @@
    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
    
    %>
-<div class="col-lg-5">
+<div class="col-lg-6">
    <div class="ibox float-e-margins">
       <div class="ibox-content">
          <form class="form-horizontal" id="signup_form" action="<%=baseURL%><%=actionUrl%>" method="post">
@@ -394,7 +394,7 @@
 </div>
 <%if(userType.equalsIgnoreCase("TRAINER"))
    {%>
-<div class="col-lg-7">
+<div class="col-lg-6">
    <!-- </br> <label class="col-sm-6 control-label">Mark the preferred College or Center locations:</label>
       <div id="floating-panel">
       	<input id="address" type="textbox" value=""> <input id="submit" type="button" value="Search">
@@ -433,14 +433,16 @@
                   	String css ="btn-default";
                   	if(clusterIds.contains((int)clusters.get(i).get("id")))
                   	{
-                  		css="btn-primary active";
+                  		if(user != null) {
+                  			css="btn-primary active";
+                  		} 
                   	}
                   	
                   %>
                <td><button data-toggle="button"
                   class="btn <%=css%> cluster-btn cluster_button" type="button"
                   aria-pressed="true" data-id="<%=clusters.get(i).get("id")%>"
-                  style="margin-bottom: 5px; color: #1ab394; border-color: #1ab394; white-space: normal; word-break: break-word; max-width: 200px; min-width: 200px;"><%=clusters.get(i).get("cluster_name")%></button></td>
+                  style="margin-bottom: 5px; color: #1ab394; border-color: #1ab394; white-space: normal; word-break: break-word; max-width: 160px; min-width: 160px;"><%=clusters.get(i).get("cluster_name")%></button></td>
                <%
                   if (i % 2 == 2) {
                   %>

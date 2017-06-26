@@ -84,6 +84,11 @@ try{
 <script src="<%=basePath %>assets/js/websocket.js"></script>
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>
  --%>
+ 
+     <!-- iCheck -->
+    <script src="<%=basePath%>assets/js/plugins/iCheck/icheck.min.js"></script>
+ 
+ 
  <script src="<%=basePath%>assets/js/jquery.rateyo.min.js"></script>
  
  			<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>

@@ -104,6 +104,7 @@ th {
 						<%
 							CustomReportUtils reportUtil = new CustomReportUtils();
 							String sql2 = reportUtil.getReport(43).getSql();
+							System.err.println("sql2--------------------"+sql2);
 							List<HashMap<String, Object>> data = util.executeQuery(sql2);
 
 							for (int i = 0; i < data.size(); i++) {
@@ -179,7 +180,7 @@ th {
 										
 										String result ="select  stage_type, cast (avg(rating) as integer) as rating from interview_rating where trainer_id = "+data.get(i).get("id")+" and course_id = "+courseRow.get("id")+" group by  stage_type";
 										List<HashMap<String, Object>> scoreData = util.executeQuery(result);
-										for(HashMap<String, Object>levelScore : scoreData)
+										for(HashMap<String, Object> levelScore : scoreData)
 										{
 											if(levelScore.get("stage_type").toString().equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW))
 											{
@@ -196,16 +197,16 @@ th {
 										String getStatus = "SELECT trainer_id, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L2') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L2' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l2, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L3') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L3' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l3, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L4') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L4' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l4, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L5') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L5' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l5, ( CASE WHEN ( COUNT (*) FILTER (WHERE stage = 'L6') ) > 0 THEN ( CASE WHEN ( COUNT (*) FILTER (  WHERE stage = 'L6' AND empanelment_status = 'SELECTED' ) ) > 0 THEN 'SELECTED' ELSE 'REJECTED' END ) ELSE 'NOT_REACHED' END ) AS l6 FROM trainer_empanelment_status  where trainer_id = "+data.get(i).get("id")+" and course_id = "+courseRow.get("id")+" group by trainer_id";				
 										List<HashMap<String, Object>> statusData = util.executeQuery(getStatus);
 										HashMap<String,String> statusIconMap = new HashMap();
-										statusIconMap.put(TrainerEmpanelmentStatusTypes.SELECTED, "<i class='fa fa-check text-navy'>");
-										statusIconMap.put(TrainerEmpanelmentStatusTypes.REJECTED, "<i class='fa fa-times'>");
-										statusIconMap.put(TrainerEmpanelmentStatusTypes.NOT_REACHED, "<i class='fa fa-hourglass-end'>");
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.SELECTED, "<i class='fa fa-check text-navy' />");
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.REJECTED, "<i class='fa fa-times' />");
+										statusIconMap.put(TrainerEmpanelmentStatusTypes.NOT_REACHED, "<i class='fa fa-hourglass-end' />");
 										for(HashMap<String, Object>statusRow : statusData)
 										{
 											
-											L3 +="&nbsp;"+ statusIconMap.get(statusRow.get("l3").toString());
-											L4 +="&nbsp;"+ statusIconMap.get(statusRow.get("l4").toString());
-											L5 +="&nbsp;"+ statusIconMap.get(statusRow.get("l5").toString());
-											L6 +="&nbsp;"+ statusIconMap.get(statusRow.get("l6").toString());
+											L3 +="&nbsp;"+ (L3.contains("fa-hourglass-end")?"":statusIconMap.get(statusRow.get("l3").toString()));
+											L4 +="&nbsp;"+ (L4.contains("fa-hourglass-end")?"":statusIconMap.get(statusRow.get("l4").toString()));
+											L5 +="&nbsp;"+ (L5.contains("fa-hourglass-end")?"":statusIconMap.get(statusRow.get("l5").toString()));
+											L6 +="&nbsp;"+ (L6.contains("fa-hourglass-end")?"":statusIconMap.get(statusRow.get("l6").toString()));
 											if(statusRow.get("l6").toString().equalsIgnoreCase(TrainerEmpanelmentStatusTypes.SELECTED))
 											{
 												courseCleared = true;
@@ -291,7 +292,7 @@ th {
 											String[] clusters = data.get(i).get("clusters").toString().split(",");
 													for (String cluster : clusters) {
 										%>
-										<button class="btn btn-white btn-xs" type="button"><%=cluster%></button>
+										<button class="btn btn-white btn-xs m-b-xs m-r-xs" type="button"><%=cluster%></button>
 										<%
 											}
 										%>

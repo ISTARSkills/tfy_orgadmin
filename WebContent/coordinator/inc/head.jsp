@@ -53,6 +53,7 @@
 <link href="<%=basePath%>assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/steps/jquery.steps.css" rel="stylesheet">
  <link href="<%=basePath%>assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+ <link href="<%=basePath%>assets/css/plugins/iCheck/custom.css" rel="stylesheet">
 
 
 </head>

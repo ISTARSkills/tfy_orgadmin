@@ -59,25 +59,30 @@ ratingSkill:
 		String comments =request.getParameter("comments")!=null? request.getParameter("comments"): "";;
 		comments = comments.replaceAll("'", "");
 		String isSelected = request.getParameter("is_selected");
-		String ratingSkill =  request.getParameter("ratingSkill");
+		String ratingSkill =  request.getParameter("rating_skill");
 		DBUTILS util = new DBUTILS();
 		
 		String findPreviousEntries ="select * from interview_rating where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage_type ='"+stage+"'";
 		List<HashMap<String, Object>> prevData = util.executeQuery(findPreviousEntries);
 		if(prevData.size()==0)
 		{
-			for(String skillData : ratingSkill.split(",")){
-				String skillId = skillData.split(":")[0];
-				String  rating = skillData.split(":")[1];
-			String insertInInterviewRating ="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
-					+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), '"+trainerId+"', '"+skillId+"', "+rating+", "+interviewerId+", '"+stage+"', "+courseId+");";
-			util.executeUpdate(insertInInterviewRating);
-			
+			if(ratingSkill!=null && !ratingSkill.equalsIgnoreCase("")){
+				for(String skillData : ratingSkill.split(",")){
+					String skillId = skillData.split(":")[0];
+					String  rating = skillData.split(":")[1];
+				String insertInInterviewRating ="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), '"+trainerId+"', '"+skillId+"', "+rating+", "+interviewerId+", '"+stage+"', "+courseId+");";
+				util.executeUpdate(insertInInterviewRating);
+				
+				}
 			}
 			
+			if(comments!=null && !comments.equalsIgnoreCase("")){
 			String insertComments ="INSERT INTO trainer_comments (id, trainer_id, interviewer_id, stage, course_id, comments,created_at)"
 					+ " VALUES ((select COALESCE(max(id),0)+1 from trainer_comments), "+trainerId+", "+interviewerId+", '"+stage+"', "+courseId+", '"+comments+"', now())";
 			util.executeUpdate(insertComments);
+			}
+			
 			String status = TrainerEmpanelmentStatusTypes.REJECTED;
 			if(isSelected!=null && Boolean.parseBoolean(isSelected))
 			{
