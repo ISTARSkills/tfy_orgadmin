@@ -40,7 +40,7 @@
 <link href="<%=basePath %>assets/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
     <link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 
-<link href="<%=basePath %>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="<%=basePath %>assets/css/animate.css" rel="stylesheet">
 <link href="<%=basePath %>assets/css/style.css" rel="stylesheet">
  <link href="<%=basePath %>assets/css/plugins/toastr/toastr.min.css" rel="stylesheet">

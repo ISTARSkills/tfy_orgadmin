@@ -25,6 +25,9 @@
 String userRole = istarUser.getUserRoles().iterator().next().getRole().getRoleName();
 System.out.println("user role  "+userRole);
 
+String b_url = request.getRequestURL().toString();
+String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().length())+ "/";
+
 ComplexObject cp  = (ComplexObject)request.getAttribute("cp");
 
 request.setAttribute("cp", cp);
@@ -100,12 +103,13 @@ request.setAttribute("cp", cp);
 									||  notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 									|| notification.getItemType().equalsIgnoreCase("LESSON")
 									|| notification.getItemType().equalsIgnoreCase("MESSAGE")
-									|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")){
+									|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION") 
+									|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")){
 								
 								String url = NotificationLinkFactory.getURL(notification, istarUser.getId());
 							%>
 						<li style="    margin-left: -31px;min-height: 38px;	">
-							<div class="dropdown-messages-box">
+							<div class="dropdown-messages-box notification_holder_status" data-url="<%=baseURL+"t2c/notifications/user/"+cp.getId() %>" data-notifiction="<%=notification.getId()%>" >
 								<a href="<%=url %>" class="pull-left"> <img alt="image" class='' style="width: 45px;" src="<%=notification.getImageURL() %>">
 								</a>
 								<div class="media-body">

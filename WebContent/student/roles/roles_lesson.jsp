@@ -83,6 +83,11 @@
 										src="<%=OrgAdminPropData.get("media_url_path") %><%=less.getImageUrl() %>"
 										style="width: 100%;max-height: 145px;">
 								</div>
+								<div class="progress progress-mini m-t-none">
+											<div style="width: <%=lesson.getProgress() %>%" aria-valuemax="100" aria-valuemin="0"
+												aria-valuenow="<%=lesson.getProgress() %>" role="progressbar" class="progress-bar">
+											</div>
+										</div>
 								<div class="product-desc m-t-md" style="padding: 0px  !important;">
 									<div class="medium m-t-xs">
 										<div class="m-t-sm">

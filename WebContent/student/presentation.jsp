@@ -30,10 +30,12 @@
 	RestClient rc = new RestClient();
 
 	ComplexObject cp = rc.getComplexObject(user.getId());
+	String lessonTitle = "Talentify";
 	for(CoursePOJO coursePOJO:cp.getCourses()){
 		for(ModulePOJO modulePOJO:coursePOJO.getModules()){
 			for(ConcreteItemPOJO concreteItemPOJO:modulePOJO.getLessons()){
 				if(concreteItemPOJO.getLesson().getId().intValue() == lesson_id){
+					lessonTitle = concreteItemPOJO.getLesson().getTitle();
 					 playlist_id = concreteItemPOJO.getLesson().getPlaylistId();			
 				}
 			}
@@ -52,8 +54,8 @@ if(data.size()!=0){
 %>
 <head>
 <meta charset="utf-8">
-
-<title>reveal.js - The HTML Presentation Framework</title>
+<link rel="shortcut icon" href="<%=basePath%>assets/img/user_images/new_talentify_logo.png" />
+<title><%=lessonTitle %> - Istar Presentation</title>
 
 <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 <meta name="author" content="Hakim El Hattab">
@@ -216,7 +218,7 @@ if(data.size()!=0){
 
 								$.ajax({
 			        type: "GET",
-			        url: '<%=basePath%>t2c/LessonProgressService?user_id=<%=user.getId()%>&lesson_id=<%=lesson_id%>&slide_id='+slideID+'&itle='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
+			        url: '<%=basePath%>t2c/LessonProgressService?user_id=<%=user.getId()%>&lesson_id=<%=lesson_id%>&slide_id='+slideID+'&title='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
 			        success: function(result) {
 			           
 			        }

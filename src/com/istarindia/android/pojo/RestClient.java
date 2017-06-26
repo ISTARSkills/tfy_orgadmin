@@ -27,6 +27,45 @@ import com.google.gson.JsonObject;
  *
  */
 public class RestClient {
+	
+	
+	public CourseContent getCourseContentForStudent(int taskId)
+	{
+		String string = ""; // The String You Need To Be Converted 
+		CourseContent courseContent = new CourseContent();
+		try {
+			URL url = new URL("http://localhost:8080/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
+		System.out.println("url in getCourseContentForStudent"+url.toString());
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			System.out.println(conn.getURL().toString());
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			
+			
+			courseContent = gsonRequest.fromJson(string, CourseContent.class);
+			
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return courseContent;
+	}
+	
 	public ComplexObject getComplexObject(int userID) {
 		String string = ""; // The String You Need To Be Converted 
 		ComplexObject covertedObject = new ComplexObject();

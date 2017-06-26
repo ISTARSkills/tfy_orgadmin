@@ -158,7 +158,7 @@ Parameter Name - type, Value - checking*/
 			ArrayList<Integer> modules = new ArrayList<>();
 			ArrayList<Integer> cmsessions = new ArrayList<>();
 			ArrayList<Integer> lessons = new ArrayList<>();
-			String playListData = "SELECT 	lesson_cmsession.lesson_id, 	lesson_cmsession.cmsession_id, 	cmsession_module.module_id, 	module_course.course_id FROM 	module_course, 	cmsession_module, 	lesson_cmsession, lesson WHERE lesson.is_published = 't' and lesson.id = lesson_cmsession.lesson_id AND module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND module_course.course_id = "+scheduler_course_id+" ORDER BY 	module_course.oid, 	cmsession_module.oid, 	lesson_cmsession.oid";
+			String playListData = "SELECT 	lesson_cmsession.lesson_id, 	lesson_cmsession.cmsession_id, 	cmsession_module.module_id, 	module_course.course_id FROM 	module_course, 	cmsession_module, 	lesson_cmsession, lesson WHERE lesson.is_published = 't' and lesson.is_deleted!='t' and lesson.id = lesson_cmsession.lesson_id AND module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND module_course.course_id = "+scheduler_course_id+" ORDER BY 	module_course.oid, 	cmsession_module.oid, 	lesson_cmsession.oid";
 			List<HashMap<String, Object>>  pldata = util.executeQuery(playListData);
 			for(HashMap<String, Object> cdata : pldata)
 			{

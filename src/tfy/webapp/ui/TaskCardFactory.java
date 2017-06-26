@@ -96,11 +96,62 @@ public class TaskCardFactory {
 			return showCLASSROOM_SESSIONCard(task);
 		case TaskItemCategory.LESSON_PRESENTATION:
 				return showLessonPresenationCard(task);
+		case TaskItemCategory.CLASSROOM_SESSION_STUDENT:
+			return showCLASSROOM_SESSIONStudentCard(task);		
 		default:
 			break;
 		}
 		return new StringBuffer().append("ff");
 
+	}
+
+	private StringBuffer showCLASSROOM_SESSIONStudentCard(TaskSummaryPOJO task) {
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		sb.append("<div class='col-md-3 '>													");
+		sb.append("<div class='ibox'>														");
+		sb.append("<div class='ibox-content product-box h-370'>                             ");
+		sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+		sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+		sb.append("<div class='product-imitation'                                           ");
+		sb.append("style='padding: 0px !important; background: transparent;'>               ");
+		sb.append("<img alt='' class='session-square-img'                                   ");
+		sb.append("src='"+task.getImageURL()+"'>                   ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='product-desc'>                                               ");
+		sb.append("<div class='row text-center font-normal bg-muted small p-xxs'>           ");
+		sb.append("<div class='col-xs-4 col-md-4'>Time</div>                                ");
+		sb.append("<div class='col-xs-4 col-md-4'>Batch</div>                               ");
+		sb.append("<div class='col-xs-4 col-md-4'>Location</div>                            ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='row text-center p-xxs' style='font-size:20px;color: #eb384f;'>                                      ");
+		sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+		sb.append("<i class='fa fa-clock-o'></i>                                            ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+		sb.append("<i class='fa fa-group'></i>                                              ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+		sb.append("<i class='fa fa-home'></i>                                               ");
+		sb.append("</div>                                                                   ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
+		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
+		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
+		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
+		sb.append("</div>                                                                   ");
+		sb.append("                                                                         ");
+		sb.append("</div>                                                                   ");
+		sb.append("</div>                                                                   ");
+		sb.append("<div class='m-t text-center button-top'>                                 ");
+		sb.append("                                                                         ");
+		sb.append("<a class='banner btn btn-rounded' href='/student/sync_class.jsp?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
+		sb.append("</div>                                                                   ");
+		sb.append("</div>                                                                   ");
+		sb.append("</div>                                                                   ");
+		return sb;
 	}
 
 	private StringBuffer showLessonPresenationCard(TaskSummaryPOJO task) {
@@ -168,7 +219,7 @@ public class TaskCardFactory {
 		sb.append("<i class='fa fa-home'></i>                                               ");
 		sb.append("</div>                                                                   ");
 		sb.append("</div>                                                                   ");
-		sb.append("<div class='row text-center font-bold medium p-xxs'>                     ");
+		sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
 		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
 		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
 		sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
@@ -233,8 +284,8 @@ public class TaskCardFactory {
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div class='col-md-3 product-box ' style='max-height: 370px !important;    overflow-y: auto;'>			"
-				+ "	<div class='ibox' style='height: 100%;'> "
-				+ "<div class='ibox-content ' style='height: 100%; min-height:500px'> ");			
+				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
+				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> ");			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");
 		sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");
@@ -246,8 +297,8 @@ public class TaskCardFactory {
 			String dateString = dateFormat.format(event.getStartDate());
 			int rnd = (new Random()).nextInt(4);
 		sb.append("<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
-		sb.append("<div class='row'><div class='col-md-1  no-padding' style='    margin-top: 8px;'><span class='label label-"+class1[rnd]+"'>"+(i++)+"</span></div>"
-				+ "<div class='col-md-1  no-padding'></div><div class='col-md-7 no-padding'>"+event.getName()+"</div>"
+		sb.append("<div class='row'><div class='col-md-1  no-padding' style='    margin-top: 0px;'><span class='label label-"+class1[rnd]+"'>"+(i++)+"</span></div>"
+				+ "<div class='col-md-1  no-padding'></div><div class='col-md-7 no-padding' style='font-size: 12px;'>"+event.getName()+"</div>"
 				+ "<div class='col-md-3	 no-padding'>"+dateString+"</div></div>");
 		sb.append("</li>                                                                                    ");
 		}                                                                              

@@ -36,7 +36,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 <link rel="shortcut icon" href="<%=cdnUrl%>assets/img/user_images/new_talentify_logo.png" />
 <title>Talentify | Sign Up</title>
 <link href="<%=cdnUrl %>assets/css/bootstrap.min.css" rel="stylesheet">
-<link href="<%=cdnUrl %>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="<%=cdnUrl %>assets/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 <link href="<%=cdnUrl %>assets/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 <link href="<%=cdnUrl %>assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">

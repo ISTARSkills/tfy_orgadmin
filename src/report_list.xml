@@ -1553,9 +1553,7 @@ order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
 <reports id="3066" type_of_report="table">
- <column columnHandler="NONE" display_name="Course Id" isVisible="false" name="course_id" />		
 		<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
-		<column columnHandler="NONE" display_name="Cluster Id" isVisible="false" name="cluster_id" />
 		<column columnHandler="NONE" display_name="Cluster Name" isVisible="true" name="cluster_name" />			
 		<column columnHandler="NONE" display_name="Requirement" isVisible="true" name="req" />		
 		<column columnHandler="NONE" display_name="Cities" isVisible="true" name="cities" />
@@ -1566,9 +1564,8 @@ order by :order_by_column :order_type limit :limit offset :offset
 		<column columnHandler="NONE" display_name="L6" isVisible="true" name="l6count" />
 		<column columnHandler="NONE" display_name="Net Requirement" isVisible="true" name="net" />						
 <sql>
-select STATIC_TAB.course_id,
+select 
 STATIC_TAB.course_name,
-STATIC_TAB.cluster_id,
 STATIC_TAB.cluster_name,
 STATIC_TAB.req,
 STATIC_TAB.cities,

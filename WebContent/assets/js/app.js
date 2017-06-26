@@ -101,7 +101,7 @@ function readyFn(jQuery) {
 	    			
 	    			
 	    } catch (err) {
-	    	console.log('71->'+err);
+	    	//console.log('71->'+err);
 		}
 		//
 	
@@ -210,6 +210,8 @@ function readyFn(jQuery) {
 	case 'coordinator_trainer_profile':	
 		init_coordinator_trainer_profile();
 		break;
+	case 'cordinator_interview':
+		init_cordinator_interview();
 	default:
 		init_orgadmin_none();
 	}
@@ -233,6 +235,23 @@ function readyFn(jQuery) {
 	} catch (err) {
 		// TODO: handle exception
 	}
+	
+	//org admin student notiifcation READ status
+	$('.notification_holder_status').unbind().on("click",function(){		
+		var notifiction=$(this).data('notifiction');
+		var url=$(this).data('url');
+		var notifications=[];
+		notifications.push(notifiction);
+		$.ajax({
+	        type: "PUT",
+	        url: url,
+	        contentType:'application/json',
+	        data: JSON.stringify(notifications),
+	        success: function(data) {	
+	        }});
+	});
+	
+	
 }
 
 function initUnreadChatAndNotification()
@@ -492,7 +511,7 @@ function createDataTables()
 			});		
 		
 		if ( $.fn.dataTable.isDataTable(this) ) {
-		    console.log('dddd');
+		    //console.log('dddd');
 		    //this.DataTable();
 		}
 		else
@@ -810,7 +829,7 @@ function createGraphs()
  			//$('.dataTables_wrapper').hide();
 
  		} catch (err) {
- 		console.log(err);
+ 		//console.log(err);
  		}
 
 
@@ -1281,7 +1300,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 		
 	}catch(err)
 	{
-		console.log(err);
+		//console.log(err);
 	}
 	
 	function getElement(id) {
@@ -6135,3 +6154,17 @@ $('[data-equal]').each(function(){
         target = $this.data('equal');
     $this.find(target).equalHeights();
 });
+
+
+function init_cordinator_interview() {
+	$( ".rateYo_element" ).each(function( index ) {
+		var rating=$(this).data('star_value');
+		$(this).rateYo({
+		    rating: rating,
+		    readOnly: true,
+		    starWidth: "20px"
+		  });
+		});
+	
+
+}

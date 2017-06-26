@@ -31,7 +31,7 @@ public class TaskCardFactoryRecruitment {
 		DBUTILS util = new DBUTILS();
 		CustomReportUtils repUtil = new CustomReportUtils();
 
-		sb.append("<div class='product-box  ' style='    margin-bottom: 20px;'>			" + "	<div class='ibox' style='height: 100%;margin-bottom: 0px !important; '> " + "<div class='ibox-title'><h5>Profile Details</h5></div>" + "<div class='ibox-content ' style='height: 100%; min-height:500px'> ");
+		sb.append("<div class='product-box  ' style='    margin-bottom: 20px;'>			" + "	<div class='ibox' style='height: 100%;margin-bottom: 0px !important; '> " + "<div class='ibox-title'><h5>Profile Details</h5></div>" + "<div class='ibox-content ' style='height: 100%; min-height:368px'> ");
 		// sb.append("<small>You have "+cp.getEventsToday().size() +" events and
 		// "+cp.getNotificationsValid()+" notifications.</small> ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");

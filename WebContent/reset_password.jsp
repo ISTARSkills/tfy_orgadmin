@@ -26,7 +26,7 @@
     <title>Talentify | Login</title>
 
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link href="assets/css/animate.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">

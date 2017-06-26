@@ -431,7 +431,7 @@ public class UIUtils {
 
 	public StringBuffer getAllTrainer(ArrayList<Integer> selectedTrainer) {
 		// <option value="">Data Analytics</option>
-		String sql = "SELECT 	istar_user. ID, 	istar_user.email, 	user_profile.first_name FROM 	istar_user, 	user_role,   user_profile WHERE 	istar_user. ID = user_role.user_id AND user_role.role_id = 14 AND user_profile.user_id = istar_user. ID";
+		String sql = "SELECT 	istar_user. ID, 	istar_user.email, 	user_profile.first_name FROM 	istar_user, 	user_role,   user_profile WHERE 	istar_user. ID = user_role.user_id AND user_role.role_id in (select id from role where role_name like 'TRAINER') AND user_profile.user_id = istar_user. ID";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);

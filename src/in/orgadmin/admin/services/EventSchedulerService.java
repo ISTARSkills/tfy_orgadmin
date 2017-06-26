@@ -124,7 +124,7 @@ public class EventSchedulerService {
 			
 		}
 		
-		/*String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
+		String findStudentInBatch ="select distinct batch_students.student_id from batch_students,batch_group, batch where batch.batch_group_id = batch_group.id and batch_group.id = batch_students.batch_group_id and batch_group.is_historical_group ='f' and batch.id = "+batchID;
 		List<HashMap<String, Object>> studentsInBatch = db.executeQuery(findStudentInBatch);
 		for(HashMap<String, Object> row: studentsInBatch)
 		{
@@ -136,7 +136,7 @@ public class EventSchedulerService {
 			
 			String createTaskForStudent ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+stuId+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+studentEventId+", '"+TaskItemCategory.CLASSROOM_SESSION_STUDENT+"',"+projectId+") returning id ;";
 			int taskIdForStudent =db.executeUpdateReturn(createTaskForStudent);						
-			notificationTitle = "A class has been scheduled for the course "+c.getCourseName()+ " in classroom "+classRoom.getClassroomIdentifier().trim().replace("'", "")+" at "+eventDate;
+			notificationTitle = "A class has been scheduled for the course <b>"+c.getCourseName()+ "</b> in classroom <b>"+classRoom.getClassroomIdentifier().trim().replace("'", "")+"</b>";
 			notificationDescription =  notificationTitle;
 		
 			IstarNotification istarNotificationForStudent = notificationService.createIstarNotification(AdminUserID, stuId, notificationTitle.trim().replace("'", ""), notificationDescription.trim().replace("'", ""), "UNREAD", null, NotificationType.CLASSROOM_SESSION_STUDENT, true, taskIdForStudent, groupNotificationCode);
@@ -144,7 +144,7 @@ public class EventSchedulerService {
 			
 			itemForStudent.put("taskId", taskIdForStudent);
 			noticeDelegator.sendNotificationToUser(istarNotificationForStudent.getId(), stuId+"", notificationTitle.trim().replace("'", ""), NotificationType.CLASSROOM_SESSION, itemForStudent);  						
-		}*/
+		}
 		
 		
 		for(Integer userKey : userToEventMap.keySet())

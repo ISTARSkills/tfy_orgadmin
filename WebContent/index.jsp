@@ -91,7 +91,7 @@ try {
     <title>  EMPTY PAGE </title>
 
     <link href="<%=baseURL%>assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=baseURL%>assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <link href="<%=baseURL%>assets/css/animate.css" rel="stylesheet">
     <link href="<%=baseURL%>assets/css/style.css" rel="stylesheet">
