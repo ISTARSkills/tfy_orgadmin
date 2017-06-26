@@ -45,33 +45,33 @@ th {
 			<jsp:include page="inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
-					<h2>
+					<h2 style="margin-left: 30px">
 						<strong>Trainer Dashboard</strong>
 					</h2>
 				</div>
 				<div class="col-lg-2"></div>
 			</div>
-			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px;margin-left: 5px">
+			<div class="wrapper wrapper-content animated fadeInRight white-bg" style="padding: 20px;margin-left: 5px">
 				<div class="row" id="filters">
 
 					<div class=" col-lg-2 input-group pull-right">
 						<input type="text" id="user_keyword" name="user_keyword" class="form-control"> <span class="input-group-btn">
-							<button type="button" id="user_search_button" class="btn btn-primary">search</button>
+							<button type="button" id="user_search_button" class="btn btn-outline btn-info">Search</button>
 						</span>
 					</div>	
 					<%
 						DBUTILS utils = new DBUTILS();
-						String sql = "select distinct course_name from cluster_requirement, course where course.id= cluster_requirement.course_id";
+						String sql = "SELECT DISTINCT 	course_name FROM 	cluster_requirement, 	course, 	trainer_intrested_course WHERE 	course. ID = cluster_requirement.course_id and trainer_intrested_course.course_id=course.id";
 						List<HashMap<String, Object>> items = utils.executeQuery(sql);
 					%>
 					<div class="big-demo go-wide" data-js="filtering-demo">
 						<div class="filter-button-group button-group js-radio-button-group">
 							<span class="badge badge-info">Course</span>
-							<button class="button is-checked" data-filter="*">show all</button>
+							<button class="btn btn-outline btn-info is-checked btn-xs" data-filter="*">show all</button>
 							<%
 								for (HashMap<String, Object> item : items) {
 							%>
-							<button class="button" data-filter=".course_<%=item.get("course_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("course_name").toString()%></button>
+							<button class="btn btn-outline btn-info btn-xs" style="margin-bottom: 5px; margin-right: 5px" data-filter=".course_<%=item.get("course_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("course_name").toString()%></button>
 							<%
 								}
 							%>
@@ -79,18 +79,18 @@ th {
 
 					</div>
 					<%
-						String sql1 = "select * from cluster";
+						String sql1 = "select distinct cluster.id, cluster_name from cluster, trainer_prefred_location, pincode , cluster_pincode_mapping where trainer_prefred_location.pincode = pincode.pin and pincode.id = cluster_pincode_mapping.pincode_id and cluster_pincode_mapping.cluster_id = cluster.id ";
 						List<HashMap<String, Object>> items1 = utils.executeQuery(sql1);
 					%>
 					<div class="row" style="margin-top: 20px;margin-left: 15px;">
 						<div class="big-demo go-wide" data-js="filtering-demo">
 							<div class="filter-button-group button-group js-radio-button-group">
 								<span class="badge badge-info">Filter by Cluster</span>
-								<button class="button is-checked" data-filter="*">show all</button>
+								<button class="btn btn-outline btn-warning btn-xs is-checked" data-filter="*">show all</button>
 								<%
 									for (HashMap<String, Object> item : items1) {
 								%>
-								<button class="button" data-filter=".cluster_<%=item.get("cluster_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("cluster_name").toString()%></button>
+								<button class="btn btn-outline btn-warning btn-xs" style="margin-bottom: 5px; margin-right: 5px"  data-filter=".cluster_<%=item.get("cluster_name").toString().replaceAll("-", "_").replaceAll(" ", "_").replaceAll("/", "___").trim()%>"><%=item.get("cluster_name").toString()%></button>
 								<%
 									}
 								%>
@@ -109,9 +109,10 @@ th {
 							for (int i = 0; i < data.size(); i++) {
 								try{
 						%>						
-						<div data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>'  data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>'
+						<div style="margin-bottom : 10px" data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>' 
+						 data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>'
 						 class="trainerprofile_holder product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
-						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
+						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>" >
 							<div class="contact-box" style="height: 100% !important;">
 								<div class="col-sm-4">
 									<div class="text-center">

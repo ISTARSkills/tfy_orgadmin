@@ -1,3 +1,6 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.util.Properties"%>
+<%@page import="java.io.InputStream"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="tfy.admin.trainer.TaskCardFactoryRecruitment"%>
 <%@page import="java.util.Enumeration"%>
@@ -29,12 +32,27 @@
 	int trainerId = Integer.parseInt(request.getParameter("trainer_id"));
 	
 	IstarUser trainer = new IstarUserDAO().findById(trainerId);
+	
+	
+	String baseURL1 = url.substring(0, url.length() - request.getRequestURI().length())
+			+ request.getContextPath() + "/";
+			try {
+				Properties properties = new Properties();
+				String propertyFileName = "app.properties";
+				InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+				if (inputStream != null) {
+					properties.load(inputStream);
+					baseURL1 = properties.getProperty("cdn_path");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 %>
 
 
 <body class="top-navigation" id="coordinator_trainer_profile">
 	<div id="wrapper">
-		<div id="page-wrapper" class="gray-bg" style="min-height: 1212px !important">
+		<div id="page-wrapper" class="gray-bg" >
 			<jsp:include page="inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
@@ -48,7 +66,7 @@
                 <div class="col-md-6">
 
                     <div class="profile-image">
-                        <img src="http://cdn.talentify.in/video/android_images/D.png" class="img-circle circle-border m-b-md" alt="profile">
+                        <img src="<%=baseURL1 %><%=(new IstarUserDAO()).findById(trainerId).getUserProfile().getImage() %>" class="img-circle circle-border m-b-md" alt="profile">
                     </div>
                     <div class="profile-info">
                         <div class="">
@@ -83,9 +101,17 @@
 				if (courseData.size()>0) {
 					for(HashMap<String, Object> row: courseData) { 
 					int courseId = (int)row.get("id");
+					try{
 					%>
+					
 					<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,courseId, user.getId()).toString()%>
-				<% }
+				
+				<% 
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					}
 				}
 				%>
 				</div>

@@ -106,7 +106,7 @@ public class TaskCardFactoryRecruitment {
 					+ " order by id desc limit 1 )T1 left join interview_rating on (interview_rating.trainer_id =T1.trainer_id and T1.course_id =interview_rating.course_id) left join user_profile TP on (interview_rating.trainer_id = TP.user_id) left join user_profile IP on (interview_rating.interviewer_id = IP.user_id) limit 1";
 			List<HashMap<String, Object>> statusData = util.executeQuery(getstatus);
 			String taskIcon = "fa fa-desktop";
-			String bgStyle = " style='    background-color: #eb384f;' ";
+			String bgStyle = " style='    background-color: #eb384f;color: white Important' ";
 			String status = statusData.get(0).get("empanelment_status").toString();
 			String stage = statusData.get(0).get("stage").toString();
 			String interviewerName = "";
@@ -220,7 +220,7 @@ public class TaskCardFactoryRecruitment {
 		{
 
 			String taskIcon = "fa fa-desktop";
-			String bgStyle = " style='    background-color: #eb384f;' ";
+			String bgStyle = " style='    background-color: #eb384f;color: white Important' ";
 			String title = "";
 			// String stage="";
 			String interviewerComments = "";
@@ -282,23 +282,30 @@ public class TaskCardFactoryRecruitment {
 					} else if (stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW)
 							|| stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO)
 							|| stages.get(i).equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW)) {
-						String getScore = "SELECT  CAST (AVG(rating) AS INTEGER) AS rating FROM interview_rating WHERE trainer_id = "
-								+ trainerID + " AND course_id = " + courseID + " and stage_type = '" + stages.get(i)
-								+ "'";
-						List<HashMap<String, Object>> scoreL3Plus = util.executeQuery(getScore);
-						if (scoreL3Plus.size() > 0) {
-							score = "with the score " + scoreL3Plus.get(0).get("rating").toString() + "/5";
-							details="<a href='/coordinator/interview_details.jsp?user_id="+trainerID+"&course_id="+courseID+"&stage="+stages.get(i)+"' class='btn btn-sm btn-success'> Details </a>";
-						}
-						String getComments = "select trainer_comments.comments, user_profile.first_name from trainer_comments, user_profile where trainer_comments.interviewer_id = user_profile.user_id and trainer_comments.course_id = "
-								+ courseID + " and trainer_comments.stage = '" + stages.get(i)
-								+ "' and trainer_comments.trainer_id = " + trainerID;
-						List<HashMap<String, Object>> commentsData = util.executeQuery(getComments);
-						if (commentsData.size() > 0) {
-							if (commentsData.get(0).get("comments") != null) {
-								interviewerComments = commentsData.get(0).get("comments").toString();
-								interviewerName = "by " + commentsData.get(0).get("first_name").toString();
+						
+							String getScore = "SELECT  CAST (AVG(rating) AS INTEGER) AS rating FROM interview_rating WHERE trainer_id = "
+									+ trainerID + " AND course_id = " + courseID + " and stage_type = '" + stages.get(i)
+									+ "'";
+							List<HashMap<String, Object>> scoreL3Plus = util.executeQuery(getScore);
+							try {
+							if (scoreL3Plus.size() > 0 && scoreL3Plus.get(0).get("rating") != null) {
+								score = "with the score " + scoreL3Plus.get(0).get("rating").toString() + "/5";
+								details="<a href='/coordinator/interview_details.jsp?user_id="+trainerID+"&course_id="+courseID+"&stage="+stages.get(i)+"' class='btn btn-sm btn-success'> Details </a>";
 							}
+							String getComments = "select trainer_comments.comments, user_profile.first_name from trainer_comments, user_profile where trainer_comments.interviewer_id = user_profile.user_id and trainer_comments.course_id = "
+									+ courseID + " and trainer_comments.stage = '" + stages.get(i)
+									+ "' and trainer_comments.trainer_id = " + trainerID;
+							List<HashMap<String, Object>> commentsData = util.executeQuery(getComments);
+							if (commentsData.size() > 0) {
+								if (commentsData.get(0).get("comments") != null) {
+									interviewerComments = commentsData.get(0).get("comments").toString();
+									interviewerName = "by " + commentsData.get(0).get("first_name").toString();
+								}
+							}
+						} catch (Exception e) {
+							System.err.println(getScore+" --- Exception-->"+scoreL3Plus.size());
+
+							e.printStackTrace();
 						}
 						
 					}
