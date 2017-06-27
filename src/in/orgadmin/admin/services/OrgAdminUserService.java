@@ -48,7 +48,7 @@ public class OrgAdminUserService {
 				System.out.println(istarStudentSql);
 
 			//Student User Role Mapping
-				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", '12', (SELECT MAX(id)+1 FROM user_role), '1');";
+				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name = 'STUDENT'), (SELECT MAX(id)+1 FROM user_role), '1');";
 				db.executeUpdate(userRoleMappingSql);
 				System.out.println(userRoleMappingSql);
 

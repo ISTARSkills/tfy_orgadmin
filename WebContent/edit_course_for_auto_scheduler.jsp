@@ -138,9 +138,9 @@ if(data.size()>0)
 											<label>#Days Scheduled</label>
 											<input type="text" class="form-control"  disabled name="frequency" value="<%=scheduled_days_count%>" id="total_days_scheduled" style="    width: 88px;">
 										</div>
-								<%if(data.size()==0){ %>
+								
 								<div class="form-group">
                                     <button class="btn btn-primary" type="submit" id="save_auto_schedule">Save </button> 
                                 </div>
-                                <%} %>
+                                
 									</div>
