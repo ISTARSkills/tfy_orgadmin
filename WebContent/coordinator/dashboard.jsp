@@ -41,7 +41,7 @@ th {
 %>
 <body class="top-navigation" id="coordinator_trainer_details">
 	<div id="wrapper">
-		<div id="page-wrapper" class="gray-bg">
+		<div id="page-wrapper" class="white-bg">
 			<jsp:include page="inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
@@ -98,7 +98,7 @@ th {
 
 						</div>
 					</div>
-					<div class="row grid" id="searchable_grid" style="margin: 10px" id='equalheight'>
+					<div class="row grid" id="searchable_grid" style="margin: 10px">
 
 
 						<%
@@ -112,9 +112,18 @@ th {
 						%>						
 						<div style="margin-bottom : 10px" data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>' 
 						 data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>'
-						 class="trainerprofile_holder product-box col-lg-4 element-item <%=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString())%> 
+						 
+						 <%
+						 String clustersData="";
+						 if(data.get(i)!=null && data.get(i).get("clusters")!=null && !data.get(i).get("clusters").toString().equalsIgnoreCase("")){
+							 clustersData=UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString());
+						 }
+						 
+						 %>
+						 
+						 class="trainerprofile_holder product-box col-lg-4 element-item <%=clustersData%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>" >
-							<div class="contact-box" style="height: 100% !important;">
+							<div class="contact-box no-borders" style="height:80% !important;" >
 								<div class="col-sm-4">
 									<div class="text-center">
 										<img style="width: 80px !important; height: 80px !important;" alt="image"
@@ -239,6 +248,8 @@ th {
 										%>
 									</tbody>
 								</table>
+								
+								<div class="show_more" style="display:none;">
 								<%
 									if (data.get(i).get("slots") != null && !data.get(i).get("slots").toString().equalsIgnoreCase("")) {
 								%>
@@ -301,15 +312,22 @@ th {
 								<%
 									}
 								%>
+								</div>
+							
+								
+							</div>
+							<div class="row text-center"> 
+							<a class="btn btn-outline btn-primary btn-xs show_more_button" style=''>more info</a>
 							</div>
 						</div>
 						<%
 							}catch(Exception e)
 							{
-								
+								e.printStackTrace();
 							}
 							}
 						%>
+					
 					</div>
 				</div>
 			</div>

@@ -6042,34 +6042,52 @@ yes_js_login = function() {
 }
 
 function init_coordinator_trainer_details(){
-	$("#user_keyword").on("change paste keyup", function() {
-		var keyword=$(this).val().replace(" ","_");
-		init_coordinatortrainr_search(keyword);
+	var qsRegex;
+	var $container = $('.grid').isotope({
+		  itemSelector: '.element-item',
+		  layoutMode: 'fitRows',
+		  filter: function() {
+			  return qsRegex ? $(this).text().match(qsRegex) : true;
+		  }
 		});
 	
-	$('#user_search_button').unbind().on('click',function(){
-		var keyword=$("#user_keyword").val().replace(" ","_");
-		init_coordinatortrainr_search(keyword);
-	});
-	
+	 var $quicksearch = $('#user_keyword').keyup(debounce(function () {
+	        var regexVal = $quicksearch.val().split(/\s+/).join('\\b.*');
+	        //var regexVal = $quicksearch.val().split(/\s+/).join('.*');
+	        qsRegex = new RegExp(regexVal, 'gi');
+	        $container.isotope({
+	            filter: function () {
+	                return qsRegex ? $(this).text().match(qsRegex) : true;
+	            }
+	        });
+	    }));
+		
 	$('.trainerprofile_holder').unbind().on('click',function(){
 		var url=$(this).data('url');
 		window.location.href = url;
-		
 	});
 	
+	$('.show_more_button').unbind().on("click",function(e){
+	   e.stopPropagation();
+	    $(this).parent().parent().find('.show_more').toggle();
+	    
+	    if($(this).text().indexOf("more") >= 0){
+	    	$(this).html('less info');
+	    }else{
+	    	$(this).html('more info');
+	    }
+	    
+	   $('#searchable_grid .trainerprofile_holder').removeAttr('style');
+	    $('#searchable_grid .trainerprofile_holder').css('cssText','position: absolute;');
+	    $('#searchable_grid  .trainerprofile_holder').equalHeights();	
+	    $('.grid').isotope({
+	    	  layoutMode: 'fitRows',
+	    	  itemSelector: '.element-item'
+	    	});
+	});
+	
+	
 }
-
-function init_coordinatortrainr_search(keyword){
-	if(keyword.length==0){
-		$("#searchable_grid").children().show();
-	}else{	
-		keyword=keyword.toLowerCase();
-	$("#searchable_grid").children().hide();
-	$("#searchable_grid").find("[data-name*='" + keyword + "']").show();
-	}	
-}
-
 
 $.fn.equalHeights = function() {
     var maxHeight = 0,
@@ -6084,6 +6102,19 @@ $.fn.equalHeights = function() {
     return $this.css('height', maxHeight);
 };
 
+function debounce( fn, threshold ) {
+	  var timeout;
+	  return function debounced() {
+	    if ( timeout ) {
+	      clearTimeout( timeout );
+	    }
+	    function delayed() {
+	      fn();
+	      timeout = null;
+	    }
+	    setTimeout( delayed, threshold || 100 );
+	  };
+}
 
 function init_coordinator_trainer_profile(){
 	$(".card1").flip({
