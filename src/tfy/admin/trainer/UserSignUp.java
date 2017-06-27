@@ -181,7 +181,9 @@ public class UserSignUp extends IStarBaseServelet {
 					if (!courseIds.equalsIgnoreCase("")) {
 						String[] courses = courseIds.split(",");
 						for (String course_id : courses) {
-							
+							String isAlreadyPresent = "SELECT  CAST (COUNT(*) AS INTEGER) as count FROM  trainer_intrested_course WHERE  trainer_id = "+urseId+" AND course_id =  "+course_id;
+							List<HashMap<String, Object>> data = db.executeQuery(isAlreadyPresent);
+							if((int)data.get(0).get("count") == 0){
 							String insertIntoTrainerEmpanelmentStatus = "insert into trainer_empanelment_status (id, trainer_id, empanelment_status,created_at,stage, course_id) values((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "
 									+ urseId + ", '" + TrainerEmpanelmentStatusTypes.SELECTED + "',now(), '"
 									+ TrainerEmpanelmentStageTypes.SIGNED_UP + "',"+course_id+")";
@@ -195,6 +197,7 @@ public class UserSignUp extends IStarBaseServelet {
 							String insertInIntrestedTable = "insert into trainer_intrested_course (id, trainer_id, course_id) values((select COALESCE(max(id),0)+1 from trainer_intrested_course),"
 									+ urseId + "," + course_id + ")";
 							db.executeUpdate(insertInIntrestedTable);
+							}
 
 							Course course = new CourseDAO().findById(Integer.parseInt(course_id));
 							String getAssessmentForCourse = "select distinct assessment_id from  course_assessment_mapping where course_id="
