@@ -212,6 +212,10 @@ function readyFn(jQuery) {
 		break;
 	case 'cordinator_interview':
 		init_cordinator_interview();
+		break;
+	case 'coordinator_interview_schedular':
+		init_coordinator_interview_schedular();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -6205,6 +6209,83 @@ function init_cordinator_interview() {
 		    starWidth: "20px"
 		  });
 		});
-	
-
 }
+
+function init_coordinator_interview_schedular(){
+	$('.input-group.date').datepicker({
+		startView : 1,
+		todayBtn : "linked",
+		keyboardNavigation : false,
+		forceParse : false,
+		autoclose : true,
+		format : "dd/mm/yyyy"
+	});
+	
+	$('.time_element').timepicki({
+		show_meridian:false,
+		min_hour_value:0,
+		max_hour_value:23,
+		step_size_minutes:1,
+		overflow_minutes:true,
+		increase_direction:'up',
+		disable_keyboard_mobile: true});
+	
+	$('#stage_id').on("change", function(e) {
+	    var stage=$(this).val();
+	    var course=$('#course_id').val();
+	    
+	    if(course == undefined || course===''){
+	    	toastr.error('Please choose course!');
+	    }else if(stage== undefined || stage===''){
+	    	toastr.error('Please choose stage!');
+	    }else{
+	    	console.log(stage,course);
+		    $.ajax({
+		        type: "POST",
+		        url: "/coordinator_interview_data",
+		        data: {stage:stage,course:course,type:'trainer'},
+		        success: function(data) {
+		        	$('#trainer_id').html(data);
+		        	
+		        }});
+		 }
+	    
+	});
+	
+	$('#submit_form').unbind().on("click",function(){
+		var stage=$("#stage_id").val();
+	    var course=$('#course_id').val();
+	    var trainer_id=$('#trainer_id').val();
+	    var inter_viewer_id=$('#inter_viewer_id').val();
+	    var eventDate=$('#eventDate').val();
+	    var eventTime=$('#eventTime').val();
+	    
+	    
+	    if(course == undefined || course===''){
+	    	toastr.error('Please choose course!');
+	    }else if(stage== undefined || stage===''){
+	    	toastr.error('Please choose stage!');
+	    }else if(trainer_id== undefined || trainer_id==='' || inter_viewer_id== undefined || inter_viewer_id===''){
+	    	toastr.error('Please choose Trainer and Interviewer!');
+	    }else if(eventDate== undefined || eventDate==='' || eventTime== undefined || eventTime===''){
+	    	toastr.error('Please choose date and time!');
+	    }else{
+		
+	    var data=$('#schedular_form').serialize();
+		
+		$.ajax({
+	        type: "POST",
+	        url: "/coordinator_interview_data",
+	        data: data,
+	        success: function(data) {
+	        	toastr.success('Successfully Scheduled');
+	        },
+	        error: function(data) {
+	        	toastr.errorr('Failed To Schedule. Please Contact Admin!');
+	        }    
+		});
+	    }
+	});
+	
+}
+

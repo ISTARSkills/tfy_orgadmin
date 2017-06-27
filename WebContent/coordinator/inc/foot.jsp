@@ -54,12 +54,10 @@ try{
 <!-- Full Calendar -->
 <script src="<%=basePath %>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <!-- Toastr script -->
-<script src="<%=basePath %>assets/js/plugins/toastr/toastr.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>assets/js/wickedpicker.js"></script>
 <!-- Jquery Validate -->
 <script src="<%=basePath %>assets/js/plugins/validate/jquery.validate.min.js"></script>
 <script	src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
- <script type="text/javascript" src="<%=basePath %>assets/js/timepicki.js"></script>
  
    <!-- Tags Input -->
     <script src="<%=basePath %>assets/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
@@ -86,7 +84,9 @@ try{
  --%>
  
      <!-- iCheck -->
-    <script src="<%=basePath%>assets/js/plugins/iCheck/icheck.min.js"></script>
+  <script src="<%=basePath%>assets/js/plugins/iCheck/icheck.min.js"></script>
+  <script type="text/javascript" src="<%=basePath %>assets/js/timepicki.js"></script>
+ <script src="<%=basePath %>assets/js/plugins/toastr/toastr.min.js"></script>
  
  
  <script src="<%=basePath%>assets/js/jquery.rateyo.min.js"></script>
