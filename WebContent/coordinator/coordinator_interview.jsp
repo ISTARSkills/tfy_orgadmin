@@ -25,26 +25,7 @@
 
 <jsp:include page="inc/head.jsp"></jsp:include>
 <%
-	String url = request.getRequestURL().toString();
-	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
-			+ request.getContextPath() + "/";
-
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-
-	String baseURL1 = url.substring(0, url.length() - request.getRequestURI().length())
-			+ request.getContextPath() + "/";
-	try {
-		Properties properties = new Properties();
-		String propertyFileName = "app.properties";
-		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-		if (inputStream != null) {
-			properties.load(inputStream);
-			baseURL1 = properties.getProperty("cdn_path");
-		}
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-
 	CoordinatorSchedularUtil schedularUtil = new CoordinatorSchedularUtil();
 %>
 
@@ -66,7 +47,7 @@
 									</a>
 								</div>
 							</div>
-							<div class="ibox-content" style='padding:15px 20px 64px 20px !important;'>
+							<div class="ibox-content" style='padding: 15px 20px 64px 20px !important;'>
 								<form id="schedular_form" class="form">
 									<div class="form-group">
 										<label>Choose Course</label> <select class="form-control m-b scheduler_select" id="course_id" name="course_id">
@@ -90,14 +71,14 @@
 											<option value="L6">Fitment Interview(L6)</option>
 										</select>
 									</div>
-									
+
 									<div class="form-group">
 										<label>Choose Interviewer</label> <select class="form-control m-b scheduler_select" id='inter_viewer_id' name="interviewer_id">
 											<option value="">Select Interviewer...</option>
 											<%
 												for (HashMap<String, Object> item : schedularUtil.getInterViewersList()) {
 											%>
-											<option value="<%=item.get("id")%>"><%=item.get("email")%> 	(<%=item.get("role_name").toString().replaceAll("_", " ").toLowerCase()%>)
+											<option value="<%=item.get("id")%>"><%=item.get("email")%> (<%=item.get("role_name").toString().replaceAll("_", " ").toLowerCase()%>)
 											</option>
 											<%
 												}
@@ -110,8 +91,8 @@
 											<option value="">Select Trainer...</option>
 										</select>
 									</div>
-									
-									
+
+
 
 									<div class="form-group" id="data_2">
 										<label class="font-bold">Interview Date</label>
@@ -127,7 +108,7 @@
 											</span> <input type="text" style="width: 100%; height: 28px;" id="eventTime" name="time" class="time_element" />
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<label class="font-bold">Interview Duration(in Mins)</label>
 										<div class="input-group" data-autoclose="true">
@@ -135,12 +116,11 @@
 											</span> <input type="text" style="width: 100%; height: 28px;" id="event_duration" value='30' name="duration" />
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<button type="button" class="btn btn-outline btn-primary pull-right" id="submit_form">Submit</button>
 									</div>
-									<input type='hidden'  name='coordinator_id' value='<%=user.getId()%>' />
-									<input type='hidden'  name='type' value='submit' />
+									<input type='hidden' name='coordinator_id' value='<%=user.getId()%>' /> <input type='hidden' name='type' value='submit' />
 								</form>
 
 							</div>
