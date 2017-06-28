@@ -405,7 +405,7 @@
    <div class="text-center">
       <h3>Clusters</h3>
    </div>
-   <%String clusterSql = "SELECT id,cluster_name from cluster WHERE id in (SELECT cluster_id from cluster_pincode_mapping);";
+   <%String clusterSql = "SELECT id,cluster_name from cluster WHERE id in (SELECT distinct cluster_id from cluster_requirement);";
       List<HashMap<String, Object>> clusters = db.executeQuery(clusterSql);
       String clusterOfUser ="SELECT DISTINCT cluster_id FROM cluster_pincode_mapping WHERE pincode_id IN ( SELECT ID FROM pincode );";
       if(user != null) {

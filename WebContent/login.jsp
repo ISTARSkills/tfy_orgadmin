@@ -1,3 +1,4 @@
+<%@page import="java.util.Random"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.util.Properties"%>
@@ -49,9 +50,12 @@
 <link href="<%=cdnUrl%>assets/css/custom.css" rel="stylesheet">
 
 </head>
-
+<% 
+String bgs[] = {baseURL+"assets/images/demo.png", baseURL+"assets/images/demo1.png", baseURL+"assets/images/demo2.png","assets/images/demo3.png"};
+int rand = (new Random()).nextInt(4);
+%>
 <body class="gray-bg"
-	style="background-size: cover; background-repeat: no-repeat; background-image: url('<%=baseURL%>assets/images/demo.png')">
+	style="background-size: cover; background-repeat: no-repeat; background-image: url('<%=bgs[rand]%>')">
 	
 	<% String errormsg=""; 
 	Boolean flag = false;%>

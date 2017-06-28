@@ -1665,7 +1665,7 @@ FROM
 	pincode
 WHERE
 	CLUSTER . ID = cluster_pincode_mapping.cluster_id
-AND cluster_pincode_mapping.pincode_id = pincode.pin
+AND cluster_pincode_mapping.pincode_id = pincode.id
 GROUP BY
 	CLUSTER . ID
 order by :order_by_column :order_type limit :limit offset :offset

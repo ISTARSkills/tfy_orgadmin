@@ -111,7 +111,7 @@ public class MAIN {
 	
 	private static void scheduleMeeting() {
 		CreateInterviewSchedule cc= new CreateInterviewSchedule();
-		cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14);				
+		cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14,"S$");				
 		//cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
 	}
 
