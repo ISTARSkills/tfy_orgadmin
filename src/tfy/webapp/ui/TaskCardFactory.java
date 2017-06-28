@@ -123,7 +123,7 @@ public class TaskCardFactory {
 				int intervieweeId = Integer.parseInt(task.getTaskContent().get("interviewee_id"));
 				int courseId = Integer.parseInt(task.getTaskContent().get("course_id"));
 				
-				sb.append(new TaskCardFactoryRecruitment().showCourseCard(intervieweeId, courseId, interviewerId));
+				sb.append(new TaskCardFactoryRecruitment().showCourseCard(intervieweeId, courseId, interviewerId,true));
 				
 			}
 		

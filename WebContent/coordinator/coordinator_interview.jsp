@@ -4,10 +4,10 @@
 <%
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	CoordinatorSchedularUtil schedularUtil = new CoordinatorSchedularUtil();
-	String course_id=request.getParameter("course_id");
-	String stage_id=request.getParameter("stage_id");
-	String trainerID=request.getParameter("trainerID");
-	String uniq_id=request.getParameter("uniq_id");
+	String course_id = request.getParameter("course_id");
+	String stage_id = request.getParameter("stage_id");
+	String trainerID = request.getParameter("trainerID");
+	String uniq_id = request.getParameter("uniq_id");
 %>
 
 
@@ -35,19 +35,24 @@
 		</div>
 	</div>
 
-	<div class="form-group">
-		<label class="font-bold">Interview Time</label>
-		<div class="input-group" data-autoclose="true">
-			<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
-			</span> <input type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
+	<div class="row">
+		<div class="col-md-6 no-padding">
+			<div class="form-group">
+				<label class="font-bold">Time</label>
+				<div class="input-group" data-autoclose="true">
+					<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
+					</span> <input type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
+				</div>
+			</div>
 		</div>
-	</div>
-
-	<div class="form-group">
-		<label class="font-bold">Interview Duration(in Mins)</label>
-		<div class="input-group" data-autoclose="true">
-			<span class="input-group-addon"> <span class="fa fa-hourglass-start"></span>
-			</span> <input type="number" style="width: 100%; height: 28px;" id="event_duration_<%=uniq_id%>" value='30' name="duration" />
+		<div class="col-md-6" style="padding-left:15px;padding-right:0px;">
+			<div class="form-group">
+				<label class="font-bold">Duration(in Mins)</label>
+				<div class="input-group" data-autoclose="true">
+					<span class="input-group-addon"> <span class="fa fa-hourglass-start"></span>
+					</span> <input type="number" style="width: 100%; height: 28px;" id="event_duration_<%=uniq_id%>" value='30' name="duration" />
+				</div>
+			</div>
 		</div>
 	</div>
 </form>

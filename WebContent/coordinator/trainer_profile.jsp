@@ -104,7 +104,7 @@
 					try{
 					%>
 					
-					<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,courseId, user.getId()).toString()%>
+					<%=(new TaskCardFactoryRecruitment()).showCourseCard(trainerId,courseId, user.getId(),false).toString()%>
 				
 				<% 
 					}catch(Exception e)

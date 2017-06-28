@@ -248,10 +248,13 @@ public class TaskCardFactoryRecruitment {
 		return sb;
 	}
 
-	public StringBuffer showCourseCard(int trainerID, int courseID, int interviewerid) {
+	public StringBuffer showCourseCard(int trainerID, int courseID, int interviewerid,boolean isEnabled) {
 		Course course = new CourseDAO().findById(courseID);
 		String startUrl="";
 		String intervieweeName="";
+
+		IstarUser istarUser=new IstarUserDAO().findById(interviewerid);
+		
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div class='col-lg-4 equalheight2' id='trainer_rating_" + trainerID + "_" + courseID
@@ -361,8 +364,9 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				
-				
+				if(isEnabled)
 				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>");
+				
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L4' data-interviewer_id='"
@@ -398,8 +402,9 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				
+				if(isEnabled)
+				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>");
 				
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>          ");
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + "data-stage='L5' data-interviewer_id='"
@@ -434,7 +439,7 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				
-				
+				if(isEnabled)
 				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-4'>           ");
 				
 				
