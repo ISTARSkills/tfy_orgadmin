@@ -28,7 +28,8 @@
 
 	ComplexObject cp = rc.getComplexObject(user.getId());
 	String lessonTitle = "Talentify";
-	
+	System.out.println("31");
+
 	CourseContent courseContent = rc.getCourseContentForStudent(task_id);
 	int lessonId=0;
 	long currentSlideId = 0;
@@ -39,9 +40,12 @@
 		if(courseContent.getCurrentItemSlideId()!=null)
 		{
 			currentSlideId = courseContent.getCurrentItemSlideId();
-		}	}
+		}	
+		}
 
 	String email = user.getEmail();
+	
+	System.out.println("47");
 %>
 <head>
 <meta charset="utf-8">
@@ -84,7 +88,6 @@
 
 		<div class="slides">
 			
-			<%=lessonServices.lessonHTMLfromLessonXMLAddendum(lessonId) %>
 			<%=lessonServices.lessonHTMLfromLessonXML(lessonId) %>
           
 		</div>

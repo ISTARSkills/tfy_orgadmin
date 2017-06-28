@@ -38,34 +38,24 @@ import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
 import com.viksitpro.core.dao.utils.HibernateSessionFactory;
+import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class LessonServices {
 
 	public String lessonHTMLfromLessonXML(int lessonID) throws IOException {
 		StringBuffer stringBuffer = new StringBuffer();
-		URL url = new URL("http://cdn.talentify.in/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
+		
+		String path = AppProperies.getProperty("mediaLessonPath");
+	
+
+		URL url = new URL( AppProperies.getProperty("media_url_path")+"/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		InputStream is = http.getInputStream();
-		String path = "";
-		try {
-			Properties properties = new Properties();
-			String propertyFileName = "app.properties";
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-			if (inputStream != null) {
-				properties.load(inputStream);
-			} else {
-				throw new FileNotFoundException("property file '" + propertyFileName + "' not found in the classpath");
-			}
-			path = properties.getProperty("mediaLessonPath");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+		
 		path += "/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml";
 
-		URL file = new URL("http://cdn.talentify.in/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
+		URL file = new URL( AppProperies.getProperty("media_url_path")+"/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
 
 		try {
 			JAXBContext jaxbcontext = JAXBContext.newInstance(CMSLesson.class);

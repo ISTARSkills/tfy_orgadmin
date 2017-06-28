@@ -117,6 +117,18 @@ request.setAttribute("cp", cp);
 									|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")){
 								
 								String url = NotificationLinkFactory.getURL(notification, istarUser.getId());
+								if(notification.getItemType().equalsIgnoreCase("ASSESSMENT"))
+								{
+									int assessmentTaskId = ((Double)notification.getItem().get("taskId")).intValue();
+									for(TaskSummaryPOJO task : cp.getTaskForTodayCompleted())
+									{
+										if(task.getId()== assessmentTaskId)
+										{
+											url="/student/assessment_report.jsp?assessment_id="+notification.getItemId().intValue()+"&user_id="+cp.getId();
+												break;	
+										}	
+									}	
+								}	
 							%>
 						<li style="    margin-left: -31px;min-height: 38px;	">
 							<div class="dropdown-messages-box notification_holder_status" data-url="<%=baseURL+"t2c/notifications/user/"+cp.getId() %>" data-notifiction="<%=notification.getId()%>" >

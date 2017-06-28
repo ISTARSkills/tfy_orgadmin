@@ -72,6 +72,7 @@ public class UserSignUp extends IStarBaseServelet {
 		String addressLine2 = "";
 		String cluster = "";
 		String userType = "";
+		String panNo = "";
 		int pincode = 0;
 		boolean hasUgDegree = false;
 		boolean hasPgDegree = false;
@@ -84,6 +85,7 @@ public class UserSignUp extends IStarBaseServelet {
 		pgDegree = request.getParameter("pg_degree") != null ? request.getParameter("pg_degree") : null;
 		gender = request.getParameter("gender") != null ? request.getParameter("gender") : "";
 		dob = request.getParameter("dob") != null ? request.getParameter("dob") : "";
+		panNo = request.getParameter("pan") != null ? request.getParameter("pan") : "";
 		courseIds = request.getParameter("session_id") != null ? request.getParameter("session_id") : "";
 		mobile = request.getParameter("mobile") != null ? request.getParameter("mobile") : "0";
 		avaiableTime = request.getParameter("avaiable_time") != null ? request.getParameter("avaiable_time") : "";
@@ -164,10 +166,10 @@ public class UserSignUp extends IStarBaseServelet {
 						+ "'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
 				db.executeUpdate(insertIntoUserRole);
 
-				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
+				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months, pan_no) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
 						+ urseId + ", '" + Boolean.toString(hasUgDegree).charAt(0) + "','"
 						+ Boolean.toString(hasPgDegree).charAt(0) + "','" + ugDegree + "','" + pgDegree + "','"
-						+ experinceYears + "','" + experinceMonths + "'); ";
+						+ experinceYears + "','" + experinceMonths + "', '"+panNo+"'); ";
 				db.executeUpdate(insertIntoProfessionalProfile);
 
 				if (userType.equalsIgnoreCase("TRAINER")) {

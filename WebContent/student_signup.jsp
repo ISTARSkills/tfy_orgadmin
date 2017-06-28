@@ -108,6 +108,9 @@ function formatRepoSelection(repo) {
 $(document)
 		.ready(
 				function() {
+					$('#signup_button').unbind().click(function() {
+						$('#signup_form').submit();
+					});
 					
 					//$('select').select2();
 					$('#data_2 .input-group.date').datepicker({
