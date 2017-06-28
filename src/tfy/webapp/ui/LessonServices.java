@@ -219,9 +219,8 @@ public class LessonServices {
 			addendum += "<h1 data-slide_id='9999' data-element_type='TITLE' class='edit'>Addendum</h1>";
 			addendum += "<ul>";
 			for(String addendum_link : addendum_links) {
-				String link = "http://cdn.talentify.in/lessonXMLs/"+lessonID+"/"+lessonID+"/"+addendum_link;
-				addendum += link;
-				addendum += "<li data-slide_id='9999' data-element_type='LIST' class='fragment fade-up edit' data-fragment-index='0'><a href='"+link+"'>"+addendum_link+"</li> ";
+				String link = getAnyPath("cdn_path")+"lessonXMLs/"+lessonID+"/"+lessonID+"/"+addendum_link;
+				addendum += "<li data-slide_id='9999' data-element_type='LIST' class=' fade-up' data-fragment-index='0'><a href='"+link+"'>"+addendum_link+"</li> ";
 			}
 			addendum += "</ul><aside class='notes'> Ask the class to download these resources, as they will form the basis of the case studies etc during the lesson </aside> </section> <div class='hidden_element' id='slide_4529' data-template='only_title_list' data-slide_id='4529' data-length='120' ></div>";
 		}

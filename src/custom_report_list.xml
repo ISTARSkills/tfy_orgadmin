@@ -52,7 +52,7 @@ AND report.user_id = istar_user.ID
 AND batch_group.college_id = user_org_mapping.organization_id
 and user_org_mapping.user_id = istar_user.id
 and istar_user.id = user_role.user_id
-and user_role.role_id = 12
+and user_role.role_id in (select id from role where role_name='STUDENT')
 GROUP BY
 	batch_group.college_id,
 	batch.course_id
@@ -83,7 +83,7 @@ AND report.user_id = istar_user.ID
 AND batch_group.college_id = user_org_mapping.organization_id
 and user_org_mapping.user_id = istar_user.id
 and istar_user.id = user_role.user_id
-and user_role.role_id = 12
+and user_role.role_id in (select id from role where role_name='STUDENT')
 GROUP BY
 	batch_group.college_id,
 	batch.course_id

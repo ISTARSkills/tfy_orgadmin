@@ -700,7 +700,7 @@ FROM
 	left join batch_group on (batch_students.batch_group_id = batch_group. ID)
 	left join batch on (batch_group. ID = batch.batch_group_id)
 	left join course on (batch.course_id = course. ID)
-	where  user_role.role_id in (12,14)
+	where  user_role.role_id in (select id from role where role_name in ('STUDENT','TRAINER'))
 	GROUP BY
 		istar_user. ID,
 		user_profile.first_name,
@@ -782,7 +782,7 @@ SELECT 	T1.cname, 	T1.summaster / countmaster AS avgmaaster, 	T1.sumwizard / cou
 		<column columnHandler="NONE" display_name="Location" isVisible="true" name="city" />		
 		<column columnHandler="NONE" display_name="Unbilled Hours" isVisible="true" name="hours" />			
 	<sql>
-SELECT   TF.tid, 	TF.tname, 	TF.joindate, 	TF.temail, 	TF.avgrating, 	COALESCE (TF.LATE_STARTED, 0) AS LATE_STARTED, 	COALESCE (TF.EARLY_ENDED, 0) AS EARLY_ENDED, 	TF.city, 	COALESCE (TF.hours, 0) AS hours, 	COALESCE (TF. MIN, 0) AS MIN, count(*) OVER() as total_rows 	 FROM 	( 		( 			SELECT 				tid, 				joindate, 				tname, 				temail, 				city, 				( 					CASE 					WHEN round( 						AVG (student_feedback.rating) 					) IS NULL THEN 						1 					ELSE 						round( 							AVG (student_feedback.rating) 						) 					END 				) AS avgrating 			FROM 				( 					SELECT 						istar_user. ID AS tid, 						istar_user.created_at AS joindate, 						user_profile.first_name AS tname, 						istar_user.email AS temail, 						pincode.city AS city 					FROM 						address, 						pincode, 						istar_user, 						user_profile, 						user_role 					WHERE 						user_profile.address_id = address. ID 					AND istar_user. ID = user_profile.user_id 					AND address.pincode_id = pincode. ID 					AND user_profile.user_id = user_role.user_id 					AND user_role.role_id = 14 				) xxx 			LEFT JOIN batch_schedule_event ON ( 				xxx.tid = batch_schedule_event.actor_id 			) 			LEFT JOIN student_feedback ON ( 				student_feedback.trainer_id = xxx.tid 				AND student_feedback.event_id = batch_schedule_event. ID 			) 			GROUP BY 				tid, 				joindate, 				tname, 				temail, 				city 			ORDER BY 				tid 		) T1 		LEFT JOIN ( 			SELECT 				exception_log.trainer_id AS t_id, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'LATE_STARTED' 				) AS LATE_STARTED, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'EARLY_ENDED' 				) AS EARLY_ENDED 			FROM 				exception_log 			WHERE 				exception_log.exception_component = 'EVENT_DELIVERY' 			GROUP BY 				exception_log.trainer_id 		) T2 ON (T1.tid = T2.t_id) 		LEFT JOIN ( 			SELECT 				batch_schedule_event.actor_id AS tids, 				SUM ( 					batch_schedule_event.eventhour 				) AS hours, 				SUM ( 					batch_schedule_event.eventminute 				) AS MIN 			FROM 				batch_schedule_event 			WHERE 				batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' 			AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' 			GROUP BY 				actor_id 		) T3 ON (T3.tids = T1.tid) 	) TF	order by :order_by_column :order_type limit :limit offset :offset	</sql>
+SELECT   TF.tid, 	TF.tname, 	TF.joindate, 	TF.temail, 	TF.avgrating, 	COALESCE (TF.LATE_STARTED, 0) AS LATE_STARTED, 	COALESCE (TF.EARLY_ENDED, 0) AS EARLY_ENDED, 	TF.city, 	COALESCE (TF.hours, 0) AS hours, 	COALESCE (TF. MIN, 0) AS MIN, count(*) OVER() as total_rows 	 FROM 	( 		( 			SELECT 				tid, 				joindate, 				tname, 				temail, 				city, 				( 					CASE 					WHEN round( 						AVG (student_feedback.rating) 					) IS NULL THEN 						1 					ELSE 						round( 							AVG (student_feedback.rating) 						) 					END 				) AS avgrating 			FROM 				( 					SELECT 						istar_user. ID AS tid, 						istar_user.created_at AS joindate, 						user_profile.first_name AS tname, 						istar_user.email AS temail, 						pincode.city AS city 					FROM 						address, 						pincode, 						istar_user, 						user_profile, 						user_role 					WHERE 						user_profile.address_id = address. ID 					AND istar_user. ID = user_profile.user_id 					AND address.pincode_id = pincode. ID 					AND user_profile.user_id = user_role.user_id 					AND user_role.role_id in (select id from role where role_name = 'TRAINER') 				) xxx 			LEFT JOIN batch_schedule_event ON ( 				xxx.tid = batch_schedule_event.actor_id 			) 			LEFT JOIN student_feedback ON ( 				student_feedback.trainer_id = xxx.tid 				AND student_feedback.event_id = batch_schedule_event. ID 			) 			GROUP BY 				tid, 				joindate, 				tname, 				temail, 				city 			ORDER BY 				tid 		) T1 		LEFT JOIN ( 			SELECT 				exception_log.trainer_id AS t_id, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'LATE_STARTED' 				) AS LATE_STARTED, 				COUNT (*) FILTER (  					WHERE 						exception_log.exception_type = 'EARLY_ENDED' 				) AS EARLY_ENDED 			FROM 				exception_log 			WHERE 				exception_log.exception_component = 'EVENT_DELIVERY' 			GROUP BY 				exception_log.trainer_id 		) T2 ON (T1.tid = T2.t_id) 		LEFT JOIN ( 			SELECT 				batch_schedule_event.actor_id AS tids, 				SUM ( 					batch_schedule_event.eventhour 				) AS hours, 				SUM ( 					batch_schedule_event.eventminute 				) AS MIN 			FROM 				batch_schedule_event 			WHERE 				batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' 			AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' 			GROUP BY 				actor_id 		) T3 ON (T3.tids = T1.tid) 	) TF	order by :order_by_column :order_type limit :limit offset :offset	</sql>
 	<filter_sql>
 		
 	</filter_sql>	
@@ -1641,6 +1641,33 @@ and tes.stage = 'L2' and tes.empanelment_status ='SELECTED'
 group by course_id , cluster_id
 )L2_TAB
 )FINAL_L2 on (FINAL_L2.course_id= STATIC_TAB.course_id and FINAL_L2.cluster_id=STATIC_TAB.cluster_id)
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>
+</reports>
+
+
+
+<reports id="3067" type_of_report="table">
+		<column columnHandler="NONE" display_name="Cluster ID " isVisible="true" name="id" />
+		<column columnHandler="NONE" display_name="Cluster Name" isVisible="true" name="cluster_name" />			
+		<column columnHandler="NONE" display_name="Areas" isVisible="true" name="string_agg" />
+		<column columnHandler="NONE" display_name="Pincodes" isVisible="true" name="string_agg1" />		
+								
+<sql>
+SELECT DISTINCT
+	CLUSTER . ID,
+	CLUSTER .cluster_name,
+	string_agg (distinct pincode."name", ', '),string_agg (cast(pincode.pin as VARCHAR), ',') as string_agg1,
+	COUNT (*) OVER () AS total_rows
+FROM
+	CLUSTER,
+	cluster_pincode_mapping,
+	pincode
+WHERE
+	CLUSTER . ID = cluster_pincode_mapping.cluster_id
+AND cluster_pincode_mapping.pincode_id = pincode.pin
+GROUP BY
+	CLUSTER . ID
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>

@@ -338,7 +338,7 @@
                         <td style="text-align: center;"><input class="chechbox" id="wednesday10" type="checkbox" value="wednesday#&5:00 PM-6:00 PM!&" <%if(slotData.get("WEDNESDAY")!=null && slotData.get("WEDNESDAY").get(10)){%>checked<%} %>></td>
                      </tr>
                      <tr>
-                        <td>THURSDAY</td>
+                        <td>Thursday</td>
                         <td style="text-align: center;"><input class="chechbox" id="thrusday1" type="checkbox" value="thrusday#&8:00 AM-9:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(1)){%>checked<%} %>></td>
                         <td style="text-align: center;"><input class="chechbox" id="thrusday2" type="checkbox" value="thrusday#&9:00 AM-10:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(2)){%>checked<%} %>></td>
                         <td style="text-align: center;"><input class="chechbox" id="thrusday3" type="checkbox" value="thrusday#&10:00 AM-11:00 AM!&" <%if(slotData.get("THURSDAY")!=null && slotData.get("THURSDAY").get(3)){%>checked<%} %>></td>

@@ -36,8 +36,10 @@
 	{
 		lessonId = courseContent.getItems().get(courseContent.getCurrentItemOrderId()).getItemId();
 		lessonTitle = courseContent.getItems().get(courseContent.getCurrentItemOrderId()).getItemName();
-		currentSlideId = courseContent.getCurrentItemSlideId();
-	}
+		if(courseContent.getCurrentItemSlideId()!=null)
+		{
+			currentSlideId = courseContent.getCurrentItemSlideId();
+		}	}
 
 	String email = user.getEmail();
 %>

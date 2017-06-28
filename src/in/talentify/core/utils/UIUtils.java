@@ -523,7 +523,7 @@ public class UIUtils {
 
 		String sql = "SELECT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s.first_name AS trainer_name, 	bse.batch_id AS batch_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_id = B. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND org. ID = "
 				+ c.getId()
-				+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+				+ " AND s.user_id = ur.user_id AND ur.role_id in (select id from role where role_name = 'TRAINER') AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -571,11 +571,11 @@ public class UIUtils {
 
 			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_group_id AS batch_group_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_group_id = BG. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND  org. ID = "
 					+ org_id + " AND BSE.course_id = " + course_id
-					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+					+ " AND s.user_id = ur.user_id AND ur.role_id in (select id from role where role_name = 'TRAINER') AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		} else {
 			sql = "SELECT DISTINCT 	bse.eventdate AS eventdate, 	bse.event_name AS event_name, 	CAST (bse. ID AS VARCHAR(50)) AS ID, 	bse.eventhour AS bse_eventhour, 	bse.eventminute AS bse_eventmin, 	bse.status AS bse_status, 	org. ID AS org_id, 	org. NAME AS org_name, 	s. first_name AS trainer_name, 	bse.batch_group_id AS batch_group_id, 	s.user_id AS trainer_id, 	CD.classroom_identifier, 	CD. ID AS class_id, 	B. NAME AS batch_name FROM 	user_profile s,   user_role ur, 	batch_schedule_event bse, 	batch B, 	batch_group BG, 	classroom_details CD, 	organization org WHERE 	CD. ID = bse.classroom_id AND BG. ID = B.batch_group_id AND bse.batch_group_id = BG. ID AND BG.college_id = org. ID AND bse.actor_id = s. ID AND "
 					+ " org. ID = " + org_id + " AND BSE.course_id = " + course_id
-					+ " AND s.user_id = ur.user_id AND ur.role_id = 14 AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
+					+ " AND s.user_id = ur.user_id AND ur.role_id in (select id from role where role_name = 'TRAINER') AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		}
 		// System.out.println("101 -> " + sql);
 		DBUTILS db = new DBUTILS();
@@ -750,7 +750,7 @@ public class UIUtils {
 
 	public StringBuffer getAllStudentsForBatch(int orgId, ArrayList<Integer> selectedStudents) {
 		String sql = "SELECT 	istar_user. ID, email FROM 	user_org_mapping, 	istar_user, user_role WHERE 	istar_user. ID = user_org_mapping.user_id AND user_role.user_id = istar_user. ID AND user_org_mapping.organization_id = "
-				+ orgId + " AND user_role.role_id = 12";
+				+ orgId + " AND user_role.role_id in (select id from role where role_name='STUDENT')";
 
 		// System.err.println(sql);
 		DBUTILS db = new DBUTILS();

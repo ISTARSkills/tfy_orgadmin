@@ -720,7 +720,7 @@ public class EventSchedulerService {
 				+ "FROM 	batch_schedule_event, batch,  user_profile, user_role WHERE batch.batch_group_id = batch_schedule_event.batch_group_id and batch.course_id = batch_schedule_event.course_id and"
 				+ " 	batch_schedule_event.batch_group_id IN ( SELECT 	ID 	FROM batch_group WHERE 	college_id ="+ orgID + " ) 	 " + "AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate
 				+ "%' and batch_schedule_event.type = 'BATCH_SCHEDULE_EVENT_TRAINER' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
-				+ "AND user_role.role_id = 14";
+				+ "AND user_role.role_id in (select id from role where role_name = 'TRAINER')";
 		System.out.println("erronous sql>>>>>    "+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
