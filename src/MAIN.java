@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
@@ -66,6 +68,7 @@ import tfy.admin.services.EmailService;
 
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillGraph;
+import tfy.admin.trainer.CreateInterviewSchedule;
 
 
 public class MAIN {
@@ -95,14 +98,23 @@ public class MAIN {
 		//jsontesting();
 		System.out.println("start");
 		//createInterviewSkill();
-		createFarziData();
-		for(int i=0;i<15;i++)
-		{
-			createFarziData();
-		}
+		//createFarziData();
+		//for(int i=0;i<15;i++)
+		//{
+			//createFarziData();
+		//}
+		
+		scheduleMeeting();
+		
 		System.out.println("end");
 	}
 	
+	private static void scheduleMeeting() {
+		CreateInterviewSchedule cc= new CreateInterviewSchedule();
+		cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14);				
+		//cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
+	}
+
 	private static void createInterviewSkill() {
 		// TODO Auto-generated method stub
 		DBUTILS db = new DBUTILS();

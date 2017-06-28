@@ -121,7 +121,7 @@ th {
 						 
 						 %>
 						 
-						 class="trainerprofile_holder product-box col-lg-4 element-item <%=clustersData%> 
+						 class="trainerprofile_holder product-box  white-bg col-lg-4 element-item <%=clustersData%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>" >
 							<div class="contact-box no-borders"  >
 								<div class="col-sm-4">

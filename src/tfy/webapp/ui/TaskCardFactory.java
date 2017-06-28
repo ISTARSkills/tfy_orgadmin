@@ -117,17 +117,16 @@ public class TaskCardFactory {
 			task.setHeader("");
 		}
 		if(task.getTaskContent()!=null && task.getTaskContent().size()>0)
-		{	
-			String interviewerName =task.getTaskContent().get("interviewer_name");
-			String intervieweeName =task.getTaskContent().get("interviewee_name");
-			String startUrl =task.getTaskContent().get("start_url");
-			int interviewerId = Integer.parseInt(task.getTaskContent().get("interviewer_id"));
-			int intervieweeId = Integer.parseInt(task.getTaskContent().get("interviewee_id"));
-			int courseId = Integer.parseInt(task.getTaskContent().get("course_id"));
-			
-			sb.append(new TaskCardFactoryRecruitment().showCourseCard(intervieweeId, courseId, interviewerId));
-			
-		}
+			{	
+				
+				int interviewerId = Integer.parseInt(task.getTaskContent().get("interviewer_id"));
+				int intervieweeId = Integer.parseInt(task.getTaskContent().get("interviewee_id"));
+				int courseId = Integer.parseInt(task.getTaskContent().get("course_id"));
+				
+				sb.append(new TaskCardFactoryRecruitment().showCourseCard(intervieweeId, courseId, interviewerId));
+				
+			}
+		
 		return sb;
 	}
 	

@@ -36,7 +36,7 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//request.getSession().removeAttribute("user");
+
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 		
 			System.out.println("Email -> " + request.getParameter("email"));
@@ -88,7 +88,7 @@ public class LoginController extends HttpServlet {
 					else if (userRole.equalsIgnoreCase("MASTER_TRAINER"))
 					{
 						request.getSession().setAttribute("user", user);
-						url = "/trainer/dashboard.jsp";
+						url = "/student/dashboard.jsp";
 						request.getRequestDispatcher(url).forward(request, response);
 					}
 					else if (userRole.equalsIgnoreCase("TRAINER"))

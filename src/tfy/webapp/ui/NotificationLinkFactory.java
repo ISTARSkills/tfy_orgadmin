@@ -14,7 +14,7 @@ public class NotificationLinkFactory {
 
 		switch (notification.getItemType()) {
 		case "ASSESSMENT":
-			return "/student/user_assessment.jsp?task_id=" + notification.getItem().get("taskId") + "&assessment_id="
+			return "/student/user_assessment.jsp?task_id=" + ((Double)notification.getItem().get("taskId")).intValue() + "&assessment_id="
 					+ notification.getItemId().intValue() + "&user_id=" + istarUSERID;
 
 		case "LESSON":

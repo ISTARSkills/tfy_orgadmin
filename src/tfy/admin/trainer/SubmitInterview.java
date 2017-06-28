@@ -91,10 +91,14 @@ ratingSkill:
 			}
 			
 			
+			
+			
 			String insertIntoStatus ="INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
 					+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+trainerId+", '"+status+"', now(), '"+stage+"', "+courseId+");";
 			util.executeUpdate(insertIntoStatus);
 			
+			String updateTask ="update task set is_active ='f' , state ='COMPLETED' where id in (select task_id from interview_task_details where course_id = "+courseId+" and interviewee_id = "+trainerId+" and interviewer_id = "+interviewerId+" and stage ='"+stage+"')";
+			util.executeUpdate(updateTask);
 		}
 		
 	}

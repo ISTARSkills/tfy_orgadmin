@@ -54,12 +54,24 @@
 	</div>
 	<jsp:include page="inc/foot.jsp"></jsp:include>
 	<Script>
+	$( document ).ready(function() {
 	$(".card1").flip({
 		  trigger: 'mannual'
 		});
-	
-	$('#equalheight2 .ibox-content').equalHeights();
+	$('.card1 .vertical-container').css('cssText','max-height:1200px !important;backface-visibility: hidden;');
 
+	$('.equalheight2 #ibox-content').equalHeights();
+	$('.card1 .vertical-container').parent().css('cssText','max-height:1200px !important;backface-visibility: hidden;');
+	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height();
+	
+	console.log('productBoxHeight---'+productBoxHeight);
+	$('.back').each(function(e){
+		$(this).find('#ibox-content').height(productBoxHeight)
+	});
+	$('.front').each(function(e){
+	$(this).find('#ibox-content').height(productBoxHeight)
+	});
+	
 	
 	$('.reverse_view').unbind().on('click',function(){
 		var card=$(this).closest('div[class="card1"]');
@@ -72,6 +84,7 @@
 
 	  });
 	
+	
 	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height();
 	
 	console.log('productBoxHeight---'+productBoxHeight);
@@ -81,6 +94,9 @@
 	$('.front').each(function(e){
 	$(this).find('#ibox-content').height(productBoxHeight)
 	});
+	
+	
+
 	
 	$('.submit_feedback').unbind().on("click",function(){
 		//var holder_id='#trainer_rating_7035_14';
@@ -104,9 +120,19 @@
 			ratingSkill=ratingSkill+skill_id+":"+rating+",";
 		});
 		
+
+		
+		$(".rateYo").rateYo({
+		    rating: 0.0, 
+		    starWidth: "10px"   
+
+		  });
+		
 		if(ratingSkill.endsWith(",")){
 			ratingSkill=ratingSkill.substring(0,ratingSkill.length-1);
 		}
+		
+		
 		
 		 $.ajax({
 		        type: "POST",
@@ -123,6 +149,9 @@
       checkboxClass: 'icheckbox_square-green',
       radioClass: 'iradio_square-green',
   });
+	
+
+	});
 	</Script>
 </body>
 </html>

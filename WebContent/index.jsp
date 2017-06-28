@@ -59,6 +59,10 @@ try {
 		{
 			url1 = "/student/dashboard.jsp";
 		}
+		else if(userRole.equalsIgnoreCase("MASTER_TRAINER"))
+		{
+			url1 = "/student/dashboard.jsp";
+		}
 		else if (userRole.equalsIgnoreCase("STUDENT"))
 		{
 			url1 = "/student/dashboard.jsp";

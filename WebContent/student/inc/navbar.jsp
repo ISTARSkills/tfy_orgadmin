@@ -22,7 +22,17 @@
 		activeUrl = urlParts[urlParts.length - 1];
 
  IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");		
-String userRole = istarUser.getUserRoles().iterator().next().getRole().getRoleName();
+//String userRole = istarUser.getUserRoles().iterator().next().getRole().getRoleName();
+DBUTILS util = new DBUTILS();
+String findUserRole ="SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "+user.getId()+" order by ROLE . ID  limit 1";
+List<HashMap<String, Object>> roles = util.executeQuery(findUserRole);
+String userRole = "";
+if(roles.size()>0 && roles.get(0).get("role_name")!=null )
+{
+	userRole = roles.get(0).get("role_name").toString();
+}
+
+
 System.out.println("user role  "+userRole);
 
 String b_url = request.getRequestURL().toString();
