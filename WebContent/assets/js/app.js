@@ -6086,7 +6086,8 @@ function init_coordinator_trainer_details(){
 	    $('#searchable_grid  .trainerprofile_holder').equalHeights();	
 	    $('.grid').isotope({
 	    	  layoutMode: 'fitRows',
-	    	  itemSelector: '.element-item'
+	    	  itemSelector: '.element-item',
+	    	  transitionDuration:0
 	    	});
 	});
 	

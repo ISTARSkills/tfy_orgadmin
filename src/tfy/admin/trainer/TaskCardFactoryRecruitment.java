@@ -351,6 +351,8 @@ public class TaskCardFactoryRecruitment {
 				sb.append(" <div class='i-checks'><label> <input type='checkbox' value='SELECTED' id='selected_"
 						+ trainerID + "_" + courseID + "' > <i></i> Selected </label></div>");
 				sb.append("</div><div class='col-md-4'>");
+				String joinUrl="";
+				String intervieweeName="";
 				sb.append("<a class='banner btn btn-rounded' target='_blank' href='"+joinUrl+"?uname="+intervieweeName+"'>Start Interview</a>           ");
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
