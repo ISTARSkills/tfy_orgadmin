@@ -61,7 +61,7 @@
                            <div class="col-xs-12 col-md-12">
                               <% 
                                  for(FeedbackPojo feebackpojo:feedbackPojoArrayList){ %>
-                              <div class="col-xs-12 col-md-6">
+                              <div class="col-xs-12 col-md-6 no-padding no-margin">
                                  <div class="row no-padding no-margin">
                                     <div class="col-xs-5 no-padding no-margin">
                                        <h3 class="text-right no-padding no-margin"><%=feebackpojo.getName() %> :</h3>

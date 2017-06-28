@@ -6287,7 +6287,7 @@ function init_new_feedback(){
  			      }
  
  		  });
- 		$(this).rateYo("option", "spacing", "10px")
+ 		$(this).rateYo("option", "spacing", "5px")
 	});
 	
 	$('#feedback-submit-button').click(function (){
