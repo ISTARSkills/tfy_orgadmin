@@ -114,9 +114,15 @@ Param -> question_time_taken_3 : Value ->-11*/
 						{
 							status = TrainerEmpanelmentStatusTypes.SELECTED;
 						}
-						String insertIntoEmpanelMentStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+						
+						String checkIfExist ="select cast (count(*) as integer) as total from trainer_empanelment_status where stage ='L3' and trainer_id = "+user.getId()+" and course_id = "+courseId;
+						List<HashMap<String, Object>> oldData = util.executeQuery(checkIfExist);
+						if(oldData.size()>0 && oldData.get(0).get("total")!=null && (int)oldData.get(0).get("total")==0)
+						{
+							String insertIntoEmpanelMentStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
 								+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+user.getId()+", '"+status+"', now(), 'L3', "+courseId+");";
-						util.executeUpdate(insertIntoEmpanelMentStatus);
+							util.executeUpdate(insertIntoEmpanelMentStatus);
+						}
 					}
 					
 				}
