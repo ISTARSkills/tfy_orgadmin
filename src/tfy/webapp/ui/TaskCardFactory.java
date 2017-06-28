@@ -364,7 +364,7 @@ public class TaskCardFactory {
 	
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-3 product-box ' style='max-height: 370px !important; '>			"
+		sb.append("<div class='col-md-3 product-box ' style='max-height: 386px !important;overflow-y: scroll; '>			"
 				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> ");			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");

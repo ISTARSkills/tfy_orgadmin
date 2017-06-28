@@ -54,6 +54,4 @@
     <servlet-class>com.viksitpro.chat.services.ChatServerStarter</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  
- 
 </web-app>

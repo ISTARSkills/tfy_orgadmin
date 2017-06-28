@@ -38,6 +38,7 @@
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/coordinator/dashboard.jsp" url="/coordinator/dashboard.jsp" valid_role="coordinator" />
  	<parent_links display_name="Recruitment Details" is_visible_in_menu="true" jsp_file="/coordinator/coordinator_recruitment.jsp" url="/coordinator/coordinator_recruitment.jsp" valid_role="coordinator" /> 	
  	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />	
+ 	<parent_links display_name="Cluster Details" is_visible_in_menu="true" jsp_file="/coordinator/cluster_all.jsp" url="/coordinator/cluster_all.jsp" valid_role="coordinator" />	
 	<!-- coordinator ends here-->
 	
 	<!--student specific starts here -->

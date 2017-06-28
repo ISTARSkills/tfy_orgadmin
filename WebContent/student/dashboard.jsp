@@ -58,18 +58,18 @@
 	$(".card1").flip({
 		  trigger: 'mannual'
 		});
-	$('.card1 .vertical-container').css('cssText','max-height:1200px !important;backface-visibility: hidden;');
+//	$('.card1 .vertical-container').css('cssText','max-height:1200px !important;backface-visibility: hidden;');
 
 	$('.equalheight2 #ibox-content').equalHeights();
-	$('.card1 .vertical-container').parent().css('cssText','max-height:1200px !important;backface-visibility: hidden;');
+	$('.card1 .vertical-container').parent().css('cssText','max-height:386px !important;backface-visibility: hidden;');
 	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height();
 	
 	console.log('productBoxHeight---'+productBoxHeight);
 	$('.back').each(function(e){
-		$(this).find('#ibox-content').height(productBoxHeight)
+		$(this).find('#ibox-content').height(335);
 	});
 	$('.front').each(function(e){
-	$(this).find('#ibox-content').height(productBoxHeight)
+	$(this).find('#ibox-content').height(341);
 	});
 	
 	
@@ -84,16 +84,7 @@
 
 	  });
 	
-	
-	var productBoxHeight=$($($('.front')[0]).find('#ibox-content')).height();
-	
-	console.log('productBoxHeight---'+productBoxHeight);
-	$('.back').each(function(e){
-		$(this).find('#ibox-content').height(productBoxHeight)
-	});
-	$('.front').each(function(e){
-	$(this).find('#ibox-content').height(productBoxHeight)
-	});
+
 	
 	
 

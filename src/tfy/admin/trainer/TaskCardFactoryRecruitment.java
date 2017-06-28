@@ -257,7 +257,7 @@ public class TaskCardFactoryRecruitment {
 		
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-lg-4 equalheight2' id='trainer_rating_" + trainerID + "_" + courseID
+		sb.append("<div class='col-lg-3 equalheight2' style='max-height: 386px !important;' id='trainer_rating_" + trainerID + "_" + courseID
 				+ "' >				");
 
 		sb.append("<div class='card1' id='rate_list_" + courseID + "_" + trainerID
