@@ -33,7 +33,7 @@ import com.viksitpro.core.utilities.TaskItemCategory;
 public class CreateInterviewSchedule {
 
 	
-	public void createInterviewForTrainer(int coordinatorId, int interviewerId, int intervieweeId, int durationInMinutes, String date, String time, int courseId)
+	public void createInterviewForTrainer(int coordinatorId, int interviewerId, int intervieweeId, int durationInMinutes, String date, String time, int courseId, String stage)
 	{
 		DateFormat dateformatfrom = new SimpleDateFormat("dd/MM/yyyy");
 		
@@ -67,11 +67,12 @@ public class CreateInterviewSchedule {
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviewer+"', '"+taskTitleForInterviewer+"', "
 								+ ""+coordinatorId+", "+interviewerId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW+"') returning id;";
-				System.out.println(">>>"+sql);
+				
 				int taskId =util.executeUpdateReturn(sql);
 				
-				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id) "
-						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+");";
+				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id,stage) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+stage+"');";
+				System.out.println(">>>"+insertTaskDetails);
 				util.executeUpdate(insertTaskDetails);
 				
 			}
@@ -81,11 +82,12 @@ public class CreateInterviewSchedule {
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviee+"', '"+taskTitleForInterviee+"', "
 								+ ""+coordinatorId+", "+intervieweeId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW+"') returning id;";
-				System.out.println(">>>"+sql);
+				
 				int taskId =util.executeUpdateReturn(sql);
 				
-				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id) "
-						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+");";
+				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id,stage) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+stage+"');";
+				System.out.println(">>>"+insertTaskDetails);
 				util.executeUpdate(insertTaskDetails);
 			}
 		}	
@@ -94,7 +96,7 @@ public class CreateInterviewSchedule {
 	
 	
 	
-	public Integer createZoomSchedule(String dateTime, String topic, int durationInminutes  )
+	public Integer createZoomSchedule(String dateTime, String topic, int durationInminutes)
 	{
 		String url = "https://api.zoom.us/v1/meeting/create?host_id=j9Ix95GCQTqmc9aj6IPfYQ&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
 		System.out.println("c,s,s,,s ");

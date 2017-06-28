@@ -204,6 +204,9 @@ function readyFn(jQuery) {
 	case 'student_dashboard':	
 		$('#equalheight div.product-box').equalHeights();
 		break;
+	case 'coordinator_dashboard':
+		init_coordinator_dashboard();
+		break;
 	case 'coordinator_trainer_details':
 		init_coordinator_trainer_details();
 		break;
@@ -212,9 +215,6 @@ function readyFn(jQuery) {
 		break;
 	case 'cordinator_interview':
 		init_cordinator_interview();
-		break;
-	case 'coordinator_interview_schedular':
-		init_coordinator_interview_schedular();
 		break;
 	default:
 		init_orgadmin_none();
@@ -6211,7 +6211,9 @@ function init_cordinator_interview() {
 		});
 }
 
-function init_coordinator_interview_schedular(){
+
+function init_coordinator_dashboard(){
+	$('#dashboard_cads .ibox-content').equalHeights();
 	$('.input-group.date').datepicker({
 		startView : 1,
 		todayBtn : "linked",
@@ -6230,48 +6232,24 @@ function init_coordinator_interview_schedular(){
 		increase_direction:'up',
 		disable_keyboard_mobile: true});
 	
-	$('#stage_id').on("change", function(e) {
-	    var stage=$(this).val();
-	    var course=$('#course_id').val();
-	    
-	    if(course == undefined || course===''){
-	    	toastr.error('Please choose course!');
-	    }else if(stage== undefined || stage===''){
-	    	toastr.error('Please choose stage!');
-	    }else{
-	    	console.log(stage,course);
-		    $.ajax({
-		        type: "POST",
-		        url: "/coordinator_interview_data",
-		        data: {stage:stage,course:course,type:'trainer'},
-		        success: function(data) {
-		        	$('#trainer_id').html(data);
-		        	
-		        }});
-		 }
-	    
-	});
-	
-	$('#submit_form').unbind().on("click",function(){
-		var stage=$("#stage_id").val();
-	    var course=$('#course_id').val();
-	    var trainer_id=$('#trainer_id').val();
-	    var inter_viewer_id=$('#inter_viewer_id').val();
-	    var eventDate=$('#eventDate').val();
-	    var eventTime=$('#eventTime').val();
-	    
-	    
-	    if(course == undefined || course===''){
-	    	toastr.error('Please choose course!');
-	    }else if(stage== undefined || stage===''){
-	    	toastr.error('Please choose stage!');
-	    }else if(trainer_id== undefined || trainer_id==='' || inter_viewer_id== undefined || inter_viewer_id===''){
-	    	toastr.error('Please choose Trainer and Interviewer!');
-	    }else if(eventDate== undefined || eventDate==='' || eventTime== undefined || eventTime===''){
-	    	toastr.error('Please choose date and time!');
+$('.submit_form').unbind().on("click",function(){
+	    var uniqueId=$(this).data('unique');
+	    var inter_viewer_id=$('#inter_viewer_id_'+uniqueId).val();
+	    var eventDate=$('#eventDate_'+uniqueId).val();
+	    var eventTime=$('#eventTime_'+uniqueId).val();
+	    var event_duration=$('#event_duration_'+uniqueId).val();
+
+	    if(inter_viewer_id== undefined || inter_viewer_id===''){
+	    	toastr.error('Please choose Interviewer!');
+	    }else if(eventDate== undefined || eventDate==='' ){
+	    	toastr.error('Please specify Date!');
+	    }else if( eventTime== undefined || eventTime===''){
+	    	toastr.error('Please specify Time!');
+	    }else if(event_duration== undefined || event_duration===''){
+	    	toastr.error('Please specify Duration!');
 	    }else{
 		
-	    var data=$('#schedular_form').serialize();
+	    var data=$('#schedular_form_'+uniqueId).serialize();
 		
 		$.ajax({
 	        type: "POST",
@@ -6279,6 +6257,7 @@ function init_coordinator_interview_schedular(){
 	        data: data,
 	        success: function(data) {
 	        	toastr.success('Successfully Scheduled');
+	        	$('#interview_holder_'+uniqueId).remove();
 	        },
 	        error: function(data) {
 	        	toastr.errorr('Failed To Schedule. Please Contact Admin!');
@@ -6286,6 +6265,6 @@ function init_coordinator_interview_schedular(){
 		});
 	    }
 	});
-	
 }
+
 

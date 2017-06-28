@@ -26,35 +26,20 @@ public class CoordinatorInterviewDataController extends IStarBaseServelet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		printParams(request);
-		DBUTILS dbutils = new DBUTILS();
 		StringBuffer sb = new StringBuffer();
 
-		if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("trainer")) {
-			String stage = request.getParameter("stage");
-			int courseId = Integer.parseInt(request.getParameter("course"));
-			List<HashMap<String, Object>> data = new CoordinatorSchedularUtil().getTrainerLists(stage, courseId);
-
-			sb.append("<option value=''>Select Trainer...</option>");
-
-			if (data != null && data.size() != 0) {
-				for (HashMap<String, Object> item : data) {
-					sb.append("<option value='" + item.get("trainer_id") + "'>" + item.get("email") + "</option>");
-				}
-			}
-
-		} else if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("submit")) {
-			int coordinatorId = Integer.parseInt(request.getParameter("coordinator_id"));
-			int interviewerId = Integer.parseInt(request.getParameter("interviewer_id"));
-			int intervieweeId = Integer.parseInt(request.getParameter("trainerID"));
-			int durationInMinutes = Integer.parseInt(request.getParameter("duration"));
-			int courseId = Integer.parseInt(request.getParameter("course_id"));
-			String date = request.getParameter("date");
-			String time = request.getParameter("time");
-			CreateInterviewSchedule schedule = new CreateInterviewSchedule();
-			schedule.createInterviewForTrainer(coordinatorId, interviewerId, intervieweeId, durationInMinutes, date,
-					time, courseId);
-			sb.append("Success");
-		}
+		int coordinatorId = Integer.parseInt(request.getParameter("coordinator_id"));
+		int interviewerId = Integer.parseInt(request.getParameter("interviewer_id"));
+		int intervieweeId = Integer.parseInt(request.getParameter("trainerID"));
+		int durationInMinutes = Integer.parseInt(request.getParameter("duration"));
+		int courseId = Integer.parseInt(request.getParameter("course_id"));
+		String stage_id=request.getParameter("stage_id");
+		String date = request.getParameter("date");
+		String time = request.getParameter("time");
+		CreateInterviewSchedule schedule = new CreateInterviewSchedule();
+		schedule.createInterviewForTrainer(coordinatorId, interviewerId, intervieweeId, durationInMinutes, date, time,
+				courseId,stage_id);
+		sb.append("Success");
 		response.getWriter().print(sb);
 	}
 

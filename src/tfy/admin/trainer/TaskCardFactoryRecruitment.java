@@ -640,11 +640,10 @@ public class TaskCardFactoryRecruitment {
 
 		if (isCompleted != null) {
 			out.append(
-					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L4"
+					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L5"
 							+ "&course_id=" + course.getId() + "&user_id=" + trainerID + "'>" + "Trainer Demo Report"
 							+ "</a>");
 		}
-
 		out.append("</div>");
 		out.append("</div>");
 		return out;
@@ -679,7 +678,7 @@ public class TaskCardFactoryRecruitment {
 
 		if (isCompleted != null) {
 			out.append(
-					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L4"
+					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L6"
 							+ "&course_id=" + course.getId() + "&user_id=" + trainerID + "'>"
 							+ "Fitment Interview Report" + "</a>");
 		}
