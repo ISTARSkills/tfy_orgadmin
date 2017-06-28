@@ -56,9 +56,24 @@ public class CreateInterviewSchedule {
 		Course course = new CourseDAO().findById(courseId);
 		String topic = "Scheduled interview for the profile of Trainer for course "+course.getCourseName();
 		topic="";
-		String taskTitleForInterviewer = "An inteview has been scheduled with <strong>"+interviewee.getUserProfile().getFirstName()+" ["+interviewee.getUserProfile().getFirstName()+"]</strong> for the profile of Trainer for Course - <strong>"+course.getCourseName()+"</strong> at "+date+" "+time;
-		String taskTitleForInterviee = "An inteview has been scheduled with <strong>"+interviewer.getUserProfile().getFirstName()+" ["+interviewer.getUserProfile().getFirstName()+"]</strong> for the profile of Trainer for Course - <strong>"+course.getCourseName()+"</strong> at "+date+" "+time;
-		Integer meetingId = createZoomSchedule(dateTime, topic, durationInMinutes);
+		String taskTitleForInterviewer = "Scheduled interview with <strong>"+interviewee.getUserProfile().getFirstName()+" ["+interviewee.getEmail()+"]</strong> for the profile of Trainer for Course - <strong>"+course.getCourseName()+"</strong> at "+date+" "+time;
+		String taskTitleForInterviee = "Scheduled interview with <strong>"+interviewer.getUserProfile().getFirstName()+" ["+interviewer.getEmail()+"]</strong> for the profile of Trainer for Course - <strong>"+course.getCourseName()+"</strong> at "+date+" "+time;
+		
+		String interviewData = createZoomSchedule(dateTime, topic, durationInMinutes);
+		Integer meetingId = null;
+		String startUrl = "";
+		String joinUrl = "";
+		JSONObject data;
+		try {
+			data = new JSONObject(interviewData);
+			 meetingId = (int)data.getInt("id");
+			 startUrl = data.getString("start_url");
+			 joinUrl = data.getString("join_url");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 		if(meetingId!=null)
 		{
@@ -66,13 +81,12 @@ public class CreateInterviewSchedule {
 				//for interviewer			
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviewer+"', '"+taskTitleForInterviewer+"', "
-								+ ""+coordinatorId+", "+interviewerId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW+"') returning id;";
-				
+								+ ""+coordinatorId+", "+interviewerId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWER+"') returning id;";
+				System.out.println(">>>"+sql);
 				int taskId =util.executeUpdateReturn(sql);
 				
-				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id,stage) "
-						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+stage+"');";
-				System.out.println(">>>"+insertTaskDetails);
+				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id, start_url, join_url,meeting_id,stage) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+startUrl+"','"+joinUrl+"',"+meetingId+",'"+stage+"');";
 				util.executeUpdate(insertTaskDetails);
 				
 			}
@@ -81,13 +95,12 @@ public class CreateInterviewSchedule {
 				//for interviewee
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviee+"', '"+taskTitleForInterviee+"', "
-								+ ""+coordinatorId+", "+intervieweeId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW+"') returning id;";
-				
+								+ ""+coordinatorId+", "+intervieweeId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWEE+"') returning id;";
+				System.out.println(">>>"+sql);
 				int taskId =util.executeUpdateReturn(sql);
 				
-				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id,stage) "
-						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+stage+"');";
-				System.out.println(">>>"+insertTaskDetails);
+				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id, start_url, join_url,meeting_id,stage) "
+						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_task_details), "+taskId+", "+courseId+", "+interviewerId+","+intervieweeId+",'"+startUrl+"','"+joinUrl+"',"+meetingId+",'"+stage+"');";
 				util.executeUpdate(insertTaskDetails);
 			}
 		}	
@@ -96,7 +109,7 @@ public class CreateInterviewSchedule {
 	
 	
 	
-	public Integer createZoomSchedule(String dateTime, String topic, int durationInminutes)
+	public String createZoomSchedule(String dateTime, String topic, int durationInminutes  )
 	{
 		String url = "https://api.zoom.us/v1/meeting/create?host_id=j9Ix95GCQTqmc9aj6IPfYQ&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
 		System.out.println("c,s,s,,s ");
@@ -114,9 +127,8 @@ public class CreateInterviewSchedule {
 				}
 				in.close();					
 				System.out.println(response.toString());
-				JSONObject data = new JSONObject(response.toString());
-    			int meetingId = (int)data.getInt("id");
-    			return meetingId;
+				
+    			return response.toString();
     			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -127,10 +139,7 @@ public class CreateInterviewSchedule {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 }

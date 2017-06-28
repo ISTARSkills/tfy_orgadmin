@@ -73,7 +73,13 @@ try{
 <script src="<%=basePath %>assets/js/plugins/select2/select2.full.min.js"></script>
 
 <script src="<%=basePath%>assets/js/jquery.rateyo.min.js"></script>
+    <script src="<%=basePath%>assets/js/plugins/iCheck/icheck.min.js"></script>
+ 
+ 
 
+ 
+
+ <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
 <script src="<%=basePath %>assets/js/plugins/sweetalert/sweetalert.min.js"></script>

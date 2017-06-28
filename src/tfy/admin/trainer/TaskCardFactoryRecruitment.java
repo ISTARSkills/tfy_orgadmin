@@ -251,6 +251,8 @@ public class TaskCardFactoryRecruitment {
 	public StringBuffer showCourseCard(int trainerID, int courseID, int interviewerid) {
 		Course course = new CourseDAO().findById(courseID);
 
+		String findInterviewDetails = "";
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div class='col-lg-4 equalheight2' id='trainer_rating_" + trainerID + "_" + courseID
 				+ "' >				");
@@ -349,6 +351,9 @@ public class TaskCardFactoryRecruitment {
 				sb.append(" <div class='i-checks'><label> <input type='checkbox' value='SELECTED' id='selected_"
 						+ trainerID + "_" + courseID + "' > <i></i> Selected </label></div>");
 				sb.append("</div><div class='col-md-4'>");
+				String joinUrl="";
+				String intervieweeName="";
+				sb.append("<a class='banner btn btn-rounded' target='_blank' href='"+joinUrl+"?uname="+intervieweeName+"'>Start Interview</a>           ");
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L4' data-interviewer_id='"
@@ -640,10 +645,11 @@ public class TaskCardFactoryRecruitment {
 
 		if (isCompleted != null) {
 			out.append(
-					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L5"
+					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L4"
 							+ "&course_id=" + course.getId() + "&user_id=" + trainerID + "'>" + "Trainer Demo Report"
 							+ "</a>");
 		}
+
 		out.append("</div>");
 		out.append("</div>");
 		return out;
@@ -678,7 +684,7 @@ public class TaskCardFactoryRecruitment {
 
 		if (isCompleted != null) {
 			out.append(
-					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L6"
+					"<a target='_blank' class='btn btn-outline btn-warning btn-xs pull-right m-r-xs' href='/coordinator/interview_details.jsp?stage=L4"
 							+ "&course_id=" + course.getId() + "&user_id=" + trainerID + "'>"
 							+ "Fitment Interview Report" + "</a>");
 		}

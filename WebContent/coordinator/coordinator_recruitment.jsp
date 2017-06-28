@@ -123,7 +123,7 @@ th {
 						 
 						 class="trainerprofile_holder product-box col-lg-4 element-item <%=clustersData%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>" >
-							<div class="contact-box no-borders" style="height:80% !important;" >
+							<div class="contact-box no-borders"  >
 								<div class="col-sm-4">
 									<div class="text-center">
 										<img style="width: 80px !important; height: 80px !important;" alt="image"
@@ -316,7 +316,7 @@ th {
 							
 								
 							</div>
-							<div class="row text-center"> 
+							<div class="row text-center" style="margin-top:-40px;"> 
 							<a class="btn btn-outline btn-primary btn-xs show_more_button" style=''>more info</a>
 							</div>
 						</div>
