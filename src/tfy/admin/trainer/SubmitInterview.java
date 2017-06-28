@@ -63,6 +63,7 @@ ratingSkill:
 		DBUTILS util = new DBUTILS();
 		
 		String findPreviousEntries ="select * from interview_rating where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage_type ='"+stage+"'";
+		System.err.println(findPreviousEntries);
 		List<HashMap<String, Object>> prevData = util.executeQuery(findPreviousEntries);
 		if(prevData.size()==0)
 		{
@@ -72,6 +73,7 @@ ratingSkill:
 					String  rating = skillData.split(":")[1];
 				String insertInInterviewRating ="INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) "
 						+ "VALUES ((select COALESCE(max(id),0)+1 from interview_rating), '"+trainerId+"', '"+skillId+"', "+rating+", "+interviewerId+", '"+stage+"', "+courseId+");";
+			
 				util.executeUpdate(insertInInterviewRating);
 				
 				}

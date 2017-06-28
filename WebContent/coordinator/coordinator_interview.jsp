@@ -31,7 +31,8 @@
 	<div class="form-group" id="data_2">
 		<label class="font-bold">Interview Date</label>
 		<div class="input-group date">
-			<span class="input-group-addon"><i class="fa fa-calendar"></i></span> <input name="date" id="eventDate_<%=uniq_id%>" type="text" class="form-control date_holder" value="">
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+			<input placeholder="Select Interview Date" name="date" id="eventDate_<%=uniq_id%>" type="text" class="form-control date_holder" value="">
 		</div>
 	</div>
 
@@ -41,7 +42,7 @@
 				<label class="font-bold">Time</label>
 				<div class="input-group" data-autoclose="true">
 					<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
-					</span> <input type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
+					</span> <input  placeholder="Interview Time"  type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
 				</div>
 			</div>
 		</div>

@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes"%>
 <%@page import="com.viksitpro.core.utilities.TrainerEmpanelmentStageTypes"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
@@ -32,6 +34,8 @@ th {
 				<div class="col-lg-10">
 					<h2 style="margin-left: 30px">
 						<strong>Trainer Recruitment</strong>
+												<small>This page gives you a list of all people in the trainer hiring pipeline</small>
+						
 					</h2>
 				</div>
 				<div class="col-lg-2"></div>
@@ -94,7 +98,7 @@ th {
 
 						</div>
 					</div>
-					<div class="row grid" id="searchable_grid" style="margin: 10px">
+					<div class="row-fluid grid" id="searchable_grid">
 
 
 						<%
@@ -106,19 +110,21 @@ th {
 							for (int i = 0; i < data.size(); i++) {
 								try {
 						%>
-						<div style="margin-bottom: 10px" data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>' data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' <%String clustersData = "";
+						<div style="min-height:400px !important; width: 30% !important;margin: 10px !important;" data-name='<%=data.get(i).get("first_name").toString().replaceAll(" ", "_").toLowerCase()%>' 
+						 data-url='<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=data.get(i).get("id")%>' <%String clustersData = "";
 					if (data.get(i) != null && data.get(i).get("clusters") != null
 							&& !data.get(i).get("clusters").toString().equalsIgnoreCase("")) {
 						clustersData = UIUtils.createClassNameCLuster(data.get(i).get("clusters").toString());
-					}%> class="trainerprofile_holder product-box  white-bg col-lg-4 element-item <%=clustersData%> 
+					}%> class="trainerprofile_holder product-box white-bg col-lg-4 element-item widget-head-color-box <%=clustersData%> 
 						  <%=UIUtils.createClassNameCourse(data.get(i).get("courses").toString())%>">
-							<div class="contact-box no-borders">
-								<div class="col-sm-4">
+							<div class="contact-box no-borders" >
+								<div class="col-md-3">
 									<div class="text-center">
-										<img style="width: 80px !important; height: 80px !important;" alt="image" class="img-circle m-t-xs img-responsive" src="<%=user.getUserProfile().getProfileImage()%>">
+										<img style="width: 80px !important; height: 80px !important;" alt="image" class="img-circle m-t-xs img-responsive" 
+										 src="<%=AppProperies.getProperty("media_url_path") %><%=(new IstarUserDAO().findById(Integer.parseInt(data.get(i).get("id").toString()))).getUserProfile().getImage() %>">
 									</div>
 								</div>
-								<div class="col-sm-8">
+								<div class="col-md-9" style="    text-align: right;">
 									<h3>
 										<strong><%=data.get(i).get("first_name")%></strong>
 									</h3>
@@ -308,8 +314,9 @@ th {
 
 
 							</div>
-							<div class="row text-center" style="margin-top: -40px;">
-								<a class="btn btn-outline btn-primary btn-xs show_more_button" style=''>more info</a>
+							<div class="row text-center" style="    position: absolute;    bottom: 10px;    left: 43%;">
+								<a class="btn btn-outline btn-primary btn-xs show_more_button" style=''><i class="fa fa-angle-double-down" aria-hidden="true"></i>
+								Click to Expand</a>
 							</div>
 						</div>
 						<%

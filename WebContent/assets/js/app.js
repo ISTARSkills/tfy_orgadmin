@@ -6081,9 +6081,10 @@ function init_coordinator_trainer_details(){
 	    $(this).parent().parent().find('.show_more').toggle();
 	    
 	    if($(this).text().indexOf("more") >= 0){
-	    	$(this).html('less info');
+	    	$(this).html('<i class="fa fa-angle-double-down" aria-hidden="true"></i>Click to Expand');
+	    	
 	    }else{
-	    	$(this).html('more info');
+	    	$(this).html('<i class="fa fa-angle-double-up" aria-hidden="true"></i>Click to Collapse');
 	    }
 	    
 	   $('#searchable_grid .trainerprofile_holder').removeAttr('style');

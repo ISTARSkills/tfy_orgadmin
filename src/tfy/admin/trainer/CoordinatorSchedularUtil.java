@@ -13,6 +13,69 @@ import com.viksitpro.core.utilities.DBUTILS;
 public class CoordinatorSchedularUtil {
 	DBUTILS utils = new DBUTILS();
 
+	public List<HashMap<String, Object>> getDashboardCardListsL4() {
+		//String sql = "SELECT 	t1.*, C .course_name, 	up.first_name FROM 	( 		( 			SELECT DISTINCT 				te.trainer_id, 				te.course_id, 				te.stage, 				iu.email 			FROM 				trainer_empanelment_status te, 				istar_user iu 			WHERE 				te.trainer_id NOT IN ( 					SELECT 						trainer_id 					FROM 						trainer_empanelment_status te 					WHERE 						te.stage = 'L4' 				) 			AND te.stage = 'L3' 			AND te.empanelment_status = 'SELECTED' 			AND iu. ID = te.trainer_id 		) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L5' 					) 				AND te.stage = 'L4' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L6' 					) 				AND te.stage = 'L5' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 	) t1, 	course C, 	user_profile up WHERE 	t1.course_id = C . ID AND t1.trainer_id = up.user_id";
+		List<HashMap<String, Object>> finalData = new ArrayList<>();
+		
+		String sql ="select * from trainer_empanelment_status where stage ='L3' and empanelment_status ='SELECTED'";
+		List<HashMap<String, Object>> l3clearedData = utils.executeQuery(sql);
+		for(HashMap<String, Object> l3row: l3clearedData)
+		{
+			int trainerId = (int)l3row.get("trainer_id");
+			int courseId = (int)l3row.get("course_id");
+			String findPedningL4="select cast (count(*) as integer) as count  from trainer_empanelment_status where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage='L4'";
+			List<HashMap<String, Object>> l4Pending = utils.executeQuery(findPedningL4);
+			if(l4Pending.size()>0 && l4Pending.get(0).get("count")!=null && (int)l4Pending.get(0).get("count")==0)
+			{
+				finalData.add(l3row);
+			}
+		}
+		
+		return finalData;
+	}
+	
+	public List<HashMap<String, Object>> getDashboardCardListsL5() {
+		//String sql = "SELECT 	t1.*, C .course_name, 	up.first_name FROM 	( 		( 			SELECT DISTINCT 				te.trainer_id, 				te.course_id, 				te.stage, 				iu.email 			FROM 				trainer_empanelment_status te, 				istar_user iu 			WHERE 				te.trainer_id NOT IN ( 					SELECT 						trainer_id 					FROM 						trainer_empanelment_status te 					WHERE 						te.stage = 'L4' 				) 			AND te.stage = 'L3' 			AND te.empanelment_status = 'SELECTED' 			AND iu. ID = te.trainer_id 		) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L5' 					) 				AND te.stage = 'L4' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L6' 					) 				AND te.stage = 'L5' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 	) t1, 	course C, 	user_profile up WHERE 	t1.course_id = C . ID AND t1.trainer_id = up.user_id";
+		List<HashMap<String, Object>> finalData = new ArrayList<>();
+		
+		String sql ="select * from trainer_empanelment_status where stage ='L4' and empanelment_status ='SELECTED'";
+		List<HashMap<String, Object>> l3clearedData = utils.executeQuery(sql);
+		for(HashMap<String, Object> l3row: l3clearedData)
+		{
+			int trainerId = (int)l3row.get("trainer_id");
+			int courseId = (int)l3row.get("course_id");
+			String findPedningL4="select cast (count(*) as integer) as count  from trainer_empanelment_status where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage='L5'";
+			List<HashMap<String, Object>> l4Pending = utils.executeQuery(findPedningL4);
+			if(l4Pending.size()>0 && l4Pending.get(0).get("count")!=null && (int)l4Pending.get(0).get("count")==0)
+			{
+				finalData.add(l3row);
+			}
+		}
+		
+		return finalData;
+	}
+	
+	public List<HashMap<String, Object>> getDashboardCardListsL6() {
+		//String sql = "SELECT 	t1.*, C .course_name, 	up.first_name FROM 	( 		( 			SELECT DISTINCT 				te.trainer_id, 				te.course_id, 				te.stage, 				iu.email 			FROM 				trainer_empanelment_status te, 				istar_user iu 			WHERE 				te.trainer_id NOT IN ( 					SELECT 						trainer_id 					FROM 						trainer_empanelment_status te 					WHERE 						te.stage = 'L4' 				) 			AND te.stage = 'L3' 			AND te.empanelment_status = 'SELECTED' 			AND iu. ID = te.trainer_id 		) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L5' 					) 				AND te.stage = 'L4' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L6' 					) 				AND te.stage = 'L5' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 	) t1, 	course C, 	user_profile up WHERE 	t1.course_id = C . ID AND t1.trainer_id = up.user_id";
+		List<HashMap<String, Object>> finalData = new ArrayList<>();
+		
+		String sql ="select * from trainer_empanelment_status where stage ='L5' and empanelment_status ='SELECTED'";
+		List<HashMap<String, Object>> l3clearedData = utils.executeQuery(sql);
+		for(HashMap<String, Object> l3row: l3clearedData)
+		{
+			int trainerId = (int)l3row.get("trainer_id");
+			int courseId = (int)l3row.get("course_id");
+			String findPedningL4="select cast (count(*) as integer) as count  from trainer_empanelment_status where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage='L6'";
+			List<HashMap<String, Object>> l4Pending = utils.executeQuery(findPedningL4);
+			if(l4Pending.size()>0 && l4Pending.get(0).get("count")!=null && (int)l4Pending.get(0).get("count")==0)
+			{
+				finalData.add(l3row);
+			}
+		}
+		
+		return finalData;
+	}
+	
 	public List<HashMap<String, Object>> getCoursees() {
 		String sql = "select id,course_name from course ORDER BY course_name";
 		return utils.executeQuery(sql);
