@@ -216,6 +216,11 @@ function readyFn(jQuery) {
 	case 'cordinator_interview':
 		init_cordinator_interview();
 		break;
+	case 'new_feedback':
+		try{
+		init_new_feedback();
+		}catch(err){}
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -6267,4 +6272,39 @@ $('.submit_form').unbind().on("click",function(){
 	});
 }
 
+function init_new_feedback(){ 
+	
+	$(".feedback_rateYo").each(function(){
+ 		//console.log($(this).data('star_rating')); 
+ 		 var rating = $(this).data('star_rating');
+ 		 $(this).rateYo({
+ 			    rating: rating,
+ 			        starWidth: "25px",
+ 			    onSet: function (rating, rateYoInstance) {
+ 			    	$(this).attr('data-star_rating',rating);
+ 			        //alert("Rating is set to: " + rating);
+ 			      }
+ 
+ 		  });
+ 		$(this).rateYo("option", "spacing", "10px")
+	});
+	
+	$('#feedback-submit-button').click(function (){
+		var value_to_send_to_server ={};
+		var feedback_values =[];
+		$(".feedback_rateYo").each(function(){
+			var temp_obj={'name': $(this).data('name'),'rating': $(this).attr('data-star_rating')}
+			feedback_values.push(temp_obj);
+		});
+		var comment={'name': 'Comment','rating': $('textarea#feedbackTextarea').val()}
+		feedback_values.push(comment);
+		value_to_send_to_server['feedbacks']=feedback_values;
+		//alert('clicked '+JSON.stringify(value_to_send_to_server));
+		$.post( "http://localhost:8080/HttpUtil/Hello",{'response' :JSON.stringify(value_to_send_to_server)} ).done(function( data ) {
+		    //alert( "Data Loaded: " + data );
+		  });;
+		
+	});
+	
+}
 
