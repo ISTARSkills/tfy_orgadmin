@@ -362,7 +362,7 @@ public class TaskCardFactoryRecruitment {
 				
 				
 				
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"?uname="+intervieweeName+"'>Start Interview</a> </div><div class='col-md-4'>");
+				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>");
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L4' data-interviewer_id='"
@@ -399,7 +399,7 @@ public class TaskCardFactoryRecruitment {
 				
 				
 				
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"?uname="+intervieweeName+"'>Start Interview</a> </div><div class='col-md-4'>          ");
+				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>          ");
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + "data-stage='L5' data-interviewer_id='"
@@ -435,7 +435,7 @@ public class TaskCardFactoryRecruitment {
 				
 				
 				
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"?uname="+intervieweeName+"'>Start Interview</a></div><div class='col-md-4'>           ");
+				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-4'>           ");
 				
 				
 				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
