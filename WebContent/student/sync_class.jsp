@@ -82,6 +82,7 @@
 
 		<div class="slides">
 			
+			<%=lessonServices.lessonHTMLfromLessonXMLAddendum(lessonId) %>
 			<%=lessonServices.lessonHTMLfromLessonXML(lessonId) %>
           
 		</div>
