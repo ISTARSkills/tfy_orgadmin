@@ -39,7 +39,7 @@
 		<label class="font-bold">Interview Time</label>
 		<div class="input-group" data-autoclose="true">
 			<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
-			</span> <input type="number" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
+			</span> <input type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
 		</div>
 	</div>
 
@@ -47,7 +47,7 @@
 		<label class="font-bold">Interview Duration(in Mins)</label>
 		<div class="input-group" data-autoclose="true">
 			<span class="input-group-addon"> <span class="fa fa-hourglass-start"></span>
-			</span> <input type="text" style="width: 100%; height: 28px;" id="event_duration_<%=uniq_id%>" value='30' name="duration" />
+			</span> <input type="number" style="width: 100%; height: 28px;" id="event_duration_<%=uniq_id%>" value='30' name="duration" />
 		</div>
 	</div>
 </form>
