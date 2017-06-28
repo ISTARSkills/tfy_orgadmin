@@ -11295,7 +11295,7 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
 .student_pages  #vertical-timeline {
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 311px;
+	max-height: 450px;
 }
 
 .student_pages  .vertical-container {

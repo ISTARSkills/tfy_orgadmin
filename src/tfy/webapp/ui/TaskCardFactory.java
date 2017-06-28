@@ -35,7 +35,7 @@ public class TaskCardFactory {
 		sb.append(" ACTIVITY</h6>                                                 ");
 		sb.append(" <h3 class='p-xxs m-l-xs'>"+cp.getTaskForTodayCompleted().size()+" Tasks Completed</h3>               ");
 		sb.append(" </div>                                                        ");
-		sb.append(" <div class='product-desc no-padding'>                         ");
+		sb.append(" <div class='product-desc no-padding' style='height:83%'>                         ");
 		sb.append("                                                               ");
 		sb.append("                                                               ");
 		sb.append(" <div class='ibox-content no-padding content-border'           ");
@@ -72,7 +72,7 @@ public class TaskCardFactory {
 		
 		sb.append("                                                               ");
 		sb.append("                                                               ");
-		sb.append(" <div class='m-l-lg'>                                          ");
+		sb.append(" <div class='m-l-lg' style='position: absolute;    bottom: 8px;'>                                          ");
 		sb.append(" <i class='fa fa-circle-thin m-r-md'></i>"+taskRemaining+" tasks remaining    ");
 		sb.append(" for the day                                                   ");
 		sb.append(" </div>                                                        ");
@@ -364,7 +364,7 @@ public class TaskCardFactory {
 	
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-3 product-box ' style='max-height: 386px !important;overflow-y: scroll; '>			"
+		sb.append("<div class='col-md-3 product-box ' style='max-height: 500px !important;overflow-y: scroll; '>			"
 				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> ");			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");

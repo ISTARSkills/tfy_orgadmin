@@ -257,18 +257,24 @@ public class TaskCardFactoryRecruitment {
 		
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-lg-3 equalheight2' style='max-height: 386px !important;' id='trainer_rating_" + trainerID + "_" + courseID
+		if(isEnabled){
+		sb.append("<div class='col-lg-3 equalheight2' style='max-height: 500px !important;' id='trainer_rating_" + trainerID + "_" + courseID
 				+ "' >				");
-
+		}else{
+			sb.append("<div class='col-lg-3 equalheight2' id='trainer_rating_" + trainerID + "_" + courseID
+					+ "' >				");	
+		}
+		
 		sb.append("<div class='card1' id='rate_list_" + courseID + "_" + trainerID
 				+ "'>                                                                          ");
 		sb.append("<div class='front'>                                                                      ");
 
+		
+		sb.append(
+				"<div class='ibox-content product-box' id='ibox-content' style='margin-bottom:20px;'>                                             ");
 		sb.append("<div class='ibox-title'><h5>" + course.getCourseName() + "</h5> "
 				+ "<div class='ibox-tools'><span class='label label-info pull-right reverse_view'><i class='fa fa-exchange'></i></span></div>"
 				+ "</div>");
-		sb.append(
-				"<div class='ibox-content product-box' id='ibox-content' style='margin-bottom:20px;'>                                             ");
 		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline '>                   ");
 		
 		sb.append(getStatusForL1().toString());
@@ -331,7 +337,12 @@ public class TaskCardFactoryRecruitment {
 		sb.append("<div class='ibox-title'><h5>Feedback for(" + stage_string + ")</h5> "
 				+ "<div class='ibox-tools'><span class='label label-info pull-right reverse_view'><i class='fa fa-exchange'></i></span></div>"
 				+ " </div>                                          ");
-		sb.append("<div class='ibox-content' id='ibox-content' style='padding:10px !important;'>");
+		
+		if(isEnabled){
+		sb.append("<div class='ibox-content' id='ibox-content' style='padding:10px !important;overflow-y: auto;    max-height: 450px;'>");
+		}else{
+			sb.append("<div class='ibox-content' id='ibox-content'>");
+		}
 
 		if (!lists.get(0).get("empanelment_status").toString().equalsIgnoreCase("REJECTED")) {
 			switch (stage) {
@@ -340,13 +351,13 @@ public class TaskCardFactoryRecruitment {
 						+ " and stage_type='L4'";
 				List<HashMap<String, Object>> items = util.executeQuery(sql2);
 				for (HashMap<String, Object> item : items) {
-					sb.append("<div class='row'><div class='col-md-10'>" + item.get("interview_skill_name") + "</div>");
-					sb.append("<div class='rateYo col-md-2' data-course_id='" + courseID + "' data-user_id='"
+					sb.append("<div class='row' style='    border-bottom: 1px solid #e7eaec;    margin-bottom: 5px;'><div class='col-md-8  text-right'>" + item.get("interview_skill_name") + "</div>");
+					sb.append("<div class='rateYo col-md-4' style='float:right' data-course_id='" + courseID + "' data-user_id='"
 							+ trainerID + "' data-skill_id='" + item.get("id") + "' " + " data-interviewer_id='"
 							+ interviewerid
 							+ "' data-stage='L4' ></div> </div>                                                               ");
 				}
-				sb.append("<div class='row p-xl'><textarea rows='4' cols='50' style='margin-top:10px;' id='comments_"
+				sb.append("<div class='row p-sm'><textarea rows='4' cols='38' style='margin-top:10px;' id='comments_"
 						+ trainerID + "_" + courseID + "' tool-tip='comments here' >");
 				sb.append("</textarea></div>");
 
@@ -378,13 +389,13 @@ public class TaskCardFactoryRecruitment {
 				String sql3 = "select id, interview_skill_name from interview_skill where  stage_type='L5'";
 				List<HashMap<String, Object>> items1 = util.executeQuery(sql3);
 				for (HashMap<String, Object> item : items1) {
-					sb.append("<div class='row'><div class='col-md-10'>" + item.get("interview_skill_name") + "</div>");
-					sb.append("<div class='rateYo col-md-2' data-course_id='" + courseID + "' data-user_id='"
+					sb.append("<div class='row' style='    border-bottom: 1px solid #e7eaec;   margin-bottom: 5px;'><div class='col-md-8 text-right' >" + item.get("interview_skill_name") + "</div>");
+					sb.append("<div class='rateYo col-md-4'   style='float:right' data-course_id='" + courseID + "' data-user_id='"
 							+ trainerID + "' data-skill_id='" + item.get("id") + "' " + " data-interviewer_id='"
 							+ interviewerid + "' data-stage='L5' ></div> </div>");
 
 				}
-				sb.append("<div class='row'><textarea rows='4' cols='50' style='margin-top:10px;' id='comments_"
+				sb.append("<div class='row'><textarea rows='4' cols='38' style='margin-top:10px;' id='comments_"
 						+ trainerID + "_" + courseID + "' tool-tip='comments here'>");
 				sb.append("</textarea></div>");
 
@@ -414,14 +425,14 @@ public class TaskCardFactoryRecruitment {
 				String sql4 = "select id, interview_skill_name from interview_skill where stage_type='L6'";
 				List<HashMap<String, Object>> items2 = util.executeQuery(sql4);
 				for (HashMap<String, Object> item : items2) {
-					sb.append("<div class='row'><div class='col-md-10'>" + item.get("interview_skill_name") + "</div>");
-					sb.append("<div class='rateYo col-md-2' data-course_id='" + courseID + "' data-user_id='"
+					sb.append("<div class='row' style='    border-bottom: 1px solid #e7eaec;    margin-bottom: 5px;'><div class='col-md-8 text-right' >" + item.get("interview_skill_name") + "</div>");
+					sb.append("<div class='rateYo col-md-4'  style='float:right' data-course_id='" + courseID + "' data-user_id='"
 							+ trainerID + "' data-skill_id='" + item.get("id") + "' " + " data-interviewer_id='"
 							+ interviewerid + "' data-stage='L6' ></div> </div>        "
 							+ "                                                       ");
 
 				}
-				sb.append("<div class='row p-xl'><textarea rows='4' cols='50' style='margin-top:10px;' id='comments_"
+				sb.append("<div class='row p-sm'><textarea rows='4' cols='38' style='margin-top:10px;' id='comments_"
 						+ trainerID + "_" + courseID + "' tool-tip='comments here'>");
 				sb.append("</textarea></div>");
 
