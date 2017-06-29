@@ -36,7 +36,7 @@
 <body class="top-navigation student_pages" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="./inc/navbar.jsp" />
 			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;" id='equalheight'>
 				
 			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>

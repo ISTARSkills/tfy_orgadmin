@@ -35,8 +35,7 @@ th {
 			<div class="row wrapper border-bottom  page-heading white-bg">
 				<div class="col-lg-10">
 					<h2 style="margin-left: 30px">
-						<strong>Dashboard</strong>
-						<small>These are the list of interviews you need to schedule today.</small>
+						<strong>Dashboard</strong> <small>These are the list of interviews you need to schedule today.</small>
 					</h2>
 				</div>
 				<div class="col-lg-2"></div>
@@ -44,7 +43,7 @@ th {
 			<div class="wrapper wrapper-content animated fadeInRight grey-bg" style="padding: 20px; margin-left: 5px">
 				<div class='row' id="dashboard_cads">
 					<%
-					List<HashMap<String, Object>> dataL4 = schedularUtil.getDashboardCardListsL4();
+					  List<HashMap<String, Object>> dataL4 = schedularUtil.getDashboardCardListsL4();
 				    List<HashMap<String, Object>> dataL5 = schedularUtil.getDashboardCardListsL5();
 				    List<HashMap<String, Object>> dataL6 = schedularUtil.getDashboardCardListsL6();
 					
@@ -53,7 +52,6 @@ th {
 				    finalList.addAll(dataL5);
 				    finalList.addAll(dataL6);
 					for (HashMap<String, Object> item : finalList) {
-
 							String stage = item.get("stage").toString();
 							String temp = "L";
 							int stageCount = Integer.parseInt(stage.charAt(stage.length() - 1) + "") + 1;
@@ -70,24 +68,29 @@ th {
 					<div class="col-md-3" id="interview_holder_<%=uniq_id%>">
 						<div class="ibox">
 
-							
+
 							<div class="ibox-content  product-box" style="padding: 20px;">
 								<div class="row" style="border-bottom: 1px solid #e7eaec;">
 									<div class="col-md-10">
-										<h3><%=trainer.getUserProfile().getFirstName()%></h3>
+										<% String firstName="FIRST NAME";
+									if(trainer != null) {
+										try {
+										firstName = trainer.getUserProfile().getFirstName();
+										} catch(Exception npe) {}
+									 %>
+										<h3><%=firstName%></h3>
 										<h5 class="no-padding">
 											<i class="fa fa-envelope-o fa-1x"></i> <small><%=trainer.getEmail()%></small>
 										</h5>
 									</div>
 									<div class="col-md-2 pull-right">
-										<a href="<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=trainerId%>" 
-										 target="_blank" data-toggle="tooltip" title="Click here to see trainer performance details">
-										<img style="width: 42px;" src='<%=AppProperies.getProperty("media_url_path") %><%=trainer.getUserProfile().getImage() %>'></a>
+										<a href="<%=baseURL%>coordinator/trainer_profile.jsp?trainer_id=<%=trainerId%>" target="_blank" data-toggle="tooltip" title="Click here to see trainer performance details"> <img style="width: 42px;" src='<%=AppProperies.getProperty("media_url_path") %><%=(trainer!=null&&trainer.getUserProfile()!=null&& trainer.getUserProfile().getImage()!=null)?trainer.getUserProfile().getImage():""%>'></a>
 									</div>
-								</div><div class="product-desc" style="padding-bottom: 0px;">
+								</div>
+								<div class="product-desc" style="padding-bottom: 0px;">
 									<div class="row text-center font-bold bg-muted small p-xxs">
 										<div class="col-xs-6 col-md-6" style="display: none">Stage</div>
-										<div class="col-xs-6 col-md-6"  style="display: none">Course</div>
+										<div class="col-xs-6 col-md-6" style="display: none">Course</div>
 									</div>
 									<div class="row text-center p-xxs" style="font-size: 28px; color: #eb384f;">
 										<div class="col-xs-6 col-md-6">
@@ -95,7 +98,7 @@ th {
 										</div>
 
 										<div class="col-xs-6 col-md-6">
-											<img style="width:85px;" src='<%=AppProperies.getProperty("media_url_path") %><%=course.getImage_url() %>'></a>
+											<img style="width: 85px;" src='<%=AppProperies.getProperty("media_url_path") %><%=course.getImage_url() %>'></a>
 										</div>
 									</div>
 									<div class="row text-center font-bold medium p-xxs m-b-xs" style="font-size: 14px;">
@@ -118,8 +121,9 @@ th {
 					</div>
 
 					<%
-						}
-						}
+							}
+							}
+					}
 					%>
 				</div>
 			</div>

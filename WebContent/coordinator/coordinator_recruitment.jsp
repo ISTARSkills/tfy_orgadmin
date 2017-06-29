@@ -120,8 +120,13 @@ th {
 							<div class="contact-box no-borders" >
 								<div class="col-md-3">
 									<div class="text-center">
+										
+									<%
+									
+									IstarUser trainer=(new IstarUserDAO().findById(Integer.parseInt(data.get(i).get("id").toString())));
+									%>
 										<img style="width: 80px !important; height: 80px !important;" alt="image" class="img-circle m-t-xs img-responsive" 
-										 src="<%=AppProperies.getProperty("media_url_path") %><%=(new IstarUserDAO().findById(Integer.parseInt(data.get(i).get("id").toString()))).getUserProfile().getImage() %>">
+										 src="<%=AppProperies.getProperty("media_url_path") %><%=(trainer!=null&& trainer.getUserProfile()!=null&trainer.getUserProfile().getImage()!=null)?trainer.getUserProfile().getImage():"" %>">
 									</div>
 								</div>
 								<div class="col-md-9" style="    text-align: right;">

@@ -190,7 +190,6 @@
                         <%
                            }
                            %>
-                        <option value="MTECH">MTECH</option>
                         <option value="MA">MA</option>
                         <option value="MCOM">MCOM</option>
                         <option value="MTECH">MTECH</option>

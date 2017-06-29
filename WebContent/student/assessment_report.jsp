@@ -210,13 +210,19 @@
 														
 														for(OptionPOJO option : que.getOptions())
 														{
-															if(selectByUser.contains(option.getId()))
+															int optionId=option.getId();
+															if(selectByUser.contains(optionId))
 															{
 																userAnswer = option.getText()+", ";
 															}
+															if(que.getAnswers().contains(optionId)){
+																correctAnswer = option.getText()+", ";
+															}
+															
 														}
 														userAnswer = userAnswer.replaceAll(", $", "");
-													}	
+														correctAnswer = correctAnswer.replaceAll(", $", "");
+													}		
 												}
 												else
 												{

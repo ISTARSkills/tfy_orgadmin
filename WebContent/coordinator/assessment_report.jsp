@@ -193,6 +193,7 @@
 													QuestionResponsePOJO queByUser = answersByUser.get(que.getId());
 													ArrayList<Integer> realAnswers = (ArrayList<Integer>) que.getAnswers();
 													ArrayList<Integer> selectByUser = (ArrayList<Integer>) queByUser.getOptions();
+													
 													Boolean isEqual = CollectionUtils.isEqualCollection(realAnswers,selectByUser);
 													timeTookToAnswer = queByUser.getDuration()+" sec";
 													
@@ -210,12 +211,18 @@
 														
 														for(OptionPOJO option : que.getOptions())
 														{
-															if(selectByUser.contains(option.getId()))
+															int optionId=option.getId();
+															if(selectByUser.contains(optionId))
 															{
 																userAnswer = option.getText()+", ";
 															}
+															if(que.getAnswers().contains(optionId)){
+																correctAnswer = option.getText()+", ";
+															}
+															
 														}
 														userAnswer = userAnswer.replaceAll(", $", "");
+														correctAnswer = correctAnswer.replaceAll(", $", "");
 													}	
 												}
 												else
