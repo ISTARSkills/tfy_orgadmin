@@ -52,20 +52,20 @@ public class TaskCardFactoryRecruitment {
 				"<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
 		sb.append("<div class='row'>" + "<div class='col-md-1  no-padding'></div>"
 				+ "<div class='col-md-3 no-padding'><b>UG Degree</b></div>" + "<div class='col-md-8	 no-padding'>"
-				+ user.getProfessionalProfile().getUnderGraduateDegreeName() + "</div></div>");
+				+ (user.getProfessionalProfile()!=null && user.getProfessionalProfile().getUnderGraduateDegreeName()!=null ?user.getProfessionalProfile().getUnderGraduateDegreeName():"") + "</div></div>");
 		sb.append("</li>");
 		sb.append(
 				"<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
 		sb.append("<div class='row'>" + "<div class='col-md-1  no-padding'></div>"
 				+ "<div class='col-md-3 no-padding'><b>PG Degree</b></div>" + "<div class='col-md-8	 no-padding'>"
-				+ user.getProfessionalProfile().getPgDegreeName() + "</div></div>");
+				+ (user.getProfessionalProfile()!=null && user.getProfessionalProfile().getPgDegreeName()!=null?user.getProfessionalProfile().getPgDegreeName():"" )+ "</div></div>");
 		sb.append("</li>");
 		sb.append(
 				"<li class='list-group-item' style='margin-left: -16px;     margin-right: -13px;'	>                                                   ");
 		sb.append("<div class='row'>" + "<div class='col-md-1  no-padding'></div>"
 				+ "<div class='col-md-3 no-padding'><b>Experience</b></div>" + "<div class='col-md-8	 no-padding'>"
-				+ user.getProfessionalProfile().getExpereinceInYears() + " years "
-				+ user.getProfessionalProfile().getExperienceInMonths() + " months</div></div>");
+				+ (user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExpereinceInYears()!=null ?user.getProfessionalProfile().getExpereinceInYears():"") + " years "
+				+ (user.getProfessionalProfile()!=null&&user.getProfessionalProfile().getExperienceInMonths()!=null?user.getProfessionalProfile().getExperienceInMonths():"") + " months</div></div>");
 		sb.append("</li>");
 		String interestedCourses = "";
 		String getAlreadySelectedInterestedCourse = "select string_agg(distinct course_name,', ') as courses from trainer_intrested_course, course where trainer_intrested_course.course_id = course.id and trainer_id = "

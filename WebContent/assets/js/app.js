@@ -515,6 +515,7 @@ function createDataTables()
 		var id = $(this).attr('id');
 		var url = '../data_table_controller?';
 		var params ={}; 
+		var limit = $(this).data('limit');
 		$.each($(this).context.dataset, function( index, value ) {		
 			url +=index+'='+value+'&';						
 			});		
@@ -525,9 +526,9 @@ function createDataTables()
 		}
 		else
 		{
-			console.log('>>>>eee>>>');
+			console.log('>>>>eee>>>+'+ limit);
 			$(this).DataTable({
-		         pageLength: 10,
+		         pageLength: limit,
 		         responsive: true,
 		         dom: '<"html5buttons"B>lTfgitp',
 		         buttons: [
@@ -2593,7 +2594,9 @@ function init_auto_scheduler()
 					//starts here
 					$("table.datatable_istar" ).each(function() {
 						var id = $(this).attr('id');
-					var url = '../data_table_controller?';
+					
+						
+						var url = '../data_table_controller?';
 					var params ={}; 
 					$.each($(this).context.dataset, function( index, value ) {		
 						url +=index+'='+value+'&';						

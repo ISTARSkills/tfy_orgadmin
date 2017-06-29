@@ -135,7 +135,7 @@
 					<%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();
-				conditions.put("limit", "12");
+				conditions.put("limit", "100");
 				conditions.put("offset", "0");							
 				%>				
 				<%=util.getTableOuterHTML(3066, conditions)%>

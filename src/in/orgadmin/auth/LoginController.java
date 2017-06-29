@@ -44,6 +44,7 @@ public class LoginController extends HttpServlet {
 			
 			try {
 				IstarUserDAO dao = new IstarUserDAO();
+				dao.getSession().clear();
 				IstarUser user = dao.findByEmail(request.getParameter("email").toLowerCase()).get(0);
 				if (user.getPassword().equals(request.getParameter("password"))) {
 					

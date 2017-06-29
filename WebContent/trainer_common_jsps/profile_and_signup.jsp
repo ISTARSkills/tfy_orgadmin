@@ -74,7 +74,7 @@
                   <label class="col-sm-4 control-label">Date of Birth</label>
                   <div class="input-group date col-sm-8">
                      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
-                        name="dob" type="text" class="form-control date_holder"
+                        name="dob" required type="text" class="form-control date_holder"
                         value ="<%if(user!=null && user.getUserProfile()!=null && user.getUserProfile().getDob()!=null){%><%=df.format(user.getUserProfile().getDob()) %><%}%>">
                   </div>
                </div>
@@ -180,7 +180,7 @@
                <div class="form-group">
                   <label class="col-sm-4 control-label">PG Degree Name:</label>
                   <div class="col-sm-8">
-                     <select class="form-control m-b" name="pg_degree">
+                     <select class="form-control m-b" required name="pg_degree">
                         <option value="">Select PG Degree</option>
                         <%
                            if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getPgDegreeName()!=null)
@@ -190,9 +190,8 @@
                         <%
                            }
                            %>
-                        <option value="MA">MA</option>
-                        <option value="MCOM">MCOM</option>
                         <option value="MTECH">MTECH</option>
+                        <option value="MA">MA</option>
                         <option value="MCOM">MCOM</option>
                         <option value="MBA">MBA</option>
                         <option value="ME">ME</option>
@@ -203,21 +202,30 @@
                   </div>
                </div>
             </div>
-            <%if(userType.equalsIgnoreCase("TRAINER")){ %>
+            <%if(userType.equalsIgnoreCase("TRAINER") || userType.equalsIgnoreCase("MASTER_TRAINER")){ %>
+            <div class="col-lg-12">
+               <div class="form-group">
+                  <label class="col-sm-4 control-label">PAN Card:</label>
+                  <div class="col-sm-8">
+                     <input type="text" required placeholder="PAN Number" name="pan" class="form-control" value="<%if(user!=null && user.getProfessionalProfile().getPanNo() !=null){%><%=user.getProfessionalProfile().getPanNo()
+                        %><%}%>">
+                  </div>
+               </div>
+            </div>
             <div class="col-lg-12">
                <div class="form-group form-inline">
                   <label class="col-sm-4 control-label">Experience:</label>
                   <div class="col-sm-3 ">
-                     <input type="number" placeholder="year" name="experince_years" class="form-control" value="<%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExpereinceInYears()!=null ){%><%=user.getProfessionalProfile().getExpereinceInYears().trim()%><%}%>">
+                     <input type="number"  min="0" required placeholder="year" name="experince_years" class="form-control" value="<%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExpereinceInYears()!=null ){%><%=user.getProfessionalProfile().getExpereinceInYears().trim()%><%}%>">
                   </div>
                   <div class="col-sm-3 ">
-                     <input type="number" placeholder="month" name="experince_months" class="form-control" value="<%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExperienceInMonths()!=null ){%><%=user.getProfessionalProfile().getExperienceInMonths().trim() %><%}%>">
+                     <input type="number"  min="0" required placeholder="month" name="experince_months" class="form-control" value="<%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getExperienceInMonths()!=null ){%><%=user.getProfessionalProfile().getExperienceInMonths().trim() %><%}%>">
                   </div>
                </div>
             </div>
             <div class="col-lg-12">
                <div class="form-group">
-                  <label class="col-sm-4 control-label">Interested Course:</label> <input type="hidden" id="session_id" name="session_id" value="">
+                  <label class="col-sm-4 control-label">Interested Course:</label> <input type="hidden" id="session_id" required name="session_id" value="">
                   <div class="col-sm-8" style="margin-left: 0px">
                      <%
                         String course_sql = "select distinct  course.id, course_name from course, course_assessment_mapping		where course_assessment_mapping.course_id = course.id ";
@@ -234,7 +242,7 @@
                         	}
                         }
                         %>
-                     <select data-placeholder="Choose a Course..." class="chosen-select course_holder" multiple style="width: 350px;" tabindex="4" name="course">
+                     <select data-placeholder="Choose a Course..." class="chosen-select course_holder" required multiple style="width: 350px;" tabindex="4" name="course">
                         <%
                            if (data1.size() > 0) {
                            	for (HashMap<String, Object> row1 : data1) {
@@ -254,7 +262,7 @@
                </div>
             </div>
             <div class="col-lg-12">
-               <label class="col control-label">Available Time Slots:</label> <input type="hidden" id="avaiable_time" name="avaiable_time" value=""><br />
+               <label class="col control-label">Available Time Slots:</label> <input type="hidden" id="avaiable_time" required name="avaiable_time" value=""><br />
                <br />
                <%
                   HashMap<String, HashMap<Integer, Boolean>> slotData = new HashMap();
@@ -297,7 +305,20 @@
                      </tr>
                   </thead>
                   <tbody>
-                     <tr>
+							<tr>
+								<td>Sunday</td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday1" type="checkbox" value="sunday#&8:00 AM-9:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(1)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday2" type="checkbox" value="sunday#&9:00 AM-10:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(2)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday3" type="checkbox" value="sunday#&10:00 AM-11:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(3)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday4" type="checkbox" value="sunday#&11:00 AM-12:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(4)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday5" type="checkbox" value="sunday#&12:00 PM-1:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(5)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday6" type="checkbox" value="sunday#&1:00 PM-2:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(6)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday7" type="checkbox" value="sunday#&2:00 PM-3:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(7)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday8" type="checkbox" value="sunday#&3:00 PM-4:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(8)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday9" type="checkbox" value="sunday#&4:00 PM-5:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(9)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday10" type="checkbox" value="sunday#&5:00 PM-6:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(10)) {%> checked <%}%>></td>
+							</tr>
+							<tr>
                         <td>Monday</td>
                         <td style="text-align: center;"><input class="chechbox" id="monday1" type="checkbox" value="monday#&8:00 AM-9:00 AM!&" <%if(slotData.get("MONDAY")!=null && slotData.get("MONDAY").get(1)){%>checked<%} %>></td>
                         <td style="text-align: center;"><input class="chechbox" id="monday2" type="checkbox" value="monday#&9:00 AM-10:00 AM!&" <%if(slotData.get("MONDAY")!=null && slotData.get("MONDAY").get(2)){%>checked<%} %>></td>
@@ -383,7 +404,7 @@
                %>
             <div class="form-group">
                <div class="" style="float: right;margin-right: 20px">
-                  <button class="btn btn-sm btn-primary m-t-n-xs" type="submit">Update Details</button>
+                  <button  type="button" class="btn btn-sm btn-primary m-t-n-xs signup_button">Update Details</button>
                </div>
             </div>
             <input type="hidden" value="" id="submit_cluster" name="cluster"></input>
@@ -404,7 +425,8 @@
    <div class="text-center">
       <h3>Clusters</h3>
    </div>
-   <%String clusterSql = "SELECT id,cluster_name from cluster WHERE id in (SELECT distinct cluster_id from cluster_requirement);";
+   <%
+ 		 String clusterSql = "SELECT id,cluster_name from cluster WHERE id in (SELECT distinct cluster_id from cluster_requirement) order by cluster_name;";
       List<HashMap<String, Object>> clusters = db.executeQuery(clusterSql);
       String clusterOfUser ="SELECT DISTINCT cluster_id FROM cluster_pincode_mapping WHERE pincode_id IN ( SELECT ID FROM pincode );";
       if(user != null) {
