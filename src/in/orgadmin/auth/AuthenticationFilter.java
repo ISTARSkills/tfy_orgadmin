@@ -54,6 +54,13 @@ public class AuthenticationFilter implements Filter {
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith(".gif")) {
 			isStarticrequest = true;
 		}
+		if (((HttpServletRequest) request).getRequestURL().toString().endsWith(".jpg")) {
+			isStarticrequest = true;
+		}
+
+		if (((HttpServletRequest) request).getRequestURL().toString().endsWith(".jpeg")) {
+			isStarticrequest = true;
+		}
 
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("index.jsp")) {
 			isStarticrequest = true;
