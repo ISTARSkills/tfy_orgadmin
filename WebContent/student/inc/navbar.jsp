@@ -51,9 +51,7 @@ request.setAttribute("cp", cp);
 			</button>
 			<a href="/student/dashboard.jsp" class="navbar-brand">
 			<div class='row'>
-			<div class='col-md-3'>			<img style="    width: 40px;
-    margin-left: -33px;
-    margin-top: -10px;" src='/assets/img/user_images/new_talentify_logo_inverse.png'>
+			<div class='col-md-3'>			<img style="    width: 40px;    margin-left: -33px;    margin-top: -10px;" src='/assets/img/user_images/new_talentify_logo_inverse.png'>
 			</div>
 			<div  class='col-md-9'>	Talentify
 			</div>
@@ -65,13 +63,27 @@ request.setAttribute("cp", cp);
 				<%
 					for (ParentLink link : (new UIUtils()).getMenuLinks(userRole.toLowerCase())) {
 						if (link.isIs_visible_in_menu()) {
-							
+							if(link.getDisplayName().equalsIgnoreCase("ROLES")){
+								if(cp.getCourses().size()>0){
+									%>
+									<li><a id="<%=link.getDisplayName().replace(" ","")%>"
+					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+					<%
+								} 
+							} else if(link.getDisplayName().equalsIgnoreCase("Skill Profile")){
+								if(cp.getCourses().size()>0){
+									%>
+									<li><a id="<%=link.getDisplayName().replace(" ","")%>"
+					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+					<%
+								} 
+							} else {
 				%>
 
 				<li><a id="<%=link.getDisplayName().replace(" ","")%>"
 					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
-					} else {
+					}} else {
 							System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}

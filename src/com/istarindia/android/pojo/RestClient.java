@@ -21,6 +21,7 @@ import org.apache.log4j.helpers.QuietWriter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.viksitpro.core.utilities.AppProperies;
 
 /**
  * @author Istar
@@ -34,7 +35,7 @@ public class RestClient {
 		String string = ""; // The String You Need To Be Converted 
 		CourseContent courseContent = new CourseContent();
 		try {
-			URL url = new URL("http://localhost:8080/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
+			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
 		System.out.println("url in getCourseContentForStudent"+url.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			System.out.println(conn.getURL().toString());
@@ -71,7 +72,7 @@ public class RestClient {
 		ComplexObject covertedObject = new ComplexObject();
 		try {
 
-			URL url = new URL("http://localhost:8080/t2c/user/"+userID+"/complex");
+			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/user/"+userID+"/complex");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			System.out.println(conn.getURL().toString());
@@ -109,7 +110,7 @@ public class RestClient {
 		String string = ""; // The String You Need To Be Converted 
 		AssessmentPOJO assessment = new AssessmentPOJO();
 		try {
-			URL url = new URL("http://localhost:8080/t2c/assessments/user/"+userId+"/"+assessmentId);
+			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
@@ -145,7 +146,7 @@ public class RestClient {
 	{
 		
 		
-		String url = "http://localhost:8080/t2c/assessments/user/"+userId+"/"+assessmentId+"/"+taskId+"";
+		String url = AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId+"/"+taskId+"";
 		URL obj = new URL(url);
 		HttpURLConnection con =  (HttpURLConnection) obj.openConnection();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();

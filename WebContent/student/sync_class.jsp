@@ -17,6 +17,7 @@
 		+ path + "/";
 	int playlist_id = -1;
 	int slide_id = 0;
+	long first = System.currentTimeMillis();
 	DBUTILS util = new DBUTILS();
 	int task_id =0;
 	if(request.getParameter("task_id")!=null){
@@ -25,23 +26,17 @@
 	LessonServices lessonServices = new LessonServices();
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-
-	ComplexObject cp = rc.getComplexObject(user.getId());
-	String lessonTitle = "Talentify";
-	System.out.println("31");
-
 	CourseContent courseContent = rc.getCourseContentForStudent(task_id);
 	int lessonId=0;
 	long currentSlideId = 0;
 	if(courseContent!=null)
 	{
 		lessonId = courseContent.getItems().get(courseContent.getCurrentItemOrderId()).getItemId();
-		lessonTitle = courseContent.getItems().get(courseContent.getCurrentItemOrderId()).getItemName();
 		if(courseContent.getCurrentItemSlideId()!=null)
 		{
 			currentSlideId = courseContent.getCurrentItemSlideId();
 		}	
-		}
+	}
 
 	String email = user.getEmail();
 	
@@ -50,7 +45,7 @@
 <head>
 <meta charset="utf-8">
 <link rel="shortcut icon" href="<%=basePath%>assets/img/user_images/new_talentify_logo.png" />
-<title><%=lessonTitle %> - Istar Presentation</title>
+<title>IStarlong first = System.currentTimeMillis(); - Istar Presentation</title>
 
 <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 <meta name="author" content="Hakim El Hattab">
@@ -86,7 +81,7 @@
 
 	<div class="reveal">
 
-		<div class="slides">
+		<div class="slides"><%=lessonServices.lessonHTMLfromLessonXMLAddendum(lessonId) %>
 			
 			<%=lessonServices.lessonHTMLfromLessonXML(lessonId) %>
           
@@ -160,7 +155,7 @@ function updateMessage(msg)
 
 	var str = JSON.stringify(msg, null, 2);
 	var data = JSON.parse(msg.data);
-	console.log(data);
+	//console.log(data);
 	var type = data.messageType;
 	var content = data.content
 	if(type==='SLIDE_LEFT')
@@ -248,25 +243,10 @@ function updateMessage(msg)
 
 
 <script>
+ // A smple ajax request 
+ //1	449	414	PRESENT	2017-06-14 14:33:20.55018	2017-06-14 14:33:20.55018	548
  
-/* $(document).bind("contextmenu",function(e) {
-	 e.preventDefault();
-	});
-
-var ar = new Array(37, 38, 39, 40,123);
-var disableArrowKeys = function(e) {
-    if ($.inArray(e.keyCode, ar)>=0) {
-        e.preventDefault();
-    }
-}
-
-$(document).keydown(disableArrowKeys);
-
-// then when you are ready to enable, unbind the function...
-$(document).unbind('keydown', disableArrowKeys);
-        */
-    
-    // More info https://github.com/hakimel/reveal.js#configuration
+ 
 		Reveal.initialize({
 			controls : false,
 			progress : true,

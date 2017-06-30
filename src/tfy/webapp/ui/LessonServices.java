@@ -46,17 +46,15 @@ public class LessonServices {
 	public String lessonHTMLfromLessonXML(int lessonID) throws IOException {
 		StringBuffer stringBuffer = new StringBuffer();
 		
-		String path = AppProperies.getProperty("mediaLessonPath");
 	
 
-		URL url = new URL( AppProperies.getProperty("media_url_path")+"/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
+		URL url = new URL("http://cdn.talentify.in:9999/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		InputStream is = http.getInputStream();
 		
-		path += "/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml";
 
-		URL file = new URL( AppProperies.getProperty("media_url_path")+"/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
-
+		URL file = new URL("http://cdn.talentify.in:9999/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
+		System.out.println();
 		try {
 			JAXBContext jaxbcontext = JAXBContext.newInstance(CMSLesson.class);
 			Unmarshaller unmarshaller = jaxbcontext.createUnmarshaller();
