@@ -412,7 +412,7 @@
       </div>
    </div>
 </div>
-<%if(userType.equalsIgnoreCase("TRAINER"))
+<%if(userType.equalsIgnoreCase("TRAINER") || userType.equalsIgnoreCase("MASTER_TRAINER") )
    {%>
 <div class="col-lg-6">
    <!-- </br> <label class="col-sm-6 control-label">Mark the preferred College or Center locations:</label>
