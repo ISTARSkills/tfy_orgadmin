@@ -1657,7 +1657,7 @@ order by 1
 SELECT DISTINCT
 	CLUSTER . ID,
 	CLUSTER .cluster_name,
-	string_agg (distinct pincode."name", ', '),string_agg (cast(pincode.pin as VARCHAR), ',') as string_agg1,
+	string_agg (distinct pincode."name", ', '),string_agg ( distinct cast(pincode.pin as VARCHAR), ',') as string_agg1,
 	COUNT (*) OVER () AS total_rows
 FROM
 	CLUSTER,

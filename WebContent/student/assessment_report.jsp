@@ -180,11 +180,7 @@
 												String correctAnswer ="";
 												String userAnswer ="";
 												String timeTookToAnswer ="0 sec";
-												for(OptionPOJO option : que.getOptions())
-												{
-													correctAnswer = option.getText()+", ";
-												}
-												correctAnswer = correctAnswer.replaceAll(", $", "");
+												
 												if(answersByUser.get(que.getId())!=null && answersByUser.get(que.getId()).getOptions()!=null && answersByUser.get(que.getId()).getOptions().size()>0)
 												{
 													//atleast not skipped
@@ -201,7 +197,19 @@
 														mark = "Correct";
 														labelStyle="style='background-color: #1ab394; color: white;';";
 														
-														userAnswer = correctAnswer;
+														for(OptionPOJO option : que.getOptions())
+														{
+															int optionId=option.getId();
+															if(selectByUser.contains(optionId))
+															{
+																userAnswer += option.getText()+",";
+															}
+															if(que.getAnswers().contains(optionId)){
+																correctAnswer += option.getText()+",";
+															}
+															
+														}
+														
 													}
 													else
 													{
@@ -213,15 +221,13 @@
 															int optionId=option.getId();
 															if(selectByUser.contains(optionId))
 															{
-																userAnswer = option.getText()+", ";
+																userAnswer += option.getText()+",";
 															}
 															if(que.getAnswers().contains(optionId)){
-																correctAnswer = option.getText()+", ";
+																correctAnswer += option.getText()+",";
 															}
 															
 														}
-														userAnswer = userAnswer.replaceAll(", $", "");
-														correctAnswer = correctAnswer.replaceAll(", $", "");
 													}		
 												}
 												else
@@ -229,9 +235,26 @@
 													mark ="Skipped";
 													labelStyle="style='    background-color: #d1dade;color: #5e5e5e;';";
 													userAnswer ="Skipped";
+													for(OptionPOJO option : que.getOptions())
+													{
+														int optionId=option.getId();
+														if(que.getAnswers().contains(optionId)){
+															correctAnswer += option.getText()+",";
+														}
+														
+													}
+													
 												}	
+												
+												
+												if(correctAnswer.endsWith(",")){
+													correctAnswer=correctAnswer.substring(0,correctAnswer.length()-1);
+												}
+												
+												if(userAnswer.endsWith(",")){
+													userAnswer=userAnswer.substring(0,userAnswer.length()-1);
+												}
 												%>
-											
 											<tr>
 												
 												<td class="issue-info"><small>

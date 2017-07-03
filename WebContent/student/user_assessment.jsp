@@ -152,7 +152,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 									 <button type="button" class="btn btn-primary btn-xs" style="    font-size: 17px;    float: right;"><i class="fa fa-clock-o"></i> &nbsp;&nbsp;
 					<span class="bold" id="que_clock_<%=i%>"> </span></button> 
 								</div>
-                                        <div class="panel-body">
+                                        <div class="panel-body" style="user-select: none !important;">
                                             <p>
                                             <%=quePojo.getText()%>
                                             </p>
@@ -168,7 +168,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                             Choose the correct answer
                                              
                                         </div>
-                                        <div class="panel-body">
+                                        <div class="panel-body" style="user-select: none !important;">
                                         <input type="hidden" name="question_time_taken_<%=quePojo.getId()%>" value="" id="question_time_taken_<%=i%>">
                                             <p style='margin-top: -22px;margin-left: 22px;'>
                                             <%

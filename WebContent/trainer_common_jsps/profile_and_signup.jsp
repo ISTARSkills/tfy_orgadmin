@@ -307,16 +307,16 @@
                   <tbody>
 							<tr>
 								<td>Sunday</td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday1" type="checkbox" value="sunday#&8:00 AM-9:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(1)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday2" type="checkbox" value="sunday#&9:00 AM-10:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(2)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday3" type="checkbox" value="sunday#&10:00 AM-11:00 AM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(3)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday4" type="checkbox" value="sunday#&11:00 AM-12:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(4)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday5" type="checkbox" value="sunday#&12:00 PM-1:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(5)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday6" type="checkbox" value="sunday#&1:00 PM-2:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(6)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday7" type="checkbox" value="sunday#&2:00 PM-3:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(7)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday8" type="checkbox" value="sunday#&3:00 PM-4:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(8)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday9" type="checkbox" value="sunday#&4:00 PM-5:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(9)) {%> checked <%}%>></td>
-								<td style="text-align: center;"><input class="chechbox" id="sunday10" type="checkbox" value="sunday#&5:00 PM-6:00 PM!&" <%if (slotData.get("sunday") != null && slotData.get("sunday").get(10)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday1" type="checkbox" value="sunday#&8:00 AM-9:00 AM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(1)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday2" type="checkbox" value="sunday#&9:00 AM-10:00 AM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(2)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday3" type="checkbox" value="sunday#&10:00 AM-11:00 AM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(3)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday4" type="checkbox" value="sunday#&11:00 AM-12:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(4)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday5" type="checkbox" value="sunday#&12:00 PM-1:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(5)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday6" type="checkbox" value="sunday#&1:00 PM-2:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(6)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday7" type="checkbox" value="sunday#&2:00 PM-3:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(7)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday8" type="checkbox" value="sunday#&3:00 PM-4:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(8)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday9" type="checkbox" value="sunday#&4:00 PM-5:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(9)) {%> checked <%}%>></td>
+								<td style="text-align: center;"><input class="chechbox" id="sunday10" type="checkbox" value="sunday#&5:00 PM-6:00 PM!&" <%if (slotData.get("SUNDAY") != null && slotData.get("SUNDAY").get(10)) {%> checked <%}%>></td>
 							</tr>
 							<tr>
                         <td>Monday</td>
