@@ -74,6 +74,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 String addressLine1 = "";
 		 String addressLine2 = "";
 		 String cluster = "";
+		 String panNo = "";
 		 String userType="";
 		 int pincode =0;
 		 boolean hasUgDegree = false;
@@ -99,6 +100,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 experinceMonths =  request.getParameter("experince_months")!=null?request.getParameter("experince_months"):"";
 		 experinceYears = request.getParameter("experince_years")!=null?request.getParameter("experince_years"):"";
 		 userType = request.getParameter("user_type");
+		 panNo = request.getParameter("pan") != null ? request.getParameter("pan") : "";
 		 JSONParser parser = new JSONParser();
 		 JSONObject obj;
 		 String presentor_email = "";
@@ -158,7 +160,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 String updateUserProfile ="update user_profile set address_id="+address_id+", first_name='"+firstName+"', last_name='"+lastName+"', dob='"+dob+"', gender='"+gender+"' where user_id ="+userId;
 			 util.executeUpdate(updateUserProfile);
 			 
-			 String updateProfessionalProfile ="update professional_profile set has_under_graduation='"+Boolean.toString(hasUgDegree).charAt(0)+"' ,has_post_graduation = '"+Boolean.toString(hasPgDegree).charAt(0)+"', under_graduate_degree_name='"+ugDegree+"', pg_degree_name='"+pgDegree+"', experience_in_years='"+experinceYears+"', experince_in_months='"+experinceMonths+"' where user_id ="+userId+"";
+			 String updateProfessionalProfile ="update professional_profile set has_under_graduation='"+Boolean.toString(hasUgDegree).charAt(0)+"' ,has_post_graduation = '"+Boolean.toString(hasPgDegree).charAt(0)+"', under_graduate_degree_name='"+ugDegree+"', pg_degree_name='"+pgDegree+"', experience_in_years='"+experinceYears+"', experince_in_months='"+experinceMonths+"' , pan_no = '"+panNo+"' where user_id ="+userId+"";
 			 util.executeUpdate(updateProfessionalProfile);
 			 
 			 String findAlreadyInterestedCourse ="select distinct course_id from trainer_intrested_course where trainer_id = "+userId;

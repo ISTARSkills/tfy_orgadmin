@@ -29,6 +29,9 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 					<div class="col-lg-10">
 						<h2 style="margin-left: 31px;">Edit Profile</h2>
 					</div>
+					<div class="pull-right" style=" margin-top: 18px;margin-right: 80px;">
+                  <button type="button" class="btn btn-sm btn-primary m-t-n-xs signup_button">Update Details</button>
+               </div>
 				</div>
 				<jsp:include page="/trainer_common_jsps/profile_and_signup.jsp">
 				<jsp:param value="TRAINER" name="user_type"/>
@@ -61,14 +64,57 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 		}
 		return markup;
 	}
-
+	function check_cluster_validation(){
+		var flag =false;
+		$( ".cluster_button" ).each(function() {
+			  if($(this).hasClass('active')){
+			  console.log($(this).data('id'));
+			  flag = true;
+			  }
+		  });
+		
+		if($( ".cluster_button" ).length==0){
+			flag=true;
+		}
+		
+		return flag;
+	}
+	
+	function check_time_slot_validation(){
+		var flag =false;
+		
+		$('.chechbox').each(function(){
+			if($(this).prop('checked')){
+				flag = true;
+			}
+		});
+		return flag;
+	}
 	function formatRepoSelection(repo) {
 		return repo.id;
 	}
 	$(document)
 			.ready(
 					function() {
-						
+						$('.signup_button').unbind().click(function() {
+							
+							 if($('#signup_form').valid()){	 
+							  if(check_cluster_validation() && check_time_slot_validation()){
+								  console.log('validation sucess');
+								  $('#signup_form').submit();
+							  }else{
+								  console.log('validation falil');
+								  swal({
+						                title: "Please select atleast one Cluster and time slot",
+						                type: "warning",
+						                confirmButtonColor: "#eb384f"
+						                //text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+						            });
+
+
+							  }
+							 }
+						});
 						var selected_cluster = [];
 						//selected_cluster = $('#cluster-table button.active').attr('id');
 						//console.log("selected_cluster   "+selected_cluster);
