@@ -6428,7 +6428,7 @@ function init_coordinator_overall_cluster(){
 		        data: {pincode:pincode,course:course,requirement:req},
 		        success: function(data) {
 		        	toastr.success('Successfully Added Requirment!');
-		        	$('#chart_datatable_3066').DataTable().ajax.reload();
+		        	//$('#chart_datatable_3066').DataTable().ajax.reload();
 		        },
 		        error: function(data) {
 		        	toastr.error('Failed To Add Requirement. Please Contact Admin!');
