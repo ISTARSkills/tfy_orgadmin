@@ -6147,10 +6147,10 @@ function init_coordinator_trainer_details(){
 	    $(this).parent().parent().find('.show_more').toggle();
 	    
 	    if($(this).text().indexOf("Expand") >= 0){
-	    	$(this).html('<i class="fa fa-angle-double-down" aria-hidden="true"></i>Click to Collapse');
+	    	$(this).html('<i class="fa fa-angle-double-up" aria-hidden="true"></i>Click to Collapse');
 	    	
 	    }else{
-	    	$(this).html('<i class="fa fa-angle-double-up" aria-hidden="true"></i>Click to Expand');
+	    	$(this).html('<i class="fa fa-angle-double-down" aria-hidden="true"></i>Click to Expand');
 	    }
 	    
 	   $('#searchable_grid .trainerprofile_holder').removeAttr('style');
