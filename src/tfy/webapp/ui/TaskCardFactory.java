@@ -328,7 +328,7 @@ public class TaskCardFactory {
 		}
 
 		if(task.getImageURL() == null){
-			task.setImageURL("http://cdn.talentify.in//course_images/assessment.png");
+			task.setImageURL("http://cdn.talentify.in:9999//course_images/assessment.png");
 		}
 		sb.append("<div class='col-md-3 '>                                            ");
 		sb.append("<div class='ibox'>                                                 ");
