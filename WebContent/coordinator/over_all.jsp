@@ -1,35 +1,8 @@
+
+<%@page import="tfy.admin.trainer.ClusterRequirmentUtil"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
-<%@page import="com.istarindia.android.pojo.AssessmentResponsePOJO"%>
-<%@page import="tfy.admin.trainer.TrainerReportService"%>
-<%@page import="in.orgadmin.admin.services.AdminUIServices"%>
-<%@page import="com.istarindia.android.pojo.OptionPOJO"%>
-<%@page import="org.apache.commons.collections.CollectionUtils"%>
-<%@page import="com.istarindia.android.pojo.QuestionPOJO"%>
-<%@page import="com.istarindia.android.pojo.AssessmentPOJO"%>
-<%@page import="com.istarindia.android.pojo.SkillReportPOJO"%>
-<%@page import="com.viksitpro.core.dao.entities.Question"%>
-<%@page import="com.viksitpro.core.dao.entities.QuestionDAO"%>
-<%@page import="com.istarindia.android.pojo.QuestionResponsePOJO"%>
-<%@page import="com.istarindia.android.pojo.AssessmentReportPOJO"%>
-<%@page import="org.omg.CosNaming.IstringHelper"%>
-<%@page import="java.util.Enumeration"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="tfy.webapp.ui.TaskCardFactory"%>
-<%@page import="com.istarindia.android.pojo.TaskSummaryPOJO"%>
-<%@page import="com.istarindia.android.pojo.ComplexObject"%>
-<%@page import="com.istarindia.android.pojo.RestClient"%>
-<%@page import="java.sql.Timestamp"%>
-<%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@page
-	import="in.talentify.core.services.NotificationAndTicketServices"%>
-<%@page import="java.util.HashSet"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
-<%@page import="org.json.JSONArray"%>
-<%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -111,7 +84,7 @@
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	
 %>
-<body class="top-navigation" >
+<body class="top-navigation" id="coordinator_overall_cluster">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp" />
@@ -126,6 +99,59 @@
 			<div class="wrapper wrapper-content animated fadeInRight"
 				style="padding: 10px;">
 				<div class="row">
+
+					<div class="col-md-4">
+						<div class="ibox float-e-margins">
+							<div class="ibox-content" style="padding-bottom: 30px;">
+								<div class="ibox-title">
+									<h5>Add Requirements</h5>
+								</div>
+								<form role="form" class="">
+									<div class="form-group">
+										<label class="col-sm-8 control-label">PinCode:</label> <select
+											class="js-data-example-ajax  form-control" id="pincode_data"
+											data-pin_uri="<%=baseURL%>" name="pincode"
+											data-validation="required" required>
+											<option value="">Select Pincode</option>
+										</select>
+									</div>
+									<%
+										ClusterRequirmentUtil clusterRequirmentUtil = new ClusterRequirmentUtil();
+									%>
+									<div class="form-group">
+										<label class="col-sm-8 control-label">Course:</label> <select
+											class="form-control" id="course_data" name="course"
+											data-validation="required" required>
+											<option value="">Select Course</option>
+
+											<%
+												for (HashMap<String, Object> item : clusterRequirmentUtil.getCoursees()) {
+											%>
+											<option value="<%=item.get("id")%>"><%=item.get("course_name")%>(<%=item.get("id")%>)
+											</option>
+											<%
+												}
+											%>
+
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-8 control-label">Requirement:</label> <input
+											type="number" placeholder="Number of requirements" id="requirement_number"
+											class="form-control">
+									</div>
+									<button class="btn btn-outline btn-primary pull-right"
+										type="button" id="add_requirement">
+										<i class="fa fa-plus-square"></i>
+									</button>
+								</form>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-8"></div>
+
 				</div>
 					<div class="col-lg-12">
 						<div class="ibox">

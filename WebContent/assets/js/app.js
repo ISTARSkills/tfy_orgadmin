@@ -216,6 +216,9 @@ function readyFn(jQuery) {
 	case 'cordinator_interview':
 		init_cordinator_interview();
 		break;
+	case 'coordinator_overall_cluster':
+		init_coordinator_overall_cluster();
+		break;
 	case 'new_feedback':
 		try{
 		init_new_feedback();
@@ -6370,6 +6373,72 @@ function init_new_feedback(){
 		  });;
 		
 	});
+	
+}
+
+function init_coordinator_overall_cluster(){
+	var baseURL = $(".js-data-example-ajax").data("pin_uri");
+	var urlPin = baseURL + "PinCodeController";
+	$(".js-data-example-ajax").select2({
+		ajax : {
+			url : urlPin,
+			dataType : 'json',
+			delay : 250,
+			data : function(params) {
+				return {
+					q : params.term, // search term
+					page : params.page
+				};
+			},
+			processResults : function(data, params) {
+				params.page = params.page || 1;
+				return {
+					results : data.items,
+					pagination : {
+						more : (params.page * 30) < data.total_count
+					}
+				};
+			},
+			cache : true
+		},
+		escapeMarkup : function(markup) {
+			return markup;
+		}, 
+		minimumInputLength : 1,
+		templateResult : formatRepo,
+		templateSelection : formatRepoSelection
+	});
+	
+	$('#add_requirement').unbind().on("click",function(){
+		
+		var pincode=$('#pincode_data').val();
+		var course=$('#course_data').val();
+		var req=$('#requirement_number').val();
+		
+		if(pincode===undefined || pincode===''){
+			toastr.error('Select Pincode!');
+		}else if(course===undefined || course===''){
+			toastr.error('specify Course!');
+		}else if(req===undefined || req===''){
+			toastr.error('specify prorper number of requirments!');
+		}else{
+			$.ajax({
+		        type: "POST",
+		        url: "/cluster_requirment_add",
+		        data: {pincode:pincode,course:course,requirement:req},
+		        success: function(data) {
+		        	toastr.success('Successfully Added Requirment!');
+		        	$('#chart_datatable_3066').DataTable().ajax.reload();
+		        },
+		        error: function(data) {
+		        	toastr.error('Failed To Add Requirement. Please Contact Admin!');
+		        }    
+			});
+		}
+		
+	});
+	
+	
 	
 }
 
