@@ -116,6 +116,7 @@ function readyFn(jQuery) {
 	 * Page specific js
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
+	$('select').select2();
 	
 	$('.top_navbar_holder').css('color',' #676a6c');	
 	switch (body_id) {
@@ -231,7 +232,7 @@ function readyFn(jQuery) {
 	createCalender();
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
-	$('select').select2();
+	
 	loadTables();	
 	try {
 		$('#searchable_grid  div.product-box').equalHeights();
