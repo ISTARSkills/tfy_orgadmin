@@ -37,7 +37,7 @@
 			currentSlideId = courseContent.getCurrentItemSlideId();
 		}	
 	}
-
+	int user_id = user.getId();
 	String email = user.getEmail();
 	
 	System.out.println("47");
@@ -245,7 +245,17 @@ function updateMessage(msg)
 <script>
  // A smple ajax request 
  //1	449	414	PRESENT	2017-06-14 14:33:20.55018	2017-06-14 14:33:20.55018	548
- 
+ $(document).ready(function() {
+        	 
+        	$.ajax({
+                 type: "POST",
+                 url: '<%=basePath%>update_attendance',
+                 data: {user_id:<%=user_id%>,task_id:<%=task_id%>},
+                 success: function(result) {}
+             });
+        
+        });
+       
  
 		Reveal.initialize({
 			controls : false,
