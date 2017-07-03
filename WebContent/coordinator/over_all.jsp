@@ -117,15 +117,15 @@
 			<jsp:include page="inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
-					<h2><small>Over All Hiring Report</small></strong> </h2>
-
+					<h2><small>Over All Hiring Report</small></h2>
 				</div>
-				<div class="col-lg-2"></div>
+				<div class="col-lg-2 m-t-sm">
+				<button class="btn btn-primary pull-right" type="button"><i class="fa fa-plus-circle"></i></button>
+				</div>
 			</div>
 			<div class="wrapper wrapper-content animated fadeInRight"
 				style="padding: 10px;">
 				<div class="row">
-			
 				</div>
 					<div class="col-lg-12">
 						<div class="ibox">
@@ -136,7 +136,8 @@
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();
 				conditions.put("limit", "100");
-				conditions.put("offset", "0");							
+				conditions.put("offset", "0");					conditions.put("static_table", "true");		
+						
 				%>				
 				<%=util.getTableOuterHTML(3066, conditions)%>
 				</div>

@@ -1553,9 +1553,9 @@ order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
 <reports id="3066" type_of_report="table">
-		<column columnHandler="NONE" display_name="Course Name" isVisible="true" name="course_name" />
-		<column columnHandler="NONE" display_name="Cluster Name" isVisible="true" name="cluster_name" />			
-		<column columnHandler="NONE" display_name="Requirement" isVisible="true" name="req" />		
+		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true"  display_name="Cluster Name" isVisible="true" name="cluster_name" />			
+		<column columnHandler="NONE" is_selectable="true"  display_name="Requirement" isVisible="false" name="req" />		
 		<column columnHandler="NONE" display_name="Cities" isVisible="true" name="cities" />
 		<column columnHandler="NONE" display_name="L2" isVisible="true" name="l2count" />
 		<column columnHandler="NONE" display_name="L3" isVisible="true" name="l3count" />			
@@ -1641,7 +1641,7 @@ and tes.stage = 'L2' and tes.empanelment_status ='SELECTED'
 group by course_id , cluster_id
 )L2_TAB
 )FINAL_L2 on (FINAL_L2.course_id= STATIC_TAB.course_id and FINAL_L2.cluster_id=STATIC_TAB.cluster_id)
-order by :order_by_column :order_type limit :limit offset :offset
+order by 1
 </sql>
 </reports>
 
@@ -1668,7 +1668,7 @@ WHERE
 AND cluster_pincode_mapping.pincode_id = pincode.id
 GROUP BY
 	CLUSTER . ID
-order by :order_by_column :order_type limit :limit offset :offset
+order by 1
 </sql>
 </reports>
 </istar_reports>

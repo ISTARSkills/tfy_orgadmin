@@ -20,6 +20,19 @@ public class IStarColumn {
 	String select_options;
 	boolean is_header;
 	
+	boolean is_selectable=false;
+	
+	
+	
+	@XmlAttribute(name = "is_selectable")
+	public boolean isIs_selectable() {
+		return is_selectable;
+	}
+
+	public void setIs_selectable(boolean is_selectable) {
+		this.is_selectable = is_selectable;
+	}
+
 	@XmlAttribute(name = "is_header")
 	public boolean isIs_header() {
 		return is_header;

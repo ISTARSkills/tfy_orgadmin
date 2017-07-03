@@ -516,6 +516,7 @@ function createDataTables()
 		var url = '../data_table_controller?';
 		var params ={}; 
 		var limit = $(this).data('limit');
+		var static_table = $(this).data('static_table');
 		$.each($(this).context.dataset, function( index, value ) {		
 			url +=index+'='+value+'&';						
 			});		
@@ -526,37 +527,96 @@ function createDataTables()
 		}
 		else
 		{
-			console.log('>>>>eee>>>+'+ limit);
-			$(this).DataTable({
-		         pageLength: limit,
-		         responsive: true,
-		         dom: '<"html5buttons"B>lTfgitp',
-		         buttons: [
-		             { extend: 'copy'},
-		             {extend: 'csv'},
-		             {extend: 'excel', title: 'ExampleFile'},
-		             {extend: 'pdf', title: 'ExampleFile'},
-		             {extend: 'print',
-		              customize: function (win){
-		                     $(win.document.body).addClass('white-bg');
-		                     $(win.document.body).css('font-size', '10px');
-		                     $(win.document.body).find('table')
-		                             .addClass('compact')
-		                             .css('font-size', 'inherit');
-		             }
-		             }
-		         ], "processing": true,
-		         "serverSide": true,
-		         "ajax": url,
-		         "drawCallback": function( settings ) {
-		            
-		         }
-		     });
+			if(static_table) {
+				console.log('>>>>eee>>>+ true');
+
+				$(this).DataTable({
+			         pageLength: limit, 
+			         responsive: true,
+			         dom: '<"html5buttons"B>lTfgitp',
+			         buttons: [
+			             { extend: 'copy'},
+			             {extend: 'csv'},
+			             {extend: 'excel', title: 'ExampleFile'},
+			             {extend: 'pdf', title: 'ExampleFile'},
+			             {extend: 'print',
+			              customize: function (win){
+			                     $(win.document.body).addClass('white-bg');
+			                     $(win.document.body).css('font-size', '10px');
+			                     $(win.document.body).find('table')
+			                             .addClass('compact')
+			                             .css('font-size', 'inherit');
+			             }
+			             }
+			         ], "processing": true,
+			         "serverSide": false,
+			        
+			         
+			         initComplete: function () {
+			             this.api().columns().every( function () {
+			                 var column = this;
+			                 console.log("kamini123->"+column.data('selectable'));
+			                 if(column.data('selectable')) {
+			                 var select = $('<select><option value=""></option></select>')
+			                     .appendTo( $(column.footer()).empty() )
+			                     .on( 'change', function () {
+			                         var val = $.fn.dataTable.util.escapeRegex(
+			                             $(this).val()
+			                         );
+			  
+			                         column
+			                             .search( val ? '^'+val+'$' : '', true, false )
+			                             .draw();
+			                     } );
+			  
+			                 column.data().unique().sort().each( function ( d, j ) {
+			                     select.append( '<option value="'+d+'">'+d+'</option>' )
+			                 } );
+			             }
+			             } );
+			         }
+			     });
+				
+				$(this).on( 'draw.dt', function () {
+				    callColumnHandlerFunctions();
+				});
+				$('.dataTables_info').hide();
+			} else {
+				console.log('>>>>eee>>>+alse');
+
+				$(this).DataTable({
+			         pageLength: limit,
+			         responsive: true,
+			         dom: '<"html5buttons"B>lTfgitp',
+			         buttons: [
+			             { extend: 'copy'},
+			             {extend: 'csv'},
+			             {extend: 'excel', title: 'ExampleFile'},
+			             {extend: 'pdf', title: 'ExampleFile'},
+			             {extend: 'print',
+			              customize: function (win){
+			                     $(win.document.body).addClass('white-bg');
+			                     $(win.document.body).css('font-size', '10px');
+			                     $(win.document.body).find('table')
+			                             .addClass('compact')
+			                             .css('font-size', 'inherit');
+			             }
+			             }
+			         ], "processing": true,
+			         "serverSide": true,
+			         "ajax": url,
+			         "drawCallback": function( settings ) {
+			            
+			         }
+			     });
+				
+				$(this).on( 'draw.dt', function () {
+				    callColumnHandlerFunctions();
+				});
+				$('.dataTables_info').hide();
+			}
 			
-			$(this).on( 'draw.dt', function () {
-			    callColumnHandlerFunctions();
-			});
-			$('.dataTables_info').hide();
+			
 			
 		}	
 		
