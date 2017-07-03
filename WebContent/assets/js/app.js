@@ -117,7 +117,7 @@ function readyFn(jQuery) {
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
 	$('select').select2();
-	
+
 	$('.top_navbar_holder').css('color',' #676a6c');	
 	switch (body_id) {
 	case 'orgadmin_dashboard':
@@ -232,7 +232,6 @@ function readyFn(jQuery) {
 	createCalender();
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
-	
 	loadTables();	
 	try {
 		$('#searchable_grid  div.product-box').equalHeights();
@@ -561,7 +560,7 @@ function createDataTables()
 			                 var column = this;
 			                 console.log("kamini123->"+column.data('selectable'));
 			                 if(column.data('selectable')) {
-			                 var select = $('<select><option value=""></option></select>')
+			                 var select = $('<select><option value="">Select ALL</option></select>')
 			                     .appendTo( $(column.footer()).empty() )
 			                     .on( 'change', function () {
 			                         var val = $.fn.dataTable.util.escapeRegex(
@@ -6440,6 +6439,4 @@ function init_coordinator_overall_cluster(){
 	});
 	
 	
-	
 }
-
