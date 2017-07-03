@@ -59,6 +59,9 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					<div class="col-lg-10">
 						<h2 style="margin-left: 31px;">Sign Up Form</h2>
 					</div>
+					<div class="pull-right" style=" margin-top: 18px;margin-right: 80px;">
+                  <button type="button" class="btn btn-sm btn-primary m-t-n-xs signup_button">Update Details</button>
+               </div>
 				</div>
 				<jsp:include page="/trainer_common_jsps/profile_and_signup.jsp">
 				<jsp:param value="STUDENT" name="user_type"/>
@@ -108,7 +111,7 @@ function formatRepoSelection(repo) {
 $(document)
 		.ready(
 				function() {
-					$('#signup_button').unbind().click(function() {
+					$('.signup_button').unbind().click(function() {
 						$('#signup_form').submit();
 					});
 					
