@@ -34,6 +34,21 @@ public class CoordinatorSchedularUtil {
 		return finalData;
 	}
 	
+	
+	public static String createClassNameStage(String string) {
+		String returnData = "";
+		for (String iterable_element : string.split(",")) {
+			try {
+				returnData = returnData+ "stage_"+iterable_element+" ";
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
+		}
+		return returnData;
+		
+	}
+	
 	public List<HashMap<String, Object>> getDashboardCardListsL5() {
 		//String sql = "SELECT 	t1.*, C .course_name, 	up.first_name FROM 	( 		( 			SELECT DISTINCT 				te.trainer_id, 				te.course_id, 				te.stage, 				iu.email 			FROM 				trainer_empanelment_status te, 				istar_user iu 			WHERE 				te.trainer_id NOT IN ( 					SELECT 						trainer_id 					FROM 						trainer_empanelment_status te 					WHERE 						te.stage = 'L4' 				) 			AND te.stage = 'L3' 			AND te.empanelment_status = 'SELECTED' 			AND iu. ID = te.trainer_id 		) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L5' 					) 				AND te.stage = 'L4' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 		UNION 			( 				SELECT DISTINCT 					te.trainer_id, 					te.course_id, 					te.stage, 					iu.email 				FROM 					trainer_empanelment_status te, 					istar_user iu 				WHERE 					te.trainer_id NOT IN ( 						SELECT 							trainer_id 						FROM 							trainer_empanelment_status te 						WHERE 							te.stage = 'L6' 					) 				AND te.stage = 'L5' 				AND te.empanelment_status = 'SELECTED' 				AND iu. ID = te.trainer_id 			) 	) t1, 	course C, 	user_profile up WHERE 	t1.course_id = C . ID AND t1.trainer_id = up.user_id";
 		List<HashMap<String, Object>> finalData = new ArrayList<>();
