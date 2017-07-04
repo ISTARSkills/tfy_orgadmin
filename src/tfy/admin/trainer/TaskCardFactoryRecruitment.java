@@ -253,6 +253,8 @@ public class TaskCardFactoryRecruitment {
 
 	public StringBuffer showCourseCard(int trainerID, int courseID, int interviewerid,boolean isEnabled) {
 		Course course = new CourseDAO().findById(courseID);
+		IstarUser trainer=new IstarUserDAO().findById(trainerID);
+		
 		String startUrl="";
 		String intervieweeName="";
 
@@ -275,9 +277,13 @@ public class TaskCardFactoryRecruitment {
 		
 		sb.append(
 				"<div class='ibox-content product-box' id='ibox-content' style='margin-bottom:20px;'>                                             ");
-		sb.append("<div class='ibox-title'><h5>" + course.getCourseName() + "</h5> "
+		sb.append("<div class='ibox-title'><h5>" + course.getCourseName() + "</h5>"
 				+ "<div class='ibox-tools'><span class='label label-info pull-right reverse_view'><i class='fa fa-exchange'></i></span></div>"
 				+ "</div>");
+		
+		if(isEnabled)
+		sb.append("<h5 class='m-l-sm'>Candidate Name : " + trainer.getUserProfile().getFirstName() + " ("+trainer.getEmail()+") </h5>");
+		
 		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline '>                   ");
 		
 		sb.append(getStatusForL1().toString());
@@ -347,7 +353,13 @@ public class TaskCardFactoryRecruitment {
 			sb.append("<div class='ibox-content' id='ibox-content'>");
 		}
 
+		
+		
 		if (!lists.get(0).get("empanelment_status").toString().equalsIgnoreCase("REJECTED")) {
+			
+			if(isEnabled)
+				sb.append("<div class='row text-center'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></a>");
+			
 			switch (stage) {
 			case "L3":
 				String sql2 = "select id, interview_skill_name from interview_skill where course_id = " + courseID
@@ -378,10 +390,9 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				
-				if(isEnabled)
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>");
 				
-				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
+				
+				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L4' data-interviewer_id='"
 						+ interviewerid + "' type='button'>Submit</button></div></div>");
@@ -416,10 +427,9 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				
-				if(isEnabled)
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a> </div><div class='col-md-4'>");
 				
-				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
+				
+				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + "data-stage='L5' data-interviewer_id='"
 						+ interviewerid + "' type='button'>Submit</button></div></div>");
@@ -450,14 +460,9 @@ public class TaskCardFactoryRecruitment {
 				{
 					intervieweeName = interviewDetailsL6.get(0).get("first_name").toString();
 					startUrl = interviewDetailsL6.get(0).get("start_url").toString();
-				}
+				}				
 				
-				
-				if(isEnabled)
-				sb.append("<a class='btn btn-primary btn-xs' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-4'>           ");
-				
-				
-				sb.append("<button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
+				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L6' data-interviewer_id='"
 						+ interviewerid + "' type='button'>Submit</button></div></div>");

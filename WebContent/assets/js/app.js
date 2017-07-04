@@ -233,14 +233,7 @@ function readyFn(jQuery) {
 	setInterval(event_details_card,3000);
 	setInterval(init_session_logs, 10000);
 	loadTables();	
-	try {
-		//$('#searchable_grid  div.product-box').equalHeights();
-	} catch (err) {
-		// TODO: handle exception
-	}
-	
-
-	
+		
 	try {
 		$('#equalheight div.product-box').equalHeights();
 	
@@ -6117,6 +6110,7 @@ yes_js_login = function() {
 }
 
 function init_coordinator_trainer_details(){
+	$('#searchable_grid  div.product-box').equalHeights();	
 	var qsRegex;
 	var $container = $('.grid').isotope({
 		  itemSelector: '.element-item',
@@ -6287,6 +6281,27 @@ function init_cordinator_interview() {
 
 function init_coordinator_dashboard(){
 	$('#dashboard_cads .ibox-content').equalHeights();
+	
+	var qsRegex;
+	var $container = $('.grid').isotope({
+		  itemSelector: '.element-item',
+		  layoutMode: 'fitRows',
+		  filter: function() {
+			  return qsRegex ? $(this).text().match(qsRegex) : true;
+		  }
+		});
+	
+	var $quicksearch = $('#user_keyword').keyup(debounce(function () {
+        var regexVal = $quicksearch.val().split(/\s+/).join('\\b.*');
+        //var regexVal = $quicksearch.val().split(/\s+/).join('.*');
+        qsRegex = new RegExp(regexVal, 'gi');
+        $container.isotope({
+            filter: function () {
+                return qsRegex ? $(this).text().match(qsRegex) : true;
+            }
+        });
+    }));
+	
 	$('.input-group.date').datepicker({
 		startView : 1,
 		todayBtn : "linked",
@@ -6331,6 +6346,17 @@ $('.submit_form').unbind().on("click",function(){
 	        success: function(data) {
 	        	toastr.success('Successfully Scheduled');
 	        	$('#interview_holder_'+uniqueId).remove();
+	        	
+	        	$('#dashboard_cads .element-item').removeAttr('style');
+	    	    $('#dashboard_cads .element-item').css('cssText','position: absolute;');
+	        	$('#dashboard_cads .ibox-content').equalHeights();
+	        	
+	        	$('.grid').isotope({
+	  	    	  layoutMode: 'fitRows',
+	  	    	  itemSelector: '.element-item',
+	  	    	  transitionDuration:0
+	  	    	});
+	        	
 	        },
 	        error: function(data) {
 	        	toastr.errorr('Failed To Schedule. Please Contact Admin!');
@@ -6338,6 +6364,37 @@ $('.submit_form').unbind().on("click",function(){
 		});
 	    }
 	});
+
+$('.inactive_button').unbind().on('click',function(){
+	var uniqueId=$(this).data('unique');
+	var course_id=$(this).data('course_id');
+	var user_id=$(this).data('trainer_id');
+	var interviewer_id=$(this).data('interviewer_id');
+	var stage =$(this).data('stage_id');
+	var comments="Trainer is rejected because of he is inactive.";
+	var isSlected=false;	
+	var ratingSkill="";
+	
+	 $.ajax({
+	        type: "POST",
+	        url: "/submit_interview",
+	        data: {course_id:course_id,user_id:user_id,interviewer_id:interviewer_id,comments:comments,is_selected:isSlected,rating_skill:ratingSkill,stage:stage},
+	        success: function(data) {
+	        	toastr.success('Trainer is Rejected!');
+	        	$('#interview_holder_'+uniqueId).remove();
+	        	$('#dashboard_cads .element-item').removeAttr('style');
+	    	    $('#dashboard_cads .element-item').css('cssText','position: absolute;');
+	        	$('#dashboard_cads .ibox-content').equalHeights();
+	        	
+	        	$('.grid').isotope({
+		  	    	  layoutMode: 'fitRows',
+		  	    	  itemSelector: '.element-item',
+		  	    	  transitionDuration:0
+		  	    	});
+	        	
+	        }});
+});
+
 }
 
 function init_new_feedback(){ 

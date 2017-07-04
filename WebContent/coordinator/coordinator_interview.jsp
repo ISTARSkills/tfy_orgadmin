@@ -13,9 +13,14 @@
 
 
 <form id="schedular_form_<%=uniq_id%>" class="schedular_form m-t-md">
-	<input type='hidden' name='coordinator_id' value='<%=user.getId()%>' /> <input type='hidden' name='course_id' value='<%=course_id%>' /> <input type='hidden' name='stage_id' value='<%=stage_id%>' /> <input type='hidden' name='trainerID' value='<%=trainerID%>' />
+	<input type='hidden' name='coordinator_id' value='<%=user.getId()%>' />
+	<input type='hidden' name='course_id' value='<%=course_id%>' /> <input
+		type='hidden' name='stage_id' value='<%=stage_id%>' /> <input
+		type='hidden' name='trainerID' value='<%=trainerID%>' />
 	<div class="form-group">
-		<label>Choose Interviewer</label> <select class="form-control m-b scheduler_select" id='inter_viewer_id_<%=uniq_id%>' name="interviewer_id">
+		<label>Choose Interviewer</label> <select
+			class="form-control m-b scheduler_select"
+			id='inter_viewer_id_<%=uniq_id%>' name="interviewer_id">
 			<option value="">Select Interviewer...</option>
 			<%
 				for (HashMap<String, Object> item : schedularUtil.getInterViewersList()) {
@@ -31,8 +36,10 @@
 	<div class="form-group" id="data_2">
 		<label class="font-bold">Interview Date</label>
 		<div class="input-group date">
-			<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-			<input placeholder="Select Interview Date" name="date" id="eventDate_<%=uniq_id%>" type="text" class="form-control date_holder" value="">
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			<input placeholder="Select Interview Date" name="date"
+				id="eventDate_<%=uniq_id%>" type="text"
+				class="form-control date_holder" value="">
 		</div>
 	</div>
 
@@ -42,18 +49,31 @@
 				<label class="font-bold">Time</label>
 				<div class="input-group" data-autoclose="true">
 					<span class="input-group-addon"> <span class="fa fa-clock-o"></span>
-					</span> <input  placeholder="Interview Time"  type="text" style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>" name="time" class="time_element" />
+					</span> <input placeholder="Interview Time" type="text"
+						style="width: 100%; height: 28px;" id="eventTime_<%=uniq_id%>"
+						name="time" class="time_element" />
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6" style="padding-left:15px;padding-right:0px;">
+		<div class="col-md-6" style="padding-left: 15px; padding-right: 0px;">
 			<div class="form-group">
 				<label class="font-bold">Duration(in Mins)</label>
 				<div class="input-group" data-autoclose="true">
-					<span class="input-group-addon"> <span class="fa fa-hourglass-start"></span>
-					</span> <input type="number" style="width: 100%; height: 28px;" id="event_duration_<%=uniq_id%>" value='30' name="duration" />
+					<span class="input-group-addon"> <span
+						class="fa fa-hourglass-start"></span>
+					</span> <input type="number" style="width: 100%; height: 28px;"
+						id="event_duration_<%=uniq_id%>" value='30' name="duration" />
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<button class="btn btn-warning btn-circle inactive_button"
+			data-stage_id='<%=stage_id%>' data-trainer_id='<%=trainerID%>'
+			data-course_id='<%=course_id%>' data-unique='<%=uniq_id%>' data-interviewer_id="<%=user.getId()%>" type="button">
+			<i class="fa fa-times"></i>
+		</button>
+		Make Trainer Inactive
+	</div>
+
 </form>
