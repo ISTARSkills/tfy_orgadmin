@@ -2940,7 +2940,7 @@ function init_orgadmin_report_detail(){
         	num=(num*3)-3;
         }
         
-        $.post("../batch_session_model_data.jsp", {
+        $.post("./batch_session_model_data.jsp", {
         	      offset: num,
         	      batch_id:$('#session-page-selection').data('batch')
             },
