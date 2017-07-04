@@ -369,9 +369,9 @@ public class TaskCardFactoryRecruitment {
 				}
 				
 				if(isEnabled){
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</button></div></div>");
 				}else{
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm text-center'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</button></div>");
 				}
 				
 				String sql2 = "select id, interview_skill_name from interview_skill where course_id = " + courseID
@@ -412,9 +412,9 @@ public class TaskCardFactoryRecruitment {
 				}
 
 				if(isEnabled){
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</button></div></div>");
 				}else{
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm text-center'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</button></div>");
 				}
 				
 				String sql3 = "select id, interview_skill_name from interview_skill where  stage_type='L5'";
@@ -451,9 +451,9 @@ public class TaskCardFactoryRecruitment {
 				}	
 				
 				if(isEnabled){
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</button></div></div>");
 				}else{
-					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</a></div></div>");
+					sb.append("<div class='row m-b-sm text-center'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</button></div>");
 				}
 				
 				String sql4 = "select id, interview_skill_name from interview_skill where stage_type='L6'";
