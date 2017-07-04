@@ -165,11 +165,11 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 
 			 String findAlreadyInterestedCourse ="select distinct course_id from trainer_intrested_course where trainer_id = "+userId;
 			 List<HashMap<String, Object>> interestedCourse = util.executeQuery(findAlreadyInterestedCourse);
-			 ArrayList<Integer> interstedCourse = new ArrayList<>();
+			 ArrayList<Integer> interstedCourseList = new ArrayList<>();
 			 for(HashMap<String, Object> row: interestedCourse)
 			 {
 				 int courseId = (int)row.get("course_id");
-				 interstedCourse.add(courseId);
+				 interstedCourseList.add(courseId);
 			 }
 			 String groupNotificationCode = UUID.randomUUID().toString();
 			 if(!courseIds.equalsIgnoreCase("")){
@@ -177,12 +177,13 @@ public class ProfileUpdate extends IStarBaseServelet {
     			 TaskServices taskService = new TaskServices();
     			 for(String course_id : courses)
     			 {
-    				 if(!interestedCourse.contains(Integer.parseInt(course_id)))
+    				 int courseId=Integer.parseInt(course_id);
+    				 if(!interstedCourseList.contains(courseId))
     				{
     					 String insertInIntrestedTable = "insert into trainer_intrested_course (id, trainer_id, course_id) values((select COALESCE(max(id),0)+1 from trainer_intrested_course),"+userId+","+course_id+")";
         				 db.executeUpdate(insertInIntrestedTable);
         				 
-        				 Course course  = new CourseDAO().findById(Integer.parseInt(course_id));
+        				 Course course  = new CourseDAO().findById(courseId);
         				 String getAssessmentForCourse="select distinct assessment_id from  course_assessment_mapping where course_id="+course_id;
         				 List<HashMap<String, Object>> assessments = db.executeQuery(getAssessmentForCourse);
         				 for(HashMap<String, Object> assess: assessments)
@@ -194,7 +195,7 @@ public class ProfileUpdate extends IStarBaseServelet {
         					String taskTitle = assessment.getAssessmenttitle();
         					String taskDescription = notificationDescription;
         					int taskId = taskService.createTodaysTask(taskTitle.trim().replace("'", ""), taskDescription.trim().replace("'", ""), 300+"",userId+"" , assessmentId+"", "ASSESSMENT");
-        					IstarNotification istarNotification = notificationService.createIstarNotification(300, userId, notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
+        					notificationService.createIstarNotification(300, userId, notificationTitle, notificationDescription, "UNREAD", null, NotificationType.ASSESSMENT, true, taskId, groupNotificationCode);
         				 }	 
     				}
     				
