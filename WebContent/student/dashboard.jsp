@@ -141,7 +141,12 @@
       radioClass: 'iradio_square-green',
   });
 	
-
+	$('.interview_question').unbind().on('click',function(){
+		var url=$(this).data('href');
+		var baseUrl = document.location.origin;
+		window.open(baseUrl+'/student/'+url, '_blank');
+	});
+	
 	});
 	</Script>
 </body>

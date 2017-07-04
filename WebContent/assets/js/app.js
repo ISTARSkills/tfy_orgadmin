@@ -6260,6 +6260,14 @@ function init_coordinator_trainer_profile(){
         checkboxClass: 'icheckbox_square-green',
         radioClass: 'iradio_square-green',
     });
+	
+	$('.interview_question').unbind().on('click',function(){
+		var url=$(this).data('href');
+		var baseUrl = document.location.origin;
+		window.open(baseUrl+'/coordinator/'+url, '_blank');
+	});
+	
+	
 }
 
 // auto-initialize plugin

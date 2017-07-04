@@ -64,14 +64,14 @@ request.setAttribute("cp", cp);
 					for (ParentLink link : (new UIUtils()).getMenuLinks(userRole.toLowerCase())) {
 						if (link.isIs_visible_in_menu()) {
 							if(link.getDisplayName().equalsIgnoreCase("ROLES")){
-								if(cp.getCourses().size()>0){
+								if(cp!=null && cp.getCourses()!=null && cp.getCourses().size()>0){
 									%>
 									<li><a id="<%=link.getDisplayName().replace(" ","")%>"
 					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 					<%
 								} 
 							} else if(link.getDisplayName().equalsIgnoreCase("Skill Profile")){
-								if(cp.getCourses().size()>0){
+								if(cp!=null && cp.getCourses()!=null &&cp.getCourses().size()>0){
 									%>
 									<li><a id="<%=link.getDisplayName().replace(" ","")%>"
 					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
@@ -102,16 +102,21 @@ request.setAttribute("cp", cp);
 			<%} else {%>
 
 			<ul class="nav navbar-top-links navbar-right">
-			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><img alt="" src="/assets/img/user_images/coins_icon.png" style=" width: 14px;"> <%=cp.getStudentProfile().getCoins() %></span>
-			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><%=cp.getStudentProfile().getExperiencePoints() %>&nbsp;&nbsp; XP </span>
+			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><img alt="" src="/assets/img/user_images/coins_icon.png" style=" width: 14px;"> <%=cp!=null && cp.getStudentProfile()!=null && cp.getStudentProfile().getCoins()!=null ?cp.getStudentProfile().getCoins():"0"%></span>
+			<span class="label" style="color: #eb384f;font-size: 15px; background: white;"><%=cp!=null && cp.getStudentProfile()!=null && cp.getStudentProfile().getExperiencePoints()!=null ?cp.getStudentProfile().getExperiencePoints():"0" %>&nbsp;&nbsp; XP </span>
 				<li class="dropdown"><a class="dropdown-toggle count-info"
 					data-toggle="dropdown" href="#" aria-expanded="true"> <i style="color:#eb384f" " 
-						class="fa fa-bell"></i> <span class="label label-warning"><%=cp.getNotificationsValid() %></span>
+						class="fa fa-bell"></i> <span class="label label-warning"><%=cp!=null?cp.getNotificationsValid():""%></span>
 				</a>
 					<ul class="dropdown-menu dropdown-messages">
 						<% 
 						
-						List<NotificationPOJO> items = cp.getNotifications();
+						List<NotificationPOJO> items = new ArrayList();
+						
+						if(cp!=null && cp.getNotifications()!=null){
+							items=cp.getNotifications();
+						}
+						
 				        Collections.reverse(items);
 						for(NotificationPOJO notification: items) { 
 							

@@ -356,12 +356,24 @@ public class TaskCardFactoryRecruitment {
 		
 		
 		if (!lists.get(0).get("empanelment_status").toString().equalsIgnoreCase("REJECTED")) {
-			
-			if(isEnabled)
-				sb.append("<div class='row text-center'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></a>");
-			
 			switch (stage) {
 			case "L3":
+				
+				String findInterviewDetails = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L4'  limit 1";
+				List<HashMap<String, Object>> interviewDetails = util.executeQuery(findInterviewDetails);
+				
+				if(interviewDetails.size()>0)
+				{
+					intervieweeName = interviewDetails.get(0).get("first_name").toString();
+					startUrl = interviewDetails.get(0).get("start_url").toString();
+				}
+				
+				if(isEnabled){
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}else{
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L4&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}
+				
 				String sql2 = "select id, interview_skill_name from interview_skill where course_id = " + courseID
 						+ " and stage_type='L4'";
 				List<HashMap<String, Object>> items = util.executeQuery(sql2);
@@ -380,17 +392,6 @@ public class TaskCardFactoryRecruitment {
 				sb.append(" <div class='i-checks'><label> <input type='checkbox' value='SELECTED' id='selected_"
 						+ trainerID + "_" + courseID + "' > <i></i> Selected </label></div>");
 				sb.append("</div><div class='col-md-4'>");
-				String findInterviewDetails = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L4'  limit 1";
-				List<HashMap<String, Object>> interviewDetails = util.executeQuery(findInterviewDetails);
-				
-				if(interviewDetails.size()>0)
-				{
-					intervieweeName = interviewDetails.get(0).get("first_name").toString();
-					startUrl = interviewDetails.get(0).get("start_url").toString();
-				}
-				
-				
-				
 				
 				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
@@ -400,6 +401,22 @@ public class TaskCardFactoryRecruitment {
 				break;
 
 			case "L4":
+				
+				String findInterviewDetailsL5 = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L5'  limit 1";
+				List<HashMap<String, Object>> interviewDetailsL5 = util.executeQuery(findInterviewDetailsL5);
+				
+				if(interviewDetailsL5.size()>0)
+				{
+					intervieweeName = interviewDetailsL5.get(0).get("first_name").toString();
+					startUrl = interviewDetailsL5.get(0).get("start_url").toString();
+				}
+
+				if(isEnabled){
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}else{
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L5&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}
+				
 				String sql3 = "select id, interview_skill_name from interview_skill where  stage_type='L5'";
 				List<HashMap<String, Object>> items1 = util.executeQuery(sql3);
 				for (HashMap<String, Object> item : items1) {
@@ -417,24 +434,28 @@ public class TaskCardFactoryRecruitment {
 				sb.append(" <div class='i-checks'><label> <input type='checkbox' value='SELECTED' id='selected_"
 						+ trainerID + "_" + courseID + "' > <i></i> Selected </label></div>");
 				sb.append("</div><div class='col-md-4'>");
-				String findInterviewDetailsL5 = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L5'  limit 1";
-				List<HashMap<String, Object>> interviewDetailsL5 = util.executeQuery(findInterviewDetailsL5);
-				
-				if(interviewDetailsL5.size()>0)
-				{
-					intervieweeName = interviewDetailsL5.get(0).get("first_name").toString();
-					startUrl = interviewDetailsL5.get(0).get("start_url").toString();
-				}
-				
-				
-				
-				
 				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + "data-stage='L5' data-interviewer_id='"
 						+ interviewerid + "' type='button'>Submit</button></div></div>");
 				break;
 			case "L5":
+				
+				String findInterviewDetailsL6 = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L6'  limit 1";
+				List<HashMap<String, Object>> interviewDetailsL6 = util.executeQuery(findInterviewDetailsL6);
+				
+				if(interviewDetailsL6.size()>0)
+				{
+					intervieweeName = interviewDetailsL6.get(0).get("first_name").toString();
+					startUrl = interviewDetailsL6.get(0).get("start_url").toString();
+				}	
+				
+				if(isEnabled){
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'><a class='btn btn-primary' target='_blank' href='"+startUrl+"'>Start Interview</a></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}else{
+					sb.append("<div class='row m-b-sm'><div class='col-md-3'></div><div class='col-md-3'></div><div class='col-md-3'><button class='btn btn-primary interview_question'  data-href='interview_question.jsp?stage=L6&course_id="+courseID+"'>Interview Question</a></div></div>");
+				}
+				
 				String sql4 = "select id, interview_skill_name from interview_skill where stage_type='L6'";
 				List<HashMap<String, Object>> items2 = util.executeQuery(sql4);
 				for (HashMap<String, Object> item : items2) {
@@ -453,15 +474,6 @@ public class TaskCardFactoryRecruitment {
 				sb.append(" <div class='i-checks'><label> <input type='checkbox' value='SELECTED' id='selected_"
 						+ trainerID + "_" + courseID + "' > <i></i> Selected </label></div>");
 				sb.append("</div><div class='col-md-4'>");
-				String findInterviewDetailsL6 = "select first_name, start_url from interview_task_details, user_profile interviewee where interviewee.user_id = interview_task_details.interviewee_id and course_id = "+courseID+" and interviewer_id = "+interviewerid+" and interviewee_id = "+trainerID+" and stage = 'L6'  limit 1";
-				List<HashMap<String, Object>> interviewDetailsL6 = util.executeQuery(findInterviewDetailsL6);
-				
-				if(interviewDetailsL6.size()>0)
-				{
-					intervieweeName = interviewDetailsL6.get(0).get("first_name").toString();
-					startUrl = interviewDetailsL6.get(0).get("start_url").toString();
-				}				
-				
 				sb.append("</div><div class='col-md-4'><button data-_holer_id='trainer_rating_" + trainerID + "_" + courseID
 						+ "' class='btn btn-primary submit_feedback pull-right btn-xs' data-course_id='" + courseID
 						+ "' data-user_id='" + trainerID + "' " + " data-stage='L6' data-interviewer_id='"

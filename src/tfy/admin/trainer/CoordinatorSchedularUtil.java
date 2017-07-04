@@ -97,7 +97,7 @@ public class CoordinatorSchedularUtil {
 	}
 
 	public List<HashMap<String, Object>> getInterViewersList() {
-		String sql = "SELECT 	iu. ID, 	iu.email, 	r.role_name FROM 	istar_user iu, 	user_role ur, 	ROLE r WHERE 	iu. ID = ur.user_id AND ur.role_id = r. ID AND ur.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ( 			'MASTER_TRAINER', 			'SUPER_ADMIN', 			'COORDINATOR', 			'RECRUITER', 			'EXECUTIVE RECRUITER', 			'PANELIST' 		) )";
+		String sql = "SELECT 	iu. ID, 	iu.email, 	r.role_name FROM 	istar_user iu, 	user_role ur, 	ROLE r WHERE 	iu. ID = ur.user_id AND ur.role_id = r. ID AND ur.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('MASTER_TRAINER') )";
 		return utils.executeQuery(sql);
 	}
 
@@ -122,4 +122,16 @@ public class CoordinatorSchedularUtil {
 		  stageNames.put("L6","Fitment Interview (L6)");
 		  return stageNames.get(stage);
 	}
+	
+	public List<HashMap<String, Object>> getAllInterviewQuestions(String stage,int courseId){
+		String sql="";
+		if(!stage.equalsIgnoreCase("") && courseId!=0){
+			sql="SELECT * FROM interview_questions where course_id="+courseId+" and stage='"+stage+"'";
+		}else{
+			sql="SELECT * FROM interview_questions where stage='"+stage+"'";
+		}
+		return utils.executeQuery(sql);
+	}
+	
+	
 }
