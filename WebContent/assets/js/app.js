@@ -234,7 +234,7 @@ function readyFn(jQuery) {
 	setInterval(init_session_logs, 10000);
 	loadTables();	
 	try {
-		$('#searchable_grid  div.product-box').equalHeights();
+		//$('#searchable_grid  div.product-box').equalHeights();
 	} catch (err) {
 		// TODO: handle exception
 	}

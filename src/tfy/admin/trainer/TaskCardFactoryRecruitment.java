@@ -185,8 +185,11 @@ public class TaskCardFactoryRecruitment {
 							+ row.get("id") + ")";
 					List<HashMap<String, Object>> scoreL3 = util.executeQuery(getScore);
 					if (scoreL3.size() > 0 && scoreL3.get(0).get("user_score") != null) {
+						
+						int percentage = (100*Integer.parseInt(scoreL3.get(0).get("user_score").toString()))/(Integer.parseInt(scoreL3.get(0).get("total").toString()));
+						
 						score = "with the score " + scoreL3.get(0).get("user_score").toString() + "/"
-								+ scoreL3.get(0).get("total").toString();
+								+ scoreL3.get(0).get("total").toString() + "("+percentage+" % )";
 					}
 				} else if (stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.SME_INTERVIEW)
 						|| stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.DEMO)
