@@ -44,7 +44,7 @@
 							</div>
 						</div>
 					</div>
-					 <div class="col-lg-3 p-xxs bg-muted" style="display:none">
+					  <div class="col-lg-1 p-xxs bg-muted" style="display:none">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 								<h5>Student Score Table</h5>
@@ -58,7 +58,7 @@
 
 							</div>
 						</div>
-					</div>  
+					</div>   
 					<div class="col-lg-3 p-xxs bg-muted">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">

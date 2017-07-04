@@ -41,7 +41,8 @@
 
 			if (item.get("comprehensive_passage_text") == null
 					|| item.get("comprehensive_passage_text").toString().equalsIgnoreCase("")
-					|| item.get("comprehensive_passage_text").toString().trim().contains("<p>null</p>")) {
+					|| item.get("comprehensive_passage_text").toString().trim().contains("<p>null</p>")
+					|| item.get("comprehensive_passage_text").toString().trim().contains("null")) {
 				questionText = item.get("question_text").toString();
 			} else {
 				questionText = item.get("comprehensive_passage_text").toString() + "<br/>"

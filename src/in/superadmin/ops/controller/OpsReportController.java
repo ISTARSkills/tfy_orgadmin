@@ -54,7 +54,7 @@ public class OpsReportController extends IStarBaseServelet {
 		
 		if(request.getParameter("type")!=null&&request.getParameter("type").equalsIgnoreCase("batch") &&request.getParameter("batch")!=null){
 			
-			String sql="SELECT DISTINCT 	ass. ID, 	ass.assessmenttitle, 	isa.eventdate FROM 	istar_assessment_event isa, 	assessment ass WHERE 	isa.assessment_id = ass. ID AND isa.batch_id = "+request.getParameter("batch");
+			String sql="SELECT  DISTINCT assessment.id, assessment.assessmenttitle, task.start_date FROM 	task, 	batch, 	batch_group, 	batch_students, assessment WHERE 	item_type = 'ASSESSMENT' AND batch.batch_group_id = batch_group.id AND batch_group.id = batch_students.batch_group_id AND task.actor = batch_students.student_id AND assessment.id = task.item_id AND batch.id ="+request.getParameter("batch");
 			
 			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 			StringBuffer out = new StringBuffer();
@@ -62,7 +62,7 @@ public class OpsReportController extends IStarBaseServelet {
 			out.append("<option value='null'>select Assessment</option>");
 			
 			for (HashMap<String, Object> item : data) {
-				out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle")+" ("+item.get("eventdate")+ ") </option>");
+				out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle")+" ("+item.get("start_date")+ ") </option>");
 			}
 			out.append("");
 			response.getWriter().print(out);
