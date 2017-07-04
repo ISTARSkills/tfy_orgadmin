@@ -378,7 +378,7 @@ JOIN course ON (
 		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="id"/>		
 	<sql>
 SELECT ID,
-	COALESCE(trim(profile_image),'http://cdn.talentify.in/video/android_images/S.png') as profile_image,
+	COALESCE(trim(profile_image),'http://cdn.talentify.in:9999/video/android_images/S.png') as profile_image,
 	COALESCE(first_name,'NA') as first_name,
 	(case when atten_perc is not null then
 						
@@ -406,7 +406,7 @@ FROM
 			CASE
 		WHEN user_profile.profile_image LIKE 'null'
 		OR user_profile.profile_image IS NULL THEN
-			'http://cdn.talentify.in/video/android_images/' || UPPER (
+			'http://cdn.talentify.in:9999/video/android_images/' || UPPER (
 				SUBSTRING (
 					user_profile.first_name
 					FROM
@@ -414,7 +414,7 @@ FROM
 				)
 			) || '.png'
 		ELSE
-			'http://cdn.talentify.in/' || user_profile.profile_image
+			'http://cdn.talentify.in:9999/' || user_profile.profile_image
 		END AS profile_image,
 		string_agg (
 			DISTINCT (batch_group. NAME),
@@ -660,7 +660,7 @@ FROM
 			CASE
 		WHEN user_profile.profile_image LIKE 'null'
 		OR user_profile.profile_image IS NULL THEN
-			'http://cdn.talentify.in/video/android_images/' || UPPER (
+			'http://cdn.talentify.in:9999/video/android_images/' || UPPER (
 				SUBSTRING (
 					TRIM (user_profile.first_name)
 					FROM
@@ -671,7 +671,7 @@ FROM
 		ThEN
 			user_profile.profile_image
 		ELSE
-			'http://cdn.talentify.in/' || user_profile.profile_image
+			'http://cdn.talentify.in:9999/' || user_profile.profile_image
 		END AS profile_image,
 		string_agg (
 			DISTINCT (batch_group. NAME),
