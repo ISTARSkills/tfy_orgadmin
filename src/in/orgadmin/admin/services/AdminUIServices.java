@@ -84,6 +84,21 @@ public class AdminUIServices {
 		out.append("");
 		return out;
 	}
+	
+	public List<HashMap<String, Object>> studentFeedbackTrainerInfo(int taskId){
+		
+		String sql="SELECT 	bse.eventdate,bse.id, c.course_name,	iu.email, 	up.first_name, 	iu. ID AS trainer_id, bse.batch_group_id, 	up.profile_image FROM "
+				+ "	batch_schedule_event bse, 	istar_user iu, 	user_profile up,course c WHERE 	"
+				+ "bse.batch_group_id IN ( 		SELECT 			batch_group_id 		FROM 			batch_schedule_event 		WHERE 			"
+				+ "ID IN ( 				SELECT 					item_id 				FROM 					task 				WHERE 					ID = "+taskId+" 			) 	) "
+						+ "AND bse.eventdate IN ( 	SELECT 		eventdate 	FROM 		batch_schedule_event 	WHERE 	"
+						+ "	ID IN ( 			SELECT 				item_id 			FROM 				task 			WHERE 				ID = "+taskId+" 		) ) AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' AND bse.actor_id = iu. ID AND iu. ID = up.user_id AND bse.course_id=c.id";
+
+		DBUTILS db = new DBUTILS();
+		return db.executeQuery(sql);
+	}
+	
+	
 
 	/*public StringBuffer getAllStudents(int orgId) {
 		// <option value="">Data Analytics</option>
