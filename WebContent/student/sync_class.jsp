@@ -88,6 +88,8 @@
 		</div>
 
 	</div>
+	<button  style='float:right;margin: 10px; z-index: 999; position: absolute;top: 5%;right: 1%;' class="btn btn-danger btn-circle" type="button">Feedback</button>
+	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="<%=basePath%>assets/slide_assets/lib/js/head.min.js"></script>
 	<script src="<%=basePath%>assets/slide_assets/js/reveal.js"></script>
@@ -249,7 +251,7 @@ function updateMessage(msg)
         	 
         	$.ajax({
                  type: "POST",
-                 url: '<%=basePath%>update_attendance',
+                 url: '<%=basePath%>/t2c/update_attendance',
                  data: {user_id:<%=user_id%>,task_id:<%=task_id%>},
                  success: function(result) {}
              });

@@ -7,7 +7,7 @@
 ReportUtils util = new ReportUtils();
 int collegeId = Integer.parseInt(request.getSession().getAttribute("orgId").toString());
 %>
-<div class="row">
+<div class="row" id='auto_scheduler'>
 	<div class="col-lg-12">
 		<div class="col-lg-12">
 			<div class="ibox">

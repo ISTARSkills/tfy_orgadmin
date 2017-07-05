@@ -2608,8 +2608,8 @@ function init_orgadmin_scheduler() {
 function init_auto_scheduler()
 {
 	$('#entity_type_selector').removeClass('select2-hidden-accessible');
-	$('#org_selector').removeClass('select2-hidden-accessible');
-	$('.select2-container--default').hide();
+	$('auto_scheduler #org_selector').removeClass('select2-hidden-accessible');
+	$('#auto_scheduler .select2-container--default').hide();
 	$('#wizard').steps();
 	$('#org_selector').unbind().on('change', function(){
 		var orgId = $(this).val();
