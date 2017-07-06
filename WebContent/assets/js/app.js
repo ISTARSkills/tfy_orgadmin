@@ -6044,17 +6044,12 @@ function init_super_admin_report(){
 function init_superadmin_class_room(){
 	
 	$('#class-add').on("click",function(){
-		var urls = 'partials/modal/create_edit_classroom_modal.jsp?type=Create';
-    	$.get( urls, function( data ) {
-    		  $('#edit_class_room_model').remove(); 
-    		  $("body").append(data);
-    		  init_classRoom_Modal();
-    		  $('#edit_class_room_model').modal();
-    		});
-		
-		
-		
+		var urls = $(this).data('url');
+    	window.open(urls,'_blank');
+    	init_classRoom_Modal();
 	});
+	
+	init_classRoom_Modal();
 	
 }
 
@@ -6082,7 +6077,7 @@ function init_classRoom_Modal(){
 	
 	if(checkData()){
 		
-	var url='../create_or_update_classroom';
+	var url='/create_or_update_classroom';
 	 $.post(url, $('#edit_class_model_form').serialize().toString(),
 			 function(data) {
 		 				$('#edit_class_room_model').modal('hide');
