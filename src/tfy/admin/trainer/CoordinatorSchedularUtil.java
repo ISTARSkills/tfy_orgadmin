@@ -107,8 +107,8 @@ public class CoordinatorSchedularUtil {
 		return utils.executeQuery(sql);
 	}
 	
-	public List<HashMap<String, Object>> isAlreadyScheduled(String trainerId,String stage) {
-		String sql = "SELECT * from interview_task_details where interviewee_id="+trainerId+" and stage='"+stage+"'";
+	public List<HashMap<String, Object>> isAlreadyScheduled(String trainerId,String stage,int courseId) {
+		String sql = "SELECT * from interview_task_details where interviewee_id="+trainerId+" and stage='"+stage+"' and course_id="+courseId;
 		return utils.executeQuery(sql);
 	}
 	

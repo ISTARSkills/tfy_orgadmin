@@ -95,7 +95,7 @@ th {
 							String uniq_id = courseId + "_" + trainerId;
 							IstarUser trainer = new IstarUserDAO().findById(trainerId);
 							Course course = new CourseDAO().findById(courseId);
-							List<HashMap<String, Object>> interViewData = schedularUtil.isAlreadyScheduled(trainerId + "", stage);
+							List<HashMap<String, Object>> interViewData = schedularUtil.isAlreadyScheduled(trainerId + "", stage,courseId);
 							if (interViewData != null && interViewData.size() == 0) {
 					%>
 					<div

@@ -14,6 +14,7 @@ import com.istarindia.android.pojo.ModulePOJO;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
+import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 import tfy.admin.trainer.TaskCardFactoryRecruitment;
@@ -366,7 +367,7 @@ public class TaskCardFactory {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<div class='col-md-3 product-box ' style='max-height: 500px !important;overflow-y: scroll; '>			"
 				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
-				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> ");			
+				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> " +AppProperies.generatePopOver("task_summary_card"));			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");
 		sb.append("<small>You have "+cp.getEventsToday().size() +" events and "+cp.getNotificationsValid()+" notifications.</small>                                 ");
 		sb.append("<ul class='list-group clear-list m-t'>  ");
