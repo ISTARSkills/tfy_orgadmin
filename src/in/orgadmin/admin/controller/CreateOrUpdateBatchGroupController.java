@@ -84,7 +84,13 @@ Param -> course_ids : Value ->1*/
 			{
 				isPrimary  = true;
 			}
-						
+			
+			Integer student_count=0;
+			
+			if(request.getParameterMap().containsKey("student_count"))
+			{
+				student_count  = Integer.parseInt(request.getParameter("student_count"));
+			}			
 			
 			String modeType = request.getParameter("mode_type");
 			
@@ -169,11 +175,11 @@ Param -> course_ids : Value ->1*/
 			if(request.getParameterMap().containsKey("bg_id") && !request.getParameter("bg_id").equalsIgnoreCase("")){
 				//update
 				int bg_id=Integer.parseInt(request.getParameter("bg_id"));
-				batchGroup=batchGroupService.updateBatchGroup(bg_id,group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType,modeType,startDateInDateFormats, isPrimary, isHistorical);
+				batchGroup=batchGroupService.updateBatchGroup(bg_id,group_name, group_desc, student_count, college_id, 10195, parentGroupId, groupType,modeType,startDateInDateFormats, isPrimary, isHistorical);
 			}else{
 				
 				//create
-				batchGroup= batchGroupService.createBatchGroup(group_name, group_desc, 1000, college_id, 10195, parentGroupId, groupType, modeType,startDateInDateFormats, isPrimary, isHistorical);
+				batchGroup= batchGroupService.createBatchGroup(group_name, group_desc, student_count, college_id, 10195, parentGroupId, groupType, modeType,startDateInDateFormats, isPrimary, isHistorical);
 			}
 			
 			if (batchGroup != null) {

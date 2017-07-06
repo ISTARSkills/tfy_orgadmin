@@ -62,7 +62,7 @@ public class CreateOrUpdateClassRoomController extends IStarBaseServelet {
 		boolean keyboard = request.getParameter("keyboard") != null
 				&& request.getParameter("keyboard").equalsIgnoreCase("YES") ? true : false;
 		boolean mouse = request.getParameter("mouse") != null
-				&& request.getParameter("extension_box").equalsIgnoreCase("YES") ? true : false;
+				&& request.getParameter("mouse").equalsIgnoreCase("YES") ? true : false;
 
 		DBUTILS db = new DBUTILS();
 
@@ -77,11 +77,14 @@ public class CreateOrUpdateClassRoomController extends IStarBaseServelet {
 					+ ")";
 			System.out.println(sql);
 			db.executeUpdate(sql);
-
 		} else {
-			sql = "UPDATE classroom_details SET classroom_identifier = '" + class_name + "',  organization_id = '"
-					+ org_id + "',  max_students = " + class_students + ",  ip_address = '" + class_ip
-					+ "' WHERE ( ID =" + class_id + ")";
+			sql = "UPDATE classroom_details SET " + "classroom_identifier='" + class_name + "', " + "organization_id='"
+					+ org_id + "', " + "max_students='" + class_students + "',  ip_address='" + class_ip
+					+ "', tv_projector='" + tv_projector + "', internet_availability='" + internet_availability
+					+ "', internet_speed='" + internet_speed + "'" + ", type_of_class='" + lab_or_class
+					+ "', compute_stick='" + compute_stick + "'," + " extension_box='" + extension_box + "', router='"
+					+ router + "', keyboard='" + keyboard + "', mouse='" + mouse + "' WHERE (id='" + class_id + "');";
+			System.out.println(sql);
 			db.executeUpdate(sql);
 		}
 	}

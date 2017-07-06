@@ -90,6 +90,7 @@ public class OrgAdminBatchGroupService {
 		batchGroup.setYear(year);
 		batchGroup.setModeType(modeType);
 		batchGroup.setOrganization(new OrganizationDAO().findById(org_id));
+		batchGroup.setNumberOfStudents(studentCount);
 		Session session = batchGroupDAO.getSession();
 		Transaction tx = null;
 		try {
@@ -122,6 +123,7 @@ public class OrgAdminBatchGroupService {
 		batchGroup.setIsHistorical(isHistorical);
 		batchGroup.setIsPrimary(isPrimary);
 		batchGroup.setModeType(modeType);
+		batchGroup.setNumberOfStudents(studentCount);
 		java.sql.Date sqlDate =  new java.sql.Date(startDateInDateFormats.getTime());
 		batchGroup.setStartDate(sqlDate);
 		int year = Calendar.getInstance().get(Calendar.YEAR);

@@ -537,6 +537,7 @@ SELECT DISTINCT 	csobj.skill_objective_id, 	C .course_name, 	CAST ( 		AVG (sp.pe
 		<column columnHandler="NONE" display_name="Number of Batchs" isVisible="true" name="batches" />
 		<column columnHandler="NONE" display_name="Number of Students" isVisible="true" name="students" />
 		<column columnHandler="NONE" display_name="Group Code" isVisible="true" name="batch_code" />
+		<column columnHandler="NONE" display_name="Enrolled Students" isVisible="true" name="enrolled_students" />
 		<column columnHandler="BG_ROLE_HANDLER" display_name="Edit" isVisible="true" name="bg_id"/>
 	<sql>
 SELECT
@@ -547,7 +548,8 @@ SELECT
 	T1.bg_parent_group as bg_parent_group,
 	COALESCE (T2.batches, 0) AS batches,
 	COALESCE (T3.students, 0) AS students,
-	COUNT (*) OVER () AS total_rows
+	COUNT (*) OVER () AS total_rows, 
+	 T1.enrolled_students 
 FROM
 	(
 		SELECT
@@ -556,7 +558,9 @@ FROM
 			batch_group. NAME AS bg_name,
 			batch_group.bg_desc AS bg_desc,
 			batch_group.batch_code,
-			COALESCE(PBG.name,'NONE') as bg_parent_group
+			COALESCE(PBG.name,'NONE') as bg_parent_group, 
+			batch_group.enrolled_students as enrolled_students  
+			
 		FROM
 			batch_group left join  batch_group PBG on (PBG.id = batch_group.parent_group_id)
  		WHERE
@@ -1317,7 +1321,9 @@ ORDER BY
 		<column columnHandler="NONE" display_name="Organization" isVisible="true" name="name" />
 		<column columnHandler="NONE" display_name="Max Students" isVisible="true" name="max_students" />
 		<column columnHandler="NONE" display_name="IP Address" isVisible="true" name="ip_address" />
-			
+				<column columnHandler="CLASSROOM_HANDLER" display_name="Edit" isVisible="true" name="id" />
+
+		
 <sql>select classroom_details.id, classroom_identifier, max_students, ip_address, organization.name , count(*) over() as total_rows 
 from classroom_details, organization where 
 organization.id = classroom_details.organization_id 
@@ -1671,4 +1677,24 @@ GROUP BY
 order by 1
 </sql>
 </reports>
+
+
+<reports id="3068" type_of_report="table">
+ <column columnHandler="NONE" display_name="Id" isVisible="true" name="id" />		
+		<column columnHandler="NONE" display_name="ClassRoom Name" isVisible="true" name="classroom_identifier" />
+		<column columnHandler="NONE" display_name="Organization" isVisible="true" name="name" />
+		<column columnHandler="NONE" display_name="Capacity" isVisible="true" name="max_students" />
+		<column columnHandler="NONE" display_name="IP Address" isVisible="true" name="ip_address" />
+		<column columnHandler="CLASSROOM_HANDLER" display_name="Edit" isVisible="true" name="id" />
+			
+<sql>select classroom_details.id, classroom_identifier, max_students, ip_address, organization.name , count(*) over() as total_rows 
+from classroom_details, organization where 
+organization.id = classroom_details.organization_id  and  organization_id=:organization_id
+order by :order_by_column :order_type limit :limit offset :offset
+</sql>	
+</reports>
+
+
 </istar_reports>
+
+

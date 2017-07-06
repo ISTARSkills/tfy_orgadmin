@@ -6045,8 +6045,7 @@ function init_superadmin_class_room(){
 	
 	$('#class-add').on("click",function(){
 		var urls = $(this).data('url');
-    	window.open(urls,'_blank');
-    	init_classRoom_Modal();
+    	window.location=urls;
 	});
 	
 	init_classRoom_Modal();
@@ -6080,9 +6079,7 @@ function init_classRoom_Modal(){
 	var url='/create_or_update_classroom';
 	 $.post(url, $('#edit_class_model_form').serialize().toString(),
 			 function(data) {
-		 				$('#edit_class_room_model').modal('hide');
-		 				var table=$('#classroom_list').DataTable();
-		 			  table.search('').draw();
+		       window.location=$('#redirect_url').data('url');
         });
 }else{
 	toastr.error('Please Fill required Fileds!');

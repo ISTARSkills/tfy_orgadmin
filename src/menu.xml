@@ -25,6 +25,7 @@
 	<parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/orgadmin/report.jsp" url="/orgadmin/report.jsp" valid_role="org_admin" />
 	<parent_links display_name="Admin" is_visible_in_menu="true" jsp_file="/orgadmin/admin.jsp" url="/orgadmin/admin.jsp" valid_role="org_admin" />
 	<parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/orgadmin/istar_notification.jsp" url="/orgadmin/istar_notification.jsp" valid_role="org_admin"/>
+		<parent_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/orgadmin/classrroms.jsp" url="/orgadmin/classrroms.jsp" valid_role="org_admin"/>
 	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin"/>	
 <!-- 	<parent_links display_name="Placement" is_visible_in_menu="true" jsp_file="/orgadmin/placement.jsp" url="/orgadmin/placement.jsp" valid_role="org_admin"/>	
  -->

@@ -92,6 +92,20 @@
 											<input type="checkbox" name="is_historical" class="js-switch" <%if(bg.getIsHistorical()!=null && bg.getIsHistorical()){%>checked<%} %>/>
 										</div>
 									</div>
+									
+									<div class="col-lg-3">
+										<div class="form-group">
+						<h3 class="m-b-n-md">Enrolled Students</h3>
+						<hr class="m-b-xs">
+						<div class="col-lg-12">
+							<input type="number" min='0' placeholder="Number of Students" name="student_count"  
+							id='"student_count_idd'  
+							
+							value="<%=bg.getNumberOfStudents() %>"
+								class="form-control">
+						</div>
+					</div>
+									</div>
 							</div>
 							
 						<div class="form-group">			

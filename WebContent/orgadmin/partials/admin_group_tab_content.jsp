@@ -109,6 +109,20 @@ Organization college=new OrganizationDAO().findById(colegeID);
 										</div>
 									</div>
 									
+									<div class="col-lg-3">
+										<div class="form-group">
+						<h3 class="m-b-n-md">Enrolled Students</h3>
+						<hr class="m-b-xs">
+						<div class="col-lg-12">
+							<input type="number" min='0' placeholder="Number of Students" name="student_count"  
+							id='"student_count_idd'  
+							
+							value="0"
+								class="form-control">
+						</div>
+					</div>
+									</div>
+									
 								</div>
 									<div class="form-group">	
 									<div class="col-lg-4">
