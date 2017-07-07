@@ -39,7 +39,7 @@
 			<jsp:include page="./inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
-                    <h2>Timeline</h2><small>This is a list of activities a user has done till now .. Need a better term for it </small>
+                    <h2>Timeline</h2><small>Here you can see all historical activity.</small>
                     
                 </div>
                 <div class="col-lg-2">
@@ -56,13 +56,16 @@
 						if(task.getItemType().equalsIgnoreCase("ASSESSMENT")){
 							taskIcon = "fa fa-houzz";
 							if(task.getStatus().equalsIgnoreCase("SCHEDULED")) {
-								description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you have to finish. Why dotn we just do it now. </b>";
+								//description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you have to finish. Why dotn we just do it now. </b>";
+								description = "Believe you can and you're half way there.";
+								//Because you can't do anything halfway, you've got to go all the way in anything you do
 								Task taskObject = new TaskDAO().findById(task.getId());
 								actionString = "<a class='btn btn-primary btn-sm' href='"+"/student/user_assessment.jsp?task_id="+task.getId()+
-										"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId()+"'>Complete Assessment</a>";
+										"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId()+"'> Finish Now! </a>";
 							} else {
-								description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you completed </b>";
-								actionString = "<a class='btn btn-primary btn-sm' href='/student/assessment_report.jsp?assessment_id="+task.getItemId()+"&user_id="+cp.getId()+"'>View Report</a>";
+								//description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you completed </b>";
+								description = "That's the magic of revisions - every cut is necessary, and every cut hurts, but something new always grows.";
+								actionString = "<a class='btn btn-primary btn-sm' href='/student/assessment_report.jsp?assessment_id="+task.getItemId()+"&user_id="+cp.getId()+"'> Revise </a>";
 
 							}
 							
@@ -71,13 +74,15 @@
 						}else if(task.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")) {
 							taskIcon = "fa fa-houzz";
 							if(task.getStatus().equalsIgnoreCase("SCHEDULED")) {
-								description = "You were assigned to study  a lesson titled <b>"+task.getTitle()+"</b> which you have to finish."+ 
-										"Why don't we just do it now. </b>";
+								/* description = "You were assigned to study  a lesson titled <b>"+task.getTitle()+"</b> which you have to finish."+ 
+										"Why don't we just do it now. </b>"; */
+								description = "Better a little which is well done, than a great deal imperfectly.";	
 								Task taskObject = new TaskDAO().findById(task.getId());
-								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Read Lesson </a> ";
+								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Read </a> ";
 							} else {
-								description = "You were assigned to study  a lesson titled <b>"+task.getTitle()+"</b>  which you completed </b>";
-								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Review Lesson </a> ";
+								//description = "You were assigned to study  a lesson titled <b>"+task.getTitle()+"</b>  which you completed </b>";
+								description = "Twice and thrice over, as they say, good is it to repeat and review what is good.";
+								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Revise </a> ";
 
 							}
 
