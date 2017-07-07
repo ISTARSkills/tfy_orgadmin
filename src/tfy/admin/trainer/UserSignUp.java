@@ -179,6 +179,12 @@ public class UserSignUp extends IStarBaseServelet {
 					String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
 							+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
 					db.executeUpdate(insertIntoUserOrg);
+					
+					//trainer presentor mapping
+					String insertTrainerPresentorMap = "INSERT INTO trainer_presentor (id, trainer_id, presentor_id) VALUES ((SELECT max(id)+1 from trainer_presentor) ,"
+							+ " '"+urseId+"', (SELECT id from istar_user where email = '"+presentor_email+"'));";
+					db.executeUpdate(insertTrainerPresentorMap);
+					
 					String groupNotificationCode = UUID.randomUUID().toString();
 					if (!courseIds.equalsIgnoreCase("")) {
 						String[] courses = courseIds.split(",");
