@@ -6437,6 +6437,8 @@ function init_new_feedback(){
 }
 
 function init_coordinator_overall_cluster(){
+	$('#stats div.widget').equalHeights();
+	
 	var baseURL = $(".js-data-example-ajax").data("pin_uri");
 	var urlPin = baseURL + "PinCodeController";
 	$(".js-data-example-ajax").select2({
