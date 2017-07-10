@@ -326,7 +326,7 @@ Parameter Name - type, Value - checking*/
 			if(alreadyAvailbleTask.size()==0)
 			{
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
-						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle+"', '"+taskDescription+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
+						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle.replaceAll("'", "")+"', '"+taskDescription.replaceAll("'", "")+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
 				System.out.println(">>>"+sql);
 				taskId = util.executeUpdateReturn(sql); 
 				

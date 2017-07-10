@@ -1,4 +1,3 @@
-
 <%@page import="tfy.admin.trainer.ClusterRequirmentUtil"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
@@ -51,6 +50,16 @@
 	width: 99% !important;
 }
 
+.custom-colum-grid1{
+	padding-right: 5px;
+	margin:0px;
+	padding-left: 0px;
+	width: 16.66% !important;
+	position: relative;
+	min-height: 10px;
+	float: left;
+}
+
 .vertical-timeline-content p {
 	margin-bottom: 2px !important;
 	margin-top: 0 !important;
@@ -82,6 +91,17 @@
 			+ request.getContextPath() + "/";
 
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
+	ClusterRequirmentUtil clusterRequirmentUtil = new ClusterRequirmentUtil();
+	
+	List<HashMap<String, Object>> data=clusterRequirmentUtil.getTotalCount();
+	int net=data!=null && data.get(0).get("net")!=null?(int)data.get(0).get("net"):0;
+	int requirement=data!=null && data.get(0).get("net")!=null?(int)data.get(0).get("requirement"):0;
+	int l3count=data!=null && data.get(0).get("l3count")!=null?(int)data.get(0).get("l3count"):0;
+	int l4count=data!=null && data.get(0).get("l4count")!=null?(int)data.get(0).get("l4count"):0;
+	int l5count=data!=null && data.get(0).get("l5count")!=null?(int)data.get(0).get("l5count"):0;
+	int l6count=data!=null && data.get(0).get("l6count")!=null?(int)data.get(0).get("l6count"):0;
+	
+	
 %>
 <body class="top-navigation" id="coordinator_overall_cluster">
 	<div id="wrapper">
@@ -93,15 +113,106 @@
 						<small>Over All Hiring Report</small>
 					</h2>
 				</div>
-				<div class="col-lg-2 m-t-sm">
-				</div>
+				<div class="col-lg-2 m-t-sm"></div>
 			</div>
 			<div class="wrapper wrapper-content animated fadeInRight"
 				style="padding: 10px;">
+
+				<div class="col-lg-12 no-padding no-margins" id='stats'>
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-puzzle-piece fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span> <%=clusterRequirmentUtil.getStage("L3")%>
+									</span>
+									<h2 class="font-bold"><%=l3count%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-wechat fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span><%=clusterRequirmentUtil.getStage("L4")%></span>
+									<h2 class="font-bold"><%=l4count%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-eye fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span><%=clusterRequirmentUtil.getStage("L5")%></span>
+									<h2 class="font-bold"><%=l5count%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-thumbs-up fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span> <%=clusterRequirmentUtil.getStage("L6")%></span>
+									<h2 class="font-bold"><%=l6count%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-group fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span>Required</span>
+									<h2 class="font-bold"><%=requirement%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="custom-colum-grid1">
+						<div class="widget style1 navy-bg custom-theme-color">
+							<div class="row">
+								<div class="col-xs-2" style="float: right;">
+									<i class="fa fa-send fa-2x"></i>
+								</div>
+								<div class="col-xs-9 text-right"
+									style="text-align: left !important;">
+									<span> Net Requirement</span>
+									<h2 class="font-bold"><%=net%></h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="row">
-					<%
-						ClusterRequirmentUtil clusterRequirmentUtil = new ClusterRequirmentUtil();
-					%>
 					<div class="col-md-12">
 						<div class="ibox float-e-margins">
 							<div class="ibox-content" style="padding-bottom: 30px;">
@@ -157,6 +268,10 @@
 					</div>
 
 				</div>
+
+
+
+
 				<div class="col-lg-12">
 					<div class="ibox">
 						<div class="ibox-content">
