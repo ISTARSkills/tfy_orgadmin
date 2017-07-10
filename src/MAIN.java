@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
@@ -109,13 +111,14 @@ public class MAIN {
 		
 		//scheduleMeeting();
 
+
 		ImportDatafromPostgres();
-		
-		
+
 		System.out.println("end");
 	}
 	
 	
+
 
 	private static void ImportDatafromPostgres() {
 		// TODO Auto-generated method stub
@@ -124,6 +127,262 @@ public class MAIN {
 	}
 
 
+
+	public static double round(double value, int places) {
+		if (places < 0)
+			throw new IllegalArgumentException();
+
+		BigDecimal bd = new BigDecimal(value);
+		bd = bd.setScale(places, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}
+
+	private static void createTrainerSelectionStatus() {
+		DBUTILS util = new DBUTILS();
+
+		HashMap<String, String> listofTrainerCourse = new HashMap<>();
+
+		listofTrainerCourse.put("134","");
+		listofTrainerCourse.put("133","");
+		listofTrainerCourse.put("2641","");
+		listofTrainerCourse.put("1779","");
+		listofTrainerCourse.put("5236","");
+		listofTrainerCourse.put("4482","");
+		listofTrainerCourse.put("7141","");
+		listofTrainerCourse.put("160","");
+		listofTrainerCourse.put("385","");
+		listofTrainerCourse.put("5189","");
+		listofTrainerCourse.put("5968","");
+		listofTrainerCourse.put("4753","");
+		listofTrainerCourse.put("4739","");
+		listofTrainerCourse.put("5098","");
+		listofTrainerCourse.put("7210","");
+		listofTrainerCourse.put("5984","");
+		listofTrainerCourse.put("151","");
+		listofTrainerCourse.put("147","");
+		listofTrainerCourse.put("1905","");
+		listofTrainerCourse.put("5036","");
+		listofTrainerCourse.put("142","");
+		listofTrainerCourse.put("408","");
+		listofTrainerCourse.put("416","");
+		
+		for (String trainerList : listofTrainerCourse.keySet()) {
+			String courseList = listofTrainerCourse.get(trainerList);
+			String trainerCourseListQuery = "";
+
+			if (!courseList.equalsIgnoreCase("")) {
+				trainerCourseListQuery = "and course_id in(" + courseList + ")";
+			}
+
+			String courseIntrestedWiseTrainer = "SELECT DISTINCT istar_user.id,trainer_intrested_course.course_id from istar_user,user_role,trainer_intrested_course where user_role.user_id=istar_user.id and user_role.role_id=24 and istar_user.id  in (SELECT trainer_id from trainer_intrested_course) and trainer_intrested_course.trainer_id=istar_user.id and trainer_id in("
+					+ trainerList + ") " + trainerCourseListQuery;
+			System.out.println("courseIntrestedWiseTrainer--" + courseIntrestedWiseTrainer);
+			List<HashMap<String, Object>> courseIntrestedWiseTrainerList = util
+					.executeQuery(courseIntrestedWiseTrainer);
+
+
+			String checktrainerintrestedcourses = "SELECT DISTINCT istar_user.id,istar_user.email from istar_user,user_role where user_role.user_id=istar_user.id and user_role.role_id=24 and istar_user.id not in (SELECT trainer_id from trainer_intrested_course) and istar_user.id in ("
+					+ trainerList + ")";
+			List<HashMap<String, Object>> checktrainerintrestedcoursesList = util
+					.executeQuery(checktrainerintrestedcourses);
+
+			if (checktrainerintrestedcoursesList != null && checktrainerintrestedcoursesList.size() != 0) {
+				System.out.println("Trainer intrested courses not available for these users----->>>start \n\n");
+				for (HashMap<String, Object> data : checktrainerintrestedcoursesList) {
+					System.out.println("ID------" + data.get("id") + " email----" + data.get("email"));
+				}
+				System.out.println("\n\nTrainer intrested courses not available for these users----->>>end");
+			}
+
+
+			for (HashMap<String, Object> data : courseIntrestedWiseTrainerList) {
+				int trainerId = (int) data.get("id");
+				int courseId = (int) data.get("course_id");
+				String checkEmpStatus = "SELECT * from trainer_empanelment_status where trainer_id=" + trainerId
+						+ " and course_id=" + courseId + " ORDER BY stage desc limit 1;";
+
+				List<HashMap<String, Object>> trainer_empanelment_statusList = util.executeQuery(checkEmpStatus);
+
+				if (trainer_empanelment_statusList != null && trainer_empanelment_statusList.size() != 0) {
+					// get latest stage selection
+
+					for (HashMap<String, Object> item : trainer_empanelment_statusList) {
+						String stage = item.get("stage").toString();
+						int stageCount = Integer.parseInt(stage.charAt(stage.length() - 1) + "") + 1;
+						stage = "L" + stageCount;
+						setStages(trainerId, courseId, stage);
+					}
+				} else {
+					setStages(trainerId, courseId, "L1");
+				}
+
+			}
+		}
+	}
+
+	private static void createActiveTrainerCourseStautus() {
+		DBUTILS util = new DBUTILS();
+
+		String checkSelectedTrainer = "select DISTINCT trainer_id,course_id from trainer_empanelment_status where stage ='L6' and empanelment_status ='SELECTED';";
+		List<HashMap<String, Object>> selectedtrainerList = util.executeQuery(checkSelectedTrainer);
+
+		for (HashMap<String, Object> selectedTrainer : selectedtrainerList) {
+			int trainer_id = (int) selectedTrainer.get("trainer_id");
+			int course_id = (int) selectedTrainer.get("course_id");
+
+			String checktrainer_course_statusExist = "SELECT * from trainer_course_status where trainer_id="
+					+ trainer_id + " and course_id=" + course_id;
+
+			List<HashMap<String, Object>> lists = util.executeQuery(checktrainer_course_statusExist);
+
+			if (lists != null && lists.size() == 0) {
+				String createtrainerCourseStatus = "INSERT INTO trainer_course_status (id, trainer_id, course_id, status, type) VALUES ((select COALESCE(max(id),0)+1 from trainer_course_status), "
+						+ trainer_id + ", " + course_id + ", 'ACTIVE', 'FULL_TIME');";
+
+				util.executeUpdate(createtrainerCourseStatus);
+			}
+		}
+	}
+	
+	
+	public static void setStages(int trainerId, int courseId, String stage) {
+		switch (stage) {
+		case "L1":
+			stageEntry(trainerId, courseId, stage);
+			setStages(trainerId, courseId, "L2");
+			break;
+		case "L2":
+			stageEntry(trainerId, courseId, stage);
+			setStages(trainerId, courseId, "L3");
+			break;
+		case "L3":
+			checkAssessmentForTrainer(trainerId,courseId,stage);
+			stageEntry(trainerId, courseId, stage);
+			setStages(trainerId, courseId, "L4");
+			break;
+		case "L4":
+			stageEntry(trainerId, courseId, stage);
+			setStages(trainerId, courseId, "L5");
+			break;
+		case "L5":
+			stageEntry(trainerId, courseId, stage);
+			setStages(trainerId, courseId, "L6");
+			break;
+		case "L6":
+			stageEntry(trainerId, courseId, stage);
+			createActiveTrainerCourseStautus();
+			break;
+		default:
+			createActiveTrainerCourseStautus();
+		}
+	}
+
+	private static void checkAssessmentForTrainer(int trainerId, int courseId, String stage) {
+		DBUTILS util = new DBUTILS();
+
+		String sql = "select * from task where actor=" + trainerId
+				+ " and item_type='ASSESSMENT' and item_id in (select assessment_id from course_assessment_mapping where course_id="
+				+ courseId
+				+ " UNION 	SELECT  CAST (regexp_split_to_table(constant_properties.property_value,E',') AS INTEGER) FROM constant_properties 	WHERE constant_properties.property_name = 'default_assessment_for_trainer')";
+		
+		
+		List<HashMap<String, Object>> list = util.executeQuery(sql);
+		for (HashMap<String, Object> item : list) {
+			if (item.get("state").toString().equalsIgnoreCase("COMPLETED")) {
+			} else {
+				try {
+					giveAllAssessment(trainerId);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+	}
+
+	public static void stageEntry(int trainerId, int courseId, String stage) {
+		// create interview skills
+		createinterviewSkillRating(trainerId, courseId, stage);
+
+		// create trainer_empanelment_status entry
+		String status = "SELECTED";
+		DBUTILS util = new DBUTILS();
+		String insertIntoStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+				+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), " + trainerId + ", '"
+				+ status + "', now(), '" + stage + "', " + courseId + ");";
+		util.executeUpdate(insertIntoStatus);
+	}
+
+	public static void createinterviewSkillRating(int trainerId, int courseId, String stage) {
+		DBUTILS util = new DBUTILS();
+		Random r = new Random();
+		String comments = "Trainer is Selected in stage " + stage;
+
+		String getListofSkills = "SELECT * from interview_skill where course_id=" + courseId + " and stage_type='"
+				+ stage + "'";
+
+		String getMasterTrainer = "SELECT istar_user.id from istar_user,user_role where istar_user.id=user_role.user_id and user_role.role_id=23;";
+
+		List<HashMap<String, Object>> masterTrainerList = util.executeQuery(getMasterTrainer);
+		int maxMasters = masterTrainerList.size();
+
+		List<HashMap<String, Object>> ListofSkills = util.executeQuery(getListofSkills);
+		if (ListofSkills != null && ListofSkills.size() != 0) {
+			for (HashMap<String, Object> item : ListofSkills) {
+				int skill_id = (int) item.get("id");
+
+				double rating = round(0 + (r.nextDouble() * (5 - 0)), 2);
+				int master_id = (int) masterTrainerList.get(r.nextInt(maxMasters - 1) + 1).get("id");
+
+				String createInterviewSkill = "INSERT INTO interview_rating (id, trainer_id, interview_skill_id, rating, interviewer_id, stage_type, course_id) VALUES ((select COALESCE(max(id),0)+1 from interview_rating), "
+						+ trainerId + ", " + skill_id + ", " + rating + ", " + master_id + ", '" + stage + "', "
+						+ courseId + ");";
+				util.executeUpdate(createInterviewSkill);
+
+			}
+		}
+
+		// create trainer_comments
+		int master_id = (int) masterTrainerList.get(r.nextInt(maxMasters - 1) + 1).get("id");
+		String insertComments = "INSERT INTO trainer_comments (id, trainer_id, interviewer_id, stage, course_id, comments,created_at)"
+				+ " VALUES ((select COALESCE(max(id),0)+1 from trainer_comments), " + trainerId + ", " + master_id
+				+ ", '" + stage + "', " + courseId + ", '" + comments + "', now())";
+		util.executeUpdate(insertComments);
+	}
+	
+	
+	private static void updateUserProfile() {
+		
+		DBUTILS dbutils=new DBUTILS();
+		
+		
+		String userListsSql="SELECT 	ID,email FROM 	istar_user WHERE 	ID NOT IN ( 		SELECT 			user_id 		FROM 			user_profile 	)";
+		List<HashMap<String, Object>> listsNotHaveProfile=dbutils.executeQuery(userListsSql);
+		
+		for(HashMap<String, Object> item:listsNotHaveProfile){
+			int userId=(int)item.get("id");
+			String email=(String)item.get("email");
+			
+			String firstName=email.split("@")[0];
+			String gender="MALE";
+			
+			String userUpdateSql="INSERT INTO user_profile (id, address_id, first_name, last_name, dob, gender, profile_image, user_id, aadhar_no, father_name, mother_name, user_category) VALUES ((select COALESCE(max(id),0)+1 from user_profile), 2, '"+firstName+"', '', NULL, '"+gender+"', '', "+userId+", '0', NULL, NULL, NULL);";
+			
+			//System.out.println(userUpdateSql);
+			dbutils.executeUpdate(userUpdateSql);
+		}
+		
+		userListsSql="SELECT 	ID,email FROM 	istar_user WHERE 	ID NOT IN ( 		SELECT 			user_id 		FROM 			professional_profile)";
+		
+List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery(userListsSql);
+		
+		for(HashMap<String, Object> item:listsNotHaveProffesionProfile){
+			int userId=(int)item.get("id");
+			String userUpdateSql="INSERT INTO professional_profile (id, user_id, yop_10, marks_10, yop_12, marks_12, has_under_graduation, under_graduation_specialization_name, under_gradution_marks, has_post_graduation, post_graduation_specialization_name, post_gradution_marks, is_studying_further_after_degree, job_sector, preferred_location, company_name, position, duration, description, interested_in_type_of_course, area_of_interest, marksheet_10, marksheet_12, under_graduate_degree_name, pg_degree_name, resume_url, under_graduation_year, post_graduation_year, under_graduation_college, post_graduation_college, experience_in_years, experince_in_months, pan_no) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "+userId+", NULL, NULL, NULL, NULL, 't', NULL, NULL, 't', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'BCA', 'OTHERS', NULL, NULL, NULL, NULL, NULL, '0', '0', NULL)";
+			dbutils.executeUpdate(userUpdateSql);
+			//System.out.println(userUpdateSql);
+		}		
+	}
 
 	private static void scheduleMeeting() {
 		CreateInterviewSchedule cc= new CreateInterviewSchedule();

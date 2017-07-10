@@ -155,8 +155,23 @@ public class ComplexObject {
 		String todaysDate = dateFormat.format(date);
 
 		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
-			if (assessmentReportPOJO.getDate().toString().startsWith(todaysDate)
+			if (assessmentReportPOJO.getCompletedDate()!=null && assessmentReportPOJO.getCompletedDate().toString().startsWith(todaysDate)
 					&& assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
+				items.add(assessmentReportPOJO);
+			}
+		}
+		return items;
+	}
+	
+	@XmlTransient
+	public List<TaskSummaryPOJO> getTaskCompleted() {
+		List<TaskSummaryPOJO> items = new ArrayList<>();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String todaysDate = dateFormat.format(date);
+
+		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
+			if ( assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
 				items.add(assessmentReportPOJO);
 			}
 		}

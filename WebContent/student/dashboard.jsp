@@ -41,14 +41,16 @@
 				
 			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
 				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
-			<% 	for(TaskSummaryPOJO task :cp.getTaskForToday()) {
+			<% int k=0; 	
+			
+			for(TaskSummaryPOJO task :cp.getTasks()) {
 				System.out.println("task.getStatus()"+task.getStatus());
 				System.out.println("task.getItemType()"+task.getItemType());
 			if(!task.getStatus().equalsIgnoreCase("COMPLETED")) {
 			%>
 				<%=(new TaskCardFactory()).showcard(task).toString() %>
 				
-				<% } } %>
+				<% k++;} } %>
 			</div>
 		</div>
 	</div>

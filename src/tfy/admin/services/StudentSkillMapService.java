@@ -353,8 +353,8 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 				System.err.println("in mod shell tree "+" "+dd.getUserPoints()+" "+dd.getTotalPoints()+" "+dd.getPercentage());
 				for(SkillReportPOJO ll: dd.getSkills())
 				{
-					System.err.println("in cmsession shell tree "+ll.getName()+" - "+ll.getId());
-					System.err.println("in cmsession shell tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
+					//System.err.println("in cmsession shell tree "+ll.getName()+" - "+ll.getId());
+					//System.err.println("in cmsession shell tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
 				}
 			}
 			DBUTILS utils = new DBUTILS();
