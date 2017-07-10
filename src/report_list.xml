@@ -1559,7 +1559,7 @@ order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
 <reports id="3066" type_of_report="table">
-		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" name="course_name" data_type="" />
 		<column columnHandler="NONE" is_selectable="true"  display_name="Cluster Name" isVisible="true" name="cluster_name" />			
 		<column columnHandler="NONE" is_selectable="true"  display_name="Requirement" isVisible="false" name="req" />		
 		<column columnHandler="NONE" is_selectable="true" display_name="States" isVisible="true" name="state" />
@@ -1863,7 +1863,41 @@ organization.id = classroom_details.organization_id  and  organization_id=:organ
 order by :order_by_column :order_type limit :limit offset :offset
 </sql>	
 </reports>
+<reports id="3069" type_of_report="table">	
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="eventdate" />		
+		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Rating" data_type="int" isVisible="true" name="rating" />
+		 <column columnHandler="NONE" display_name="Trainer" isVisible="true" name="first_name" />				
+		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
+		 <column columnHandler="NONE" display_name="Noise" isVisible="true" name="noise" />		
+		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
+		<column columnHandler="NONE" display_name="Sick" isVisible="true" name="sick" />
+		 <column columnHandler="NONE" display_name="Content" isVisible="true" name="content" />		
+		<column columnHandler="NONE" display_name="Assignment" isVisible="true" name="assignment" />
+		<column columnHandler="NONE" display_name="Internals" isVisible="true" name="internals" />
+		 <column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />		
+		<column columnHandler="NONE" display_name="Electricity" isVisible="true" name="electricity" />
+		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
+		 <column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />		
+	<sql>
 
+select batch_schedule_event.eventdate, batch_group.name, course.course_name, user_profile.first_name, trainer_feedback.rating,
+ trainer_feedback.comments,noise, attendance, sick, content, assignment, internals, internet, electricity, time, projector, count(*) over() as total_rows
+from batch_schedule_event, trainer_feedback, user_profile, batch_group, course, classroom_details
+where batch_schedule_event.id = trainer_feedback.event_id
+and batch_schedule_event.classroom_id = classroom_details.id
+and classroom_details.organization_id = :org_id
+and trainer_feedback.user_id = user_profile.user_id
+and batch_schedule_event.batch_group_id = batch_group.id
+and batch_schedule_event.course_id = course.id 
+order by batch_schedule_event.eventdate desc
+</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Trainer Feedback</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 
 </istar_reports>
 

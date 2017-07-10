@@ -566,7 +566,7 @@ function createDataTables()
 			                     } );
 			  
 			                 column.data().unique().sort().each( function ( d, j ) {
-			                     select.append( '<option value="'+d+'">'+d+'</option>' )
+			                     select.append( '<option class="date_selector" value="'+d+'">'+d+'</option>' )
 			                 } );
 			             }
 			             } );
@@ -575,8 +575,10 @@ function createDataTables()
 				
 				$(this).on( 'draw.dt', function () {
 				    callColumnHandlerFunctions();
+			
 				});
 				$('.dataTables_info').hide();
+				
 			} else {
 				console.log('>>>>eee>>>+alse');
 
@@ -4653,8 +4655,11 @@ function init_super_admin_placemenet()
 function init_super_admin_analytics() {
 		//init org report js
 		init_orgadmin_report();
-	
+	try{
     trainerRatingGraph();
+	}
+	catch(err)
+	{}
     trainerLevelGraph();
     trainerSkillGraph();
     //studentFeedBackGraph();

@@ -21,9 +21,18 @@ public class IStarColumn {
 	boolean is_header;
 	
 	boolean is_selectable=false;
+	String dataType;
 	
 	
-	
+	@XmlAttribute(name = "data_type", required=false)
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
+
 	@XmlAttribute(name = "is_selectable")
 	public boolean isIs_selectable() {
 		return is_selectable;
