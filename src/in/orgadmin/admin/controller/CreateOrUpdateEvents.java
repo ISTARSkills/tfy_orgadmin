@@ -119,10 +119,106 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 			// singleEvent
 			if (request.getParameterMap().containsKey("tabType")
 					&& request.getParameter("tabType").equalsIgnoreCase("singleEvent")) {
-
 				IstarUserDAO dao = new IstarUserDAO();
 				IstarUser user = new IstarUser();
 				EventSchedulerService ess = new EventSchedulerService();
+if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("webinar")){					
+					if (request.getParameterMap().containsKey("eventValue")) {
+						JSONParser parser = new JSONParser();
+					      String eventDataDetails = request.getParameter("eventDataDetails");					     
+					      Object obj = null;
+							try {
+								obj = parser.parse(eventDataDetails);
+								JSONArray array = (JSONArray)obj;
+								
+								for (int i = 0; i < array.size(); i++) {
+								
+									JSONObject jsonObject = (JSONObject) array.get(i);																		
+									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+											hours = Integer.parseInt((String) jsonObject.get("hours"));
+											minute = Integer.parseInt((String) jsonObject.get("minute"));
+											batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+											eventType = (String) jsonObject.get("eventType");
+											eventDate = (String) jsonObject.get("eventDate");
+											startTime = (String) jsonObject.get("startTime");
+									        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+									        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+									      if(jsonObject.containsKey("sessionID")){
+									        sessionID = Integer.parseInt((String) jsonObject.get("sessionID"));
+									        }  
+									        eventID = (String) jsonObject.get("eventID");
+									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+									        
+									        ess.insertUpdateWebinarData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);									
+								}
+								
+									
+							} catch (org.json.simple.parser.ParseException e) {
+								e.printStackTrace();
+							}
+						
+						
+							user = dao.findById(AdminUserID);
+						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
+							response.sendRedirect("super_admin/scheduler.jsp");
+						}else{
+							response.sendRedirect("orgadmin/scheduler.jsp");							
+						}
+					} else {
+						response.getWriter().print(ess.singleEvent(trainerID, hours, minute, batchID, eventType, eventDate,
+								startTime,  classroomID, AdminUserID,orgID,associateTrainerID));
+					}
+					
+				}if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("remote_class")){					
+					if (request.getParameterMap().containsKey("eventValue")) {
+						JSONParser parser = new JSONParser();
+					      String eventDataDetails = request.getParameter("eventDataDetails");					     
+					      Object obj = null;
+							try {
+								obj = parser.parse(eventDataDetails);
+								JSONArray array = (JSONArray)obj;
+								
+								for (int i = 0; i < array.size(); i++) {
+								
+									JSONObject jsonObject = (JSONObject) array.get(i);																		
+									        trainerID = Integer.parseInt((String) jsonObject.get("trainerID"));
+											hours = Integer.parseInt((String) jsonObject.get("hours"));
+											minute = Integer.parseInt((String) jsonObject.get("minute"));
+											batchID = Integer.parseInt((String) jsonObject.get("batchID"));
+											eventType = (String) jsonObject.get("eventType");
+											eventDate = (String) jsonObject.get("eventDate");
+											startTime = (String) jsonObject.get("startTime");
+									        classroomID = Integer.parseInt((String) jsonObject.get("classroomID"));
+									        AdminUserID = Integer.parseInt((String) jsonObject.get("AdminUserID"));
+									      if(jsonObject.containsKey("sessionID")){
+									        sessionID = Integer.parseInt((String) jsonObject.get("sessionID"));
+									        }  
+									        eventID = (String) jsonObject.get("eventID");
+									        associateTrainerID =  (String) jsonObject.get("associateTrainerID");
+									        
+									        ess.insertUpdateRemoteClassData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+													 classroomID, AdminUserID, sessionID, eventID,associateTrainerID);										
+								}
+								
+									
+							} catch (org.json.simple.parser.ParseException e) {
+								e.printStackTrace();
+							}
+						
+						
+							user = dao.findById(AdminUserID);
+						if(user.getUserRoles().iterator().next().getRole().getRoleName().equalsIgnoreCase("SUPER_ADMIN")){
+							response.sendRedirect("super_admin/scheduler.jsp");
+						}else{
+							response.sendRedirect("orgadmin/scheduler.jsp");							
+						}
+					} else {
+						response.getWriter().print(ess.singleEvent(trainerID, hours, minute, batchID, eventType, eventDate,
+								startTime,  classroomID, AdminUserID,orgID,associateTrainerID));
+					}
+					
+				}
 				if(request.getParameterMap().containsKey("eventType") && request.getParameter("eventType").equalsIgnoreCase("session")){
 					
 					if (request.getParameterMap().containsKey("eventValue")) {

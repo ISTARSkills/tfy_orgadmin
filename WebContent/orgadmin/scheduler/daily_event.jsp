@@ -69,6 +69,8 @@ user_id = ui.getOrgPrincipal(colegeID);
 				<label>Select Event Type</label> <select
 					class="form-control m-b eventType scheduler_select" name="eventType">
 					<option value="session">Session</option>
+					<option value="webinar">Webinar (TOT)</option>
+					<option value="remote_class">Remote Class</option>
 					<!-- <option value="assessment">Assessment</option> -->
 
 				</select>

@@ -2,6 +2,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -104,11 +107,24 @@ public class MAIN {
 			//createFarziData();
 		//}
 		
-		scheduleMeeting();
+		//scheduleMeeting();
+
+		ImportDatafromPostgres();
+		
 		
 		System.out.println("end");
 	}
 	
+	
+
+	private static void ImportDatafromPostgres() {
+		// TODO Auto-generated method stub
+		mAYANKtEST mm= new mAYANKtEST();
+		mm.ImportDatafromPostgres();
+	}
+
+
+
 	private static void scheduleMeeting() {
 		CreateInterviewSchedule cc= new CreateInterviewSchedule();
 		cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14,"S$");				

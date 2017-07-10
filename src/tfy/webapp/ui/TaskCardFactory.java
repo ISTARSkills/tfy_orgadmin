@@ -3,6 +3,7 @@ package tfy.webapp.ui;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +16,7 @@ import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.utilities.AppProperies;
+import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 import tfy.admin.trainer.TaskCardFactoryRecruitment;
@@ -104,12 +106,241 @@ public class TaskCardFactory {
 		case TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWEE:
 			return showZoomInterviewForIntervieweeCard(task);	
 		case TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWER:
-			return showZoomInterviewForInterviewerCard(task);	
+			return showZoomInterviewForInterviewerCard(task);
+		case TaskItemCategory.WEBINAR_TRAINER:
+			return showTrainerWebinarCard(task);
+		case TaskItemCategory.WEBINAR_STUDENT:
+			return showStudentWebinarCard(task);
+		case TaskItemCategory.REMOTE_CLASS_TRAINER:
+			return showTrainerRemoteClassCard(task);
+		case TaskItemCategory.REMOTE_CLASS_STUDENT:
+			return showStudentRemoteClassCard(task);		
 		default:
 			break;
 		}
 		return new StringBuffer().append("ff");
 
+	}
+
+	private StringBuffer showStudentRemoteClassCard(TaskSummaryPOJO task) {
+
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		
+			sb.append("<div class='col-md-3 '>													");
+			sb.append("<div class='ibox'>														");
+			sb.append("<div class='ibox-content product-box h-370'>                             ");
+			sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+			sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+			sb.append("<div class='product-imitation'                                           ");
+			sb.append("style='padding: 0px !important; background: transparent;'>               ");
+			sb.append("<img alt='' class='session-square-img'                                   ");
+			sb.append("src='"+task.getImageURL()+"'>                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='product-desc'>                                               ");
+			sb.append("<div class='row text-center font-normal bg-muted small p-xxs'>           ");
+			sb.append("<div class='col-xs-4 col-md-4'>Time</div>                                ");
+			sb.append("<div class='col-xs-4 col-md-4'>Batch</div>                               ");
+			sb.append("<div class='col-xs-4 col-md-4'>Location</div>                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center p-xxs' style='font-size:20px;color: #eb384f;'>                                      ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-clock-o'></i>                                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-group'></i>                                              ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-home'></i>                                               ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
+			sb.append("</div>                                                                   ");
+			sb.append("                                                                         ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='m-t text-center button-top'>                                 ");
+			sb.append("                                                                         ");
+			sb.append("<a class='banner btn btn-rounded' href='/start_remote_class?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+		
+		return sb;
+	}
+
+	private StringBuffer showTrainerRemoteClassCard(TaskSummaryPOJO task) {
+
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		
+			
+			sb.append("<div class='col-md-3 '>													");
+			sb.append("<div class='ibox'>														");
+			sb.append("<div class='ibox-content product-box h-370'>                             ");
+			sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+			sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+			sb.append("<div class='product-imitation'                                           ");
+			sb.append("style='padding: 0px !important; background: transparent;'>               ");
+			sb.append("<img alt='' class='session-square-img'                                   ");
+			sb.append("src='"+task.getImageURL()+"'>                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='product-desc'>                                               ");
+			sb.append("<div class='row text-center font-normal bg-muted small p-xxs'>           ");
+			sb.append("<div class='col-xs-4 col-md-4'>Time</div>                                ");
+			sb.append("<div class='col-xs-4 col-md-4'>Batch</div>                               ");
+			sb.append("<div class='col-xs-4 col-md-4'>Location</div>                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center p-xxs' style='font-size:20px;color: #eb384f;'>                                      ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-clock-o'></i>                                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-group'></i>                                              ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-home'></i>                                               ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
+			sb.append("</div>                                                                   ");
+			sb.append("                                                                         ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='m-t text-center button-top'>                                 ");
+			sb.append("                                                                         ");
+			sb.append("<a class='banner btn btn-rounded' href='/start_remote_class?task_id="+task.getId()+"'>START CLASS</a>           ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			
+		
+		
+		
+		return sb;
+	}
+
+	private StringBuffer showStudentWebinarCard(TaskSummaryPOJO task) {
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		if(task.getTaskContent()!=null && task.getTaskContent().size()>0)
+		{	
+				
+			String startUrl = task.getTaskContent().get("join_url");
+			sb.append("<div class='col-md-3 '>													");
+			sb.append("<div class='ibox'>														");
+			sb.append("<div class='ibox-content product-box h-370'>                             ");
+			sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+			sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+			sb.append("<div class='product-imitation'                                           ");
+			sb.append("style='padding: 0px !important; background: transparent;'>               ");
+			sb.append("<img alt='' class='session-square-img'                                   ");
+			sb.append("src='"+task.getImageURL()+"'>                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='product-desc'>                                               ");
+			sb.append("<div class='row text-center font-normal bg-muted small p-xxs'>           ");
+			sb.append("<div class='col-xs-4 col-md-4'>Time</div>                                ");
+			sb.append("<div class='col-xs-4 col-md-4'>Batch</div>                               ");
+			sb.append("<div class='col-xs-4 col-md-4'>Location</div>                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center p-xxs' style='font-size:20px;color: #eb384f;'>                                      ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-clock-o'></i>                                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-group'></i>                                              ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-home'></i>                                               ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
+			sb.append("</div>                                                                   ");
+			sb.append("                                                                         ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='m-t text-center button-top'>                                 ");
+			sb.append("                                                                         ");
+			sb.append("<a class='banner btn btn-rounded' href='/start_webinar?task_id="+task.getId()+"'>JOIN WEBINAR</a>           ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+		}
+		return sb;
+	}
+
+	private StringBuffer showTrainerWebinarCard(TaskSummaryPOJO task) {
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		if(task.getTaskContent()!=null && task.getTaskContent().size()>0)
+		{	
+			
+			String startUrl = task.getTaskContent().get("start_url");
+			
+			
+			sb.append("<div class='col-md-3 '>													");
+			sb.append("<div class='ibox'>														");
+			sb.append("<div class='ibox-content product-box h-370'>                             ");
+			sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+			sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+			sb.append("<div class='product-imitation'                                           ");
+			sb.append("style='padding: 0px !important; background: transparent;'>               ");
+			sb.append("<img alt='' class='session-square-img'                                   ");
+			sb.append("src='"+task.getImageURL()+"'>                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='product-desc'>                                               ");
+			sb.append("<div class='row text-center font-normal bg-muted small p-xxs'>           ");
+			sb.append("<div class='col-xs-4 col-md-4'>Time</div>                                ");
+			sb.append("<div class='col-xs-4 col-md-4'>Batch</div>                               ");
+			sb.append("<div class='col-xs-4 col-md-4'>Location</div>                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center p-xxs' style='font-size:20px;color: #eb384f;'>                                      ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-clock-o'></i>                                            ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-group'></i>                                              ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='col-xs-4 col-md-4'>                                          ");
+			sb.append("<i class='fa fa-home'></i>                                               ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='row text-center font-bold medium p-xxs' style='font-size: 10px;'>                     ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getTime()+"</div>     	            ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>"+task.getGroupName()+"</div>             ");
+			sb.append("<div class='col-xs-4 col-md-4' style='padding-left:3px;padding-right:3px'>ROOM #"+task.getClassRoomId()+"</div>     ");
+			sb.append("</div>                                                                   ");
+			sb.append("                                                                         ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='m-t text-center button-top'>                                 ");
+			sb.append("                                                                         ");
+			sb.append("<a class='banner btn btn-rounded' href='/start_webinar?task_id="+task.getId()+"'>START WEBINAR</a>           ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			
+		}
+		
+		
+		return sb;
 	}
 
 	private StringBuffer showZoomInterviewForInterviewerCard(TaskSummaryPOJO task) {

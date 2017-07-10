@@ -80,7 +80,8 @@
 					class="form-control m-b eventType" name="eventType">
 					<option value="session">Session</option>
 					<option value="assessment">Assessment</option>
-
+<option value="webinar">Webinar (TOT)</option>
+					<option value="remote_class">Remote Class</option>
 				</select>
 			</div>
 			<div class="form-group">
