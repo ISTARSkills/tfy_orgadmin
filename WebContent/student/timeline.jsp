@@ -57,13 +57,15 @@
 							taskIcon = "fa fa-houzz";
 							if(task.getStatus().equalsIgnoreCase("SCHEDULED")) {
 								//description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you have to finish. Why dotn we just do it now. </b>";
-								description = "Believe you can and you're half way there.";
+								description = "Believe you can and you're half way there. Lets fiish what we have to finish.";
 								//Because you can't do anything halfway, you've got to go all the way in anything you do
 								Task taskObject = new TaskDAO().findById(task.getId());
 								actionString = "<a class='btn btn-primary btn-sm' href='"+"/student/user_assessment.jsp?task_id="+task.getId()+
 										"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId()+"'> Finish Now! </a>";
 							} else {
 								//description = "You were assigned an assessment titled <b>"+task.getTitle()+"</b> which you completed </b>";
+								
+								// Show score of  what you have gained 
 								description = "That's the magic of revisions - every cut is necessary, and every cut hurts, but something new always grows.";
 								actionString = "<a class='btn btn-primary btn-sm' href='/student/assessment_report.jsp?assessment_id="+task.getItemId()+"&user_id="+cp.getId()+"'> Revise </a>";
 
@@ -79,19 +81,28 @@
 								description = "Better a little which is well done, than a great deal imperfectly.";	
 								Task taskObject = new TaskDAO().findById(task.getId());
 								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Read </a> ";
-							} else {
+							} else if(task.getStatus().equalsIgnoreCase("INCOMPLETE")) {
 								//description = "You were assigned to study  a lesson titled <b>"+task.getTitle()+"</b>  which you completed </b>";
+								// Add progress
+								description = "Great job you have already crossed 50% of the learning journey..";
+								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Lets Finish what we started </a> ";
+
+							} else {
 								description = "Twice and thrice over, as they say, good is it to repeat and review what is good.";
 								actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Revise </a> ";
-
 							}
 
 							
 
 						} else if(task.getItemType().equalsIgnoreCase("ZOOM_INTERVIEW_INTERVIEWER") || task.getItemType().equalsIgnoreCase("ZOOM_INTERVIEW_INTERVIEWEE") ) {
+							
 							taskIcon = "fa fa-houzz";
+							description = "Twice and thrice over, as they say, good is it to repeat and review what is good.";
+							actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Revise </a> ";
 						} else if(task.getItemType().equalsIgnoreCase("ZOOM_INTERVIEW_INTERVIEWER") || task.getItemType().equalsIgnoreCase("ZOOM_INTERVIEW_INTERVIEWEE") ) {
 							taskIcon = "fa fa-houzz";
+							description = "Twice and thrice over, as they say, good is it to repeat and review what is good.";
+							actionString =  "<a class='btn btn-primary btn-sm'  href='/student/presentation.jsp?lesson_id="+task.getItemId()+"&task_id="+task.getId()+"'> Revise </a> ";
 						}
 						PrettyTime p = new PrettyTime();
 						String prettyTime = p.format(task.getDate());

@@ -22,13 +22,13 @@ import tfy.admin.trainer.TaskCardFactoryRecruitment;
 public class TaskCardFactory {
 
 	public StringBuffer showSummaryCard(ComplexObject cp) {
-		if(cp.getTaskForTodayCompleted().size()==0) {
+		if(cp.getTasks().size()==0) {
 			return new StringBuffer();
 		} else {
 		
 		StringBuffer sb = new StringBuffer();
-		Integer taskRemaining = cp.getTaskForToday().size() - cp.getTaskForTodayCompleted().size();
-		sb.append("<div class='col-md-3 product-box' style='height: 100%;' >                                        ");
+		Integer taskRemaining = cp.getTasks().size() - cp.getTaskForTodayCompleted().size();
+		sb.append("<div class='col-md-3 product-box' style='height: 100%;     width: 22.6%; margin-left: 2.25%;    margin-right: 1.2%;' >                                        ");
 		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
 		sb.append(" <div class='ibox-content product-box h-370' style='height: 100%;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
@@ -36,7 +36,7 @@ public class TaskCardFactory {
 		sb.append(" ACTIVITY</h6>                                                 ");
 		sb.append(" <h3 class='p-xxs m-l-xs'>"+cp.getTaskForTodayCompleted().size()+" Tasks Completed</h3>               ");
 		sb.append(" </div>                                                        ");
-		sb.append(" <div class='product-desc no-padding' style='height:83%'>                         ");
+		sb.append(" <div class='product-desc no-padding'>                         ");
 		sb.append("                                                               ");
 		sb.append("                                                               ");
 		sb.append(" <div class='ibox-content no-padding content-border'           ");
@@ -44,7 +44,7 @@ public class TaskCardFactory {
 		sb.append("<div id='vertical-timeline' class='vertical-container dark-timeline left-orientation'style=' margin-bottom: 10px !important;'>");
 		//iterate
 		String taskIcon = "fa fa-desktop";
-		for(TaskSummaryPOJO taskSummaryPOJO :cp.getTaskForTodayCompleted() ){
+		for(TaskSummaryPOJO taskSummaryPOJO :cp.getTaskCompleted() ){
 			if(taskSummaryPOJO.getItemType().equalsIgnoreCase("ASSESSMENT")){
 				taskIcon = "fa fa-houzz";
 			}
@@ -73,7 +73,7 @@ public class TaskCardFactory {
 		
 		sb.append("                                                               ");
 		sb.append("                                                               ");
-		sb.append(" <div class='m-l-lg' style='position: absolute;    bottom: 8px;'>                                          ");
+		sb.append(" <div class='m-l-lg' style='position: absolute;    bottom: -30px;'>                                          ");
 		sb.append(" <i class='fa fa-circle-thin m-r-md'></i>"+taskRemaining+" tasks remaining    ");
 		sb.append(" for the day                                                   ");
 		sb.append(" </div>                                                        ");
@@ -365,7 +365,7 @@ public class TaskCardFactory {
 	
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-3 product-box ' style='max-height: 500px !important;overflow-y: scroll; '>			"
+		sb.append("<div class='col-md-3 product-box ' style='overflow-y: auto;    max-height: 360px !important;    margin-left: 16px;    width: 22.6%; '>			"
 				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> " +AppProperies.generatePopOver("task_summary_card"));			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");
