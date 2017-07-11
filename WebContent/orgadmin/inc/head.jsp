@@ -30,6 +30,7 @@
 <link href="<%=basePath %>assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/timepicki.css" rel="stylesheet">
 <link href="<%=basePath %>assets/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
     <link href="<%=basePath %>assets/css/plugins/select2/select2.min.css" rel="stylesheet">
 
@@ -57,6 +58,5 @@
 
     <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
     <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
-
 
 </head>

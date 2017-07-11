@@ -105,7 +105,7 @@ $(document).ready(function(){
 	         endDate: moment(),
 	         minDate: '01/01/2016',
 	         maxDate: '12/31/2020',
-	         dateLimit: { days: 360 },
+	         dateLimit: { days: 120 },
 	         showDropdowns: true,
 	         showWeekNumbers: true,
 	         timePicker: false,
@@ -203,17 +203,21 @@ $(document).ready(function(){
     	}); 
      
    
-	$('.data_table_filter').unbind().on('change', function(){
+	$('.data_table_filter').unbind().on('select2:select select2:unselecting', function(){
 	   var id = $(this).attr('id');
 	   
 	   var tableId = '#chart_datatable_'+report_id;
   	   var table = $(tableId).DataTable();
-  	   if($("#"+id+" option:selected")!=null && $("#"+id+" option:selected").val()!=null && $("#"+id+" option:selected").val()!='all'){
+  	   if($("#"+id+" option:selected")!=null && $("#"+id+" option:selected").val()!=null && $("#"+id+" option:selected").val()!=''){
   		 var filter_name = $(this).data('filter_name');
   	     var filter_value =$("#"+id+" option:selected").text();
   	     var column_number = $('#'+id).data('column_number');
   	     table.columns(column_number).search(filter_value).draw();
   	   }
+  	   else
+  		{ var column_number = $('#'+id).data('column_number');
+  		 table.columns(column_number).search('').draw();
+  		}	   
   	   
   	   $('#'+id).select2();
 	});  

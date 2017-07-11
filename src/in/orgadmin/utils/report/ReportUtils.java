@@ -400,7 +400,7 @@ int colCount =0;
 						
 						if(options.size()>0)
 						{
-							sb.append("<option value='all'>Select "+iterable_element.displayName+" </option>");
+							sb.append("<option value=''>Select "+iterable_element.displayName+" </option>");
 							for(HashMap<String, Object>  row: options)
 							{
 								sb.append("<option value="+row.get(iterable_element.name)+">"+row.get(iterable_element.name)+"</option>");
