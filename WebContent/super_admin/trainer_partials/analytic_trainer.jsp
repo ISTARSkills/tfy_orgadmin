@@ -91,14 +91,14 @@ UIUtils ui_Util = new UIUtils();
 			
 			
 			
-			<%
+			<%-- <%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();
 				conditions.put("limit", "12");
 				conditions.put("offset", "0");			
 				%>
 				
-				<%=util.getTableOuterHTML(3039, conditions)%>
+				<%=util.getTableOuterHTML(3039, conditions)%> --%>
 				
 				
 				</div>

@@ -4063,10 +4063,9 @@ $(".final-submit-btn").unbind().click(function(event ){
 // old event  submit to create the changed event
 function scheduler_createOldEvent() {
 	 var fID = null;
-$(".edit-submit-btn").unbind().click(function(){
-	
+	 $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 	 
-
+$(".edit-submit-btn").unbind().click(function(){
 	  var url = "../createorupdate_events"; // the script where you handle the form input.
 
 		 $.ajax({
@@ -4074,10 +4073,10 @@ $(".edit-submit-btn").unbind().click(function(){
 		       url: url,
 		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
 		       success: function(data)
-		       { $('#myModal2').modal('toggle');
+		       { 
 		       }
 		     });
-      
+		 $('#myModal2').modal('toggle');
    });
 }
 
@@ -5568,7 +5567,8 @@ function init_istar_notification(){
 					$('#notification_type_holder').select2('val','null');
 				}
 			});
-		}				
+		}
+		$('#notification_batchgroup_holder').select2();
 	});
 	
 	function init_courseFilter() {
