@@ -6,6 +6,8 @@ package in.orgadmin.utils.report;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,8 +115,10 @@ int colCount =0;
 			for (IStarColumn iterable_element : report.getColumns()) {
 				try {
 					if (iterable_element.isVisible) {
+						out.append("<th data-visisble='true' data-selectable='false'>" + iterable_element.getDisplayName() + "</th>");
 						if(iterable_element.is_selectable){
-							out.append("<th data-visisble='true' class='select-filter' data-selectable='true'>" + iterable_element.getDisplayName() + "</th>");
+							//out.append("<th data-visisble='true' class='select-filter' data-selectable='true'>" + iterable_element.getDisplayName() + "</th>");
+							
 						} else {
 							//out.append("<th data-visisble='true' data-selectable='false'>" + iterable_element.getDisplayName() + "</th>");
 						}
@@ -396,6 +400,7 @@ int colCount =0;
 						
 						if(options.size()>0)
 						{
+							sb.append("<option value='all'>Select "+iterable_element.displayName+" </option>");
 							for(HashMap<String, Object>  row: options)
 							{
 								sb.append("<option value="+row.get(iterable_element.name)+">"+row.get(iterable_element.name)+"</option>");
@@ -411,10 +416,42 @@ int colCount =0;
 		return sb;
 	}
 
-	private StringBuffer getDateFiler(Report report, String sql1, IStarColumn iterable_element, int colCount) {		
+	private StringBuffer getDateFiler(Report report, String sql1, IStarColumn iterable_element, int colCount) {	
 		StringBuffer sb = new StringBuffer();
+		DBUTILS util = new DBUTILS();
+		String filterSql = "select min ("+iterable_element.name+") as min_date , max ("+iterable_element.name+") as max_date from ("+sql1+")FILTER_TABLE";
+		List<HashMap<String, Object>> minMaxDates = util.executeQuery(filterSql);
+		String minDate = "01/01/2015";
+		String maxDate = "12/31/2030";
+		SimpleDateFormat from = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+		SimpleDateFormat to = new SimpleDateFormat("MMMMM dd, yyyy");
+		
+		if(minMaxDates.size()> 0)
+		{
+			if(minMaxDates.get(0).get("min_date")!=null)
+			{
+				String mtemp = minMaxDates.get(0).get("min_date").toString();
+				try {
+					minDate = to.format(from.parse(mtemp));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(minMaxDates.get(0).get("max_date")!=null)
+			{
+				
+				String mtemp = minMaxDates.get(0).get("max_date").toString();
+				try {
+					maxDate = to.format(from.parse(mtemp));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		sb.append("<div class='col-sm-3 m-b-xs'><h4>Select Date </h4>");
-				sb.append("<div id='reportrange_"+iterable_element.name+"' class='form-control date_range_filter ' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"'>");
+				sb.append("<div id='reportrange_"+iterable_element.name+"' class='form-control date_range_filter ' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"' data-min_date='"+minDate+"' data-max_date='"+maxDate+"'>");
 						sb.append("   <i class='fa fa-calendar'></i>");
 								sb.append(" <span></span> <b class='caret'></b>");
 										sb.append(" </div>");

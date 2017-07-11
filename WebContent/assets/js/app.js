@@ -549,7 +549,7 @@ function createDataTables()
 			        
 			         
 			         initComplete: function () {
-			             this.api().columns().every( function () {
+			             /*this.api().columns().every( function () {
 			                 var column = this;
 			                 console.log("kamini123->"+column.data('selectable'));
 			                 if(column.data('selectable')) {
@@ -569,16 +569,22 @@ function createDataTables()
 			                     select.append( '<option class="date_selector" value="'+d+'">'+d+'</option>' )
 			                 } );
 			             }
-			             } );
+			             } );*/
 			         }
 			     });
 				
 				$(this).on( 'draw.dt', function () {
+					
+					
 				    callColumnHandlerFunctions();
 			
 				});
 				$('.dataTables_info').hide();
-				
+				 
+	        	
+	        	 
+	        	 
+	        	 
 			} else {
 				console.log('>>>>eee>>>+alse');
 

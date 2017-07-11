@@ -1882,7 +1882,7 @@ order by :order_by_column :order_type limit :limit offset :offset
 		 <column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />		
 	<sql>
 
-select batch_schedule_event.eventdate, batch_group.name, course.course_name, user_profile.first_name, trainer_feedback.rating,
+select to_char(batch_schedule_event.eventdate, 'DD-Mon-yyyy HH24:MI') as eventdate, batch_group.name, course.course_name, user_profile.first_name, trainer_feedback.rating,
  trainer_feedback.comments,noise, attendance, sick, content, assignment, internals, internet, electricity, time, projector, count(*) over() as total_rows
 from batch_schedule_event, trainer_feedback, user_profile, batch_group, course, classroom_details
 where batch_schedule_event.id = trainer_feedback.event_id
