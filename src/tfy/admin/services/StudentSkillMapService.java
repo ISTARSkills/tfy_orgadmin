@@ -107,7 +107,7 @@ public Double getMaxPointsOfLesson(Integer lessonId) {
 	{
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object>> courses = new ArrayList<>();
-		String sql="select id, trim(course_name) as course_name , (case when image_url is null or image_url ='' then 'http://cdn.talentify.in/course_images/'||substr(course_name, 1,1)||'.png' else 'http://cdn.talentify.in/'||image_url end ) as course_image from course where id in (select distinct course_id from student_playlist where student_id =  "+userId+")";
+		String sql="select id, trim(course_name) as course_name , (case when image_url is null or image_url ='' then (select property_value from constant_properties where property_name='media_url_path')||substr(course_name, 1,1)||'.png' else (select property_value from constant_properties where property_name='media_url_path')||image_url end ) as course_image from course where id in (select distinct course_id from student_playlist where student_id =  "+userId+")";
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>."+sql);
 		courses = util.executeQuery(sql);
 		return courses;

@@ -1,3 +1,6 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="java.util.Properties"%>
 <%@page import="tfy.admin.studentmap.pojos.SkillReportPOJO"%>
 <%@page import="java.util.List"%>
 <%@page import="tfy.admin.services.StudentSkillMapService"%>
@@ -8,6 +11,68 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
 /*tree related  */
+.rank {
+	margin-top: 3%;
+}
+
+.profile-header {
+	background: lightgray;
+	vertical-align: middle;
+	padding: 6px;
+	height: 30px;
+	color: grey;
+}
+
+@media only screen and (min-width: 992px) {
+	.position-no {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		bottom: 55;
+		right: 37%;
+		border-radius: 50%;
+		padding-left: 5px;
+		padding-right: 6px;
+	}
+	.account-setting-camera-position {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		bottom: 55;
+		right: 42%;
+		border-radius: 50%;
+		padding-left: 5px;
+		padding-right: 6px;
+	}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width
+	: 480px) {
+	.position-no {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		top: 75;
+		right: 0;
+		border-radius: 50%;
+		padding-left: 7px;
+		padding-right: 7px;
+	}
+}
+
+.scroll-horizontally-div {
+	overflow: auto;
+	display: flex;
+	background: lightgray;
+}
+
+/*start  */
 .tree1>li {
 	padding: 0 !important;
 }
@@ -100,6 +165,32 @@ ul>p {
 	padding: 0px 0px 0px 0px;
 	outline: 0;
 }
+/* end */
+/*Start of plugin css  */
+.circular-progress-bar {
+	position: relative;
+	margin: 0 auto;
+}
+
+.progress-percentage, .progress-text {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	left: 59%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.progress-percentage {
+	font-size: 18px;
+	transform: translate(-50%, -85%);
+}
+
+.progress-text {
+	transform: translate(-50%, 0%);
+	color: #888888;
+	font-size: 11px;
+}
 </style>
 <%
 
@@ -119,6 +210,25 @@ if(request.getParameterMap().containsKey("course_id"))
 
 IstarUser stu = new IstarUserDAO().findById(studentId);
 String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProfileImage()!=null ?stu.getUserProfile().getProfileImage(): "/users/"+stu.getEmail().toUpperCase().charAt(0)+".png") : "/users/"+stu.getUserProfile().getFirstName().trim().toUpperCase().charAt(0)+".png";
+%>
+<%
+	String path = request.getContextPath();
+	String basePath = "http://cdn.talentify.in/";
+	
+
+	try {
+		Properties properties = new Properties();
+		String propertyFileName = "app.properties";
+		InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+		if (inputStream != null) {
+			properties.load(inputStream);
+			basePath = properties.getProperty("cdn_path");
+		}
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
+	
 %>
 <div class="modal-dialog">
 	<div class="modal-content animated flipInY">
@@ -205,7 +315,7 @@ String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProf
 										</h3>
 									</div>
 									<div class="col-md-4" style="height: 98px;     margin-top: 11px;">
-										<img src="http://cdn.talentify.in/<%=profileImage%>" class="img-circle circle-border m-b-md" alt="profile" style="width: 98px;
+										<img src="http://cdn.talentify.in:9999/<%=profileImage%>" class="img-circle circle-border m-b-md" alt="profile" style="width: 98px;
     height: 98px;">
 
 									</div>
@@ -242,15 +352,15 @@ String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProf
 		            <ul class="tree1">
 		                <li><%=subSkill.getName()%>
 		                    <ul> 
-		                    <% double percentagesubSkill=1;
+		                    <% double percentagesubSkill=0;
                                             	
                                             	if(subSkill.getPercentage()!=null && subSkill.getPercentage()!=0){
                                                       percentagesubSkill= (subSkill.getPercentage());
                                                       
                                             	}
                                                      %>
-		                    <div class="progress " >
-		                                <div style="width: <%=percentagesubSkill%>%; padding:20px;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentagesubSkill%>" role="progressbar" class="progress-bar ">
+		                    <div class="progress" style="height: 5px !important; display: block;">
+		                                <div style="width: <%=percentagesubSkill%>%; " aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentagesubSkill%>" role="progressbar" class="progress-bar ">
 		                                    
 		                                </div>
 		                            </div>
@@ -261,14 +371,14 @@ String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProf
 		                        <li><%=child.getName()%>
 		                        
 		                         <%
-                                                     double percentageChild=1;
+                                                     double percentageChild=0;
                                                  	if(child.getPercentage()!=null && child.getPercentage()!=0){
                                                  		percentageChild= child.getPercentage();
                                                  		
                                                  	}
                                                      %>
-		                         <div class="progress"  >
-		                                <div style="width: <%=percentageChild%>%; padding:20px;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentageChild%>" role="progressbar" class="progress-bar">
+		                         <div class="progress" style="height: 5px !important;" >
+		                                <div style="width: <%=percentageChild%>%; " aria-valuemax="100" aria-valuemin="0" aria-valuenow="<%=percentageChild%>" role="progressbar" class="progress-bar">
 		                                    
 		                                </div>
 		                            </div>
@@ -341,3 +451,50 @@ String profileImage = stu.getUserProfile()!=null ? (stu.getUserProfile().getProf
 
 	</div>
 </div>
+<div id="progress-nos" va="50"></div>
+<script src="<%=basePath %>assets/js/circular-custom-plugin.js"></script>
+<script>
+
+$(document).ready(function() {
+var progress;
+progress = $('#progress-nos').attr('va');
+console.log("progress------" + progress);
+$(".my-progress-bar").circularProgress({
+	line_width : 4,
+	height : "140px",
+	width : "140px",
+	color : "#eb384f",
+	starting_position : 0, // 12.00 o' clock position, 25 stands for 3.00 o'clock (clock-wise)
+	percent : 0, // percent starts from
+	percentage : true,
+	text : "Profile Completed"
+}).circularProgress('animate', progress, 5000);
+
+$('.btn-white').click(function(){
+	var icon_class = $(this).find('i').attr('class');
+	var button_icon = $(this).find('i');
+	if(icon_class === 'fa fa-pencil'){
+		button_icon.removeClass(icon_class);
+		button_icon.addClass('fa fa-check');
+		$(this).parent().siblings().removeAttr('disabled');
+		
+	}else{
+		button_icon.removeClass(icon_class);
+		button_icon.addClass('fa fa-pencil');
+		$(this).parent().siblings().attr('disabled', 'disabled');
+		
+		
+		var serialized = form.serialize();
+		console.log(serialized);
+		$.ajax({
+	        type: "POST",
+	        url: "gvygv",
+	        data: {serialized},
+	        success: function(data) {
+	        	console.log('success');
+	        }});
+		
+	}
+});
+});
+</script>
