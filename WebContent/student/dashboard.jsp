@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.utilities.TaskItemCategory"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -47,10 +48,18 @@
 				System.out.println("task.getStatus()"+task.getStatus());
 				System.out.println("task.getItemType()"+task.getItemType());
 			if(!task.getStatus().equalsIgnoreCase("COMPLETED")) {
+				
+				if((task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION) || task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_TRAINER) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER))&& sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0){
+					%>
+					
+					<%=(new TaskCardFactory()).showcard(task).toString() %>
+					<%
+				}else if(!task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_TRAINER) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER) ){
+				
 			%>
 				<%=(new TaskCardFactory()).showcard(task).toString() %>
 				
-				<% k++;} } %>
+				<% k++;} }} %>
 			</div>
 		</div>
 	</div>

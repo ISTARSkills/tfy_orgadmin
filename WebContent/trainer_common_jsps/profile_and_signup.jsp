@@ -207,7 +207,7 @@
                <div class="form-group">
                   <label class="col-sm-4 control-label">PAN Card:</label>
                   <div class="col-sm-8">
-                     <input type="text" required placeholder="PAN Number" name="pan" class="form-control" value="<%if(user!=null && user.getProfessionalProfile().getPanNo() !=null){%><%=user.getProfessionalProfile().getPanNo()
+                     <input type="text" required placeholder="PAN Number" name="pan" class="form-control" value="<%if(user!=null &&user.getProfessionalProfile()!=null && user.getProfessionalProfile().getPanNo() !=null){%><%=user.getProfessionalProfile().getPanNo()
                         %><%}%>">
                   </div>
                </div>
