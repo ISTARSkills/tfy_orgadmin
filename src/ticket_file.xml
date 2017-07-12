@@ -1,3 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ticket id="1" name="attendance" primary_receiver_email="$$SUPER_ADMIN_EMAILS;" primary_receiver_mobile="$$SUPER_ADMIN_MOBILES;" sec_receiver_email="$$SUPER_ADMIN_EMAILS;" primary_receiver_mobile="$$SUPER_ADMIN_MOBILES;">
+<ticket id="1" name="attendance" primary_receiver_email="vaibhav@istarindia.com" primary_receiver_mobile="9632224803">
+<exception_param name="attendance" expectation="60" type="integer" />
+<defaulter_item_query>select batch_schedule_event.id as item_id , (case when count(attendance.id)&amp;gt;0 then cast((count(*) filter  ( where attendance.status='PRESENT')*100 /(count(*) filter  ( where attendance.status='PRESENT')+count(*) filter  ( where attendance.status='ABSENT'))) as integer) else 0 end ) as attendance 
+from batch_schedule_event left join attendance on (attendance.event_id = batch_schedule_event.id) 
+where 
+eventdate + (((eventhour*60)+eventminute) * interval '1 minute') &amp;lt; now() 
+and eventdate + (((eventhour*60)+eventminute) * interval '1 minute') &amp;gt; now() - (2 * interval '1 day')
+and type in ('BATCH_SCHEDULE_EVENT_TRAINER')
+group by batch_schedule_event.id</defaulter_item_query>
+<exception_title>Poor attendance in Section :section_name</exception_title>
+<exception_desc>:attendance percent was recorded in session of Course - :course_name in section :section_name scheduled on :eventdate. Trainer was :trainer_name [:trainer_email]. Organization - :organization_name</exception_desc>
+  
 </ticket>
