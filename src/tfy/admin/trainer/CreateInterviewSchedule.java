@@ -112,7 +112,7 @@ public class CreateInterviewSchedule {
 	public String createZoomSchedule(String dateTime, String topic, int durationInminutes  )
 	{
 		String url = "https://api.zoom.us/v1/meeting/create?host_id=j9Ix95GCQTqmc9aj6IPfYQ&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		System.out.println("c,s,s,,s ");
+		System.out.println("c,s,s,,s "+url);
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
