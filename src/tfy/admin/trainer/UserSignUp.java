@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -73,6 +74,24 @@ public class UserSignUp extends IStarBaseServelet {
 		String cluster = "";
 		String userType = "";
 		String panNo = "";
+		Long aadharno = 0l;
+		float marks10 = 0f;
+		int yop10 = 0;
+		float marks12 = 0f;
+		int yop12 = 0;
+		String underGraduationSpecializationName = "";
+		float underGradutionMarks = 0f;
+		String postGraduationSpecializationName = "";
+		float postGradutionMarks = 0f;
+		String jobSector = "";
+		String companyName = "";
+		String position = "";
+		int duration = 0;
+		String description = "";
+		String preferredLocation = "";
+		boolean isStudyingFurtherAfterDegree = false;
+		String areaOfInterest = "";
+		String interestedInTypeOfCourse = "";
 		int pincode = 0;
 		boolean hasUgDegree = false;
 		boolean hasPgDegree = false;
@@ -94,6 +113,25 @@ public class UserSignUp extends IStarBaseServelet {
 		cluster = request.getParameter("cluster") != null ? request.getParameter("cluster") : "";
 		addressLine1 = request.getParameter("address_line1") != null ? request.getParameter("address_line1") : "";
 		addressLine2 = request.getParameter("address_line2") != null ? request.getParameter("address_line2") : "";
+		aadharno = request.getParameter("aadharno") != null ? Long.parseLong(request.getParameter("aadharno")) : 0l;
+		marks10 = request.getParameter("marks10") != null ? Float.parseFloat(request.getParameter("marks10")) : 0f;
+		marks12 = request.getParameter("marks12") != null ? Float.parseFloat(request.getParameter("marks12")) : 0f;
+		yop10 = request.getParameter("") != null ? Integer.parseInt(request.getParameter("")) : 0;
+		yop12 = request.getParameter("") != null ? Integer.parseInt(request.getParameter("")) : 0;
+		underGraduationSpecializationName = request.getParameter("") != null ? request.getParameter("") : "";
+		underGradutionMarks = request.getParameter("") != null ? Float.parseFloat(request.getParameter("")) : 0f;
+		postGraduationSpecializationName = request.getParameter("") != null ? request.getParameter("") : "";
+		postGradutionMarks = request.getParameter("") != null ? Float.parseFloat(request.getParameter("")) : 0f;
+		jobSector = request.getParameter("") != null ? request.getParameter("") : "";
+		companyName = request.getParameter("") != null ? request.getParameter("") : "";
+		position = request.getParameter("") != null ? request.getParameter("") : "";
+		duration = request.getParameter("") != null ? Integer.parseInt(request.getParameter("")) : 0;
+		description = request.getParameter("") != null ? request.getParameter("") : "";
+		preferredLocation = request.getParameter("") != null ? request.getParameter("") : "";
+		isStudyingFurtherAfterDegree = request.getParameter("") != null ? Boolean.getBoolean(request.getParameter("")) : false;
+		areaOfInterest = request.getParameter("") != null ? request.getParameter("") : "";
+		interestedInTypeOfCourse = request.getParameter("") != null ? request.getParameter("") : "";
+		String student_id = "";
 		pincode = request.getParameter("pincode") != null ? Integer.parseInt(request.getParameter("pincode")) : 0;
 		experinceMonths = request.getParameter("experince_months") != null ? request.getParameter("experince_months")
 				: "";
@@ -144,7 +182,9 @@ public class UserSignUp extends IStarBaseServelet {
 
 				String insertIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
 						+ email + "', '" + password + "', now(), " + mobile + ", NULL, NULL, 't') returning id;";
+				System.err.println(insertIntoIstarUser);
 				int urseId = db.executeUpdateReturn(insertIntoIstarUser);
+				student_id = urseId+"";
 				if (userType.equalsIgnoreCase("TRAINER")) {
 					String insertPresentorIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
 							+ presentor_email + "', '" + password + "', now(), " + mobile
@@ -156,20 +196,26 @@ public class UserSignUp extends IStarBaseServelet {
 					db.executeUpdate(insertIntoUserRole);
 				}
 
-				String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"
+				String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob,aadhar_no) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"
 						+ firstName + "', '" + lastName + "', '" + gender + "'," + urseId + "," + address_id + " , '"
-						+ dob + "');";
+						+ dob + "', "+aadharno+");";
+				System.err.println(createUserProfile);
 				db.executeUpdate(createUserProfile);
 
 				String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + urseId
 						+ ", (select id from role where role_name='" + userType
 						+ "'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
+				System.err.println(insertIntoUserRole);
 				db.executeUpdate(insertIntoUserRole);
 
-				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months, pan_no) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
+				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months, pan_no, yop_10, marks_10, yop_12, marks_12, under_graduation_specialization_name, under_gradution_marks, post_graduation_specialization_name, post_gradution_marks, is_studying_further_after_degree, job_sector, preferred_location, company_name, position, duration, description, interested_in_type_of_course, area_of_interest) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
 						+ urseId + ", '" + Boolean.toString(hasUgDegree).charAt(0) + "','"
 						+ Boolean.toString(hasPgDegree).charAt(0) + "','" + ugDegree + "','" + pgDegree + "','"
-						+ experinceYears + "','" + experinceMonths + "', '"+panNo+"'); ";
+						+ experinceYears + "','" + experinceMonths + "', '"+panNo+"', "+yop10+", "+marks10+", "+yop12+", "+marks12+","
+						+ " '"+underGraduationSpecializationName+"' , "+underGradutionMarks+", '"+postGraduationSpecializationName+"',"
+						+ " "+postGradutionMarks+", '"+Boolean.toString(isStudyingFurtherAfterDegree).charAt(0)+"', '"+jobSector+"', '"+preferredLocation+"',"
+						+ " '"+companyName+"', '"+position+"', '"+duration+"', '"+description+"', '"+interestedInTypeOfCourse+"', '"+areaOfInterest+"'); ";
+				System.err.println(insertIntoProfessionalProfile);
 				db.executeUpdate(insertIntoProfessionalProfile);
 
 				if (userType.equalsIgnoreCase("TRAINER")) {
@@ -366,7 +412,11 @@ public class UserSignUp extends IStarBaseServelet {
 
 				}
 			}
+			if(!userType.equalsIgnoreCase("STUDENT")){
 			response.sendRedirect("/login?email=" + email + "&password=" + password + "");
+			}else{
+				response.getWriter().print(student_id);
+			}
 		}
 	}
 

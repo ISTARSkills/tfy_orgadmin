@@ -132,6 +132,11 @@ public class AuthenticationFilter implements Filter {
 			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
+		
+		if (((HttpServletRequest) request).getRequestURL().toString().contains("student_signup_ui")) {
+			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			isStarticrequest = true;
+		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {

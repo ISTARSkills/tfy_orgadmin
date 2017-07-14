@@ -97,7 +97,7 @@ int rand = (new Random()).nextInt(4);
 				
                  <div class="row">       
 				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Sign up as Trainer</a></div>
-				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="student_signup.jsp">Sign up as Student</a></div>
+				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="/student/student_wizard_signup.jsp">Sign up as Student</a></div>
 				</div>
 				
 			</form>
