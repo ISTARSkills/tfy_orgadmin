@@ -203,7 +203,7 @@
 											<%
 												for (String key : AppProperies.getProperty("religion").toString().split("!#")) {
 											%>
-											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getReligion() != null && user.getUserProfile().getReligion()==key) {%>selected<%}%>><%=key%></option>
+											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getReligion() != null && user.getUserProfile().getReligion().equalsIgnoreCase(key)) {%>selected<%}%>><%=key%></option>
 											<%} %>
 										</select>
 									</div>
@@ -215,7 +215,7 @@
 											<%
 												for (String key : AppProperies.getProperty("caste_category").toString().split("!#")) {
 											%>
-											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getCasteCategory() != null && user.getUserProfile().getCasteCategory()==key) {%>selected<%}%>><%=key%></option>
+											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getCasteCategory() != null && user.getUserProfile().getCasteCategory().equalsIgnoreCase(key)) {%>selected<%}%>><%=key%></option>
 											<%} %>
 										</select>
 									</div>
@@ -474,18 +474,8 @@
 										<label>Is Studying Further After Degree? *</label> <select
 											class="form-control m-b" required
 											name="isStudyingFurtherAfterDegree">
-											<option value="">Select any one</option>
-											<%
-												if (user != null && user.getProfessionalProfile() != null
-														&& user.getProfessionalProfile().getPgDegreeName() != null) {
-											%>
-											<option selected
-												value="<%=user.getProfessionalProfile().getPgDegreeName()%>"><%=user.getProfessionalProfile().getPgDegreeName()%></option>
-											<%
-												}
-											%>
-											<option value="false">No</option>
-											<option value="true">Yes</option>
+											<option value="true" <%if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getIsStudyingFurtherAfterDegree()!=null && user.getProfessionalProfile().getIsStudyingFurtherAfterDegree()) {%>selected<%}%>>Yes</option>
+											<option value="false" <%if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getIsStudyingFurtherAfterDegree()!=null && !user.getProfessionalProfile().getIsStudyingFurtherAfterDegree()) {%>selected<%}%>>No</option>
 										</select>
 									</div>
 									<div class="form-group">
@@ -495,7 +485,7 @@
 											<%
 												for (String key : AppProperies.getProperty("AREAS_OF_INTEREST").toString().split("!#")) {
 											%>
-											<option value="<%=key%>"><%=key%></option>
+											<option value="<%=key%>" <%if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getAreaOfInterest()!=null && user.getProfessionalProfile().getAreaOfInterest().equalsIgnoreCase(key)){%>selected<% }%>> <%=key%></option>
 											<%
 												}
 											%>
@@ -511,7 +501,7 @@
 											<%
 												for (String key : AppProperies.getProperty("FURTHER_STUDIES").toString().split("!#")) {
 											%>
-											<option value="<%=key%>"><%=key%></option>
+											<option value="<%=key%>" <%if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getInterestedInTypeOfCourse()!=null && user.getProfessionalProfile().getInterestedInTypeOfCourse().equalsIgnoreCase(key)) {%>selected<%}%> ><%=key%></option>
 											<%} %>
 										</select>
 									</div>
@@ -593,26 +583,63 @@
 								</div>
 							</div>
 						</fieldset>
-						
-						<%if(user != null) {%>
 						<h1>Batch Code</h1>
 						<fieldset>
-						<h4>Have a Batch-Code?</h4>
-							<div class="row">
+						<%if(user != null) {
+							DBUTILS util = new DBUTILS();
+							String checkIfBatchCodeExist ="select batch_group.name, batch_group.batch_code from batch_group, batch_students where batch_group.id = batch_students.batch_group_id and batch_students.student_id = "+user.getId()+" and batch_group.is_primary = 't'";
+							List<HashMap<String,Object>> batchCodeDetails = util.executeQuery(checkIfBatchCodeExist);
+							if(batchCodeDetails.size()>0)
+							{
+								String groupName =  batchCodeDetails.get(0).get("name").toString();
+								String code  = batchCodeDetails.get(0).get("batch_code").toString();
+								%>
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Primary Group Name:</label>
+										<div class="col-sm-5">
+											<input type="text" disabled value="<%=groupName %>"  required class="form-control">
+										</div>
+									</div>
+
+								</div>
+								
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Batch Code:</label>
+										<div class="col-sm-5">
+											<input type="text" disabled value ="<%=code%>"  required class="form-control">
+										</div>
+									</div>
+
+								</div>
+								<% 
+							}else
+							{
+								%>
+								<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">
 										<label>Enter Batch Code</label> <input type="text"
 											placeholder="Enter Batch Code" name="batch_code"
-											value=""
+											value="" id="batch_code"
 											class="form-control">
 									</div>
-									<button type="button" id="batch_code" class="btn btn-w-m btn-danger">Join now</button>
+									<button type="button" id="batch_code_button" class="btn btn-w-m btn-danger">Join Batch</button>
 								</div>
-							</div>
+							</div>	
+								<%
+							}	
+						%>
+						
+						
+							
 						</fieldset>
 						<%} %>
+						<input type="hidden" id="user_id" name="user_id" value="<%if(user!=null){%><%=user.getId() %><%}%>">
 					</form>
-					<input type="hidden" id="student_id" value="">
+					
+					<input type="hidden" id="student_id" value="<%if(user!=null){%><%=user.getId() %><%}%>">
 				</div>
 				<!-- wizard end here -->
 				
@@ -737,7 +764,7 @@
 														data : serialized,
 														type : 'POST',
 														success : function(data) {
-															alert('submited and id - '+data);
+															//alert('submited and id - '+data);
 															$('#student_id').val(data);
 														}
 													});
@@ -778,7 +805,7 @@
 																contentType : false,
 																processData : false
 														        ,success: function(response) {
-														            alert(response);
+														            //alert(response);
 														            if (response !== undefined) {
 														                window.location.href = '<%=baseURL%>'+response;
 														            }
@@ -982,6 +1009,32 @@
 
 	function init_form() {
 
+		
+		
+		$('#batch_code_button').unbind().on('click', function() {
+			
+			if($('#student_id')!=null && $('#student_id').val()!=null)
+			{
+				var stuId = $('#student_id').val();
+				var batchCode = $('#batch_code').val();
+				$.ajax({
+					type : "GET",
+					url : "/edit_batch_code",
+					data : {
+						student_id : stuId,
+						batch_code : batchCode	
+					},
+					success : function(data) {
+						if ($(data) != undefined) {
+						window.location.reload;	
+						}
+					}
+				});
+			}		
+			
+		});
+		
+		
 		$('#ug_degree').unbind().on('change', function() {
 			$.ajax({
 				type : "GET",

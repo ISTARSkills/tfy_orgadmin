@@ -200,7 +200,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 }	 
 			 
 			 if(request.getParameterMap().containsKey("email")) {
-				 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"',WHERE id="+user.getId();
+				 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"' WHERE id="+user.getId();
 				 util.executeUpdate(updateUserPassword);
 			 } 
 			String updateUserProfile = "update user_profile set address_id=" + address_id + ", first_name='" + firstName
