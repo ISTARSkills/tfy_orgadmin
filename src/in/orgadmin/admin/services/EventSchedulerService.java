@@ -983,13 +983,58 @@ public class EventSchedulerService {
 
 		if (eventID != null) {
 
-			//updateEvent(eventID, trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(),startTime, adminUserID, classroomID, sessionID, associateTrainerID);
+			updateWebinarEvent(eventID, trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(),startTime, adminUserID, classroomID, sessionID, associateTrainerID);
 		} else {
 
 			
 			createWebinarEvent(trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(), startTime,	adminUserID, classroomID, -1, associateTrainerID);
 
 		}
+	}
+
+
+
+	private void updateWebinarEvent(String eventID, int trainerID, int hours, int minute, int batchID, String eventDate,
+			String startTime, int AdminUserID, int classroomID, int sessionID, String associateTrainerID) {
+		deleteWebinarEvent(eventID);
+		
+        createWebinarEvent(trainerID, hours, minute, batchID, eventDate, startTime, AdminUserID, classroomID, sessionID,
+				associateTrainerID);
+		
+	}
+
+
+
+	private void deleteWebinarEvent(String eventID) {
+        DBUTILS db = new DBUTILS();
+		
+		String findGrouCode = "select batch_group_code from batch_schedule_event where id ="+eventID;
+		List<HashMap<String, Object>> codeData = db.executeQuery(findGrouCode);
+		if(codeData.size()>0)
+		{
+			String groupCode = codeData.get(0).get("batch_group_code").toString();
+			
+			String deletefromNotification="DELETE FROM istar_notification WHERE group_code ='"+groupCode+"'";
+			db.executeUpdate(deletefromNotification);
+			
+			String deleteFromTask ="DELETE FROM task WHERE  item_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"') AND item_type like '%WEBINAR%' ";
+			db.executeUpdate(deleteFromTask);
+			
+			String deleteMapping ="delete from event_queue_event_mapping where event_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteMapping);
+			
+			String deleteBSE="DELETE FROM batch_schedule_event WHERE batch_group_code='"+groupCode+"'";
+			db.executeUpdate(deleteBSE);
+			
+			String deteleEventQueue ="delete from event_queue where group_code ='"+groupCode+"'";
+			db.executeUpdate(deteleEventQueue);
+		}
+		
+		
+		
+		
+		
+		
 	}
 
 
@@ -1327,13 +1372,59 @@ public class EventSchedulerService {
 
 		if (eventID != null) {
 
-			//updateEvent(eventID, trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(),startTime, adminUserID, classroomID, sessionID, associateTrainerID);
+			updateEventRemoteClassEvent(eventID, trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(),startTime, adminUserID, classroomID, sessionID, associateTrainerID);
 		} else {
 
 			
 			createRemoteClassEvent(trainerID, hours, minute, batchID, formatter.format(FinaleventDate).toString(), startTime,	adminUserID, classroomID, -1, associateTrainerID);
 
 		}
+		
+	}
+
+
+
+	private void updateEventRemoteClassEvent(String eventID, int trainerID, int hours, int minute, int batchID,
+			String eventDate, String startTime, int AdminUserID, int classroomID, int sessionID,
+			String associateTrainerID) {
+		// TODO Auto-generated method stub
+           deleteRemoteClassEvent(eventID);
+		
+           createRemoteClassEvent(trainerID, hours, minute, batchID, eventDate, startTime, AdminUserID, classroomID, sessionID,
+				associateTrainerID);
+	}
+
+
+
+	private void deleteRemoteClassEvent(String eventID) {
+DBUTILS db = new DBUTILS();
+		
+		String findGrouCode = "select batch_group_code from batch_schedule_event where id ="+eventID;
+		List<HashMap<String, Object>> codeData = db.executeQuery(findGrouCode);
+		if(codeData.size()>0)
+		{
+			String groupCode = codeData.get(0).get("batch_group_code").toString();
+			
+			String deletefromNotification="DELETE FROM istar_notification WHERE group_code ='"+groupCode+"'";
+			db.executeUpdate(deletefromNotification);
+			
+			String deleteFromTask ="DELETE FROM task WHERE  item_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"') AND item_type like '%REMOTE%' ";
+			db.executeUpdate(deleteFromTask);
+			
+			String deleteMapping ="delete from event_queue_event_mapping where event_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteMapping);
+			
+			String deleteBSE="DELETE FROM batch_schedule_event WHERE batch_group_code='"+groupCode+"'";
+			db.executeUpdate(deleteBSE);
+			
+			String deteleEventQueue ="delete from event_queue where group_code ='"+groupCode+"'";
+			db.executeUpdate(deteleEventQueue);
+		}
+		
+		
+		
+		
+		
 		
 	}
 }

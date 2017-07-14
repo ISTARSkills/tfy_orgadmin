@@ -129,7 +129,7 @@
 			</div>
 			<!-- edit modal -->
 
-			<div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog"
+			<div class="modal inmodal" id="myModal2" role="dialog"
 				aria-hidden="true">
 				<input type="hidden" value="<%=colegeID%>" id="org_id">
 				<div class="modal-dialog">

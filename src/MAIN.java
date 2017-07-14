@@ -55,6 +55,7 @@ import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
+import com.viksitpro.core.ticket.services.TicketException;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.EmailUtils;
 import com.viksitpro.core.utilities.NotificationType;
@@ -110,14 +111,21 @@ public class MAIN {
 		//}
 		
 		//scheduleMeeting();
+         exceptiontesting();
 
-
-		ImportDatafromPostgres();
+		//ImportDatafromPostgres();
 
 		System.out.println("end");
 	}
 	
 	
+
+
+	private static void exceptiontesting() {
+		
+	}	
+
+
 
 
 	private static void ImportDatafromPostgres() {
@@ -386,8 +394,8 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 
 	private static void scheduleMeeting() {
 		CreateInterviewSchedule cc= new CreateInterviewSchedule();
-		cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14,"S$");				
-		//cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
+		//cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14,"S$");				
+		cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
 	}
 
 	private static void createInterviewSkill() {

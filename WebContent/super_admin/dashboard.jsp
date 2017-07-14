@@ -31,7 +31,7 @@
 			
 			<!-- edit modal -->
 
-								<div class="modal inmodal" id="myModal2" tabindex="-1"
+								<div class="modal inmodal" id="myModal2" 
 									role="dialog" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content animated flipInY event-edit-modal">

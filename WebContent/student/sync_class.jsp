@@ -81,6 +81,8 @@
       <script src="<%=basePath%>assets/slide_assets/lib/js/head.min.js"></script>
       <script src="<%=basePath%>assets/slide_assets/js/reveal.js"></script>
       <script src="<%=basePath%>assets/js/jquery.rateyo.min.js"></script>
+      <script src="<%=basePath %>assets/js/reconnecting-websocket.min.js"></script>
+      
       
       <script>
       $(document).ready(function() {
@@ -376,8 +378,14 @@
          				
          
          		}
-         		var indices = Reveal.getIndices( document.getElementById( '<%=slide_id%>' ) );
-         		Reveal.slide( indices.h, indices.v );
+         	
+         		
+         		var currSlideId = <%=currentSlideId%>;
+    			if(currSlideId!=0)
+    			{
+    				var indices = Reveal.getIndices( document.getElementById( currSlideId ) );
+    				Reveal.slide( indices.h, indices.v );
+    			}
          		
          	});
          	
