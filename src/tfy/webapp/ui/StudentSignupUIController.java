@@ -39,21 +39,21 @@ public class StudentSignupUIController extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig config) {
+
+		String mediaPath = null;
 		try {
 			Properties properties = new Properties();
 			String propertyFileName = "app.properties";
 			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
 			if (inputStream != null) {
 				properties.load(inputStream);
-			} else {
-				throw new FileNotFoundException("property file '" + propertyFileName + "' not found in the classpath");
+				mediaPath = properties.getProperty("mediaPath");
 			}
-			fileUploadPath = properties.getProperty("fileUploaderPath");
-		} catch (Exception e) {
-			fileUploadPath = "/var/www/html/android_images";
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		uploadFolder = new File(fileUploadPath);
+
+		uploadFolder = new File(mediaPath);
 	}
 
 	/**
@@ -68,24 +68,23 @@ public class StudentSignupUIController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// printParams(request);
 		String redirectType = request.getParameter("redirect");
-		if(redirectType != null && !redirectType.equalsIgnoreCase("")){
-			if(redirectType.equalsIgnoreCase("create")){
+		if (redirectType != null && !redirectType.equalsIgnoreCase("")) {
+			if (redirectType.equalsIgnoreCase("create")) {
 				String userId = request.getParameter("stu_id");
-				System.err.println("type--> "+redirectType+" student id --> "+userId);
+				System.err.println("type--> " + redirectType + " student id --> " + userId);
 				DBUTILS db = new DBUTILS();
-				String sql = "SELECT email,password from istar_user where id = "+ userId;
+				String sql = "SELECT email,password from istar_user where id = " + userId;
 				List<HashMap<String, Object>> data = db.executeQuery(sql);
-				if(data.get(0) != null){
+				if (data.get(0) != null) {
 					System.err.println("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + "");
-				response.getWriter().println(("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + ""));
+					response.getWriter().println(("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + ""));
 				}
 			}
 		}
-		out=new StringBuffer();
+		out = new StringBuffer();
 		if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("ug_degree")) {
 			String value = AppProperies.getProperty(request.getParameter("value"));
 			String[] lists = value.split("!#");
@@ -108,17 +107,17 @@ public class StudentSignupUIController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		if (!ServletFileUpload.isMultipartContent(request)) {
-			throw new IllegalArgumentException(
-					"Request is not multipart, please 'multipart/form-data' enctype for your form.");
+			throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
 		}
 
 		ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
 
 		List<FileItem> items = null;
+		// items will include one type {profile_image, resume, marks_10,
+		// marks_12}
 		try {
 			items = uploadHandler.parseRequest(request);
 		} catch (FileUploadException e) {
@@ -126,17 +125,16 @@ public class StudentSignupUIController extends HttpServlet {
 		}
 
 		String type = "";
+		String studentId = "";
+		String fileExtension = "";
+
+		FileItem fileItem = null;
 
 		for (FileItem item : items) {
-			if (item.getFieldName().equalsIgnoreCase("type")) {
-				type = item.getString();
-			}
-		}
 
-		for (FileItem item : items) {	
 			if (!item.isFormField()) {
-				String fileExtension = "";
-				String imagePath = "";
+
+				fileItem = item;
 				if (item.getName().toString().toLowerCase().endsWith(".png")) {
 					fileExtension = ".png";
 				} else if (item.getName().toString().toLowerCase().endsWith(".jpg")) {
@@ -147,23 +145,59 @@ public class StudentSignupUIController extends HttpServlet {
 					fileExtension = ".pdf";
 				} else if (item.getName().toString().toLowerCase().endsWith(".doc")) {
 					fileExtension = ".doc";
-				}else if (item.getName().toString().toLowerCase().endsWith(".docx")) {
+				} else if (item.getName().toString().toLowerCase().endsWith(".docx")) {
 					fileExtension = ".docx";
 				}
 
-				if (!fileExtension.trim().isEmpty()) {
-						imagePath = uploadPersonalImage(item, fileExtension, type);
-						System.out.println(imagePath);
-						out=new StringBuffer();
-						out.append(imagePath.trim());
+			} else {
+				if (item.getFieldName().equalsIgnoreCase("type")) {
+					type = item.getString();
+				}
+				if (item.getFieldName().equalsIgnoreCase("student_id")) {
+					studentId = item.getString();
 				}
 			}
 		}
+		String mediaUrl = "";
+		if (!fileExtension.trim().isEmpty() && fileItem != null) {
+			out = new StringBuffer();
+			switch (type) {
+			case "profile_image":
+				mediaUrl = uploadMedia(fileItem, fileExtension, "users", studentId).trim();
+				updateInDB(mediaUrl, "user_profile", "profile_image", studentId);
+				break;
+			case "resume":
+				mediaUrl = uploadMedia(fileItem, fileExtension, "resumes", studentId).trim();
+				updateInDB(mediaUrl, "professional_profile", "resume_url", studentId);
+				break;
+			case "marks_10":
+				mediaUrl = uploadMedia(fileItem, fileExtension, "marks_10", studentId).trim();
+				updateInDB(mediaUrl, "professional_profile", "marksheet_10", studentId);
+				break;
+			case "marks_12":
+				mediaUrl = uploadMedia(fileItem, fileExtension, "marks_12", studentId).trim();
+				updateInDB(mediaUrl, "professional_profile", "marksheet_12", studentId);
+				break;
+			default:
+				return;
+			}
+
+		}
+
 		response.getWriter().print(out);
 	}
 
-	private String uploadPersonalImage(FileItem item, String fileExtension, String innerDirectory) {
-		Path path = Paths.get(uploadFolder.getAbsolutePath() + "/" + innerDirectory);
+	private void updateInDB(String mediaUrl, String table_name, String column_name, String studentId) {
+
+		DBUTILS util = new DBUTILS();
+		String updateInDB = "update " + table_name + " set " + column_name + " ='" + mediaUrl + "' where user_id = " + studentId;
+		util.executeUpdate(updateInDB);
+
+	}
+
+	private String uploadMedia(FileItem fileItem, String fileExtension, String innerDirectory, String studentId) {
+
+		Path path = Paths.get(uploadFolder.getAbsolutePath() + "/" + innerDirectory + "/" + studentId);
 		if (Files.exists(path)) {
 		} else {
 			try {
@@ -172,16 +206,16 @@ public class StudentSignupUIController extends HttpServlet {
 				System.err.println("Cannot create directories - " + e);
 			}
 		}
-
 		File parentFolder = new File(path.toString());
 
 		UUID uuidName = UUID.randomUUID();
 		File imageFile = new File(parentFolder, uuidName.toString() + fileExtension);
 		String imageURL = "";
 		try {
-			item.write(imageFile);
-			imageURL = "/android_images/" + innerDirectory + "/" + uuidName.toString()+ fileExtension;
-			System.out.println("Absolute Path id: " + imageFile.getAbsoluteFile());
+			fileItem.write(imageFile);
+			imageURL = "/" + innerDirectory + "/" + studentId + "/" + uuidName.toString() + fileExtension;
+			// System.out.println("Absolute Path id: " +
+			// imageFile.getAbsoluteFile());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

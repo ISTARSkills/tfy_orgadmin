@@ -151,7 +151,7 @@
 							</div>
 
 						</fieldset>
-						<h1>Profile</h1>
+						<h1>Personal</h1>
 						<fieldset>
 							<div class="row">
 								<div class="col-lg-6">
@@ -205,6 +205,13 @@
 												name="address_line2" class="form-control"
 												value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getAddress() != null
 					&& user.getUserProfile().getAddress().getAddressline2() != null) {%><%=user.getUserProfile().getAddress().getAddressline2()%>   <%}%>">
+									</div>
+									<div class="form-group">
+										<label>Fathers Name *</label> <input type="text" required
+											placeholder="Father's Name" name="father_name"
+											class="form-control"
+											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getAddress() != null
+					&& user.getUserProfile().getAddress().getAddressline1() != null) {%><%=user.getUserProfile().getAddress().getAddressline1()%>   <%}%>">
 									</div>
 								</div>
 							</div>
@@ -448,7 +455,7 @@
 						<fieldset>
 							<div class="row">
 								<div class="col-lg-6">
-									<label>Upload 10th Marksheet *</label>
+									<label>Upload Profile Image *</label>
 									<div class="fileinput fileinput-new input-group" data-provides="fileinput">
 										<div class="form-control" data-trigger="fileinput">
 											<i class="glyphicon glyphicon-file fileinput-exists"></i> <span
@@ -457,9 +464,9 @@
 										<span class="input-group-addon btn btn-default btn-file"><span
 											class="fileinput-new">Select file</span><span
 											class="fileinput-exists">Change</span><input type="hidden"
-											id='marks_10_url' name='marks_10_url' value=''><input
+											id='profile_image' name='profile_image' value=''><input
 											type="file" name="" class='stu_file_uploader'
-											data-type='marks_10' data-url='marks_10_url'
+											data-type='profile_image' data-url='profile_image_url'
 											accept="image/jpg,image/png,image/jpeg"></span> <a href="#"
 											class="input-group-addon btn btn-default fileinput-exists"
 											data-dismiss="fileinput">Remove</a>
@@ -482,6 +489,23 @@
 									</div>
 								</div>
 								<div class="col-lg-6">
+								<label>Upload 10th Marksheet *</label>
+									<div class="fileinput fileinput-new input-group" data-provides="fileinput">
+										<div class="form-control" data-trigger="fileinput">
+											<i class="glyphicon glyphicon-file fileinput-exists"></i> <span
+												class="fileinput-filename"></span>
+										</div>
+										<span class="input-group-addon btn btn-default btn-file"><span
+											class="fileinput-new">Select file</span><span
+											class="fileinput-exists">Change</span><input type="hidden"
+											id='marks_10_url' name='marks_10_url' value=''><input
+											type="file" name="" class='stu_file_uploader'
+											data-type='marks_10' data-url='marks_10_url'
+											accept="image/jpg,image/png,image/jpeg"></span> <a href="#"
+											class="input-group-addon btn btn-default fileinput-exists"
+											data-dismiss="fileinput">Remove</a>
+									</div>
+								
 									<label>Upload 12th Marksheet *</label>
 									<div class="fileinput fileinput-new input-group" data-provides="fileinput">
 										<div class="form-control" data-trigger="fileinput">
