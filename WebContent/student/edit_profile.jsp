@@ -88,6 +88,14 @@ request.setAttribute("cp", co	);
 		<div id="page-wrapper" class="gray-bg">
 		<jsp:include page="inc/navbar.jsp"></jsp:include>
 		<div class="row">
+				
+				<% if(userType.equalsIgnoreCase("STUDENT")) {%>
+				<jsp:include page="/student/student_wizard_signup.jsp">
+				<jsp:param value="<%=userType %>" name="user_type"/>
+				<jsp:param value="<%=trainer.getId()%>" name="user_id"/>
+				</jsp:include>
+				<%}else{ %>
+				
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
 						<h2 style="margin-left: 31px;">Edit Profile</h2>
@@ -100,6 +108,7 @@ request.setAttribute("cp", co	);
 				<jsp:param value="<%=userType %>" name="user_type"/>
 				<jsp:param value="<%=trainer.getId()%>" name="user_id"/>
 				</jsp:include>
+				<%} %>
 			</div>
 			
 			
@@ -531,6 +540,5 @@ var sThisVal = {};
 	
 	
 </script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1hUAMpiCKN2dUDuTVWMm-Aj42XVIWQH0&callback=myMap" type="text/javascript"></script>
 
 </html>

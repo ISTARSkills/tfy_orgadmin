@@ -82,6 +82,7 @@ try{
  <script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
+ <script src="<%=basePath %>assets/js/plugins/chosen/chosen.jquery.js"></script>
 <script src="<%=basePath %>assets/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/highcharts.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/no-data-to-display.js"></script>

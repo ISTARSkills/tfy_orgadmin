@@ -97,7 +97,10 @@ public class StudentSignupUIController extends HttpServlet {
 			String value = AppProperies.getProperty(request.getParameter("value"));
 			String[] lists = value.split("!#");
 			for (String key : lists) {
-				out.append("<option value='" + key + "'>" + key + "</option>");
+				String selected ="";
+						
+				
+				out.append("<option value='" + key + "'  >" + key + "</option>");
 			}
 		}
 		response.getWriter().print(out);

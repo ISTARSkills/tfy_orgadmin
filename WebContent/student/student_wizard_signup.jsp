@@ -81,6 +81,7 @@
 <link href="<%=cdnUrl%>assets/css/style.css" rel="stylesheet">
 <link href="<%=cdnUrl%>assets/css/custom.css" rel="stylesheet">
 <link href="<%=cdnUrl%>assets/css/plugins/steps/jquery.steps.css" rel="stylesheet">
+
 </head>
 
 <body class="top-navigation" id="">
@@ -98,7 +99,11 @@
 			<div class="row">
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
+					<%if(user !=null) {%>
+						<h2 style="margin-left: 31px;">Edit Profile</h2>
+					<%}else{ %>
 						<h2 style="margin-left: 31px;">Student Sign Up</h2>
+					<%} %>
 					</div>
 				</div>
 				
@@ -117,7 +122,7 @@
 
 									<div class="form-group">
 										<label>Email *</label> <input id="email" name="email"
-											type="email" class="form-control required email">
+											type="email" class="form-control required email"  value="<%if(user!=null && user.getEmail() !=null){%><%=user.getEmail() %><%} %>">
 									</div>
 									<div class="form-group">
 										<label>Mobile Number *</label> <input id="mobile" min='0' value="<%if(user!=null && user.getMobile()!=null){%><%=user.getMobile() %><%}%>"
@@ -187,8 +192,32 @@
 									<div class="form-group">
 										<label>Aadhar No *</label>
 											<input type="number" placeholder="Aadhar No." name="aadharno"
-												value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+												value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getAadharNo() != null) {%><%=user.getUserProfile().getAadharNo()%><%}%>"
 												required class="form-control">
+									</div>
+									<div class="form-group">
+										<label>Religion *</label> <select
+											class="form-control m-b" required
+											name="religion">
+										
+											<%
+												for (String key : AppProperies.getProperty("religion").toString().split("!#")) {
+											%>
+											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getReligion() != null && user.getUserProfile().getReligion()==key) {%>selected<%}%>><%=key%></option>
+											<%} %>
+										</select>
+									</div>
+									<div class="form-group">
+										<label>Caste Category *</label> <select
+											class="form-control m-b" required
+											name="caste_category">
+											
+											<%
+												for (String key : AppProperies.getProperty("caste_category").toString().split("!#")) {
+											%>
+											<option value="<%=key%>" <%if (user != null && user.getUserProfile() != null && user.getUserProfile().getCasteCategory() != null && user.getUserProfile().getCasteCategory()==key) {%>selected<%}%>><%=key%></option>
+											<%} %>
+										</select>
 									</div>
 								</div>
 								<div class="col-lg-6">
@@ -210,8 +239,19 @@
 										<label>Fathers Name *</label> <input type="text" required
 											placeholder="Father's Name" name="father_name"
 											class="form-control"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getAddress() != null
-					&& user.getUserProfile().getAddress().getAddressline1() != null) {%><%=user.getUserProfile().getAddress().getAddressline1()%>   <%}%>">
+											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFatherName() != null) {%><%=user.getUserProfile().getFatherName	()%>   <%}%>">
+									</div>
+									<div class="form-group">
+										<label>Place of Birth *</label> <input type="text" required
+											placeholder="Place of Birth" name="place_of_birth"
+											class="form-control"
+											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getPlaceOfBirth() != null
+					&& user.getUserProfile().getPlaceOfBirth() != null) {%><%=user.getUserProfile().getPlaceOfBirth()%>   <%}%>">
+									</div>
+									<div class="form-group">
+										<label>Below Poverty Line *</label> <select class="form-control m-b" required
+											name="below_poverty_line">
+											<option value="true" <%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getBelowPovertyLine() != null && user.getProfessionalProfile().getBelowPovertyLine()==true) {%>selected<%}%>>Yes</option><option value="false" <%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getBelowPovertyLine() != null && user.getProfessionalProfile().getBelowPovertyLine()==false) {%>selected<%}%>>No</option></select>
 									</div>
 								</div>
 							</div>
@@ -224,13 +264,13 @@
 									<div class="form-group">
 										<label>10th Marks *</label> <input type="number" min='0'
 											max='100' placeholder="10th Marks (in %)" name="marks10"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getMarks10() != null) {%><%=user.getProfessionalProfile().getMarks10()%><%}%>"
 											required class="form-control">
 									</div>
 									<div class="form-group">
 										<label>12th Marks *</label> <input type="number" min='0'
-											max='100' placeholder="12th Marks (in %)" name="marks10"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											max='100' placeholder="12th Marks (in %)" name="marks12"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getMarks12() != null) {%><%=user.getProfessionalProfile().getMarks12()%><%}%>"
 											required class="form-control">
 									</div>
 									<div class="form-group">
@@ -263,8 +303,22 @@
 									<div class="form-group">
 										<label>UG Specialization Name *</label> <select
 											class="form-control m-b" required
-											name="underGraduationSpecializationName"
-											id='underGraduationSpecializationName'>
+											name="underGraduationSpecializationName" id="underGraduationSpecializationName"
+											>
+											<%
+											if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getUnderGraduateDegreeName()!=null && user.getProfessionalProfile().getUnderGraduationSpecializationName()!=null )
+											{
+												String value = AppProperies.getProperty(user.getProfessionalProfile().getUnderGraduateDegreeName());
+												String[] lists = value.split("!#");
+												for (String key : lists) {
+												
+												%>
+												<option value="<%=key%>" <%if(user.getProfessionalProfile().getUnderGraduationSpecializationName().equalsIgnoreCase(key) ){%>selected<%} %>><%=key %></option>
+												<% 
+												}
+											}
+											%>
+											
 
 										</select>
 									</div>
@@ -272,7 +326,7 @@
 										<label>UG Marks *</label> <input type="number" min='0'
 											max='100' placeholder="UG Marks (in %)"
 											name="underGradutionMarks"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getUnderGradutionMarks() != null) {%><%=user.getProfessionalProfile().getUnderGradutionMarks()%><%}%>"
 											required class="form-control">
 									</div>
 								</div>
@@ -280,13 +334,13 @@
 									<div class="form-group">
 										<label>10th Year of Passing *</label> <input type="number"
 											min='1900' placeholder="10th Year of Passing" name="yop10"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getYop10() != null) {%><%=user.getProfessionalProfile().getYop10()%><%}%>"
 											required class="form-control">
 									</div>
 									<div class="form-group">
 										<label>12th Year of Passing *</label> <input type="number"
 											min='1900' placeholder="12th Year of Passing" name="yop12"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getYop12() != null) {%><%=user.getProfessionalProfile().getYop12()%><%}%>"
 											required class="form-control">
 									</div>
 
@@ -318,15 +372,29 @@
 									<div class="form-group">
 										<label>PG Specialization Name *</label> <select
 											class="form-control m-b" required
-											name="postGraduationSpecializationName"
-											id='postGraduationSpecializationName'>
+											name="postGraduationSpecializationName" id="postGraduationSpecializationName"
+											>
+											<%
+											if(user!= null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getPgDegreeName()!=null && user.getProfessionalProfile().getPostGraduationSpecializationName()!=null )
+											{
+												String value = AppProperies.getProperty(user.getProfessionalProfile().getPgDegreeName());
+												String[] lists = value.split("!#");
+												for (String key : lists) {
+												
+												%>
+												<option value="<%=key%>" <%if(user.getProfessionalProfile().getPostGraduationSpecializationName().equalsIgnoreCase(key) ){%>selected<%} %>><%=key %></option>
+												<% 
+												}
+											}
+											%>
+											
 										</select>
 									</div>
 									<div class="form-group">
 										<label>PG Marks *</label> <input type="number" min='0'
 											max='100' placeholder="PG Marks (in %)"
 											name="postGradutionMarks"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getPostGradutionMarks() != null) {%><%=user.getProfessionalProfile().getPostGradutionMarks()%><%}%>"
 											required class="form-control">
 									</div>
 								</div>
@@ -344,7 +412,7 @@
 											<%
 												for (String key : AppProperies.getProperty("JOB_SECTOR").toString().split("!#")) {
 											%>
-											<option value="<%=key%>"><%=key%></option>
+											<option value="<%=key%>" <%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getJobSector()!=null && user.getProfessionalProfile().getJobSector().equalsIgnoreCase(key)){%>selected<%}%>><%=key%></option>
 											<%
 												}
 											%>
@@ -356,13 +424,13 @@
 									<div class="form-group">
 										<label>Company Name</label> <input type="text"
 											placeholder="Company Name" name="companyName"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getCompanyName() != null) {%><%=user.getProfessionalProfile().getCompanyName()%><%}%>"
 											 class="form-control">
 									</div>
 									<div class="form-group">
 										<label>Position</label> <input type="text"
 											placeholder="Position" name="position"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getPosition() != null) {%><%=user.getProfessionalProfile().getPosition()%><%}%>"
 											 class="form-control">
 									</div>
 								</div>
@@ -375,7 +443,7 @@
 											<%
 												for (String key : AppProperies.getProperty("JOB_LOCATION").toString().split("!#")) {
 											%>
-											<option value="<%=key%>"><%=key%></option>
+											<option value="<%=key%>" <%if(user!=null && user.getProfessionalProfile()!=null && user.getProfessionalProfile().getPreferredLocation()!=null && user.getProfessionalProfile().getPreferredLocation().equalsIgnoreCase(key)){%>selected<%}%>><%=key%></option>
 											<%
 												}
 											%>
@@ -385,13 +453,13 @@
 									<div class="form-group">
 										<label>Duration (in Months)</label> <input type="number"
 											placeholder="Duration" min='0' name="duration"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getDuration() != null) {%><%=user.getProfessionalProfile().getDuration()%><%}%>"
 											 class="form-control">
 									</div>
 									<div class="form-group">
 										<label>Description</label> <input type="text"
 											placeholder="Description" name="description"
-											value="<%if (user != null && user.getUserProfile() != null && user.getUserProfile().getFirstName() != null) {%><%=user.getUserProfile().getFirstName()%><%}%>"
+											value="<%if (user != null && user.getProfessionalProfile() != null && user.getProfessionalProfile().getDescription() != null) {%><%=user.getProfessionalProfile().getDescription()%><%}%>"
 											 class="form-control">
 									</div>
 								</div>
@@ -924,7 +992,9 @@
 				},
 				success : function(data) {
 					if ($(data) != undefined) {
+						$('#underGraduationSpecializationName').html("");
 						$('#underGraduationSpecializationName').html(data);
+						$('#underGraduationSpecializationName').select2();
 					}
 				}
 			});
@@ -940,7 +1010,9 @@
 				},
 				success : function(data) {
 					if ($(data) != undefined) {
+						$('#postGraduationSpecializationName').html("");
 						$('#postGraduationSpecializationName').html(data);
+						$('#postGraduationSpecializationName').select2();
 					}
 				}
 			});
