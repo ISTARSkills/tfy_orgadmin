@@ -75,6 +75,29 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 String addressLine2 = "";
 		 String cluster = "";
 		 String panNo = "";
+		Long aadharno = 0l;
+		float marks10 = 0f;
+		int yop10 = 0;
+		float marks12 = 0f;
+		int yop12 = 0;
+		String underGraduationSpecializationName = "";
+		float underGradutionMarks = 0f;
+		String postGraduationSpecializationName = "";
+		float postGradutionMarks = 0f;
+		String jobSector = "";
+		String companyName = "";
+		String position = "";
+		int duration = 0;
+		String description = "";
+		String preferredLocation = "";
+		boolean isStudyingFurtherAfterDegree = false;
+		String areaOfInterest = "";
+		String interestedInTypeOfCourse = "";
+		Boolean below_poverty_line = false;
+		String place_of_birth = "";
+		String father_name = "";
+		String caste_category = "";
+		String religion = "";
 		 String userType="";
 		 int pincode =0;
 		 boolean hasUgDegree = false;
@@ -99,6 +122,29 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 pincode = request.getParameter("pincode")!=null?Integer.parseInt(request.getParameter("pincode")):0;
 		 experinceMonths =  request.getParameter("experince_months")!=null?request.getParameter("experince_months"):"";
 		 experinceYears = request.getParameter("experince_years")!=null?request.getParameter("experince_years"):"";
+		 aadharno = request.getParameter("aadharno") != null ? Long.parseLong(request.getParameter("aadharno")) : 0l;
+		 marks10 = request.getParameter("marks10") != null ? Float.parseFloat(request.getParameter("marks10")) : 0f;
+		 marks12 = request.getParameter("marks12") != null ? Float.parseFloat(request.getParameter("marks12")) : 0f;
+		 yop10 = request.getParameter("yop10") != null ? Integer.parseInt(request.getParameter("yop10")) : 0;
+		 yop12 = request.getParameter("yop12") != null ? Integer.parseInt(request.getParameter("yop12")) : 0;
+		 underGraduationSpecializationName = request.getParameter("underGraduationSpecializationName") != null ? request.getParameter("underGraduationSpecializationName") : "";
+		 underGradutionMarks = request.getParameter("underGradutionMarks") != null ? Float.parseFloat(request.getParameter("underGradutionMarks")) : 0f;
+		 postGraduationSpecializationName = request.getParameter("postGraduationSpecializationName") != null ? request.getParameter("postGraduationSpecializationName") : "";
+		 postGradutionMarks = request.getParameter("postGradutionMarks") != null ? Float.parseFloat(request.getParameter("postGradutionMarks")) : 0f;
+		 jobSector = request.getParameter("jobSector") != null ? request.getParameter("jobSector") : "";
+		 companyName = request.getParameter("companyName") != null ? request.getParameter("companyName") : "";
+		 position = request.getParameter("position") != null ? request.getParameter("position") : "";
+		 duration = request.getParameter("duration") != null ? Integer.parseInt(request.getParameter("duration")) : 0;
+		 description = request.getParameter("description") != null ? request.getParameter("description") : "";
+		 preferredLocation = request.getParameter("preferredLocation") != null ? request.getParameter("preferredLocation") : "";
+		 isStudyingFurtherAfterDegree = request.getParameter("isStudyingFurtherAfterDegree") != null ? Boolean.getBoolean(request.getParameter("isStudyingFurtherAfterDegree")) : false;
+		 areaOfInterest = request.getParameter("areaOfInterest") != null ? request.getParameter("areaOfInterest") : "";
+		 interestedInTypeOfCourse = request.getParameter("interestedInTypeOfCourse") != null ? request.getParameter("interestedInTypeOfCourse") : "";
+		 below_poverty_line = request.getParameter("below_poverty_line") != null ? Boolean.parseBoolean(request.getParameter("below_poverty_line")) : false;
+		 place_of_birth = request.getParameter("place_of_birth") != null ? request.getParameter("place_of_birth") : "";
+		 father_name = request.getParameter("father_name") != null ? request.getParameter("father_name") : "";
+		 caste_category = request.getParameter("caste_category") != null ? request.getParameter("caste_category") : "";
+		 religion = request.getParameter("religion") != null ? request.getParameter("religion") : "";
 		 userType = request.getParameter("user_type");
 		 panNo = request.getParameter("pan") != null ? request.getParameter("pan") : "";
 		 JSONParser parser = new JSONParser();
@@ -154,13 +200,25 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 }	 
 			 
 			 if(request.getParameterMap().containsKey("email")) {
-				 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"',WHERE id="+user.getId();
+				 String updateUserPassword = "UPDATE istar_user SET password='"+password+"', mobile='"+mobile+"' WHERE id="+user.getId();
 				 util.executeUpdate(updateUserPassword);
 			 } 
-			 String updateUserProfile ="update user_profile set address_id="+address_id+", first_name='"+firstName+"', last_name='"+lastName+"', dob='"+dob+"', gender='"+gender+"' where user_id ="+userId;
+			String updateUserProfile = "update user_profile set address_id=" + address_id + ", first_name='" + firstName
+					+ "', last_name='" + lastName + "', dob='" + dob + "', gender='" + gender
+					+ "' ,aadhar_no= "+aadharno+" ,place_of_birth='"+place_of_birth+"',father_name='"+father_name+"'"
+					+ ",caste_category='"+caste_category+"',religion='"+religion+"' where user_id ="+userId;
 			 util.executeUpdate(updateUserProfile);
 			 
-			 String updateProfessionalProfile ="update professional_profile set has_under_graduation='"+Boolean.toString(hasUgDegree).charAt(0)+"' ,has_post_graduation = '"+Boolean.toString(hasPgDegree).charAt(0)+"', under_graduate_degree_name='"+ugDegree+"', pg_degree_name='"+pgDegree+"', experience_in_years='"+experinceYears+"', experince_in_months='"+experinceMonths+"' , pan_no = '"+panNo+"' where user_id ="+userId+"";
+			 String updateProfessionalProfile ="update professional_profile set has_under_graduation='"+Boolean.toString(hasUgDegree).charAt(0)+"'"
+			 		+ " ,has_post_graduation = '"+Boolean.toString(hasPgDegree).charAt(0)+"', under_graduate_degree_name='"+ugDegree+"'"
+			 		+ ", pg_degree_name='"+pgDegree+"', experience_in_years='"+experinceYears+"', experince_in_months='"+experinceMonths+"' "
+			 		+ ", pan_no = '"+panNo+"', yop_10="+yop10+", marks_10="+marks10+", yop_12="+yop12+", marks_12="+marks12+","
+			 		+ " under_graduation_specialization_name='"+underGraduationSpecializationName+"', under_gradution_marks="+underGradutionMarks+","
+			 		+ " post_graduation_specialization_name='"+postGraduationSpecializationName+"', post_gradution_marks="+postGradutionMarks+","
+			 		+ " is_studying_further_after_degree='"+Boolean.toString(isStudyingFurtherAfterDegree).charAt(0)+"', job_sector='"+jobSector+"',"
+			 		+ " preferred_location='"+preferredLocation+"', company_name='"+companyName+"', position='"+position+"', duration="+duration+","
+			 		+ " description='"+description+"', interested_in_type_of_course='"+interestedInTypeOfCourse+"', area_of_interest='"+areaOfInterest+"',"
+			 		+ "below_poverty_line='"+Boolean.toString(below_poverty_line).charAt(0)+"' where user_id ="+userId+"";
 			 util.executeUpdate(updateProfessionalProfile);
 			 
 			 String findAlreadyInterestedCourse ="select distinct course_id from trainer_intrested_course where trainer_id = "+userId;

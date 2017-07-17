@@ -28,7 +28,7 @@ html {
 	height: 100%;
 }
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: Lato;
 	font-size: 15px;
 	line-height: 1.50;
 	color: #666666;
@@ -6060,3 +6060,4 @@ ul.tweets li span {
 .ie8 .overlay-container:hover .overlay { 
 	display: block;
 }
+ul.nav a:hover { color: #fff !important; }

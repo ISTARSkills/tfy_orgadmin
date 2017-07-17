@@ -33,7 +33,7 @@ public class EditBatchCode extends IStarBaseServelet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		printParams(request);
-		String userId = request.getParameter("user_id");
+		String userId = request.getParameter("student_id");
 		String batchCode =  request.getParameter("batch_code");
 		DBUTILS util = new DBUTILS();
 		String findGroupIdForCode ="select id from batch_group where batch_code='"+batchCode+"'";
@@ -50,7 +50,6 @@ public class EditBatchCode extends IStarBaseServelet {
 				util.executeUpdate(insertIntoBatchStudents);
 			}
 		}
-		response.sendRedirect("/index.jsp");
 				
 	}
 

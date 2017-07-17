@@ -125,7 +125,7 @@ try {
 		<link href="assets/talentify/plugins/magnific-popup/magnific-popup.css" rel="stylesheet">
 		<link href="assets/talentify/css/animations.css" rel="stylesheet">
 		<link href="assets/talentify/plugins/owl-carousel/owl.carousel.css" rel="stylesheet">
-
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
 		<!-- iDea core CSS file -->
 		<link href="assets/talentify/css/style.css" rel="stylesheet">
 

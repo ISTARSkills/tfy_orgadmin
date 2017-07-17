@@ -6,6 +6,8 @@ package in.orgadmin.utils.report;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,14 +73,15 @@ public class ReportUtils {
 		out.append("<table class='table table-bordered datatable_istar' " + dataAttrString + " id='chart_datatable_"
 				+ report.getId() + "' data-report_id='" + report.getId() + "'>");
 		out.append("<thead> <tr>");
-
+int colCount =0;
 		for (IStarColumn iterable_element : report.getColumns()) {
 			try {
 				if (iterable_element.isVisible) {
-					out.append("<th data-visisble='true'>" + iterable_element.getDisplayName() + "</th>");
+					out.append("<th data-visisble='true' data-column_number='"+colCount+"'>" + iterable_element.getDisplayName() + "</th>");
 				}
 			} catch (Exception e) {
 			}
+			colCount++;
 		}
 		out.append("</tr></thead>");
 
@@ -112,8 +115,10 @@ public class ReportUtils {
 			for (IStarColumn iterable_element : report.getColumns()) {
 				try {
 					if (iterable_element.isVisible) {
+						out.append("<th data-visisble='true' data-selectable='false'>" + iterable_element.getDisplayName() + "</th>");
 						if(iterable_element.is_selectable){
-							out.append("<th data-visisble='true' class='select-filter' data-selectable='true'>" + iterable_element.getDisplayName() + "</th>");
+							//out.append("<th data-visisble='true' class='select-filter' data-selectable='true'>" + iterable_element.getDisplayName() + "</th>");
+							
 						} else {
 							//out.append("<th data-visisble='true' data-selectable='false'>" + iterable_element.getDisplayName() + "</th>");
 						}
@@ -190,7 +195,7 @@ public class ReportUtils {
 		StringBuffer out = new StringBuffer();
 		out.append("<div class='graph_holder' id='graph_container_" + report.getId() + "' ></div> ");
 		out.append(
-				"<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"
+				"<table   class='data_holder datatable_report' data-graph_containter='graph_container_"
 						+ report.getId() + "' data-y_axis_title='" + report.getyAxisTitle() + "' data-report_title='"
 						+ report.getTitle() + "' " + " data-graph_holder='container" + report.getId()
 						+ "' id='chart_datatable_" + report.getId() + "'");
@@ -314,4 +319,143 @@ public class ReportUtils {
 		return report;
 	}
 
+	public StringBuffer getTableFilters(int reportId, HashMap<String, String> conditions) {
+		StringBuffer sb = new StringBuffer();
+		Report report = getReport(reportId);
+		
+		String sql1 = report.getSql();
+		for (String key : conditions.keySet()) {
+			System.out.println("key->" + key + "   value-> " + conditions.get(key));
+			String paramName = ":" + key;
+			if (sql1.contains(paramName)) {
+
+				sql1 = sql1.replaceAll(paramName, conditions.get(key));
+			}
+		}
+		
+		sb.append("<div class='row'>");
+		
+		int columnCount =0;
+		for (IStarColumn iterable_element : report.getColumns()) {
+			try {
+				if (iterable_element.isVisible && iterable_element.is_selectable && iterable_element.dataType!=null) {
+					
+					switch (iterable_element.dataType)
+					{
+						case IstarColumnTypes.DATE:
+							sb.append(getDateFiler(report, sql1, iterable_element, columnCount));
+							break;
+						case IstarColumnTypes.STRING:
+							sb.append(getStringDropdown(report, sql1, iterable_element, columnCount));
+							break;
+						case IstarColumnTypes.INTEGER:
+							sb.append(getIntegerSelector(report, sql1, iterable_element, columnCount));
+							break;
+					}
+				}
+			} catch (Exception e) {
+			}
+			columnCount++;
+		}
+		
+		sb.append("</div>");
+		
+		return sb;		
+	}
+
+	private StringBuffer getIntegerSelector(Report report, String sql1, IStarColumn iterable_element, int colCount) {
+		StringBuffer sb = new StringBuffer();
+		DBUTILS util = new DBUTILS();
+		String filterSql = "select cast (COALESCE(min("+iterable_element.name+"), 0) as integer) as  min,cast (COALESCE(max("+iterable_element.name+"), 0) as integer) as  max  from ("+sql1+")FILTER_TABLE ";
+		List<HashMap<String, Object>> options = util.executeQuery(filterSql);
+		int min =0;
+		int max =0;
+		if(options.size()>0)
+		{
+			if(options.get(0).get("min")!=null){
+			min = (int)options.get(0).get("min");
+			}
+			if(options.get(0).get("max")!=null){
+				max = (int)options.get(0).get("max");
+				}
+		}
+		sb.append("<div class=col-sm-3>");
+				sb.append("<div class=m-b-sm>");
+						sb.append("<h4>Select "+iterable_element.displayName+"</h4>");
+								sb.append("</div>");                           
+										sb.append("<div class='int_filter' id=int_filter_"+iterable_element.name+" data-min='"+min+"' data-max='"+max+"' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"'></div>");
+												sb.append("</div>");
+	return sb;
+	}
+
+	private StringBuffer getStringDropdown(Report report, String sql1, IStarColumn iterable_element, int colCount) {
+		DBUTILS util = new DBUTILS();
+		String filterSql = "select distinct "+iterable_element.name+" from ("+sql1+")FILTER_TABLE order by "+iterable_element.name;
+		List<HashMap<String, Object>> options = util.executeQuery(filterSql);
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div class='col-sm-3 m-b-xs'>");
+				sb.append(" <h4>Select "+iterable_element.displayName+"</h4>");
+						sb.append(" <select class='data_table_filter' id='string_filter_"+iterable_element.name+"' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"'>");
+						
+						if(options.size()>0)
+						{
+							sb.append("<option value=''>Select "+iterable_element.displayName+" </option>");
+							for(HashMap<String, Object>  row: options)
+							{
+								sb.append("<option value="+row.get(iterable_element.name)+">"+row.get(iterable_element.name)+"</option>");
+							}							
+						}
+						else
+						{
+							sb.append("<option value='null'>No Filter Available</option");
+						}	
+								
+														sb.append(" </select>");
+																sb.append("</div>");
+		return sb;
+	}
+
+	private StringBuffer getDateFiler(Report report, String sql1, IStarColumn iterable_element, int colCount) {	
+		StringBuffer sb = new StringBuffer();
+		DBUTILS util = new DBUTILS();
+		String filterSql = "select min ("+iterable_element.name+") as min_date , max ("+iterable_element.name+") as max_date from ("+sql1+")FILTER_TABLE";
+		List<HashMap<String, Object>> minMaxDates = util.executeQuery(filterSql);
+		String minDate = "01/01/2015";
+		String maxDate = "12/31/2030";
+		SimpleDateFormat from = new SimpleDateFormat("dd-MMM-yyyy HH:mm");
+		SimpleDateFormat to = new SimpleDateFormat("MMMMM dd, yyyy");
+		
+		if(minMaxDates.size()> 0)
+		{
+			if(minMaxDates.get(0).get("min_date")!=null)
+			{
+				String mtemp = minMaxDates.get(0).get("min_date").toString();
+				try {
+					minDate = to.format(from.parse(mtemp));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(minMaxDates.get(0).get("max_date")!=null)
+			{
+				
+				String mtemp = minMaxDates.get(0).get("max_date").toString();
+				try {
+					maxDate = to.format(from.parse(mtemp));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		sb.append("<div class='col-sm-3 m-b-xs'><h4>Select Date </h4>");
+				sb.append("<div id='reportrange_"+iterable_element.name+"' class='form-control date_range_filter ' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"' data-min_date='"+minDate+"' data-max_date='"+maxDate+"'>");
+						sb.append("   <i class='fa fa-calendar'></i>");
+								sb.append(" <span></span> <b class='caret'></b>");
+										sb.append(" </div>");
+												sb.append("  </div>");
+		return sb;
+	}
 }

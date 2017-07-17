@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<exception_list>
+   <ticket_exception id="1" type="ATTENDANCE"  department="$$Operations_TEAM,College">
+      <exception_param name="attendance" expectation="60" type="integer" />
+      <defaulter_item_query>select batch_schedule_event.id as item_id , (case when count(attendance.id)&amp;gt;0 then cast((count(*) filter  ( where attendance.status='PRESENT')*100 /(count(*) filter  ( where attendance.status='PRESENT')+count(*) filter  ( where attendance.status='ABSENT'))) as integer) else 0 end ) as attendance 
+from batch_schedule_event left join attendance on (attendance.event_id = batch_schedule_event.id) 
+where 
+eventdate + (((eventhour*60)+eventminute) * interval '1 minute') &amp;lt; now() 
+and eventdate + (((eventhour*60)+eventminute) * interval '1 minute') &amp;gt; now() - (2 * interval '1 day')
+and type in ('BATCH_SCHEDULE_EVENT_TRAINER')
+group by batch_schedule_event.id</defaulter_item_query>
+      <primary_receiver_query>select 
+distinct user_role.user_id  from batch_schedule_event, classroom_details, user_org_mapping, user_role, role
+where 
+batch_schedule_event.classroom_id = classroom_details.id
+and user_org_mapping.organization_id = classroom_details.organization_id
+and user_org_mapping.user_id = user_role.user_id
+and user_role.role_id = (select id from role where role_name ='ORG_ADMIN')
+and batch_schedule_event.id = :item_id</primary_receiver_query>
+      <associated_receiver_query>select 
+distinct user_role.user_id as associated_receiver_id from batch_schedule_event, classroom_details, user_org_mapping, user_role, role
+where 
+batch_schedule_event.classroom_id = classroom_details.id
+and user_org_mapping.organization_id = classroom_details.organization_id
+and user_org_mapping.user_id = user_role.user_id
+and user_role.role_id = (select id from role where role_name ='COORDINATOR')
+and batch_schedule_event.id = :item_id
+union 
+select 
+actor_id  as  associated_receiver_id from batch_schedule_event where id = :item_id</associated_receiver_query>
+      <title_and_desc_query>select istar_user.email as trainer_email, user_profile.first_name as trainer_name,
+organization.name as organization_name,
+batch_group.name as section_name,
+course.course_name as course_name,
+to_char(batch_schedule_event.eventdate, 'DD-Mon-yyyy HH24:MI') as eventdate
+from batch_schedule_event, classroom_details, organization, istar_user, user_profile, batch_group, course
+where batch_schedule_event.id = :item_id
+and batch_schedule_event.classroom_id = classroom_details.id
+and classroom_details.organization_id = organization.id 
+and batch_schedule_event.batch_group_id = batch_group.id 
+and batch_schedule_event.course_id = course.id 
+and batch_schedule_event.actor_id = istar_user.id
+and istar_user.id = user_profile.user_id</title_and_desc_query>
+      <exception_title>Poor attendance in Section :section_name</exception_title>
+      <exception_desc>$$attendance percent was recorded in session of Course - :course_name in section :section_name scheduled on :eventdate. Trainer was :trainer_name [:trainer_email]. Organization - :organization_name</exception_desc>
+   </ticket_exception>
+   <ticket_exception id="2" type="TRAINER_FEEDBACK" department="Operations,College">
+      <defaulter_item_query>select distinct event_id  which were supposed to be finished by 30 mins before current time and feedback rating  is less than 3</defaulter_item_query>
+      <primary_receiver_query>select orgadmin of organization where event_id =:event_id from defaulter_item_query</primary_receiver_query>
+      <associated_receiver_query>select coordinator of organization where event_id =:event_id from defaulter_item_query
+union 
+select trainer for event where  event_id =:event_id from defaulter_item_query</associated_receiver_query>
+   </ticket_exception>
+   <ticket_exception id="3" type="STUDENT_FEEDBACK" department="Operations,College">
+      <exception_param name="agg_rating" expectation="4" />
+      <defaulter_item_query>select distinct event_id  which were supposed to be finished by 30 mins before and aggregate student feedback is less than 3</defaulter_item_query>
+      <primary_receiver_query>select orgadmin of organization where event_id =:event_id from defaulter_item_query</primary_receiver_query>
+      <associated_receiver_query>select coordinator of organization where event_id =:event_id from defaulter_item_query
+union 
+select trainer for event where  event_id =:event_id from defaulter_item_query</associated_receiver_query>
+   </ticket_exception>
+   <ticket_exception id="3" type="GROUP_ASSESSMENT" department="Operations,College,Content">
+      <exception_param name="avg_score" expectation="55" />
+      <exception_param name="attendance" expectation="60" />
+      <defaulter_item_query>select distinct event_id , avg_score, attendance which were supposed to be finished by 30 mins before and average score is less than 55%</defaulter_item_query>
+      <primary_receiver_query>select orgadmin of organization where event_id =:event_id from defaulter_item_query</primary_receiver_query>
+      <associated_receiver_query>select coordinator of organization where event_id =:event_id from defaulter_item_query
+union 
+select trainer for event where  event_id =:event_id from defaulter_item_query
+union 
+select content developer for event where  event_id =:event_id from defaulter_item_query</associated_receiver_query>
+   </ticket_exception>
+   <ticket_exception id="4" type="TOT" department="Operations,Content">
+      <exception_param name="slide_covered" expectation="90" />
+      <exception_param name="attendance" expectation="60" />
+      <defaulter_item_query>select distinct event_id , attendance, slide_covered which were supposed to be finished by 30 mins before and average attendance is less than 55%</defaulter_item_query>
+      <primary_receiver_query>select orgadmin of organization where event_id =:event_id from defaulter_item_query</primary_receiver_query>
+      <associated_receiver_query>select coordinator of organization where event_id =:event_id from defaulter_item_query
+union 
+select trainer for event where  event_id =:event_id from defaulter_item_query
+union 
+select content developer for event where  event_id =:event_id from defaulter_item_query</associated_receiver_query>
+   </ticket_exception>
+</exception_list>

@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.utilities.TaskItemCategory"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
@@ -7,15 +8,13 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@page
-	import="in.talentify.core.services.NotificationAndTicketServices"%>
+<%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
+<%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -100,18 +99,29 @@
 	request.setAttribute("cp", cp);
 	boolean flag = false;
 %>
-<body class="top-navigation" >
+<body class="top-navigation">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp" />
 			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;">
-				
-			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
+
+				<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
 				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
-			<% 	for(TaskSummaryPOJO task :cp.getTaskForToday()) { %>
-				<%=(new TaskCardFactory()).showcard(task).toString() %>
+				<% 
+			
+			for(TaskSummaryPOJO task :cp.getTasks()) {
+
+			if(!task.getStatus().equalsIgnoreCase("COMPLETED")) {
 				
-				<% } %>
+				if((task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION) || task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_TRAINER) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER))&& sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0){			
+					%>
+				<%=(new TaskCardFactory()).showcard(task).toString() %>
+				<%
+				}else if(!task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_TRAINER) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT) && !task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER) ){
+			%>
+				<%=(new TaskCardFactory()).showcard(task).toString() %>
+
+				<% }}} %>
 			</div>
 		</div>
 	</div>
