@@ -93,3 +93,7 @@ try{
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <script src="<%=basePath %>assets/js/circular-custom-plugin.js"></script>
+
+   <!-- Switchery -->
+   <script src="<%=basePath %>assets/js/plugins/switchery/switchery.js"></script>
+

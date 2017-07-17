@@ -163,7 +163,7 @@ public class JsonUIUtils {
 
 	private ArrayList<Float> converttoFloatArray(String input) {
 		String[] temp = input.split(",");
-		ArrayList<Float> values = new ArrayList();
+		ArrayList<Float> values = new ArrayList<Float>();
 		for (int i = 0; i < temp.length; i++) {
 			try {
 				values.add(Float.parseFloat(temp[i]));

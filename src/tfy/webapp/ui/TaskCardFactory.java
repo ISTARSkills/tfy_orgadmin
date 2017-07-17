@@ -114,12 +114,41 @@ public class TaskCardFactory {
 		case TaskItemCategory.REMOTE_CLASS_TRAINER:
 			return showTrainerRemoteClassCard(task);
 		case TaskItemCategory.REMOTE_CLASS_STUDENT:
-			return showStudentRemoteClassCard(task);		
+			return showStudentRemoteClassCard(task);
+		case TaskItemCategory.CUSTOM_TASK:
+			return showStudentCUSTOM_TASKCard(task);
 		default:
 			break;
 		}
 		return new StringBuffer().append("ff");
 
+	}
+
+	private StringBuffer showStudentCUSTOM_TASKCard(TaskSummaryPOJO task) {
+		StringBuffer sb = new StringBuffer();
+		if (task.getHeader() == null) {
+			task.setHeader("");
+		}
+		
+			sb.append("<div class='col-md-3 '>													");
+			sb.append("<div class='ibox'>														");
+			sb.append("<div class='ibox-content product-box h-370'>                             ");
+			sb.append("<h6 class='p-xxs font-normal bg-muted m-l-xs'>"+task.getHeader()+"</h6>          ");
+			sb.append("<h3 class='p-xxs m-l-xs'>"+task.getTitle()+"</h3>                                ");
+			sb.append("<div class='product-imitation'                                           ");
+			sb.append("style='padding: 0px !important; background: transparent;'>               ");
+			sb.append("<img alt='' class='session-square-img'   style='width:92% !important'                                 ");
+			sb.append("src='"+task.getImageURL()+"'>                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("<div class='m-t text-center button-top'>                                 ");
+			sb.append("                                                                         ");
+			sb.append("<a class='banner btn btn-rounded' href='/task_factory/start_custom_task.jsp?task_id="+task.getId()+"'>Start Task</a>           ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+			sb.append("</div>                                                                   ");
+		
+		return sb;
 	}
 
 	private StringBuffer showStudentRemoteClassCard(TaskSummaryPOJO task) {

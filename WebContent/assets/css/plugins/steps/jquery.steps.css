@@ -134,7 +134,7 @@
 
 .wizard > .content
 {
-    background: #eee;
+    background-color: #ffffff;;
     display: block;
     margin: 5px 5px 10px 5px;
     min-height: 120px;
@@ -148,7 +148,7 @@
 }
 
 .wizard-big.wizard > .content {
-    min-height: 320px;
+    min-height: 480px;
 }
 .wizard.vertical > .content
 {
@@ -163,7 +163,6 @@
     float: left;
     position: absolute;
     width: 95%;
-    height: 95%;
     padding: 2.5%;
 }
 

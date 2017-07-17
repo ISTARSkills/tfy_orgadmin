@@ -225,6 +225,9 @@ function readyFn(jQuery) {
 		init_new_feedback();
 		}catch(err){}
 		break;
+	case 'custom_task':
+		init_custom_task();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -6501,4 +6504,147 @@ function init_coordinator_overall_cluster(){
 	});
 	
 	
+}
+
+function init_custom_task(){
+	
+		$("#form").steps({
+        bodyTag: "fieldset",
+        enableCancelButton:false,
+        onStepChanging: function (event, currentIndex, newIndex)
+        {
+        	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5){
+        		var checkValidation = false;
+        		$('.current textarea').each(function() { 
+        			var my_text =$('#'+$(this).attr('id')).siblings('label').text();
+        			console.log(my_text);
+            		console.log('......>>>> '+$(this).attr('id'));
+            		//console.log('......>>>> '+$('#'+$(this).attr('id')));
+            	//	console.log('......>>>> '+$('#'+$(this).attr('id')).parent().children().text());
+            		if($(this).val() === ''){	
+            			checkValidation = false;
+            			
+            		}else{
+            			checkValidation = true;
+            		}
+            		});
+        		if(checkValidation){
+        			return true;	
+        		}else{
+        			alert('Please fill all the fields');
+        			return false;
+        			
+        		}
+        	}
+        	
+            if (currentIndex > newIndex)
+            {
+            	
+                return true;
+            }
+            if (newIndex === 3 && Number($("#age").val()) < 18)
+            {
+                return false;
+            }
+            var form = $(this);
+            if (currentIndex < newIndex)
+            {
+                $(".body:eq(" + newIndex + ") label.error", form).remove();
+                $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+            }
+            form.validate().settings.ignore = ":disabled,:hidden";
+            return form.valid();
+        },
+        onStepChanged: function (event, currentIndex, priorIndex)
+        {
+          
+        	
+        	
+        	if (currentIndex === 2 && Number($("#age").val()) >= 18)
+            {
+                $(this).steps("next");
+            }
+
+            if (currentIndex === 2 && priorIndex === 3)
+            {
+                $(this).steps("previous");
+            }
+        },
+        onFinishing: function (event, currentIndex)
+        {
+        	var checkValidation = false;
+    		$('.current textarea').each(function() { 
+        		console.log('......>>>> '+$(this).val());
+        		if($(this).val() === ''){	
+        			checkValidation = false;
+        			
+        		}else{
+        			checkValidation = true;
+        		}
+        		});
+    		if(checkValidation){
+    			return true;	
+    		}else{
+    			alert('Please fill all the fields');
+    			return false;
+    			
+    		}
+        	
+            var form = $(this);
+            form.validate().settings.ignore = ":disabled";
+
+            // Start validation; Prevent form submission if false
+            return form.valid();
+        },
+        onFinished: function (event, currentIndex)
+        {
+            var form = $(this);
+            var getRatingData="";
+            $('.combostar').each(function(){
+            	var name=$(this).data('name');
+            	var rating=$(this).rateYo("option", "rating");
+            	getRatingData+=name+"="+rating+"&";
+            });
+
+            var serilaized=getRatingData+form.serialize();
+            console.log(serilaized);
+            
+            
+            $.ajax({
+                type: "POST",
+                url: '/custom_task_factory',
+                data: serilaized,
+                success: function(result) {
+                }
+            });
+            
+        }
+    }).validate({
+                errorPlacement: function (error, element)
+                {
+                    element.before(error);
+                },
+                rules: {
+                    confirm: {
+                        equalTo: "#password"
+                    }
+                }
+    });
+	
+	$('.combostar').rateYo({
+		rating : 5.0,
+		starWidth : "20px",
+		numStars : 5,
+		normalFill: "rgba(235, 56, 79, 0.45)"
+	});
+	
+	var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+
+	elems.forEach(function(html) {
+	  var switchery = new Switchery(html,{ color: '#eb384f' });
+	});
+	$('.ibox-content  .wizard > .content > .body').equalHeights();
+	//$('.wizard-big.wizard > .content').css('cssText','min-height:450px');
+	
+	//$('.scroll_content').slimscroll({height:'auto'});
 }
