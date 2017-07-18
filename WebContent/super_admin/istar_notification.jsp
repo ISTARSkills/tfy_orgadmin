@@ -126,12 +126,11 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 										{
 											courseIds.add(assess.getCourse());
 											Course cc = new CourseDAO().findById(assess.getCourse());
+											if(cc!=null && cc.getId()!=null){
 											%>
 											<option value="<%=cc.getId()%>"><%=cc.getCourseName() %></option>
-											<%
-										}
-									}
-									%>
+										
+										<%}}}%>
 									
 									
 								</select>

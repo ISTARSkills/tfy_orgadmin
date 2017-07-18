@@ -128,10 +128,11 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 										{
 											courseIds.add(assess.getCourse());
 											Course cc = new CourseDAO().findById(assess.getCourse());
+											if(cc!=null && cc.getId()!=null){
 											%>
 											<option value="<%=cc.getId()%>"><%=cc.getCourseName() %></option>
 											<%
-										}
+										}}
 									}
 									%>
 									

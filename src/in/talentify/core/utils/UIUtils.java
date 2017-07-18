@@ -70,7 +70,7 @@ public class UIUtils {
 			
 			
 			
-			sql = "SELECT 	COUNT(batch_students.student_id) as totstudent FROM 	 		batch_students WHERE 	batch_group_id ="+res.get(0).get("batch_group_id")+" AND batch_students.user_type = 'STUDENT'";
+			sql = "SELECT 	COUNT(batch_students.student_id) as totstudent FROM 	 		batch_students WHERE 	batch_group_id ="+res.get(0).get("batch_group_id")+" ";
 			List<HashMap<String, Object>> res1 = util.executeQuery(sql);
 			hashMap.put("totstudent", res1.get(0).get("totstudent").toString());
 			
