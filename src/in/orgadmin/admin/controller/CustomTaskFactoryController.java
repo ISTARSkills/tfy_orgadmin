@@ -16,9 +16,10 @@ import com.viksitpro.core.customtask.TaskLibrary;
 import com.viksitpro.core.customtask.TaskStep;
 import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.utilities.CustomFormElementTypes;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
-
+import com.viksitpro.core.utilities.CustomFormElementTypes;
 
 @WebServlet("/custom_task_factory")
 public class CustomTaskFactoryController extends IStarBaseServelet {
@@ -32,13 +33,33 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-	printParams(request);
+	
 	DBUTILS util = new DBUTILS();
 	int task_id = Integer.parseInt(request.getParameter("task_id"));
 	int user_id = Integer.parseInt(request.getParameter("user_id"));
+	Task task = new TaskLibrary().getTaskTemplate(task_id);
+	EvaluaterServices service = new EvaluaterServices();
+	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {
+		
+		String updateQuery = step.getUpdateQuery();
+		for (TaskFormElement formelement : step.getForm_elements()) {
+			switch (formelement.getElemntType()) {
+			case CustomFormElementTypes.VOICE:
+				service.evaluateVoiceText();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	
+	
+	
+	
 	String updateSql = "";
 	
-	Task task = new TaskLibrary().getTaskTemplate(task_id);
+	
 	
 	String checkQuery = "SELECT CAST (count(*) AS INTEGER) as counts FROM user_task_feedback WHERE user_id ="+user_id+" AND task_id ="+task_id;
 	List<HashMap<String, Object>> data = util.executeQuery(checkQuery);
@@ -58,9 +79,6 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		   String paramvalues = formelement.getElemntName();
 			
 		   paramvalues = request.getParameter(paramvalues.replaceAll(" ", "_"))!=null?request.getParameter(paramvalues):"NULL";
-			
-			
-			
 			if(!paramvalues.equalsIgnoreCase("NULL") && !paramvalues.equalsIgnoreCase("")) {
 				
 				if(paramvalues.equalsIgnoreCase("on")) {
@@ -100,6 +118,12 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 	}
 
 	
+	private void printParams(HttpServletRequest request) {
+		
+		
+	}
+
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
