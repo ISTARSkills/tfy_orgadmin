@@ -36,18 +36,22 @@ public class EditBatchCode extends IStarBaseServelet {
 		String userId = request.getParameter("student_id");
 		String batchCode =  request.getParameter("batch_code");
 		DBUTILS util = new DBUTILS();
-		String findGroupIdForCode ="select id from batch_group where batch_code='"+batchCode+"'";
+		String findGroupIdForCode ="select id,college_id from batch_group where batch_code='"+batchCode+"'";
 		
 		List<HashMap<String, Object>> grpData = util.executeQuery(findGroupIdForCode);
 		for(HashMap<String, Object> row: grpData)
 		{
 			int groupId = (int)row.get("id");
+			int orgId = (int) row.get("college_id");
 			String checkIfMappingExist ="select cast(count(*) as integer) as cnt from batch_students where student_id ="+userId+" and batch_group_id="+groupId+"";
 			List<HashMap<String, Object>> mappins =   util.executeQuery(checkIfMappingExist);
 			if(mappins.size()>0 && (int)mappins.get(0).get("cnt")==0)
 			{
 				String insertIntoBatchStudents ="insert into batch_students (id, student_id, batch_group_id) values((select COALESCE(max(id),0)+1 from batch_students),"+userId+","+groupId+")";
 				util.executeUpdate(insertIntoBatchStudents);
+				String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
+						+ userId + ", "+orgId+", ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
+				util.executeUpdate(insertIntoUserOrg);
 			}
 		}
 				
