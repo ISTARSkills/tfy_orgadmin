@@ -831,9 +831,9 @@ function initEditUserModalCall()
 
 function initiateGraphFilter()
 {
-	$('select').select2();
+	
 	$(".graph_filter_selector" ).each(function() {
-		 
+		$(this).select2();
 		
 		
 		var report_id = $(this).data("report_id");
@@ -6592,7 +6592,7 @@ function init_custom_task(){
         onFinishing: function (event, currentIndex)
         {
         	
-        	alert('onFinishing');
+        	//alert('onFinishing');
         	/*var checkValidation = false;
     		$('.current textarea').each(function() { 
         		console.log('......>>>> '+$(this).val());

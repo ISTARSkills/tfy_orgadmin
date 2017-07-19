@@ -34,7 +34,7 @@
 	request.setAttribute("cp", cp);
 	boolean flag = false;
 %>
-<body class="top-navigation student_pages" id="orgadmin_dashboard">
+<body class="top-navigation student_pages">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="./inc/navbar.jsp" />
