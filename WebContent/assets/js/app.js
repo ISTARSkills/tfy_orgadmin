@@ -6528,7 +6528,8 @@ function init_custom_task(){
         enableCancelButton:false,
         onStepChanging: function (event, currentIndex, newIndex)
         {
-        	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5){
+        	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
+        	{
         		var checkValidation = false;
         		$('.current textarea').each(function() { 
         			var my_text =$('#'+$(this).attr('id')).siblings('label').text();
@@ -6572,10 +6573,7 @@ function init_custom_task(){
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
-          
-        	
-        	
-        	if (currentIndex === 2 && Number($("#age").val()) >= 18)
+          if (currentIndex === 2 && Number($("#age").val()) >= 18)
             {
                 $(this).steps("next");
             }

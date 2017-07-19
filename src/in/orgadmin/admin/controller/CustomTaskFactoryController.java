@@ -18,6 +18,7 @@ import com.viksitpro.core.customtask.TaskLibrary;
 import com.viksitpro.core.customtask.TaskStep;
 import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.utilities.CustomFormElementDataTypes;
 import com.viksitpro.core.utilities.CustomFormElementTypes;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
@@ -67,6 +68,29 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				break;
+			case CustomFormElementTypes.TEXT:
+				String textAreaValue = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textAreaValue);
+				break;
+			case CustomFormElementTypes.SWITCH:
+				String switchValue = request.getParameter(formelement.getElemntName());
+				boolean val = false;
+				if(switchValue.equalsIgnoreCase("on"))
+				{
+					val= true;
+				}
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), Boolean.toString(val).charAt(0)+"");
+				break;
+			case CustomFormElementTypes.STAR_RATING:
+				
+				Float rating = Float.parseFloat(request.getParameter(formelement.getElemntName()));
+				String ratingVal= rating+"";
+				if (formelement.getDataType().equalsIgnoreCase(CustomFormElementDataTypes.NUMBER))
+				{
+					ratingVal= (int)Math.ceil(rating)+"";					
+				}
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), ratingVal);
 				break;
 			default:
 				break;
