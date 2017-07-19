@@ -197,8 +197,7 @@ public class UserSignUp extends IStarBaseServelet {
 				student_id = urseId+"";
 				if (userType.equalsIgnoreCase("TRAINER")) {
 					String insertPresentorIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
-							+ presentor_email + "', '" + password + "', now(), " + mobile
-							+ ", NULL, NULL, 't') returning id;";
+							+ presentor_email + "', '" + password + "', now(), 9999999999, NULL, NULL, 't') returning id;";
 					int presentorId = db.executeUpdateReturn(insertPresentorIntoIstarUser);
 					
 					String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + presentorId
