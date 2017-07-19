@@ -175,6 +175,13 @@ public class OrgAdminDashboardServices {
 		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
 		return logs;
 	}
+	
+	public List<HashMap<String, Object>> getFeedbackTextForEvent(String eventId) {
+		String sql2 = "SELECT 	comments FROM 	trainer_feedback WHERE 	event_id ="+eventId;
+		DBUTILS dbutils = new DBUTILS();
+		List<HashMap<String, Object>> logs = dbutils.executeQuery(sql2);
+		return logs;
+	}
 
 	public StringBuffer getEventSessionLog(String eventId) {
 		String sql2 = "SELECT url FROM trainer_event_log WHERE event_id = '" + eventId

@@ -374,6 +374,7 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 					<div class="panel-body white-bg">
 						<%
 											List<HashMap<String, Object>> feedbackData = dashboardServices.getFeedbackDataForEvent(eventId);
+						              List<HashMap<String, Object>> feedbackText = dashboardServices.getFeedbackTextForEvent(eventId);
 										%>
 
 						<h2 class="forum-item-title">
@@ -421,6 +422,7 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 												
 											%>
 						</p>
+						<p><strong>Trainer Feedback:</strong> <%if (feedbackText != null && feedbackText.size()>0){%><%=feedbackText.get(0).get("comments") %><%} %></p>
 						<hr>
 
 						<h2 class="forum-item-title">

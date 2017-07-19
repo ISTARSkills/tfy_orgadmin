@@ -224,7 +224,7 @@
                </div>
             </div>
             <div class="col-lg-12">
-               <div class="form-group">
+               <div class="form-group" id="show_error">
                   <label class="col-sm-4 control-label">Interested Course:</label> <input type="hidden" id="session_id" required name="session_id" value="">
                   <div class="col-sm-8" style="margin-left: 0px">
                      <%
@@ -242,7 +242,7 @@
                         	}
                         }
                         %>
-                     <select data-placeholder="Choose a Course..." class="chosen-select course_holder" required multiple style="width: 350px;" tabindex="4" name="course">
+                     <select data-placeholder="Choose a Course..." class="chosen-select course_holder form-control" required multiple style="width: 350px;" tabindex="4" name="course">
                         <%
                            if (data1.size() > 0) {
                            	for (HashMap<String, Object> row1 : data1) {

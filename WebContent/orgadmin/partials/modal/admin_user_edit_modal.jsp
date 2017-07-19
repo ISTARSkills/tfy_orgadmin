@@ -1,11 +1,11 @@
+<%@page import="org.hibernate.dialect.pagination.FirstLimitHandler"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.UserProfile"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.orgadmin.admin.services.OrgAdminBatchGroupService"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
 	String url = request.getRequestURL().toString();
@@ -23,117 +23,119 @@
 
 	 user = new IstarUserDAO().findById(user_id);
 	ArrayList<Integer> selectedBG = new OrgAdminBatchGroupService().getSelectedBatchBgoups(user_id);
-	 stuProfileData = user.getUserProfile();
-	String lastName = "";
-	if (stuProfileData != null) {
+	
+	if( user.getUserProfile()!=null)
+	 	stuProfileData = user.getUserProfile();
+	
+	String lastName = "",firstName="";
+	
+	if(user!=null && user.getEmail()!=null){
+		firstName=user.getEmail().split("@")[0];
+		lastName=user.getEmail().split("@")[0];
+	}
+	
+	if (stuProfileData != null &&stuProfileData.getFirstName()!=null && !stuProfileData.getFirstName().equalsIgnoreCase("")) {
+		firstName = stuProfileData.getFirstName();
+	}
+	
+	if (stuProfileData != null &&stuProfileData.getLastName()!=null && !stuProfileData.getLastName().equalsIgnoreCase("")) {
 		lastName = stuProfileData.getLastName();
 	}
+	
+	
 	UIUtils ui = new UIUtils();
 %>
 
 
-<div id="edit_user_model_<%=user.getId()%>"
-	class="modal inmodal edit_modal" role="dialog">
+<div id="edit_user_model_<%=user.getId()%>" class="modal inmodal edit_modal" role="dialog">
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content animated flipInY'>
 
 			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
-                                        <div class="panel-heading custom-theme-panal-color">
-				<button type="button" class="close" data-dismiss="modal">
-					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-				</button>
-				<h4 class="modal-title text-center">Edit User</h4>
-			</div>
-			<div class="modal-body" style="padding-bottom: 0px;">
+				<div class="panel-heading custom-theme-panal-color">
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<h4 class="modal-title text-center">Edit User</h4>
+				</div>
+				<div class="modal-body" style="padding-bottom: 0px;">
 
-				<form id="formUser" class="form-horizontal"
-					action="<%=baseURL%>createOrUpdateUser " method="post">
-					<!-- < -->
+					<form id="formUser" class="form-horizontal" action="<%=baseURL%>createOrUpdateUser " method="post">
+						<!-- < -->
 
-					<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input
-						type="hidden" value="<%=user_id%>" name="user_id" />
-					<div class="form-group">
+						<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input type="hidden" value="<%=user_id%>" name="user_id" />
+						<div class="form-group">
 
-						<div class="col-lg-6">
+							<div class="col-lg-6">
 
-							<label class="control-label">First Name</label> <input type="text"
-								placeholder="First Name.." name="user_f_name"
-								class="form-control" required value="<%=stuProfileData.getFirstName()%>">
-						</div>
+								<label class="control-label">First Name</label> <input type="text" placeholder="First Name.." name="user_f_name" class="form-control" required value="<%=firstName %>">
+							</div>
 
-						<div class="col-lg-6">
-							<label class="control-label">Last Name</label> <input type="text"
-								placeholder="Last Name.." name="user_l_name"
-								class="form-control" value="<%=lastName%>">
-						</div>
+							<div class="col-lg-6">
+								<label class="control-label">Last Name</label> <input type="text" placeholder="Last Name.." name="user_l_name" class="form-control" value="<%=lastName%>">
+							</div>
 
-						<br>
+							<br>
 
-						
-						<div class="col-lg-6">
-							<label class="control-label">Mobile No</label> <input type="number"
-								name="user_mobile" class="form-control"
-								value="<%=user.getMobile()%>" required placeholder="Mobile Number">
 
-						</div>
-						<br>
+							<div class="col-lg-6">
+								<label class="control-label">Mobile No</label> <input type="number" name="user_mobile" class="form-control" value="<%=user.getMobile()%>" required placeholder="Mobile Number">
 
-						<div class="col-lg-6">
-							<label class="control-label">Email</label> <input type="email"
-								placeholder="joe@schmoe.com" name="user_email"
-								class="form-control" required value="<%=user.getEmail()%>">
-						</div>
-						
-						
-						 <div class="col-lg-2">
-							<label class="control-label">Gender</label> <select
-								class="form-control m-b" required name="user_gender">
-									<option value="MALE" <%if(stuProfileData.getGender().equalsIgnoreCase("MALE")) {	%>selected	<% } %>>Male</option>
-									<option value="FEMALE" <%if(stuProfileData.getGender().equalsIgnoreCase("FEMALE")) {	%>selected	<% } %>>Female</option>
-							</select>
-						</div> 
+							</div>
+							<br>
 
-					</div>
-					<div class="form-group">
-					<div class="col-lg-6">
-						<h3 class="m-b-n-md">Section</h3>
-						<hr class="m-b-xs">
-						<div class="col-lg-12">
-							<label class="font-noraml">Select Section the student will
-								belong to:</label>
-							<div>
-								<select data-placeholder="Section..." class="select2-dropdown"
-									multiple tabindex="4">
-									<%=ui.getBatchGroups(colegeID, selectedBG)%>
+							<div class="col-lg-6">
+								<label class="control-label">Email</label> <input type="email" placeholder="joe@schmoe.com" name="user_email" class="form-control" required value="<%=user.getEmail()%>">
+							</div>
+
+
+							<div class="col-lg-2">
+								<label class="control-label">Gender</label> <select class="form-control m-b" required name="user_gender">
+									<option value="MALE" <%if(stuProfileData !=null && stuProfileData.getGender() != null && stuProfileData.getGender().equalsIgnoreCase("MALE")) {	%> selected <% } %>>Male</option>
+									<option value="FEMALE" <%if(stuProfileData !=null && stuProfileData.getGender() != null && stuProfileData.getGender().equalsIgnoreCase("FEMALE")) {	%> selected <% } %>>Female</option>
 								</select>
 							</div>
-							<input type="hidden" value="" name="batch_groups" />
+
 						</div>
-					</div><div class="col-lg-6">
-						<h3 class="m-b-n-md">Role(only for corporate)</h3>
-						<hr class="m-b-xs">
-						<div class="col-lg-12">
-							<label class="font-noraml">Select Roles the student will
-								belong to:</label>
-							<div>
-								<select data-placeholder="Roles..." class="chosen-select"
-									name="role_name" multiple tabindex="4">
-									<option value="">Select</option>
-									<option value="">Account Manager</option>
-									<option value="">Account Manager</option>
-								</select>
+						<div class="form-group">
+							<div class="col-lg-6">
+								<h3 class="m-b-n-md">Section</h3>
+								<hr class="m-b-xs">
+								<div class="col-lg-12">
+									<label class="font-noraml">Select Section the student will belong to:</label>
+									<div>
+										<select data-placeholder="Section..." class="select2-dropdown" multiple tabindex="4">
+											<%=ui.getBatchGroups(colegeID, selectedBG)%>
+										</select>
+									</div>
+									<input type="hidden" value="" name="batch_groups" />
+								</div>
 							</div>
-						</div></div>
+							<div class="col-lg-6">
+								<h3 class="m-b-n-md">Role(only for corporate)</h3>
+								<hr class="m-b-xs">
+								<div class="col-lg-12">
+									<label class="font-noraml">Select Roles the student will belong to:</label>
+									<div>
+										<select data-placeholder="Roles..." class="chosen-select" name="role_name" multiple tabindex="4">
+											<option value="">Select</option>
+											<option value="">Account Manager</option>
+											<option value="">Account Manager</option>
+										</select>
+									</div>
+								</div>
+							</div>
 
 
-					</div>
- <div class="modal-footer" style="padding-bottom: 0px;">
-					<div class="form-group">
-						<button type="submit" class="btn btn-danger">Save
-							changes</button>
-					</div></div>
-				</form>
+						</div>
+						<div class="modal-footer" style="padding-bottom: 0px;">
+							<div class="form-group">
+								<button type="submit" class="btn btn-danger">Save changes</button>
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
-		</div></div>
+		</div>
 	</div>
 </div>

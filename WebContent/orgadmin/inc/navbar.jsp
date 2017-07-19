@@ -66,8 +66,7 @@
 					%>
 					<li class="dropdown"><a aria-expanded="true" role="button"
 					href="" class="dropdown-toggle"
-					data-toggle="dropdown">Custom Reports<span
-						class="caret"></span> </a>
+					data-toggle="dropdown">Custom Reports </a>
 					<ul role="menu" class="dropdown-menu">
 					<% 
 					for(HashMap<String, Object> row: data){
@@ -75,7 +74,7 @@
 						String organizationId = row.get("organization_id").toString();
 						String reportName = row.get("report_name").toString();
 							%>
-							<li><a href="/orgadmin/custom_report.jsp?report_name=<%=reportName%>&organziation_id=<%=organizationId%>&report_id=<%=reportId%>"><i class="fa fa-sign-out"></i>
+							<li><a href="/orgadmin/custom_report.jsp?report_name=<%=reportName%>&organziation_id=<%=organizationId%>&report_id=<%=reportId%>">
 							<%=reportName %>
 							</a></li>
 							<%	

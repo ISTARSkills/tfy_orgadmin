@@ -195,7 +195,7 @@ public class TaskCardFactory {
 			sb.append("</div>                                                                   ");
 			sb.append("<div class='m-t text-center button-top'>                                 ");
 			sb.append("                                                                         ");
-			sb.append("<a class='banner btn btn-rounded' href='/start_remote_class?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
+			sb.append("<a class='banner btn btn-rounded' target='_blank' href='/start_remote_class?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
 			sb.append("</div>                                                                   ");
 			sb.append("</div>                                                                   ");
 			sb.append("</div>                                                                   ");
@@ -248,7 +248,7 @@ public class TaskCardFactory {
 			sb.append("</div>                                                                   ");
 			sb.append("<div class='m-t text-center button-top'>                                 ");
 			sb.append("                                                                         ");
-			sb.append("<a class='banner btn btn-rounded' href='/start_remote_class?task_id="+task.getId()+"'>START CLASS</a>           ");
+			sb.append("<a class='banner btn btn-rounded' target='_blank' href='/start_remote_class?task_id="+task.getId()+"'>START CLASS</a>           ");
 			sb.append("</div>                                                                   ");
 			sb.append("</div>                                                                   ");
 			sb.append("</div>                                                                   ");
@@ -489,7 +489,7 @@ public class TaskCardFactory {
 		sb.append("</div>                                                                   ");
 		sb.append("<div class='m-t text-center button-top'>                                 ");
 		sb.append("                                                                         ");
-		sb.append("<a class='banner btn btn-rounded' href='/student/sync_class.jsp?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
+		sb.append("<a class='banner btn btn-rounded' target='_blank' href='/student/sync_class.jsp?task_id="+task.getId()+"'>JOIN CLASS</a>           ");
 		sb.append("</div>                                                                   ");
 		sb.append("</div>                                                                   ");
 		sb.append("</div>                                                                   ");

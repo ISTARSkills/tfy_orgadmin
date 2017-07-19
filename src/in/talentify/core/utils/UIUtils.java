@@ -250,22 +250,17 @@ public class UIUtils {
 
 		StringBuffer out = new StringBuffer();
 		// cancelled=0, teaching=0, completed=0, totevent=0, scheduled=0
-		out.append("<div class='col-lg-3'> <div class='widget style1 navy-bg'> "
+		out.append("<div class='col-lg-4'> <div class='widget style1 navy-bg'> "
 				+ "<div class='row'> <div class='col-xs-2'> <i class='fa fa-calendar fa-2x'></i>"
 				+ " </div> <div class='col-xs-9 text-right'> <span> Events Today </span> " + "<h2 class='font-bold'>"
 				+ data.get(0).get("totevent") + "</h2> </div> </div> </div> </div>");
 
-		out.append("<div class='col-lg-3'> <div class='widget style1 navy-bg'> "
-				+ "<div class='row'> <div class='col-xs-2'> <i class='fa fa-calendar fa-2x'></i>"
-				+ " </div> <div class='col-xs-9 text-right'> <span> Events Cancelled </span> "
-				+ "<h2 class='font-bold'>" + data.get(0).get("cancelled") + "</h2> </div> </div> </div> </div>");
-
-		out.append("<div class='col-lg-3'> <div class='widget style1 navy-bg'> "
+		out.append("<div class='col-lg-4'> <div class='widget style1 navy-bg'> "
 				+ "<div class='row'> <div class='col-xs-2'> <i class='fa fa-calendar fa-2x'></i>"
 				+ " </div> <div class='col-xs-9 text-right'> <span> SCHEDULED </span> " + "<h2 class='font-bold'>"
 				+ data.get(0).get("scheduled") + "</h2> </div> </div> </div> </div>");
 
-		out.append("<div class='col-lg-3'> <div class='widget style1 navy-bg'> "
+		out.append("<div class='col-lg-4'> <div class='widget style1 navy-bg'> "
 				+ "<div class='row'> <div class='col-xs-2'> <i class='fa fa-calendar fa-2x'></i>"
 				+ " </div> <div class='col-xs-9 text-right'> <span> Events Inprogress </span> "
 				+ "<h2 class='font-bold'>" + data.get(0).get("teaching") + "</h2> </div> </div> </div> </div>");

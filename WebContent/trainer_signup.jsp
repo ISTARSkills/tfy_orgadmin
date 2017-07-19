@@ -149,10 +149,14 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					function() {
 						
 						$('.signup_button').unbind().click(function() {
-							
+							 if($("select[name='course']").val() == undefined){
+								  $("#show_error").append('<p id="course-error" class="error" for="course" style="display:block !important;color:#cc5965;text-align:center;font-weight: bold !important;">This field is required.</p>')
+							  }
 							 if($('#signup_form').valid()){	 
 							  if(check_cluster_validation() && check_time_slot_validation()){
 								  console.log('validation sucess');
+								 
+								  
 								  $('#signup_form').submit();
 							  }else{
 								  console.log('validation falil');
@@ -273,7 +277,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 						}
 
 						$('.course_holder').change(function() {
-
+							$('#course-error').remove();
 							$('#session_id').val($(this).val());
 						});
 						var sThisVal = {};
