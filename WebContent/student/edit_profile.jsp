@@ -89,12 +89,6 @@ request.setAttribute("cp", co	);
 		<jsp:include page="inc/navbar.jsp"></jsp:include>
 		<div class="row">
 				
-				<% if(userType.equalsIgnoreCase("STUDENT")) {%>
-				<jsp:include page="/student/student_wizard_signup.jsp">
-				<jsp:param value="<%=userType %>" name="user_type"/>
-				<jsp:param value="<%=trainer.getId()%>" name="user_id"/>
-				</jsp:include>
-				<%}else{ %>
 				
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
@@ -108,7 +102,7 @@ request.setAttribute("cp", co	);
 				<jsp:param value="<%=userType %>" name="user_type"/>
 				<jsp:param value="<%=trainer.getId()%>" name="user_id"/>
 				</jsp:include>
-				<%} %>
+				
 			</div>
 			
 			

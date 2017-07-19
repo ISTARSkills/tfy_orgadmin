@@ -113,25 +113,7 @@ public class CMSRegistry {
 		}
 		
 		
-		try {
-			// req.getServletContext().getRealPath("/WEB-INF/fileName.properties")
-			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("dropdown_list.xml");
-			File file = new File(url.toURI());
-			JAXBContext jaxbContext = JAXBContext.newInstance(DropDownList.class);
-
-			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			dropdownList = (DropDownList) jaxbUnmarshaller.unmarshal(file);
-			//System.out.println(dropdownList);
-			
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 	}
 }
