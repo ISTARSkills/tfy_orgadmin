@@ -7,7 +7,7 @@ String orgId = request.getParameter("organziation_id");
 ReportUtils util = new ReportUtils();
 %>
 <jsp:include page="inc/head.jsp"></jsp:include>
-<body class="top-navigation" >
+<body class="top-navigation" id="custom_report">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="inc/navbar.jsp"></jsp:include>

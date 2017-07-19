@@ -228,6 +228,9 @@ function readyFn(jQuery) {
 	case 'custom_task':
 		init_custom_task();
 		break;
+	case 'custom_report':
+		$('select').select2();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -828,7 +831,7 @@ function initEditUserModalCall()
 
 function initiateGraphFilter()
 {
-	
+	$('select').select2();
 	$(".graph_filter_selector" ).each(function() {
 		 
 		
@@ -2574,7 +2577,8 @@ function initCreateSectionCall()
 
 
 function init_orgadmin_scheduler() {
-    console.log('intiliazing scheduler');    	
+    console.log('intiliazing scheduler');
+    $('select').select2();
     init_auto_scheduler();
     
     $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
@@ -5449,7 +5453,7 @@ function company_profile() {
 }
 
 function init_istar_notification(){
-	
+	$('select').select2();
 	
 	console.log('istar Notification');
 	$('#notification_type_holder').on("change", function() {
@@ -6528,7 +6532,7 @@ function init_custom_task(){
         enableCancelButton:false,
         onStepChanging: function (event, currentIndex, newIndex)
         {
-        	alert('onStepChanging');
+        	//alert('onStepChanging');
         	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
         	{
         		var checkValidation = false;
@@ -6574,7 +6578,7 @@ function init_custom_task(){
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
-        	alert('onStepChanged');
+        	//alert('onStepChanged');
           if (currentIndex === 2 && Number($("#age").val()) >= 18)
             {
                 $(this).steps("next");
@@ -6664,20 +6668,23 @@ function init_custom_task(){
 			var dependency_term="";
 			var search_term ="";
 			var sql = $(this).data("sql");
-			if($(this).data("dependency")!=null)
+			if($('#'+id).data("dependency")!=null)
 			{
-				dependencyId = $(this).data("dependency");
+				var dependencyId = $('#'+id).data("dependency");
 				if($('#'+dependencyId).select2("val")!=null){
 					dependency_term = $('#'+dependencyId).select2("val");
 				}
 				$('#'+dependencyId).unbind().on('change',function(){
 					dependency_term = $('#'+dependencyId).select2("val");
+					$('#'+id).empty();
 				});
 			}
 			var placeholder = $('#'+id).data('placeholder');
 			console.log('placeholder->'+ placeholder);
 			$('#'+id).select2({
-				  ajax: {
+				 
+				
+				ajax: {
 					    url: "/get_data_for_dropdown",
 					    dataType: 'json',
 					    delay: 250,
