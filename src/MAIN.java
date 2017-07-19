@@ -23,6 +23,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -40,6 +42,11 @@ import com.istarindia.android.pojo.OptionPOJO;
 import com.istarindia.android.pojo.QuestionPOJO;
 import com.istarindia.android.pojo.QuestionResponsePOJO;
 import com.istarindia.android.pojo.RestClient;
+import com.viksitpro.core.customtask.DropDownList;
+import com.viksitpro.core.customtask.TaskFormElement;
+import com.viksitpro.core.customtask.TaskLibrary;
+import com.viksitpro.core.customtask.TaskStep;
+import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
@@ -51,6 +58,8 @@ import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.utils.task.TaskServices;
@@ -111,14 +120,97 @@ public class MAIN {
 		//}
 		
 		//scheduleMeeting();
-         exceptiontesting();
+         //exceptiontesting();
 
 		//ImportDatafromPostgres();
-
+		//taslCreator();
+		testingTask();
 		System.out.println("end");
 	}
 	
 	
+
+
+	private static void testingTask() {
+		// TODO Auto-generated method stub
+		
+		try {
+			// req.getServletContext().getRealPath("/WEB-INF/fileName.properties")
+			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("dropdown_list.xml");
+			File file = new File(url.toURI());
+			JAXBContext jaxbContext = JAXBContext.newInstance(DropDownList.class);
+
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			 DropDownList dropdownList = (DropDownList) jaxbUnmarshaller.unmarshal(file);
+			System.out.println(dropdownList);
+			System.out.println(dropdownList.getDropdowns().size());
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+	private static void taslCreator() {
+		// TODO Auto-generated method stub
+		TaskLibrary lib = new TaskLibrary();
+		HashMap<Integer, TaskTemplate> templates = new HashMap<>();
+		
+		TaskTemplate template = new TaskTemplate();
+		template.setDescription("This template is for sentiemnt analysis and density analysis");
+		template.setId(200);
+		template.setLabel("Text Analysis");
+		template.setTaskName("Text Analysis");
+		ArrayList<TaskStep> steps = new ArrayList<>();
+		TaskStep step = new TaskStep();
+		
+		ArrayList<TaskFormElement> formElements = new ArrayList<>();
+		TaskFormElement element = new TaskFormElement();
+		element.setDataType("text_area");
+		element.setElemntName("input_text");
+		element.setElemntType("TEXT");
+		element.setLabel("Enter Text");
+		
+		formElements.add(element);		
+		step.setForm_elements(formElements);
+		step.setLabel("Text Analysis");
+		
+		steps.add(step);
+		
+		template.setSteps(steps);
+		templates.put(200, template);
+		
+		lib.setTemplates(templates);
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(TaskLibrary.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+			jaxbMarshaller.marshal(lib, System.out);
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	     
+		
+	}
+
+
 
 
 	private static void exceptiontesting() {

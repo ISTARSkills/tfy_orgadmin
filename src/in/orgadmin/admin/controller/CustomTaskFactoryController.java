@@ -1,6 +1,8 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,27 +34,52 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		printParams(request);
 	
 	DBUTILS util = new DBUTILS();
 	int task_id = Integer.parseInt(request.getParameter("task_id"));
 	int user_id = Integer.parseInt(request.getParameter("user_id"));
 	Task task = new TaskLibrary().getTaskTemplate(task_id);
 	EvaluaterServices service = new EvaluaterServices();
-	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {
-		
+	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {		
 		String updateQuery = step.getUpdateQuery();
+		
 		for (TaskFormElement formelement : step.getForm_elements()) {
 			switch (formelement.getElemntType()) {
 			case CustomFormElementTypes.VOICE:
 				service.evaluateVoiceText();
 				break;
+			case CustomFormElementTypes.DROP_DOWN:
+				String value = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), value);
+				break;
+			case CustomFormElementTypes.TEXT_BOX:
+				String textBoxValue = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textBoxValue);
+				break;
+			case CustomFormElementTypes.DATE_PICKER:
+				String dateValue = request.getParameter(formelement.getElemntName());
+				SimpleDateFormat from = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), to.format(from.parse(dateValue)));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
 			default:
 				break;
 			}
 		}
+		
+		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
+		System.out.println("updateQuery ->>>"+updateQuery);
+		util.executeUpdate(updateQuery);
 	}
 	
+	
+/*
 	
 	
 	
@@ -112,17 +139,13 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 		
 		
-	}
+	}*/
 	
 	
 	}
 
 	
-	private void printParams(HttpServletRequest request) {
-		
-		
-	}
-
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

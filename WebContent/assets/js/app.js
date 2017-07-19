@@ -116,7 +116,7 @@ function readyFn(jQuery) {
 	 * Page specific js
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
-	$('select').select2();
+	//$('select').select2();
 
 	$('.top_navbar_holder').css('color',' #676a6c');	
 	switch (body_id) {
@@ -2619,7 +2619,7 @@ function init_orgadmin_scheduler() {
 function init_auto_scheduler()
 {
 	$('#entity_type_selector').removeClass('select2-hidden-accessible');
-	$('auto_scheduler #org_selector').removeClass('select2-hidden-accessible');
+	$('#auto_scheduler #org_selector').removeClass('select2-hidden-accessible');
 	$('#auto_scheduler .select2-container--default').hide();
 	$('#wizard').steps();
 	$('#org_selector').unbind().on('change', function(){
@@ -6519,6 +6519,10 @@ function init_coordinator_overall_cluster(){
 
 function init_custom_task(){
 	
+	
+	
+	//$('.select2-container--default').hide();
+	
 		$("#form").steps({
         bodyTag: "fieldset",
         enableCancelButton:false,
@@ -6583,7 +6587,7 @@ function init_custom_task(){
         },
         onFinishing: function (event, currentIndex)
         {
-        	var checkValidation = false;
+        	/*var checkValidation = false;
     		$('.current textarea').each(function() { 
         		console.log('......>>>> '+$(this).val());
         		if($(this).val() === ''){	
@@ -6599,7 +6603,7 @@ function init_custom_task(){
     			alert('Please fill all the fields');
     			return false;
     			
-    		}
+    		}*/
         	
             var form = $(this);
             form.validate().settings.ignore = ":disabled";
@@ -6649,6 +6653,88 @@ function init_custom_task(){
 		normalFill: "rgba(235, 56, 79, 0.45)"
 	});
 	
+	
+	$('select').each(function(){
+		var selectId = $(this).attr('id');
+		if($(this).hasClass( "ajaxified_list"))
+		{
+			var id = $(this).attr("id");
+			var dependency_term="";
+			var search_term ="";
+			var sql = $(this).data("sql");
+			if($(this).data("dependency")!=null)
+			{
+				dependencyId = $(this).data("dependency");
+				if($('#'+dependencyId).select2("val")!=null){
+					dependency_term = $('#'+dependencyId).select2("val");
+				}
+				$('#'+dependencyId).unbind().on('change',function(){
+					dependency_term = $('#'+dependencyId).select2("val");
+				});
+			}
+			var placeholder = $('#'+id).data('placeholder');
+			console.log('placeholder->'+ placeholder);
+			$('#'+id).select2({
+				  ajax: {
+					    url: "/get_data_for_dropdown",
+					    dataType: 'json',
+					    delay: 250,
+					    data: function (params) {
+					      return {
+					    	  q: params.term, // search term
+					        page: params.page,
+					        sql: sql,
+					        dependency: dependency_term
+					        
+					      };
+					    },
+					    processResults: function (data, params) {
+					      // parse the results into the format expected by Select2
+					      // since we are using custom formatting functions we do not need to
+					      // alter the remote JSON data, except to indicate that infinite
+					      // scrolling can be used
+					      params.page = params.page || 1;
+
+					      
+					                    var dbData = [];
+					      	          for(i=0;i<data.items.length;i++){
+					      		          dbData[i] = {id:  data.items[i].key, value:data.items[i].value};
+					      	          }
+					      	          
+					      return {
+					        results: dbData,
+					        pagination: {
+					          more: (params.page * 30) < data.total_count
+					        }
+					      };
+					    },
+					    cache: true
+					  },
+					  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+					  minimumInputLength: 1,
+					  templateResult: formatRepo1, // omitted for brevity, see the source of this page
+					  templateSelection: formatRepoSelection1 // omitted for brevity, see the source of this page
+					});	
+		}	
+		else
+		{
+			$(this).select2();
+		}
+		
+		//$('#'+selectId).prop('tabindex', $('#'+selectId).data('tabindex'));
+	});
+	
+	
+	
+	$('.data_date_picker .input-group.date').datepicker({
+		startView : 1,
+		todayBtn : "linked",
+		keyboardNavigation : false,
+		forceParse : false,
+		autoclose : true,
+		format : "dd/mm/yyyy"
+	});
+	
 	var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
 
 	elems.forEach(function(html) {
@@ -6658,4 +6744,45 @@ function init_custom_task(){
 	//$('.wizard-big.wizard > .content').css('cssText','min-height:450px');
 	
 	//$('.scroll_content').slimscroll({height:'auto'});
+}
+
+function formatRepo1 (repo) {
+    if (repo.loading) return repo.text;
+
+    var markup = "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__avatar'></div>" +
+      "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'>" + repo.value + "</div>";
+
+    if (repo.description) {
+      markup += "<div class='select2-result-repository__description'>" + repo.value + "</div>";
+    }
+
+    markup += "<div class='select2-result-repository__statistics'>" +
+      //"<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> " + repo.forks_count + " Forks</div>" +
+      //"<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> " + repo.stargazers_count + " Stars</div>" +
+     // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> " + repo.watchers_count + " Watchers</div>" +
+    "</div>" +
+    "</div></div>";
+
+    return markup;
+	}
+
+	function formatRepoSelection1 (repo) {
+		return repo.value || repo.text;
+	}
+  
+function formatRepoForCustom(repo) {
+	if (repo.loading)
+		return repo.text;
+
+	var markup = "<div class='select2-result-repository clearfix'>"
+			+ repo.value + "</div>";
+
+	
+	return markup;
+}
+
+function formatRepoSelectionForCustom(repo) {
+	return repo.value;
 }

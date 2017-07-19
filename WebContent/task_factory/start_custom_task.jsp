@@ -52,10 +52,8 @@ color: #fff;
 							<form id="form"  class="wizard-big">
 								<%
 									int i = 0;
-									for (TaskStep step : task.fetchTaskTemplate().getSteps()) {
-										String uniqueId = UUID.randomUUID().toString().replaceAll("-", "");
-								%>
-								
+									for (TaskStep step : task.fetchTaskTemplate().getSteps()) {										
+								%>								
 								<input type="hidden" name="task_id"  value="<%=taskID %>" >
 								<input type="hidden" name="user_id"  value="<%=user.getId() %>" >
 								<h1><%=step.getLabel()%></h1>
@@ -64,9 +62,10 @@ color: #fff;
 									<div class="row equal_heights_wizard_step" style='padding-bottom:20px;'>
 										<%
 											for (TaskFormElement formelement : step.getForm_elements()) {
+												String uniqueId = UUID.randomUUID().toString().replaceAll("-", "");
 										%>
-										<div class="col-md-6">
-											<%=TaskFormElement.get(formelement, uniqueId).toString()%>
+										<div class="col-md-4">
+											<%=TaskFormElement.get(formelement, task.fetchTaskTemplate().getId(), step.getId()).toString()%>
 										</div>
 										<%
 											}
@@ -85,5 +84,7 @@ color: #fff;
 		</div>
 	</div>
 	<jsp:include page="../student/inc/foot.jsp"></jsp:include>
+	
+	
 </body>
 </html>
