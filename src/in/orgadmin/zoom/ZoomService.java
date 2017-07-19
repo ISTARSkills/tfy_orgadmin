@@ -28,15 +28,15 @@ public class ZoomService {
 	
 	public String createZoomUser(String email){
 		String hostZoomID="";
-		System.out.println("Creating ZOOM User");
+		//System.out.println("Creating ZOOM User");
 		try{
 		client = Client.create();
 		webResource = client.resource(baseUserCreateURI + "&type=2&email="+URLEncoder.encode(email, "UTF-8"));
-		System.out.println("URL->" + webResource.getURI().toURL().toString());
+		//System.out.println("URL->" + webResource.getURI().toURL().toString());
 		response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("USER CREATION FAILED");
+			//System.out.println("USER CREATION FAILED");
 		}
 	
 		if (response.getStatus() != 200) {
@@ -45,8 +45,8 @@ public class ZoomService {
         }
 		
 		output = response.getEntity(String.class);
-		System.out.println("Output from Create Server .... ");
-        System.out.println(output + "\n");		
+		//System.out.println("Output from Create Server .... ");
+        //System.out.println(output + "\n");		
         
         JSONParser jsonParser = new JSONParser();
 
@@ -66,11 +66,11 @@ public class ZoomService {
 		String existingUserID = getUserID(hostEmail);
 		
 		if(!existingUserID.trim().isEmpty()){
-			System.out.println("USER ALREADY EXISTS");
+			//System.out.println("USER ALREADY EXISTS");
 			hostID = existingUserID;
 		}
 		else{
-			System.out.println("CREATING NEW USER");
+			//System.out.println("CREATING NEW USER");
 			hostID = createZoomUser(hostEmail);
 		}
 		
@@ -84,11 +84,11 @@ public class ZoomService {
 		client = Client.create();
 		webResource = client.resource(uri);
 		
-		System.out.println("URL->" + webResource.getURI().toURL().toString());
+		//System.out.println("URL->" + webResource.getURI().toURL().toString());
 		response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("MEETING CREATION FAILED");
+			//System.out.println("MEETING CREATION FAILED");
 		}
 		if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : "
@@ -96,8 +96,8 @@ public class ZoomService {
         }
 
 		output = response.getEntity(String.class);
-		System.out.println("Output from Meeting Server .... ");
-        System.out.println(output + "\n");
+		//System.out.println("Output from Meeting Server .... ");
+        //System.out.println(output + "\n");
         
         JSONParser jsonParser = new JSONParser();
 
@@ -122,15 +122,15 @@ public class ZoomService {
 	public String getUserID(String email){
 		String hostID = "";
 		
-		System.out.println("searching for user email:" + email);
+		//System.out.println("searching for user email:" + email);
 		try{
 		client = Client.create();
 		webResource = client.resource(baseUserInfoByEmailURI+ "&email=" +URLEncoder.encode(email, "UTF-8") + "&login_type=99");
-		System.out.println("URL->" + webResource.getURI().toURL().toString());
+		//System.out.println("URL->" + webResource.getURI().toURL().toString());
 		response = webResource.accept("application/json").type("application/json").post(ClientResponse.class);
 		}catch(Exception e){
 			e.printStackTrace();
-			System.out.println("Retrieving User FAILED");
+			//System.out.println("Retrieving User FAILED");
 		}
 		
 		if (response.getStatus() != 200) {
@@ -139,8 +139,8 @@ public class ZoomService {
         }
 
 		output = response.getEntity(String.class);
-		System.out.println("Output from Search Server .... ");
-        System.out.println(output + "\n");
+		//System.out.println("Output from Search Server .... ");
+        //System.out.println(output + "\n");
 		
 
         JSONParser jsonParser = new JSONParser();
@@ -148,13 +148,13 @@ public class ZoomService {
         try {
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(output);
 			if(jsonObject.containsKey("error")){
-				System.out.println("Error reteiving Data from ZOOM");
-				System.out.println("Error Code:" + ((JSONObject)jsonObject.get("error")).get("code"));
-				System.out.println("Error Message:" + ((JSONObject)jsonObject.get("error")).get("message"));
+				//System.out.println("Error reteiving Data from ZOOM");
+				//System.out.println("Error Code:" + ((JSONObject)jsonObject.get("error")).get("code"));
+				//System.out.println("Error Message:" + ((JSONObject)jsonObject.get("error")).get("message"));
 			}
 			else{
 			hostID = (String) jsonObject.get("id");
-			System.out.println("Exisint USER, Host ID:" + hostID);
+			//System.out.println("Exisint USER, Host ID:" + hostID);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

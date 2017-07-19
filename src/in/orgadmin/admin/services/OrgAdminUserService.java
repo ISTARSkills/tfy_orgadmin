@@ -31,8 +31,8 @@ public class OrgAdminUserService {
 		 int trainerUserID = 0;
 		 int presenterUserID = 0;
 		if (istarUserList.size() > 0) {
-			System.out.println("A user with this email address already exists of type "
-					+ istarUserList.get(0).getUserRoles() + "!");
+			//System.out.println("A user with this email address already exists of type "
+				//	+ istarUserList.get(0).getUserRoles() + "!");
 			return 0;
 			
 		}
@@ -45,12 +45,12 @@ public class OrgAdminUserService {
 			
 			
 			 userID  = db.executeUpdateReturn(istarStudentSql);
-				System.out.println(istarStudentSql);
+				//System.out.println(istarStudentSql);
 
 			//Student User Role Mapping
 				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name = 'STUDENT'), (SELECT MAX(id)+1 FROM user_role), '1');";
 				db.executeUpdate(userRoleMappingSql);
-				System.out.println(userRoleMappingSql);
+				//System.out.println(userRoleMappingSql);
 
 			
 		}else if(userType.equalsIgnoreCase("TRAINER")){
@@ -86,12 +86,12 @@ public class OrgAdminUserService {
 			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		NULL, 		'"+firstname+"', 		'"+lastname+"', 	NULL,	'"+gender+"',   "+userID+", 		NULL 	); ";
 		
 			db.executeUpdate(UserProfileSql);
-			System.out.println(UserProfileSql);
+			//System.out.println(UserProfileSql);
 
 			//Trainer Student User Org Mapping
 			String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES 	("+userID+", "+college_id+", (SELECT MAX(id)+1 FROM user_org_mapping));";
 			db.executeUpdate(userOrgMappingSql);
-			System.out.println(userOrgMappingSql);
+			//System.out.println(userOrgMappingSql);
 			//new EmailService().sendInviteMail(email, firstname,"test123");
 			
 			return userID;
@@ -105,7 +105,7 @@ public class OrgAdminUserService {
 		DBUTILS db = new DBUTILS();
 		
 		String updateIstarStudentSql = "UPDATE istar_user SET  email = '"+email+"',  password = '"+password+"',  mobile = '"+mobileNumber+"' WHERE 	id = "+userID+";";
-		System.out.println("updateIstarStudentSql>>>"+updateIstarStudentSql);
+		//System.out.println("updateIstarStudentSql>>>"+updateIstarStudentSql);
 		db.executeUpdate(updateIstarStudentSql);
 		
 		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '"+firstname+"',  last_name = '"+lastname+"',  gender = '"+gender+"' WHERE   user_id = "+userID+" ;";

@@ -47,7 +47,7 @@ public class UIUtils {
 		
 		
 		
-		 System.out.println(sql);
+		 //System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		if(res.size() > 0){
 			hashMap.put("batch_group_name", res.get(0).get("batch_group_name").toString());
@@ -116,7 +116,7 @@ public class UIUtils {
 				lastSessionId = (int)lastSessionData.get(0).get("cmsession_id");
 			}
 			String orderedLessonInCourse ="SELECT 	cmsession_module.cmsession_id AS cm_id FROM 	lesson_cmsession,	cmsession_module,   module_course WHERE 	module_course.module_id = cmsession_module.module_id AND cmsession_module.cmsession_id = lesson_cmsession.cmsession_id AND module_course .course_id = "+res.get(0).get("course_id")+"";
-			 System.out.println(orderedLessonInCourse);
+			 //System.out.println(orderedLessonInCourse);
 			List<HashMap<String, Object>> orderLessonData = util.executeQuery(orderedLessonInCourse); 
 			int nextSesionId= -1;
 			boolean gotCurrentSesison = false;
@@ -163,13 +163,13 @@ public class UIUtils {
 			
 			if(res.get(0).get("status").toString().equalsIgnoreCase("ASSESSMENT")){
 				
-				System.out.println("ASSESSMENT");
+				//System.out.println("ASSESSMENT");
 				String action = res.get(0).get("action").toString();
 				String getAssessmentId[] = action.split("__");		
 				int assessment_id = Integer.parseInt(getAssessmentId[1]);
 				Assessment assess = new AssessmentDAO().findById(assessment_id);
 				sql = "SELECT COUNT(actor_id) as totstudent FROM istar_assessment_event WHERE batch_group_id ="+res.get(0).get("batch_group_id")+" AND assessment_id = "+assessment_id+" AND CAST (eventdate as VARCHAR) ='"+res.get(0).get("evedate")+"'";
-				System.out.println(sql); 
+				//System.out.println(sql); 
 				List<HashMap<String, Object>> res4 = util.executeQuery(sql);
 				hashMap.put("totstudent", res4.get(0).get("totstudent").toString());
 				hashMap.put("assessment_title", assess.getAssessmenttitle());
@@ -319,7 +319,7 @@ public class UIUtils {
 	}
 
 	public StringBuffer getOrganization() {
-		// System.err.println(orgId);
+		// //System.err.println(orgId);
 		String sql = "SELECT id,name FROM organization";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -332,7 +332,7 @@ public class UIUtils {
 	}
 
 	public List<HashMap<String, Object>> getAllOrganization() {
-		// System.err.println(orgId);
+		// //System.err.println(orgId);
 		String sql = "SELECT id,name FROM organization limit 6";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
@@ -341,7 +341,7 @@ public class UIUtils {
 	}
 
 	public StringBuffer getCourses(int orgId) {
-		// System.err.println(orgId);
+		// //System.err.println(orgId);
 		String sql = "";
 		if (orgId == -3) {
 
@@ -365,7 +365,7 @@ public class UIUtils {
 	}
 
 	public StringBuffer getCoursesForBatches(int orgId) {
-		System.err.println(orgId);
+		//System.err.println(orgId);
 		String sql = "SELECT DISTINCT batch.id as bid, course. ID as cid ,course.course_name as cname FROM batch,course,batch_group WHERE batch.course_id = course.id AND batch_group.id = batch.batch_group_id AND batch_group.college_id ="
 				+ orgId;
 		DBUTILS db = new DBUTILS();
@@ -419,7 +419,7 @@ public class UIUtils {
 		String sql = "SELECT 	batch.id as batch_id,batch_schedule_event.classroom_id as classroomid,   batch_schedule_event.actor_id as userid,   batch_schedule_event.eventdate as evedate,   batch_schedule_event.eventhour as hours,   batch_schedule_event.eventminute as min,   batch.course_id as courseid,batch_schedule_event.associate_trainee,classroom_details.organization_id "
 				+ "FROM 	batch_schedule_event, 	batch,classroom_details WHERE 	batch_schedule_event. ID = '"
 				+ eventID + "' AND batch_schedule_event.batch_group_id = batch.batch_group_id and batch_schedule_event.course_id = batch.course_id AND classroom_details.id = batch_schedule_event.classroom_id";
-		// System.out.println(sql);
+		// //System.out.println(sql);
 		List<HashMap<String, Object>> res = util.executeQuery(sql);
 		return res;
 	}
@@ -572,10 +572,10 @@ public class UIUtils {
 					+ " org. ID = " + org_id + " AND BSE.course_id = " + course_id
 					+ " AND s.user_id = ur.user_id AND ur.role_id in (select id from role where role_name = 'TRAINER') AND event_name NOT LIKE '%TEST%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' ORDER BY 	bse.eventdate";
 		}
-		// System.out.println("101 -> " + sql);
+		// //System.out.println("101 -> " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		System.out.println("102 -> " + data.size());
+		//System.out.println("102 -> " + data.size());
 
 		ArrayList<CourseReportEvent> course_event_list = new ArrayList<>();
 		for (HashMap<String, Object> item : data) {
@@ -591,12 +591,12 @@ public class UIUtils {
 						sdf.format(eventdate), "#58D68D");
 				course_event_list.add(course_report_event);
 			} else {
-				if (item.get("event_name") != null)
-					System.out.println("Event not added due to dateformat issue " + item.get("event_name").toString());
+				if (item.get("event_name") != null){}
+					//System.out.println("Event not added due to dateformat issue " + item.get("event_name").toString());
 			}
 		}
 		JSONArray arr_strJson = new JSONArray(course_event_list);
-		// System.out.println(arr_strJson);
+		// //System.out.println(arr_strJson);
 
 		return arr_strJson;
 	}
@@ -610,7 +610,7 @@ public class UIUtils {
 				+ ")T1 left join course_stats on (T1.course_id = course_stats.course_id and course_stats.college_id = T1.college_id)";
 
 
-		// System.out.println("sql " + sql);
+		// //System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -686,7 +686,7 @@ public class UIUtils {
 				+ college_id
 				+ " and batch.batch_group_id = batch_group.id and batch_group.is_historical_group='f') T1 left join batch_stats on (T1.id = batch_stats.batch_id)";
 
-		// System.out.println("sql " + sql);
+		// //System.out.println("sql " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -721,7 +721,7 @@ public class UIUtils {
 				+ "batch_group.college_id =" + orgId
 				+ ") GROUP BY batch_students.batch_group_id )T3 on (T3.batch_group_id = T1.bg_id)";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
@@ -747,7 +747,7 @@ public class UIUtils {
 		String sql = "SELECT 	istar_user. ID, email FROM 	user_org_mapping, 	istar_user, user_role WHERE 	istar_user. ID = user_org_mapping.user_id AND user_role.user_id = istar_user. ID AND user_org_mapping.organization_id = "
 				+ orgId + " AND user_role.role_id in (select id from role where role_name='STUDENT')";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();

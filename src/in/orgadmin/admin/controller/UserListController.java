@@ -63,7 +63,7 @@ public class UserListController extends HttpServlet {
 					+ request.getParameter("order[0][dir]") + limtQuery;
 		}
 
-		System.err.println(sql);
+		//System.err.println(sql);
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 

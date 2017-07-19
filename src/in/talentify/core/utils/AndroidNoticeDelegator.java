@@ -69,11 +69,11 @@ public class AndroidNoticeDelegator {
 			}
 			/*
 			 * try { Thread.sleep(10000); } catch (InterruptedException e) {
-			 * System.out.println("error in sending notification"); }
+			 * //System.out.println("error in sending notification"); }
 			 */
-			System.out.println("Notification sent to all the users");
+			//System.out.println("Notification sent to all the users");
 		} else {
-			System.out.println("DEV SERVER");
+			//System.out.println("DEV SERVER");
 			for (String istarUserId : allIstarUserIds) {
 				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance()
 						.getReference("istar-notification-dev").child(istarUserId);
@@ -90,9 +90,9 @@ public class AndroidNoticeDelegator {
 			}
 			/*
 			 * try { Thread.sleep(10000); } catch (InterruptedException e) {
-			 * System.out.println("error in sending notification"); }
+			 * //System.out.println("error in sending notification"); }
 			 */
-			System.out.println("Notification sent to all the users");
+			//System.out.println("Notification sent to all the users");
 		}
 	}
 
@@ -118,11 +118,11 @@ public class AndroidNoticeDelegator {
 
 			/*
 			 * try { Thread.sleep(10000); } catch (InterruptedException e) {
-			 * System.out.println("error in sending notification"); }
+			 * //System.out.println("error in sending notification"); }
 			 */
-			System.out.println("Notification sent to all the users");
+			//System.out.println("Notification sent to all the users");
 		} else {
-			System.out.println("DEV SERVER");
+			//System.out.println("DEV SERVER");
 
 			DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance()
 					.getReference("istar-notification-dev").child(istarUserId);
@@ -141,9 +141,9 @@ public class AndroidNoticeDelegator {
 
 			/*
 			 * try { Thread.sleep(10000); } catch (InterruptedException e) {
-			 * System.out.println("error in sending notification"); }
+			 * //System.out.println("error in sending notification"); }
 			 */
-			System.out.println("Notification sent to all the users");
+			//System.out.println("Notification sent to all the users");
 		}
 	}
 
@@ -155,11 +155,11 @@ public class AndroidNoticeDelegator {
 	 * executor = Executors.newFixedThreadPool(50); for (String stuid :
 	 * studentIDs) { DatabaseReference ref =
 	 * FirebaseDatabase.getInstance().getReference(stuid); int stu =
-	 * Integer.parseInt(stuid); System.out.println("sending notification " +
+	 * Integer.parseInt(stuid); //System.out.println("sending notification " +
 	 * message + " to " + stu); Map<String, Object> hopperUpdates = new
 	 * HashMap<String, Object>();
 	 * 
-	 * System.out.println("------------result---------new publsidh---------"+
+	 * //System.out.println("------------result---------new publsidh---------"+
 	 * type +"-"+hidden_id+"-"+ message);
 	 * 
 	 * hopperUpdates.put("type", type); hopperUpdates.put("hidden_id",

@@ -17,7 +17,7 @@ public class ReportDetailService {
 		if (flag) {
 			sql = "SELECT 	batch_schedule_event.id as event_id, 	batch_schedule_event.eventdate, 	string_agg ( 		DISTINCT cmsession.title, 		', ' 	) AS cmsessions FROM batch_schedule_event	 left join slide_change_log on (slide_change_log.event_id = batch_schedule_event. ID ) left join cmsession on ( cmsession. ID = slide_change_log.cmsession_id) WHERE  batch_schedule_event.batch_group_id = "+batch.getBatchGroup().getId()+" AND batch_schedule_event.course_id = "+batch.getCourse().getId()+" and batch_schedule_event.type ='BATCH_SCHEDULE_EVENT_TRAINER' GROUP BY 	batch_schedule_event.id, 	batch_schedule_event.eventdate ORDER BY 	batch_schedule_event.eventdate";
 		}		
-		System.err.println(sql);
+		//System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}
@@ -34,7 +34,7 @@ public class ReportDetailService {
 				+ " AND ass. ID = asse.assessment_id and batch.id ="+batch_id+" GROUP BY 	ass. ID, 	batch.id, 	asse.eventdate ORDER BY 	asse.eventdate DESC";
 		}
 
-		System.err.println(sql);
+		//System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}
@@ -43,7 +43,7 @@ public class ReportDetailService {
 		String sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name AS NAME, 	s.email, 	CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	'http://cdn.talentify.in/video/android_images/' || UPPER (SUBSTRING(sp.first_name FROM 1 FOR 1)) || '.png' ELSE 	'http://cdn.talentify.in/' || sp.profile_image END AS profile_image FROM 	batch b, 	batch_students bs, 	batch_group bg, 	istar_user s, 	user_profile sp WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND sp.user_id = s. ID AND b. ID = "
 				+ batch_id + " ORDER BY 	sp.first_name";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 
@@ -53,7 +53,7 @@ public class ReportDetailService {
 		String sql = "SELECT DISTINCT 	q. ID, 	q.comprehensive_passage_text, 	q.question_text FROM 	assessment ass, 	assessment_question asq, 	question q WHERE 	asq.assessmentid = ass. ID AND q. ID = asq.questionid AND ass. ID ="
 				+ assessment_id;
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}
@@ -61,7 +61,7 @@ public class ReportDetailService {
 	public StringBuffer getAllOptions(int question_id, int user_id, int assessment_id) {
 		String sql = "select * from assessment_option where question_id=" + question_id;
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> questionItem = dbutils.executeQuery(sql);
 
 		sql = "select * from student_assessment where question_id=" + question_id + " and assessment_id="

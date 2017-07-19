@@ -57,12 +57,6 @@ public class mAYANKtEST {
 		// TODO Auto-generated method stub
 		Connection con = getConnection();
 		try {
-			System.out.println(con.isClosed());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter("E:\\filename.txt"));
 			
 
@@ -169,7 +163,7 @@ public class mAYANKtEST {
 				studentId = iiii;
 				String insertIntoIstarUser ="INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified)"
 						+ " VALUES ("+iiii+", '"+email+"', '"+password+"', now(), "+ss+", '18', NULL, 't');";
-				System.out.println(insertIntoIstarUser);
+				//System.out.println(insertIntoIstarUser);
 				bw.write(insertIntoIstarUser);
 				bw.write(System.lineSeparator());
 				if(name!=null)
@@ -177,19 +171,19 @@ public class mAYANKtEST {
 					finalName=name;
 					
 					String userProfile="INSERT INTO user_profile (id,  first_name,   gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile),'"+finalName+"','"+gender+"', "+studentId+");";
-					System.out.println(userProfile);
+					//System.out.println(userProfile);
 					bw.write(userProfile);
 					bw.write(System.lineSeparator());
 				}
 				
 				
 				String insertInToUserRole ="insert into user_role(user_id, id, role_id,priority) values ("+studentId+", (select COALESCE(max(id),0)+1 from user_role), 30,1);";
-				System.out.println(insertInToUserRole);
+				//System.out.println(insertInToUserRole);
 				bw.write(insertInToUserRole);
 				bw.write(System.lineSeparator());
 				
 				String insertIntoUserOrg ="insert into user_org_mapping (id, user_id, organization_id) values((select COALESCE(max(id),0)+1 from user_org_mapping),"+studentId+",259);";
-				System.out.println(insertIntoUserOrg);
+				//System.out.println(insertIntoUserOrg);
 				bw.write(insertIntoUserOrg);
 				bw.write(System.lineSeparator());
 				iiii++;

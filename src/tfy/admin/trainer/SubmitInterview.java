@@ -63,7 +63,7 @@ ratingSkill:
 		DBUTILS util = new DBUTILS();
 		
 		String findPreviousEntries ="select * from interview_rating where trainer_id = "+trainerId+" and course_id = "+courseId+" and stage_type ='"+stage+"'";
-		System.err.println(findPreviousEntries);
+		//System.err.println(findPreviousEntries);
 		List<HashMap<String, Object>> prevData = util.executeQuery(findPreviousEntries);
 		if(prevData.size()==0)
 		{

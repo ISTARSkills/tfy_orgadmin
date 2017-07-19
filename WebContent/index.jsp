@@ -28,10 +28,10 @@ try {
 }
 
 
-	System.out.println(request.getSession().getAttribute("user"));
+	//System.out.println(request.getSession().getAttribute("user"));
 	if(request.getSession().getAttribute("user")!=null) {
 		IstarUser user = (IstarUser)request.getSession().getAttribute("user");
-		System.out.println("user email"+user.getEmail());
+		//System.out.println("user email"+user.getEmail());
 		String url1 = baseURL + "dashboard.jsp";
 		
 		DBUTILS util = new DBUTILS();
@@ -44,10 +44,10 @@ try {
 			userRole = roles.get(0).get("role_name").toString();
 		}
 		
-		System.out.println("user role in index"+userRole);
+		//System.out.println("user role in index"+userRole);
 		if (userRole.equalsIgnoreCase("SUPER_ADMIN")) { 
 			url1 = "/super_admin/dashboard.jsp";
-			System.out.println("super amdin");
+			//System.out.println("super amdin");
 		}else if (userRole.equalsIgnoreCase("ORG_ADMIN")) {
 			
 			url1 = "/orgadmin/dashboard.jsp?org_id=" + user.getUserOrgMappings().iterator().next().getOrganization().getId();
@@ -71,7 +71,7 @@ try {
 			String errorResponse="";
 			if(request.getAttribute("msg")!=null){				
 				errorResponse=request.getAttribute("msg").toString();
-				System.out.println("error-- redirecting to index.jsp 55555555"+ request.getAttribute("msg").toString()) ;
+				//System.out.println("error-- redirecting to index.jsp 55555555"+ request.getAttribute("msg").toString()) ;
 			}			
 			request.setAttribute("msg", errorResponse);
 			request.getRequestDispatcher("/login.jsp").forward(request, response);			
@@ -81,7 +81,7 @@ try {
 		String errorResponse="";
 		if(request.getAttribute("msg")!=null){			
 			errorResponse=request.getAttribute("msg").toString();
-			System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
+			//System.out.println("error-- redirecting to index.jsp"+ request.getAttribute("msg").toString()) ;
 		}		
 		/* request.setAttribute("msg", errorResponse);
 		request.getRequestDispatcher("/login.jsp").forward(request, response); */

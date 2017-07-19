@@ -1,6 +1,8 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.viksitpro.core.customtask.TaskLibrary;
 import com.viksitpro.core.customtask.TaskStep;
 import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.utilities.CustomFormElementDataTypes;
 import com.viksitpro.core.utilities.CustomFormElementTypes;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
@@ -32,27 +35,75 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		printParams(request);
 	
 	DBUTILS util = new DBUTILS();
 	int task_id = Integer.parseInt(request.getParameter("task_id"));
 	int user_id = Integer.parseInt(request.getParameter("user_id"));
 	Task task = new TaskLibrary().getTaskTemplate(task_id);
 	EvaluaterServices service = new EvaluaterServices();
-	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {
-		
+	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {		
 		String updateQuery = step.getUpdateQuery();
+		
 		for (TaskFormElement formelement : step.getForm_elements()) {
 			switch (formelement.getElemntType()) {
 			case CustomFormElementTypes.VOICE:
 				service.evaluateVoiceText();
 				break;
+			case CustomFormElementTypes.DROP_DOWN:
+				String value = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), value);
+				break;
+			case CustomFormElementTypes.TEXT_BOX:
+				String textBoxValue = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textBoxValue);
+				break;
+			case CustomFormElementTypes.DATE_PICKER:
+				String dateValue = request.getParameter(formelement.getElemntName());
+				SimpleDateFormat from = new SimpleDateFormat("dd/MM/yyyy");
+				SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), to.format(from.parse(dateValue)));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case CustomFormElementTypes.TEXT:
+				String textAreaValue = request.getParameter(formelement.getElemntName());
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textAreaValue);
+				break;
+			case CustomFormElementTypes.SWITCH:
+				String switchValue = request.getParameter(formelement.getElemntName());
+				boolean val = false;
+				if(switchValue.equalsIgnoreCase("on"))
+				{
+					val= true;
+				}
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), Boolean.toString(val).charAt(0)+"");
+				break;
+			case CustomFormElementTypes.STAR_RATING:
+				
+				Float rating = Float.parseFloat(request.getParameter(formelement.getElemntName()));
+				String ratingVal= rating+"";
+				if (formelement.getDataType().equalsIgnoreCase(CustomFormElementDataTypes.NUMBER))
+				{
+					ratingVal= (int)Math.ceil(rating)+"";					
+				}
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), ratingVal);
+				break;
 			default:
 				break;
 			}
 		}
+		
+		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
+		//System.out.println("updateQuery ->>>"+updateQuery);
+		util.executeUpdate(updateQuery);
 	}
 	
+	
+/*
 	
 	
 	
@@ -68,7 +119,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 			updateSql = "DELETE FROM user_task_feedback WHERE user_id = "+user_id+" AND task_id ="+task_id;
 			util.executeUpdate(updateSql);
-			System.err.println(updateSql);
+			//System.err.println(updateSql);
 		}
 		
 	}
@@ -97,7 +148,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				 String sql = "INSERT INTO user_task_feedback ( 	ID, 	task_id, 	user_id, 	task_element_id, 	feedback ) VALUES 	((SELECT COALESCE(MAX(id)+1,1) FROM user_task_feedback), "+task_id+", "+user_id+", "+task_element_id+", '"+paramvalues+"');";
 					
 					util.executeUpdate(sql);
-					System.err.println(sql);
+					//System.err.println(sql);
 			}
 			
 			
@@ -108,21 +159,17 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		//querypart = querypart.substring(0, querypart.length() - 1);
 		// updateSql = "UPDATE xyz SET user_id="+ user_id +","+querypart+", task_name="+taskName+" WHERE task_id="+id;
 		
-		//System.err.println(updateSql);
+		////System.err.println(updateSql);
 		
 		
 		
-	}
+	}*/
 	
 	
 	}
 
 	
-	private void printParams(HttpServletRequest request) {
-		
-		
-	}
-
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);

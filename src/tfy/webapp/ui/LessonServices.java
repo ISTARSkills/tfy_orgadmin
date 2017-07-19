@@ -54,7 +54,7 @@ public class LessonServices {
 		
 
 		URL file = new URL("http://cdn.talentify.in:9999/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
-		System.out.println();
+		//System.out.println();
 		try {
 			JAXBContext jaxbcontext = JAXBContext.newInstance(CMSLesson.class);
 			Unmarshaller unmarshaller = jaxbcontext.createUnmarshaller();
@@ -178,7 +178,7 @@ public class LessonServices {
 				int length = doc.text().length();
 
 				if (cmsSlide.getId() == 981868) {
-					// System.err.println("doc.text().length()------->"+doc.text().length());
+					// //System.err.println("doc.text().length()------->"+doc.text().length());
 				}
 				if (length < 500) {
 					length = 120;
@@ -192,7 +192,7 @@ public class LessonServices {
 
 			}
 		} catch (JAXBException e) {
-			System.out.println("file name ->" + file);
+			//System.out.println("file name ->" + file);
 			e.printStackTrace();
 		}
 		return stringBuffer.toString();

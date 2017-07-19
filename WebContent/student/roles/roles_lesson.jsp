@@ -33,9 +33,9 @@
 	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	String course_id = request.getParameter("course_id");
-	System.out.println("course id =========> " + course_id);
+	//System.out.println("course id =========> " + course_id);
 	String module_id = request.getParameter("module_id");
-	System.out.println("module_id =========> " + module_id);
+	//System.out.println("module_id =========> " + module_id);
 %>
 
 

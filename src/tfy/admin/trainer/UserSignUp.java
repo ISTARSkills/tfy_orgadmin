@@ -187,18 +187,17 @@ public class UserSignUp extends IStarBaseServelet {
 						+ addressLine1 + "', 		'" + addressLine2 + "', 		 (select id from pincode where pin="
 						+ pincode + " limit 1), 		 NULL, 		 NULL 	)RETURNING ID;";
 
-				System.err.println(sql);
+				//System.err.println(sql);
 				int address_id = db.executeUpdateReturn(sql);
 
 				String insertIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
 						+ email + "', '" + password + "', now(), " + mobile + ", NULL, NULL, 't') returning id;";
-				System.err.println(insertIntoIstarUser);
+				//System.err.println(insertIntoIstarUser);
 				int urseId = db.executeUpdateReturn(insertIntoIstarUser);
 				student_id = urseId+"";
 				if (userType.equalsIgnoreCase("TRAINER")) {
 					String insertPresentorIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
-							+ presentor_email + "', '" + password + "', now(), " + mobile
-							+ ", NULL, NULL, 't') returning id;";
+							+ presentor_email + "', '" + password + "', now(), 9999999999, NULL, NULL, 't') returning id;";
 					int presentorId = db.executeUpdateReturn(insertPresentorIntoIstarUser);
 					
 					String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + presentorId
@@ -209,13 +208,13 @@ public class UserSignUp extends IStarBaseServelet {
 				String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob,aadhar_no,place_of_birth,father_name,caste_category,religion) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"
 						+ firstName + "', '" + lastName + "', '" + gender + "'," + urseId + "," + address_id + " , '"
 						+ dob + "', "+aadharno+",'"+place_of_birth+"','"+father_name+"','"+caste_category+"','"+religion+"');";
-				System.err.println(createUserProfile);
+				//System.err.println(createUserProfile);
 				db.executeUpdate(createUserProfile);
 
 				String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + urseId
 						+ ", (select id from role where role_name='" + userType
 						+ "'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
-				System.err.println(insertIntoUserRole);
+				//System.err.println(insertIntoUserRole);
 				db.executeUpdate(insertIntoUserRole);
 
 				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months, pan_no, yop_10, marks_10, yop_12, marks_12, under_graduation_specialization_name, under_gradution_marks, post_graduation_specialization_name, post_gradution_marks, is_studying_further_after_degree, job_sector, preferred_location, company_name, position, duration, description, interested_in_type_of_course, area_of_interest,below_poverty_line) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
@@ -225,7 +224,7 @@ public class UserSignUp extends IStarBaseServelet {
 						+ " '"+underGraduationSpecializationName+"' , "+underGradutionMarks+", '"+postGraduationSpecializationName+"',"
 						+ " "+postGradutionMarks+", '"+Boolean.toString(isStudyingFurtherAfterDegree).charAt(0)+"', '"+jobSector+"', '"+preferredLocation+"',"
 						+ " '"+companyName+"', '"+position+"', '"+duration+"', '"+description+"', '"+interestedInTypeOfCourse+"', '"+areaOfInterest+"', '"+Boolean.toString(below_poverty_line).charAt(0)+"'); ";
-				System.err.println(insertIntoProfessionalProfile);
+				//System.err.println(insertIntoProfessionalProfile);
 				db.executeUpdate(insertIntoProfessionalProfile);
 
 				if (userType.equalsIgnoreCase("TRAINER")) {
@@ -350,7 +349,7 @@ public class UserSignUp extends IStarBaseServelet {
 							obj = (JSONObject) parser.parse(avaiableTime);
 
 							for (Object obja : obj.keySet()) {
-								System.out.println(obja + "--->" + obj.get(obja).toString());
+								//System.out.println(obja + "--->" + obj.get(obja).toString());
 								boolean t8am_9am = false;
 								boolean t9am_10am = false;
 								boolean t10am_11am = false;
@@ -368,7 +367,7 @@ public class UserSignUp extends IStarBaseServelet {
 
 								for (String time : times) {
 
-									System.err.println("day>>>> " + day + " time>>>>> " + time);
+									//System.err.println("day>>>> " + day + " time>>>>> " + time);
 
 									if (time.equalsIgnoreCase("8:00 AM-9:00 AM")) {
 										t8am_9am = true;
@@ -409,7 +408,7 @@ public class UserSignUp extends IStarBaseServelet {
 										+ t2pm_3pm + "', 		'" + t3pm_4pm + "', 		'" + t4pm_5pm
 										+ "', 		'" + t5pm_6pm + "' 	);";
 
-								System.err.println(ssql);
+								//System.err.println(ssql);
 								db.executeUpdate(ssql);
 							}
 

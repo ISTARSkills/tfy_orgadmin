@@ -62,7 +62,7 @@ public class DeleteGroup extends IStarBaseServelet {
 		finalSql +=deleteBatch; 
 		String deleteGroup = "delete from batch_group where id ="+groupId+";";
 		finalSql +=deleteGroup;			
-		System.out.println(finalSql);
+		//System.out.println(finalSql);
 		util.executeUpdate(finalSql);
 		
 	}

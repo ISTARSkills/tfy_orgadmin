@@ -72,7 +72,7 @@ public class ChatUserService {
 				}
 			}
 		}
-		System.out.println();
+		//System.out.println();
 		return usersInGroup;
 	}
 	

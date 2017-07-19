@@ -27,7 +27,7 @@ public class SMSServices {
 	{
 		DBUTILS util = new DBUTILS();
 		String sql = "select role.role_name, ticket_type, organization.name from ticket , user_org_mapping,organization, user_role, role where ticket.creator_id = user_role.user_id and user_role.role_id = role.id and user_role.user_id = user_org_mapping.user_id and user_org_mapping.organization_id = organization.id and ticket.id ="+ticketId+ "limit 1";
-		System.out.println(sql);
+		//System.out.println(sql);
 		List<HashMap<String, Object>> ticketData = util.executeQuery(sql);
 		for(HashMap<String, Object> row: ticketData)
 		{
@@ -38,20 +38,20 @@ public class SMSServices {
 					+ "&api_key=0c9ee1130f2a27302bbef3f39360a9eba5f7e48a&sender=TLNTFY";				
 			
 			String message = "A ticket has been raised by "+roleName+" of organization "+orgName+" regarding "+ticketType+". Ticket number is "+ticketId;
-			System.out.println(message);
+			//System.out.println(message);
 			for(String mobile : mobiles)
 			{
 				String smsURL;
 				try {
 					smsURL = mobTextingURLBase + "&to="+URLEncoder.encode(mobile, "UTF-8")+"&message="+URLEncoder.encode(message, "UTF-8");
-					System.out.println(smsURL);
+					//System.out.println(smsURL);
 					URL urlObject = new URL(smsURL);
 					InputStream inputStream = urlObject.openConnection().getInputStream();
 					BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
 					String line = null;
 					while ((line = bufferedReader.readLine()) != null) {
-						System.out.println(line);
+						//System.out.println(line);
 					}
 					bufferedReader.close();
 				} catch (UnsupportedEncodingException e) {
@@ -75,7 +75,7 @@ public class SMSServices {
 	{
 		DBUTILS util = new DBUTILS();
 		String sql = "select role.role_name, ticket_type, organization.name from ticket , user_org_mapping,organization, user_role, role where ticket.creator_id = user_role.user_id and user_role.role_id = role.id and user_role.user_id = user_org_mapping.user_id and user_org_mapping.organization_id = organization.id and ticket.id ="+ticketId+ "limit 1";
-		System.out.println(sql);
+		//System.out.println(sql);
 		List<HashMap<String, Object>> ticketData = util.executeQuery(sql);
 		for(HashMap<String, Object> row: ticketData)
 		{
@@ -86,20 +86,20 @@ public class SMSServices {
 					+ "&api_key=0c9ee1130f2a27302bbef3f39360a9eba5f7e48a&sender=TLNTFY";				
 			
 			String message = "Ticket number "+ticketId+" has been "+newStatus.replace("_", " ") +" which was  raised by "+roleName+" of organization "+orgName+" regarding "+ticketType;
-			System.out.println(message);
+			//System.out.println(message);
 			for(String mobile : mobiles)
 			{
 				String smsURL;
 				try {
 					smsURL = mobTextingURLBase + "&to="+URLEncoder.encode(mobile, "UTF-8")+"&message="+URLEncoder.encode(message, "UTF-8");
-					System.out.println(smsURL);
+					//System.out.println(smsURL);
 					URL urlObject = new URL(smsURL);
 					InputStream inputStream = urlObject.openConnection().getInputStream();
 					BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
 					String line = null;
 					while ((line = bufferedReader.readLine()) != null) {
-						System.out.println(line);
+						//System.out.println(line);
 					}
 					bufferedReader.close();
 				} catch (UnsupportedEncodingException e) {

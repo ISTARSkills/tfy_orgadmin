@@ -11,7 +11,7 @@ try{
 		if (inputStream != null) {
 			properties.load(inputStream);
 			basePath =  properties.getProperty("cdn_path");
-			System.out.println("basePath"+basePath);
+			//System.out.println("basePath"+basePath);
 		}
 	} catch (IOException e) {
 		e.printStackTrace();

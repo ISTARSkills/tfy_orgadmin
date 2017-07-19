@@ -83,7 +83,7 @@ public class OrgAdminDashboardServices {
 	public List<HashMap<String, Object>> getTodaysEventStats(int collegeId) {
 		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");
 		String aajKiDate = dateformatto.format(new Date(System.currentTimeMillis())).toString();
-		System.out.println(aajKiDate);
+		//System.out.println(aajKiDate);
 		DBUTILS dbutils = new DBUTILS();
 		String sql = "SELECT 	COUNT (*) AS totevent, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'COMPLETED' 	) AS completed, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'SCHEDULED' 	) AS scheduled, 	COUNT (*) FILTER (WHERE bse.status = 'TEACHING') AS teaching, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'CANCELLED' 	) AS cancelled FROM 	batch_schedule_event bse, 	classroom_details cd WHERE 	cast (bse.eventdate as varchar) like '%"
 				+ aajKiDate
@@ -102,14 +102,14 @@ public class OrgAdminDashboardServices {
 
 		}
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		System.out.println(sql);
+		//System.out.println(sql);
 		return items;
 	}
 
 	public List<HashMap<String, Object>> getTodaysEventData(int collegeId) {
 		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");
 		String aajKiDate = dateformatto.format(new Date(System.currentTimeMillis())).toString();
-		System.out.println(aajKiDate);
+		//System.out.println(aajKiDate);
 		DBUTILS dbutils = new DBUTILS();
 		String sql1 = "SELECT DISTINCT batch_schedule_event.batch_group_id,batch_schedule_event.course_id, course.course_name AS title, batch_schedule_event.actor_id, CAST ( batch_schedule_event. ID AS VARCHAR ) AS event_id, batch_schedule_event.eventdate, batch_schedule_event.eventhour, batch_schedule_event.status, batch_group. NAME AS batchname, batch_schedule_event.cmsession_id, classroom_details.classroom_identifier, user_profile.first_name AS trainername, CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN (select property_value from constant_properties where property_name ='media_url_path')||'/users/' || UPPER ( SUBSTRING ( user_profile.first_name FROM 1 FOR 1 ) ) || '.png' ELSE (select property_value from constant_properties where property_name ='media_url_path') || user_profile.profile_image END AS trainer_image FROM batch_schedule_event JOIN batch_group ON ( batch_schedule_event.batch_group_id = batch_group. ID ) JOIN course ON (batch_schedule_event.course_id = course. ID) JOIN classroom_details ON ( batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( batch_schedule_event.actor_id = user_profile.user_id ) WHERE batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' AND batch_schedule_event.batch_group_id IN ( SELECT DISTINCT ID FROM batch_group WHERE college_id = "+collegeId+" ) AND CAST ( batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"+aajKiDate+"%'";
 
@@ -117,7 +117,7 @@ public class OrgAdminDashboardServices {
 			sql1 = "SELECT DISTINCT batch_schedule_event.batch_group_id,batch_schedule_event.course_id, course.course_name AS title, batch_schedule_event.actor_id, CAST ( batch_schedule_event. ID AS VARCHAR ) AS event_id, batch_schedule_event.eventdate, batch_schedule_event.eventhour, batch_schedule_event.status, batch_group. NAME AS batchname, batch_schedule_event.cmsession_id, classroom_details.classroom_identifier, user_profile.first_name AS trainername, CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN (select property_value from constant_properties where property_name ='media_url_path')||'/users/' || UPPER ( SUBSTRING ( user_profile.first_name FROM 1 FOR 1 ) ) || '.png' ELSE (select property_value from constant_properties where property_name ='media_url_path')|| user_profile.profile_image END AS trainer_image FROM batch_schedule_event JOIN batch_group ON ( batch_schedule_event.batch_group_id = batch_group. ID ) JOIN course ON (batch_schedule_event.course_id = course. ID) JOIN classroom_details ON ( batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( batch_schedule_event.actor_id = user_profile.user_id ) WHERE batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT'  AND CAST ( batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"+aajKiDate+"%'";
 		}
 
-		System.out.println(sql1);
+		//System.out.println(sql1);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql1);
 
 		return items;
@@ -186,7 +186,7 @@ public class OrgAdminDashboardServices {
 	public StringBuffer getEventSessionLog(String eventId) {
 		String sql2 = "SELECT url FROM trainer_event_log WHERE event_id = '" + eventId
 				+ "' ORDER BY created_at DESC LIMIT 1";
-		System.err.println(sql2);
+		//System.err.println(sql2);
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql2);
 		StringBuffer out = new StringBuffer();
@@ -206,13 +206,13 @@ public class OrgAdminDashboardServices {
 
 			out.append("<p>No Event Session Log Found</p>");
 		}
-		System.out.println("eeeeeeeeeeeeeeeeeeeeeeeee" + out);
+		//System.out.println("eeeeeeeeeeeeeeeeeeeeeeeee" + out);
 		return out;
 	}
 
 	public List<HashMap<String, Object>> getEvenetDetailsFromEvent(String eventId) {
 		String sql = "SELECT DISTINCT batch_group.id as batch_group_id, batch_schedule_event.course_id AS course_id, course.course_name AS title, batch_schedule_event.actor_id, CAST ( batch_schedule_event. ID AS VARCHAR ) AS event_id, batch_schedule_event.eventdate, batch_schedule_event.eventhour, batch_schedule_event.status, batch_group. NAME AS batchname, batch_schedule_event.cmsession_id, classroom_details.classroom_identifier, user_profile.first_name AS trainername, CASE WHEN user_profile.profile_image LIKE 'null' OR user_profile.profile_image IS NULL THEN (select property_value from constant_properties where property_name = 'media_url_path')||'/users/' || UPPER ( SUBSTRING ( user_profile.first_name FROM 1 FOR 1 ) ) || '.png' ELSE (select property_value from constant_properties where property_name = 'media_url_path') || user_profile.profile_image END AS trainer_image FROM batch_schedule_event JOIN batch_group ON ( batch_schedule_event.batch_group_id = batch_group.id ) JOIN course ON (batch_schedule_event.course_id = course. ID) JOIN classroom_details ON ( batch_schedule_event.classroom_id = classroom_details. ID ) JOIN user_profile ON ( batch_schedule_event.actor_id = user_profile.user_id ) WHERE batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_PRESENTOR' AND batch_schedule_event. TYPE != 'BATCH_SCHEDULE_EVENT_STUDENT' AND batch_schedule_event. ID = "+eventId;
-		System.err.println(sql);
+		//System.err.println(sql);
 		DBUTILS dbutils = new DBUTILS();
 		List<HashMap<String, Object>> events = dbutils.executeQuery(sql);
 		return events;

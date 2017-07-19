@@ -46,7 +46,7 @@ public class AssessmentSchedulerService {
 	public void createAssessment(int trainerID, int batch_id, int assessment_id, String event_date, String time,
 			int AdminUserID, int classroomID, String associateTrainerID) {
 
-		System.out.println("inside Assessment");
+		//System.out.println("inside Assessment");
 
 		DBUTILS db = new DBUTILS();
 		StringBuffer out = new StringBuffer();
@@ -344,7 +344,7 @@ public class AssessmentSchedulerService {
 	}
 
 	public StringBuffer createDiv(HashMap<String, String> data, boolean isCreated) {
-		System.out.println("creatediv");
+		//System.out.println("creatediv");
 		StringBuffer out = new StringBuffer();
 		String assessmentData = "";
 
@@ -378,13 +378,13 @@ public class AssessmentSchedulerService {
 
 	public StringBuffer getEventDetails(int orgId, String qdate, ArrayList<String> datacheck) {
 
-		System.out.println("eventdetails");
+		//System.out.println("eventdetails");
 		StringBuffer out = new StringBuffer();
 		String sql = "SELECT DISTINCT 	istar_assessment_event.eventdate as evdate, 	istar_assessment_event.assessment_id AS assessment_id , 	batch.id as bid FROM 	istar_assessment_event, 	batch, 	batch_group WHERE 	batch.batch_group_id = batch_group. ID and batch_group. ID =istar_assessment_event.batch_group_id  AND batch_group.college_id = "
 				+ orgId + " AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate + "%'";
 
 		DBUTILS db = new DBUTILS();
-		System.out.println(sql);
+		//System.out.println(sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {

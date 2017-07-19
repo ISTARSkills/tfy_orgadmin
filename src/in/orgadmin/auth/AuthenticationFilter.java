@@ -121,28 +121,28 @@ public class AuthenticationFilter implements Filter {
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("initializeInterview")) {
-			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("panelist.jsp")) {
-			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("sendInterviewFeedback")) {
-			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("student_signup_ui")) {
-			System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {
 			if ((session == null || session.getAttribute("user") == null)) {
-				System.out.println("The user is not logged in! Message from -> "
-						+ ((HttpServletRequest) request).getRequestURL().toString());
+				//System.out.println("The user is not logged in! Message from -> "
+						//+ ((HttpServletRequest) request).getRequestURL().toString());
 				((HttpServletResponse) response).sendRedirect("/index.jsp");
 			} else {
 				chain.doFilter(request, response);

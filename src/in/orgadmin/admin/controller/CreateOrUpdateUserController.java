@@ -93,7 +93,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			}
 
 		} else {
-			System.out.println("Not Created");
+			//System.out.println("Not Created");
 		}
 
 		if (request.getParameterMap().containsKey("creation_type")

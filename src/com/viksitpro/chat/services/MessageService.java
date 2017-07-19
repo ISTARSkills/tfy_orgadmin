@@ -118,7 +118,7 @@ public class MessageService {
 	public int addBGroupMessage(int senderId, String message, int receiverId) {
 		String insertIntoBGMEssages="INSERT INTO batch_group_messages (id, batch_group_id, message, created_at, sender_id, sent, read_by) VALUES "
 				+ "((select COALESCE(max(id),0)+1 from batch_group_messages), "+receiverId+", '"+message+"', now(), "+senderId+", 'f', '!#"+senderId+"#!') returning id;";
-		System.out.println(insertIntoBGMEssages);
+		//System.out.println(insertIntoBGMEssages);
 		DBUTILS util = new  DBUTILS();
 		return util.executeUpdateReturn(insertIntoBGMEssages);
 		

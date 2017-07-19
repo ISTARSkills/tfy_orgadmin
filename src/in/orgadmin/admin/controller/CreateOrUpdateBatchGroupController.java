@@ -146,7 +146,7 @@ Param -> course_ids : Value ->1*/
 				}				
 				
 				DBUTILS dbutils=new DBUTILS();
-				System.out.println(">>getStudents"+getStudents);
+				//System.out.println(">>getStudents"+getStudents);
 				List<HashMap<String, Object>> data=dbutils.executeQuery(getStudents);
 				for (HashMap<String, Object> item : data) {
 					list.add((int)item.get("id"));

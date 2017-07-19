@@ -23,6 +23,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -40,6 +42,11 @@ import com.istarindia.android.pojo.OptionPOJO;
 import com.istarindia.android.pojo.QuestionPOJO;
 import com.istarindia.android.pojo.QuestionResponsePOJO;
 import com.istarindia.android.pojo.RestClient;
+import com.viksitpro.core.customtask.DropDownList;
+import com.viksitpro.core.customtask.TaskFormElement;
+import com.viksitpro.core.customtask.TaskLibrary;
+import com.viksitpro.core.customtask.TaskStep;
+import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
@@ -51,6 +58,8 @@ import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.utils.task.TaskServices;
@@ -102,7 +111,7 @@ public class MAIN {
 		//reportUtilTesting();
 		//ss();
 		//jsontesting();
-		System.out.println("start");
+		//System.out.println("start");
 		//createInterviewSkill();
 		//createFarziData();
 		//for(int i=0;i<15;i++)
@@ -111,14 +120,98 @@ public class MAIN {
 		//}
 		
 		//scheduleMeeting();
-         exceptiontesting();
+         //exceptiontesting();
 
 		//ImportDatafromPostgres();
-
-		System.out.println("end");
+		//taslCreator();
+		//testingTask();
+		//System.out.println((int)Math.ceil(Float.parseFloat("2.5")));
+		//System.out.println("end");
 	}
 	
 	
+
+
+	private static void testingTask() {
+		// TODO Auto-generated method stub
+		
+		try {
+			// req.getServletContext().getRealPath("/WEB-INF/fileName.properties")
+			URL url = (new CMSRegistry()).getClass().getClassLoader().getResource("dropdown_list.xml");
+			File file = new File(url.toURI());
+			JAXBContext jaxbContext = JAXBContext.newInstance(DropDownList.class);
+
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			 DropDownList dropdownList = (DropDownList) jaxbUnmarshaller.unmarshal(file);
+			//System.out.println(dropdownList);
+			//System.out.println(dropdownList.getDropdowns().size());
+
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+	private static void taslCreator() {
+		// TODO Auto-generated method stub
+		TaskLibrary lib = new TaskLibrary();
+		HashMap<Integer, TaskTemplate> templates = new HashMap<>();
+		
+		TaskTemplate template = new TaskTemplate();
+		template.setDescription("This template is for sentiemnt analysis and density analysis");
+		template.setId(200);
+		template.setLabel("Text Analysis");
+		template.setTaskName("Text Analysis");
+		ArrayList<TaskStep> steps = new ArrayList<>();
+		TaskStep step = new TaskStep();
+		
+		ArrayList<TaskFormElement> formElements = new ArrayList<>();
+		TaskFormElement element = new TaskFormElement();
+		element.setDataType("text_area");
+		element.setElemntName("input_text");
+		element.setElemntType("TEXT");
+		element.setLabel("Enter Text");
+		
+		formElements.add(element);		
+		step.setForm_elements(formElements);
+		step.setLabel("Text Analysis");
+		
+		steps.add(step);
+		
+		template.setSteps(steps);
+		templates.put(200, template);
+		
+		lib.setTemplates(templates);
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(TaskLibrary.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+
+			jaxbMarshaller.marshal(lib, System.out);
+		} catch (PropertyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	     
+		
+	}
+
+
 
 
 	private static void exceptiontesting() {
@@ -184,7 +277,7 @@ public class MAIN {
 
 			String courseIntrestedWiseTrainer = "SELECT DISTINCT istar_user.id,trainer_intrested_course.course_id from istar_user,user_role,trainer_intrested_course where user_role.user_id=istar_user.id and user_role.role_id=24 and istar_user.id  in (SELECT trainer_id from trainer_intrested_course) and trainer_intrested_course.trainer_id=istar_user.id and trainer_id in("
 					+ trainerList + ") " + trainerCourseListQuery;
-			System.out.println("courseIntrestedWiseTrainer--" + courseIntrestedWiseTrainer);
+			//System.out.println("courseIntrestedWiseTrainer--" + courseIntrestedWiseTrainer);
 			List<HashMap<String, Object>> courseIntrestedWiseTrainerList = util
 					.executeQuery(courseIntrestedWiseTrainer);
 
@@ -195,11 +288,11 @@ public class MAIN {
 					.executeQuery(checktrainerintrestedcourses);
 
 			if (checktrainerintrestedcoursesList != null && checktrainerintrestedcoursesList.size() != 0) {
-				System.out.println("Trainer intrested courses not available for these users----->>>start \n\n");
+				//System.out.println("Trainer intrested courses not available for these users----->>>start \n\n");
 				for (HashMap<String, Object> data : checktrainerintrestedcoursesList) {
-					System.out.println("ID------" + data.get("id") + " email----" + data.get("email"));
+					//System.out.println("ID------" + data.get("id") + " email----" + data.get("email"));
 				}
-				System.out.println("\n\nTrainer intrested courses not available for these users----->>>end");
+				//System.out.println("\n\nTrainer intrested courses not available for these users----->>>end");
 			}
 
 
@@ -376,7 +469,7 @@ public class MAIN {
 			
 			String userUpdateSql="INSERT INTO user_profile (id, address_id, first_name, last_name, dob, gender, profile_image, user_id, aadhar_no, father_name, mother_name, user_category) VALUES ((select COALESCE(max(id),0)+1 from user_profile), 2, '"+firstName+"', '', NULL, '"+gender+"', '', "+userId+", '0', NULL, NULL, NULL);";
 			
-			//System.out.println(userUpdateSql);
+			////System.out.println(userUpdateSql);
 			dbutils.executeUpdate(userUpdateSql);
 		}
 		
@@ -388,7 +481,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 			int userId=(int)item.get("id");
 			String userUpdateSql="INSERT INTO professional_profile (id, user_id, yop_10, marks_10, yop_12, marks_12, has_under_graduation, under_graduation_specialization_name, under_gradution_marks, has_post_graduation, post_graduation_specialization_name, post_gradution_marks, is_studying_further_after_degree, job_sector, preferred_location, company_name, position, duration, description, interested_in_type_of_course, area_of_interest, marksheet_10, marksheet_12, under_graduate_degree_name, pg_degree_name, resume_url, under_graduation_year, post_graduation_year, under_graduation_college, post_graduation_college, experience_in_years, experince_in_months, pan_no) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "+userId+", NULL, NULL, NULL, NULL, 't', NULL, NULL, 't', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'BCA', 'OTHERS', NULL, NULL, NULL, NULL, NULL, '0', '0', NULL)";
 			dbutils.executeUpdate(userUpdateSql);
-			//System.out.println(userUpdateSql);
+			////System.out.println(userUpdateSql);
 		}		
 	}
 
@@ -469,7 +562,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 				+ addressLine1 + "', 		'" + addressLine2 + "', 		 (select id from pincode where pin="
 				+ pincode + " limit 1), 		 NULL, 		 NULL 	)RETURNING ID;";
 
-		System.err.println(sql);
+		//System.err.println(sql);
 		int address_id = db.executeUpdateReturn(sql);
 
 		String insertIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
@@ -578,7 +671,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 				String ssql = "INSERT INTO trainer_prefred_location ( 	ID, 	trainer_id, 	marker_id, 	prefred_location, pincode ) "
 						+ "VALUES 	((SELECT COALESCE(max(id)+1,1) FROM trainer_prefred_location), "
 						+ urseId + ", '" + UUID.randomUUID().toString() + "', '" + UUID.randomUUID().toString() + "',"+pincodeData.get(i).get("pin")+");";
-				System.err.println(ssql);
+				//System.err.println(ssql);
 				db.executeUpdate(ssql);
 			}
 
@@ -598,7 +691,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 						+ Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0)
 						+ "', 		'" + Boolean.toString(new Random().nextBoolean()).charAt(0) + "' 	);";
 
-				System.err.println(ssql);
+				//System.err.println(ssql);
 				db.executeUpdate(ssql);
 			}
 
@@ -774,7 +867,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 		String result="";
 		result = gson.toJson(data);
 		
-		System.out.println(result);
+		//System.out.println(result);
 		
 		
 		
@@ -786,9 +879,9 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 		CustomReportUtils repUtils = new CustomReportUtils();
 		CustomReport report = repUtils.getReport(26);
 		String sql=report.getSql();
-		System.out.println(sql);
+		//System.out.println(sql);
 		sql = sql.replaceAll(":user_id", "6044").replaceAll(":limit","10").replaceAll(":offset", "20");
-		System.out.println(sql);
+		//System.out.println(sql);
 		
 		
 	}
@@ -799,7 +892,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 		CustomReportUtils repUtils = new CustomReportUtils();
 		CustomReport report = repUtils.getReport(26);
 		String sql=report.getSql().replace(":user_id", "6044");
-		System.out.println(sql);
+		//System.out.println(sql);
 	}
 
 
@@ -809,7 +902,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 	    startCal.setTime(new Date());      
     	/* if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK)) && currentOrderId< lessons.size()) {
 	        	Date taskDate = new Date(startCal.getInstance().getTimeInMillis());
-	        	System.out.println("creatting task for date+"+taskDate);		        	
+	        	//System.out.println("creatting task for date+"+taskDate);		        	
 	        	for(int stid : users)
 	        	{
 	        		int cid=Integer.parseInt(scheduler_course_id);
@@ -827,7 +920,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 	            daysCount++;
 	        }*/
 			startCal.add(Calendar.DATE, 4);
-    	 System.out.println("checkig for "+startCal.getTime());
+    	 //System.out.println("checkig for "+startCal.getTime());
     	 
 		/*for(int daysCount=0; daysCount< 10; )
 	    {
@@ -842,7 +935,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 		for(BatchGroup bg : org.getBatchGroups())
 		{
 			if(bg.getBatchStudentses().size()>0){
-			System.out.println(bg.getName()+ " "+bg.getId()+" "+bg.getType());
+			//System.out.println(bg.getName()+ " "+bg.getId()+" "+bg.getType());
 			
 			}
 		}
@@ -859,16 +952,16 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 				if(userRole.getRole().getRoleName().equalsIgnoreCase("ORG_ADMIN"))
 				{
 					IstarUser orgadmin = userRole.getIstarUser(); 
-					System.out.println(userRole.getIstarUser());
-					System.out.println(orgadmin.getId());
-					System.out.println(orgadmin.getEmail());
-					System.out.println();
-					System.out.println();
-					System.out.println();
-					System.out.println();
-					System.out.println();
-					System.out.println();
-					System.out.println();
+					//System.out.println(userRole.getIstarUser());
+					//System.out.println(orgadmin.getId());
+					//System.out.println(orgadmin.getEmail());
+					//System.out.println();
+					//System.out.println();
+					//System.out.println();
+					//System.out.println();
+					//System.out.println();
+					//System.out.println();
+					//System.out.println();
 					
 				/*	orgAdminId=orgadmin.getId()+"";
 					orgAdminEmail=orgadmin.getEmail();
@@ -881,7 +974,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 				}
 			}
 		
-		System.out.println("done");
+		//System.out.println("done");
 		}
 		
 	
@@ -967,7 +1060,7 @@ public static StringBuffer getAttendanceGraph(int reportID,HashMap<String, Strin
 				out.append(" <tr>");
 				for(int j = 0; j<createdAt.size();j++){
 				
-				System.out.println(createdAt.get(j)+"--"+rows1.get("created_at").toString());
+				//System.out.println(createdAt.get(j)+"--"+rows1.get("created_at").toString());
 				if(createdAt.get(j) == rows1.get("created_at").toString()){
 					
 					out.append( "<td>"+rows1.get("attendance")+"</td>");
@@ -983,7 +1076,7 @@ public static StringBuffer getAttendanceGraph(int reportID,HashMap<String, Strin
 		
 		out.append("</tbody></table>");
 		
-		//System.out.println(out);
+		////System.out.println(out);
 		return out;
 		
 		
@@ -1003,7 +1096,7 @@ public static StringBuffer getAttendanceGraph(int reportID,HashMap<String, Strin
 			for (String key : conditions.keySet()) {
 				try {
 					if (sql1.contains(key)) {
-						System.out.println("key->" + key + "   value-> " + conditions.get(key));						
+						//System.out.println("key->" + key + "   value-> " + conditions.get(key));						
 						//query.setParameter("course_id", Integer.parseInt(conditions.get(key)));
 						query.setParameter("course_id", "3");
 						query.setParameter("college_id", "3");
@@ -1014,7 +1107,7 @@ public static StringBuffer getAttendanceGraph(int reportID,HashMap<String, Strin
 				}
 			}
 			sql1= query.getQueryString();
-			System.out.println("finalSql >>"+sql1);
+			//System.out.println("finalSql >>"+sql1);
 		} catch (HibernateException e) {
 			if (tx != null)
 				tx.rollback();
@@ -1028,19 +1121,19 @@ public static StringBuffer getAttendanceGraph(int reportID,HashMap<String, Strin
 	private static void checkingReportUtils() {
 		// TODO Auto-generated method stub
 		
-		//System.out.println("1>>>"+(new CMSRegistry()).getClass().getClassLoader());
-		//System.out.println("2>>>"+(new CMSRegistry()).getClass().getClassLoader().getResource("report_list.xml"));
+		////System.out.println("1>>>"+(new CMSRegistry()).getClass().getClassLoader());
+		////System.out.println("2>>>"+(new CMSRegistry()).getClass().getClassLoader().getResource("report_list.xml"));
 		ReportUtils utils = new ReportUtils();
 		HashMap<String, String> conditions = new HashMap<>();
 		
-		System.err.println(utils.getHTML(3052, conditions));;
+		//System.err.println(utils.getHTML(3052, conditions));;
 		
 		/*int totalStudent=50;
 		int nintyPercent = (int)(.9* totalStudent);		
-		System.out.println(nintyPercent);
+		//System.out.println(nintyPercent);
 		
 		
 		double r = Math.random()*0.8;
-		System.out.println(r);*/
+		//System.out.println(r);*/
 	}
 }

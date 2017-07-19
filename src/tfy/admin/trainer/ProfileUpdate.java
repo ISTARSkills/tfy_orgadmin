@@ -187,7 +187,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 {
 				 Address add = user.getUserProfile().getAddress();
 				 String updateAddress ="update address set addressline1 = '"+addressLine1+"', addressline2='"+addressLine2+"', pincode_id =(select id from pincode where pin="+pincode+"  limit 1 ) where id = "+add.getId();
-				System.err.println("140 updateAddress -> "+ updateAddress);
+				//System.err.println("140 updateAddress -> "+ updateAddress);
 				 util.executeUpdate(updateAddress);
 				 address_id = add.getId();
 			 }
@@ -195,7 +195,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 			 {
 				 //create a new address
 				 String sql = "INSERT INTO address ( 	ID, 	addressline1, 	addressline2, 	pincode_id, 	address_geo_longitude, 	address_geo_latitude ) VALUES 	( 		(SELECT max(id)+1 FROM address), 		'"+addressLine1+"', 		'"+addressLine2+"', 		 (select id from pincode where pin="+pincode+"), 		 NULL, 		 NULL 	)RETURNING ID;";		            
-		         System.err.println(sql);
+		         //System.err.println(sql);
 		         address_id = db.executeUpdateReturn(sql);
 			 }	 
 			 
@@ -296,7 +296,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		    				obj = (JSONObject) parser.parse(avaiableTime);
 		    				
 		    				for(Object obja:obj.keySet()){
-		    					System.out.println(obja+"--->"+obj.get(obja).toString());
+		    					//System.out.println(obja+"--->"+obj.get(obja).toString());
 		    					boolean t8am_9am = false;
 		    					boolean t9am_10am= false;
 		    					boolean t10am_11am= false;
@@ -314,7 +314,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		    					
 		    					for(String time:times){  
 		    						
-		    					 System.err.println("day>>>> "+day+" time>>>>> "+time);
+		    					 //System.err.println("day>>>> "+day+" time>>>>> "+time);
 		    				    
 		    					 if(time.equalsIgnoreCase("8:00 AM-9:00 AM")){
 									t8am_9am = true;
@@ -353,7 +353,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		    					String ssql = "INSERT INTO trainer_available_time_sloat ( 	ID, 	trainer_id, 	DAY, 	t8am_9am, 	t9am_10am, 	t10am_11am, 	t11am_12pm, 	t12pm_1pm, 	t1pm_2pm, 	t2pm_3pm, 	t3pm_4pm, 	t4pm_5pm, 	t5pm_6pm ) VALUES 	( 		(SELECT COALESCE(max(id)+1,1) FROM trainer_available_time_sloat), 	  "+userId+", 		'"+day+"', 		'"+t8am_9am+"', 		'"+t9am_10am+"', 		'"+t10am_11am+"', 		'"+t11am_12pm+"', 		'"+t12pm_1pm+"', 		'"+t1pm_2pm+"', 		'"+t2pm_3pm+"', 		'"+t3pm_4pm+"', 		'"+t4pm_5pm+"', 		'"+t5pm_6pm+"' 	);";
 		
 		    					
-		    					System.err.println(ssql);
+		    					//System.err.println(ssql);
 		    		    		 db.executeUpdate(ssql);
 		    				}
 		    				 

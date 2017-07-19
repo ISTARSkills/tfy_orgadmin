@@ -46,8 +46,8 @@ public class UserManagementData extends HttpServlet {
 		Enumeration params = request.getParameterNames(); 
 		while(params.hasMoreElements()){
 		 String paramName = (String)params.nextElement();
-		 System.out.println(paramName);
-		 System.out.println(request.getParameter(paramName));
+		 //System.out.println(paramName);
+		 //System.out.println(request.getParameter(paramName));
 
 		}
 		DBUTILS db = new DBUTILS();
@@ -55,7 +55,7 @@ public class UserManagementData extends HttpServlet {
 		String count = "select count(*) from org_admin";
 		List<HashMap<String, Object>> countdata = db.executeQuery(count);
 		 int counts=  Integer.parseInt(countdata.get(0).get("count").toString());
-		 System.out.println("ssc "+sql);
+		 //System.out.println("ssc "+sql);
 		List<HashMap<String, Object>> datas = db.executeQuery(sql);
 		DataTableBean result = new DataTableBean();
         try {

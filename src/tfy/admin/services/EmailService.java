@@ -30,7 +30,7 @@ public void sendInviteMail(String email, String name, String password) {
 			@Override
 			public void run() {
 				sendEmail(email, subject, message);
-				System.out.println("Starting Thread for sending mail");
+				//System.out.println("Starting Thread for sending mail");
 			}
 		};
 		
@@ -74,7 +74,7 @@ public void sendInviteMail(String email, String name, String password) {
 
 			// sends the e-mail
 			Transport.send(msg);
-			System.out.println("sending");
+			//System.out.println("sending");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
