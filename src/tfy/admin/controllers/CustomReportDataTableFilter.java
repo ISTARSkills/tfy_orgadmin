@@ -56,12 +56,12 @@ public class CustomReportDataTableFilter extends IStarBaseServelet {
 		for (String key : conditions.keySet()) {			
 			String paramName=":"+key;				
 			if (sql1.contains(paramName)) {
-				System.out.println("key->" + key + "   value-> " + conditions.get(key));					
+				//System.out.println("key->" + key + "   value-> " + conditions.get(key));					
 				sql1 =sql1.replaceAll(paramName, conditions.get(key));
 			}			
 		}
 		
-		System.out.println("-------------------------->"+sql1);
+		//System.out.println("-------------------------->"+sql1);
 		
 	}
 

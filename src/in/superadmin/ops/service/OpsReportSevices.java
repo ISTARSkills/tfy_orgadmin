@@ -109,7 +109,7 @@ public class OpsReportSevices {
 	}
 
 	public StringBuffer getOrganization() {
-		// System.err.println(orgId);
+		// //System.err.println(orgId);
 		String sql = "SELECT id,name FROM organization";
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
@@ -126,7 +126,7 @@ public class OpsReportSevices {
 		String sql = "select DISTINCT q.id as question_id,q.question_text,q.comprehensive_passage_text from question q,assessment_question asq where asq.assessmentid="
 				+ assessmentId + " and asq.questionid=q.id";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}
@@ -134,7 +134,7 @@ public class OpsReportSevices {
 	public StringBuffer getAllOptions(int question_id) {
 		String sql = "select * from assessment_option where question_id=" + question_id;
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> questionItem = dbutils.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 		for (HashMap<String, Object> item : questionItem) {
@@ -159,7 +159,7 @@ public class OpsReportSevices {
 				+ " AND student_assessment.student_id IN ( 	SELECT DISTINCT 		batch_students.student_id 	FROM 		batch_students, 		batch 	WHERE 		batch_students.batch_group_id = batch.batch_group_id 	AND batch. ID = "
 				+ batchId + " )";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 		return items;
 	}

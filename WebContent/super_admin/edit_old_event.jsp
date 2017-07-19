@@ -36,7 +36,7 @@
 
 					istrue = true;
 					evntid = request.getParameter("eventid");
-					System.out.println("------------------------------------------->" + evntid);
+					//System.out.println("------------------------------------------->" + evntid);
 					
 					SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");

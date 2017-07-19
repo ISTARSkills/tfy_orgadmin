@@ -36,7 +36,7 @@ public class MenuHolder {
 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			MenuHolder.menu = (Menu) jaxbUnmarshaller.unmarshal(file);
-			System.out.println(menu);
+			//System.out.println(menu);
 
 		} catch (JAXBException e) {
 			e.printStackTrace();

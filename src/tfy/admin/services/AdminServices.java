@@ -117,7 +117,7 @@ public class AdminServices {
 	
 	
 	public List<HashMap<String, Object>> getAllContentAssosicatedSkills(int orgId, int entityId, String entityType) {
-		System.out.println(entityType);
+		//System.out.println(entityType);
 		String sql = "";
 		CustomReportUtils repUtils= new CustomReportUtils();
 		

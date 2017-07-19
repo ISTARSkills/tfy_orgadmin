@@ -94,9 +94,9 @@ public class DeleteFireBaseContent extends HttpServlet {
 														old_cal.setTime(sdf_FIREBASE.parse(firebaseDateString));
 														if (old_cal.getTime().before(todayDate)) {
 															
-															System.out.println("firebase date-----"
-																	+ old_cal.getTime() + "----selcted_date-----"
-																	+ todayDate + "key is--->" + key);
+															//System.out.println("firebase date-----"
+																	//+ old_cal.getTime() + "----selcted_date-----"
+																	//+ todayDate + "key is--->" + key);
 
 															ref.getReference(dataSnapshot.getKey()).child(key)
 																	.removeValue();
@@ -106,9 +106,9 @@ public class DeleteFireBaseContent extends HttpServlet {
 															old_cal.setTime(sdf.parse(firebaseDateString));
 															if (old_cal.getTime().before(todayDate)) {
 																
-																System.out.println("----firebase date-----"
-																		+ old_cal.getTime() + "----selcted_date-----"
-																		+ todayDate + "key is--->" + key);
+																//System.out.println("----firebase date-----"
+																		//+ old_cal.getTime() + "----selcted_date-----"
+																		//+ todayDate + "key is--->" + key);
 																
 																ref.getReference(dataSnapshot.getKey()).child(key)
 																		.removeValue();

@@ -39,17 +39,17 @@ public class ReportUtils {
 
 	public StringBuffer getHTML(int reportID, HashMap<String, String> conditions) {
 		Report report = getReport(reportID);
-		System.err.println(report.getSql());
+		//System.err.println(report.getSql());
 		String sql1 = report.getSql();
 		for (String key : conditions.keySet()) {
-			System.out.println("key->" + key + "   value-> " + conditions.get(key));
+			//System.out.println("key->" + key + "   value-> " + conditions.get(key));
 			String paramName = ":" + key;
 			if (sql1.contains(paramName)) {
 
 				sql1 = sql1.replaceAll(paramName, conditions.get(key));
 			}
 		}
-		System.out.println("report type>>" + report.getType_of_report());
+		//System.out.println("report type>>" + report.getType_of_report());
 		return getGraphHTML(sql1, report);
 
 		// return out;
@@ -92,7 +92,7 @@ int colCount =0;
 			for (String key : conditions.keySet()) {
 				String paramName = ":" + key;
 				if (sql1.contains(paramName)) {
-					System.out.println("key->" + key + "   value-> " + conditions.get(key));
+					//System.out.println("key->" + key + "   value-> " + conditions.get(key));
 					sql1 = sql1.replaceAll(paramName, conditions.get(key));
 				}
 			}
@@ -325,7 +325,7 @@ int colCount =0;
 		
 		String sql1 = report.getSql();
 		for (String key : conditions.keySet()) {
-			System.out.println("key->" + key + "   value-> " + conditions.get(key));
+			//System.out.println("key->" + key + "   value-> " + conditions.get(key));
 			String paramName = ":" + key;
 			if (sql1.contains(paramName)) {
 

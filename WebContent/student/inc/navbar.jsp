@@ -32,7 +32,7 @@ if(roles.size()>0 && roles.get(0).get("role_name")!=null )
 }
 
 
-System.out.println("user role  "+userRole);
+//System.out.println("user role  "+userRole);
 
 String b_url = request.getRequestURL().toString();
 String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().length())+ "/";
@@ -84,7 +84,7 @@ request.setAttribute("cp", cp);
 					href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					}} else {
-							System.out.println("48 activeUrl-=>" + activeUrl);
+							//System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}
 				
@@ -95,7 +95,7 @@ request.setAttribute("cp", cp);
 			
 			<%if(request.getSession().getAttribute("not_auth")!=null){
 			
-			System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
+			//System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
 			
 			%>
 

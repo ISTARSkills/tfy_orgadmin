@@ -56,7 +56,7 @@ public class DataTableController extends IStarBaseServelet {
 		}
 		
 		String searchTerm = request.getParameter("search[value]");
-		System.out.println("search term>>>"+searchTerm);
+		//System.out.println("search term>>>"+searchTerm);
 		if (searchTerm != null && searchTerm.equalsIgnoreCase("")) {
 			conditions.put("limit", request.getParameter("length"));
 			conditions.put("offset", request.getParameter("start"));
@@ -75,12 +75,12 @@ public class DataTableController extends IStarBaseServelet {
 		for (String key : conditions.keySet()) {			
 			String paramName=":"+key;				
 			if (sql1.contains(paramName)) {
-				System.out.println("key->" + key + "   value-> " + conditions.get(key));					
+				//System.out.println("key->" + key + "   value-> " + conditions.get(key));					
 				sql1 =sql1.replaceAll(paramName, conditions.get(key));
 			}			
 		}
 		
-		System.out.println("-------------------------->"+sql1);
+		//System.out.println("-------------------------->"+sql1);
 		
 		JSONArray array = new JSONArray();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);		

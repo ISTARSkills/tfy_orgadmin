@@ -19,7 +19,7 @@ message.append("URL: " + requestUri);
 message.append("\nServlet Name : " + servletName);
 //message.append("\nException Type : " + throwable.getClass().getName());
 //message.append("\nException message: " + throwable.getMessage());
-System.out.println(message.toString());
+//System.out.println(message.toString());
 
 
 %>

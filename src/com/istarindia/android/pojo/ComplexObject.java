@@ -142,7 +142,7 @@ public class ComplexObject {
 			if (assessmentReportPOJO.getDate().toString().startsWith(todaysDate)) {
 				items.add(assessmentReportPOJO);
 			}
-			// System.err.println(assessmentReportPOJO.getDate());
+			// //System.err.println(assessmentReportPOJO.getDate());
 		}
 		return items;
 	}
@@ -206,7 +206,7 @@ public class ComplexObject {
 		Date date = new Date();
 		String todaysDate = dateFormat.format(date);
 		for (DailyTaskPOJO event : events) {
-			System.err.println(event.getEndDate());
+			//System.err.println(event.getEndDate());
 			if(event.getStartDate().toString().startsWith(todaysDate)){
 				items.add(event);
 			}

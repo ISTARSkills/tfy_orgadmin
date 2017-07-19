@@ -89,7 +89,7 @@ public class PinCodeController extends HttpServlet {
 		Enumeration params = request.getParameterNames(); 
 		while(params.hasMoreElements()){
 		 String paramName = (String)params.nextElement();
-		 System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+		 //System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
 		}
 	}
 

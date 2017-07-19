@@ -83,7 +83,7 @@ DBUTILS db = new DBUTILS();
 		<div class="ibox-title">
 				<h2 class="text-center">Employablity Over Years for <b><%=employer_name %></b></h2>
 				<% String sql2 ="select count(id) as id, to_char(to_date(''||\"PassingoutDate\"||'','dd-mm-yyyy'), 'yyyy-mm-dd') as dateeeeee from candidate_details where \"EmployerNameOrSelfEmployed\" like '%"+employer_name+"%' and \"PassingoutDate\" IS NOT NULL  AND \"PassingoutDate\" != '' AND \"PassingoutDate\" !=' ' group by dateeeeee order by dateeeeee"; 	
-						System.out.println(sql2);
+						//System.out.println(sql2);
 						List<HashMap<String, Object>> itemss2 = db.executeQuery(sql2);
 					%>
 			</div>

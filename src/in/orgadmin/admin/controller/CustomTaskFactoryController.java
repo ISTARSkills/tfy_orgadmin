@@ -98,7 +98,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		}
 		
 		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
-		System.out.println("updateQuery ->>>"+updateQuery);
+		//System.out.println("updateQuery ->>>"+updateQuery);
 		util.executeUpdate(updateQuery);
 	}
 	
@@ -119,7 +119,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 			updateSql = "DELETE FROM user_task_feedback WHERE user_id = "+user_id+" AND task_id ="+task_id;
 			util.executeUpdate(updateSql);
-			System.err.println(updateSql);
+			//System.err.println(updateSql);
 		}
 		
 	}
@@ -148,7 +148,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				 String sql = "INSERT INTO user_task_feedback ( 	ID, 	task_id, 	user_id, 	task_element_id, 	feedback ) VALUES 	((SELECT COALESCE(MAX(id)+1,1) FROM user_task_feedback), "+task_id+", "+user_id+", "+task_element_id+", '"+paramvalues+"');";
 					
 					util.executeUpdate(sql);
-					System.err.println(sql);
+					//System.err.println(sql);
 			}
 			
 			
@@ -159,7 +159,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		//querypart = querypart.substring(0, querypart.length() - 1);
 		// updateSql = "UPDATE xyz SET user_id="+ user_id +","+querypart+", task_name="+taskName+" WHERE task_id="+id;
 		
-		//System.err.println(updateSql);
+		////System.err.println(updateSql);
 		
 		
 		

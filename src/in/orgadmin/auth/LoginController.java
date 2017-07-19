@@ -38,8 +38,8 @@ public class LoginController extends HttpServlet {
 
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 
-			System.out.println("Email -> " + request.getParameter("email"));
-			System.out.println("Password -> " + request.getParameter("password"));
+			//System.out.println("Email -> " + request.getParameter("email"));
+			//System.out.println("Password -> " + request.getParameter("password"));
 			IstarUserDAO dao = new IstarUserDAO();
 			dao.getSession().clear();
 
@@ -66,26 +66,26 @@ public class LoginController extends HttpServlet {
 
 						if (user.getPassword().equals(request.getParameter("password"))) {
 
-							System.out.println("-------------------Email -> " + user.getEmail());
+							//System.out.println("-------------------Email -> " + user.getEmail());
 							// request.getSession().setMaxInactiveInterval(2000);
 							request.getSession().setAttribute("user", user);
 
 							if (userRole.equalsIgnoreCase("SUPER_ADMIN")) {
 
-								System.out.println("User logged in. ID -> "
-										+ user.getUserRoles().iterator().next().getRole().getRoleName());
-								System.out.println("User logged in. ID -> " + user.getId());
-								System.out.println("User logged in. Type -> "
-										+ user.getUserRoles().iterator().next().getRole().getRoleName());
+								//System.out.println("User logged in. ID -> "
+									//	+ user.getUserRoles().iterator().next().getRole().getRoleName());
+								//System.out.println("User logged in. ID -> " + user.getId());
+								//System.out.println("User logged in. Type -> "
+										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
 								url = "/super_admin/dashboard.jsp";
 								request.getRequestDispatcher(url).forward(request, response);
 							} else if (userRole.equalsIgnoreCase("ORG_ADMIN")) {
 
-								System.out.println("User logged in. ID -> "
-										+ user.getUserRoles().iterator().next().getRole().getRoleName());
-								System.out.println("User logged in. ID -> " + user.getId());
-								System.out.println("User logged in. Type -> "
-										+ user.getUserRoles().iterator().next().getRole().getRoleName());
+								//System.out.println("User logged in. ID -> "
+										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
+								//System.out.println("User logged in. ID -> " + user.getId());
+								//System.out.println("User logged in. Type -> "
+										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
 
 								request.getSession().setAttribute("orgId",
 										user.getUserOrgMappings().iterator().next().getOrganization().getId());
@@ -113,7 +113,7 @@ public class LoginController extends HttpServlet {
 								request.setAttribute("msg", "User Does Not Have Permission To Access");
 								request.getRequestDispatcher("/login.jsp").forward(request, response);
 							}
-							System.out.println(url);
+							//System.out.println(url);
 
 						} else {
 							request.setAttribute("msg", "Wrong Password");
@@ -132,7 +132,7 @@ public class LoginController extends HttpServlet {
 			}
 		} else {
 
-			System.err.println("9111");
+			//System.err.println("9111");
 			request.setAttribute("msg", "Missing Username or Password");
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}

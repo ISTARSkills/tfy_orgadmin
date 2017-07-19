@@ -54,7 +54,7 @@ public class ExceptionConrtoller extends HttpServlet {
 			String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");
 
 			
-			System.err.println("JSP Exception Page "+(new ExceptionUtils()).getFullStackTrace(throwable));
+			//System.err.println("JSP Exception Page "+(new ExceptionUtils()).getFullStackTrace(throwable));
 			if (servletName == null) {
 				servletName = "Unknown";
 			}
@@ -102,7 +102,7 @@ public class ExceptionConrtoller extends HttpServlet {
 				ex.printStackTrace();
 			}
 		} catch (Exception e) {
-			System.err.println("line " + Thread.currentThread().getStackTrace()[1].getLineNumber());
+			//System.err.println("line " + Thread.currentThread().getStackTrace()[1].getLineNumber());
 		}
 
 		request.getRequestDispatcher("/500.jsp").forward(request, response);

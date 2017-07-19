@@ -98,7 +98,7 @@ public class Chat {
             	int currentUserId = sessionUserIdMap.get(session);
             	if(userIdCustomGroupIdMap.get(currentUserId)!=null && userIdCustomGroupIdMap.get(currentUserId).contains(groupId))
 	            	{	      
-            			System.out.println("sending message to "+currentUserId);
+            			//System.out.println("sending message to "+currentUserId);
 	            		session.getRemote().sendString(message);
 	            		markChatMessageAsSent(integer);
 	            	}               
@@ -122,7 +122,7 @@ public class Chat {
 		{
 			if(sessionUserIdMap.get(sess)==receiverId)
 			{
-				System.out.println("got user to send message "+receiverId);
+				//System.out.println("got user to send message "+receiverId);
 				receiverSession = sess;
 			}
 		}
@@ -182,10 +182,10 @@ public class Chat {
 		
 		for(Session session : Chat.sessionUserIdMap.keySet())
 		{
-			System.out.println("use in session is "+Chat.sessionUserIdMap.get(session));
+			//System.out.println("use in session is "+Chat.sessionUserIdMap.get(session));
 			//if(userToBroadcast.contains(Chat.sessionUserIdMap.get(session)))
 			{
-				System.out.println("sending msg to "+Chat.sessionUserIdMap.get(session));
+				//System.out.println("sending msg to "+Chat.sessionUserIdMap.get(session));
 				try {
 					session.getRemote().sendString(jsonObject);
 				} catch (IOException e) {
@@ -217,10 +217,10 @@ public class Chat {
 			for(Session session : Chat.sessionUserIdMap.keySet())
 			{
 				int userId = Chat.sessionUserIdMap.get(session);
-				System.out.println("checking for user id "+userId);
+				//System.out.println("checking for user id "+userId);
 				if(subscribers.contains(userId))
 				{
-					System.out.println("got user to send notification "+userId);
+					//System.out.println("got user to send notification "+userId);
 					try {
 						session.getRemote().sendString(message);
 						markUserNotificationAsSent(userId);
@@ -267,7 +267,7 @@ public class Chat {
 		{
 			if(sessionUserIdMap.get(sess)==receiverAdminId)
 			{
-				System.out.println("got user to send message "+receiverAdminId);
+				//System.out.println("got user to send message "+receiverAdminId);
 				receiverSession = sess;
 			}
 		}
@@ -298,7 +298,7 @@ public class Chat {
             	int currentUserId = sessionUserIdMap.get(session);
             	if(userIdBGGroupIdMap.get(currentUserId)!=null && userIdBGGroupIdMap.get(currentUserId).contains(groupId))
 	            	{	      
-            			System.out.println("sending message to "+currentUserId);
+            			//System.out.println("sending message to "+currentUserId);
 	            		session.getRemote().sendString(message);
 	            		markBatchGroupMsgAsSent(msg_id);
 	            	}               
@@ -318,7 +318,7 @@ public class Chat {
 
 		DBUTILS util = new DBUTILS();
 		String update ="update batch_group_messages set read_by = COALESCE(read_by,'') || '!#"+readBy+"#!' where batch_group_id="+group;
-		System.out.println(update);
+		//System.out.println(update);
 		util.executeUpdate(update);
 	}
 

@@ -136,9 +136,9 @@ public class LessonPOJO implements Comparable<LessonPOJO> {
 				for (ConcreteItemPOJO lesson : module.getLessons()) {
 					if (lesson.getLesson().getId() == id) {
 						for (TaskSummaryPOJO task : cp.getTasks()) {
-							//System.err.println("task.getId()-->"+task.getId() + "   -           "+ lesson.getTaskId());
+							////System.err.println("task.getId()-->"+task.getId() + "   -           "+ lesson.getTaskId());
 							if(lesson.getTaskId().intValue() == task.getId().intValue()){
-								System.err.println("I found my Task ->>"+lesson.getTaskId() );
+								//System.err.println("I found my Task ->>"+lesson.getTaskId() );
 								if((task.getDate().getTime()) - (new Date()).getTime() > 0){
 									return true;
 								}

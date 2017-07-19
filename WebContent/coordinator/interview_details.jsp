@@ -122,7 +122,7 @@
 	String sql1= "select user_profile.first_name as interviewer_name,trainer_comments.comments , user_profile.user_id   from trainer_comments, "+
 			" user_profile where user_profile.user_id = interviewer_id and trainer_id = "+trainerId+" and stage = '"+stage+"' and course_id = "+courseId;
 	List<HashMap<String, Object>> items1 = 		utils.executeQuery(sql1);
-System.err.println(sql1);	
+//System.err.println(sql1);	
 String baseURL1 = url.substring(0, url.length() - request.getRequestURI().length())
 + request.getContextPath() + "/";
 try {

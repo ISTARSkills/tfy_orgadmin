@@ -40,7 +40,7 @@
       int user_id = user.getId();
       String email = user.getEmail();
       
-      System.out.println("47");
+      //System.out.println("47");
       %>
    <head>
       <meta name="description" content="A framework for easily creating beautiful presentations using HTML">

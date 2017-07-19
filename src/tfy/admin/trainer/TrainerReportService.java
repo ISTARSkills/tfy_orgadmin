@@ -23,7 +23,7 @@ import com.viksitpro.core.dao.entities.StudentAssessment;
 public class TrainerReportService {
 
 	public List<StudentAssessment> getStudentAssessmentForUser(int istarUserId, int assessmentId) {
-System.out.println("dddddddd"+assessmentId+" yyy"+istarUserId);
+//System.out.println("dddddddd"+assessmentId+" yyy"+istarUserId);
 		List<StudentAssessment> allStudentAssessment = new ArrayList<StudentAssessment>();
 
 		String hql = "from StudentAssessment studentAssessment where assessment.id= :assessment and istarUser.id= :istarUser";
@@ -47,7 +47,7 @@ System.out.println("dddddddd"+assessmentId+" yyy"+istarUserId);
 		List<StudentAssessment> allStudentAssessments = getStudentAssessmentForUser(istarUserId, assessmentId);
 		List<QuestionResponsePOJO> allQuestionsResponse = new ArrayList<QuestionResponsePOJO>();
 
-		System.out.println("allStudentAssessments>>>>>>."+allStudentAssessments);
+		//System.out.println("allStudentAssessments>>>>>>."+allStudentAssessments);
 		if (allStudentAssessments.size() > 0) {
 			assessmentResponsePOJO = new AssessmentResponsePOJO();
 			for (StudentAssessment studentAssessment : allStudentAssessments) {

@@ -75,7 +75,7 @@ public class CreateOrUpdateClassRoomController extends IStarBaseServelet {
 					+ tv_projector + "', " + internet_availability + ", '" + internet_speed + "', '" + lab_or_class
 					+ "', " + compute_stick + ", " + extension_box + "," + router + ", " + keyboard + ", " + mouse
 					+ ")";
-			System.out.println(sql);
+			//System.out.println(sql);
 			db.executeUpdate(sql);
 		} else {
 			sql = "UPDATE classroom_details SET " + "classroom_identifier='" + class_name + "', " + "organization_id='"
@@ -84,7 +84,7 @@ public class CreateOrUpdateClassRoomController extends IStarBaseServelet {
 					+ "', internet_speed='" + internet_speed + "'" + ", type_of_class='" + lab_or_class
 					+ "', compute_stick='" + compute_stick + "'," + " extension_box='" + extension_box + "', router='"
 					+ router + "', keyboard='" + keyboard + "', mouse='" + mouse + "' WHERE (id='" + class_id + "');";
-			System.out.println(sql);
+			//System.out.println(sql);
 			db.executeUpdate(sql);
 		}
 	}

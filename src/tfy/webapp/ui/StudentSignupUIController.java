@@ -74,12 +74,12 @@ public class StudentSignupUIController extends HttpServlet {
 		if (redirectType != null && !redirectType.equalsIgnoreCase("")) {
 			if (redirectType.equalsIgnoreCase("create")) {
 				String userId = request.getParameter("stu_id");
-				System.err.println("type--> " + redirectType + " student id --> " + userId);
+				//System.err.println("type--> " + redirectType + " student id --> " + userId);
 				DBUTILS db = new DBUTILS();
 				String sql = "SELECT email,password from istar_user where id = " + userId;
 				List<HashMap<String, Object>> data = db.executeQuery(sql);
 				if (data.get(0) != null) {
-					System.err.println("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + "");
+					//System.err.println("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + "");
 					response.getWriter().println(("login?email=" + data.get(0).get("email") + "&password=" + data.get(0).get("password") + ""));
 				}
 			}
@@ -206,7 +206,7 @@ public class StudentSignupUIController extends HttpServlet {
 			try {
 				Files.createDirectories(path);
 			} catch (IOException e) {
-				System.err.println("Cannot create directories - " + e);
+				//System.err.println("Cannot create directories - " + e);
 			}
 		}
 		File parentFolder = new File(path.toString());
@@ -217,7 +217,7 @@ public class StudentSignupUIController extends HttpServlet {
 		try {
 			fileItem.write(imageFile);
 			imageURL = "/" + innerDirectory + "/" + studentId + "/" + uuidName.toString() + fileExtension;
-			// System.out.println("Absolute Path id: " +
+			// //System.out.println("Absolute Path id: " +
 			// imageFile.getAbsoluteFile());
 		} catch (Exception e) {
 			e.printStackTrace();

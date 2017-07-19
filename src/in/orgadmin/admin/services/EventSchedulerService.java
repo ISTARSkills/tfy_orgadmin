@@ -85,7 +85,7 @@ public class EventSchedulerService {
 					+ batchID + ", " + trainerID + ");";
 
 			db.executeUpdate(trainerBatchSql);
-			System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+			//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
 
 		}
 		
@@ -365,7 +365,7 @@ public class EventSchedulerService {
 	}
 
 	public StringBuffer createDiv(HashMap<String, String> data, boolean isCreated) {
-		System.out.println("creatediv");
+		//System.out.println("creatediv");
 		StringBuffer out = new StringBuffer();
 		String trainerData = "";
 
@@ -730,7 +730,7 @@ public class EventSchedulerService {
 				+ " 	batch_schedule_event.batch_group_id IN ( SELECT 	ID 	FROM batch_group WHERE 	college_id ="+ orgID + " ) 	 " + "AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate
 				+ "%' and batch_schedule_event.type = 'BATCH_SCHEDULE_EVENT_TRAINER' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
 				+ "AND user_role.role_id in (select id from role where role_name = 'TRAINER')";
-		System.out.println("erronous sql>>>>>    "+sql);
+		//System.out.println("erronous sql>>>>>    "+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -1100,7 +1100,7 @@ public class EventSchedulerService {
 						+ batchID + ", " + trainerID + ");";
 
 				db.executeUpdate(trainerBatchSql);
-				System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+				//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
 
 			}
 			
@@ -1184,7 +1184,7 @@ public class EventSchedulerService {
 	public String createZoomSchedule(String dateTime, String topic, int durationInminutes  )
 	{
 		String url = "https://api.zoom.us/v1/meeting/create?host_id=j9Ix95GCQTqmc9aj6IPfYQ&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		System.out.println("c,s,s,,s ");
+		//System.out.println("c,s,s,,s ");
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -1198,7 +1198,7 @@ public class EventSchedulerService {
 					response.append(inputLine);
 				}
 				in.close();					
-				System.out.println(response.toString());				
+				//System.out.println(response.toString());				
     			return response.toString();
     			
 		} catch (MalformedURLException e) {
@@ -1277,7 +1277,7 @@ public class EventSchedulerService {
 						+ batchID + ", " + trainerID + ");";
 
 				db.executeUpdate(trainerBatchSql);
-				System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+				//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
 
 			}
 			

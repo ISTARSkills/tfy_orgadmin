@@ -42,14 +42,14 @@
 <li><a id ="<%=link.getDisplayName().replace(" ","")%>" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
 					} else {
-							System.out.println("48 activeUrl-=>" + activeUrl);
+							//System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}
 				%>
 			</ul>
 			<%if(request.getSession().getAttribute("not_auth")!=null){
 			
-			System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
+			//System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
 			
 			%>
 			<%

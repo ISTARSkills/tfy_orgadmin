@@ -19,13 +19,13 @@ public class IStarBaseServelet extends HttpServlet {
 		Enumeration headerNames = request.getHeaderNames();
 		while(headerNames.hasMoreElements()) {
 		  String headerName = (String)headerNames.nextElement();
-		  System.out.println("Header Name - " + headerName + ", Value - " + request.getHeader(headerName));
+		  //System.out.println("Header Name - " + headerName + ", Value - " + request.getHeader(headerName));
 		}
 		
 		Enumeration params = request.getParameterNames(); 
 		while(params.hasMoreElements()){
 		 String paramName = (String)params.nextElement();
-		 System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+		 //System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
 		}
 
 	}

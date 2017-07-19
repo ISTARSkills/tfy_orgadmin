@@ -19,7 +19,7 @@
 				UIUtils ui = new UIUtils();
 /* 			OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user");
  */     int colegeID = (int)request.getSession().getAttribute("orgId");
-                    System.out.println("------colegeID------->"+colegeID);
+                    //System.out.println("------colegeID------->"+colegeID);
  
  
  IstarUser istarUser =(IstarUser) request.getSession().getAttribute("user");

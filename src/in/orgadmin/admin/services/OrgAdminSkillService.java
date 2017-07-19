@@ -24,7 +24,7 @@ public class OrgAdminSkillService {
 
 		String sql = "SELECT DISTINCT 	so. ID, 	so. NAME FROM 	skill_objective so, 	lesson_skill_objective lso WHERE 	so. NAME NOT LIKE '' AND so. TYPE = 'TASK_BASED' AND lso.learning_objectiveid = so.id ORDER BY 	NAME";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -84,7 +84,7 @@ public class OrgAdminSkillService {
 		String sql = "SELECT DISTINCT 	t1. ID, 	t1.role_name, 	COUNT (t1.sid) AS role_skill_count FROM 	( 		SELECT DISTINCT 			C . ID, 			C .course_name AS role_name, 			skill_objective. ID AS sid 		FROM 			course C 		LEFT JOIN module_course ON ( 			module_course.course_id = C . ID 		) 		LEFT JOIN cmsession_module ON ( 			module_course.module_id = cmsession_module.module_id 		) 		LEFT JOIN lesson_cmsession ON ( 			cmsession_module.cmsession_id = lesson_cmsession.cmsession_id 		) 		LEFT JOIN lesson_skill_objective ON ( 			lesson_cmsession.lesson_id = lesson_skill_objective.lessonid 		) 		LEFT JOIN skill_objective ON ( 			skill_objective. ID = lesson_skill_objective.learning_objectiveid 			AND skill_objective. TYPE = 'TASK_BASED' 		) 		LEFT JOIN batch ON ( 			batch.course_id = module_course.course_id 		) 		LEFT JOIN batch_group ON ( 			batch.batch_group_id = batch_group. ID 			AND batch_group.college_id = "
 				+ orgId + " 		) 	) t1 GROUP BY 	t1. ID, 	t1.role_name ORDER BY 	t1.role_name";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -96,7 +96,7 @@ public class OrgAdminSkillService {
 				+ orgId + " AND batch.course_id = " + roleId
 				+ " AND skill_objective. TYPE = 'TASK_BASED' ORDER BY 	skill_objective. NAME, 	module_course.course_id";
 
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
@@ -106,7 +106,7 @@ public class OrgAdminSkillService {
 	public void deleteSkillAssosicatedRole(int roleskillId, int roll_id) {
 		String sql = "DELETE FROM role_skill_mapping rs WHERE 	rs.role_id = " + roll_id + " AND rs. ID = "
 				+ roleskillId;
-		// System.err.println(sql);
+		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
 		db.executeUpdate(sql);
 	}
@@ -142,12 +142,12 @@ public class OrgAdminSkillService {
 				
 				sql = "INSERT INTO lesson_skill_objective (lessonid, learning_objectiveid) VALUES ('" + item.get("lessonid")+"', "+skillId+");";
 				db.executeUpdate(sql);
-				System.err.println("----->"+sql);
+				//System.err.println("----->"+sql);
 				sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + item.get("lessonid")
 						+ "', '" + cmssession + "')";
-				///System.err.println(sql);
+				/////System.err.println(sql);
 				db.executeUpdate(sql);
-				System.out.println(sql);
+				//System.out.println(sql);
 			}
 
 		} catch (Exception e) {
@@ -208,14 +208,14 @@ public class OrgAdminSkillService {
 			sql = sql.replaceAll(":offset", offset+"");
 			sql = sql.replaceAll(":search_term", searchquery);
 		}
-		System.out.println("final sql"+sql);
+		//System.out.println("final sql"+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		return data;
 	}
 
 	public List<HashMap<String, Object>> getAllContentAssosicatedSkills(int orgId, int typeId, String type) {
-		System.out.println(type);
+		//System.out.println(type);
 		String sql = "";
 		if (type.equalsIgnoreCase("User")) {
 			sql = "SELECT DISTINCT 	lesson.title AS lesson_title, 	lesson. ID AS lesson_id, 	course. ID AS course_id, 	course.course_name AS course_name FROM 	student_playlist, 	lesson, 	course WHERE 	course. ID = student_playlist.course_id AND lesson. ID = student_playlist.lesson_id AND student_id = "
@@ -247,20 +247,20 @@ public class OrgAdminSkillService {
 				
 				sql = rep.getSql();
 				sql = sql.replaceAll(":skill_objective_id", skillId+"");
-				System.err.println(sql);
+				//System.err.println(sql);
 				data = db.executeQuery(sql);
 
 			} else if (skillType.equalsIgnoreCase("MODULE")) {
 				CustomReport rep = repUtils.getReport(14); 				
 				sql = rep.getSql();
 				sql = sql.replaceAll(":skill_objective_id", skillId+"");
-				System.err.println(sql);
+				//System.err.println(sql);
 				data = db.executeQuery(sql);
 			} else if (skillType.equalsIgnoreCase("CMSESSION")) {
 				CustomReport rep = repUtils.getReport(15); 				
 				sql = rep.getSql();
 				sql = sql.replaceAll(":skill_objective_id", skillId+"");
-				System.err.println(sql);
+				//System.err.println(sql);
 				data = db.executeQuery(sql);
 			}
 
@@ -279,7 +279,7 @@ public class OrgAdminSkillService {
 				sql = rep.getSql();
 				sql = sql.replaceAll(":batch_group_id", entityId+"");
 					
-				System.err.println(sql);
+				//System.err.println(sql);
 				List<HashMap<String, Object>> result = db.executeQuery(sql);
 
 				for (HashMap<String, Object> item : result) {
@@ -399,7 +399,7 @@ public class OrgAdminSkillService {
 					+ "VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+student_id+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				
 			db.executeUpdate(tasksql);
 			
-			System.err.println(sql);
+			//System.err.println(sql);
 			db.executeUpdate(sql);
 			if (!lessonList.contains(lesson_id)) {
 				appendingString = "<div class='alert alert-dismissable gray-bg'>"
@@ -407,12 +407,12 @@ public class OrgAdminSkillService {
 						+ "' data-role='" + typeId + "' data-role_skill='" + lesson_id + "' type='button'>x</button>"
 						+ lesson.getTitle() + "</div>";
 			} else {
-				System.out.println("contains");
+				//System.out.println("contains");
 			}
 			lessonList.add(lesson_id);
 		} else {
-			System.out.println("Skill ALready Avilable--->student_id:" + student_id + " course_id:" + course_id
-					+ " lesson_id:" + lesson_id);
+			//System.out.println("Skill ALready Avilable--->student_id:" + student_id + " course_id:" + course_id
+					//+ " lesson_id:" + lesson_id);
 		}
 		return appendingString;
 	}
@@ -427,30 +427,30 @@ public class OrgAdminSkillService {
 			String sql = "INSERT INTO cmsession ( id, 	title, 	uploader_admin_id, 	description, 	order_id, 	is_deleted ) VALUES 	( (select COALESCE(max(id),0)+1 from cmsession), 		'contentRolesMapping_session_"
 					+ courseId + "', 		'3', 		'skill_desc" + courseId
 					+ "', 		(select COALESCE(max(id),0)+1 from cmsession), 		'f' 	) returning id";
-			System.err.println(sql);
+			//System.err.println(sql);
 			int cmssession = (int) db.executeUpdateReturn(sql);
 
 			// create module
 			sql = "INSERT INTO module (id, module_name, order_id) VALUES ((select COALESCE(max(id),0)+1 from module), 'contentRolesMapping_module_"
 					+ courseId + "', (select COALESCE(max(id),0)+1 from module))returning id";
-			System.err.println(sql);
+			//System.err.println(sql);
 			int module_id = (int) db.executeUpdateReturn(sql);
 
 			// create cmsession_module mapping
 			sql = "INSERT INTO cmsession_module (cmsession_id, module_id) VALUES ('" + cmssession + "', '" + module_id
 					+ "')";
-			System.err.println(sql);
+			//System.err.println(sql);
 			db.executeUpdate(sql);
 
 			// create module_course mapping
 			sql = "INSERT INTO module_course (module_id, course_id) VALUES ('" + module_id + "', '" + courseId + "')";
-			System.err.println(sql);
+			//System.err.println(sql);
 			db.executeUpdate(sql);
 
 			// map lessons
 			sql = "INSERT INTO lesson_cmsession (lesson_id, cmsession_id) VALUES ('" + lessonId + "', '" + cmssession
 					+ "')";
-			System.err.println(sql);
+			//System.err.println(sql);
 			db.executeUpdate(sql);
 
 			// "<button aria-hidden='true' data-dismiss='alert' class='close'
@@ -468,18 +468,18 @@ public class OrgAdminSkillService {
 		DBUTILS db = new DBUTILS();
 		if (userType.equalsIgnoreCase("User")) {
 			String sql = "DELETE FROM student_playlist WHERE 	student_id= " + typeId + " AND lesson_id=" + lessonId;
-			System.err.println(sql);
+			//System.err.println(sql);
 			db.executeUpdate(sql);
 		} else if (userType.equalsIgnoreCase("Group")) {
 
 			String sql = "SELECT DISTINCT 	stu.student_id FROM 	batch_group bg, 	batch b, 	batch_students stu WHERE 	bg. ID = b.batch_group_id AND stu.batch_group_id = bg. ID AND bg. ID="
 					+ typeId;
-			System.err.println(sql);
+			//System.err.println(sql);
 			List<HashMap<String, Object>> data = db.executeQuery(sql);
 			for (HashMap<String, Object> item : data) {
 				sql = "DELETE FROM student_playlist WHERE 	student_id= " + item.get("student_id") + " AND lesson_id="
 						+ lessonId;
-				System.err.println(sql);
+				//System.err.println(sql);
 				db.executeUpdate(sql);
 			}
 		}

@@ -45,8 +45,8 @@
 			<% int k=0; 	
 			
 			for(TaskSummaryPOJO task :cp.getTasks()) {
-				System.out.println("task.getStatus()"+task.getStatus());
-				System.out.println("task.getItemType()"+task.getItemType());
+				//System.out.println("task.getStatus()"+task.getStatus());
+				//System.out.println("task.getItemType()"+task.getItemType());
 			if(!task.getStatus().equalsIgnoreCase("COMPLETED")) {
 				
 				if((task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION) || task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_TRAINER) || task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT) || task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER))&& sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0){

@@ -38,10 +38,10 @@ public class ChatWebSocketHandler   {
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
-    	System.out.println(user.getUpgradeRequest().getRequestURI());
+    	//System.out.println(user.getUpgradeRequest().getRequestURI());
     	String url = user.getUpgradeRequest().getRequestURI().toString();
     	String email = url.split("/")[4];
-    	System.out.println("---"+email);
+    	//System.out.println("---"+email);
     	List<IstarUser> users = new IstarUserDAO().findByEmail(email);
     	if(users.size()>0)
     	{
@@ -106,7 +106,7 @@ public class ChatWebSocketHandler   {
         	//JSONObject obj = getJoiningMsgJSONObject(user, IstarUser);
         	//msgService.addJoiningMessage(IstarUser,username+" joined the chat");
         	//Chat.broadcastJoiningMessage(IstarUser, obj.toString());
-        	System.out.println("connected");
+        	//System.out.println("connected");
     	}
     	
     	
@@ -159,13 +159,13 @@ public class ChatWebSocketHandler   {
         Chat.userIdBGGroupIdMap.remove(IstarUserId);
         Chat.userIdCustomGroupIdMap.remove(IstarUserId);
         Chat.sessionUserIdMap.remove(user);
-        System.out.println("closed");
+        //System.out.println("closed");
 	}
 
     @OnWebSocketMessage
     public void onMessage(Session user, String message) {
     	MessageService msgService = new MessageService();
-    	System.out.println("json string in onMessage >>>>>>>"+ message);
+    	//System.out.println("json string in onMessage >>>>>>>"+ message);
     	IstarNotificationServices serv = new IstarNotificationServices();
     	AndroidNoticeDelegator delegator = new AndroidNoticeDelegator();
     	Integer senderId = Chat.sessionUserIdMap.get(user);

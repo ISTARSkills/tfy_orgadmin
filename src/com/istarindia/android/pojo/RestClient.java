@@ -36,9 +36,9 @@ public class RestClient {
 		CourseContent courseContent = new CourseContent();
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
-		System.out.println("url in getCourseContentForStudent"+url.toString());
+		//System.out.println("url in getCourseContentForStudent"+url.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			System.out.println(conn.getURL().toString());
+			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
@@ -46,9 +46,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			System.out.println("Output from Server .... \n");
+			//System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				System.out.println(output);
+				//System.out.println(output);
 				string = string+ output;
 			}
 			
@@ -75,7 +75,7 @@ public class RestClient {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/user/"+userID+"/complex");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			System.out.println(conn.getURL().toString());
+			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
@@ -83,9 +83,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			System.out.println("Output from Server .... \n");
+			//System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				//System.out.println(output);
+				////System.out.println(output);
 				string = string+ output;
 			}
 			
@@ -93,7 +93,7 @@ public class RestClient {
 			
 			
 			covertedObject = gsonRequest.fromJson(string, ComplexObject.class);
-			System.err.println(covertedObject.getId());
+			//System.err.println(covertedObject.getId());
 			conn.disconnect();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class RestClient {
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			System.out.println(conn.getURL().toString());
+			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
@@ -120,9 +120,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			System.out.println("Output from Server .... \n");
+			//System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				System.out.println(output);
+				//System.out.println(output);
 				string = string+ output;
 			}
 			
@@ -164,9 +164,9 @@ public class RestClient {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + url);
-		System.out.println("Post parameters : " + urlParameters);
-		System.out.println("Response Code : " + responseCode);
+		//System.out.println("\nSending 'POST' request to URL : " + url);
+		//System.out.println("Post parameters : " + urlParameters);
+		//System.out.println("Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -179,13 +179,13 @@ public class RestClient {
 		in.close();
 
 		//print result
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 		
 	}
 	
 	public static void main(String[] args) {
 		RestClient rc = new RestClient();
 		//rc.getComplexObject(16);
-		System.out.println(rc.getAssessment(10039, 449).getQuestions().size());
+		//System.out.println(rc.getAssessment(10039, 449).getQuestions().size());
 	}
 }

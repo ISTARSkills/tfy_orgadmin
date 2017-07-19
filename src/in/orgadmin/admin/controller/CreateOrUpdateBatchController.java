@@ -59,23 +59,23 @@ public class CreateOrUpdateBatchController extends IStarBaseServelet {
 				String batchName=batchGroupName+"_"+courseName;
 						
 				String sql="select * from batch where batch_group_id="+batch_group+" and course_id="+couse_id;
-				System.err.println(sql);
+				//System.err.println(sql);
 				
 				List<HashMap<String, Object>> data = db.executeQuery(sql);
 				
 				if(data.size()==0){
 				sql = "INSERT INTO batch ( 	ID, 	createdat, 	NAME, 	updatedat, 	batch_group_id, 	course_id ) VALUES 	((select COALESCE(max(id),0)+1 from batch) 		, 		'now()', 		'"+batchName+"', 		'now()', 		'"+batch_group+"', 		'"+couse_id+"')returning id";
-				System.err.println(sql);
+				//System.err.println(sql);
 				int batchId = (int) db.executeUpdateReturn(sql);
 				
 				sql="UPDATE batch SET order_id='"+batchId+"' WHERE (id='"+batchId+"')";
-				System.err.println(sql);
+				//System.err.println(sql);
 				db.executeUpdate(sql);
 				
 				out.append("<div class='alert alert-dismissable gray-bg'><button aria-hidden='true' data-dismiss='alert' data-role='"+batch_group+"' data-role_skill='"+batchId+"' class='close role-map' type='button'></button>"+batchName+"</div>");
 				response.getWriter().print(out);
 				}else{
-					System.out.println("Batch already created for batch_group:"+batch_group+" course:"+couse_id);
+					//System.out.println("Batch already created for batch_group:"+batch_group+" course:"+couse_id);
 				}
 			}
 

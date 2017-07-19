@@ -26,7 +26,7 @@ public class FilterUtils {
 	public StringBuffer getHTML(int filterID, HashMap<String, String> conditions) {
 	StringBuffer out = new StringBuffer();
 	DataFilter filter = getReport(filterID);
-	System.err.println(filter.getSql());
+	//System.err.println(filter.getSql());
 	
 	DBUTILS db = new DBUTILS();
 	List<HashMap<String, Object>> data = db.executeQuery(filter.getSql());
@@ -86,7 +86,7 @@ public class FilterUtils {
 	
 	out.append("</tbody> </table>");*/
 	
-	System.out.println(out.toString());
+	//System.out.println(out.toString());
 	
 	return out;
 

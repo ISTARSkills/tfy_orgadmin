@@ -38,7 +38,7 @@
 
 				<%
 					} else {
-							System.out.println("48 activeUrl-=>" + activeUrl);
+							//System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}
 				
@@ -47,7 +47,7 @@
 			</ul>
 			<%if(request.getSession().getAttribute("not_auth")!=null){
 			
-			System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
+			//System.out.println("--vhvhvhv-->"+request.getParameter("not_auth"));
 			
 			%>
 			<!-- <ul class="nav navbar-top-links navbar-right">

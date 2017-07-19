@@ -67,7 +67,7 @@ int rand = (new Random()).nextInt(4);
 
 	}%>
 	
-	<% System.out.println("---------------->"+errormsg); %>
+	<% //System.out.println("---------------->"+errormsg); %>
 	<div class="text-center loginscreen animated fadeInDown">
 
 		<div class="login-screen-box">

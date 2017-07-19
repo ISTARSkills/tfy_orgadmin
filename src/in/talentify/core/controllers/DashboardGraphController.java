@@ -53,7 +53,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			String sql12 = "SELECT 	batch_group.name, 	CAST (AVG(master) * 100 AS INTEGER) AS master, 	CAST (AVG(rookie) * 100 AS INTEGER) AS rookie, 	CAST ( 		AVG (apprentice) * 100 AS INTEGER 	) AS apprentice, 	CAST (AVG(wizard) * 100 AS INTEGER) AS wizard, 	CAST ( 		( 			AVG (master) + AVG (rookie) + AVG (apprentice) + AVG (wizard) 		) AS INTEGER 	) AS total FROM 	mastery_level_per_course, batch_group WHERE "
 					+ "	mastery_level_per_course.college_id = "+collegeId+" AND course_id = "+courseId+" AND batch_group.id = mastery_level_per_course.batch_group_id GROUP BY 	batch_group.name ORDER BY total";
 			
-			//System.out.println("sql2------->" + sql12);
+			////System.out.println("sql2------->" + sql12);
 			List<HashMap<String, Object>> program_scores = dbutils.executeQuery(sql12);
 
 			if (program_scores.size() > 0) {
@@ -61,7 +61,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 				for (HashMap<String, Object> program_score : program_scores) {
 					
 					
-					//System.out.println(">>>>>>>>>>>>>>>>>>>200"+program_score.get("rookie").toString());
+					////System.out.println(">>>>>>>>>>>>>>>>>>>200"+program_score.get("rookie").toString());
 					if(Integer.parseInt(program_score.get("total").toString()) > 0)
 					{
 						out.append(
@@ -90,7 +90,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 				out.append("<tr> <th>0</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>");
 			}
 			out.append("</tbody></table>");
-			//System.out.println("PROGRAMVIEWREPORT------->" + out);
+			////System.out.println("PROGRAMVIEWREPORT------->" + out);
 			break;
 		case "COURSEVIEWREPORT":
 
@@ -103,7 +103,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			String sql14 = "SELECT 	course.course_name, 	CAST (AVG(master) * 100 AS INTEGER) AS master, 	CAST (AVG(rookie) * 100 AS INTEGER) AS rookie, 	CAST ( 		AVG (apprentice) * 100 AS INTEGER 	) AS apprentice, 	CAST (AVG(wizard) * 100 AS INTEGER) AS wizard, 	CAST ( 		( 			AVG (master) + AVG (rookie) + AVG (apprentice) + AVG (wizard) 		) AS INTEGER 	) AS total FROM 	mastery_level_per_course,course WHERE"
 					+ " 	 mastery_level_per_course.college_id = "+collegeId+" AND batch_group_id = "+batchGroupId+" AND course.id = mastery_level_per_course.course_id GROUP BY 	course.course_name ORDER BY 	total";
 			
-			//System.out.println("sql------->" + sql14);
+			////System.out.println("sql------->" + sql14);
 			List<HashMap<String, Object>> course_scores = dbutils.executeQuery(sql14);
 
 			if (course_scores.size() > 0) {
@@ -138,7 +138,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 				out.append("<tr> <th>0</th><td>0</td><td>0</td><td>0</td><td>0</td></tr>");
 			}
 			out.append("</tbody></table>");
-			//System.out.println("COURSEVIEWREPORT------->" + out);
+			////System.out.println("COURSEVIEWREPORT------->" + out);
 			break;
 		case "PROGRESSVIEWREPORT":
 			
@@ -147,7 +147,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			out.append("<table id='progress_view_datatable' data-college="+collegeId+" style='display: none'><thead><tr><th></th>");
 			String sql9 = "select id, created_at, batch_group_name, avg_score from bg_progress where college_id ="
 					+ collegeId + " ORDER BY created_at";
-			//System.out.println("sql------->" + sql9);
+			////System.out.println("sql------->" + sql9);
 			List<HashMap<String, Object>> progress_views = dbutils.executeQuery(sql9);
 
 			String bg_name = "FALSE";
@@ -177,7 +177,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			}
 
 			out.append("</tbody></table>");
-			//System.out.println("PROGRESSVIEWREPORT------->" + out);
+			////System.out.println("PROGRESSVIEWREPORT------->" + out);
 			break;
 	  	case "COMPETITIONVIEWREPORT":
 			
@@ -188,7 +188,7 @@ public class DashboardGraphController extends IStarBaseServelet {
 			
 			String sql10 = "SELECT DISTINCT 	csobj .skill_objective_id, 	c.course_name, 	CAST ( 		AVG (sp.percentage) AS INTEGER 	) FROM 	batch_group AS bg, 	batch AS b, 	course_skill_objective AS csobj, course c, 	skill_precentile sp, 	batch_students AS bs WHERE 	bg.college_id = "+collegeId+" AND b.batch_group_id = bg. ID AND bs.batch_group_id = b.batch_group_id AND b.course_id = csobj .course_id AND csobj .course_id = c.id AND csobj .skill_objective_id = sp.skill_id AND bs.student_id = sp.student_id GROUP BY 	c .course_name, 	csobj .skill_objective_id ORDER BY 	AVG";
 			
-		//	System.out.println("sql------->" + sql10);
+		//	//System.out.println("sql------->" + sql10);
 			
 			out.append("<table id='competition_view_datatable' style='display: none'>"
 					+ "<thead><tr><th></th>");
@@ -211,13 +211,13 @@ public class DashboardGraphController extends IStarBaseServelet {
 			}
 			
 			out.append("</tr></tbody></table>");
-			//System.out.println("last out------->" + out);
+			////System.out.println("last out------->" + out);
 			break;
 		default:
 			break;
 		}
 		
-		//System.out.println("out------->" + out);
+		////System.out.println("out------->" + out);
 		response.getWriter().print(out);
 	}
 

@@ -6528,6 +6528,7 @@ function init_custom_task(){
         enableCancelButton:false,
         onStepChanging: function (event, currentIndex, newIndex)
         {
+        	alert('onStepChanging');
         	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
         	{
         		var checkValidation = false;
@@ -6573,6 +6574,7 @@ function init_custom_task(){
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
+        	alert('onStepChanged');
           if (currentIndex === 2 && Number($("#age").val()) >= 18)
             {
                 $(this).steps("next");
@@ -6585,6 +6587,8 @@ function init_custom_task(){
         },
         onFinishing: function (event, currentIndex)
         {
+        	
+        	alert('onFinishing');
         	/*var checkValidation = false;
     		$('.current textarea').each(function() { 
         		console.log('......>>>> '+$(this).val());

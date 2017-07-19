@@ -121,7 +121,7 @@ public class CMSRegistry {
 
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			dropdownList = (DropDownList) jaxbUnmarshaller.unmarshal(file);
-			System.out.println(dropdownList);
+			//System.out.println(dropdownList);
 			
 		} catch (JAXBException e) {
 			e.printStackTrace();

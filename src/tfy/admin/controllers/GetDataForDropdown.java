@@ -55,7 +55,7 @@ public class GetDataForDropdown extends HttpServlet {
 		sql =sql.replaceAll(":search_term", searchTerm.toLowerCase());
 		sql =sql.replaceAll(":dependency_term", dependencyTerm);
 		
-		System.out.println("sql >>"+sql);
+		//System.out.println("sql >>"+sql);
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
