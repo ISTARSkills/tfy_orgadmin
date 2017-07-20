@@ -84,21 +84,5 @@
 				</div>
 			</div>
 		</div>
-
-		<div class='custom-colum-grid'>
-			<div class='widget style1 navy-bg custom-theme-color'>
-				<div class='row'>
-					<div class='col-xs-2' style="float: right;">
-						<i class='fa fa-trash fa-2x'></i>
-					</div>
-					<div class='col-xs-9 text-right' style="text-align: left !important;">
-						<span> Events Cancelled </span>
-						<h2 class='font-bold'>
-							<%=cancelled%>
-						</h2>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>

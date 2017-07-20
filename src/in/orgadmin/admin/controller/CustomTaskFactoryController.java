@@ -97,7 +97,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 			case CustomFormElementTypes.SWITCH:
 				String switchValue = request.getParameter(formelement.getElemntName());
 				boolean val = false;
-				if(switchValue.equalsIgnoreCase("on"))
+				if(switchValue != null && switchValue.equalsIgnoreCase("on"))
 				{
 					val= true;
 				}
@@ -119,7 +119,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		}
 		
 		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
-		//System.out.println("updateQuery ->>>"+updateQuery);
+		System.out.println("updateQuery ->>>"+updateQuery);
 		util.executeUpdate(updateQuery);
 	}
 	
