@@ -6528,7 +6528,7 @@ function init_custom_task(){
         enableCancelButton:false,
         onStepChanging: function (event, currentIndex, newIndex)
         {
-        	alert('onStepChanging');
+        	//alert('onStepChanging');
         	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
         	{
         		var checkValidation = false;
@@ -6574,7 +6574,7 @@ function init_custom_task(){
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
-        	alert('onStepChanged');
+        	//alert('onStepChanged');
           if (currentIndex === 2 && Number($("#age").val()) >= 18)
             {
                 $(this).steps("next");
@@ -6588,7 +6588,7 @@ function init_custom_task(){
         onFinishing: function (event, currentIndex)
         {
         	
-        	alert('onFinishing');
+        	//alert('onFinishing');
         	/*var checkValidation = false;
     		$('.current textarea').each(function() { 
         		console.log('......>>>> '+$(this).val());
@@ -6725,6 +6725,32 @@ function init_custom_task(){
 		
 		//$('#'+selectId).prop('tabindex', $('#'+selectId).data('tabindex'));
 	});
+	var recognition = new webkitSpeechRecognition();
+	recognition.continuous = true;
+	$('.stop_mic').hide();
+	
+	$('.start_mic').unbind().on('click',function(){
+		recognition.start();
+		var id = $(this).attr('id');
+		var StopButtonId = id.replace('start_speaking_','stop_speaking_');		
+		$(this).hide();
+		$('#'+StopButtonId).show();		
+	});
+	
+	$('.stop_mic').unbind().on('click',function(){
+		var micId = $(this).attr('id');
+		//stop_speaking_200_1_1
+		recognition.stop();
+		$(this).hide();
+		var StartButtonId = micId.replace('stop_speaking_','start_speaking_');				
+		$('#'+StartButtonId).show();
+		
+		var speechBoxId = micId.replace('stop_speaking_','voice_text_');
+		recognition.onresult = function(event) {
+				$('#'+speechBoxId).val(event.results[0][0].transcript);			  
+			};
+	});
+	
 	
 	
 	

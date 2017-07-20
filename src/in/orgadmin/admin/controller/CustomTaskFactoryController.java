@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.customtask.ElementParam;
 import com.viksitpro.core.customtask.TaskFormElement;
 import com.viksitpro.core.customtask.TaskLibrary;
 import com.viksitpro.core.customtask.TaskStep;
@@ -48,7 +49,27 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		for (TaskFormElement formelement : step.getForm_elements()) {
 			switch (formelement.getElemntType()) {
 			case CustomFormElementTypes.VOICE:
-				service.evaluateVoiceText();
+				String speechText = request.getParameter(formelement.getElemntName());
+				ArrayList<ElementParam> elementParams = formelement.getElementParams();
+				String keywords = "";
+				String benchMarkString ="";
+				for(ElementParam param : elementParams)
+				{
+					if(param.getName().equalsIgnoreCase("keywords"))
+					{
+						keywords = param.getValue();
+					}
+					else if (param.getName().equalsIgnoreCase("benchmark_string"))
+					{
+						benchMarkString = param.getValue();
+					}	
+				}
+				HashMap<String, Object> returnedData =service.evaluateVoiceText(speechText,keywords, benchMarkString);
+				//just for the sake of testing
+				for(String key: keywords.split("!#"))
+				{
+					System.out.println("density of "+key+" is "+returnedData.get(key).toString());
+				}	
 				break;
 			case CustomFormElementTypes.DROP_DOWN:
 				String value = request.getParameter(formelement.getElemntName());
