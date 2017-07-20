@@ -1915,19 +1915,10 @@ order by batch_schedule_event.eventdate desc
 		<column columnHandler="NONE" display_name="Trainer Rating" isVisible="true" name="trainer_rating" />
 		<column columnHandler="NONE" display_name="Avg. Student Rating" isVisible="true" name="avg_student_rating" />
 	<sql>
-SELECT DISTINCT
-	organization. NAME AS college_name,
-	course.course_name AS course_name,
-	batch_group. NAME AS batch_group_name,
-	user_profile.first_name AS t_name,
-	to_char(
-		batch_schedule_event.eventdate,
-		'DD-Mon-yyyy HH24:MI'
-	) AS event_date,
-	CAST (
+select T1.*, 	CAST (
 		COALESCE (
 			to_char(
-				MIN (event_log.created_at),
+				MIN (slide_change_log.created_at),
 				'DD-Mon-yyyy HH24:MI'
 			),
 			'N/A'
@@ -1936,23 +1927,18 @@ SELECT DISTINCT
 	CAST (
 		COALESCE (
 			to_char(
-				MAX (event_log.created_at),
+				MAX (slide_change_log.created_at),
 				'DD-Mon-yyyy HH24:MI'
 			),
 			'N/A'
 		) AS VARCHAR
 	) AS session_ended,
-	batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
-	COUNT (
-		DISTINCT batch_students.student_id
-	) AS student_enrolled,
-	COUNT (DISTINCT attendance. ID) FILTER (
+	
 
+	COUNT (DISTINCT attendance. ID) FILTER (
 		WHERE
 			attendance.status = 'PRESENT'
-	) || '/' || COUNT (
-		DISTINCT batch_students.student_id
-	) AS total_attendance_count,
+	)  AS total_attendance_count,
 	CASE
 WHEN trainer_feedback.comments IS NULL
 OR trainer_feedback.comments = '' THEN
@@ -1968,36 +1954,29 @@ END AS trainer_comment,
 ) AS trainer_rating,
 COALESCE(CAST(avg(student_feedback.rating) as VARCHAR),'N/A') AS avg_student_rating,
 COALESCE(string_agg(DISTINCT cmsession.title||'('||cmsession.id||')' ,', '),'N/A') as session_covered
-FROM
-	classroom_details,
+ from 
+(select DISTINCT batch_schedule_event.id as event_id,
+	organization. NAME AS college_name,
+	course.course_name AS course_name,
+	batch_group. NAME AS batch_group_name,
+	user_profile.first_name AS t_name,
+batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
+	to_char(
+		batch_schedule_event.eventdate,
+		'DD-Mon-yyyy HH24:MI'
+	) AS event_date,
+	COUNT (
+		DISTINCT batch_students.student_id
+	) AS student_enrolled
+ 
+from batch_schedule_event,
+classroom_details,
 	organization,
 	course,
 	batch_group,
 	batch_students,
-	user_profile,
-	batch_schedule_event
-LEFT JOIN event_log ON (
-	event_log.trainer_id = batch_schedule_event.actor_id
-	AND event_log.event_id = batch_schedule_event. ID
-)
-LEFT JOIN attendance ON (
-	attendance.taken_by = batch_schedule_event.actor_id
-	AND attendance.event_id = batch_schedule_event. ID
-)
-LEFT JOIN trainer_feedback ON (
-	batch_schedule_event.actor_id = trainer_feedback.user_id
-	AND batch_schedule_event. ID = trainer_feedback.event_id
-)
-LEFT JOIN cmsession ON (
-	event_log.cmsession_id = cmsession.id
-)
-LEFT JOIN student_feedback ON (
-	batch_schedule_event.actor_id = student_feedback.trainer_id
-AND batch_schedule_event.batch_group_code in (SELECT batch_schedule_event.batch_group_code FROM batch_schedule_event,student_feedback WHERE student_feedback.event_id = batch_schedule_event.id) 
-)
-
-WHERE
-	batch_schedule_event.classroom_id = classroom_details. ID
+	user_profile
+where batch_schedule_event.classroom_id = classroom_details. ID
 AND classroom_details.organization_id = organization. ID
 AND batch_schedule_event.course_id = course. ID
 AND batch_group. ID = batch_schedule_event.batch_group_id
@@ -2009,17 +1988,34 @@ GROUP BY
 	organization. NAME,
 	course.course_name,
 	batch_group. NAME,
-	user_profile.first_name,
-	batch_schedule_event.eventdate,
+batch_schedule_event.id,	
+batch_schedule_event.eventdate,
 	total_duration,
-	trainer_feedback.comments,
+user_profile.first_name
+)	T1
+left join slide_change_log ON (
+	slide_change_log.event_id = T1.event_id
+)
+LEFT JOIN attendance ON (
+	attendance.event_id = T1. event_id
+)
+LEFT JOIN trainer_feedback ON (
+ T1. event_id = trainer_feedback.event_id
+)
+LEFT JOIN cmsession ON (
+	slide_change_log.cmsession_id = cmsession.id
+)
+LEFT JOIN student_feedback ON (
+	T1.event_id = student_feedback.event_id
+)
+group by T1.college_name, T1.course_name, T1.batch_group_name,T1.event_id,T1.event_date, T1.total_duration,T1.student_enrolled,T1.t_name,
+trainer_feedback.comments,
 	trainer_feedback.rating
-ORDER BY
-	event_date ASC
+order by T1.event_date 
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
-		<title>Trainer Feedback</title>
+		<title>Daily Session Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3071" type_of_report="table">	
@@ -2059,5 +2055,3 @@ order by batch_schedule_event.eventdate desc
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>
-
-

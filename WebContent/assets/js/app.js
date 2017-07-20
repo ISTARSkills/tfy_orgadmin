@@ -4600,7 +4600,7 @@ $('#college_id').on('change', function(){
 
 function init_super_admin_scheduler(){
 	init_auto_scheduler();
-	
+	  $('select').select2();
 	   $('.org_holder').change(function() {
 			 var orgID =  this.value;
 			 
