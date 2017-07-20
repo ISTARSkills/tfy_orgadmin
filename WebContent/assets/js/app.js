@@ -4537,7 +4537,7 @@ function set_batchgroup_data(){
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
-	
+	$('select').select2();
 	user_filter_by_course_batch();
 	admin_edit_modal_create();
 	set_batchgroup_data();
