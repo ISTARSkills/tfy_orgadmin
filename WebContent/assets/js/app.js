@@ -4537,7 +4537,7 @@ function set_batchgroup_data(){
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
-	
+	$('select').select2();
 	user_filter_by_course_batch();
 	admin_edit_modal_create();
 	set_batchgroup_data();
@@ -5529,8 +5529,10 @@ function init_istar_notification(){
 	});
 
 	$('#notification_college_holder').on("change", function() {
-		var orgId = $(this).val();
+		var orgId = $(this).select2('val');
 		var type = 'ORG';
+		
+		
 		$.ajax({
 			type : "POST",
 			url : '../get_notification_data',
@@ -5566,7 +5568,7 @@ function init_istar_notification(){
 		var batchGroupId = $(this).val();
 		var type = 'GROUP';
 
-		if (batchGroupId != 'null') {
+		if (batchGroupId!=undefined && batchGroupId!='' && batchGroupId != 'null') {
 			$.ajax({
 				type : "POST",
 				url : '../get_notification_data',
@@ -5589,7 +5591,7 @@ function init_istar_notification(){
 		var course = $(this).val();
 		var type = 'COURSE';
 
-		if (course != 'null') {
+		if (course!=undefined && course!='' && course != 'null') {
 			$.ajax({
 				type : "POST",
 				url : '../get_notification_data',
