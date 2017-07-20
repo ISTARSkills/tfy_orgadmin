@@ -481,7 +481,7 @@ $(document).ready(function(){
 		var moduleLevelData = [];  
 		var sessionLevelData ={} ;  
 		 $.ajax({
-	          url: "http://localhost:8080/get_admin_skill_graph",
+	          url: "<%=baseURL%>/get_admin_skill_graph",
 	          cache: false,
 	          type:  "POST",
 	          data:  "type=MODULE_LEVEL&"+queryString,
@@ -490,7 +490,7 @@ $(document).ready(function(){
 	        	  moduleLevelData = data;
 	        	  
 	        	  $.ajax({
-	    	          url: "http://localhost:8080/get_admin_skill_graph",
+	    	          url: "<%=baseURL%>/get_admin_skill_graph",
 	    	          cache: false,
 	    	          type:  "POST",
 	    	          data:  "type=SESSION_LEVEL&"+queryString,
