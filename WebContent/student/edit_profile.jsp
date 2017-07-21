@@ -208,12 +208,15 @@ var sThisVal = {};
 	
 	function check_time_slot_validation(){
 		var flag =false;
-		
+		if($('.checkbox').length > 0){
 		$('.chechbox').each(function(){
 			if($(this).prop('checked')){
 				flag = true;
 			}
 		});
+	}else{
+		flag = true;
+	}
 		return flag;
 	}
 	function formatRepoSelection(repo) {
