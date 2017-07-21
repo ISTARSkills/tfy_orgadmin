@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AndroidNoticeDelegator {
 
-	String deployment_type;
+	String deployment_type="";
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
 	public AndroidNoticeDelegator() {
@@ -30,11 +30,9 @@ public class AndroidNoticeDelegator {
 			if (inputStream != null) {
 				properties.load(inputStream);
 			} else {
-				System.out.println("property file '" + propertyFileName + "' not found in the classpath");
 				throw new FileNotFoundException("property file '" + propertyFileName + "' not found in the classpath");
 			}
 			deployment_type = properties.getProperty("deploymentType");
-			System.out.println("deployment type"+ deployment_type);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -50,7 +48,7 @@ public class AndroidNoticeDelegator {
 	// assessmentType (if required), courseId
 	public void sendNotificationToGroup(List<String> allIstarUserIds, String message, String type,
 			HashMap<String, Object> item) {
-		if (deployment_type.equalsIgnoreCase("production")) {
+		if (deployment_type.equalsIgnoreCase("prod")) {
 
 			for (String istarUserId : allIstarUserIds) {
 				DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance()
@@ -100,7 +98,7 @@ public class AndroidNoticeDelegator {
 
 	public void sendNotificationToUser(int notificationId, String istarUserId, String message, String type,
 			HashMap<String, Object> item) {
-		if (deployment_type.equalsIgnoreCase("production")) {
+		if (deployment_type.equalsIgnoreCase("prod")) {
 
 			DatabaseReference databaseReferenceForUser = FirebaseDatabase.getInstance()
 					.getReference("istar-notification").child(istarUserId);
