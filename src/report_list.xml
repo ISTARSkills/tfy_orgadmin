@@ -2196,11 +2196,11 @@ TF.item_type,
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
-		<title>Trainer Feedback</title>
+		<title>TOT Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3075" type_of_report="table">	
-		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" data_type="int" name="trainer_id" />
+		<column columnHandler="NONE" display_name="Trainer id" isVisible="true" name="trainer_id" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" name="org_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
@@ -2250,16 +2250,16 @@ SELECT DISTINCT
 
 SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	) AS hours_scheduled,
-	COALESCE(cast(SUM (
+	)/60 AS hours_scheduled,
+	COALESCE(cast((SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
 
 		WHERE
 			batch_schedule_event.eventdate &lt; now()
 		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	) as varchar),'N/A') AS hours_incomplete,
-	COALESCE(cast(SUM (
+	))/60 as varchar),'N/A') AS hours_incomplete,
+	COALESCE(cast((SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
 
@@ -2270,15 +2270,15 @@ SUM (
 			'ATTENDANCE',
 			'FEEDBACK'
 		)
-	) as varchar),'N/A') AS hours_finished,
-	COALESCE(cast(SUM (
+	))/60 as varchar),'N/A') AS hours_finished,
+	COALESCE(cast((SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
 
 		WHERE
 			batch_schedule_event.eventdate &gt; now()
 		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	) as varchar),'N/A') AS hours_pending
+	))/60 as varchar),'N/A') AS hours_pending
 
 FROM
 	batch_schedule_event,
