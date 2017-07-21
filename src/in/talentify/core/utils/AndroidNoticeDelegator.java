@@ -30,9 +30,11 @@ public class AndroidNoticeDelegator {
 			if (inputStream != null) {
 				properties.load(inputStream);
 			} else {
+				System.out.println("property file '" + propertyFileName + "' not found in the classpath");
 				throw new FileNotFoundException("property file '" + propertyFileName + "' not found in the classpath");
 			}
-			deployment_type = properties.getProperty("deployment_type");
+			deployment_type = properties.getProperty("deploymentType");
+			System.out.println("deployment type"+ deployment_type);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

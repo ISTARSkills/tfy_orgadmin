@@ -90,13 +90,25 @@ request.setAttribute("cp", co	);
 		<div class="row">
 				
 				
-				<div class="row wrapper border-bottom white-bg page-heading">
-					<div class="col-lg-10">
-						<h2 style="margin-left: 31px;">Edit Profile</h2>
-					</div>
-					<div class="pull-right" style=" margin-top: 18px;margin-right: 80px;">
+				<div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;
+    padding-left: 20px;">
+					 <div class="col-lg-10">
+                    <h2>Profile</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="dashboard.jsp">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <strong>Profile</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+<div class="pull-right" style=" margin-top: 18px;margin-right: 80px;">
                   <button type="button" class="btn btn-sm btn-primary m-t-n-xs signup_button">Update Details</button>
                </div>
+                </div>
+					
 				</div>
 				<jsp:include page="/trainer_common_jsps/profile_and_signup.jsp">
 				<jsp:param value="<%=userType %>" name="user_type"/>
