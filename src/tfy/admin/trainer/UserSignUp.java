@@ -100,7 +100,8 @@ public class UserSignUp extends IStarBaseServelet {
 		int pincode = 0;
 		boolean hasUgDegree = false;
 		boolean hasPgDegree = false;
-
+String batchCode ="";
+		
 		firstName = request.getParameter("f_name") != null ? request.getParameter("f_name") : "";
 		lastName = request.getParameter("l_name") != null ? request.getParameter("l_name") : "";
 		email = request.getParameter("email") != null ? request.getParameter("email") : "";
@@ -146,6 +147,7 @@ public class UserSignUp extends IStarBaseServelet {
 		experinceMonths = request.getParameter("experince_months") != null ? request.getParameter("experince_months")
 				: "";
 		experinceYears = request.getParameter("experince_years") != null ? request.getParameter("experince_years") : "";
+		 batchCode = request.getParameter("batch_code") != null ? request.getParameter("batch_code") : "";
 		userType = request.getParameter("user_type");
 		String presentor[] = email.split("@");
 		String part1 = presentor[0];
@@ -194,6 +196,35 @@ public class UserSignUp extends IStarBaseServelet {
 						+ email + "', '" + password + "', now(), " + mobile + ", NULL, NULL, 't') returning id;";
 				//System.err.println(insertIntoIstarUser);
 				int urseId = db.executeUpdateReturn(insertIntoIstarUser);
+				if(batchCode!=null && !batchCode.equalsIgnoreCase(""))
+				 {
+					 String findGroupIdForCode ="select id,college_id from batch_group where batch_code='"+batchCode+"'";
+					 List<HashMap<String, Object>> grpData = db.executeQuery(findGroupIdForCode);
+						for(HashMap<String, Object> row: grpData)
+						{
+							int groupId = (int)row.get("id");
+							int orgId = (int) row.get("college_id");
+							String checkIfMappingExist ="select cast(count(*) as integer) as cnt from batch_students where student_id ="+urseId+" and batch_group_id="+groupId+"";
+							List<HashMap<String, Object>> mappins =   db.executeQuery(checkIfMappingExist);
+							if(mappins.size()>0 && (int)mappins.get(0).get("cnt")==0)
+							{
+								String insertIntoBatchStudents ="insert into batch_students (id, student_id, batch_group_id) values((select COALESCE(max(id),0)+1 from batch_students),"+urseId+","+groupId+")";
+								db.executeUpdate(insertIntoBatchStudents);
+								
+								String checkIfExistInOrgMapping = "select cast(count(*) as integer) as cnt from user_org_mapping where user_id = "+urseId+" and organization_id="+orgId;
+								List<HashMap<String, Object>> orgMappins =   db.executeQuery(checkIfExistInOrgMapping);
+								if(orgMappins.size()>0 && (int)orgMappins.get(0).get("cnt")==0)
+								{
+									String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
+											+ urseId + ", "+orgId+", ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
+									db.executeUpdate(insertIntoUserOrg);
+								}
+								
+							}
+						}
+				 }
+				
+				
 				student_id = urseId+"";
 				if (userType.equalsIgnoreCase("TRAINER")) {
 					String insertPresentorIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
@@ -230,10 +261,15 @@ public class UserSignUp extends IStarBaseServelet {
 				if (userType.equalsIgnoreCase("TRAINER")) {
 
 					
-
-					String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
-							+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
-					db.executeUpdate(insertIntoUserOrg);
+					String checkIfExistInOrgMapping = "select cast(count(*) as integer) as cnt from user_org_mapping where user_id = "+urseId;
+					List<HashMap<String, Object>> orgMappins =   db.executeQuery(checkIfExistInOrgMapping);
+					if(orgMappins.size()>0 && (int)orgMappins.get(0).get("cnt")==0)
+					{
+						String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
+								+ urseId + ", 2, ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
+						db.executeUpdate(insertIntoUserOrg);
+					}
+					
 					
 					//trainer presentor mapping
 					String insertTrainerPresentorMap = "INSERT INTO trainer_presentor (id, trainer_id, presentor_id) VALUES ((SELECT max(id)+1 from trainer_presentor) ,"
@@ -421,11 +457,7 @@ public class UserSignUp extends IStarBaseServelet {
 
 				}
 			}
-			if(!userType.equalsIgnoreCase("STUDENT")){
 			response.sendRedirect("/login?email=" + email + "&password=" + password + "");
-			}else{
-				response.getWriter().print(student_id);
-			}
 		}
 	}
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,6 +28,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -34,6 +36,8 @@ import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,6 +46,7 @@ import com.istarindia.android.pojo.OptionPOJO;
 import com.istarindia.android.pojo.QuestionPOJO;
 import com.istarindia.android.pojo.QuestionResponsePOJO;
 import com.istarindia.android.pojo.RestClient;
+import com.viksitpro.core.cms.interactive.InteractiveContent;
 import com.viksitpro.core.customtask.DropDownList;
 import com.viksitpro.core.customtask.TaskFormElement;
 import com.viksitpro.core.customtask.TaskLibrary;
@@ -76,6 +81,7 @@ import in.orgadmin.utils.report.CustomReportList;
 import in.orgadmin.utils.report.CustomReportUtils;
 import in.orgadmin.utils.report.ReportUtils;
 import in.talentify.core.services.NotificationAndTicketServices;
+import in.talentify.core.utils.AndroidNoticeDelegator;
 import in.talentify.core.utils.CMSRegistry;
 import in.talentify.core.utils.EmailSendingUtility;
 
@@ -126,10 +132,41 @@ public class MAIN {
 		//taslCreator();
 		//testingTask();
 		//System.out.println((int)Math.ceil(Float.parseFloat("2.5")));
+		//xmlTesting();
+		appPropertiesTesting();
 		//System.out.println("end");
 	}
 	
 	
+
+
+	private static void appPropertiesTesting() {
+		AndroidNoticeDelegator nd = new AndroidNoticeDelegator();
+		
+	}
+
+
+
+
+	private static void xmlTesting() {
+		// TODO Auto-generated method stub
+		InteractiveContent content = new InteractiveContent();
+		String xmlPath = "C:\\var\\www\\html\\lessonXMLs\\5778\\5778\\5778.xml";
+		try {
+			String contentq = FileUtils.readFileToString(new File(xmlPath));
+		System.out.println(contentq);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*String lessonXML = lesson.getLessonXml();
+		Serializer serializer = new Persister();*/
+		//interactiveContent = serializer.read(InteractiveContent.class, lessonXML);
+		//interactiveContent.setZipFileURL(mediaURLPath+"lessons" + lessonZipFilePath);
+	}
+
+
 
 
 	private static void testingTask() {

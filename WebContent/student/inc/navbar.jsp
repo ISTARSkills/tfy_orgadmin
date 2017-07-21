@@ -146,14 +146,14 @@ request.setAttribute("cp", cp);
 									}	
 								}	
 							%>
-						<li style="    margin-left: -31px;min-height: 38px;	">
+						<li style="    margin-left: -9px;min-height: 38px;	">
 							<div class="dropdown-messages-box notification_holder_status" data-url="<%=baseURL+"t2c/notifications/user/"+cp.getId() %>" data-notifiction="<%=notification.getId()%>" >
-								<a href="<%=url %>" class="pull-left"> <img alt="image" class='' style="width: 45px;" src="<%=notification.getImageURL() %>">
+								<a href="<%=url %>" class="pull-left" style="    padding: 3px 5px;"> <img alt="image" class='' style="width: 45px;" src="<%=notification.getImageURL() %>">
 								</a>
 								<div class="media-body">
 									<small class="pull-right"><%=time %></small>
 									<%if(!url.equalsIgnoreCase("#")){ %>	
-																	<a href="<%=url%>" target="_blank" class="pull-left"> <%=notification.getMessage().trim() %></a><br>
+																	<a href="<%=url%>" target="_blank" class="pull-left" style="padding: 3px 7px !important;"> <%=notification.getMessage().trim() %></a><br>
 																	<%}else{ %>
 												<a class="pull-left"><%=notification.getMessage().trim() %></a><br>					
 								<%} %>

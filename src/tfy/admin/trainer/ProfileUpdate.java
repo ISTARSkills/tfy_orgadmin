@@ -102,7 +102,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 int pincode =0;
 		 boolean hasUgDegree = false;
 		 boolean hasPgDegree = false;
-		
+		String batchCode="";
 		 
 		 firstName = request.getParameter("f_name")!=null?request.getParameter("f_name"):"";
 		 lastName = request.getParameter("l_name")!=null?request.getParameter("l_name"):"";
@@ -147,6 +147,8 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 religion = request.getParameter("religion") != null ? request.getParameter("religion") : "";
 		 userType = request.getParameter("user_type");
 		 panNo = request.getParameter("pan") != null ? request.getParameter("pan") : "";
+		 
+		 batchCode = request.getParameter("batch_code") != null ? request.getParameter("batch_code") : "";
 		 JSONParser parser = new JSONParser();
 		 JSONObject obj;
 		 String presentor_email = "";
@@ -182,6 +184,39 @@ public class ProfileUpdate extends IStarBaseServelet {
 		 {
 			 int userId = Integer.parseInt(request.getParameter("user_id"));
 			 IstarUser user = new IstarUserDAO().findById(userId);
+			 
+			 if(batchCode!=null && !batchCode.equalsIgnoreCase(""))
+			 {
+				 String findGroupIdForCode ="select id,college_id from batch_group where batch_code='"+batchCode+"'";
+				 List<HashMap<String, Object>> grpData = util.executeQuery(findGroupIdForCode);
+					for(HashMap<String, Object> row: grpData)
+					{
+						int groupId = (int)row.get("id");
+						int orgId = (int) row.get("college_id");
+						String checkIfMappingExist ="select cast(count(*) as integer) as cnt from batch_students where student_id ="+userId+" and batch_group_id="+groupId+"";
+						List<HashMap<String, Object>> mappins =   util.executeQuery(checkIfMappingExist);
+						if(mappins.size()>0 && (int)mappins.get(0).get("cnt")==0)
+						{
+							String insertIntoBatchStudents ="insert into batch_students (id, student_id, batch_group_id) values((select COALESCE(max(id),0)+1 from batch_students),"+userId+","+groupId+")";
+							util.executeUpdate(insertIntoBatchStudents);
+							
+							String checkIfExistInOrgMapping = "select cast(count(*) as integer) as cnt from user_org_mapping where user_id = "+userId+" and organization_id="+orgId;
+							List<HashMap<String, Object>> orgMappins =   util.executeQuery(checkIfExistInOrgMapping);
+							if(orgMappins.size()>0 && (int)orgMappins.get(0).get("cnt")==0)
+							{
+								String insertIntoUserOrg = "INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("
+										+ userId + ", "+orgId+", ((select COALESCE(max(id),0)+1 from user_org_mapping)));";
+								util.executeUpdate(insertIntoUserOrg);
+							}
+							
+						}
+					}
+			 }
+			 
+			 
+			 
+			 
+			 
 			 Integer address_id = null;
 			 if(user.getUserProfile().getAddress()!=null)
 			 {

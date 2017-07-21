@@ -202,6 +202,58 @@
                   </div>
                </div>
             </div>
+            
+              	<%
+              	if(user!=null)
+              	{
+              		DBUTILS util = new DBUTILS();
+					String checkIfBatchCodeExist ="SELECT 	string_agg(distinct batch_group. NAME ||' ('	|| batch_group.batch_code || ')', ',<br>') as groups FROM 	batch_group, 	batch_students WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+user.getId();
+					List<HashMap<String,Object>> batchCodeDetails = util.executeQuery(checkIfBatchCodeExist);
+					if(batchCodeDetails.size()>0 &&  batchCodeDetails.get(0).get("groups")!=null)
+					{
+						String groupName =  batchCodeDetails.get(0).get("groups").toString();
+						
+						%>
+						<div class="col-lg-12">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Group Names:</label>
+								<div class="col-sm-8">
+									<textarea  disabled required class="form-control"><%=groupName %></textarea>
+								</div>
+							</div>
+						</div>												
+						<% 
+					}
+					else
+					{
+						%>
+						<div class="col-lg-12">
+              <div class="form-group">
+              		<label class="col-sm-4 control-label">Batch Code:</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Enter Batch Code" name="batch_code"  required class="form-control">
+										</div>
+										</div>
+             </div>
+						<%
+					}	
+              	}
+              	else
+              	{
+              		%>
+              		 <div class="col-lg-12">
+              <div class="form-group">
+              		<label class="col-sm-4 control-label">Batch Code:</label>
+										<div class="col-sm-8">
+											<input type="text" placeholder="Enter Batch Code" name="batch_code"  required class="form-control">
+										</div>
+										</div>
+             </div>
+              		<%
+              	}	
+              	%>
+              
+              
             <%if(userType.equalsIgnoreCase("TRAINER") || userType.equalsIgnoreCase("MASTER_TRAINER")){ %>
             <div class="col-lg-12">
                <div class="form-group">
