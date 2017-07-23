@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+<%@page import="org.omg.CosNaming.IstringHelper"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.util.Properties"%>
@@ -89,13 +91,23 @@ try{
 
 <script src="<%=basePath %>assets/js/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-101170072-1', 'auto');
-  ga('send', 'pageview');
+<% String userID = "NOT_LOGGED_IN_USER";
+
+if(request.getSession().getAttribute("user") != null) {
+	userID =  ((IstarUser)request.getSession().getAttribute("user")).getUserRoles().iterator().next().getRole().getId()+"_"+ ((IstarUser)request.getSession().getAttribute("user")).getId();
+}
+%>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-103015121-1', 'auto', {
+	  userId: '<%=userID%>'
+	});
+ga('send', 'pageview');
+
 
 </script>

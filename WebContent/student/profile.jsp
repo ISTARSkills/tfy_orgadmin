@@ -329,7 +329,8 @@ ul>p {
 											}
 											if (co.getSkills().get(i).getSkills().size() > 0) {
 									%>
-									<li class="<%=class_tag%> text-center" style="width: 97px;"><a data-toggle="tab" href="#course<%=i%>" aria-expanded="true"><img src="<%=co.getSkills().get(i).getImageURL()%>" class="img-circle" style="width: 65px !important; height: 65px !important;"> <br />
+									<li class="<%=class_tag%> text-center" style="width: 97px;"><a data-toggle="tab" href="#course<%=i%>" aria-expanded="true">
+									<img src="<%=co.getSkills().get(i).getImageURL()%>" class="img-circle" style="width: 65px !important; height: 65px !important;"> <br />
 											<h3 sty>
 												<small><%=co.getSkills().get(i).getName()%></small>
 											</h3> </a></li>
