@@ -27,6 +27,7 @@ import com.viksitpro.core.utilities.NotificationType;
 
 import in.orgadmin.utils.report.CustomReport;
 import in.orgadmin.utils.report.CustomReportUtils;
+import in.talentify.core.controllers.IStarBaseServelet;
 import in.talentify.core.utils.AndroidNoticeDelegator;
 import tfy.admin.services.StudentPlayListServicesAdmin;
 
@@ -34,7 +35,7 @@ import tfy.admin.services.StudentPlayListServicesAdmin;
  * Servlet implementation class CreateNotofication
  */
 @WebServlet("/create_notification")
-public class CreateNotification extends HttpServlet {
+public class CreateNotification extends IStarBaseServelet {
 	private static final long serialVersionUID = 1L;
 
 	public CreateNotification() {
@@ -44,7 +45,7 @@ public class CreateNotification extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-	
+	printparams(request);
 DBUTILS util = new DBUTILS(); 	
 String notificationType =  request.getParameter("notification_type");
 TaskServices taskService = new TaskServices();

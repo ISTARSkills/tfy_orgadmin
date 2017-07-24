@@ -71,12 +71,12 @@ public class GetNotificationData extends IStarBaseServelet {
 				if(entityId.contains("ALL_GROUP_OF_ORG_"))
 				{
 					entityId = entityId.replace("ALL_GROUP_OF_ORG_", "");
-					sql = "select distinct istar_user. ID, 	istar_user.email from istar_user, user_org_mapping, user_role where istar_user.id = user_org_mapping.user_id and user_org_mapping.user_id = user_role.user_id and  user_role.role_id in (SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT', 'TRAINER')) and user_org_mapping.organization_id = "+entityId+" order by email";
+					sql = "select distinct istar_user. ID, 	istar_user.email from istar_user, user_org_mapping, user_role where istar_user.id = user_org_mapping.user_id and user_org_mapping.user_id = user_role.user_id and  user_role.role_id in (SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR')) and user_org_mapping.organization_id = "+entityId+" order by email";
 					//System.out.println("Get NotificationData 54>>sql"+sql);
 				}
 				else
 				{
-					 sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name IN ('STUDENT','TRAINER') );";
+					 sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR') );";
 					//System.out.println("Get NotificationData 54>>sql"+sql);
 				}	
 				

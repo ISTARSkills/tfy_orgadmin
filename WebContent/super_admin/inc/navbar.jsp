@@ -1,3 +1,6 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%><div class="row border-bottom white-bg">
 	<%@page import="in.talentify.core.utils.*"%>
@@ -52,6 +55,32 @@
 							//System.out.println("48 activeUrl-=>" + activeUrl);
 						}
 					}
+				DBUTILS utils = new DBUTILS();
+				String sql="select * from super_admin_reports";
+				List<HashMap<String, Object>> data = utils.executeQuery(sql);
+				if(data.size()>0)
+				{
+					%>
+					<li class="dropdown"><a aria-expanded="true" role="button"
+					href="" class="dropdown-toggle"
+					data-toggle="dropdown">Custom Reports </a>
+					<ul role="menu" class="dropdown-menu">
+					<% 
+					for(HashMap<String, Object> row: data){
+						String reportId = row.get("report_id").toString();
+						String organizationId = "2";
+						String reportName = row.get("report_name").toString();
+							%>
+							<li><a href="/super_admin/custom_report_super_admin.jsp?report_name=<%=reportName%>&organziation_id=<%=organizationId%>&report_id=<%=reportId%>">
+							<%=reportName %>
+							</a></li>
+							<%	
+					}
+					%>
+					</ul>
+					</li>
+					<% 
+				}	
 				%>
 			</ul>
 			<ul class="nav navbar-top-links navbar-right">

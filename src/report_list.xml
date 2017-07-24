@@ -2085,114 +2085,84 @@ trainer detail task report
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3074" type_of_report="table">	
-		<column columnHandler="NONE" is_selectable="true" display_name="TOT Type" isVisible="true" data_type="string" name="tot_type" />
-	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="event_date" />
+		
+		<column columnHandler="NONE"  display_name="Id" isVisible="true"  name="id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="eventdate" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="section_name" />
-		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="f_name" />
+		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="master_trainer" />
 		<column columnHandler="NONE" display_name="Enrolled Trainer" isVisible="true" name="enrolled_trainers" />
-		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
-		<column columnHandler="NONE" display_name="Session Covered" isVisible="true" name="session_covered" />
-		<column columnHandler="NONE" display_name="Lesson Covered" isVisible="true" name="lesson_covered" />
+		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendances" />
+		<column columnHandler="NONE" display_name="Content Covered" isVisible="true" name="event_details" />
+		
 	<sql>
-SELECT
-	TF.item_type as tot_type,
-	to_char(
-	TF.eventdate,
-	'DD-Mon-yyyy HH24:MI'
-	) AS event_date,
-	TF.course_name as course_name,
-	TF.section_name as section_name,
-	TF.first_name as f_name,
-	TF.enrolled_trainers as enrolled_trainers,
-	TF.attendances as attendance,
-  string_agg(TF.cms_title , ', ') as session_covered,
-	string_agg(DISTINCT TF.lesson_title||'('||slidemoved_total_silde||')' ,', ')as lesson_covered
-FROM
-	(
-		SELECT
-			T1.*, COUNT (DISTINCT attendance. ID) FILTER (
+select id, to_char(
+				eventdate,
+				'DD-Mon-yyyy HH24:MI'
+			) as eventdate, course_name, section_name, master_trainer, enrolled_trainers, attendances,  
+COALESCE(string_agg (cms_title ||' - '|| lesson_title||' ('|| COALESCE(slide_details,'NA')||')', '&lt;br&gt;'),'NA') as event_details from 
+(select T1.*, COUNT (DISTINCT attendance. ID) FILTER (
 
 				WHERE
 					attendance.status = 'PRESENT'
-			) || '/' || T1.enrolled_trainers AS attendances,
-       cmsession.title as cms_title,
+			) || '/' || T1.enrolled_trainers AS attendances,      
+			cmsession.title as cms_title,
 			lesson.title AS lesson_title,
-			COUNT (
-				DISTINCT slide_change_log.slide_id
-			) || '/' || COUNT (
-				DISTINCT slide_change_log.total_slide_count
-			) AS slidemoved_total_silde
-		FROM
-			(
-				SELECT DISTINCT
-					task.item_id,
-					task.item_type,
+		COALESCE('(' ||count(distinct slide_change_log.slide_id) ||' / '||max(slide_change_log.total_slide_count)||')','NA') as slide_details
+
+from (SELECT DISTINCT
+					batch_schedule_event.id ,
 					batch_schedule_event.eventdate,
 					course.course_name,
 					batch_group. NAME AS section_name,
-					user_profile.first_name,
+					user_profile.first_name as master_trainer,
 					COUNT (
 						DISTINCT batch_students.student_id
 					) AS enrolled_trainers
 				FROM
-					user_profile,
-					ROLE,
-					user_role,
+					user_profile,					
 					batch_schedule_event,
-					task,
 					course,
 					batch_group,
 					batch_students
 				WHERE
-					ROLE . ID = user_role.role_id
-				AND user_role.user_id = user_profile.user_id
-				AND batch_schedule_event.actor_id = user_profile.user_id
-				AND task.item_id = batch_schedule_event. ID
-				AND course. ID = batch_schedule_event.course_id
+					 batch_schedule_event.actor_id = user_profile.user_id
+			AND course. ID = batch_schedule_event.course_id
 				AND batch_group. ID = batch_schedule_event.batch_group_id
 				AND batch_students.batch_group_id = batch_group. ID
-				AND ROLE . ID = 23
-				AND task.item_type in ( 'CLASSROOM_SESSION','REMOTE_CLASS_TRAINER','WEBINAR_TRAINER')
-				GROUP BY
-					task.item_id,
-					task.item_type,
+        and	batch_schedule_event.type ='BATCH_SCHEDULE_EVENT_TRAINER'	
+				and batch_schedule_event.batch_group_id in (select id from batch_group where college_id = 2)
+GROUP BY					
+batch_schedule_event.id,
 					batch_schedule_event.eventdate,
 					course.course_name,
 					batch_group. NAME,
 					user_profile.first_name
-			) T1
-		LEFT JOIN attendance ON (
-			T1.item_id = attendance.event_id
+) T1
+LEFT JOIN attendance ON (
+			T1.id = attendance.event_id
 		)
 		LEFT JOIN slide_change_log ON (
-			T1.item_id = slide_change_log.event_id
+			T1.id = slide_change_log.event_id
 		)
-		LEFT JOIN lesson ON (
+		 left JOIN lesson ON (
 			lesson. ID = slide_change_log.lesson_id
 		)
-LEFT JOIN cmsession ON (
+     left JOIN cmsession ON (
 			cmsession. ID = slide_change_log.cmsession_id
 		)
-		GROUP BY
-			T1.item_id,
-			T1.item_type,
+GROUP BY
+			T1.id,
 			T1.eventdate,
 			T1.course_name,
 			T1.section_name,
-			T1.first_name,
+			T1.master_trainer,
 			T1.enrolled_trainers,
-			lesson.title,
-      cmsession.title
-	) TF
-GROUP BY
-TF.item_type,
-	TF.eventdate,
-	TF.course_name,
-	TF.section_name,
-	TF.first_name,
-	TF.enrolled_trainers,
-	TF.attendances
+cmsession. ID, lesson. ID
+) T2			
+group by 
+id, eventdate, course_name, section_name, master_trainer, enrolled_trainers, attendances
+order by eventdate , course_name, section_name, master_trainer
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -2202,7 +2172,7 @@ TF.item_type,
 <reports id="3075" type_of_report="table">	
 		<column columnHandler="NONE" display_name="Trainer id" isVisible="true" name="trainer_id" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
-	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" name="org_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true"  data_type="string" name="org_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="section_name" />
 		<column columnHandler="NONE" display_name="Classes Scheduled" isVisible="true" name="classes_scheduled" />
@@ -2247,19 +2217,26 @@ SELECT DISTINCT
 			batch_schedule_event.eventdate &gt; now()
 		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
 	) as varchar),'N/A') AS classes_pending,
-
+round(cast (
 SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	)/60 AS hours_scheduled,
-	COALESCE(cast((SUM (
+	)
+/ cast('60' as float) as numeric
+),2)
+AS hours_scheduled,
+	COALESCE(cast(
+round(
+cast(((
+SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
-
 		WHERE
 			batch_schedule_event.eventdate &lt; now()
 		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	))/60 as varchar),'N/A') AS hours_incomplete,
-	COALESCE(cast((SUM (
+	))/ cast('60' as float))  as numeric),2)
+ as varchar),'0') AS hours_incomplete,
+	COALESCE(cast(
+round(cast (((SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
 
@@ -2270,15 +2247,22 @@ SUM (
 			'ATTENDANCE',
 			'FEEDBACK'
 		)
-	))/60 as varchar),'N/A') AS hours_finished,
-	COALESCE(cast((SUM (
+	))/ cast('60' as float)) as numeric),2) as varchar),'0') AS hours_finished,
+	COALESCE(cast(
+round(cast (
+(
+(
+SUM (
 		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
 	) FILTER (
 
 		WHERE
-			batch_schedule_event.eventdate &gt; now()
+			batch_schedule_event.eventdate > now()
 		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	))/60 as varchar),'N/A') AS hours_pending
+	))
+/ cast('60' as float)
+)
+ as numeric),2)  as varchar),'0') AS hours_pending
 
 FROM
 	batch_schedule_event,
@@ -2304,7 +2288,7 @@ GROUP BY
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
-		<title>Trainer Feedback</title>
+		<title>Trainer Session Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>
