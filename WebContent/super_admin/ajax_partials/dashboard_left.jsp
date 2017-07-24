@@ -65,6 +65,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 				<jsp:param value='<%=item.get("title") %>' name="title"/>
 				<jsp:param value='<%=item.get("eventdate") %>' name="eventdate"/>
 				<jsp:param value='<%=item.get("eventhour") %>' name="eventhour"/>
+				<jsp:param value='<%=item.get("eventminute") %>' name="eventminute"/>
 				<jsp:param value='<%=item.get("batchname") %>' name="batchname"/>
 				<jsp:param value='<%=item.get("classroom_identifier") %>' name="classroom_identifier"/>
 				<jsp:param value='<%=item.get("trainername") %>' name="trainername"/>
