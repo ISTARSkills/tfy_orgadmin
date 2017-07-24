@@ -70,7 +70,7 @@ public class OrgAdminUserService {
 			  
 			//Trainer Presenter User Role Mapping
 			  String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name = 'TRAINER'), (SELECT MAX(id)+1 FROM user_role), '1');"
-			  		+ "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+presenterUserID+", '10', (SELECT MAX(id)+1 FROM user_role), '1');";
+			  		+ "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+presenterUserID+", (select id from role where role_name = 'PRESENTOR'), (SELECT MAX(id)+1 FROM user_role), '1');";
 				db.executeUpdate(userRoleMappingSql);
 			
 				//Trainer Presenter Mapping
