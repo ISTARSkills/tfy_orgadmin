@@ -2093,14 +2093,14 @@ trainer detail task report
 		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="master_trainer" />
 		<column columnHandler="NONE" display_name="Enrolled Trainer" isVisible="true" name="enrolled_trainers" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendances" />
-		<column columnHandler="NONE" display_name="Content Covered" isVisible="true" name="event_details" />
+		<column columnHandler="NONE" display_name="Session - Lesson(slides moved / total slides) " isVisible="true" name="event_details" />
 		
 	<sql>
 select id, to_char(
 				eventdate,
 				'DD-Mon-yyyy HH24:MI'
 			) as eventdate, course_name, section_name, master_trainer, enrolled_trainers, attendances,  
-COALESCE(string_agg (cms_title ||' - '|| lesson_title||' ('|| COALESCE(slide_details,'NA')||')', '&lt;br&gt;'),'NA') as event_details from 
+COALESCE(string_agg ('&lt;b&gt;'||cms_title ||'&lt;/b&gt; - '|| lesson_title||' ('|| COALESCE(slide_details,'NA')||')', ',&lt;br&gt;'),'NA') as event_details from 
 (select T1.*, COUNT (DISTINCT attendance. ID) FILTER (
 
 				WHERE

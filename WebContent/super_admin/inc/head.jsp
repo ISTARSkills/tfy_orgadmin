@@ -60,6 +60,7 @@ try {
 <link href="<%=basePath%>assets/css/wickedpicker.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/wickedpicker.min.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/timepicki.css" rel="stylesheet">
+ <link href="<%=basePath%>assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/steps/jquery.steps.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 </head>

@@ -91,6 +91,7 @@ try{
 <script src="<%=basePath %>assets/js/reconnecting-websocket.min.js"></script>
 <script src="<%=basePath %>assets/js/websocket.js"></script>
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>
+<script src="<%=basePath %>assets/js/plugins/daterangepicker/daterangepicker.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
 
