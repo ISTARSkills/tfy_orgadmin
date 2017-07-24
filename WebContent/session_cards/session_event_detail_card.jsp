@@ -15,6 +15,7 @@ String status = request.getParameter("status");
 String title = request.getParameter("title");
 String eventDate = request.getParameter("eventdate");
 String eventHour = request.getParameter("eventhour");
+String eventMin = request.getParameter("eventminute");
 String batchName = request.getParameter("batchname");
 String classroomIdentifier = request.getParameter("classroom_identifier");
 String trainerName = request.getParameter("trainername");
@@ -39,7 +40,7 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 		<p style="float: right; margin-top: -4px;"><%=eventDate.substring(11, 16)%>
 			for
 			<%=eventHour%>
-			hours
+			hours <%=eventMin %> minutes
 		</p>
 		<ul class="list-unstyled m-t-md">
 			<li><label>Organization: </label> <%=bg.getOrganization().getName()%></li>
