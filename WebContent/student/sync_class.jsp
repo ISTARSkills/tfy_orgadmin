@@ -406,7 +406,7 @@
          
          							$.ajax({
          		        type: "GET",
-         		        url: '<%=basePath%>t2c/LessonProgressService?user_id=<%=user.getId()%>&lesson_id=<%=lessonId%>&slide_id='+slideID+'&title='+title+'&totoal_slides='+document.getElementsByTagName("section").length,
+         		        url: '<%=basePath%>t2c/LessonProgressService?user_id=<%=user.getId()%>&lesson_id=<%=lessonId%>&slide_id='+slideID+'&title='+title+'&total_slides='+document.getElementsByTagName("section").length,
          		        success: function(result) {
          		           
          		        }
