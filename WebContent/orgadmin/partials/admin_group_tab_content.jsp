@@ -115,7 +115,7 @@ Organization college=new OrganizationDAO().findById(colegeID);
 						<hr class="m-b-xs">
 						<div class="col-lg-12">
 							<input type="number" min='0' placeholder="Number of Students" name="student_count"  
-							id='"student_count_idd'  
+							id='student_count_idd'  
 							
 							value="0"
 								class="form-control">
