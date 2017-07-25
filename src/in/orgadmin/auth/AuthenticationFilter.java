@@ -137,6 +137,11 @@ public class AuthenticationFilter implements Filter {
 			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
+		
+		if (((HttpServletRequest) request).getRequestURL().toString().contains("email_mobile_validator")) {
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			isStarticrequest = true;
+		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {
