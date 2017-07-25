@@ -82,12 +82,29 @@
 					<% 
 				}	
 				%>
+				
+				
+				<li class="dropdown"><a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown"><%=user.getUserProfile().getFirstName() %><span class="caret"></span></a>
+					<ul role="menu" class="dropdown-menu">
+					
+							<li><a href="/orgadmin/custom_report.jsp?report_name=Trainer Feedback&amp;organziation_id=2&amp;report_id=3069">
+							Profile
+							</a></li>
+							
+							<li><a href="/orgadmin/custom_report.jsp?report_name=TOT Report&amp;organziation_id=2&amp;report_id=3074">
+							Switch Role
+							</a></li>
+							
+							<li><a href="/orgadmin/custom_report.jsp?report_name=Trainer Session Report&amp;organziation_id=2&amp;report_id=3075">
+							Logout
+							</a></li>
+							
+					</ul>
+					</li>
 			</ul>
-			<ul class="nav navbar-top-links navbar-right">
-				<li><a href="/auth/logout"> <i class="fa fa-sign-out"></i>
-						Log out
-				</a></li>
-			</ul>
+			
+			
+			
 		</div>
 	</nav>
 	<%-- <jsp:include page="/chat_element.jsp"></jsp:include> --%>
