@@ -245,7 +245,7 @@
               <div class="form-group">
               		<label class="col-sm-4 control-label">Batch Code:</label>
 										<div class="col-sm-8">
-											<input type="text" placeholder="Enter Batch Code" name="batch_code"  required class="form-control">
+											<input type="text" placeholder="Enter Batch Code" name="batch_code"  class="form-control">
 										</div>
 										</div>
              </div>

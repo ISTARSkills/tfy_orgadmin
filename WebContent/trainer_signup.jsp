@@ -150,6 +150,37 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 	$(document)
 			.ready(
 					function() {
+						$("input[name='email'],input[name='mobile']").click(function() {
+							$(this).unbind().focusout(function(){
+								var current_input =$(this);
+								var key = current_input.attr('name');
+						        var url = "<%=baseURL%>email_mobile_validator";
+						        var value=current_input.val();
+								 $.ajax({
+								        type: "POST",
+								        url: url,
+								        data: {key:key,value:value},
+								        success: function(data) {
+								        	if(data != null && data != 'undefined'){
+								        		if(data==='new email'){
+									        		$('#email_error').remove();
+									        	}
+								        		if(data==='new mobile'){
+								        			$('#mobile_error').remove();
+									        	}
+								        		if(data === 'Email already exist'){
+								        			$('#email_error').remove();
+								        			$(current_input).after('<label id="email_error" class="error">'+data+'</label>');
+								        		}
+								        		if(data === 'Mobile already exist'){
+								        			$('#mobile_error').remove();
+								        			$(current_input).after('<label id="mobile_error" class="error">'+data+'</label>');
+								        		}
+								        	}
+								        }		        
+								    });
+						    });
+						});
 						
 						$('.signup_button').unbind().click(function() {
 							 if($("select[name='course']").val() == undefined){
