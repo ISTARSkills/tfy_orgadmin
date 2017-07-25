@@ -65,10 +65,16 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 					}	
 				}
 				HashMap<String, Object> returnedData =service.evaluateVoiceText(speechText,keywords, benchMarkString);
+				for(String str: returnedData.keySet())
+				{
+					System.out.println("key - "+ " "+ returnedData.get(str));
+				}
 				//just for the sake of testing
 				for(String key: keywords.split("!#"))
 				{
-					System.out.println("density of "+key+" is "+returnedData.get(key).toString());
+					if(returnedData.get(key)!=null){
+						System.out.println("density of "+key+" is "+returnedData.get(key).toString());
+					}
 				}	
 				break;
 			case CustomFormElementTypes.DROP_DOWN:
@@ -118,7 +124,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 			}
 		}
 		
-		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
+		//updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
 		System.out.println("updateQuery ->>>"+updateQuery);
 		util.executeUpdate(updateQuery);
 	}

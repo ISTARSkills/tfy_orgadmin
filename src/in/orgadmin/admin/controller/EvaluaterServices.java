@@ -23,7 +23,7 @@ public class EvaluaterServices {
 		HashMap<String, Object> data = new HashMap<>();
 		data.putAll(getSentimentAnalysisReport(sampleText));
 		ArrayList<String> keyWordsList = new ArrayList<>();
-		for(String key : keyWords.split(keyWords))
+		for(String key : keyWords.split("!#"))
 		{
 			keyWordsList.add(key);
 		}
@@ -49,7 +49,7 @@ public class EvaluaterServices {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return data;
 	}
 	
 	
@@ -61,6 +61,7 @@ public class EvaluaterServices {
 		
 		for(String keyWord: keywords)
 		{
+			System.out.println("keyWord "+keyWord);
 			if(systemDensity.get(keyWord)!=null && expectedDensity.get(keyWord)!=null && expectedDensity.get(keyWord)!=0)
 			{
 				data.put(keyWord, (expectedDensity.get(keyWord)*100)/systemDensity.get(keyWord));

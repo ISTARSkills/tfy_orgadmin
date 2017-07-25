@@ -30,7 +30,7 @@ public class TaskCardFactory {
 		
 		StringBuffer sb = new StringBuffer();
 		Integer taskRemaining = cp.getTasks().size() - cp.getTaskForTodayCompleted().size();
-		sb.append("<div class='col-md-3 product-box' style='height: 100%;     width: 22.6%; margin-left: 2.25%;    margin-right: 1.2%;' >                                        ");
+		sb.append("<div class='col-md-3 product-box' style='height: 100%;' >                                        ");
 		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
 		sb.append(" <div class='ibox-content product-box h-370' style='height: 100%;'>                  ");
 		sb.append(" <div class='task-complete-header bg-primary'>                 ");
@@ -625,7 +625,7 @@ public class TaskCardFactory {
 	
 	public StringBuffer showSummaryEvents(ComplexObject cp) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<div class='col-md-3 product-box ' style='overflow-y: auto;    max-height: 360px !important;    margin-left: 16px;    width: 22.6%; '>			"
+		sb.append("<div class='col-md-3 product-box ' style='overflow-y: auto;    max-height: 360px !important; '>			"
 				+ "	<div class='ibox' style='height: 100%;margin-bottom:0px !important'> "
 				+ "<div class='ibox-content ' style='height: 100%; min-height:345px;margin-bottom:0px !important'> " +AppProperies.generatePopOver("task_summary_card"));			
 		sb.append("<h3>Welcome "+cp.getStudentProfile().getFirstName()+"</h3>                                                                  ");

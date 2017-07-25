@@ -48,12 +48,7 @@ request.setAttribute("cp", cp);
 				<i class="fa fa-reorder"></i>
 			</button>
 			<a href="/student/dashboard.jsp" class="navbar-brand">
-				<div class='row'>
-					<div class='col-md-3'>
-						<img style="width: 40px; margin-left: -33px; margin-top: -10px;" src='/assets/img/user_images/new_talentify_logo_inverse.png'>
-					</div>
-					<div class='col-md-9'>Talentify</div>
-				</div>
+				Talentify
 			</a>
 
 		</div>

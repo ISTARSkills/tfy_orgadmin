@@ -19,6 +19,8 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#tab-1">User Creation</a></li>
+                            <li ><a data-toggle="tab" href="#tab-trainers">Trainers</a></li>
+                            <li ><a data-toggle="tab" href="#tab-master_trainers">Master Trainers</a></li>
                             
                         </ul>
                         <div class="tab-content">
@@ -103,37 +105,132 @@
                         </div>
                     </div>
                 </div>
-            <!-- <div class="col-lg-7">
-                <div class="ibox float-e-margins">
-                    
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-sm-6 b-r"><h3 class="m-t-none m-b">Sign in</h3>
-                                <p>Sign in today for more expirience.</p>
-                                <form role="form">
-                                    <div class="form-group"><label>Email</label> <input type="email" placeholder="Enter email" class="form-control"></div>
-                                    <div class="form-group"><label>Password</label> <input type="password" placeholder="Password" class="form-control"></div>
-                                    <div>
-                                        <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Log in</strong></button>
-                                        <label> <div class="icheckbox_square-green" style="position: relative;"><input type="checkbox" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> Remember me </label>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-sm-6"><h4>Not a member?</h4>
-                                <p>You can create an account:</p>
-                                <p class="text-center">
-                                    <a href=""><i class="fa fa-sign-in big-icon"></i></a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            
                 
             </div>											
 											</div>
                             </div>
+                           <div id="tab-trainers" class="tab-pane">
+                                <div class="panel-body">
+                                    
+                                    <div class="row">
+                                    <div class="ibox-content">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>First Name</th>
+                                <th>Email</th>
+                                <th>Roles</th>
+                                <th>Presentor</th>
+                                <th>Action</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <%
                            
+                            String findTrainers = "select T1.*, COALESCE(user_profile.first_name,'NA') as fname, string_agg(role.role_name,', ') as roles ,string_agg(cast (role.id as varchar),', ') as role_ids , trainer_presentor.presentor_id from (select distinct istar_user.id , istar_user.email, istar_user.mobile from istar_user, user_role where istar_user.id = user_role.user_id and user_role.role_id in (select id from role where role_name='TRAINER') )T1 left join user_profile on (user_profile.user_id = T1.id) left join user_role on (user_role.user_id = T1.id) left join role on (role.id = user_role.role_id) left join trainer_presentor on (trainer_presentor.trainer_id = T1.id) group by T1.id, email, mobile, first_name,trainer_presentor.presentor_id order by fname";
+                            List<HashMap<String	,Object>> trainerData = util.executeQuery(findTrainers);
+                            String findAllRoles = "select id, role_name from role";
+                            List<HashMap<String	,Object>> roleData = util.executeQuery(findAllRoles);
+                            
+                            
+                            for(HashMap<String	,Object> row: trainerData)
+                            {
+                            	int trainerId =(int)row.get("id");
+                            	String email = row.get("email").toString();
+                            	String mobile = "";
+                            	if(row.get("mobile")!=null)
+                            	{
+                            		mobile =row.get("mobile").toString();
+                            	}
+                            	String fname = row.get("fname").toString();	
+                            	String roleses = row.get("roles").toString();
+                            	String presentor="";
+                            	if(row.get("presentor_id")!=null)
+                            	{
+                            		presentor = row.get("presentor_id").toString();
+                            	}
+                            	else
+                            	{
+                            		presentor ="<a class='btn btn-primary btn-xs' href ='"+ baseURL+"create_presentor?trainer_id="+trainerId+"'>Create Presentor</a>";
+                            	}
+                            	String roleIds = row.get("role_ids").toString();
+                            	%>
+                            	
+                            	<tr>
+                            	<td><%=trainerId %></td>
+                            	<td><%=fname %></td>
+                            	<td><%=email %></td>
+                            	<td><%=roleses %></td>
+                            	<td><%=presentor %></td>
+                            	<td><a class='btn btn-primary btn-xs' href ='#edit_roles_<%=trainerId%>' data-toggle="modal">Edit Roles</a>
+                            	 &nbsp;&nbsp;<a class='btn btn-primary btn-xs' href ='<%=baseURL%>delete_trainer?trainer_id=<%=trainerId%>'>Delete User</a>
+                            	 <div id="edit_roles_<%=trainerId%>" class="modal fade" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Add / Remove Roles</h3>
+<form role="form" action="<%=baseURL %>alter_roles" method="post">
+                                                        <div class="form-group"><label>Roles</label> 
+                                                      	<select name="roles" multiple>
+                                                      	
+                                                      	<%for(HashMap<String	,Object> rowRole: roleData)
+                                                      	{
+                                                      		int roleId = (int)rowRole.get("id");
+                                                      		String selected ="";
+                                                      		if(roleIds.contains(roleId+""))
+                                                      		{
+                                                      			selected="selected";
+                                                      		}
+                                                      		%>
+                                                      		<option value="<%=roleId%>" <%=selected %>><%=rowRole.get("role_name")%> </option>
+                                                      		<% 
+                                                      	}	%>
+                                                      	
+                                                      	</select>
+                                                        </div>
+                                                        
+                                                        <input type="hidden" name="user_id" value="<%=trainerId%>">
+                                                        <div>
+                                                            <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Save Changes</strong></button>
+                                                           
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                    
+                                    
+                                    </div>
+                            	 </td>
+                            	</tr>
+                            	
+                            	<%
+                            }	
+                            %>
+                            
+                                    </tbody>
+                                    </table>
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    
+                                    
+                                    </div>
+                                    <div id="tab-master_trainers" class="tab-pane">
+                                    <div class="panel-body">                                    
+                                    <div class="row">
+                                    </div>
+                                    </div>
+                                    </div>
                         </div>
 
 
@@ -145,5 +242,11 @@
 	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<script type="text/javascript">
+	$(document).ready()
+	{
+		$('select').select2();
+	}
+	</script>
 </body>
 </html>
