@@ -642,6 +642,21 @@ function  callColumnHandlerFunctions(){
 	initEditGroupModalCall();
 	initDeleteGroupCall();
 	initStudentProfileHandler();
+	initPresentorHandler();
+}
+
+function initPresentorHandler(){
+	$('.presentor_anchor').unbind().on("click",function(){
+		var trainer_id = $(this).data("trainer_id");
+		var parent_html = $(this).parent();
+		var url = "/create_presentor";
+		$.post(url,{trainer_id:trainer_id}, function(data) {
+					
+					if(data != null && data != 'undefined'){
+						parent_html.html(data);
+					}
+		});
+	});
 }
 
 function initStudentProfileHandler()
@@ -4679,6 +4694,40 @@ $('#college_id').on('change', function(){
 		
 	});
 	
+	$('.super_admin_user_creation').on('change', function(){
+		var user_type = $('.super_admin_user_creation option:selected').text();
+		if(check_user_type(user_type)){
+			$('#hide_college_holder').hide();
+			$('#batch_group_holder').hide();
+			$('#hide_role_holder').hide();
+			
+		}else{
+			$('#hide_college_holder').show();
+			$('#batch_group_holder').show();
+			$('#hide_role_holder').show();
+		}
+		$('#user_type').val(user_type);
+		set_batchgroup_data();
+	});
+	
+	function check_user_type(user_type) {
+		switch (user_type){
+		case 'ORG_ADMIN':
+			return false;
+		case 'COORDINATOR':
+			return false;
+		case 'RECRUITER':
+			return false;
+		case 'EXECUTIVE RECRUITER':
+			return false;
+		case 'PANELIST':
+			return false;
+		case 'STUDENT':
+			return false;
+		default :
+				return true;
+		}
+	}
 	
 }
 

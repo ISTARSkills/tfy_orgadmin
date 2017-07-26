@@ -10,7 +10,7 @@
 	pageEncoding="UTF-8"%>
 
 <%
-	int user_id = Integer.parseInt(request.getParameter("uer_id"));
+	int user_id = Integer.parseInt(request.getParameter("user_id"));
 	int task_id = Integer.parseInt(request.getParameter("task_id"));
 
 	HashMap<String, String> ratingList = new HashMap();

@@ -70,7 +70,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                </div>
 				</div>
 				<jsp:include page="/trainer_common_jsps/profile_and_signup.jsp">
-				<jsp:param value="TRAINER" name="user_type"/>
+				<jsp:param value="3076" name="report_id"/>
 				</jsp:include>
 			</div>
 		</div>

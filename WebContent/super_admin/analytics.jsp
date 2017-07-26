@@ -34,19 +34,25 @@
 					<div class="tabs-container">
 						<ul class="nav nav-tabs">
 							<li
-								class="active col-lg-3 text-center no-padding bg-muted"><a
+								class="active col-lg-2 text-center no-padding bg-muted"><a
 								data-toggle="tab" id="tab_1" href="#tab1">Account</a></li>
 
 							<li
-								class="col-lg-3 text-center no-padding bg-muted"><a
+								class="col-lg-2 text-center no-padding bg-muted"><a
 								data-toggle="tab" id="tab_2" href="#tab2">Program</a></li>
 
 							<li
-								class=" col-lg-3 text-center no-padding bg-muted"><a
+								class=" col-lg-2 text-center no-padding bg-muted"><a
 								data-toggle="tab" id="tab_3" href="#tab3">Trainer</a></li>
+							<li
+								class=" col-lg-2 text-center no-padding bg-muted"><a
+								data-toggle="tab" id="tab_5" href="#tab5">OrgAdmin</a></li>
+							<li
+								class=" col-lg-2 text-center no-padding bg-muted"><a
+								data-toggle="tab" id="tab_6" href="#tab6">Super-Admin</a></li>
 
 							<li
-								class=" col-lg-3 text-center no-padding bg-muted"><a
+								class=" col-lg-2 text-center no-padding bg-muted"><a
 								data-toggle="tab" id="tab_4" href="#tab4">Student Feedback</a></li>
 						</ul>
 
@@ -54,21 +60,33 @@
 							<div id="tab1"
 								class="active tab-pane div-min-height">
 								<div class="panel-body">
-									<jsp:include page="report_section/static_report_main.jsp"/>
+									<jsp:include page="superadmin_partials/static_report_main.jsp"/>
 								</div>
 							</div>
 
 							<div id="tab2"
 								class=" tab-pane div-min-height">
 								<div class="panel-body">
-							 <jsp:include page="program_partials/program_main.jsp"/>
+							 <jsp:include page="superadmin_partials/program_main.jsp"/>
 								</div>
 							</div>
 
 							<div id="tab3"
 								class=" tab-pane div-min-height">
 								<div class="panel-body">
-									 <jsp:include page="trainer_partials/analytic_trainer.jsp" />  
+									 <jsp:include page="superadmin_partials/analytic_trainer.jsp" />  
+								</div>
+							</div>
+							<div id="tab5"
+								class=" tab-pane div-min-height">
+								<div class="panel-body">
+									 <jsp:include page="superadmin_partials/analytics_orgadmin.jsp" />  
+								</div>
+							</div>
+							<div id="tab6"
+								class=" tab-pane div-min-height">
+								<div class="panel-body">
+									 <jsp:include page="superadmin_partials/analytics_superadmin.jsp" />  
 								</div>
 							</div>
 
