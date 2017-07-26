@@ -5,10 +5,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;import javax.persistence.criteria.CriteriaBuilder.In;
+import java.util.List;
+import java.util.Random;
+
+import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.ws.rs.core.Response;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.github.javafaker.Faker;
+import com.istarindia.android.pojo.GroupPojo;
+import com.istarindia.android.pojo.GroupStudentPojo;
+import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.DBUTILS;
+import com.viksitpro.core.utilities.TaskItemCategory;
+import com.viksitpro.core.utilities.TrainerWorkflowStages;
 
 /**
  * 
@@ -112,22 +125,181 @@ public class MayankFarziDataCreator {
 	            }
 	        }*/
 	    System.out.println("start");
-		addStudentInBGOFCollege(272);
-		addStudentInBGOFCollege(273);
-		markEventAsCompleteInOrg(272);
-		markEventAsCompleteInOrg(273);
+		//addStudentInBGOFCollege(272);
+		//addStudentInBGOFCollege(273);
+		createEventsForGroup(272);
+	    
+	    //markEventAsCompleteInOrg(272);
+		//markEventAsCompleteInOrg(273);
 		System.out.println("end");
 		System.exit(0);
 		
 		
 	}
 
-	private void markEventAsCompleteInOrg(int i) {
-	
+	private void createEventsForGroup(int i) {
+			
+		int trainerID = 0;
+		int hours = 0;
+		int minute = 0;
+		int batchID = 0;
+		String eventType = "";
+		String eventDate = "";
+		String startTime = "";
+		int classroomID = 0;
+		int AdminUserID = 0;
+		
+		String eventID = null;
+		String associateTrainerID = "";
+			insertUpdateData(trainerID, hours, minute, batchID, eventType, eventDate, startTime,
+				classroomID, AdminUserID, sessionID, eventID, associateTrainerID);
+	}
+
+	private void markEventAsCompleteInOrg(int orgId) {
+		
+			attendaceCreator(orgId);
+	}
+
+	private void attendaceCreator(int orgId) {
+		// TODO Auto-generated method stub
+		DBUTILS util = new DBUTILS();
+		String getTaskBeforeToday ="select * from task where item_id in (select id from batch_schedule_event where type = 'BATCH_SCHEDULE_EVENT_TRAINER' and batch_group_id in (select id from batch_group where college_id = "+orgId+") and eventdate <  '2017-07-28 09:32:00' ) and item_type = 'CLASSROOM_SESSION'";
+		List<HashMap<String, Object>> events = util.executeQuery(getTaskBeforeToday);
+		for(HashMap<String, Object> row: events)
+		{
+			int id = (int)row.get("id");
+			int actor = (int)row.get("actor");
+			com.istarindia.android.pojo.GroupPojo group = new com.istarindia.android.pojo.GroupPojo();
+			String getGroupId ="select batch_group_id, batch_group.name from task,batch_schedule_event, batch_group where batch_group.id = batch_schedule_event.batch_group_id and batch_schedule_event.id = task.item_id and task.id ="+id+" and item_type in ('"+TaskItemCategory.CLASSROOM_SESSION+"') ";
+			//System.out.println("getGroupId>>>"+getGroupId);
+			List<HashMap<String, Object>> groupData = util.executeQuery(getGroupId);
+			
+			if(groupData.size()>0)
+			{
+				Random r = new Random();
+				int Low = 85;
+				int High = 100;
+				int Result = r.nextInt(High-Low) + Low;
+				
+				
+				ArrayList<com.istarindia.android.pojo.GroupStudentPojo> students = new ArrayList<>();
+				int groupId = (int)groupData.get(0).get("batch_group_id");
+				String groupName = groupData.get(0).get("name").toString();
+				students = studentsInGroup(groupId,id);				
+				int totalStu = students.size();
+				int homnayToMarkASPResent = (Result*totalStu)/100;  //60
+				ArrayList<GroupStudentPojo> updateList = new ArrayList<>();
+				int i= 0;
+				for(GroupStudentPojo st :students)
+				{
+					if(i< homnayToMarkASPResent)
+					{
+						st.setStatus(true);
+					}					
+					i++;
+					updateList.add(st);
+				}								
+				
+				group.setGroupId(groupId);
+				group.setGroupName(groupName);
+				group.setStudents(updateList);
+				group.setStuCount(students.size());	
+				
+				submitAttendance(id,actor , group);	
+				updateState(id, actor,TrainerWorkflowStages.ATTENDANCE);
+			}
+			
+		}
+	}
+
+	public void updateState(int taskId, int istarUserId, String state) {
+		
+		DBUTILS util = new DBUTILS();
+		String fineCourseBGeventId ="select batch_group_id, course_id, id from batch_schedule_event where id = (select item_id from task where id ="+taskId+")";
+		List<HashMap<String, Object>> detail = util.executeQuery(fineCourseBGeventId);		
+		if(detail.size()>0)
+		{
+			
+			String bgId = detail.get(0).get("batch_group_id").toString();
+			String courseId = detail.get(0).get("course_id").toString();
+			String id = detail.get(0).get("id").toString();			
+			String insertIntoLog="INSERT INTO status_change_log (id, trainer_id, course_id,  created_at, updated_at,  event_type, event_status, event_id, batch_group_id) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from status_change_log), "+istarUserId+", "+courseId+", now(),now(), 'STATUS_CHANGED', '"+state+"', "+id+",  "+bgId+");";
+			util.executeUpdate(insertIntoLog);
+			
+			String updateBSE="update batch_schedule_event set status ='"+state+"' where id=(select item_id from task where id ="+taskId+")";
+			util.executeUpdate(updateBSE);
+			
+		}	
 		
 		
 	}
 
+	public void submitAttendance(int taskId, int istarUserId, GroupPojo attendanceResponse) {
+		
+		DBUTILS util = new DBUTILS();
+		
+		String deleteOldEntry = "delete from attendance where event_id = (select item_id from task where id = "+taskId+")";
+		util.executeUpdate(deleteOldEntry);
+		for(GroupStudentPojo stu :attendanceResponse.getStudents())
+		{
+			String status ="ABSENT";
+			if(stu.getStatus()!=null && stu.getStatus() )
+			{
+				status="PRESENT";
+			}
+			else
+			{
+				status="ABSENT";
+			}	
+			String insertIntoAttendance ="INSERT INTO attendance (id, taken_by, user_id, status, created_at, updated_at, event_id) "
+					+ "VALUES ((select COALESCE(max(id),0)+1 from attendance), '"+istarUserId+"', '"+stu.getStudentId()+"', '"+status+"', (select start_date from task where id ="+taskId+"), (select start_date from task where id ="+taskId+"), (select item_id from task where id="+taskId+"));";
+			util.executeUpdate(insertIntoAttendance);
+		}
+		
+	}
+
+	public ArrayList<com.istarindia.android.pojo.GroupStudentPojo> studentsInGroup(int groupId, int taskID)
+	{
+		String mediaUrlPath =AppProperies.getProperty("media_url_path");
+		ArrayList<com.istarindia.android.pojo.GroupStudentPojo> students = new ArrayList<>();
+		DBUTILS utils = new DBUTILS();
+		String sql="SELECT 	distinct istar_user. ID, 	CASE WHEN ( 	user_profile.first_name IS NULL ) THEN 	istar_user.email ELSE 	user_profile.first_name END,  user_profile.profile_image,  CASE WHEN (attendance.status IS NULL) THEN 	'ABSENT' ELSE 	attendance.status END FROM "
+				+ "	task LEFT JOIN batch_schedule_event ON ( 	task.item_id = batch_schedule_event. ID ) "
+				+ "LEFT JOIN batch_students ON ( 	batch_students.batch_group_id = "+groupId+" ) "
+				+ "LEFT JOIN istar_user ON ( 	batch_students.student_id = istar_user. ID )"
+				+ " LEFT JOIN user_profile ON ( 	istar_user. ID = user_profile.user_id ) "
+				+ "LEFT JOIN attendance ON ( 	attendance.event_id = batch_schedule_event. ID 	AND istar_user. ID = attendance.user_id )"
+				+ " WHERE 	task. ID = "+taskID+" AND istar_user. ID NOTNULL";
+		
+		//System.err.println(sql);
+		List<HashMap<String, Object>> studentData = utils.executeQuery(sql);
+		for(HashMap<String, Object> row : studentData)
+		{
+			int studentId = (int)row.get("id");
+			String name = row.get("first_name").toString();
+			String profileImage = "/users/"+name.charAt(0)+".png";
+			if(row.get("profile_image")!=null)
+			{
+				profileImage = row.get("profile_image").toString();
+			}
+			String status = row.get("status").toString();
+			com.istarindia.android.pojo.GroupStudentPojo stu = new com.istarindia.android.pojo.GroupStudentPojo();
+			stu.setImageUrl(mediaUrlPath+profileImage);
+			stu.setStudentId(studentId);
+			stu.setStudentName(name);
+			if(status.equalsIgnoreCase("PRESENT")) {
+				stu.setStatus(true);
+			}else{
+				stu.setStatus(false);
+			}
+			
+			
+			students.add(stu);
+		}
+		
+		return students;
+	}
 	private static void addStudentInBGOFCollege(int orgId) {
 		String  findBGOfOrg="select * from  batch_group where college_id="+orgId+" and type='ROLE'";
 		DBUTILS util = new DBUTILS();
