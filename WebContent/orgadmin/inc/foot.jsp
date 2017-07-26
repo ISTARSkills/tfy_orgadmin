@@ -90,6 +90,7 @@ try{
     <script src="<%=basePath %>assets/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
 
 <script src="<%=basePath %>assets/js/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="<%=basePath %>assets/js/circular-custom-plugin.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 
 <% String userID = "NOT_LOGGED_IN_USER";

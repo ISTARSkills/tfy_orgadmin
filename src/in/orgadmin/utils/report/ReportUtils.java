@@ -102,7 +102,24 @@ int colCount =0;
 				out.append("<tr>");
 				for (IStarColumn iterable_element : report.getColumns()) {
 					if (iterable_element.isVisible) {
-						out.append("<td>" + hashMap.get(iterable_element.getName()) + "</td>");
+						
+						if(iterable_element.getColumnHandler().equalsIgnoreCase("NONE"))
+						{
+							out.append("<td>" + hashMap.get(iterable_element.getName()) + "</td>");
+						}
+						else
+						{
+							ColumnHandler handler= ReportColumnHandlerFactory.getInstance().getHandler(iterable_element.getColumnHandler());
+							
+							String val="";
+							
+							if(handler!=null && hashMap.get(iterable_element.getName())!=null && handler.getHTML(hashMap.get(iterable_element.getName()).toString(), reportID)!=null){
+								val= handler.getHTML(hashMap.get(iterable_element.getName()).toString(), reportID).toString();;
+							}
+							out.append("<td>" + val + "</td>");
+						}
+						
+						
 					}
 				}
 

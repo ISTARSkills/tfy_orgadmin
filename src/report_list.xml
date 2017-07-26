@@ -2509,4 +2509,219 @@ GROUP BY
 		<title>Trainer Compiled Session Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3077" type_of_report="table">	
+		<column columnHandler="NONE" display_name="Trainer id" isVisible="true" name="trainer_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Email Id" isVisible="true" data_type="string" name="trainer_email" />
+		<column columnHandler="NONE" display_name="Mobile No." isVisible="true" name="mobile_no" />
+		<column columnHandler="PRESENTOR_HANDLER" display_name="Presentor" isVisible="true" name="presentor_id" />
+	<sql>
+SELECT
+	T1. ID AS trainer_id,
+	T1.email as trainer_email,
+	T1.mobile as mobile_no,
+	COALESCE (
+		user_profile.first_name,
+		'NA'
+	) AS trainer_name,
+	T1.ID || '!#' || COALESCE (
+		CAST (
+			trainer_presentor.presentor_id AS VARCHAR
+		),
+		'N/A'
+	) as presentor_id
+FROM
+	(
+		SELECT DISTINCT
+			istar_user. ID,
+			istar_user.email,
+			istar_user.mobile
+		FROM
+			istar_user,
+			user_role
+		WHERE
+			istar_user. ID = user_role.user_id
+		AND user_role.role_id IN (
+			SELECT
+				ID
+			FROM
+				ROLE
+			WHERE
+				role_name = 'TRAINER'
+		)
+	) T1
+LEFT JOIN user_profile ON (user_profile.user_id = T1. ID)
+LEFT JOIN user_role ON (user_role.user_id = T1. ID)
+LEFT JOIN ROLE ON (ROLE . ID = user_role.role_id)
+LEFT JOIN trainer_presentor ON (
+	trainer_presentor.trainer_id = T1. ID
+)
+GROUP BY
+	T1. ID,
+	email,
+	mobile,
+	first_name,
+	trainer_presentor.presentor_id
+ORDER BY
+	trainer_name
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Trainer List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3078" type_of_report="table">	
+		<column columnHandler="NONE" display_name="Trainer id" isVisible="true" name="trainer_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Email Id" isVisible="true" data_type="string" name="trainer_email" />
+		<column columnHandler="NONE" display_name="Mobile No." isVisible="true" name="mobile_no" />
+		<column columnHandler="PRESENTOR_HANDLER" display_name="Presentor" isVisible="true" name="presentor_id" />
+	<sql>
+SELECT
+	T1. ID AS trainer_id,
+	T1.email as trainer_email,
+	T1.mobile as mobile_no,
+	COALESCE (
+		user_profile.first_name,
+		'NA'
+	) AS trainer_name,
+	T1.ID || '!#' || COALESCE (
+		CAST (
+			trainer_presentor.presentor_id AS VARCHAR
+		),
+		'N/A'
+	) as presentor_id
+FROM
+	(
+		SELECT DISTINCT
+			istar_user. ID,
+			istar_user.email,
+			istar_user.mobile
+		FROM
+			istar_user,
+			user_role
+		WHERE
+			istar_user. ID = user_role.user_id
+		AND user_role.role_id IN (
+			SELECT
+				ID
+			FROM
+				ROLE
+			WHERE
+				role_name = 'MASTER_TRAINER'
+		)
+	) T1
+LEFT JOIN user_profile ON (user_profile.user_id = T1. ID)
+LEFT JOIN user_role ON (user_role.user_id = T1. ID)
+LEFT JOIN ROLE ON (ROLE . ID = user_role.role_id)
+LEFT JOIN trainer_presentor ON (
+	trainer_presentor.trainer_id = T1. ID
+)
+GROUP BY
+	T1. ID,
+	email,
+	mobile,
+	first_name,
+	trainer_presentor.presentor_id
+ORDER BY
+	trainer_name
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Master Trainer List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3079" type_of_report="table">	
+		<column columnHandler="NONE" display_name="Organization id" isVisible="true" name="user_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Name" isVisible="true" data_type="string" name="user_fname" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Email Id" isVisible="true" data_type="string" name="user_mail" />
+		<column columnHandler="NONE" display_name="Mobile No." isVisible="true" name="user_mobile" />
+		<column columnHandler="NONE" display_name="Sections" isVisible="true" name="batch_group_name" />
+	<sql>
+SELECT
+	tf.user_id,
+	tf.user_mail,
+	tf.user_mobile,
+	tf.user_fname,
+	COALESCE (batch_group. NAME, 'N/A') AS batch_group_name
+FROM
+	(
+		SELECT
+			t1.*, batch_students.batch_group_id
+		FROM
+			(
+				SELECT
+					istar_user. ID AS user_id,
+					istar_user.email AS user_mail,
+					istar_user.mobile AS user_mobile,
+					user_profile.first_name AS user_fname
+				FROM
+					istar_user,
+					user_profile
+				WHERE
+					istar_user. ID IN (
+						SELECT
+							user_id
+						FROM
+							user_role
+						WHERE
+							role_id IN (
+								SELECT
+									ID
+								FROM
+									ROLE
+								WHERE
+									role_name LIKE 'ORG_ADMIN'
+							)
+					)
+				AND istar_user. ID = user_profile.user_id
+			) T1
+		LEFT JOIN batch_students ON T1.user_id = batch_students.student_id
+	) TF
+LEFT JOIN batch_group ON TF.batch_group_id = batch_group. ID
+ORDER BY TF.user_id
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Organization List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3080" type_of_report="table">	
+		<column columnHandler="NONE" display_name="Superadmin id" isVisible="true" name="user_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Name" isVisible="true" data_type="string" name="user_fname" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Email Id" isVisible="true" data_type="string" name="user_mail" />
+		<column columnHandler="NONE" display_name="Mobile No." isVisible="true" name="user_mobile" />
+	<sql>
+SELECT
+	istar_user. ID AS user_id,
+	istar_user.email AS user_mail,
+	istar_user.mobile AS user_mobile,
+	user_profile.first_name AS user_fname
+FROM
+	istar_user,
+	user_profile
+WHERE
+	istar_user. ID IN (
+		SELECT
+			user_id
+		FROM
+			user_role
+		WHERE
+			role_id IN (
+				SELECT
+					ID
+				FROM
+					ROLE
+				WHERE
+					role_name LIKE 'SUPER_ADMIN'
+			)
+	)
+AND istar_user. ID = user_profile.user_id
+ORDER BY user_id
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Superadmin List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 </istar_reports>
