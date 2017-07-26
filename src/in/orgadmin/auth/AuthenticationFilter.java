@@ -142,6 +142,14 @@ public class AuthenticationFilter implements Filter {
 			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
+		if (((HttpServletRequest) request).getRequestURL().toString().contains("custom_task_factory")) {
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			isStarticrequest = true;
+		}
+		if (((HttpServletRequest) request).getRequestURL().toString().contains("fetch_custom_task")) {
+			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			isStarticrequest = true;
+		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {
