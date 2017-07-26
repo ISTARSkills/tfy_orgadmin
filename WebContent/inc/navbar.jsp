@@ -94,7 +94,7 @@
 					}						
 				%>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">Swicth Organization<b class="caret"></b></a>
+					data-toggle="dropdown">Switch Organization<b class="caret"></b></a>
 
 <% DBUTILS db = new DBUTILS();
 String sql2 = "SELECT pincode.state, organization.name, organization.id, count(user_org_mapping.user_id) as cnt FROM organization, pincode, address, user_org_mapping WHERE organization.address_id = address. ID AND address.pincode_id = pincode. ID and organization.id=user_org_mapping.organization_id GROUP BY organization.id, organization.name, pincode.state";
@@ -211,11 +211,11 @@ for(String state : orgs.keySet())
 				}				
 				%>
 				<li class="dropdown"><a aria-expanded="true" role="button"
-					href="" class="dropdown-toggle" data-toggle="dropdown"><%=user.getUserProfile().getFirstName() %><span
+					href="" class="dropdown-toggle" data-toggle="dropdown">Welcome &nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName() %><span
 						class="caret"></span></a>
 					<ul role="menu" class="dropdown-menu">
 
-						<li><a href="/profile.jsp"> Profile </a></li>
+						<li><a href="/edit_profile.jsp"> Profile </a></li>
 
 						<%
 							if(userRoles!=null && userRoles.size()>1)
