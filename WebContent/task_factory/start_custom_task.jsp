@@ -8,7 +8,7 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.UUID"%>
 
-<jsp:include page="../student/inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -34,7 +34,7 @@ color: #fff;
 <body class="top-navigation student_pages" id='custom_task'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="../student/inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-sm-4">
 					<h2><%=task.fetchTaskTemplate().getLabel()%></h2>
@@ -83,7 +83,7 @@ color: #fff;
 			</div>
 		</div>
 	</div>
-	<jsp:include page="../student/inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	
 	
 </body>

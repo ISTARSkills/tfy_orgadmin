@@ -10,11 +10,11 @@ UIUtils ui_Util = new UIUtils();
 DBUTILS db = new DBUTILS();
  %>
 
- <jsp:include page="../inc/head.jsp"></jsp:include>
+ <jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_comp_prof">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="../inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
  
  
@@ -147,7 +147,7 @@ DBUTILS db = new DBUTILS();
 
 		</div>
 	</div>
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 <!-- Mainly scripts -->
 </body>
 </html>

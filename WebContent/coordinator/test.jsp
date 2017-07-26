@@ -19,7 +19,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
    
@@ -36,7 +36,7 @@
 <body class="top-navigation student_pages" id="orgadmin_dashboard">
    <div id="wrapper">
       <div id="page-wrapper" class="gray-bg">
-         <jsp:include page="inc/navbar.jsp" />
+         <jsp:include page="/inc/navbar.jsp" />
          <div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;" id='equalheight'>
             <div class="row">
                <!-- First card of profile with Course level -->
@@ -164,7 +164,7 @@ At w3schools.com you will learn how to make a website. We offer free tutorials i
          </div>
       </div>
    </div>
-   <jsp:include page="inc/foot.jsp"></jsp:include>
+   <jsp:include page="/inc/foot.jsp"></jsp:include>
    <script type="text/javascript">
       $(document).ready(function() {
       	 $("#rateYo").rateYo({

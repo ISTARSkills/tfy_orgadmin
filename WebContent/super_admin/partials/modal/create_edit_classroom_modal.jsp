@@ -3,7 +3,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<jsp:include page="./../../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 
 <%
 	String url = request.getRequestURL().toString();
@@ -66,7 +66,7 @@
 <body class="top-navigation" id='super_admin_classroom'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="./../../inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content white-bg">
 				<div class='row'>
 					<div id='redirect_url' data-url='<%=baseURL%>super_admin/classrroms.jsp' style='display: none;'></div>
@@ -186,5 +186,5 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="../../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>

@@ -198,7 +198,7 @@ ul>p {
 }
 /* End */
 </style>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -296,7 +296,7 @@ ul>p {
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
 			<div class="row">
@@ -427,7 +427,7 @@ ul>p {
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 	<script type="text/javascript">
 		$(document).ready(function() {

@@ -102,7 +102,7 @@
 	color: white !important;
 }
 </style>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -140,7 +140,7 @@ try {
 <body class="top-navigation" id="cordinator_interview">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<%
 													
 													
@@ -219,6 +219,6 @@ try {
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

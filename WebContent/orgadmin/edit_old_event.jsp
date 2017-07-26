@@ -19,7 +19,7 @@
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 IstarUser user = (IstarUser)request.getSession().getAttribute("user");
-
+int orgAdminUserID =user.getId();
 int colegeID = (int) request.getSession().getAttribute("orgId");
 	 
 
@@ -178,6 +178,13 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 				</select>
 			</div>
 		</div>
+		
+		<div class="form-group">
+			<div class="col-lg-12">
+				<label class="control-label">Reason for Edit*</label> <input type="text" name="reason_for_edit_delete" class="form-control" required id="reason_for_edit_delete" >
+				<label id="reason_needed" class="error" style="display:none">Reason is required.</label>
+			</div>			
+		</div>
 	</form>
 
 
@@ -185,8 +192,8 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-danger delete-event"
-		id="<%=evntid%>" data-dismiss="modal">Delete Event</button>
+	<button  class="btn btn-danger delete-event"
+		id="<%=evntid%>">Delete Event</button>
 	<button type="button" data-form="idForm4"
 		class="btn btn-danger edit-submit-btn">Save changes</button>
 </div></div>

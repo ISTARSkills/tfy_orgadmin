@@ -20,7 +20,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="com.istarindia.android.pojo.*"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
    
@@ -48,7 +48,7 @@
 <body class="top-navigation student_pages" id="new_feedback">
    <div id="wrapper">
       <div id="page-wrapper" class="gray-bg">
-         <jsp:include page="inc/navbar.jsp" />
+         <jsp:include page="/inc/navbar.jsp" />
          <div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;" id='equalheight'>
             <div class="row">
                <div class="col-lg-12">
@@ -90,6 +90,6 @@
          </div>
       </div>
    </div>
-   <jsp:include page="inc/foot.jsp"></jsp:include>
+   <jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

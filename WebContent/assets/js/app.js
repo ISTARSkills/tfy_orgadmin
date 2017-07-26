@@ -642,6 +642,21 @@ function  callColumnHandlerFunctions(){
 	initEditGroupModalCall();
 	initDeleteGroupCall();
 	initStudentProfileHandler();
+	initPresentorHandler();
+}
+
+function initPresentorHandler(){
+	$('.presentor_anchor').unbind().on("click",function(){
+		var trainer_id = $(this).data("trainer_id");
+		var parent_html = $(this).parent();
+		var url = "/create_presentor";
+		$.post(url,{trainer_id:trainer_id}, function(data) {
+					
+					if(data != null && data != 'undefined'){
+						parent_html.html(data);
+					}
+		});
+	});
 }
 
 function initStudentProfileHandler()
@@ -1867,13 +1882,48 @@ function init_edit_delete_event(eventID,status){
 	if(key === 'delete'){
 			
         console.log('----------status------->'+$(this).data('status'));
+		var url= "/delete_event_modal.jsp?event_id="+eventid;
+		$.post(url, 
+				{eventid : eventid}, 
+				function(data) {
+					
+					       $('#delete_event_modal').empty();
+								$('#delete_event_modal').append(data);
+								 $('#delete_event_modal').modal('show');
 		
-		 
+								 $('#delete_event_button').unbind().on('click',function(){
+									
+									 if($('#delete_event_form #reason_for_edit_delete').val()!=null && $('#delete_event_form #reason_for_edit_delete').val()!='')
+								      {
+										  
+										  $.ajax({
+										       type: "POST",
+										       url: '/add_entry_in_deleted_events',
+										       data: $("#delete_event_form").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+										       success: function(data)
+										       { 
+										       }
+										     });
+										  
+										  $.post(
+									   				"../event_utility_controller", 
+									   				{deleteEventid : eventid,status:$(this).data('status')}, 
+									   				function(data) {location.reload();})
+										  
+										 $('#reason_needed').hide();
+										 $('#delete_event_modal').modal('toggle'); 
+								      }
+									  else
+									  {
+										  $('#reason_needed').show();
+									  }									 
+									 
+								 });
+								 
+								 
+		});
 		
-		$.post(
-   				"../event_utility_controller", 
-   				{deleteEventid : eventid,status:$(this).data('status')}, 
-   				function(data) {location.reload();})
+		
 	}
 	else if(key === 'edit'){
 		
@@ -3748,17 +3798,43 @@ function scheduler_init_edit_new_trainer_associated() {
 
 //function to delete Event
 function scheduler_DeleteEvent() {
-	 
-	 $(".delete-event").click(function(){ 
+	
+	 $(".delete-event").unbind().on('click', function(){ 
 		 
 		var eventid =  $(this).attr('id');
+		if($('#idForm4 #reason_for_edit_delete').val()!=null && $('#idForm4 #reason_for_edit_delete').val()!='')
+	      {
+			  
+			  $.ajax({
+			       type: "POST",
+			       url: '/add_entry_in_deleted_events',
+			       data: $("#idForm4").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+			       success: function(data)
+			       { 
+			       }
+			     });
+			  
+
+				$.post(
+						"../event_utility_controller", 
+						{deleteEventid : eventid}, 
+						function(data) {
+			
+									});
+			  
+			  
+			
+			  
+			 $('#reason_needed').hide();
+			 $('#myModal2').modal('toggle'); 
+			 location.reload();
+	      }
+		  else
+		  {
+			  $('#reason_needed').show();
+		  }	
 		
-		$.post(
-				"../event_utility_controller", 
-				{deleteEventid : eventid}, 
-				function(data) {
-	
-							});
+		
 
 						});
 
@@ -4080,8 +4156,19 @@ function scheduler_createOldEvent() {
 	 
 $(".edit-submit-btn").unbind().click(function(){
 	  var url = "../createorupdate_events"; // the script where you handle the form input.
-
-		 $.ajax({
+	  if($('#idForm4 #reason_for_edit_delete').val()!=null && $('#idForm4 #reason_for_edit_delete').val()!='')
+      {
+		  
+		  $.ajax({
+		       type: "POST",
+		       url: '/add_entry_in_deleted_events',
+		       data: $("#idForm4").serialize()+ "&action_type=UPDATE", // serializes the form's elements.
+		       success: function(data)
+		       { 
+		       }
+		     });
+		  
+		  $.ajax({
 		       type: "POST",
 		       url: url,
 		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
@@ -4089,7 +4176,19 @@ $(".edit-submit-btn").unbind().click(function(){
 		       { 
 		       }
 		     });
-		 $('#myModal2').modal('toggle');
+		  
+		  
+		
+		  
+		 $('#reason_needed').hide();
+		 $('#myModal2').modal('toggle'); 
+		 location.reload();
+      }
+	  else
+	  {
+		  $('#reason_needed').show();
+	  }	  
+	  
    });
 }
 
@@ -4595,6 +4694,40 @@ $('#college_id').on('change', function(){
 		
 	});
 	
+	$('.super_admin_user_creation').on('change', function(){
+		var user_type = $('.super_admin_user_creation option:selected').text();
+		if(check_user_type(user_type)){
+			$('#hide_college_holder').hide();
+			$('#batch_group_holder').hide();
+			$('#hide_role_holder').hide();
+			
+		}else{
+			$('#hide_college_holder').show();
+			$('#batch_group_holder').show();
+			$('#hide_role_holder').show();
+		}
+		$('#user_type').val(user_type);
+		set_batchgroup_data();
+	});
+	
+	function check_user_type(user_type) {
+		switch (user_type){
+		case 'ORG_ADMIN':
+			return false;
+		case 'COORDINATOR':
+			return false;
+		case 'RECRUITER':
+			return false;
+		case 'EXECUTIVE RECRUITER':
+			return false;
+		case 'PANELIST':
+			return false;
+		case 'STUDENT':
+			return false;
+		default :
+				return true;
+		}
+	}
 	
 }
 

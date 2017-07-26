@@ -14,7 +14,7 @@
 		batchId = Integer.parseInt(request.getParameter("batchId"));
 	}
 %>
-<jsp:include page="../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_ops_report_print">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
@@ -109,7 +109,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
 			init_opsReport();
@@ -190,7 +190,7 @@
 		batchId = Integer.parseInt(request.getParameter("batchId"));
 	}
 %>
-<jsp:include page="../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_ops_report_print">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
@@ -285,7 +285,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
 			init_opsReport();

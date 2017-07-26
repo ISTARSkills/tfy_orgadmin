@@ -1,5 +1,5 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -10,7 +10,7 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 <body class="top-navigation" id="trainer_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-		<jsp:include page="inc/navbar.jsp"></jsp:include>
+		<jsp:include page="/inc/navbar.jsp"></jsp:include>
 		<div class="row">
 				<div class="row wrapper border-bottom white-bg page-heading">
 					<div class="col-lg-10">
@@ -26,5 +26,5 @@ IstarUser trainer = (IstarUser)request.getSession().getAttribute("user");
 		
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>

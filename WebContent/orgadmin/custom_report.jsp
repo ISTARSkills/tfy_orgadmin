@@ -6,11 +6,11 @@ String reportName = request.getParameter("report_name");
 String orgId = request.getParameter("organziation_id");
 ReportUtils util = new ReportUtils();
 %>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="custom_report">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;
     padding-left: 20px;">
                 <div class="col-lg-10">
@@ -63,7 +63,7 @@ ReportUtils util = new ReportUtils();
 				
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 <!-- Mainly scripts -->
 </body>
  

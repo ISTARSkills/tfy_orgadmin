@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
+<%@page import="java.util.List"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
@@ -6,13 +8,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 
 	AdminUIServices adminUiServcies = new AdminUIServices();
+	DBUTILS db = new DBUTILS();
 %>
 <div class="modal inmodal"
 									id="admin_student_card_modal" tabindex="-1"
@@ -23,7 +26,7 @@
 <body class="top-navigation" id="super_admin_user_managment">
 	<div id="wrapper" class="white-bg">
 		<div id="page-wrapper" class="white-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content white-bg" style="padding: 4px;">
 				<div class="ibox">
 					<div class="col-lg-12" style="padding: 0px;">
@@ -167,11 +170,16 @@
 							
 								<div class="col-lg-4">
 									<input type="hidden" value="STUDENT" id="user_type"
-										name="user_type" /> <label class="control-label">Select User Type</label> <select
-										class="form-control m-b userType">
-										<option value="STUDENT">Student</option>
-										<option value="TRAINER">Trainer</option>
-
+										name="user_type" /> <label class="control-label">Select User Type</label> <select class="form-control super_admin_user_creation" name="user_role">
+										<%
+											String findRoles = "select id, role_name from role where role_name not in ('PRESENTOR') order by id desc";
+											List<HashMap<String, Object>> roles = db.executeQuery(findRoles);
+											for (HashMap<String, Object> role : roles) {
+										%>
+										<option value="<%=role.get("id")%>"><%=role.get("role_name")%></option>
+										<%
+											}
+										%>
 									</select>
 								</div>
 								<div id="hide_college_holder">
@@ -208,7 +216,7 @@
                                </div>
 
 
-								<div id="hide_role_holder">
+								<!-- <div id="hide_role_holder">
 									<div class="col-lg-6">
 										<h3 class="m-b-n-md">Role(only for corporate)</h3>
 										<hr class="m-b-xs">
@@ -225,7 +233,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 							<div class="modal-footer">
 								<div class="form-group">
@@ -240,7 +248,7 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 </body>
 </html>

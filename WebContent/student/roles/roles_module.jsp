@@ -19,7 +19,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 
-<jsp:include page="../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -37,7 +37,7 @@
 <body class="top-navigation student_pages" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="../inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
 
@@ -86,7 +86,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 
 </html>

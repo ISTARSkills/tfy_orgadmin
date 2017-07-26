@@ -56,7 +56,7 @@
 	padding-top: 0px !important;
 }
 </style>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -69,7 +69,7 @@
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" style="background: #ffffff;">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
 
@@ -153,7 +153,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 
 </body>

@@ -1,6 +1,7 @@
 package in.orgadmin.auth;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.dao.entities.Role;
+import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -57,7 +60,7 @@ public class LoginController extends HttpServlet {
 				if (roles.size() > 0 && roles.get(0).get("role_name") != null) {
 					userRole = roles.get(0).get("role_name").toString();
 				}
-				if (userRole.equalsIgnoreCase("CONTENT_CREATOR")) {
+				if (userRole.equalsIgnoreCase("CONTENT_CREATOR") ||userRole.equalsIgnoreCase("CONTENT_ADMIN")) {
 					url = "/content/auth/login?email=" + request.getParameter("email") + "&password="
 							+ request.getParameter("password");
 					response.sendRedirect(url);
@@ -65,27 +68,23 @@ public class LoginController extends HttpServlet {
 					try {
 
 						if (user.getPassword().equals(request.getParameter("password"))) {
-
-							//System.out.println("-------------------Email -> " + user.getEmail());
-							// request.getSession().setMaxInactiveInterval(2000);
+							
+							ArrayList<Role> userRoles = new ArrayList<>();
+							for(UserRole ur : user.getUserRoles())
+							{
+								System.out.println("ur.getRole -- "+ur.getRole().getRoleName());
+								userRoles.add(ur.getRole());
+							}
+							
+							request.getSession().setAttribute("user_roles", userRoles);
 							request.getSession().setAttribute("user", user);
-
+							request.getSession().setAttribute("main_role", userRole);
+							request.getSession().setAttribute("logged_in_role", userRole);
+								
 							if (userRole.equalsIgnoreCase("SUPER_ADMIN")) {
-
-								//System.out.println("User logged in. ID -> "
-									//	+ user.getUserRoles().iterator().next().getRole().getRoleName());
-								//System.out.println("User logged in. ID -> " + user.getId());
-								//System.out.println("User logged in. Type -> "
-										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
 								url = "/super_admin/dashboard.jsp";
 								request.getRequestDispatcher(url).forward(request, response);
 							} else if (userRole.equalsIgnoreCase("ORG_ADMIN")) {
-
-								//System.out.println("User logged in. ID -> "
-										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
-								//System.out.println("User logged in. ID -> " + user.getId());
-								//System.out.println("User logged in. Type -> "
-										//+ user.getUserRoles().iterator().next().getRole().getRoleName());
 
 								request.getSession().setAttribute("orgId",
 										user.getUserOrgMappings().iterator().next().getOrganization().getId());
@@ -113,7 +112,7 @@ public class LoginController extends HttpServlet {
 								request.setAttribute("msg", "User Does Not Have Permission To Access");
 								request.getRequestDispatcher("/login.jsp").forward(request, response);
 							}
-							//System.out.println(url);
+							
 
 						} else {
 							request.setAttribute("msg", "Wrong Password");
@@ -121,7 +120,7 @@ public class LoginController extends HttpServlet {
 						}
 
 					} catch (Exception e) {
-						// e.printStackTrace();
+					
 						request.setAttribute("msg", "Wrong Username");
 						request.getRequestDispatcher("/login.jsp").forward(request, response);
 					}

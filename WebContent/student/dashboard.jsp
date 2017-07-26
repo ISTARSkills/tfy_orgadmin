@@ -20,7 +20,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -37,7 +37,7 @@
 <body class="top-navigation student_pages">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="./inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;" id='equalheight'>
 				
 			<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
@@ -63,7 +63,7 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<Script>
 	$( document ).ready(function() {
 	$(".card1").flip({

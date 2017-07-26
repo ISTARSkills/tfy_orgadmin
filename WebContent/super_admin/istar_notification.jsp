@@ -19,7 +19,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  String url = request.getRequestURL().toString();
 String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -30,7 +30,7 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 <input type="hidden" name="admin_id" value="<%=user.getId()%>" id ="hidden_admin_id">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-		<jsp:include page="inc/navbar.jsp"></jsp:include>
+		<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="row p-xl">
 			<div class="col-lg-2">
 					<div class="form-group">
@@ -220,5 +220,5 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 
 		</div>
 	</div>
-<jsp:include page="inc/foot.jsp"></jsp:include>
+<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>

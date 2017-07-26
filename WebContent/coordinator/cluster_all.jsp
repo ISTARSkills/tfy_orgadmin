@@ -100,7 +100,7 @@
 	color: white !important;
 }
 </style>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -114,7 +114,7 @@
 <body class="top-navigation" >
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2><small>Over All Hiring Report</small></strong> </h2>
@@ -149,6 +149,6 @@
 			</div>
 		</div>
 	
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

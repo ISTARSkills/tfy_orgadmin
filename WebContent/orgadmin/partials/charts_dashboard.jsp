@@ -183,8 +183,7 @@
 					<%
 						CalenderUtils calUtil = new CalenderUtils();
 						HashMap<String, String> input_params = new HashMap();
-						/* 						OrgAdmin u = (OrgAdmin) request.getSession().getAttribute("user");
-						 */
+						
 						int college_id = (int) request.getSession().getAttribute("orgId");
 						input_params.put("org_id", college_id + "");
 					%>

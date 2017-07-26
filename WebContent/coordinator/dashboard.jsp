@@ -9,7 +9,7 @@
 <%@page import="tfy.admin.trainer.CoordinatorSchedularUtil"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
 th {
 	text-align: center
@@ -31,7 +31,7 @@ th {
 <body class="top-navigation student_pages" id="coordinator_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom  page-heading white-bg">
 
 				<div class="row white-bg">
@@ -178,6 +178,6 @@ th {
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

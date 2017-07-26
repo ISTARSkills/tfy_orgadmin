@@ -21,7 +21,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
 th {
 	text-align: center
@@ -42,7 +42,7 @@ th {
 <body class="top-navigation" id="coordinator_trainer_details">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2>
@@ -313,6 +313,6 @@ th {
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

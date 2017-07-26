@@ -63,7 +63,7 @@ public class AccountManagementServices {
 	}
 
 	public List<HashMap<String, Object>> getAllBG(int courseId, int coleegeId) {
-		String sql = "SELECT DISTINCT 	bg. ID, 	bg. NAME, CAST ( 		COUNT (DISTINCT student_id) AS INTEGER 	) AS stu_count FROM 	batch_group bg, 	batch b, batch_students WHERE batch_students.batch_group_id = bg. ID AND	b.batch_group_id = b.batch_group_id AND b.course_id = "
+		String sql = "SELECT DISTINCT 	bg. ID, 	bg. NAME, CAST ( 		COUNT (DISTINCT student_id) AS INTEGER 	) AS stu_count FROM 	batch_group bg, 	batch b, batch_students WHERE batch_students.batch_group_id = bg. ID AND	bg.id = b.batch_group_id AND b.course_id = "
 				+ courseId + " AND bg.college_id = " + coleegeId
 				+ " GROUP BY 	bg. ID, 	bg. NAME ORDER BY 	bg. NAME";
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
