@@ -5,7 +5,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -14,7 +14,7 @@
 <body class="top-navigation" id='super_admin_account_managment'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content" style=" padding: 4px!important;">
 				<div class="row">
 					<!-- Start Table -->
@@ -54,6 +54,6 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

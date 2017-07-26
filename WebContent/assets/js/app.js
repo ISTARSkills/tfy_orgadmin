@@ -1867,13 +1867,48 @@ function init_edit_delete_event(eventID,status){
 	if(key === 'delete'){
 			
         console.log('----------status------->'+$(this).data('status'));
+		var url= "/delete_event_modal.jsp?event_id="+eventid;
+		$.post(url, 
+				{eventid : eventid}, 
+				function(data) {
+					
+					       $('#delete_event_modal').empty();
+								$('#delete_event_modal').append(data);
+								 $('#delete_event_modal').modal('show');
 		
-		 
+								 $('#delete_event_button').unbind().on('click',function(){
+									
+									 if($('#delete_event_form #reason_for_edit_delete').val()!=null && $('#delete_event_form #reason_for_edit_delete').val()!='')
+								      {
+										  
+										  $.ajax({
+										       type: "POST",
+										       url: '/add_entry_in_deleted_events',
+										       data: $("#delete_event_form").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+										       success: function(data)
+										       { 
+										       }
+										     });
+										  
+										  $.post(
+									   				"../event_utility_controller", 
+									   				{deleteEventid : eventid,status:$(this).data('status')}, 
+									   				function(data) {location.reload();})
+										  
+										 $('#reason_needed').hide();
+										 $('#delete_event_modal').modal('toggle'); 
+								      }
+									  else
+									  {
+										  $('#reason_needed').show();
+									  }									 
+									 
+								 });
+								 
+								 
+		});
 		
-		$.post(
-   				"../event_utility_controller", 
-   				{deleteEventid : eventid,status:$(this).data('status')}, 
-   				function(data) {location.reload();})
+		
 	}
 	else if(key === 'edit'){
 		
@@ -3748,17 +3783,43 @@ function scheduler_init_edit_new_trainer_associated() {
 
 //function to delete Event
 function scheduler_DeleteEvent() {
-	 
-	 $(".delete-event").click(function(){ 
+	
+	 $(".delete-event").unbind().on('click', function(){ 
 		 
 		var eventid =  $(this).attr('id');
+		if($('#idForm4 #reason_for_edit_delete').val()!=null && $('#idForm4 #reason_for_edit_delete').val()!='')
+	      {
+			  
+			  $.ajax({
+			       type: "POST",
+			       url: '/add_entry_in_deleted_events',
+			       data: $("#idForm4").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+			       success: function(data)
+			       { 
+			       }
+			     });
+			  
+
+				$.post(
+						"../event_utility_controller", 
+						{deleteEventid : eventid}, 
+						function(data) {
+			
+									});
+			  
+			  
+			
+			  
+			 $('#reason_needed').hide();
+			 $('#myModal2').modal('toggle'); 
+			 location.reload();
+	      }
+		  else
+		  {
+			  $('#reason_needed').show();
+		  }	
 		
-		$.post(
-				"../event_utility_controller", 
-				{deleteEventid : eventid}, 
-				function(data) {
-	
-							});
+		
 
 						});
 
@@ -4080,8 +4141,19 @@ function scheduler_createOldEvent() {
 	 
 $(".edit-submit-btn").unbind().click(function(){
 	  var url = "../createorupdate_events"; // the script where you handle the form input.
-
-		 $.ajax({
+	  if($('#idForm4 #reason_for_edit_delete').val()!=null && $('#idForm4 #reason_for_edit_delete').val()!='')
+      {
+		  
+		  $.ajax({
+		       type: "POST",
+		       url: '/add_entry_in_deleted_events',
+		       data: $("#idForm4").serialize()+ "&action_type=UPDATE", // serializes the form's elements.
+		       success: function(data)
+		       { 
+		       }
+		     });
+		  
+		  $.ajax({
 		       type: "POST",
 		       url: url,
 		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
@@ -4089,7 +4161,19 @@ $(".edit-submit-btn").unbind().click(function(){
 		       { 
 		       }
 		     });
-		 $('#myModal2').modal('toggle');
+		  
+		  
+		
+		  
+		 $('#reason_needed').hide();
+		 $('#myModal2').modal('toggle'); 
+		 location.reload();
+      }
+	  else
+	  {
+		  $('#reason_needed').show();
+	  }	  
+	  
    });
 }
 

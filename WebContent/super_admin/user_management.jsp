@@ -6,7 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -23,7 +23,7 @@
 <body class="top-navigation" id="super_admin_user_managment">
 	<div id="wrapper" class="white-bg">
 		<div id="page-wrapper" class="white-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content white-bg" style="padding: 4px;">
 				<div class="ibox">
 					<div class="col-lg-12" style="padding: 0px;">
@@ -240,7 +240,7 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 </body>
 </html>

@@ -3,11 +3,11 @@
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.*"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="orgadmin_scheduler">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<%
 				String url = request.getRequestURL().toString();
@@ -58,7 +58,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 
 </html>

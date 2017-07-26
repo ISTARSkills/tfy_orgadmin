@@ -3,7 +3,7 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="tfy.admin.trainer.CoordinatorSchedularUtil"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	int courseId = 0;
 	String stage = "";
@@ -22,7 +22,7 @@
 <body class="top-navigation">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10 m-l-md">
 					<h2>
@@ -144,6 +144,6 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

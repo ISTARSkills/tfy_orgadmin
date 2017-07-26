@@ -17,13 +17,13 @@ String roleName = user.getUserRoles().iterator().next().getRole().getRoleName();
 if(roleName.equalsIgnoreCase("ORG_ADMIN"))
 {
 	%>
-	<jsp:include page="../orgadmin/inc/head.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 	<% 
 }
 else if(roleName.equalsIgnoreCase("SUPER_ADMIN")) 
 {
 	%>
-	<jsp:include page="../super_admin/inc/head.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 	<%
 	
 	}	
@@ -37,14 +37,14 @@ else if(roleName.equalsIgnoreCase("SUPER_ADMIN"))
 {
 	%>
 
-	<jsp:include page="../orgadmin/inc/navbar.jsp"></jsp:include>
+	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 	<% 
 }
 else if(roleName.equalsIgnoreCase("SUPER_ADMIN")) 
 {
 	%>
 	
-	<jsp:include page="../super_admin/inc/navbar.jsp"></jsp:include>
+	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 	<%
 	
 	}	
@@ -131,14 +131,14 @@ int college_id = Integer.parseInt(request.getParameter("college_id"));
 {
             	   reportPageUrl=baseURL+"/orgadmin/report.jsp";
 	%>
-	<jsp:include page="../orgadmin/inc/head.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 	<% 
 }
 else if(roleName.equalsIgnoreCase("SUPER_ADMIN")) 
 {
 	reportPageUrl=baseURL+"/super_admin/analytics.jsp";
 	%>
-	<jsp:include page="../super_admin/inc/head.jsp"></jsp:include>
+	<jsp:include page="/inc/head.jsp"></jsp:include>
 	<%
 	
 	}
@@ -448,14 +448,14 @@ else if(roleName.equalsIgnoreCase("SUPER_ADMIN"))
 {
 	%>
 
-	<jsp:include page="../orgadmin/inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<% 
 }
 else if(roleName.equalsIgnoreCase("SUPER_ADMIN")) 
 {
 	%>
 	
-	<jsp:include page="../super_admin/inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<%
 	
 	}	

@@ -27,7 +27,6 @@ try{
 <script src="<%=basePath %>assets/js/jquery-2.1.1.js"></script>
 
 
-<script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>
 
 <script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -82,6 +81,7 @@ try{
 
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
+ <script src="<%=basePath %>assets/js//jquery.equalheights.js"></script>
 <script src="<%=basePath %>assets/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/highcharts.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/no-data-to-display.js"></script>
@@ -92,6 +92,11 @@ try{
 <script src="<%=basePath %>assets/js/websocket.js"></script>
 <script src="<%=basePath %>assets/js/plugins/steps/jquery.steps.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="<%=basePath%>assets/js/plugins/iCheck/icheck.min.js"></script>
+<script src="<%=basePath %>assets/js/circular-custom-plugin.js"></script>
+<script src="<%=basePath %>assets/js/isotope.pkgd.js"></script>
+<script src="<%=basePath %>assets/js/jquery.flip.min.js"></script>
+<script src="<%=basePath %>assets/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
 

@@ -109,7 +109,9 @@ int colegeID = (int)request.getSession().getAttribute("orgId");
 									</div>
 								</div>
 
-
+ <div id="delete_event_modal" class="modal fade" aria-hidden="true">
+                                
+								</div>  
 		<!--  -->
 							</div>
 

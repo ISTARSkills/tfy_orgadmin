@@ -25,10 +25,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					
 					 data = new UIUtils().getALLEventDetails(request.getParameter("eventid"));
 				        slideCount = dashboardServices.getSlideCount(request.getParameter("eventid"));
-					 status = request.getParameter("status");
-				
-					
-					
+					 status = request.getParameter("status");				
 				}
 			%>
 			
@@ -43,7 +40,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 <p><strong>Class Room: </strong> <%=data.get("classroom") %></p>
 
 <p><strong>Trainer Name: </strong> <%=data.get("trainername") %> (<%=data.get("traineremail") %>)</p>
-<p><strong>Date/Time: </strong> <%=dateformatter.format(todate.parse(data.get("evedate"))) %> - <%=timeformatter.format(todate.parse(data.get("evedate"))) %></p>
+<p><strong>Date/Time: </strong> <%=dateformatter.format(todate.parse(data.get("event_date"))) %> - <%=timeformatter.format(todate.parse(data.get("event_date"))) %></p>
 <p><strong>Duration: </strong> <%=data.get("duration") %></p>
 <%if(!data.get("status").equalsIgnoreCase("ASSESSMENT")){%>
 <p><strong>Status: </strong><%=data.get("status") %></p>
@@ -79,3 +76,6 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                             <% }%>
                                         </div>
                                     </div>
+                                    
+                                    
+                                 

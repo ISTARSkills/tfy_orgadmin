@@ -7,7 +7,7 @@
 <%@page import="java.io.IOException"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -22,7 +22,7 @@
 <body class="top-navigation" id="coordinator_trainer_profile">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
 
@@ -99,7 +99,7 @@
 	</div>
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 
 </html>

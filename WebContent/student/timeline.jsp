@@ -19,7 +19,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -36,7 +36,7 @@
 <body class="top-navigation student_pages" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="./inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-lg-10">
                     <h2>Timeline</h2><small>Here you can see all historical activity.</small>
@@ -131,7 +131,7 @@
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 </body>
 </html>

@@ -10,7 +10,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -43,7 +43,7 @@
 <body class="top-navigation" id="orgadmin_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 			<!-- Start Table -->
 			<jsp:include page="partials/events_stats.jsp"></jsp:include>
@@ -69,7 +69,8 @@
 										List<HashMap<String, Object>> items = dashboardServices.getTodaysEventData(colegeID);
 										if (items.size() > 0) {
 											//int i = 0;
-											for (HashMap<String, Object> item : items) {
+											for (int i=0; i < items.size();i++) {
+								HashMap<String, Object> item = items.get(i);
 
 												//i++;
 												String eventId = (String) item.get("event_id");
@@ -93,8 +94,7 @@
 				<jsp:param value='<%=item.get("actor_id") %>' name="trainer_id"/>
 				<jsp:param value='<%=item.get("batch_group_id") %>' name="batch_group_id"/>
 				<jsp:param value='<%=item.get("course_id") %>' name="course_id"/>
-				</jsp:include>
-		
+				</jsp:include>		
 									<hr>
 									<%
 										}
@@ -163,7 +163,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 
 </html>

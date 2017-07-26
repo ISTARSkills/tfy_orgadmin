@@ -41,8 +41,8 @@ try {
 	rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/clockpicker/clockpicker.css"
 	rel="stylesheet">
-
-
+ <link href="<%=basePath%>assets/css/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <link href="<%=basePath%>assets/css/animate.css" rel="stylesheet">
@@ -63,4 +63,7 @@ try {
  <link href="<%=basePath%>assets/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/steps/jquery.steps.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+<link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+<link href="<%=basePath%>assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
 </head>

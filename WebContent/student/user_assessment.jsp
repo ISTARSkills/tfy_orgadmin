@@ -10,7 +10,7 @@
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 String url = request.getRequestURL().toString();
 String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";	
@@ -101,7 +101,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 <body class="top-navigation" id="user_assessment">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-		<jsp:include page="inc/navbar.jsp"></jsp:include>
+		<jsp:include page="/inc/navbar.jsp"></jsp:include>
 		
 		<div class="wrapper wrapper-content animated fadeInRight" style="padding-top:4px;">
 					<div class="row">
@@ -219,7 +219,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		</div>		
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script src="../trainer_common_jsps/custom_assessment.js"></script>
 	<script type="text/javascript">
 	var totalQuestionCount = <%=queCount%>;

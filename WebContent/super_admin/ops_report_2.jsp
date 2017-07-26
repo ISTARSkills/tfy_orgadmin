@@ -128,7 +128,7 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script type="text/javascript">
 		$('#report_college').on("change", function() {
 			var orgId = $(this).val();

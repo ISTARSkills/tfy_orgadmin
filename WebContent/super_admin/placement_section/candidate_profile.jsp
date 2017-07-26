@@ -30,11 +30,11 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
 
 %>
 
-<jsp:include page="../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_analytics">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="../inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			
 			<div class="row animated fadeInRight">
                 <div class="col-md-4">
@@ -272,7 +272,7 @@ List<HashMap<String, Object>> skillrating = serv.getStudentRatingPerskill(18);
 
 		</div>
 	</div>
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 <!-- Mainly scripts -->
 </body>
 </html>

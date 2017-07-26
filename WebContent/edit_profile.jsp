@@ -1,7 +1,7 @@
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -86,7 +86,7 @@ request.setAttribute("cp", co	);
 <body class="top-navigation" id="trainer_dashboard">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-		<jsp:include page="inc/navbar.jsp"></jsp:include>
+		<jsp:include page="/inc/navbar.jsp"></jsp:include>
 		<div class="row">
 				
 				
@@ -124,7 +124,7 @@ request.setAttribute("cp", co	);
 		
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 
 <script type="text/javascript">

@@ -12,7 +12,8 @@
 				String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 						+ request.getContextPath() + "/";
 				boolean istrue = false;
-				
+IstarUser user = (IstarUser)request.getSession().getAttribute("user");
+int orgAdminUserID =user.getId();
 				
 				UIUtils ui = new UIUtils();
 				IstarUser istarUser = new IstarUser();
@@ -26,7 +27,7 @@
 				String trainerEmail = "defalut@mail.com";
 				int classroomID = 0;
 				String classroomName = "";
-				int orgAdminUserID =300;
+				
 				int orgID=0;
 				int batchID = 0;
 				String associate_trainee = null;
@@ -156,17 +157,18 @@
 			</div>
 			<div class="col-lg-6">
 				<label class="control-label">Select Session</label> <select
-					class="form-control m-b" name=sessionID>
-					
+					class="form-control m-b" name=sessionID>					
 					<%=ui.getLessons(batchID,batch.getCourse().getId())%>
-
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+			<div class="col-lg-12">
+				<label class="control-label">Reason for Edit*</label> <input type="text" name="reason_for_edit_delete" class="form-control" required id="reason_for_edit_delete" >
+				<label id="reason_needed" class="error" style="display:none">Reason is required.</label>
+			</div>			
+		</div>
 	</form>
-
-
-
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger custom-theme-btn-primary" data-dismiss="modal">Close</button>

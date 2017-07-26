@@ -1,6 +1,6 @@
 <%@page import="java.util.HashMap"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -11,7 +11,7 @@
 <body class="top-navigation" id="trainer_assessment_details">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-		<jsp:include page="inc/navbar.jsp"></jsp:include>		
+		<jsp:include page="/inc/navbar.jsp"></jsp:include>		
 		
 		<div class="wrapper wrapper-content white-bg">
 		
@@ -29,6 +29,6 @@
 		</div>
 	</div>
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

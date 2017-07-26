@@ -8,7 +8,7 @@
 <%@page import="java.util.List"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<jsp:include page="inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
 th {
 	text-align: center
@@ -29,7 +29,7 @@ th {
 <body class="top-navigation" id="coordinator_trainer_details">
 	<div id="wrapper">
 		<div id="page-wrapper" class="white-bg">
-			<jsp:include page="inc/navbar.jsp" />
+			<jsp:include page="/inc/navbar.jsp" />
 			<div class="row wrapper border-bottom white-bg page-heading">
 				<div class="col-lg-10">
 					<h2 style="margin-left: 30px">
@@ -336,6 +336,6 @@ th {
 			</div>
 		</div>
 	</div>
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
 </html>

@@ -186,11 +186,28 @@ public class EventSchedulerService {
 			String deleteMapping ="delete from event_queue_event_mapping where event_id in (select id from batch_schedule_event where batch_group_code='"+groupCode+"')";
 			db.executeUpdate(deleteMapping);
 			
+			String deleteEventLog ="delete from event_log where event_id in (select id from batch_schedule_event  WHERE batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteEventLog);
+			
+			String deleteFeedback = "delete from trainer_feedback where event_id in (select id from batch_schedule_event  WHERE batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteFeedback);
+			
+			String deleteStudentFeedback ="delete from student_feedback where event_id in (select id from batch_schedule_event  WHERE batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteStudentFeedback);
+			
+			String deleteFromAttendance = "delete from attendance where event_id in (select id from batch_schedule_event  WHERE batch_group_code='"+groupCode+"')";
+			db.executeUpdate(deleteFromAttendance);
+						
+			
+			
 			String deleteBSE="DELETE FROM batch_schedule_event WHERE batch_group_code='"+groupCode+"'";
 			db.executeUpdate(deleteBSE);
 			
 			String deteleEventQueue ="delete from event_queue where group_code ='"+groupCode+"'";
 			db.executeUpdate(deteleEventQueue);
+			
+			
+			
 		}
 		
 		

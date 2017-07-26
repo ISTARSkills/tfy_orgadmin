@@ -17,11 +17,11 @@
 		tab = request.getParameter("tab");
 	}
 %>
-<jsp:include page="../inc/head.jsp"></jsp:include>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_report">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="../inc/navbar.jsp"></jsp:include>
+			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			
 <div class="row">
 
@@ -58,7 +58,7 @@
 </div>
 </div>
 	</div>
-	<jsp:include page="../inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<!-- Mainly scripts -->
 </body>
 </html>

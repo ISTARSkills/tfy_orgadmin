@@ -115,7 +115,7 @@
 
 
 	<!-- Mainly scripts -->
-	<jsp:include page="inc/foot.jsp"></jsp:include>
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 		$(document)
 				.ready(
