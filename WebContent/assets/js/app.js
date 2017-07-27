@@ -369,6 +369,7 @@ function initTicket()
 {
 	
 	$('#open_ticket').unbind().on('click', function(e) {
+		$('select').select2();	 
 		$('#create_new_ticket_modal').modal();
 		$("#new_ticket_form").bind("keypress", function(e) {
             if (e.keyCode == 13) {
@@ -418,7 +419,7 @@ function initTicket()
 	});*/
 	
 	
-	$('.ticket_summary_button').unbind().on('click', function() {	 
+	$('.ticket_summary_button').unbind().on('click', function() {
     	var ticket_id = $(this).data("ticket_id");
     	var your_jsp_page_to_request = "/ticket_summary.jsp";			 			 
 		$.post(your_jsp_page_to_request,{ticket_id:ticket_id},		     
@@ -874,6 +875,8 @@ function initiateGraphFilter()
 		             success: function(data){		            	
 		            	 $('#'+data_table_id).replaceWith(data);
 		            	 createGraphs();
+		            	 
+		            	 
 		             }
 		         });
 		  });		
@@ -913,15 +916,13 @@ function createGraphs()
  							
  						}
  						
- 						
- 						
  			    	}
  			    
  			   
  			});
  			
  			//Hide Table
- 			//$('.dataTables_wrapper').hide();
+ 			$('.data_holder.datatable_report').hide();
 
  		} catch (err) {
  		//console.log(err);
@@ -2084,7 +2085,7 @@ function mark_as_read_notification(){
 function init_orgadmin_dashboard() {
     console.log('intiliazing Dashboard');
     
-   
+
     $('#myModal2').on('shown.bs.modal', function() {
 		var otherEventData = []
 		//$('#myModal5').modal('toggle');
@@ -6195,7 +6196,7 @@ function init_super_admin_report(){
 }
 
 function init_superadmin_class_room(){
-	
+	$('select').select2();
 	$('#class-add').on("click",function(){
 		var urls = $(this).data('url');
     	window.location=urls;

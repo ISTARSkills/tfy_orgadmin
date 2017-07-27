@@ -1,5 +1,3 @@
-<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
-<%@page import="java.util.List"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
@@ -15,7 +13,6 @@
 			+ request.getContextPath() + "/";
 
 	AdminUIServices adminUiServcies = new AdminUIServices();
-	DBUTILS db = new DBUTILS();
 %>
 <div class="modal inmodal"
 									id="admin_student_card_modal" tabindex="-1"
@@ -170,16 +167,11 @@
 							
 								<div class="col-lg-4">
 									<input type="hidden" value="STUDENT" id="user_type"
-										name="user_type" /> <label class="control-label">Select User Type</label> <select class="form-control super_admin_user_creation" name="user_role">
-										<%
-											String findRoles = "select id, role_name from role where role_name not in ('PRESENTOR') order by id desc";
-											List<HashMap<String, Object>> roles = db.executeQuery(findRoles);
-											for (HashMap<String, Object> role : roles) {
-										%>
-										<option value="<%=role.get("id")%>"><%=role.get("role_name")%></option>
-										<%
-											}
-										%>
+										name="user_type" /> <label class="control-label">Select User Type</label> <select
+										class="form-control m-b userType">
+										<option value="STUDENT">Student</option>
+										<option value="TRAINER">Trainer</option>
+
 									</select>
 								</div>
 								<div id="hide_college_holder">
@@ -216,7 +208,7 @@
                                </div>
 
 
-								<!-- <div id="hide_role_holder">
+								<div id="hide_role_holder">
 									<div class="col-lg-6">
 										<h3 class="m-b-n-md">Role(only for corporate)</h3>
 										<hr class="m-b-xs">
@@ -233,7 +225,7 @@
 											</div>
 										</div>
 									</div>
-								</div> -->
+								</div>
 							</div>
 							<div class="modal-footer">
 								<div class="form-group">
