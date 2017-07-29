@@ -156,7 +156,9 @@
 
 
 		<!--  -->
-
+	 <div id="delete_event_modal" class="modal fade" aria-hidden="true">
+                                
+								</div> 
 		</div>
 	</div>
 
