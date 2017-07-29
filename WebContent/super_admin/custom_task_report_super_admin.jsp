@@ -280,6 +280,7 @@ $(".delete_task_btn").click(function(){
 		var course = "";
 		var entity_type = "";
 		var entity_id = "";
+		
 		var key = $(this).attr("data-task_delete");
 		if(key === 'task_delete'){
 			 task_id = $(this).attr("data-task");
@@ -310,6 +311,7 @@ $(".delete_task_btn").click(function(){
 	        },
 	        success: function(result) {
 	          
+	        	
 	        	location.reload();
 	        }
 	    });

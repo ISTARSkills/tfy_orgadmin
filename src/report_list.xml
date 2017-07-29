@@ -2727,6 +2727,7 @@ ORDER BY user_id
 <reports id="3081" type_of_report="table">	
 		<column columnHandler="NONE" display_name="User Id" isVisible="true" name="user_id" />
 		<column columnHandler="NONE" is_selectable="true" display_name="User Name" isVisible="true" data_type="string" name="first_name" />
+		 <column columnHandler="NONE" display_name="User Type" isVisible="true"  name="role_name" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Module Name" isVisible="true" data_type="string" name="module_name" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Session Name" isVisible="true" data_type="string" name="cmsession_name" />
@@ -2741,6 +2742,7 @@ SELECT
 	tf.task_handler,
 	tf.user_id,
 	tf.first_name,
+	TF.role_name,
 	tf.course_name,
 	tf.module_name,
 	tf.cmsession_name,
@@ -2748,15 +2750,17 @@ SELECT
 	tf.lesson_name,
 	tf.student_status,
 	tf.task_date,
-	tf.item_type, COUNT (
+	tf.item_type,
+	COUNT (
 		DISTINCT user_session_log.slide_id
 	) AS slide_covered
 FROM
 	(
 		SELECT DISTINCT
-			task. ID ||','|| student_playlist.status ||','|| student_playlist.ID AS task_handler,
+			task. ID || ',' || student_playlist.status || ',' || student_playlist. ID AS task_handler,
 			user_profile.user_id AS user_id,
-			user_profile.first_name  AS first_name,
+			user_profile.first_name AS first_name,
+			ROLE .role_name,
 			course.course_name || ' (' || course. ID || ')' AS course_name,
 			MODULE .module_name || ' (' || MODULE . ID || ')' AS module_name,
 			cmsession.title || ' (' || cmsession. ID || ')' AS cmsession_name,
@@ -2772,7 +2776,9 @@ FROM
 			MODULE,
 			cmsession,
 			lesson,
-			user_profile
+			user_profile,
+			user_role,
+			ROLE
 		WHERE
 			student_playlist.task_id = task. ID
 		AND student_playlist.course_id = course. ID
@@ -2780,6 +2786,8 @@ FROM
 		AND student_playlist.cmsession_id = cmsession. ID
 		AND student_playlist.lesson_id = lesson. ID
 		AND user_profile.user_id = student_playlist.student_id
+		AND user_role.user_id = user_profile.user_id
+		AND user_role.role_id = ROLE . ID
 		AND task.item_type IN (
 			'LESSON',
 			'ASSESSMENT',
@@ -2796,6 +2804,7 @@ GROUP BY
 	tf.task_handler,
 	tf.user_id,
 	tf.first_name,
+	TF.role_name,
 	tf.course_name,
 	tf.module_name,
 	tf.cmsession_name,
@@ -2811,8 +2820,8 @@ GROUP BY
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3082" type_of_report="table">	
-		<column columnHandler="NONE"  display_name="User ID" isVisible="true"  name="entity_id" />
-				<column columnHandler="NONE" is_selectable="true" display_name="User Name" isVisible="true" data_type="string" name="name" />
+		<column columnHandler="NONE"  display_name="Entity ID" isVisible="true"  name="entity_id" />
+				<column columnHandler="NONE" is_selectable="true" display_name="Entity Name" isVisible="true" data_type="string" name="name" />
 				<column columnHandler="NONE" is_selectable="true" display_name="Entity Type" isVisible="true"  name="entity_type" />
 		
 	    <column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
