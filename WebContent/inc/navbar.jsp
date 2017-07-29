@@ -46,26 +46,76 @@
 				class="navbar-brand custom-theme-color">Talentify</a>
 		</div>
 		<div class="navbar-collapse collapse" id="navbar">
-			
-			
+
+
 			<ul class="nav navbar-nav">
-				
-					 <%
+
+				<%
 					for (ParentLink link : (new UIUtils()).getMenuLinks(loggedInRole.toLowerCase())) {
 						if (link.isIs_visible_in_menu()) {
 							int nav_link_id =0;
-							
+							if (link.getChildren().size() == 0) {
 				%>
 				<li><a id="<%=link.getDisplayName().replace(" ","")%>"
 					class="top_navbar_holder" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 				<%
-				}						
+				}else {
+					%>
+'
+				<li class="dropdown"><a aria-expanded="false" role="button"
+					href="<%=link.getUrl()%>" class="dropdown-toggle"
+					data-toggle="dropdown"><%=link.getDisplayName()%><span
+						class="caret"></span> </a>
+					<ul role="menu" class="dropdown-menu">
+						<%
+								for (ChildLink child : link.getChildren()) {
+							%>
+						<li><a id="<%=link.getDisplayName().replace(" ","")%>" href="<%=child.getUrl()%>"><%=child.getDisplayName()%></a></li>
+
+						<%
+								}
+						DBUTILS utils = new DBUTILS();
+						String sql="select * from super_admin_reports where type='UTILITY_REPORT' ";
+						List<HashMap<String, Object>> data = utils.executeQuery(sql);
+						if(data.size()>0)
+						{
+							
+							for(HashMap<String, Object> row: data){
+								String reportId = row.get("report_id").toString();
+								/* String organizationId = "2"; */
+								String reportName = row.get("report_name").toString();
+									%>
+							<li><a
+								href="/super_admin/custom_task_report_super_admin.jsp?report_name=<%=reportName%><%-- &organziation_id=<%=organizationId%> --%>&report_id=<%=reportId%>">
+									<%=reportName %>
+							</a></li>
+							<%	
+							}
+							%>
+						
+
+
+					<% 
+						}						
+					
+						
+						
+							%>
+					</ul></li>
+				<%
+						}		
+						
+							
+						}
 			}
 				
 				if(loggedInRole.equalsIgnoreCase("SUPER_ADMIN"))
 				{
+					
+					
+					
 					DBUTILS utils = new DBUTILS();
-					String sql="select * from super_admin_reports";
+					String sql="select * from super_admin_reports where type='CUSTOM_REPORT'";
 					List<HashMap<String, Object>> data = utils.executeQuery(sql);
 					if(data.size()>0)
 					{
@@ -88,15 +138,15 @@
 						}
 						%>
 					</ul></li>
-					
-					
+
+
 				<% 
 					}						
 				%>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">Switch Organization<b class="caret"></b></a>
 
-<% DBUTILS db = new DBUTILS();
+					<% DBUTILS db = new DBUTILS();
 String sql2 = "SELECT pincode.state, organization.name, organization.id, count(user_org_mapping.user_id) as cnt FROM organization, pincode, address, user_org_mapping WHERE organization.address_id = address. ID AND address.pincode_id = pincode. ID and organization.id=user_org_mapping.organization_id GROUP BY organization.id, organization.name, pincode.state";
 List<HashMap<String, Object>> orgdata = db.executeQuery(sql2);
 
@@ -127,7 +177,7 @@ for(Organization o : (List<Organization>) new OrganizationDAO().findAll())
 
 %>
 					<ul class="dropdown-menu mega-menu">
-<% 
+						<% 
 
 for(String state : orgs.keySet())
 {
@@ -143,35 +193,36 @@ for(String state : orgs.keySet())
 	for(String state : orgs.keySet())
 	{
 		%>
-		<li class="mega-menu-column">
+						<li class="mega-menu-column">
 							<ul>
-								
-							
+
+
 								<li class="nav-header" style="font-size: 15px;"><%=state.toUpperCase() %></li>
 								<%
 								for(Organization org : orgs.get(state))
 								
 								{
 									%>
-									<li style="font-size: 13px;display: block !important;    cursor: help;    border-bottom: 1px dotted #777;"><a href="/role_switch_controller?user_id=<%=user.getId()%>&main_role=<%=mainRole%>&org_id=<%=org.getId()%>"><%=org.getName() %></a></li>
-									<%
+								<li
+									style="font-size: 13px; display: block !important; cursor: help; border-bottom: 1px dotted #777;"><a
+									href="/role_switch_controller?user_id=<%=user.getId()%>&main_role=<%=mainRole%>&org_id=<%=org.getId()%>"><%=org.getName() %></a></li>
+								<%
 								}%>
-								
-								
+
+
 							</ul>
 						</li>
-		<%
+						<%
 	}	
 
 %>
-				
-						
 
-						
 
-					</ul>
-					</li>
-						
+
+
+
+					</ul></li>
+
 				<% 
 				
 				}	
@@ -203,16 +254,17 @@ for(String state : orgs.keySet())
 						<%	
 							}
 							%>
-					</ul>
-				</li>
+					</ul></li>
 				<% 
 						}
 					}						
 				}				
 				%>
 				<li class="dropdown"><a aria-expanded="true" role="button"
-					href="" class="dropdown-toggle" data-toggle="dropdown">Welcome &nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName() %><span
-						class="caret"></span></a>
+					href="" class="dropdown-toggle" data-toggle="dropdown">Welcome
+						&nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName() %><span
+						class="caret"></span>
+				</a>
 					<ul role="menu" class="dropdown-menu">
 
 						<li><a href="/edit_profile.jsp"> Profile </a></li>
@@ -248,9 +300,7 @@ for(String state : orgs.keySet())
 							}	
 							%>
 
-						<li><a
-							href="/auth/logout">
-								Logout </a></li>
+						<li><a href="/auth/logout"> Logout </a></li>
 
 					</ul></li>
 

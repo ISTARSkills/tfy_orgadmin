@@ -42,6 +42,10 @@ public class ReportColumnHandlerFactory {
 			return (new CLASSROOM_HANDLER());
 		case "PRESENTOR_HANDLER":
 			return(new PresentorHandler());
+		case "TASK_HANDLER":
+			return(new TaskHandler());
+		case "AUTO_SCHEDULER_HANDLER":
+			return(new AutoSchedulerHandler());
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":

@@ -2724,4 +2724,180 @@ ORDER BY user_id
 		<title>Superadmin List</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3081" type_of_report="table">	
+		<column columnHandler="NONE" display_name="User Id" isVisible="true" name="user_id" />
+		<column columnHandler="NONE" is_selectable="true" display_name="User Name" isVisible="true" data_type="string" name="first_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Module Name" isVisible="true" data_type="string" name="module_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Session Name" isVisible="true" data_type="string" name="cmsession_name" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Lesson Name" isVisible="true" data_type="string" name="lesson_name" />     
+	    <column columnHandler="NONE" display_name="Status" isVisible="true"  name="student_status" />
+	    <column columnHandler="NONE" display_name="Start Date" isVisible="true"  name="task_date" />
+	    <column columnHandler="NONE" display_name="Task Type" isVisible="true"  name="item_type" />
+	    <column columnHandler="NONE" display_name="Slide Covered" isVisible="true"  name="slide_covered" />
+        <column columnHandler="TASK_HANDLER" display_name="Action" isVisible="true" name="task_handler"/>	
+	<sql>
+SELECT
+	tf.task_handler,
+	tf.user_id,
+	tf.first_name,
+	tf.course_name,
+	tf.module_name,
+	tf.cmsession_name,
+	tf.lesson_id,
+	tf.lesson_name,
+	tf.student_status,
+	tf.task_date,
+	tf.item_type, COUNT (
+		DISTINCT user_session_log.slide_id
+	) AS slide_covered
+FROM
+	(
+		SELECT DISTINCT
+			task. ID ||','|| student_playlist.status ||','|| student_playlist.ID AS task_handler,
+			user_profile.user_id AS user_id,
+			user_profile.first_name  AS first_name,
+			course.course_name || ' (' || course. ID || ')' AS course_name,
+			MODULE .module_name || ' (' || MODULE . ID || ')' AS module_name,
+			cmsession.title || ' (' || cmsession. ID || ')' AS cmsession_name,
+			lesson. ID AS lesson_id,
+			lesson.title || ' (' || lesson. ID || ')' AS lesson_name,
+			student_playlist.status AS student_status,
+			task.start_date AS task_date,
+			task.item_type
+		FROM
+			task,
+			student_playlist,
+			course,
+			MODULE,
+			cmsession,
+			lesson,
+			user_profile
+		WHERE
+			student_playlist.task_id = task. ID
+		AND student_playlist.course_id = course. ID
+		AND student_playlist.module_id = MODULE . ID
+		AND student_playlist.cmsession_id = cmsession. ID
+		AND student_playlist.lesson_id = lesson. ID
+		AND user_profile.user_id = student_playlist.student_id
+		AND task.item_type IN (
+			'LESSON',
+			'ASSESSMENT',
+			'CUSTOM_TASK'
+		)
+		ORDER BY
+			task_date ASC
+	) TF
+LEFT JOIN user_session_log ON (
+	TF.user_id = user_session_log.user_id
+	AND TF.lesson_id = user_session_log.lesson_id
+)
+GROUP BY
+	tf.task_handler,
+	tf.user_id,
+	tf.first_name,
+	tf.course_name,
+	tf.module_name,
+	tf.cmsession_name,
+	tf.lesson_id,
+	tf.lesson_name,
+	tf.student_status,
+	tf.task_date,
+	tf.item_type
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Superadmin List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3082" type_of_report="table">	
+		<column columnHandler="NONE"  display_name="User ID" isVisible="true"  name="entity_id" />
+				<column columnHandler="NONE" is_selectable="true" display_name="User Name" isVisible="true" data_type="string" name="name" />
+				<column columnHandler="NONE" is_selectable="true" display_name="Entity Type" isVisible="true"  name="entity_type" />
+		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
+	   
+	    <column columnHandler="NONE" display_name="Start Date" isVisible="true"  name="start_date" />
+	    <column columnHandler="NONE" display_name="End Date" isVisible="true"  name="end_date" />
+	    <column columnHandler="AUTO_SCHEDULER_HANDLER" display_name="Action" isVisible="true" name="task_data"/>
+	<sql>
+(
+	SELECT DISTINCT
+		auto_scheduler_data. ID,
+		auto_scheduler_data.entity_id,
+		user_profile.first_name AS NAME,
+		auto_scheduler_data.entity_type,
+		course.course_name || '(' || auto_scheduler_data.course_id || ')' AS course_name,
+		auto_scheduler_data.start_date,
+		auto_scheduler_data.end_date,
+		COUNT (*) FILTER (
+
+			WHERE
+				student_playlist.status = 'COMPLETED'
+		) || ',' || auto_scheduler_data.start_date || ',' || auto_scheduler_data.end_date || ',' || auto_scheduler_data.course_id || ',' || auto_scheduler_data.entity_type || ',' || auto_scheduler_data.entity_id AS task_data
+	FROM
+		auto_scheduler_data,
+		user_profile,
+		course,
+		student_playlist
+	WHERE
+		user_profile.user_id = auto_scheduler_data.entity_id
+	AND auto_scheduler_data.entity_type = 'USER'
+	AND auto_scheduler_data.course_id = course. ID
+	AND auto_scheduler_data.entity_id = student_playlist.student_id
+	AND auto_scheduler_data.course_id = student_playlist.course_id
+	GROUP BY
+		auto_scheduler_data. ID,
+		auto_scheduler_data.entity_id,
+		user_profile.first_name,
+		auto_scheduler_data.entity_type,
+		auto_scheduler_data.course_id,
+		course.course_name,
+		auto_scheduler_data.start_date,
+		auto_scheduler_data.end_date
+)
+UNION
+	(
+		SELECT DISTINCT
+			auto_scheduler_data. ID,
+			auto_scheduler_data.entity_id,
+			batch_group. NAME AS NAME,
+			auto_scheduler_data.entity_type,
+			course.course_name || '(' || auto_scheduler_data.course_id || ')' AS course_name,
+			auto_scheduler_data.start_date,
+			auto_scheduler_data.end_date,
+			COUNT (*) FILTER (
+
+				WHERE
+					student_playlist.status = 'COMPLETED'
+		) || ',' || auto_scheduler_data.start_date || ',' || auto_scheduler_data.end_date || ',' || auto_scheduler_data.course_id || ',' || auto_scheduler_data.entity_type || ',' || auto_scheduler_data.entity_id AS task_data
+		FROM
+			auto_scheduler_data,
+			batch_group,
+			course,
+			student_playlist,
+			batch_students
+		WHERE
+			batch_group. ID = auto_scheduler_data.entity_id
+		AND auto_scheduler_data.entity_type = 'SECTION'
+		AND auto_scheduler_data.course_id = course. ID
+		AND batch_group. ID = batch_students.batch_group_id
+		AND batch_students.student_id = student_playlist.student_id
+		AND student_playlist.course_id = auto_scheduler_data.course_id
+		GROUP BY
+			auto_scheduler_data. ID,
+			auto_scheduler_data.entity_id,
+			batch_group. NAME,
+			auto_scheduler_data.entity_type,
+			auto_scheduler_data.course_id,
+			course.course_name,
+			auto_scheduler_data.start_date,
+			auto_scheduler_data.end_date
+	)
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Superadmin List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 </istar_reports>
