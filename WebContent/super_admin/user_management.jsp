@@ -15,7 +15,7 @@
 	AdminUIServices adminUiServcies = new AdminUIServices();
 %>
 <div class="modal inmodal"
-									id="admin_student_card_modal" tabindex="-1"
+									id="admin_student_card_modal" 
 										role="dialog" aria-hidden="true">
 
 
@@ -102,7 +102,7 @@
 		</div>
 	</div>
 
-	<div class="modal inmodal" id="create_user_model" tabindex="-1"
+	<div class="modal inmodal" id="create_user_model" 
 		role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content animated flipInY">
