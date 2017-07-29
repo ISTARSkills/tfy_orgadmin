@@ -1915,10 +1915,13 @@ order by batch_schedule_event.eventdate desc
 		<column columnHandler="NONE" display_name="Trainer Rating" isVisible="true" name="trainer_rating" />
 		<column columnHandler="NONE" display_name="Avg. Student Rating" isVisible="true" name="avg_student_rating" />
 	<sql>
-select T1.*, 	CAST (
+SELECT
+	T1.*, CAST (
 		COALESCE (
 			to_char(
-				MIN (slide_change_log.created_at),
+				MIN (
+					slide_change_log.created_at
+				),
 				'DD-Mon-yyyy HH24:MI'
 			),
 			'N/A'
@@ -1927,18 +1930,19 @@ select T1.*, 	CAST (
 	CAST (
 		COALESCE (
 			to_char(
-				MAX (slide_change_log.created_at),
+				MAX (
+					slide_change_log.created_at
+				),
 				'DD-Mon-yyyy HH24:MI'
 			),
 			'N/A'
 		) AS VARCHAR
 	) AS session_ended,
-	
-
 	COUNT (DISTINCT attendance. ID) FILTER (
+
 		WHERE
 			attendance.status = 'PRESENT'
-	)  AS total_attendance_count,
+	) AS total_attendance_count,
 	CASE
 WHEN trainer_feedback.comments IS NULL
 OR trainer_feedback.comments = '' THEN
@@ -1952,66 +1956,90 @@ END AS trainer_comment,
 	),
 	'N/A'
 ) AS trainer_rating,
-COALESCE(CAST(avg(student_feedback.rating) as VARCHAR),'N/A') AS avg_student_rating,
-COALESCE(string_agg(DISTINCT cmsession.title||'('||cmsession.id||')' ,', '),'N/A') as session_covered
- from 
-(select DISTINCT batch_schedule_event.id as event_id,
-	organization. NAME AS college_name,
-	course.course_name AS course_name,
-	batch_group. NAME AS batch_group_name,
-	user_profile.first_name AS t_name,
-batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
-	to_char(
-		batch_schedule_event.eventdate,
-		'DD-Mon-yyyy HH24:MI'
-	) AS event_date,
-	COUNT (
-		DISTINCT batch_students.student_id
-	) AS student_enrolled
- 
-from batch_schedule_event,
-classroom_details,
-	organization,
-	course,
-	batch_group,
-	batch_students,
-	user_profile
-where batch_schedule_event.classroom_id = classroom_details. ID
-AND classroom_details.organization_id = organization. ID
-AND batch_schedule_event.course_id = course. ID
-AND batch_group. ID = batch_schedule_event.batch_group_id
-AND batch_group. ID = batch_students.batch_group_id
-AND user_profile.user_id = batch_schedule_event.actor_id
-AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
-AND organization. ID = :org_id
-GROUP BY
-	organization. NAME,
-	course.course_name,
-	batch_group. NAME,
-batch_schedule_event.id,	
-batch_schedule_event.eventdate,
-	total_duration,
-user_profile.first_name
-)	T1
-left join slide_change_log ON (
+ COALESCE (
+	CAST (
+		AVG (student_feedback.rating) AS VARCHAR
+	),
+	'N/A'
+) AS avg_student_rating,
+ COALESCE (
+	string_agg (
+		DISTINCT '&lt;b&gt;'|| cmsession.title || '&lt;/b&gt; (' || cmsession. ID || ')',
+		',&lt;br&gt;'
+	),
+	'N/A'
+) AS session_covered
+FROM
+	(
+		SELECT DISTINCT
+			batch_schedule_event. ID AS event_id,
+			organization. NAME AS college_name,
+			course.course_name AS course_name,
+			batch_group. NAME AS batch_group_name,
+			user_profile.first_name AS t_name,
+			batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
+			to_char(
+				batch_schedule_event.eventdate,
+				'DD-Mon-yyyy HH24:MI'
+			) AS event_date,
+			COUNT (
+				DISTINCT batch_students.student_id
+			) AS student_enrolled
+		FROM
+			batch_schedule_event,
+			classroom_details,
+			organization,
+			course,
+			batch_group,
+			batch_students,
+			user_profile
+		WHERE
+			batch_schedule_event.classroom_id = classroom_details. ID
+		AND classroom_details.organization_id = organization. ID
+		AND batch_schedule_event.course_id = course. ID
+		AND batch_group. ID = batch_schedule_event.batch_group_id
+		AND batch_group. ID = batch_students.batch_group_id
+		AND user_profile.user_id = batch_schedule_event.actor_id
+		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+		AND batch_schedule_event.eventdate &lt;= CURRENT_DATE
+		AND organization. ID != 2
+		GROUP BY
+			organization. NAME,
+			course.course_name,
+			batch_group. NAME,
+			batch_schedule_event. ID,
+			batch_schedule_event.eventdate,
+			total_duration,
+			user_profile.first_name
+	) T1
+LEFT JOIN slide_change_log ON (
 	slide_change_log.event_id = T1.event_id
 )
 LEFT JOIN attendance ON (
-	attendance.event_id = T1. event_id
+	attendance.event_id = T1.event_id
 )
 LEFT JOIN trainer_feedback ON (
- T1. event_id = trainer_feedback.event_id
+	T1.event_id = trainer_feedback.event_id
 )
 LEFT JOIN cmsession ON (
-	slide_change_log.cmsession_id = cmsession.id
+	slide_change_log.cmsession_id = cmsession. ID
 )
 LEFT JOIN student_feedback ON (
 	T1.event_id = student_feedback.event_id
 )
-group by T1.college_name, T1.course_name, T1.batch_group_name,T1.event_id,T1.event_date, T1.total_duration,T1.student_enrolled,T1.t_name,
-trainer_feedback.comments,
+GROUP BY
+	T1.college_name,
+	T1.course_name,
+	T1.batch_group_name,
+	T1.event_id,
+	T1.event_date,
+	T1.total_duration,
+	T1.student_enrolled,
+	T1.t_name,
+	trainer_feedback.comments,
 	trainer_feedback.rating
-order by T1.event_date 
+ORDER BY
+	T1.event_date
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
