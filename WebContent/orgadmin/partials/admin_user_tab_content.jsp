@@ -56,7 +56,7 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 				<%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();
-				conditions.put("limit", "12");
+				conditions.put("limit", "10");
 				conditions.put("offset", "0");
 				conditions.put("college_id", colegeID+"");
 				

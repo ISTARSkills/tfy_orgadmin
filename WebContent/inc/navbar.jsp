@@ -176,7 +176,7 @@ for(Organization o : (List<Organization>) new OrganizationDAO().findAll())
 }	
 
 %>
-					<ul class="dropdown-menu mega-menu">
+					<ul class="dropdown-menu mega-menu" style="background-color: #efedf9;">
 						<% 
 
 for(String state : orgs.keySet())

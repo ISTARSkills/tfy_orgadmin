@@ -372,7 +372,7 @@ JOIN course ON (
 		<column columnHandler="PROFILE_IMAGE" display_name="Profile Image" isVisible="true" name="profile_image" />
 		<column columnHandler="NONE" display_name="First Name" isVisible="true" name="first_name" />
 		<column columnHandler="NONE" display_name="Email" isVisible="true" name="email" />
-		<column columnHandler="NO`NE" display_name="Mobile Number" isVisible="true" name="mobile" />
+		<column columnHandler="NONE" display_name="Mobile Number" isVisible="true" name="mobile" />
 		<column columnHandler="STAR_RATING" display_name="Attendance" isVisible="true" name="atten_perc" />
 		<column columnHandler="NONE" display_name="Section/Roles" isVisible="true" name="batch_groups" />		
 		<column columnHandler="USER_HANDLER" display_name="Action" isVisible="true" name="id"/>		

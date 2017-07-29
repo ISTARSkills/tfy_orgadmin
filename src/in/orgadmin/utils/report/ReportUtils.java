@@ -73,7 +73,7 @@ public class ReportUtils {
 		out.append("<table class='table table-bordered datatable_istar' " + dataAttrString + " id='chart_datatable_"
 				+ report.getId() + "' data-report_id='" + report.getId() + "'>");
 		out.append("<thead> <tr>");
-int colCount =0;
+		int colCount =0;
 		for (IStarColumn iterable_element : report.getColumns()) {
 			try {
 				if (iterable_element.isVisible) {
@@ -96,6 +96,8 @@ int colCount =0;
 					sql1 = sql1.replaceAll(paramName, conditions.get(key));
 				}
 			}
+			
+			System.out.println("sql1sql1->" + sql1);
 			List<HashMap<String, Object>> data = db.executeQuery(sql1);
 			out.append("<tbody>");
 			for (HashMap<String, Object> hashMap : data) {
