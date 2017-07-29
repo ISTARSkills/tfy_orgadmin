@@ -13,8 +13,6 @@ public class AutoSchedulerHandler extends ColumnHandler {
 		String entity_type = values[4];
 		String entity_id = values[5];
 
-		if (!task_count.equalsIgnoreCase("0")) {
-
 			sb.append("<div class='btn-group'>"
 					+ "</button><a class='btn btn-danger btn-xs delete_task_btn' data-task_delete='auto_scheduler_task_delete' data-start_date='"
 					+ start_date + "' data-end_date='" + end_date + "'" + "data-course='" + course + "' data-end_date='"
@@ -22,8 +20,6 @@ public class AutoSchedulerHandler extends ColumnHandler {
 					+ "'>Delete</a></li>"
 
 					+ "</div>");
-
-		}
 		sb.append("");
 		return sb;
 	}
