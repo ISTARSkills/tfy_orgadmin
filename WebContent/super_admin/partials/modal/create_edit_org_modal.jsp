@@ -25,11 +25,13 @@
 	}
 DBUTILS util = new DBUTILS();
 	Organization college = new Organization();
+	OrganizationDAO organizationDAO = new OrganizationDAO();
+	organizationDAO.getSession().clear();
 	IstarUser orgadmin = new IstarUser();
 	String orgAdminId="0",orgAdminEmail="",orgAdminGender="",orgAdminMobile="", orgAdminFirstName="", orgAdminLastName="" ;
 	
 	if (!type.equalsIgnoreCase("Create")) {
-		college = new OrganizationDAO().findById(org_id);
+		college = organizationDAO.findById(org_id);
 		String sql="select istar_user.id , istar_user.email, istar_user.mobile, user_profile.gender, user_profile.first_name, user_profile.last_name from  istar_user, user_profile, user_org_mapping, user_role where user_org_mapping.organization_id = "+org_id+" and user_role.role_id = (select id from role where role_name='ORG_ADMIN') and user_org_mapping.user_id = istar_user.id and istar_user.id = user_role.user_id and istar_user.id = user_profile.user_id";
 		List<HashMap<String, Object>> adminData = util.executeQuery(sql);
 		if(adminData.size()>0)

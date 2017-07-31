@@ -25,9 +25,11 @@
    String userType = request.getParameter("user_type");
    IstarUser user = null;
    String actionUrl="user_signup";
+   IstarUserDAO istarUserDAO = new IstarUserDAO();
+   istarUserDAO.getSession().clear();
    if(request.getParameterMap().containsKey("user_id") && request.getParameter("user_id")!=null)
    {
-   	user = new IstarUserDAO().findById(Integer.parseInt(request.getParameter("user_id")));
+   	user = istarUserDAO.findById(Integer.parseInt(request.getParameter("user_id")));
    	actionUrl = "profile_update";
    }	
    String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";	
