@@ -102,7 +102,7 @@ public class OrgAdminDashboardServices {
 
 		}
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		//System.out.println(sql);
+		System.out.println(sql);
 		return items;
 	}
 
