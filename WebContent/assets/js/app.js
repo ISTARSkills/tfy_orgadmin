@@ -108,7 +108,10 @@ function readyFn(jQuery) {
 	initiateGraphFilter();
 	createGraphs();
 	createDataTables();
-	
+	try {
+		var height = $( document ).height();
+		$('#page-wrapper').height(height);
+	} catch(err) {}
 	 $('.fa').show();
      $('div.progress div').show();
 	

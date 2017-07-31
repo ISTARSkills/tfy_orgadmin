@@ -192,7 +192,8 @@ public class ComplexObject {
 						|| notification.getItemType().equalsIgnoreCase("LESSON")
 						|| notification.getItemType().equalsIgnoreCase("MESSAGE")
 						|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")
-						|| notification.getItemType().equalsIgnoreCase("WEBINAR_STUDENT")) {
+						|| notification.getItemType().equalsIgnoreCase("WEBINAR_STUDENT")
+						||  notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")) {
 					count++;
 				}
 

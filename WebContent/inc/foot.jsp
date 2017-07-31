@@ -110,9 +110,11 @@ if(request.getSession().getAttribute("user") != null) {
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-103015121-1', 'auto', {
+ga('create', 'UA-101152637-1', 'auto', {
 	  userId: '<%=userID%>'
 	});
+	
+ga('set', 'userId', '<%=userID%>');
 ga('send', 'pageview');
 
 
