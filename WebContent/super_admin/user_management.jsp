@@ -198,10 +198,10 @@
 											<div>
 												<select data-placeholder="Section..."
 													id="main_batch_group_holder" class="select2-dropdown"
-													multiple tabindex="4">
+													multiple tabindex="4" name="batch_groups">
 												</select>
 											</div>
-											<input type="hidden" value="" name="batch_groups" />
+											<input type="hidden" value="" />
 										</div>
 									</div>
 								</div>
