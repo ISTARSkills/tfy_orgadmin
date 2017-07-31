@@ -19,6 +19,8 @@ String loggedInRole = (String)request.getSession().getAttribute("logged_in_role"
 String roleDir = loggedInRole.toLowerCase();
 if(loggedInRole.toLowerCase().equalsIgnoreCase("trainer")) {
 	roleDir = "student";
+}if(loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
+	roleDir = "orgadmin";
 }
 
 %><style>

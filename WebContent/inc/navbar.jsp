@@ -32,6 +32,8 @@
 		String roleDir = loggedInRole.toLowerCase();
 		if(loggedInRole.toLowerCase().equalsIgnoreCase("trainer")) {
 			roleDir = "student";
+		}if(loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
+			roleDir = "orgadmin";
 		}
 
 String b_url = request.getRequestURL().toString();
