@@ -258,7 +258,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 
 				<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#" aria-expanded="false"> <i class="fa fa-bell"></i> <span class="label label-primary"><%=cp != null ? cp.getNotificationsValid() : ""%></span>
 				</a>
-				<ul class="dropdown-menu dropdown-alerts">
+				<ul class="dropdown-menu dropdown-alerts" style="overflow: auto; max-height: 571px;">
 						<%
 							List<NotificationPOJO> items = new ArrayList();
 
