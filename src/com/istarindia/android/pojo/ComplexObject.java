@@ -155,14 +155,15 @@ public class ComplexObject {
 		String todaysDate = dateFormat.format(date);
 
 		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
-			if (assessmentReportPOJO.getCompletedDate()!=null && assessmentReportPOJO.getCompletedDate().toString().startsWith(todaysDate)
+			if (assessmentReportPOJO.getCompletedDate() != null
+					&& assessmentReportPOJO.getCompletedDate().toString().startsWith(todaysDate)
 					&& assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
 				items.add(assessmentReportPOJO);
 			}
 		}
 		return items;
 	}
-	
+
 	@XmlTransient
 	public List<TaskSummaryPOJO> getTaskCompleted() {
 		List<TaskSummaryPOJO> items = new ArrayList<>();
@@ -171,7 +172,7 @@ public class ComplexObject {
 		String todaysDate = dateFormat.format(date);
 
 		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
-			if ( assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
+			if (assessmentReportPOJO.getStatus().equalsIgnoreCase("COMPLETED")) {
 				items.add(assessmentReportPOJO);
 			}
 		}
@@ -185,29 +186,32 @@ public class ComplexObject {
 		for (NotificationPOJO notification : notifications) {
 
 			if (notification.getStatus().equalsIgnoreCase("UNREAD")) {
-			
-			if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
-					|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
-					|| notification.getItemType().equalsIgnoreCase("LESSON")
-					|| notification.getItemType().equalsIgnoreCase("MESSAGE") || notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")) {
-				count++;
-			}
 
-		}}
+				if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
+						|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
+						|| notification.getItemType().equalsIgnoreCase("LESSON")
+						|| notification.getItemType().equalsIgnoreCase("MESSAGE")
+						|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")
+						|| notification.getItemType().equalsIgnoreCase("WEBINAR_STUDENT")) {
+					count++;
+				}
+
+			}
+		}
 		return count;
 	}
-	
+
 	@XmlTransient
 
 	public List<DailyTaskPOJO> getEventsToday() {
 		List<DailyTaskPOJO> items = new ArrayList<>();
-		
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String todaysDate = dateFormat.format(date);
 		for (DailyTaskPOJO event : events) {
-			//System.err.println(event.getEndDate());
-			if(event.getStartDate().toString().startsWith(todaysDate)){
+			// System.err.println(event.getEndDate());
+			if (event.getStartDate().toString().startsWith(todaysDate)) {
 				items.add(event);
 			}
 
