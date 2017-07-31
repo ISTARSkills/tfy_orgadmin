@@ -16,6 +16,18 @@ public class NotificationLinkFactory {
 		case "LESSON_PRESENTATION":
 			return "/student/presentation.jsp?lesson_id=" + notification.getItemId().intValue();
 
+		case "WEBINAR_STUDENT":
+			return "/start_webinar?task_id="+notification.getItemId().intValue();
+
+		case "WEBINAR_TRAINER":
+			return "/start_webinar?task_id="+notification.getItemId().intValue();
+
+		case "REMOTE_CLASS_TRAINER":
+			return "#";
+
+		case "REMOTE_CLASS_STUDENT":
+			return "#";
+			
 		case "CLASSROOM_SESSION":
 			return "#";
 

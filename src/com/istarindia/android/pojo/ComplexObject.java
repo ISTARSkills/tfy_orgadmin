@@ -186,14 +186,17 @@ public class ComplexObject {
 		for (NotificationPOJO notification : notifications) {
 
 			if (notification.getStatus().equalsIgnoreCase("UNREAD")) {
-
+				System.err.println("Notification TYPE----> "+notification.getItemType());
 				if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
 						|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 						|| notification.getItemType().equalsIgnoreCase("LESSON")
 						|| notification.getItemType().equalsIgnoreCase("MESSAGE")
 						|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")
 						|| notification.getItemType().equalsIgnoreCase("WEBINAR_STUDENT")
-						||  notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")) {
+						|| notification.getItemType().equalsIgnoreCase("WEBINAR_TRAINER")
+						|| notification.getItemType().equalsIgnoreCase("REMOTE_CLASS_TRAINER")
+						|| notification.getItemType().equalsIgnoreCase("REMOTE_CLASS_STUDENT")
+						|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")) {
 					count++;
 				}
 

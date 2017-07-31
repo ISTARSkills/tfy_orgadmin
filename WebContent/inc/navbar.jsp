@@ -42,8 +42,15 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 		request.setAttribute("cp", cp);
 	%>
 	<style>
-.dropdown-submenu {
-	position: relative;
+.navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover
+	{
+	background-color: transparent !important;
+	.
+	dropdown-submenu
+	{
+	position
+	:
+	relative;
 }
 
 .dropdown-submenu .dropdown-menu {
@@ -239,8 +246,9 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 
 
 			</ul>
-
 			<ul class="nav navbar-top-links navbar-right">
+			<%if(loggedInRole.equalsIgnoreCase("TRAINER") || loggedInRole.equalsIgnoreCase("STUDENT") || loggedInRole.equalsIgnoreCase("MASTER_TRAINER")){ %>
+			
 				<span class="label" style="color: #eb384f; font-size: 15px; background: white;"><img alt="" src="/assets/img/user_images/coins_icon.png" style="width: 14px;"> <%=cp != null && cp.getStudentProfile() != null && cp.getStudentProfile().getCoins() != null
 					? cp.getStudentProfile().getCoins()
 					: "0"%></span>
@@ -271,7 +279,11 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 											|| notification.getItemType().equalsIgnoreCase("LESSON")
 											|| notification.getItemType().equalsIgnoreCase("MESSAGE")
 											|| notification.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")
-											|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")) {
+											|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION_STUDENT")
+											|| notification.getItemType().equalsIgnoreCase("WEBINAR_STUDENT")
+											||  notification.getItemType().equalsIgnoreCase("WEBINAR_TRAINER")
+											||  notification.getItemType().equalsIgnoreCase("REMOTE_CLASS_TRAINER")
+											||  notification.getItemType().equalsIgnoreCase("REMOTE_CLASS_STUDENT")) {
 
 										String url = NotificationLinkFactory.getURL(notification, user.getId());
 										if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")) {
@@ -304,19 +316,18 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 						%>
 
 					</ul></li>
-				<li><div style="border-left: 1px solid #e7eaec; height: 32px; margin-bottom: -11px; margin-left: 7px;"></div></li>
-				<li class="dropdown">
-				
+				<li><div style="border-left: 1px solid #e7eaec; height: 32px; margin-bottom: -11px; margin-left: 7px;margin-right: 7px;"></div></li>
+				<%} %>
 				<% 
 				String imageurl = "";
 				if (user != null && user.getUserProfile() != null) {
 					imageurl = "http://cdn.talentify.in:9999/"+user.getUserProfile().getProfileImage();
 				} %>
-				
-				<a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown"> <img style="height: 20px !important;margin-right: 10px" src="<%=imageurl%> " class="img-circle img-md"> Welcome &nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName()%><span class="caret"></span>
+				<img style="height: 34px !important; margin-right: -11px;" src="<%=imageurl%> " class="img-circle img-md">
+				<li class="dropdown">
+				<a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown">  Welcome &nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName()%><span class="caret"></span>
 				</a>
 					<ul role="menu" class="dropdown-menu">
-
 						<li><a href="/edit_profile.jsp"> Profile </a></li>
 
 						<%
