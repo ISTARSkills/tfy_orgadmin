@@ -15,6 +15,11 @@ ComplexObject co = rc.getComplexObject(trainer.getId());
 String userType = co.getStudentProfile().getUserType();
 
 request.setAttribute("cp", co	);
+String loggedInRole = (String)request.getSession().getAttribute("logged_in_role");
+String roleDir = loggedInRole.toLowerCase();
+if(loggedInRole.toLowerCase().equalsIgnoreCase("trainer")) {
+	roleDir = "student";
+}
 
 %><style>
 .row {
@@ -96,7 +101,8 @@ request.setAttribute("cp", co	);
                     <h2>Profile</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="/student/dashboard.jsp">Dashboard</a>
+                       
+                            <a href="/<%=roleDir %>/dashboard.jsp">Dashboard</a>
                         </li>
                         <li class="active">
                             <strong>Profile</strong>
