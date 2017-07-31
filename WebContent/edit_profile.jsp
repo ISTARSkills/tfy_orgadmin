@@ -96,7 +96,7 @@ request.setAttribute("cp", co	);
                     <h2>Profile</h2>
                     <ol class="breadcrumb">
                         <li>
-                            <a href="dashboard.jsp">Dashboard</a>
+                            <a href="/student/dashboard.jsp">Dashboard</a>
                         </li>
                         <li class="active">
                             <strong>Profile</strong>
