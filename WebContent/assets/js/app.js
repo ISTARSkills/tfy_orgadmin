@@ -5432,7 +5432,7 @@ function trainerRatingGraph() {
                 }
             }
         });
-
+        $('select').select2();
     });
 }
 
