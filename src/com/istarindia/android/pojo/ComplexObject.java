@@ -186,7 +186,7 @@ public class ComplexObject {
 		for (NotificationPOJO notification : notifications) {
 
 			if (notification.getStatus().equalsIgnoreCase("UNREAD")) {
-				System.err.println("Notification TYPE----> "+notification.getItemType());
+				//System.err.println("Notification TYPE----> "+notification.getItemType());
 				if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
 						|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 						|| notification.getItemType().equalsIgnoreCase("LESSON")

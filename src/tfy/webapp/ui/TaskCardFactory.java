@@ -29,7 +29,24 @@ public class TaskCardFactory {
 		} else {
 		
 		StringBuffer sb = new StringBuffer();
-		Integer taskRemaining = cp.getTasks().size() - cp.getTaskForTodayCompleted().size();
+		Integer taskRemaining = 0;
+		for(TaskSummaryPOJO task :cp.getTasks() ){
+			
+			if (task.getItemType().equalsIgnoreCase(TaskItemCategory.LESSON_PRESENTATION)
+					|| task.getItemType().equalsIgnoreCase(TaskItemCategory.ASSESSMENT)
+					|| task.getItemType().equalsIgnoreCase(TaskItemCategory.CUSTOM_TASK)) {
+				
+				taskRemaining ++;
+				
+			}
+			
+			}
+		
+		if(taskRemaining != 0) {
+			 taskRemaining = taskRemaining - cp.getTaskForTodayCompleted().size();
+			
+		}
+		
 		sb.append("<div class='col-md-3 product-box' style='height: 100%;' >                                        ");
 		sb.append(" <div class='ibox' style='height: 100%;'>                                            ");
 		sb.append(" <div class='ibox-content product-box h-370' style='height: 100%;'>                  ");
