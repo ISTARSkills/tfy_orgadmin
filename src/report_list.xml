@@ -663,7 +663,9 @@ FROM
 			COALESCE (istar_user.mobile, 0) AS mobile,
 			CASE
 		WHEN user_profile.profile_image LIKE 'null'
-		OR user_profile.profile_image IS NULL THEN
+		OR user_profile.profile_image IS NULL
+		OR user_profile.profile_image = ''
+		 THEN
 			'http://cdn.talentify.in:9999/video/android_images/' || UPPER (
 				SUBSTRING (
 					TRIM (user_profile.first_name)
