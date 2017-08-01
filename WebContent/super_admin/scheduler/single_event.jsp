@@ -134,8 +134,8 @@
 			<div class="form-group form-inline">
 				<label class="font-bold">Duration</label> <label class="sr-only">Hours</label>
 				<input type="number" value="1" name="hours" placeholder="Hours"
-					class="form-control duration_holder"> <label
-					class="sr-only">minute</label> <input type="number" value="0"
+					class="form-control duration_holder" min="0"> <label
+					class="sr-only">minute</label> <input type="number" value="0" min="0"
 					name="minute" placeholder="Minute"
 					class="form-control duration_holder">
 			</div>
