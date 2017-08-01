@@ -65,5 +65,7 @@ try {
 <link href="<%=basePath%>assets/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="<%=basePath%>assets/css/switchery.min.css" rel="stylesheet">
+
     <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
 </head>
