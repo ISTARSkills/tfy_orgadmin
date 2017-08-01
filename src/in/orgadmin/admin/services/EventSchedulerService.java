@@ -334,7 +334,7 @@ public class EventSchedulerService {
 		out.append("<option value='0'> Select Assessment...</option>");
 		for (HashMap<String, Object> item : data) {
 
-			out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle") + "</option>");
+			out.append("<option value='" + item.get("id") + "'>" +  item.get("id")+ " - " +item.get("assessmenttitle") + "</option>");
 		}
 		out.append("");
 
