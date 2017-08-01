@@ -2797,7 +2797,10 @@ FROM
 			lesson. ID AS lesson_id,
 			lesson.title || ' (' || lesson. ID || ')' AS lesson_name,
 			student_playlist.status AS student_status,
-			task.start_date AS task_date,
+			to_char(
+				task.start_date,
+				'DD-Mon-yyyy HH24:MI'
+			) AS task_date,
 			task.item_type
 		FROM
 			task,

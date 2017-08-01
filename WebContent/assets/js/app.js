@@ -234,6 +234,9 @@ function readyFn(jQuery) {
 	case 'custom_report':
 		$('select').select2();
 		break;
+	case 'custom_task_report_superadmin':
+		$('select').select2();
+		break;
 	default:
 		init_orgadmin_none();
 	}
