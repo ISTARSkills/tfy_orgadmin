@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.UUID;
 
 import com.viksitpro.core.dao.entities.Batch;
@@ -1074,7 +1075,7 @@ public class EventSchedulerService {
 		}
 		
 		String dateTime =dateForDB+"T"+startTime+":00Z";		
-		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute);
+		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute, trainerID);
 		Integer meetingId = null;
 		String startUrl = "";
 		String joinUrl = "";
@@ -1088,6 +1089,10 @@ public class EventSchedulerService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
+		
 		if(meetingId!=null)
 		{
 			if(associateTrainerID==null || associateTrainerID.equalsIgnoreCase("[0]"))
@@ -1198,9 +1203,70 @@ public class EventSchedulerService {
 		
 	}
 	
-	public String createZoomSchedule(String dateTime, String topic, int durationInminutes  )
+	
+
+
+	public String createZoomSchedule(String dateTime, String topic, int durationInminutes, int trainerID  )
 	{
-		String url = "https://api.zoom.us/v1/meeting/create?host_id=j9Ix95GCQTqmc9aj6IPfYQ&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
+		
+		IstarUser trainer = new IstarUserDAO().findById(trainerID);
+		String tempHostIds[] = {"iVdopKgbTECciWQIe19wHw","J8jNaBXoQTO9UQn-_dv5og","PKXx0r9TQKquG8GYBejRpA","xWB8iMpgSZGpdVXwDIjrag"} ;
+		Random r = new Random();
+		int Low = 0;
+		int High = 3;
+		int Result = r.nextInt(High-Low) + Low;
+		String hostId = tempHostIds[Result];
+		
+		String getListOfUsers ="https://api.zoom.us/v1/user/list?api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3";
+		System.out.println("get list of users--"+ getListOfUsers);
+		try {
+			URL obj1 = new URL(getListOfUsers);
+			HttpURLConnection con1 = (HttpURLConnection) obj1.openConnection();
+			con1.setRequestMethod("POST");
+			int responseCode = con1.getResponseCode();
+				BufferedReader in1 = new BufferedReader(new InputStreamReader(
+						con1.getInputStream()));
+				String inputLine1;
+				StringBuffer response1 = new StringBuffer();
+				while ((inputLine1 = in1.readLine()) != null) {
+					response1.append(inputLine1);
+				}
+				in1.close();					
+					
+				try {
+					System.out.println("users list "+response1);
+					org.json.JSONObject	jsonObj = new org.json.JSONObject(response1.toString());
+					org.json.JSONArray arr = jsonObj.getJSONArray("users");
+					for(int i =0 ; i < arr.length(); i++)
+					{
+						org.json.JSONObject user = arr.getJSONObject(i);
+						String email = user.getString("email");
+						String trainerHostId = user.getString("id");
+						if(email.trim().equalsIgnoreCase(trainer.getEmail()))
+						{
+							hostId= trainerHostId;
+							break;
+						}								
+					}	
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
 		//System.out.println("c,s,s,,s ");
 		try {
 			URL obj = new URL(url);
@@ -1251,7 +1317,7 @@ public class EventSchedulerService {
 		}
 		
 		String dateTime =dateForDB+"T"+startTime+":00Z";		
-		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute);
+		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute,trainerID);
 		Integer meetingId = null;
 		String startUrl = "";
 		String joinUrl = "";
