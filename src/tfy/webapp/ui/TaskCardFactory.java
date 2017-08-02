@@ -81,8 +81,8 @@ public class TaskCardFactory {
 			 sb.append("<span class='vertical-date'> <small>"+dateString+"</small>");
 			 sb.append("</span>                                            ");
 			 if(taskSummaryPOJO.getItemType().equalsIgnoreCase("ASSESSMENT")) {
-			 sb.append("<span class='vertical-date pull-right'> <small><a href='/student/assessment_report.jsp?assessment_id="+taskSummaryPOJO.getItemId()+"&user_id="+cp.getId()+"'>View Report</a></small>");
-			 sb.append("</span>                                            ");
+			//b.append("<span class='vertical-date pull-right'> <small><a href='/student/assessment_report.jsp?assessment_id="+taskSummaryPOJO.getItemId()+"&user_id="+cp.getId()+"'>View Report</a></small>");
+			 sb.append("<span class='vertical-date pull-right'></span>                                            ");
 			 }
 			 sb.append("</div>                                             ");
 			 sb.append("</div>                                             ");
@@ -599,7 +599,16 @@ public class TaskCardFactory {
 		// TODO Auto-generated method stub
 		Task taskObject = new TaskDAO().findById(task.getId());
 
-		String url = "/student/user_assessment.jsp?task_id="+task.getId()+"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId();
+		String url="#";
+		try {
+			System.err.println("task.getId()-->"+ task.getId());
+			System.err.println("task.getItemId()-->"+ task.getItemId());
+			System.err.println("taskObject.getIstarUserByActor().getId()-->"+ taskObject.getIstarUserByActor().getId());
+			url = "/student/user_assessment.jsp?task_id="+task.getId()+"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		StringBuffer sb = new StringBuffer();
 		if (task.getHeader() == null) {
 			task.setHeader("");

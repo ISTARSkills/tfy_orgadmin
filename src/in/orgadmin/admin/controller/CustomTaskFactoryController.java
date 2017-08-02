@@ -128,7 +128,6 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		updateQuery = updateQuery.replaceAll(":TASK_ID", task_id+"");
 		System.out.println("updateQuery ->>>"+updateQuery);
 		util.executeUpdate(updateQuery);
-		response.getWriter().println("success");
 	}
 	
 	
@@ -194,7 +193,8 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 	}*/
 	
-	
+
+	response.getWriter().print("success");
 	}
 
 	

@@ -179,7 +179,9 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                             	for(OptionPOJO option: options)
                                                 {
                                                 	%>
-                                                	<div><label><input class="question_option" type="checkbox" value="<%=option.getId()%>" name="option_for_question_<%=quePojo.getId()%>" id="questionOption_<%=i%>">  &nbsp;<%=option.getText()%></label></div>
+                                                	<div><label><input class="question_option" type="checkbox" value="<%=option.getId()%>" name="option_for_question_<%=quePojo.getId()%>" id="questionOption_<%=i%>">
+                                                	<div style='margin-left: 23px;    margin-top: -20px;'>  &nbsp;<%=option.getText()%> 
+                                                	</div></label></div>
                                                 	<%
                                                 }
                                             }
@@ -188,7 +190,10 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                             	for(OptionPOJO option: options)
                                                 {
                                                 	%>
-                                                	<div><label><input class="question_option" type="radio" value="<%=option.getId()%>" name="option_for_question_<%=quePojo.getId()%>" id="questionOption_<%=i%>">  &nbsp;<%=option.getText()%></label></div>
+                                                	<div><label><input class="question_option" type="radio" value="<%=option.getId()%>" name="option_for_question_<%=quePojo.getId()%>" id="questionOption_<%=i%>">
+														<div style='margin-left: 23px;    margin-top: -20px;'>  &nbsp;<%=option.getText()%> 
+                                                	</div></label>
+                                                	</label></div>
                                                 	<%
                                                 }
                                             }	
@@ -203,7 +208,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                     <button type="button" class="btn btn-w-m btn-danger next" id="next_<%=i%>" >Next Question</button>
                                      &nbsp;
                                     &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-w-m btn-danger"  style="float:right;    margin-top: 50px;">Submit Assessment</button>                                  
+                                    <button type="submit" class="btn btn-w-m btn-danger"  style="float:right;    margin-top: 50px;" id="submit_assessment">Submit Assessment</button>                                  
                                 </div>
                                
              </div>  
@@ -319,7 +324,9 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 	}
 	
 	$(document).ready(function(){		
-	
+		$( "#submit_assessment" ).click(function() {
+			  alert( "Are you about to finish the assessment?" );
+		});
 	assessmentStartTime = new Date().getTime();	
 	$('.question_row').hide();
 	$('.prev').hide();

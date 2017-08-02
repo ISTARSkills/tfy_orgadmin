@@ -268,6 +268,14 @@ function readyFn(jQuery) {
 	        }});
 	});
 	
+	$('#router').on("change",function(){
+		if($(this).val() == 'NO'){
+			$('#router_capacity').addClass("hidden");
+		}else{
+			$('#router_capacity').removeClass("hidden");
+		}
+	});
+	
 	
 }
 
@@ -6778,6 +6786,25 @@ function init_custom_task(){
                 url: '/custom_task_factory',
                 data: serilaized,
                 success: function(result) {
+                	if(result != null && result != ''){
+                		swal({
+                	        title: "Are you sure to Submit Form?",
+                	        type: "warning",
+                	        showCancelButton: true,
+                	        confirmButtonColor: "#DD6B55",
+                	        confirmButtonText: "Yes, Submit!",
+                	        closeOnConfirm: false
+                	    }, function (isConfirm) {
+                	    	if(isConfirm){
+                	    		var host = window.location.host;
+                	    		swal("Done", "Thanks for your input!", "success");
+                	    		window.location.href='http://'+host;
+                	    	}else{
+                	    		swal("Cancelled", "Something went wrong!", "error");
+                	    	}
+                	    });
+                		
+                	}
                 }
             });
             
