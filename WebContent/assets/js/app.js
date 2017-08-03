@@ -6683,48 +6683,61 @@ function init_custom_task(){
         onStepChanging: function (event, currentIndex, newIndex)
         {
         	//alert('onStepChanging');
-        	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
-        	{
-        		var checkValidation = false;
-        		$('.current textarea').each(function() { 
-        			var my_text =$('#'+$(this).attr('id')).siblings('label').text();
-        			console.log(my_text);
-            		console.log('......>>>> '+$(this).attr('id'));
-            		//console.log('......>>>> '+$('#'+$(this).attr('id')));
-            	//	console.log('......>>>> '+$('#'+$(this).attr('id')).parent().children().text());
-            		if($(this).val() === ''){	
-            			checkValidation = false;
-            			
-            		}else{
-            			checkValidation = true;
-            		}
-            		});
-        		if(checkValidation){
-        			return true;	
-        		}else{
-        			alert('Please fill all the fields');
-        			return false;
-        			
+        	var is_valid = true;
+        	$('.form-control').each(function(){
+        		var input =  $(this);
+        		var input_id = $(this).attr('id');
+        		var input_text =  $(this).val();
+        		if(input.data('validation_type')!=null && input.data('validation_type')==='PATTERN')
+        		{
+        			var pattern = input.attr('pattern');
+        			var regex =  new RegExp(pattern);
+        			if(!regex.test(input_text))
+        			{     			
+        				$('#warning_'+input_id).show();  
+        				is_valid = false;
+        				
+        			}else{
+        				$('#warning_'+input_id).hide();
+        			}
         		}
-        	}
+        		else if(input.data('validation_type')!=null && input.data('validation_type')==='ALPHANUMERIC'){
+        			var pattern = '^[a-zA-Z0-9]+$';
+        			var regex =  new RegExp(pattern);
+        			if(!regex.test(input_text))
+        			{     			
+        				$('#warning_'+input_id).show();  
+        				is_valid = false;
+        				
+        			}else{
+        				$('#warning_'+input_id).hide();
+        			}
+        		}
+        		
+        		
+        	});
         	
-            if (currentIndex > newIndex)
-            {
-            	
-                return true;
-            }
-            if (newIndex === 3 && Number($("#age").val()) < 18)
-            {
-                return false;
-            }
-            var form = $(this);
+        	
+        	
+        	
+           
             if (currentIndex < newIndex)
             {
                 $(".body:eq(" + newIndex + ") label.error", form).remove();
                 $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
             }
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
+            var form = $(this);
+    		form.validate().settings.ignore = ":disabled,:hidden";
+            if(form.valid() && is_valid)
+            {
+            	return true;
+            }
+            else
+            {
+            	return false;
+            }	
+    		
+    		
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {

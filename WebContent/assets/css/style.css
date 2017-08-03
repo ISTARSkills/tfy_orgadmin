@@ -11585,4 +11585,12 @@ display: inline-block; width: 350px; float: left;    margin: 5px; }
 		 /* -webkit-transform: translate3d(0, 0, 0); Webkit Hardware Acceleration*/ 
 	     -webkit-backface-visibility: hidden; /* Safari Flicker Fix #2 */
 	     -webkit-transform: translateZ(0);
-}	
+}
+
+label.custom_error {
+	color: #8a1f11;;
+	display: inline-block;
+	margin-left: 5px;
+}
+
+	
