@@ -50,7 +50,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		for (TaskFormElement formelement : step.getForm_elements()) {
 			switch (formelement.getElemntType()) {
 			case CustomFormElementTypes.VOICE:
-				String speechText = request.getParameter(formelement.getElemntName());
+				String speechText = request.getParameter(formelement.getElemntName().trim());
 				ArrayList<ElementParam> elementParams = formelement.getElementParams();
 				String keywords = "";
 				String benchMarkString ="";
@@ -79,32 +79,32 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				}	
 				break;
 			case CustomFormElementTypes.DROP_DOWN:
-				String value = request.getParameter(formelement.getElemntName());
+				String value = request.getParameter(formelement.getElemntName().trim());
 				if(value != null && !value.equalsIgnoreCase("")){
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), value);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), value);
 				}else{
 					String defaultValue = getDefaultValue(formelement.getDataType());
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), defaultValue);
 				}
 				break;
 			case CustomFormElementTypes.TEXT_BOX:
-				String textBoxValue = request.getParameter(formelement.getElemntName());
+				String textBoxValue = request.getParameter(formelement.getElemntName().trim());
 				if(textBoxValue != null && !textBoxValue.equalsIgnoreCase("")){
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textBoxValue);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), textBoxValue);
 				}else
 				{
 					String defaultValue = getDefaultValue(formelement.getDataType());
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), defaultValue);
 				}	
 				 
 				break;
 			case CustomFormElementTypes.DATE_PICKER:
-				String dateValue = request.getParameter(formelement.getElemntName());
+				String dateValue = request.getParameter(formelement.getElemntName().trim());
 				SimpleDateFormat from = new SimpleDateFormat("dd/MM/yyyy");
 				SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd");
 				if(dateValue!=null && !dateValue.equalsIgnoreCase("")){
 					try {
-						updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), to.format(from.parse(dateValue)));
+						updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), to.format(from.parse(dateValue)));
 					} catch (ParseException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -113,38 +113,38 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				else
 				{
 					String defaultValue = getDefaultValue(formelement.getDataType());
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), defaultValue);
 				}	
 				break;
 			case CustomFormElementTypes.TEXT_AREA:
-				String textAreaValue = request.getParameter(formelement.getElemntName());
+				String textAreaValue = request.getParameter(formelement.getElemntName().trim());
 				if(textAreaValue!=null && !textAreaValue.equalsIgnoreCase("")){
-				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textAreaValue);
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), textAreaValue);
 				}
 				else
 				{
 					String defaultValue = getDefaultValue(formelement.getDataType());
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), defaultValue);
 				}	
 				break;
 			case CustomFormElementTypes.SWITCH:
-				String switchValue = request.getParameter(formelement.getElemntName());
+				String switchValue = request.getParameter(formelement.getElemntName().trim());
 				boolean val = false;
 				if(switchValue != null && switchValue.equalsIgnoreCase("on"))
 				{
 					val= true;
 				}
-				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), Boolean.toString(val).charAt(0)+"");
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), Boolean.toString(val).charAt(0)+"");
 				break;
 			case CustomFormElementTypes.STAR_RATING:
-				
-				Float rating = Float.parseFloat(request.getParameter(formelement.getElemntName()));
+				System.out.println(formelement.getElemntName().trim()+"00000000");
+				Float rating = Float.parseFloat(request.getParameter(formelement.getElemntName().trim()));
 				String ratingVal= rating+"";
 				if (formelement.getDataType().equalsIgnoreCase(CustomFormElementDataTypes.NUMBER))
 				{
 					ratingVal= (int)Math.ceil(rating)+"";					
 				}
-				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), ratingVal);
+				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), ratingVal);
 				break;
 			default:
 				break;
@@ -182,7 +182,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 	for (TaskStep step : task.fetchTaskTemplate().getSteps()) {
 		for (TaskFormElement formelement : step.getForm_elements()) {
 			
-		   String paramvalues = formelement.getElemntName();
+		   String paramvalues = formelement.getElemntName().trim();
 			
 		   paramvalues = request.getParameter(paramvalues.replaceAll(" ", "_"))!=null?request.getParameter(paramvalues):"NULL";
 			if(!paramvalues.equalsIgnoreCase("NULL") && !paramvalues.equalsIgnoreCase("")) {
@@ -191,7 +191,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 					paramvalues = "true";
 				}	
 			
-			updateSql = "Select id from task_elements_list where element_name = '"+formelement.getElemntName()+"' ";
+			updateSql = "Select id from task_elements_list where element_name = '"+formelement.getElemntName().trim()+"' ";
 			
 			List<HashMap<String, Object>> res = util.executeQuery(updateSql);
 			if(res.size() > 0){
@@ -210,7 +210,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		}	
 			
 		}
-		//querypart += formelement.getElemntName() +"="+ paramvalues +",";
+		//querypart += formelement.getElemntName().trim() +"="+ paramvalues +",";
 		//querypart = querypart.substring(0, querypart.length() - 1);
 		// updateSql = "UPDATE xyz SET user_id="+ user_id +","+querypart+", task_name="+taskName+" WHERE task_id="+id;
 		
