@@ -114,11 +114,13 @@ public class ReportUtils {
 							ColumnHandler handler= ReportColumnHandlerFactory.getInstance().getHandler(iterable_element.getColumnHandler());
 							
 							String val="";
-							
+							String order="";
 							if(handler!=null && hashMap.get(iterable_element.getName())!=null && handler.getHTML(hashMap.get(iterable_element.getName()).toString(), reportID)!=null){
 								val= handler.getHTML(hashMap.get(iterable_element.getName()).toString(), reportID).toString();;
+								order = handler.getOrder(hashMap.get(iterable_element.getName()).toString(), reportID).toString();;
 							}
-							out.append("<td>" + val + "</td>");
+							
+							out.append("<td data-order='"+order+"'>" + val + "</td>");
 						}
 						
 						

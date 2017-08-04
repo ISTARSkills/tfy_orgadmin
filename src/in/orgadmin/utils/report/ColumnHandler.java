@@ -10,6 +10,8 @@ public abstract class ColumnHandler {
 
 	public abstract StringBuffer getHTML( String value, int reportID);
 
+	public abstract StringBuffer getOrder(String string, int reportID) ;
+
 	
 
 }

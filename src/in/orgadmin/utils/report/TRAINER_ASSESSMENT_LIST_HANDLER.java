@@ -34,4 +34,10 @@ public class TRAINER_ASSESSMENT_LIST_HANDLER extends ColumnHandler {
 		
 	}
 
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer("");
+		
+		return sb;
+	}
 }

@@ -24,4 +24,11 @@ public class AutoSchedulerHandler extends ColumnHandler {
 		return sb;
 	}
 
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer("");
+		
+		return sb;
+	}
+
 }

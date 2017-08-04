@@ -27,4 +27,11 @@ public class BGRoleHandler extends ColumnHandler {
 				+ "</ul></div>");
 	}
 
+	
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer("");
+		
+		return sb;
+	}
 }

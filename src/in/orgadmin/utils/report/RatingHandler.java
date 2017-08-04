@@ -34,5 +34,10 @@ public class RatingHandler extends ColumnHandler {
 		
 		return stars;
 	}
-
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer(string);
+		
+		return sb;
+	}
 }
