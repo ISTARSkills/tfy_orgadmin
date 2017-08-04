@@ -3052,26 +3052,26 @@ LEFT JOIN (
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3084" type_of_report="table">
-		<column columnHandler="NONE" display_name="Student Id" isVisible="true"  name="student_id" />
-		<column columnHandler="NONE" display_name="Student Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Name" isVisible="true"  name="student_name" />
 		<column columnHandler="NONE" display_name="Coverage" isVisible="true"  name="coverage_rate" />
-	    <column columnHandler="NONE" display_name="Ease of Understanding" isVisible="true" name="ease_understanding" />
-		<column columnHandler="NONE" display_name="Quality Of Examples Provided" isVisible="true"  name="quality_of_examples" />
-	    <column columnHandler="NONE" display_name="Knowledge of Subject Matter" isVisible="true" name="knowledge_of_matter" />
+	    <column columnHandler="NONE" display_name="Understanding" isVisible="true" name="ease_understanding" />
+		<column columnHandler="NONE" display_name="Examples Quality" isVisible="true"  name="quality_of_examples" />
+	    <column columnHandler="NONE" display_name="Subject Knowledge" isVisible="true" name="knowledge_of_matter" />
 		<column columnHandler="NONE" display_name="Classroom Management" isVisible="true"  name="cls_management" />
-	    <column columnHandler="NONE" display_name="Communication Style" isVisible="true" name="comm_style" />
-		<column columnHandler="NONE" display_name="Ablity to explain concepts" isVisible="true"  name="explain_concepts" />
-	    <column columnHandler="NONE" display_name="Are you enjoying the course?" isVisible="true" name="enjoying_course" />
-		<column columnHandler="NONE" display_name="Do you feel like you are learning something useful?" isVisible="true"  name="learning_something_useful" />
-	    <column columnHandler="NONE" display_name="Is the course giving you a fair idea of the kind of work involved in jobs in the sector and the nature of Industry?" isVisible="true" name="is_the_course_giving_a_fair_idea" />
-	    <column columnHandler="NONE" display_name="Would you be interested in learning more subjects related to the sector?" isVisible="true" name="interested_in_learning_more_subjects" />
+	    <column columnHandler="NONE" display_name="Communication" isVisible="true" name="comm_style" />
+		<column columnHandler="NONE" display_name="Explanation Ability" isVisible="true"  name="explain_concepts" />
+	    <column columnHandler="NONE" display_name="Enjoyed" isVisible="true" name="enjoying_course" />
+		<column columnHandler="NONE" display_name="Learning something useful" isVisible="true"  name="learning_something_useful" />
+	    <column columnHandler="NONE" display_name="Got the idea about jobs and industry" isVisible="true" name="is_the_course_giving_a_fair_idea" />
+	    <column columnHandler="NONE" display_name="Interested in Advance learning" isVisible="true" name="interested_in_learning_more_subjects" />
 	    <column columnHandler="NONE" display_name="Are you considering a career in this sector?" isVisible="true" name="considering_a_career_in_sector" />
-	    <column columnHandler="NONE" display_name="Would you recommend istar course(s) to your friends based on your experience?" isVisible="true" name="recommend_istar_course_to_your_friends" />
-	    <column columnHandler="NONE" display_name="How can istar make the course more interesting?" isVisible="true" name="istar_the_course_more_interesting" />
-	    <column columnHandler="NONE" display_name="What aspects of the course would you change/remove?" isVisible="true" name="course_would_you_change_or_remove" />
-	    <column columnHandler="NONE" display_name="What aspects would you like to see coverage of?" isVisible="true" name="aspects_to_see_coverage_of" />
-	    <column columnHandler="NONE" display_name="Which session did you enjoy the most?" isVisible="true" name="session_you_enjoy_the_most" />
-	    <column columnHandler="NONE" display_name="Which session did you enjoy the least?" isVisible="true" name="session_you_enjoy_the_least" />
+	    <column columnHandler="NONE" display_name="Recommend Istar to friends" isVisible="true" name="recommend_istar_course_to_your_friends" />
+	    <column columnHandler="NONE" display_name="How can istar make the course more interesting?" isVisible="false" name="istar_the_course_more_interesting" />
+	    <column columnHandler="NONE" display_name="What aspects of the course would you change/remove?" isVisible="false" name="course_would_you_change_or_remove" />
+	    <column columnHandler="NONE" display_name="What aspects would you like to see coverage of?" isVisible="false" name="aspects_to_see_coverage_of" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the most?" isVisible="false" name="session_you_enjoy_the_most" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the least?" isVisible="false" name="session_you_enjoy_the_least" />
 	<sql>
 SELECT
 	COALESCE (
@@ -3107,16 +3107,28 @@ SELECT
 		'5.0'
 	) AS rate_your_experience_in_the_course,
 	COALESCE (
-		cast(user_task_feedback.feel_like_you_are_learning_something_useful as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.feel_like_you_are_learning_something_useful = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS learning_something_useful,
 	COALESCE (
-		cast(user_task_feedback.interested_in_learning_more_subjects_related_to_the_sector as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.interested_in_learning_more_subjects_related_to_the_sector = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS interested_in_learning_more_subjects,
 	COALESCE (
-		cast(user_task_feedback.recommend_istar_course_to_your_friends_based_on_your_experience as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.recommend_istar_course_to_your_friends_based_on_your_experience = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS recommend_istar_course_to_your_friends,
 	COALESCE (
 		user_task_feedback.istar_make_the_course_more_interesting,
@@ -3147,22 +3159,34 @@ SELECT
 		'N/A'
 	) AS istar_faculty_compared_to_college_faculty,
 	COALESCE (
-		cast(user_task_feedback.enjoying_the_course as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.enjoying_the_course = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS enjoying_course,
 	COALESCE (
-		cast(user_task_feedback.is_the_course_giving_you_a_fair_idea as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.is_the_course_giving_you_a_fair_idea = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS is_the_course_giving_a_fair_idea,
 	COALESCE (
-		cast(user_task_feedback.considering_a_career_in_this_sector as VARCHAR),
-		'N/A'
+		CASE
+		WHEN user_task_feedback.considering_a_career_in_this_sector = 'true' THEN
+			'Yes'
+		ELSE
+			'No'
+		END
 	) AS considering_a_career_in_sector,
 	user_task_feedback.user_id AS student_id,
 	COALESCE (
 		user_profile.first_name,
 		'N/A'
-	) as student_name
+	) AS student_name
 FROM
 	user_task_feedback,
 	user_org_mapping,
