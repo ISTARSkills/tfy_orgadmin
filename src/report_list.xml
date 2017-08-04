@@ -2270,115 +2270,76 @@ GROUP BY
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3073" type_of_report="table">	
-		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" name="trainer_id" />
-	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" name="user_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="first_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" display_name="Module Name" isVisible="true" name="module_name" />
 		<column columnHandler="NONE" display_name="Session Name" isVisible="true" name="cmsession_name" />
-		<column columnHandler="NONE" display_name="Lesson Name" isVisible="true" name="lesson_id" />
+		<column columnHandler="NONE" display_name="Lesson Name" isVisible="true" name="lesson_name" />
 		<column columnHandler="NONE" display_name="Status" isVisible="true" name="status" />
 		<column columnHandler="NONE" display_name="Slides Covered" isVisible="true" name="slide_covered" />
 		<column columnHandler="NONE" display_name="Total No. of Slides" isVisible="true" name="total_slide_count" />
-		<column columnHandler="NONE" display_name="Has he taken Classroom Session for this Lesson" isVisible="true" name="class_taken_or_not" />
+		
 	<sql>
-SELECT
-	TF.user_id AS trainer_id,
-	TF.first_name AS trainer_name,
-	TF.c_title AS course_name,
-	TF.m_title AS module_name,
-	TF.cms_title AS cmsession_name,
-	TF.l_title AS lesson_name,
-	TF.l_id AS lesson_id,
-	TF.status AS status,
-	tf.slide_covered AS slide_covered,
+SELECT DISTINCT
+	t1.user_id,
+	t1.first_name,
+	t1.course_name,
+	t1.module_name,
+	t1.cmsession_name,
+	t1.lesson_name,
+	t1.status, COUNT (
+		DISTINCT user_session_log.slide_id
+	) AS slide_covered,
 	COALESCE (
-		CAST (
-			tf.total_slide_count AS VARCHAR
-		),
-		'N/A'
-	) AS total_slide_count,
-	CASE
-WHEN COUNT (event_log. ID) != 0 THEN
-	'Yes'
-ELSE
-	'No'
-END AS class_taken_or_not
+		user_session_log.total_slide_count,
+		0
+	) AS total_slide_count
 FROM
 	(
-		SELECT
-			T1.*, COUNT (user_session_log.slide_id) AS slide_covered,
-			user_session_log.total_slide_count
+		SELECT DISTINCT
+			user_profile.user_id,
+			user_profile.first_name,
+			course.course_name AS course_name,
+			MODULE .module_name AS module_name,
+			cmsession.title AS cmsession_name,
+			lesson. ID AS lesson_id,
+			lesson.title AS lesson_name,
+			student_playlist.status
 		FROM
-			(
-				SELECT DISTINCT
-					user_profile.user_id,
-					user_profile.first_name,
-					course.course_name AS c_title,
-					MODULE .module_name AS m_title,
-					cmsession.title AS cms_title,
-					lesson. ID AS l_id,
-					lesson.title AS l_title,
-					student_playlist.status
-				FROM
-					batch_schedule_event,
-					user_profile,
-					student_playlist,
-					course,
-					MODULE,
-					cmsession,
-					lesson,
-					task
-				WHERE
-					batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
-				AND user_profile.user_id = batch_schedule_event.actor_id
-				AND student_playlist.student_id = batch_schedule_event.actor_id
-				AND student_playlist.course_id = course. ID
-				AND student_playlist.cmsession_id = cmsession. ID
-				AND student_playlist.module_id = MODULE . ID
-				AND student_playlist.lesson_id = lesson. ID
-				AND task.item_id = student_playlist.lesson_id
-				GROUP BY
-					user_profile.user_id,
-					user_profile.first_name,
-					course.course_name,
-					MODULE .module_name,
-					cmsession.title,
-					lesson.title,
-					lesson. ID,
-					student_playlist.status
-				ORDER BY
-					user_id
-			) T1
-		LEFT JOIN user_session_log ON (
-			user_session_log.user_id = T1.user_id
-			AND user_session_log.lesson_id = T1.l_id
-		)
-		GROUP BY
-			T1.user_id,
-			T1.first_name,
-			T1.c_title,
-			T1.m_title,
-			T1.cms_title,
-			T1.l_title,
-			T1.l_id,
-			T1.status,
-			user_session_log.total_slide_count
-	) TF
-LEFT JOIN event_log ON (
-	event_log.trainer_id != TF.user_id
-	AND event_log.lesson_id = TF.l_id
+			student_playlist,
+			task,
+			user_profile,
+			course,
+			MODULE,
+			cmsession,
+			lesson
+		WHERE
+			student_playlist.task_id = task. ID
+		AND user_profile.user_id = student_playlist.student_id
+		AND course. ID = student_playlist.course_id
+		AND MODULE . ID = student_playlist.module_id
+		AND cmsession. ID = student_playlist.cmsession_id
+		AND lesson. ID = student_playlist.lesson_id
+		ORDER BY
+			lesson_id
+	) T1
+LEFT JOIN user_session_log ON (
+	T1.user_id = user_session_log.user_id
+	AND T1.lesson_id = user_session_log.lesson_id
+	AND user_session_log.total_slide_count IS NOT NULL
 )
 GROUP BY
-	TF.user_id,
-	TF.first_name,
-	TF.c_title,
-	TF.m_title,
-	TF.cms_title,
-	TF.l_title,
-	TF.l_id,
-	TF.status,
-	tf.slide_covered,
-	tf.total_slide_count
+	t1.user_id,
+	t1.first_name,
+	t1.course_name,
+	t1.module_name,
+	t1.cmsession_name,
+	t1.lesson_id,
+	t1.lesson_name,
+	t1.status,
+	user_session_log.total_slide_count
+ORDER BY t1.user_id
 
 	</sql>
 	<filter_sql>		
