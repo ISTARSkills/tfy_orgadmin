@@ -7,20 +7,17 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.helpers.QuietWriter;
+import java.util.Date;
+import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.viksitpro.core.utilities.AppProperies;
 
 /**
@@ -29,6 +26,7 @@ import com.viksitpro.core.utilities.AppProperies;
  */
 public class RestClient {
 	
+	String viksit_user_agent = getTockent();
 	
 	public CourseContent getCourseContentForStudent(int taskId)
 	{
@@ -36,10 +34,12 @@ public class RestClient {
 		CourseContent courseContent = new CourseContent();
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
-		//System.out.println("url in getCourseContentForStudent"+url.toString());
+		   //System.out.println("url in getCourseContentForStudent"+url.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -73,10 +73,10 @@ public class RestClient {
 		try {
 
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/user/"+userID+"/complex");
-
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			//System.out.println(conn.getURL().toString());
-			conn.setRequestMethod("GET");
+			conn.setRequestMethod("GET");		
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -114,6 +114,7 @@ public class RestClient {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
+			//conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
@@ -152,8 +153,9 @@ public class RestClient {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		String params = "response="+ gson.toJson(assessmentResponse).toString();
 		//add reuqest header
+		
 		con.setRequestMethod("POST");
-
+		con.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 		String urlParameters = params;
 
 		// Send post request
@@ -188,4 +190,46 @@ public class RestClient {
 		//rc.getComplexObject(16);
 		//System.out.println(rc.getAssessment(10039, 449).getQuestions().size());
 	}
+	
+	public String getTockent() {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		Date date = new Date();
+		String timeNow = dateFormat.format(date).toString();
+		timeNow = timeNow.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", "");
+		System.err.println(timeNow);
+
+		Random r = new Random();
+		int Low = 1;
+		int High = 24;
+		int Result = r.nextInt(High - Low) + Low;
+
+		for (int j = 0; j < 3; j++) {
+
+			StringBuffer randStr = new StringBuffer();
+			char ch;
+			Result = r.nextInt(High - Low) + Low;
+			for (int i = 0; i < 3; i++) {
+				Result = r.nextInt(High - Low) + Low;
+				// Result = r.nextInt(High-Low) + Low;
+				String CHAR_LIST = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+				ch = CHAR_LIST.charAt(Result);
+				randStr.append(ch);
+			}
+
+			if (j == 0) {
+				timeNow = new StringBuffer(timeNow).insert(timeNow.length() - 10, randStr).toString();
+			}
+			if (j == 1) {
+				timeNow = new StringBuffer(timeNow).insert(timeNow.length() - 3, randStr).toString();
+			}
+			if (j == 2) {
+				timeNow = new StringBuffer(timeNow).insert(timeNow.length() - 7, randStr).toString();
+			}
+
+		}
+		return "viksit-"+timeNow;
+	}
+
+	
 }
