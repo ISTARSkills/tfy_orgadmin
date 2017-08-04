@@ -1889,7 +1889,6 @@ select to_char(batch_schedule_event.eventdate, 'DD-Mon-yyyy HH24:MI') as eventda
 from batch_schedule_event, trainer_feedback, user_profile, batch_group, course, classroom_details
 where batch_schedule_event.id = trainer_feedback.event_id
 and batch_schedule_event.classroom_id = classroom_details.id
-and classroom_details.organization_id = :org_id
 and trainer_feedback.user_id = user_profile.user_id
 and batch_schedule_event.batch_group_id = batch_group.id
 and batch_schedule_event.course_id = course.id 
@@ -2089,7 +2088,7 @@ WEEKLY REPORT
 SELECT DISTINCT
 	user_profile.user_id AS trainer_id,
 	user_profile.first_name AS trainer_name,
-	ROLE .role_name AS role,
+	ROLE .role_name AS ROLE,
 	course.course_name AS course_name,
 	COUNT (task. ID) FILTER (
 
@@ -2130,7 +2129,14 @@ AND task.actor = user_profile.user_id
 AND user_role.user_id = user_profile.user_id
 AND user_role.role_id = ROLE . ID
 AND course. ID = batch_schedule_event.course_id
-AND ROLE . ID = 24
+AND ROLE . ID IN (
+	SELECT
+		ID
+	FROM
+		ROLE
+	WHERE
+		role_name LIKE 'TRAINER'
+)
 GROUP BY
 	user_profile.user_id,
 	user_profile.first_name,
@@ -2940,6 +2946,70 @@ UNION
 	<filter_sql>		
 	</filter_sql>	
 		<title>Superadmin List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3083" type_of_report="table">	
+		<column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="bg_name" />
+		<column columnHandler="NONE" display_name="Student Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Student Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="Completed Events" isVisible="true"  name="entity_type" />
+	    <column columnHandler="NONE" display_name="Attendance Count" isVisible="true" name="course_name" />
+	<sql>
+SELECT
+	t1.college_name,
+	t1.bg_name,
+	COALESCE(cast(user_profile.user_id as VARCHAR),'N/A') as student_id,
+	COALESCE(user_profile.first_name , 'N/A') as student_name,
+	t1.scheduled AS total_event,
+	COUNT (DISTINCT attendance. ID) FILTER (
+
+		WHERE
+			attendance.status = 'PRESENT'
+	) AS PRESENT
+FROM
+	(
+		SELECT DISTINCT
+			organization. NAME AS college_name,
+			batch_group. ID AS bg_id,
+			batch_group. NAME AS bg_name,
+			COUNT (
+				DISTINCT batch_schedule_event. ID
+			) AS SCHEDULED
+		FROM
+			batch_group,
+			organization,
+			batch_schedule_event
+		WHERE
+			batch_group.college_id = organization. ID
+		AND batch_group. ID = batch_schedule_event.batch_group_id
+		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+		AND organization. ID != 2
+		GROUP BY
+			college_name,
+			bg_id,
+			bg_name
+	) T1
+LEFT JOIN batch_students ON (
+	batch_students.batch_group_id = T1.bg_id
+)
+LEFT JOIN user_profile ON (
+	user_profile.user_id = batch_students.student_id
+)
+LEFT JOIN attendance ON (
+	attendance.user_id = batch_students.student_id
+)
+GROUP BY
+	t1.college_name,
+	t1.bg_id,
+	t1.bg_name,
+	t1.scheduled,
+	user_profile.user_id,
+	user_profile.first_name
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>User Attendance Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>
