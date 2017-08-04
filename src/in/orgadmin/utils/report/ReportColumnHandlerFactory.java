@@ -46,6 +46,10 @@ public class ReportColumnHandlerFactory {
 			return(new TaskHandler());
 		case "AUTO_SCHEDULER_HANDLER":
 			return(new AutoSchedulerHandler());
+		case "DECIMAL_STAR_RATING":
+			return(new DecimalColumnHandler());
+		case "BOOLEAN_HANDLER":
+			return(new BooleanColumnHandler());	
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":
