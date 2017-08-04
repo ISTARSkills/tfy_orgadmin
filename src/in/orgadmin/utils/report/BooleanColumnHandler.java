@@ -18,11 +18,11 @@ public class BooleanColumnHandler extends ColumnHandler {
 		Boolean val = Boolean.parseBoolean(value);
 		if(val)
 		{
-			return new StringBuffer("<i class='fa fa-check' style='    color: #ed5565;'></i>");
+			return new StringBuffer("<i class='fa fa-check' style=' color: #1ab394;'></i>");
 		}
 		else
 		{
-			return new StringBuffer("<i class='fa fa-times' aria-hidden='true' style='    color: #1ab394;'></i>");
+			return new StringBuffer("<i class='fa fa-times' aria-hidden='true' style='color: #ed5565;'></i>");
 		}	
 		
 	}
