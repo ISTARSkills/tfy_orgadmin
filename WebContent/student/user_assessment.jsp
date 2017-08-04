@@ -202,13 +202,20 @@ int assessmentMinutes = assessment.getDurationInMinutes();
                                             </p>
                                         </div>
                                     </div> 
-                                    <button type="button" class="btn btn-w-m btn-danger prev" id="prev_<%=i%>" >Prev Question</button>
+                                   
+                                    <button class="btn btn-danger prev" type="button" id="prev_<%=i%>"><i class="fa fa-arrow-left"></i>&nbsp;Prev</button>
                                     &nbsp;
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-w-m btn-danger next" id="next_<%=i%>" >Next Question</button>
+                                   
+                                    <button class="btn btn-danger next" type="button" id="next_<%=i%>" style="float:right">Next &nbsp;<i class="fa fa-arrow-right"></i></button>
                                      &nbsp;
                                     &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-w-m btn-danger"  style="float:right;    margin-top: 50px;" id="submit_assessment">Submit Assessment</button>                                  
+                                    <div class="row">
+                                    <div class="col-lg-12" style="padding-right: 0px!important;">
+                                    <button type="button" class="btn btn-w-m btn-danger skip_assessment"  style="float:right;    margin-top: 129px; display:none; " >Skip Questions & Submit</button>
+                                    <button type="button" class="btn btn-w-m btn-danger submit_assessment"  style="float:right;    margin-top: 129px; display:none; " >Submit Assessment</button>                                  
+                                	</div>
+                                	</div>
                                 </div>
                                
              </div>  
@@ -286,16 +293,22 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		 {
 				$('.prev').hide();
 				$('.next').show();	
+				 $('.submit_assessment').hide();
+				 $('.skip_assessment').show();
 		 }
 		 if(questionNumToShow===totalQuestionCount)
 		 {
-				$('.next').hide();	
-				$('.prev').show();
+			 $('.submit_assessment').show();
+			 $('.skip_assessment').hide();
+			 $('.next').hide();	
+			 $('.prev').show();
 		 }
 		 else
 		 {
 			 $('.next').show();	
 			 $('.prev').show();
+			 $('.submit_assessment').hide();
+			 $('.skip_assessment').show();
 			 
 			 $( ".question_thumb" ).each(function( index ) {
 				 var id = $(this).attr('id');
@@ -324,11 +337,57 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 	}
 	
 	$(document).ready(function(){		
-		$( "#submit_assessment" ).click(function() {
-			  alert( "Are you about to finish the assessment?" );
-		});
+		$( ".submit_assessment").unbind().on('click',function() {			  
+			swal({
+                title: "Are you sure ?",
+                text: "Your assessment will be submitted now.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Submit it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false },
+            function (isConfirm) {
+                if (isConfirm) {
+                	
+                    swal("Submitted!", "Your assessment submitted successfully.", "success");
+                    $( "#target" ).submit();
+                    
+                } else {
+                    swal("Cancelled", "Your assessment submission cancelled", "error");
+                }
+            });
+});
+		
+		$( ".skip_assessment").unbind().on('click',function() {			  
+			swal({
+                title: "Are you sure about skipping ?",
+                text: "Remaining questions will be skipped and your assessment will be submitted now.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Submit it!",
+                cancelButtonText: "No, cancel plx!",
+                closeOnConfirm: false,
+                closeOnCancel: false },
+            function (isConfirm) {
+                if (isConfirm) {
+                	 
+                    swal("Submitted!", "Your assessment submitted successfully.", "success");
+                    $( "#target" ).submit();
+                   
+                } else {
+                    swal("Cancelled", "Your assessment submission cancelled", "error");
+                }
+            });
+});
+		
+		
 	assessmentStartTime = new Date().getTime();	
 	$('.question_row').hide();
+	$('.submit_assessment').hide();
+	$('.skip_assessment').show();
 	$('.prev').hide();
 	var currentQuestionNumber=1;
 	$('#question_row_'+currentQuestionNumber).show();
@@ -405,6 +464,8 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		{
 			$('.next').hide();	
 			$('.prev').show();
+			$('.submit_assessment').show();
+			 $('.skip_assessment').hide();
 		}
 		$( ".question_thumb" ).each(function( index ) {
 			 var id = $(this).attr('id');
@@ -440,8 +501,16 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		if(questionNumToShow===1)
 		{
 			$('.prev').hide();
-			$('.next').show();	
+			$('.next').show();
+			$('.submit_assessment').hide();
+			$('.skip_assessment').show();
 		}
+		else
+		{
+			$('.next').show();
+			$('.submit_assessment').hide();
+			$('.skip_assessment').show();
+		}	
 		$( ".question_thumb" ).each(function( index ) {
 			 var id = $(this).attr('id');
 			 var qqno = id.split('_')[2];
@@ -473,17 +542,23 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		 if(questionNumToShow===1)
 		 {
 				$('.prev').hide();
-				$('.next').show();	
+				$('.next').show();
+				$('.submit_assessment').hide();
+				$('.skip_assessment').show();
 		 }
-		 if(questionNumToShow===totalQuestionCount)
+		 else if(questionNumToShow===totalQuestionCount)
 		 {
 				$('.next').hide();	
-				$('.prev').show();				
+				$('.prev').show();	
+				$('.submit_assessment').show();
+				 $('.skip_assessment').hide();
 		 }
 		 else
 		 {
 			 $('.next').show();	
 			 $('.prev').show();
+			 $('.submit_assessment').hide();
+			 $('.skip_assessment').show();
 		 }	 
 			 $( ".question_thumb" ).each(function( index ) {
 				 var id = $(this).attr('id');

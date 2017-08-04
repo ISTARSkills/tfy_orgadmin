@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
+import com.viksitpro.core.utilities.TrainerEmpanelmentStageTypes;
 import com.viksitpro.core.utilities.TrainerEmpanelmentStatusTypes;
 
 /**
@@ -101,6 +102,15 @@ ratingSkill:
 			
 			String updateTask ="update task set is_active ='f' , state ='COMPLETED' where id in (select task_id from interview_task_details where course_id = "+courseId+" and interviewee_id = "+trainerId+" and interviewer_id = "+interviewerId+" and stage ='"+stage+"')";
 			util.executeUpdate(updateTask);
+			
+			if(stage.equalsIgnoreCase(TrainerEmpanelmentStageTypes.FITMENT_INTERVIEW) && status.equalsIgnoreCase(TrainerEmpanelmentStatusTypes.SELECTED))
+			{
+				//mark trainer as active for that course
+				String createtrainerCourseStatus = "INSERT INTO trainer_course_status (id, trainer_id, course_id, status, type) VALUES ((select COALESCE(max(id),0)+1 from trainer_course_status), "
+						+ trainerId + ", " + courseId + ", 'ACTIVE', 'FULL_TIME');";
+				util.executeUpdate(createtrainerCourseStatus);
+			}	
+			
 		}
 		
 	}
