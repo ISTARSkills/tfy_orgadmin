@@ -2957,12 +2957,12 @@ UNION
 	    <column columnHandler="NONE" display_name="Attendance Count" isVisible="true" name="attendance_count" />
 	<sql>
 SELECT
-	T1.user_id,
-	T1.first_name,
-	T1.col_name,
+	T1.user_id as student_id,
+	T1.first_name as student_name,
+	T1.col_name as college_name,
 	T1.bg_name,
-	T1.tot_event,
-	T4.PRESENT
+	T1.tot_event as total_event,
+	T4.PRESENT as attendance_count
 FROM
 	(
 		SELECT DISTINCT
