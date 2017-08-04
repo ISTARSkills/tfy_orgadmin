@@ -2953,63 +2953,228 @@ UNION
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="bg_name" />
 		<column columnHandler="NONE" display_name="Student Id" isVisible="true"  name="student_id" />
 		<column columnHandler="NONE" display_name="Student Name" isVisible="true"  name="student_name" />
-		<column columnHandler="NONE" display_name="Completed Events" isVisible="true"  name="entity_type" />
-	    <column columnHandler="NONE" display_name="Attendance Count" isVisible="true" name="course_name" />
+		<column columnHandler="NONE" display_name="Completed Events" isVisible="true"  name="total_event" />
+	    <column columnHandler="NONE" display_name="Attendance Count" isVisible="true" name="attendance_count" />
 	<sql>
 SELECT
-	t1.college_name,
-	t1.bg_name,
-	COALESCE(cast(user_profile.user_id as VARCHAR),'N/A') as student_id,
-	COALESCE(user_profile.first_name , 'N/A') as student_name,
-	t1.scheduled AS total_event,
-	COUNT (DISTINCT attendance. ID) FILTER (
-
-		WHERE
-			attendance.status = 'PRESENT'
-	) AS PRESENT
+	T1.user_id,
+	T1.first_name,
+	T1.col_name,
+	T1.bg_name,
+	T1.tot_event,
+	T4.PRESENT
 FROM
 	(
 		SELECT DISTINCT
-			organization. NAME AS college_name,
+			user_profile.user_id,
+			user_profile.first_name,
 			batch_group. ID AS bg_id,
 			batch_group. NAME AS bg_name,
+			organization. NAME AS col_name,
 			COUNT (
-				DISTINCT batch_schedule_event. ID
-			) AS SCHEDULED
+				batch_schedule_event.batch_group_code
+			) AS tot_event
 		FROM
+			batch_schedule_event,
+			user_profile,
 			batch_group,
-			organization,
-			batch_schedule_event
+			organization
 		WHERE
-			batch_group.college_id = organization. ID
+			batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+		AND batch_schedule_event.actor_id = user_profile.user_id
 		AND batch_group. ID = batch_schedule_event.batch_group_id
-		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+		AND organization. ID = batch_group.college_id
 		AND organization. ID != 2
 		GROUP BY
-			college_name,
+			user_profile.user_id,
+			user_profile.first_name,
 			bg_id,
-			bg_name
+			batch_group. NAME,
+			organization. NAME
+		ORDER BY
+			batch_group. ID 
 	) T1
-LEFT JOIN batch_students ON (
-	batch_students.batch_group_id = T1.bg_id
+LEFT JOIN (
+	SELECT
+		t3.actor_id,
+		t3.batch_group_id,
+		COUNT (attendance. ID) FILTER (
+
+			WHERE
+				attendance.status = 'PRESENT'
+		) AS PRESENT
+	FROM
+		(
+			SELECT DISTINCT
+				T2.*, batch_schedule_event. ID
+			FROM
+				(
+					SELECT DISTINCT
+						batch_schedule_event.actor_id,
+						batch_schedule_event.batch_group_id,
+						batch_schedule_event.batch_group_code
+					FROM
+						batch_schedule_event,
+						user_profile,
+						batch_group,
+						organization
+					WHERE
+						batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+					AND batch_schedule_event.actor_id = user_profile.user_id
+					AND batch_group. ID = batch_schedule_event.batch_group_id
+					AND organization. ID = batch_group.college_id
+					AND organization. ID != 2
+					ORDER BY
+						batch_schedule_event.actor_id
+				) T2
+			LEFT JOIN batch_schedule_event ON (
+				T2.batch_group_code = batch_schedule_event.batch_group_code
+				AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+			)
+			WHERE
+				batch_schedule_event. ID IS NOT NULL
+		) T3
+	LEFT JOIN attendance ON (
+		T3. ID = attendance.event_id
+		AND T3.actor_id = attendance.user_id
+	)
+	GROUP BY
+		t3.actor_id,
+		t3.batch_group_id
+) T4 ON (
+	T1.bg_id = T4.batch_group_id
+	AND T1.user_id = T4.actor_id
 )
-LEFT JOIN user_profile ON (
-	user_profile.user_id = batch_students.student_id
-)
-LEFT JOIN attendance ON (
-	attendance.user_id = batch_students.student_id
-)
-GROUP BY
-	t1.college_name,
-	t1.bg_id,
-	t1.bg_name,
-	t1.scheduled,
-	user_profile.user_id,
-	user_profile.first_name
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
 		<title>User Attendance Report</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3084" type_of_report="table">
+		<column columnHandler="NONE" display_name="Student Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Student Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="Coverage" isVisible="true"  name="coverage_rate" />
+	    <column columnHandler="NONE" display_name="Ease of Understanding" isVisible="true" name="ease_understanding" />
+		<column columnHandler="NONE" display_name="Quality Of Examples Provided" isVisible="true"  name="quality_of_examples" />
+	    <column columnHandler="NONE" display_name="Knowledge of Subject Matter" isVisible="true" name="knowledge_of_matter" />
+		<column columnHandler="NONE" display_name="Classroom Management" isVisible="true"  name="cls_management" />
+	    <column columnHandler="NONE" display_name="Communication Style" isVisible="true" name="comm_style" />
+		<column columnHandler="NONE" display_name="Ablity to explain concepts" isVisible="true"  name="explain_concepts" />
+	    <column columnHandler="NONE" display_name="Are you enjoying the course?" isVisible="true" name="enjoying_course" />
+		<column columnHandler="NONE" display_name="Do you feel like you are learning something useful?" isVisible="true"  name="learning_something_useful" />
+	    <column columnHandler="NONE" display_name="Is the course giving you a fair idea of the kind of work involved in jobs in the sector and the nature of Industry?" isVisible="true" name="is_the_course_giving_a_fair_idea" />
+	    <column columnHandler="NONE" display_name="Would you be interested in learning more subjects related to the sector?" isVisible="true" name="interested_in_learning_more_subjects" />
+	    <column columnHandler="NONE" display_name="Are you considering a career in this sector?" isVisible="true" name="considering_a_career_in_sector" />
+	    <column columnHandler="NONE" display_name="Would you recommend istar course(s) to your friends based on your experience?" isVisible="true" name="recommend_istar_course_to_your_friends" />
+	    <column columnHandler="NONE" display_name="How can istar make the course more interesting?" isVisible="true" name="istar_the_course_more_interesting" />
+	    <column columnHandler="NONE" display_name="What aspects of the course would you change/remove?" isVisible="true" name="course_would_you_change_or_remove" />
+	    <column columnHandler="NONE" display_name="What aspects would you like to see coverage of?" isVisible="true" name="aspects_to_see_coverage_of" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the most?" isVisible="true" name="session_you_enjoy_the_most" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the least?" isVisible="true" name="session_you_enjoy_the_least" />
+	<sql>
+SELECT
+	COALESCE (
+		user_task_feedback.coverage,
+		'5.0'
+	) AS coverage_rate,
+	COALESCE (
+		user_task_feedback.ease_of_understanding,
+		'5.0'
+	) AS ease_understanding,
+	COALESCE (
+		user_task_feedback.quality_of_examples_provided,
+		'5.0'
+	) AS quality_of_examples,
+	COALESCE (
+		user_task_feedback.knowledge_of_subject_matter,
+		'5.0'
+	) AS knowledge_of_matter,
+	COALESCE (
+		user_task_feedback.classroom_management,
+		'5.0'
+	) AS cls_management,
+	COALESCE (
+		user_task_feedback.communication_style,
+		'5.0'
+	) AS comm_style,
+	COALESCE (
+		user_task_feedback.ablity_to_explain_concepts,
+		'5.0'
+	) AS explain_concepts,
+	COALESCE (
+		user_task_feedback.overall_how_would_you_rate_your_experience_in_the_course,
+		'5.0'
+	) AS rate_your_experience_in_the_course,
+	COALESCE (
+		cast(user_task_feedback.feel_like_you_are_learning_something_useful as VARCHAR),
+		'N/A'
+	) AS learning_something_useful,
+	COALESCE (
+		cast(user_task_feedback.interested_in_learning_more_subjects_related_to_the_sector as VARCHAR),
+		'N/A'
+	) AS interested_in_learning_more_subjects,
+	COALESCE (
+		cast(user_task_feedback.recommend_istar_course_to_your_friends_based_on_your_experience as VARCHAR),
+		'N/A'
+	) AS recommend_istar_course_to_your_friends,
+	COALESCE (
+		user_task_feedback.istar_make_the_course_more_interesting,
+		'N/A'
+	) AS istar_the_course_more_interesting,
+	COALESCE (
+		user_task_feedback.aspects_of_the_course_would_you_change_or_remove,
+		'N/A'
+	) AS course_would_you_change_or_remove,
+	COALESCE (
+		user_task_feedback.aspects_would_you_like_to_see_coverage_of,
+		'N/A'
+	) AS aspects_to_see_coverage_of,
+	COALESCE (
+		user_task_feedback.session_which_you_enjoy_the_most,
+		'N/A'
+	) AS session_you_enjoy_the_most,
+	COALESCE (
+		user_task_feedback.session_which_you_enjoy_the_least,
+		'N/A'
+	) AS session_you_enjoy_the_least,
+	COALESCE (
+		user_task_feedback.istar_course_compare_to_your_regular_college_curriculum,
+		'N/A'
+	) AS istar_course_compare_to_college_curriculum,
+	COALESCE (
+		user_task_feedback.istar_faculty_compared_to_regular_college_faculty,
+		'N/A'
+	) AS istar_faculty_compared_to_college_faculty,
+	COALESCE (
+		cast(user_task_feedback.enjoying_the_course as VARCHAR),
+		'N/A'
+	) AS enjoying_course,
+	COALESCE (
+		cast(user_task_feedback.is_the_course_giving_you_a_fair_idea as VARCHAR),
+		'N/A'
+	) AS is_the_course_giving_a_fair_idea,
+	COALESCE (
+		cast(user_task_feedback.considering_a_career_in_this_sector as VARCHAR),
+		'N/A'
+	) AS considering_a_career_in_sector,
+	user_task_feedback.user_id AS student_id,
+	COALESCE (
+		user_profile.first_name,
+		'N/A'
+	) as student_name
+FROM
+	user_task_feedback,
+	user_org_mapping,
+	user_profile
+WHERE
+	user_org_mapping.user_id = user_task_feedback.user_id
+AND user_task_feedback.user_id = user_profile.user_id
+AND user_org_mapping.organization_id = :org_id
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>

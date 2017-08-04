@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,26 +80,52 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				break;
 			case CustomFormElementTypes.DROP_DOWN:
 				String value = request.getParameter(formelement.getElemntName());
-				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), value);
+				if(value != null && !value.equalsIgnoreCase("")){
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), value);
+				}else{
+					String defaultValue = getDefaultValue(formelement.getDataType());
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+				}
 				break;
 			case CustomFormElementTypes.TEXT_BOX:
 				String textBoxValue = request.getParameter(formelement.getElemntName());
-				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textBoxValue);
+				if(textBoxValue != null && !textBoxValue.equalsIgnoreCase("")){
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textBoxValue);
+				}else
+				{
+					String defaultValue = getDefaultValue(formelement.getDataType());
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+				}	
+				 
 				break;
 			case CustomFormElementTypes.DATE_PICKER:
 				String dateValue = request.getParameter(formelement.getElemntName());
 				SimpleDateFormat from = new SimpleDateFormat("dd/MM/yyyy");
 				SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd");
-				try {
-					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), to.format(from.parse(dateValue)));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(dateValue!=null && !dateValue.equalsIgnoreCase("")){
+					try {
+						updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), to.format(from.parse(dateValue)));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+				else
+				{
+					String defaultValue = getDefaultValue(formelement.getDataType());
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+				}	
 				break;
-			case CustomFormElementTypes.TEXT:
+			case CustomFormElementTypes.TEXT_AREA:
 				String textAreaValue = request.getParameter(formelement.getElemntName());
+				if(textAreaValue!=null && !textAreaValue.equalsIgnoreCase("")){
 				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), textAreaValue);
+				}
+				else
+				{
+					String defaultValue = getDefaultValue(formelement.getDataType());
+					updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName(), defaultValue);
+				}	
 				break;
 			case CustomFormElementTypes.SWITCH:
 				String switchValue = request.getParameter(formelement.getElemntName());
@@ -199,6 +226,26 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 
 	
 	
+
+	private String getDefaultValue(String dataType) {
+		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd");
+		switch (dataType.trim())
+		{
+		 	case	CustomFormElementDataTypes.NUMBER :		 		
+		 		return "0";
+		 	case	CustomFormElementDataTypes.STRING :		 		
+		 		return "";
+		 	case	CustomFormElementDataTypes.BOOLEAN :		 		
+		 		return "f";
+		 	case	CustomFormElementDataTypes.DECIMAL :		 		
+		 		return "0.0";
+		 	case CustomFormElementDataTypes.DATE:
+		 		return to.format(new Date())+"";
+		 	default :
+		 		return "";
+		}	
+	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
