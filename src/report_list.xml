@@ -1914,16 +1914,16 @@ order by batch_schedule_event.eventdate desc
 		<column columnHandler="NONE" display_name="Session Covered" isVisible="true" name="session_covered" />
 		<column columnHandler="NONE" display_name="Trainer Comments" isVisible="true" name="trainer_comment" />
 		<column columnHandler="DECIMAL_STAR_RATING" display_name="Trainer Rating" isVisible="true" name="trainer_rating" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Noise Feedback" isVisible="true" name="noise" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name=" Attendance Feedback" isVisible="true" name="attendance" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Sick Feedback" isVisible="true" name="sick" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Content Feedback" isVisible="true" name="content" />		
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Assignment Feedback" isVisible="true" name="assignment" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internals Feedback" isVisible="true" name="internals" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internet Feedback" isVisible="true" name="internet" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Electricity Feedback" isVisible="true" name="electricity" />	
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Time Feedback" isVisible="true" name="time" />
-		<column columnHandler="DECIMAL_STAR_RATING" display_name="Projector Feedback" isVisible="true" name="projector" />
+		<!-- <column columnHandler="DECIMAL_STAR_RATING" display_name="Noise Feedback" isVisible="false" name="noise" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name=" Attendance Feedback" isVisible="false" name="attendance" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Sick Feedback" isVisible="false" name="sick" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Content Feedback" isVisible="false" name="content" />		
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Assignment Feedback" isVisible="false" name="assignment" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internals Feedback" isVisible="false" name="internals" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internet Feedback" isVisible="false" name="internet" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Electricity Feedback" isVisible="false" name="electricity" />	
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Time Feedback" isVisible="false" name="time" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Projector Feedback" isVisible="false" name="projector" /> -->
 		<column columnHandler="BOOLEAN_HANDLER" display_name="TOT Status" isVisible="true" name="tot_happened" />
 		<column columnHandler="DECIMAL_STAR_RATING" display_name="Avg. Student Rating" isVisible="true" name="avg_student_rating" />
 	<sql>
