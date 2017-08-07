@@ -552,18 +552,26 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             { extend: 'copy'},
-			             {extend: 'csv'},
-			             {extend: 'excel', title: 'ExampleFile'},
-			             {extend: 'pdf', title: 'ExampleFile'},
-			             {extend: 'print',
-			              customize: function (win){
-			                     $(win.document.body).addClass('white-bg');
-			                     $(win.document.body).css('font-size', '10px');
-			                     $(win.document.body).find('table')
-			                             .addClass('compact')
-			                             .css('font-size', 'inherit');
-			             }
+			             {
+			                 text: 'Download CSV File',
+			                data:'CSV',
+			                 action: function ( e, dt, node, config ) {
+			                     var reportID = dt;
+			                     console.log(">>>>>>id>>>>"+id.split('_')[2]);
+			                     console.log(">>>>>>>>>>"+$('.html5buttons > div >a').attr('aria-controls').split('_')[2]);
+			                    var reportID = $('.html5buttons > div >a').attr('aria-controls').split('_')[2]
+			                    var key = $('.html5buttons > div >a').text().trim();
+			                     
+			                     $.ajax({
+			       		            type: "POST",
+			       		            url: "/ReportExtractController",
+			       		            data: {key:key, reportID:reportID},
+			       		            success: function(data){
+			       		            	  	
+			       		            }
+			       		        });
+			                     
+			                 }
 			             }
 			         ], "processing": true,
 			         "serverSide": false,
@@ -614,18 +622,13 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             { extend: 'copy'},
-			             {extend: 'csv'},
-			             {extend: 'excel', title: 'ExampleFile'},
-			             {extend: 'pdf', title: 'ExampleFile'},
-			             {extend: 'print',
-			              customize: function (win){
-			                     $(win.document.body).addClass('white-bg');
-			                     $(win.document.body).css('font-size', '10px');
-			                     $(win.document.body).find('table')
-			                             .addClass('compact')
-			                             .css('font-size', 'inherit');
-			             }
+			             {
+			                 text: 'My button605',
+			                 action: function ( e, dt, node, config ) {
+			                     this.text( 'My button ('+config.counter+')' );
+			                     config.counter++;
+			                 },
+			                 counter: 1
 			             }
 			         ], "processing": true,
 			         "serverSide": true,
