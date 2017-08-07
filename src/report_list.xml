@@ -3381,4 +3381,164 @@ AND user_org_mapping.organization_id = :org_id
 		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3085" type_of_report="table">
+		<column columnHandler="NONE" display_name="Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="College Name" isVisible="true"  name="col_name" />
+		<column columnHandler="NONE" display_name="Section Name" isVisible="true"  name="bg_name" />
+		<column columnHandler="NONE" display_name="Total No Events" isVisible="true"  name="total_event" />
+		<column columnHandler="NONE" display_name="Student Attendance" isVisible="true"  name="student_attendance" />
+	<sql>
+SELECT DISTINCT
+	T1.user_id as student_id,
+	T1.first_name as student_name,
+	T1.col_name,
+	T1.bg_name,
+	T4.PRESENT as student_attendance,
+	T5.total_event
+FROM
+	(
+		SELECT DISTINCT
+			user_profile.user_id,
+			user_profile.first_name,
+			batch_group. ID AS bg_id,
+			batch_group. NAME AS bg_name,
+			organization. NAME AS col_name
+		FROM
+			batch_schedule_event,
+			user_profile,
+			batch_group,
+			organization,
+			user_role,
+			ROLE
+		WHERE
+			batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+		AND batch_schedule_event.actor_id = user_profile.user_id
+		AND batch_group. ID = batch_schedule_event.batch_group_id
+		AND organization. ID = batch_group.college_id
+		AND organization. ID != 2
+		AND user_role.user_id = batch_schedule_event.actor_id
+		AND user_role.role_id = ROLE . ID
+		AND ROLE .role_name = 'STUDENT'
+		GROUP BY
+			user_profile.user_id,
+			user_profile.first_name,
+			bg_id,
+			batch_group. NAME,
+			organization. NAME
+		ORDER BY
+			batch_group. ID
+	) T1
+LEFT JOIN (
+	SELECT
+		t3.actor_id,
+		t3.batch_group_id,
+		COUNT (attendance. ID) FILTER (
+
+			WHERE
+				attendance.status = 'PRESENT'
+		) AS PRESENT,
+		COUNT (DISTINCT attendance. ID) AS total_attendance
+	FROM
+		(
+			SELECT DISTINCT
+				T2.*, batch_schedule_event. ID
+			FROM
+				(
+					SELECT DISTINCT
+						batch_schedule_event.actor_id,
+						batch_schedule_event.batch_group_id,
+						batch_schedule_event.batch_group_code
+					FROM
+						batch_schedule_event,
+						user_profile,
+						batch_group,
+						organization,
+						user_role,
+						ROLE
+					WHERE
+						batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+					AND batch_schedule_event.actor_id = user_profile.user_id
+					AND batch_group. ID = batch_schedule_event.batch_group_id
+					AND organization. ID = batch_group.college_id
+					AND organization. ID != 2
+					AND user_role.user_id = batch_schedule_event.actor_id
+					AND user_role.role_id = ROLE . ID
+					AND ROLE .role_name = 'STUDENT'
+					ORDER BY
+						batch_schedule_event.actor_id
+				) T2
+			LEFT JOIN batch_schedule_event ON (
+				T2.batch_group_code = batch_schedule_event.batch_group_code
+				AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+			)
+			WHERE
+				batch_schedule_event. ID IS NOT NULL
+		) T3
+	LEFT JOIN attendance ON (
+		T3. ID = attendance.event_id
+		AND T3.actor_id = attendance.user_id
+	)
+	GROUP BY
+		t3.actor_id,
+		t3.batch_group_id
+) T4 ON (
+	T1.bg_id = T4.batch_group_id
+	AND T1.user_id = T4.actor_id
+)
+LEFT JOIN (
+	SELECT DISTINCT
+		t2.actor_id,
+		t2.batch_group_id,
+		COUNT (batch_schedule_event. ID) FILTER (
+
+			WHERE
+				batch_schedule_event.status != 'SCHEDULED'
+		) AS total_event
+	FROM
+		(
+			SELECT DISTINCT
+				batch_schedule_event.actor_id,
+				batch_schedule_event.batch_group_id,
+				batch_schedule_event.batch_group_code
+			FROM
+				batch_schedule_event,
+				user_profile,
+				batch_group,
+				organization,
+				user_role,
+				ROLE
+			WHERE
+				batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+			AND batch_schedule_event.actor_id = user_profile.user_id
+			AND batch_group. ID = batch_schedule_event.batch_group_id
+			AND organization. ID = batch_group.college_id
+			AND organization. ID != 2
+			AND user_role.user_id = batch_schedule_event.actor_id
+			AND user_role.role_id = ROLE . ID
+			AND ROLE .role_name = 'STUDENT'
+			ORDER BY
+				batch_schedule_event.actor_id
+		) T2
+	LEFT JOIN batch_schedule_event ON (
+		T2.batch_group_code = batch_schedule_event.batch_group_code
+		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+	)
+	WHERE
+		batch_schedule_event. ID IS NOT NULL
+	GROUP BY
+		t2.actor_id,
+		t2.batch_group_id
+) T5 ON (
+	T1.bg_id = T5.batch_group_id
+	AND T1.user_id = T5.actor_id
+)
+WHERE
+	T5.total_event > 0
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 </istar_reports>
