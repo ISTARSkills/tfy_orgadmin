@@ -174,7 +174,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 				
 				 		}
  				%>
-					<ul class="dropdown-menu mega-menu" style="background-color: white;">
+					<ul class="dropdown-menu mega-menu" style="background-color: white;left: -100px;">
 						<%
 							for (String state : orgs.keySet()) {
 									System.out.println("statte-" + state + "----- ");

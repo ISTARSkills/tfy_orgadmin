@@ -56,15 +56,14 @@
 	<div class='modal-dialog modal-lg'>
 		<div class='modal-content animated flipInY'>
 
-			<div class="panel panel-primary custom-theme-panel-primary"
-				style="margin-bottom: 0px;">
+			<div class="panel panel-primary custom-theme-panel-primary customcss_m-b-none">
 				<div class="panel-heading custom-theme-panal-color">
 					<button type="button" class="close" data-dismiss="modal">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
 					<h4 class="modal-title text-center">Edit User</h4>
 				</div>
-				<div class="modal-body" style="padding-bottom: 0px;">
+				<div class="modal-body customcss_p-b-none">
 
 					<form class="form-horizontal"
 						action="<%=baseURL%>createOrUpdateUser" method="post">
@@ -162,7 +161,7 @@
 
 
 						</div>
-						<div class="modal-footer" style="padding-bottom: 0px;">
+						<div class="modal-footer customcss_p-b-none">
 							<div class="form-group">
 								<button type="submit" class="btn btn-danger">Save
 									changes</button>
