@@ -25,9 +25,15 @@
 		<div id="page-wrapper" class="white-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content white-bg" style="padding: 4px;">
+			<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("User Management", brd) %>
 				<div class="ibox">
 					<div class="col-lg-12" style="padding: 0px;">
-						<div class="col-lg-3">
+						<div class="col-lg-3" style="    margin-top: 18px;
+    padding: 0px;
+    padding-right: 10px;"><div class='card-box'>
 							<button type="button" class="btn btn-w-m btn-danger"
 								data-toggle="modal" data-target="#create_user_model"
 								style="margin-top: 16px;">Add User</button>
@@ -56,7 +62,7 @@
 										<%=adminUiServcies.getBatchGroups(-3, null)%>
 									</select>
 								</div>
-							</div>
+							</div></div>
 						</div>
 						<div class="col-lg-9">
 							<!-- <button class="btn btn-default pull-right" data-toggle="modal"

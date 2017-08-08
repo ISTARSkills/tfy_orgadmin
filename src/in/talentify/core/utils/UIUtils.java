@@ -828,6 +828,25 @@ public class UIUtils {
 		return out;
 	}
 	
+	public static StringBuffer getPageHeader(String headerName, String[] breadCrums ) {
+		StringBuffer out = new StringBuffer();
+		out.append("<div class='row'>");
+		out.append("<div class='col-xs-12'>");
+		out.append("<div class='page-title-box'>");
+		out.append("<div class='row'>");
+		out.append("<div class='col-md-7'>");
+		out.append("<h4 class='page-title' style='padding-left: 15px;'>"+headerName+"</h4></div>");
+		out.append("<div class='col-md-5' style='bottom: 3px; position: absolute; right: 19px;'>");
+		out.append("<ol class='breadcrumb p-0 m-0'>");
+		for (String string : breadCrums) {
+			out.append("<li><a href='#'>"+string+"</a></li>");	
+		}
+		out.append("<li><a href='#'>"+headerName+"</a></li>");
+		
+		out.append("</ol></div></div><div class='clearfix'></div></div></div></div>");
+		return out;
+	}
+	
 	
 	
 }

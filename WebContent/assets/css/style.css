@@ -4412,7 +4412,7 @@ code {
 	background-color: #ffffff;
 	color: inherit;
 	padding: 15px 20px 20px 20px;
-	border-color: #e7eaec;
+	border-color: transparent;
 	border-image: none;
 	border-style: solid solid none;
 	border-width: 1px 0;

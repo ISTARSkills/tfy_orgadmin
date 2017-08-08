@@ -192,12 +192,11 @@ UIUtils ui_Util = new UIUtils();
 		</div>
 	</div>
 </div>
-<div class="row border-bottom white-bg report-padding">
-
-
-	
-		<div class="col-lg-12">
-			<div class="ibox float-e-margins">
+<div class="row border-bottom white-bg" style="    padding: 0px;
+    margin-left: -19px;
+    margin-right: -22px;
+    margin-top: 1px;">
+		<div class="ibox float-e-margins">
 				<div class="ibox-title">
 					<h5>Student FeedBack Details</h5>
 					

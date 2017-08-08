@@ -22,8 +22,20 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			
-<div class="row">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="page-title-box">
+						<h4 class="page-title">Student Report</h4>
+						<ol class="breadcrumb p-0 m-0">
+							<li><a href="#">Dashboard</a></li>
+							<li><a href="#">Student Report</a></li>
+
+						</ol>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+<div class="row" style='    margin-left: 0px; margin-right: 0px;'>
 
 	<!-- tab start -->
 

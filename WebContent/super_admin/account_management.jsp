@@ -1,4 +1,4 @@
-<%@page import="org.json.JSONArray"%>
+	<%@page import="org.json.JSONArray"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page
 	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
@@ -16,23 +16,12 @@
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content" style=" padding: 4px!important;">
-				<div class="row">
-							<div class="col-xs-12">
-								<div class="page-title-box">
-                                    <h4 class="page-title">Account Management</h4>
-                                    <ol class="breadcrumb p-0 m-0">
-                                        <li>
-                                            <a href="#">Dashboard</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Account Management</a>
-                                        </li>
-                                      
-                                    </ol>
-                                    <div class="clearfix"></div>
-                                </div>
-							</div>
-						</div>
+			
+			<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Account Management", brd) %>
+				
 						
 						<div class="row">
 					<!-- Start Table -->

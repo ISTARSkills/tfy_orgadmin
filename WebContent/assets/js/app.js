@@ -6118,7 +6118,7 @@ function init_opsReport(){
 
 
 function init_reports_section(){
-	
+	$('select').select2();
 	
 	  $('.report_college').on("change", function() {
 			var orgId = $(this).val();

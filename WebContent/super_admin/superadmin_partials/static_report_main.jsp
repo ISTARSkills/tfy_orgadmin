@@ -4,7 +4,7 @@
 
 UIUtils ui_Util = new UIUtils();
  %>
- <div class="row border-bottom white-bg report-padding ">
+ <div class="row border-bottom white-bg">
 		<div class="ibox no-margins no-padding bg-muted p-xs">
 			<div class="ibox-content">
 			

@@ -1,4 +1,5 @@
 
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -22,10 +23,13 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
+			
+			<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Analytics", brd) %>
 
-
-
-			<div class="row">
+			<div class="row" style='margin: 0px'>
 
 				<!-- tab start -->
 

@@ -40,7 +40,7 @@ DBUTILS util = new DBUTILS();
 							<div class='panel-heading custom-theme-panal-color font-bold' style="color: white;">
 								<%=courseName%>
 							</div>
-							<div class='panel-body' style='width: 315px'>
+							<div class='panel-body'>
 								<p class='course-desc'><%=courseDescription%></p>
 								<div class='row'>
 									<div class='col-lg-6'>Attendance</div>
@@ -103,7 +103,7 @@ DBUTILS util = new DBUTILS();
 							<div class='panel-heading custom-theme-panal-color font-bold' style="color: white;">
 								<%=batchName%>
 							</div>
-							<div class='panel-body' style='width: 315px'>
+							<div class='panel-body'>
 								
 								<div class='row'>
 									<div class='col-lg-6'>Attendance</div>
