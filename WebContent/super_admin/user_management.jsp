@@ -60,12 +60,7 @@
 							</div>
 						</div>
 						<div class="col-lg-9">
-							<!-- <button class="btn btn-default pull-right" data-toggle="modal"
-								data-target="#create_user_model" type="button">
-								<i class="fa fa-plus-circle"></i>
-							</button> -->
-
-							<!-- <br /> <br /> -->
+							
 							<div class="row">
 								<br>
 								<%

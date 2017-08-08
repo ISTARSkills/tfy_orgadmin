@@ -4655,6 +4655,51 @@ function set_batchgroup_data(){
 	});
 	
 }
+function init_student_card(){
+	
+	var progress;
+	progress = $('#progress-nos').attr('va');
+	console.log("progress------" + progress);
+	$(".my-progress-bar").circularProgress({
+		line_width : 4,
+		height : "140px",
+		width : "140px",
+		color : "#eb384f",
+		starting_position : 0, // 12.00 o' clock position, 25 stands for 3.00 o'clock (clock-wise)
+		percent : 0, // percent starts from
+		percentage : true,
+		text : "Profile Completed"
+	}).circularProgress('animate', progress, 5000);
+
+	$('.btn-white').click(function(){
+		var icon_class = $(this).find('i').attr('class');
+		var button_icon = $(this).find('i');
+		if(icon_class === 'fa fa-pencil'){
+			button_icon.removeClass(icon_class);
+			button_icon.addClass('fa fa-check');
+			$(this).parent().siblings().removeAttr('disabled');
+			
+		}else{
+			button_icon.removeClass(icon_class);
+			button_icon.addClass('fa fa-pencil');
+			$(this).parent().siblings().attr('disabled', 'disabled');
+			
+			
+			var serialized = form.serialize();
+			console.log(serialized);
+			$.ajax({
+		        type: "POST",
+		        url: "gvygv",
+		        data: {serialized},
+		        success: function(data) {
+		        	console.log('success');
+		        }});
+			
+		}
+	});
+	
+	
+}
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
@@ -4662,6 +4707,7 @@ function init_super_admin_usermgmt(){
 	user_filter_by_course_batch();
 	admin_edit_modal_create();
 	set_batchgroup_data();
+	init_student_card();
 	
 $('#college_id').on('change', function(){
 		

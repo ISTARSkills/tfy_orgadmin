@@ -4071,7 +4071,7 @@ video {
 	#page-wrapper {
 		position: inherit;
 		margin: 0 0 0 240px;
-		min-height: 2002px;
+		min-height: 1002px;
 	}
 }
 
@@ -6739,13 +6739,19 @@ body.body-small .vote-icon {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6754,8 +6760,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6766,14 +6776,20 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (0
 deg
+
+
 
 
 );
@@ -6782,13 +6798,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6797,8 +6819,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6809,14 +6835,20 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (0
 deg
+
+
 
 
 );
@@ -6828,13 +6860,19 @@ deg
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6843,8 +6881,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6853,14 +6895,20 @@ rotateX
 deg
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -6871,13 +6919,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6886,8 +6940,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6896,14 +6954,20 @@ rotateX
 deg
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -6924,13 +6988,19 @@ keyframes sk-rotatePlane { 0% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6939,8 +7009,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6951,14 +7025,20 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (0
 deg
+
+
 
 
 );
@@ -6967,13 +7047,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -6982,8 +7068,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6994,14 +7084,20 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (0
 deg
+
+
 
 
 );
@@ -7013,13 +7109,19 @@ deg
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -7028,8 +7130,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7038,14 +7144,20 @@ rotateX
 deg
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7056,13 +7168,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 perspective
+
+
 
 
 
@@ -7071,8 +7189,12 @@ perspective
 px
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7081,14 +7203,20 @@ rotateX
 deg
 
 
+
+
 )
 rotateY
 
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7144,13 +7272,19 @@ rotateY
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -7161,13 +7295,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -7188,13 +7328,19 @@ keyframes sk-doubleBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -7205,13 +7351,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -7281,13 +7433,19 @@ scale
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scaleY
+
+
 
 
 
@@ -7298,13 +7456,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scaleY
+
+
 
 
 
@@ -7325,13 +7489,19 @@ keyframes sk-waveStretchDelay { 0%, 40%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scaleY
+
+
 
 
 
@@ -7342,13 +7512,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scaleY
+
+
 
 
 
@@ -7403,10 +7579,14 @@ scaleY
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7414,8 +7594,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7424,8 +7608,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7434,8 +7622,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 );
@@ -7444,10 +7636,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7455,8 +7651,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7465,8 +7665,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7475,8 +7679,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 );
@@ -7484,80 +7692,94 @@ deg
 50
 .1
 
+
  
+
 
 %
 {
 -webkit-transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 translateY
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 rotate
+
+
 
 
 (-180
 deg
+
+
 );
-
-
-	
-
 transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 translateY
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 rotate
+
+
 
 
 (-180
 deg
+
+
 );
-
-
-
-
 }
 75%
 {
@@ -7566,10 +7788,14 @@ deg
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7577,8 +7803,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 )
@@ -7587,8 +7817,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7597,8 +7831,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 )
@@ -7607,8 +7845,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -7619,10 +7861,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7630,8 +7876,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 )
@@ -7640,8 +7890,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7650,8 +7904,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 )
@@ -7660,8 +7918,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -7675,10 +7937,14 @@ scale
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -7686,8 +7952,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 );
@@ -7696,10 +7966,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -7707,8 +7981,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 );
@@ -7728,10 +8006,14 @@ keyframes sk-wanderingCubeMove { 25% {
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7739,8 +8021,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7749,8 +8035,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7759,8 +8049,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 );
@@ -7769,10 +8063,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7780,8 +8078,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7790,8 +8092,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7800,8 +8106,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 );
@@ -7809,80 +8119,94 @@ deg
 50
 .1
 
+
  
+
 
 %
 {
 -webkit-transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 translateY
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 rotate
+
+
 
 
 (-180
 deg
+
+
 );
-
-
-	
-
 transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 translateY
 
 
+
+
 (42
 px
+
+
 )
-
- 
-
 rotate
+
+
 
 
 (-180
 deg
+
+
 );
-
-
-
-
 }
 75%
 {
@@ -7891,10 +8215,14 @@ deg
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7902,8 +8230,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 )
@@ -7912,8 +8244,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7922,8 +8258,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 )
@@ -7932,8 +8272,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -7944,10 +8288,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 translateX
@@ -7955,8 +8303,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 )
@@ -7965,8 +8317,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 )
@@ -7975,8 +8331,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 )
@@ -7985,8 +8345,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -8000,10 +8364,14 @@ scale
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -8011,8 +8379,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 );
@@ -8021,10 +8393,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -8032,8 +8408,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 );
@@ -8068,13 +8448,19 @@ deg
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8085,13 +8471,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8102,10 +8494,14 @@ opacity
 
 
 
+
+
 :
 
 
+
  
+
 
 
 0;
@@ -8124,13 +8520,19 @@ keyframes sk-pulseScaleOut { 0% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8141,13 +8543,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8158,10 +8566,14 @@ opacity
 
 
 
+
+
 :
 
 
+
  
+
 
 
 0;
@@ -8232,13 +8644,19 @@ keyframes sk-chasingDotsRotate { 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8249,13 +8667,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8276,13 +8700,19 @@ keyframes sk-chasingDotsBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8293,13 +8723,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8359,13 +8795,19 @@ scale
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8376,13 +8818,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8403,13 +8851,19 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8420,13 +8874,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8617,13 +9077,19 @@ scale
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8634,13 +9100,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8661,13 +9133,19 @@ keyframes sk-circleBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8678,13 +9156,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale
+
+
 
 
 
@@ -8791,13 +9275,19 @@ scale
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale3D
+
+
 
 
 
@@ -8811,13 +9301,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale3D
+
+
 
 
 
@@ -8841,13 +9337,19 @@ keyframes sk-cubeGridScaleDelay { 0%, 70%, 100% {
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale3D
+
+
 
 
 
@@ -8861,13 +9363,19 @@ transform
 
 
 
+
+
 :
+
 
 
  
 
 
+
 scale3D
+
+
 
 
 
@@ -8921,10 +9429,14 @@ scale3D
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -8932,8 +9444,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 );
@@ -8942,10 +9458,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -8953,8 +9473,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 );
@@ -8973,10 +9497,14 @@ keyframes sk-innerCircle { 0% {
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -8984,8 +9512,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 );
@@ -8994,10 +9526,14 @@ transform
 
 
 
+
+
 :
 
 
+
  
+
 
 
 rotate
@@ -9005,8 +9541,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 );
@@ -9194,10 +9734,14 @@ opacity
 
 
 
+
+
 :
 
 
+
  
+
 
 
 1;
@@ -9215,10 +9759,14 @@ opacity
 
 
 
+
+
 :
 
 
+
  
+
 
 
 1;
@@ -12401,22 +12949,34 @@ tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selecte
 -webkit-transform
 
 
+
+
 :
+
 
  
 
+
 scale
+
+
 
 
 (1);
 transform
 
 
+
+
 :
+
 
  
 
+
 scale
+
+
 
 
 (1);
@@ -12433,22 +12993,34 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 -webkit-transform
 
 
+
+
 :
+
 
  
 
+
 scale
+
+
 
 
 (1);
 transform
 
 
+
+
 :
+
 
  
 
+
 scale
+
+
 
 
 (1);
@@ -12782,7 +13354,15 @@ label.custom_error {
 }
 
 .customcss_p-b-none {
-	padding-bottom: 0px
+	padding-bottom: 0px !important;
+}
+
+.customcss_p-f-none {
+	padding-bottom: 0px !important;
+}
+
+.customcss_p-r-none {
+	padding-bottom: 0px !important;
 }
 
 .customcss_college-cards {
@@ -12801,4 +13381,265 @@ label.custom_error {
 
 .customcss_col-md-8 {
 	padding-left: 2px;
+}
+
+.customcss_page-title {
+	padding-left: 15px;
+}
+
+.customcss_breadcrumb {
+	bottom: 3px;
+	position: absolute;
+	right: 30px;
+}
+
+/*tree related  */
+.rank {
+	margin-top: 3%;
+}
+
+.profile-header {
+	background: lightgray;
+	vertical-align: middle;
+	padding: 6px;
+	height: 30px;
+	color: grey;
+}
+
+@media only screen and (min-width: 992px) {
+	.position-no {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		bottom: 55;
+		right: 37%;
+		border-radius: 50%;
+		padding-left: 5px;
+		padding-right: 6px;
+	}
+	.account-setting-camera-position {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		bottom: 55;
+		right: 42%;
+		border-radius: 50%;
+		padding-left: 5px;
+		padding-right: 6px;
+	}
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width
+	: 480px) {
+	.position-no {
+		font-size: 14px;
+		color: #ffffff;
+		background-color: #23b6f9;
+		padding: 6px 12px;
+		position: absolute;
+		top: 75;
+		right: 0;
+		border-radius: 50%;
+		padding-left: 7px;
+		padding-right: 7px;
+	}
+}
+
+.scroll-horizontally-div {
+	overflow: auto;
+	display: flex;
+	background: lightgray;
+}
+
+/*start  */
+.tree1>li {
+	padding: 0 !important;
+}
+
+.progress {
+	height: 6px;
+	margin-bottom: 0px !important;
+}
+
+ul>.progress {
+	margin-left: 2%;
+}
+
+li>.progress {
+	
+}
+
+ul>p {
+	margin-left: 2%;
+}
+
+.tree, .tree ul {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+
+.tree ul {
+	margin-left: 5px;
+	position: relative
+}
+
+.tree ul ul {
+	margin-left: .5em
+}
+
+.tree ul:before {
+	content: "";
+	display: block;
+	width: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	border-left: 1px solid
+}
+
+.tree li {
+	margin: 0;
+	padding: 0 33px;
+	line-height: 2em;
+	font-weight: 700;
+	position: relative
+}
+
+.tree ul li:before {
+	content: "";
+	display: block;
+	width: 30px;
+	height: 0;
+	border-top: 1px solid;
+	margin-top: -1px;
+	position: absolute;
+	top: 1em;
+	left: 0
+}
+
+.tree ul li:last-child:before {
+	background: #fff;
+	height: auto;
+	top: 1em;
+	bottom: 0
+}
+
+.indicator {
+	margin-right: 5px;
+}
+
+.tree li a {
+	text-decoration: none;
+	color: #369;
+}
+
+.tree li button, .tree li button:active, .tree li button:focus {
+	text-decoration: none;
+	color: #369;
+	border: none;
+	background: transparent;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	outline: 0;
+}
+/* end */
+/*Start of plugin css  */
+.circular-progress-bar {
+	position: relative;
+	margin: 0 auto;
+}
+
+.progress-percentage, .progress-text {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	left: 59%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.progress-percentage {
+	font-size: 18px;
+	transform: translate(-50%, -85%);
+}
+
+.progress-text {
+	transform: translate(-50%, 0%);
+	color: #888888;
+	font-size: 11px;
+}
+
+.customcss_studentcard-header {
+	padding: 13px 18px !important;
+}
+
+.customcss_studentcard-body {
+	padding: 0px 2px 0px 2px !important;
+	background-color: #e8e8e9;
+}
+
+.customcss_studentcard-course {
+	height: 87px;
+	padding: 5px;
+	padding-left: 0px !important; padding-right : 0px !important;
+	width: 98px;
+	text-align: center;
+	display: inline-block;
+	padding-right: 0px;
+}
+
+.customcss_studentcard-img {
+	width: 40px;
+	height: 40px;
+	margin-bottom: 3px;
+}
+
+.customcss_studentcard-label {
+	white-space: normal;
+	display: block;
+	min-height: 36px;
+}
+
+#rank_holder {
+	margin-top: -14px;
+	margin-left: -17px;
+	margin-right: -18px;
+	padding: 8px !important;
+	border-radius: 4px;
+}
+
+.customcss_studentcard-row {
+	height: 121px;
+}
+
+.customcss_studentcard-col-4 {
+	margin-top: 22px;
+}
+
+.customcss_studentcard-profile {
+	height: 98px;
+	margin-top: 11px;
+}
+
+.customcss_studentcard-profile_img {
+	width: 98px;
+	height: 98px;
+}
+
+.customcss_skill_holder {
+	margin-left: -17px;
+}
+
+.customcss_skilllist {
+	height: 232px !important;
+	overflow-y: auto;
+}
+.customcss_progressbar{
+	height: 5px !important; display: block;
 }

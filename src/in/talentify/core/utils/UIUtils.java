@@ -835,8 +835,8 @@ public class UIUtils {
 		out.append("<div class='page-title-box'>");
 		out.append("<div class='row'>");
 		out.append("<div class='col-md-7'>");
-		out.append("<h4 class='page-title' style='padding-left: 15px;'>"+headerName+"</h4></div>");
-		out.append("<div class='col-md-5' style='bottom: 3px; position: absolute; right: 30px;'>");
+		out.append("<h4 class='page-title customcss_page-title'>"+headerName+"</h4></div>");
+		out.append("<div class='col-md-5 customcss_breadcrumb'>");
 		out.append("<ol class='breadcrumb p-0 m-0'>");
 		for (String string : breadCrums) {
 			out.append("<li><a href='#'>"+string+"</a></li>");	
