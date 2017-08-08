@@ -3544,7 +3544,10 @@ function admin_edit_modal_create() {
 	                    });
 
 	                $("input[name='student_list']").val(sel.substring(0, sel.length - 1));
+	                
 	                $("input[name='batch_groups']").val(sel.substring(0, sel.length - 1));
+	                
+	             //   $("input[name='user_type']").val(sel.substring(0, sel.length - 1));
 
 	               // $('select').select2();
 	                
@@ -3552,6 +3555,7 @@ function admin_edit_modal_create() {
 	                        var kk = $(this).val();
 	                        $("input[name='student_list']").val(kk);
 	                        $("input[name='batch_groups']").val(kk);
+	                      //  $("input[name='user_type']").val(kk);
 	                 });
 	            }, 1000);
 
@@ -4678,37 +4682,26 @@ $('#college_id').on('change', function(){
 		
 		
 	});
-	
-	$('.userType').on('change', function(){
-		var user_type = $(this).val();
-		if(user_type === 'TRAINER'){
-			$('#hide_college_holder').hide();
-			//$('#hide_group_holder').hide();
-			$('#hide_role_holder').hide();
-			$('#user_type').val('TRAINER');
-			$('#college_id').val('2').trigger('change');
-			var url = '../event_utility_controller'
-			    $.post(url, {
-			    	college_id : '2',
-			    	type : "userOrgfilter"
-			        },
-			        function(data) {
-
-			      $('#batch_group_holder').html(data);
-			      set_batchgroup_data();
-			      $('#main_batch_group_holder').select2();
-			     
+var user_type = "";
+	$('.multi_user_type').on('change', function(){
 		
-			        });
-			
-			
-		}else{
-			$('#hide_college_holder').show();
-			//$('#hide_group_holder').show();
-			$('#hide_role_holder').show();
-			$('#user_type').val('STUDENT');
-		}
+	
+		user_type = $(this).val()+',';
+		user_type = user_type.substring(0, user_type.length - 1);
+		$('#user_type').val(user_type);
+		
+		
 		 set_batchgroup_data();
+		
+	});
+	var batch_groups = "";
+	$('.multi_batch_groups').on('change', function(){
+		
+		
+		batch_groups = $(this).val()+',';
+		batch_groups = batch_groups.substring(0, batch_groups.length - 1);
+		$('#batch_groups').val(batch_groups);
+		// set_batchgroup_data();
 		
 	});
 	

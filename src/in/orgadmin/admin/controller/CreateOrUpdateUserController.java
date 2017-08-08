@@ -57,11 +57,11 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			String user_email = request.getParameter("user_email");
 			Integer college_id = request.getParameter("college_id") != ""
 					? Integer.parseInt(request.getParameter("college_id")) : 2;
-			String user_type = request.getParameter("user_type");
+			String user_types;
 			String user_mobile = request.getParameter("user_mobile");
 			String batch_groups;
-			
 			List<Integer> bg_list = new ArrayList<Integer>();
+			List<String> user_type = new ArrayList<String>();
 
 			if (request.getParameterMap().containsKey("batch_groups")
 					&& !request.getParameter("batch_groups").equalsIgnoreCase("")) {
@@ -69,6 +69,18 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 				for (int i = 0; i < batch_groups.split(",").length; i++) {
 					try {
 						bg_list.add(Integer.parseInt(batch_groups.split(",")[i]));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			if (request.getParameterMap().containsKey("user_type")
+					&& !request.getParameter("user_type").equalsIgnoreCase("")) {
+				user_types = request.getParameter("user_type");
+				for (int i = 0; i < user_types.split(",").length; i++) {
+					try {
+						user_type.add(user_types.split(",")[i]);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -93,7 +105,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			}
 
 		} else {
-			//System.out.println("Not Created");
+			System.out.println("Not Created");
 		}
 
 		if (request.getParameterMap().containsKey("creation_type")

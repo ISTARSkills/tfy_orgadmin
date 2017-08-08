@@ -68,11 +68,11 @@ public class EventUtilityController extends HttpServlet {
 			out.append("<div class='col-lg-12'>");
 			out.append("<label class='font-noraml'>Select Section the student will belong to:</label>");
 			out.append("<div>");
-			out.append("<select data-placeholder='Section...'id='main_batch_group_holder' class='select2-dropdown' multiple tabindex='4' name='batch_groups'>");
+			out.append("<select data-placeholder='Section...'id='main_batch_group_holder' class='select2-dropdown multi_batch_groups' multiple tabindex='4'>");
 			out.append(uiUtils.getBatchGroups(org, null));
 			out.append("</select>");
 			out.append("</div>");
-			out.append("<input type='hidden' value='' name='batch_groups' />");
+			out.append("<input type='hidden' value='' id='batch_groups' name='batch_groups' />");
 			out.append("</div>");
 			out.append("</div>");
 			out.append("</div>");

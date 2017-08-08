@@ -50,6 +50,8 @@ public class ReportColumnHandlerFactory {
 			return(new DecimalColumnHandler());
 		case "BOOLEAN_HANDLER":
 			return(new BooleanColumnHandler());	
+		case "VIEW_ATTENDANCE":
+			return(new ViewAttendaceDetails());	
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":

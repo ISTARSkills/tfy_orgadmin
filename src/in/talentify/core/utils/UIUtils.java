@@ -804,6 +804,32 @@ public class UIUtils {
 		return returnData;
 		
 	}
+	
+	public StringBuffer getAllRoles(ArrayList<Integer> selectedRoles) {
+		String sql = "SELECT id,role_name FROM role WHERE role_name != 'PRESENTOR'";
+
+		// //System.err.println(sql);
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		StringBuffer out = new StringBuffer();
+
+		for (HashMap<String, Object> item : data) {
+
+			if (selectedRoles != null && selectedRoles.size()!=0) {
+				
+				out.append("<option " + checkAlreadyExist(selectedRoles, (int) item.get("id")) + "  value='"
+						+ item.get("role_name") + "'>" + item.get("role_name") + "</option>");
+			} else {
+				out.append("<option value='" + item.get("role_name") + "'>" + item.get("role_name") + "</option>");
+			}
+
+		}
+		out.append("");
+		return out;
+	}
+	
+	
+	
 }
 
 

@@ -166,11 +166,11 @@
 							
 							
 								<div class="col-lg-4">
-									<input type="hidden" value="STUDENT" id="user_type"
-										name="user_type" /> <label class="control-label">Select User Type</label> <select
-										class="form-control m-b userType">
-										<option value="STUDENT">Student</option>
-										<option value="TRAINER">Trainer</option>
+								<input type="hidden" id='user_type' value="" name="user_type"/>
+									<label class="control-label">Select User Type</label> <select
+										data-placeholder="User Type..." multiple tabindex="4" class="select2-dropdown multi_user_type" >
+										<%=new UIUtils().getAllRoles(null) %>
+										
 
 									</select>
 								</div>
@@ -197,11 +197,11 @@
 												will belong to:</label>
 											<div>
 												<select data-placeholder="Section..."
-													id="main_batch_group_holder" class="select2-dropdown"
-													multiple tabindex="4" name="batch_groups">
+													id="main_batch_group_holder" class="select2-dropdown multi_batch_groups"
+													multiple tabindex="4" >
 												</select>
 											</div>
-											<input type="hidden" value="" />
+											<input type="hidden" id='batch_groups' value="" name="batch_groups"/>
 										</div>
 									</div>
 								</div>
