@@ -17,6 +17,24 @@
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content" style=" padding: 4px!important;">
 				<div class="row">
+							<div class="col-xs-12">
+								<div class="page-title-box">
+                                    <h4 class="page-title">Account Management</h4>
+                                    <ol class="breadcrumb p-0 m-0">
+                                        <li>
+                                            <a href="#">Dashboard</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Account Management</a>
+                                        </li>
+                                      
+                                    </ol>
+                                    <div class="clearfix"></div>
+                                </div>
+							</div>
+						</div>
+						
+						<div class="row">
 					<!-- Start Table -->
 					<!-- End Table -->
 					<div class="col-lg-12">

@@ -22,16 +22,16 @@ ReportUtils util = new ReportUtils();
                 <div class="row">
 							<div class="col-xs-12">
 								<div class="page-title-box">
-                                    <h4 class="page-title">Datatable </h4>
+                                    <h4 class="page-title"><%=reportName %> </h4>
                                     <ol class="breadcrumb p-0 m-0">
                                         <li>
-                                            <a href="#">Zircos</a>
+                                            <a href="#">Dashboard</a>
                                         </li>
                                         <li>
-                                            <a href="#">Tables </a>
+                                            <a href="#">Custom Reports </a>
                                         </li>
                                         <li class="active">
-                                            Datatable
+                                            <%=reportName %>
                                         </li>
                                     </ol>
                                     <div class="clearfix"></div>
@@ -46,7 +46,7 @@ ReportUtils util = new ReportUtils();
 			<div class="col-lg-12">
 				
 				<div class="no-paddings bg-muted">
-						<div class="ibox-content">
+						<div class="ibox-content card-box margin-box ">
 						<%HashMap<String, String> conditions = new HashMap();
 						conditions.put("limit", "10");
 						conditions.put("offset", "0");
