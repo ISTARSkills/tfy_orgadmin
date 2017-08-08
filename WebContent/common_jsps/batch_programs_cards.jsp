@@ -5,8 +5,8 @@
 int collegeId = Integer.parseInt(request.getParameter("college_id"));
 DBUTILS util = new DBUTILS();
 %>
-<div class="row border-bottom white-bg ">
-	<div class="ibox no-margins no-padding bg-muted p-xs">
+<div class="row border-bottom white-bg " style="margin-left: -8px;margin-right: -3px;">
+	<div class="ibox no-margins no-padding bg-muted p-xs margin-box">
 		<div class="ibox-title">
 			<h2 class="text-center">PROGRAMS</h2>
 		</div>
@@ -75,9 +75,9 @@ DBUTILS util = new DBUTILS();
 		</div>
 	</div>
 </div>
-<div class="row border-bottom white-bg ">
+<div class="row border-bottom white-bg " style="margin-left: -8px;margin-right: -3px;">
 
-	<div class="ibox no-margins no-padding bg-muted p-xs">
+	<div class="ibox no-margins no-padding bg-muted p-xs  margin-box">
 		<div class="ibox-title">
 			<h2 class="text-center">BATCHES</h2>
 		</div>

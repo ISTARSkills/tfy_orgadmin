@@ -23,7 +23,7 @@
 				int colegeID = (int)request.getSession().getAttribute("orgId");
 			%>
 			<div class="row" style="padding:2px;">
-				<div class="col-lg-12">
+				<div class="col-lg-12 margin-box">
 				<div class="tabs-container">
                         <ul class="nav nav-tabs">
                           <!-- <li class="active"><a data-toggle="tab" href="#tab-ac" aria-expanded="true"> Academic Calendar</a></li> -->
