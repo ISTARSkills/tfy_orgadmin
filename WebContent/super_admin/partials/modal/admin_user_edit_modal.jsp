@@ -16,13 +16,20 @@
 			+ request.getContextPath() + "/";
 
 	int user_id = 2;
+	int colegeID = 0;
 	if (request.getParameter("user_id") != null) {
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 	}
 
 	IstarUser user = new IstarUserDAO().findById(user_id);
+	
+	try {
+		 colegeID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+	}catch(Exception e){
+		colegeID = 0;
+	}
 
-	int colegeID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
+	
 
 	ArrayList<Integer> userRoles = new ArrayList<Integer>();
 	try {
@@ -43,8 +50,14 @@
 	}
 	UserProfile stuProfileData = user.getUserProfile();
 	String lastName = "";
+	String firstName = "";
+	String userMobile = "";
+	String userGender = "";
 	if (stuProfileData != null) {
-		lastName = stuProfileData.getLastName();
+		lastName = stuProfileData.getLastName()!=null?stuProfileData.getLastName():"";
+		firstName = stuProfileData.getFirstName()!=null?stuProfileData.getFirstName():"";
+		userMobile = user.getMobile()!=null?(Long.toString(user.getMobile())):"";
+		userGender = stuProfileData.getGender()!=null?stuProfileData.getGender():"";
 	}
 	AdminUIServices ui = new AdminUIServices();
 	
@@ -77,7 +90,7 @@
 								<label class="control-label">First Name</label> <input
 									type="text" placeholder="First Name.." name="user_f_name"
 									class="form-control" required
-									value="<%=stuProfileData.getFirstName()%>">
+									value="<%=firstName%>">
 							</div>
 
 							<div class="col-lg-6">
@@ -92,7 +105,7 @@
 							<div class="col-lg-6">
 								<label class="control-label">Mobile No</label> <input
 									type="number" name="user_mobile" class="form-control"
-									value="<%=user.getMobile()%>" required
+									value="<%=userMobile%>" required
 									placeholder="Mobile Number">
 
 							</div>
@@ -109,12 +122,12 @@
 								<label class="control-label">Gender</label> <select
 									class="form-control m-b" name="user_gender">
 									<option value="MALE"
-										<%=stuProfileData.getGender() == "MALE" ? "selected" : ""%>>Male</option>
+										<%= userGender == "MALE" ? "selected" : ""%>>Male</option>
 									<option value="FEMALE"
-										<%=stuProfileData.getGender() == "FEMALE" ? "selected" : ""%>>Female</option>
+										<%= userGender == "FEMALE" ? "selected" : ""%>>Female</option>
 								</select>
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-4 multi_user_type_div">
 								<input type="hidden" id='user_type' value="" name="user_type" />
 								<label class="control-label">Select User Type</label> <select
 									data-placeholder="User Type..." multiple tabindex="4"
@@ -124,25 +137,19 @@
 
 								</select>
 							</div>
+							
+							<div class="col-lg-6">
+										<label class="control-label">Organization</label>
+										<div>
+											<select name="college_id" id="college_id" required
+												class="form-control m-b college_id">
+												<%=new AdminUIServices().getAllOrganizations(colegeID)%>
+											</select>
+										</div>
 
 						</div>
 						<div class="form-group">
-							<div class="col-lg-6">
-								<h3 class="m-b-n-md">Section</h3>
-								<hr class="m-b-xs">
-								<div class="col-lg-12">
-									<label class="font-noraml">Select Section the student
-										will belong to:</label>
-									<div>
-										<select data-placeholder="Section..." class="select2-dropdown"
-											multiple tabindex="4">
-											<%=ui.getBatchGroups(colegeID, selectedBG)%>
-										</select>
-									</div>
-									<input type="hidden" value="" name="batch_groups" />
-								</div>
-							</div>
-							<div class="col-lg-6">
+						<div class="col-lg-6" style='display:none'>
 								<h3 class="m-b-n-md">Role(only for corporate)</h3>
 								<hr class="m-b-xs">
 								<div class="col-lg-12">
@@ -158,6 +165,46 @@
 									</div>
 								</div>
 							</div>
+							
+							<div class="batch_group_holder">
+									<div id="hide_group_holder">
+										<div class="col-lg-6 multi_batch_groups_div">
+											<h3 class="m-b-n-md">Section</h3>
+											<hr class="m-b-xs">
+											<div class="col-lg-12">
+												<label class="font-noraml">Select Section the
+													student will belong to:</label>
+												<div>
+													<select data-placeholder="Section..."
+														id=""
+														class="select2-dropdown multi_batch_groups main_batch_group_holder" multiple
+														tabindex="4">
+														<%=ui.getBatchGroups(colegeID, selectedBG)%>
+													</select>
+												</div>
+												<input type="hidden" id='batch_groups' value=""
+													name="batch_groups" />
+											</div>
+										</div>
+									</div>
+								</div>
+							
+							<%-- <div class="col-lg-6 multi_batch_groups_div">
+								<h3 class="m-b-n-md">Section</h3>
+								<hr class="m-b-xs">
+								<div class="col-lg-12">
+									<label class="font-noraml">Select Section the student
+										will belong to:</label>
+									<div>
+										<select data-placeholder="Section..." class="select2-dropdown multi_batch_groups"
+											multiple tabindex="4">
+											<%=ui.getBatchGroups(colegeID, selectedBG)%>
+										</select>
+									</div>
+									<input type="hidden" value="" name="batch_groups" />
+								</div>
+							</div> --%>
+							
 
 
 						</div>
@@ -165,6 +212,7 @@
 							<div class="form-group">
 								<button type="submit" class="btn btn-danger">Save
 									changes</button>
+								<button type="button" class="btn btn-danger del_istar_user">Delete User</button>
 							</div>
 						</div>
 					</form>

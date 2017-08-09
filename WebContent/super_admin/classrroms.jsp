@@ -16,7 +16,7 @@
 			<% 
 			String[] brd = {"Dashboard"};
 			%>
-				<%=UIUtils.getPageHeader("Classromm(s)", brd) %>
+				<%=UIUtils.getPageHeader("Classroom(s)", brd) %>
 				<div class="row white-bg"
 					style="padding-left: 22px; padding-right: 22px;">
 					<button type="button" class="btn btn-w-m btn-danger" id="class-add"

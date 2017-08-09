@@ -123,7 +123,8 @@
 					 <span class="input-group-addon"> <span
 						class="fa fa-clock-o"></span>
 					</span>
-					<input class='customcss_singlescheduler' type="text"  name="startTime" class="time_element"/>
+					<!-- <input class='customcss_singlescheduler' type="text"  name="startTime" class="time_element"/> -->
+					<input type="text" style="width: 100%; height: 28px;" name="startTime" class="time_element"/>
 				</div> 
 				
 

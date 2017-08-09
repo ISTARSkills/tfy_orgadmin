@@ -61,14 +61,14 @@ public class EventUtilityController extends HttpServlet {
 			int org = request.getParameter("college_id") != "" ?Integer.parseInt(request.getParameter("college_id")):-3;
 			StringBuffer out = new StringBuffer();
 		
-			out.append("<div id='hide_group_holder'>");
+			out.append("<div class='hide_group_holder'>");
 			out.append("<div class='col-lg-6'>");
 			out.append("<h3 class='m-b-n-md'>Section</h3>");
 			out.append("<hr class='m-b-xs'>");
 			out.append("<div class='col-lg-12'>");
 			out.append("<label class='font-noraml'>Select Section the student will belong to:</label>");
 			out.append("<div>");
-			out.append("<select data-placeholder='Section...'id='main_batch_group_holder' class='select2-dropdown multi_batch_groups' multiple tabindex='4'>");
+			out.append("<select data-placeholder='Section...'id='main_batch_group_holder' class='select2-dropdown multi_batch_groups main_batch_group_holder' multiple tabindex='4'>");
 			out.append(uiUtils.getBatchGroups(org, null));
 			out.append("</select>");
 			out.append("</div>");

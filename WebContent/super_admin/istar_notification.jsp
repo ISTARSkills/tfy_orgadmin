@@ -183,7 +183,7 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 					<div class="row">
 
 						<div class="col-lg-6 white-bg">
-							<div class="ibox">
+							<div class="ibox customcss_iboxcontent">
 								<div class="ibox-content">
 									<div class="form-group">
 										<label>Title</label> <input type="text" id="title"

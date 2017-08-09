@@ -185,7 +185,7 @@
 
 .wizard > .content > .body input
 {
-    display: block;
+    /* display: block; */
     border: 1px solid #ccc;
 }
 

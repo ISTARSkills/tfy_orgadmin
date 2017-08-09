@@ -706,7 +706,7 @@ FROM
 	left join batch_group on (batch_students.batch_group_id = batch_group. ID)
 	left join batch on (batch_group. ID = batch.batch_group_id)
 	left join course on (batch.course_id = course. ID)
-	where  user_role.role_id in (select id from role where role_name in ('STUDENT','TRAINER'))
+	where  user_role.role_id in (select id from role where role_name != 'PRESENTOR')
 	GROUP BY
 		istar_user. ID,
 		user_profile.first_name,

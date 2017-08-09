@@ -3535,7 +3535,61 @@ function  create_program_view_datatable(flag) {
 
 
 function admin_edit_modal_create() {
+	
 	    $('.edit_modal').unbind().on('shown.bs.modal', function() {
+	    	
+	    	$('.college_id').on('change', function(){
+	    		
+	    		var college_id = $(this).val();
+	    		var url = '../event_utility_controller'
+	    		    $.post(url, {
+	    		    	college_id : college_id,
+	    		    	type : "userOrgfilter"
+	    		        },
+	    		        function(data) {
+
+	    		      $('.batch_group_holder').html(data);
+	    		      set_batchgroup_data();
+	    		      $('.main_batch_group_holder').select2();
+	    		     
+	    	
+	    		        });
+	    		
+	    		
+	    	});
+	    	
+	    	
+	    	$('.del_istar_user').click(function () {
+	    	    swal({
+	    	        title: "Are you sure?",
+	    	        text: "You will not be able to recover this User data!",
+	    	        type: "warning",
+	    	        showCancelButton: true,
+	    	        confirmButtonColor: "#DD6B55",
+	    	        confirmButtonText: "Yes, delete it!",
+	    	        closeOnConfirm: false
+	    	    },  function (isConfirm) {
+        	    	if(isConfirm){
+        	    		var user_id = $("input[name=user_id]").val();
+        	    		var url = '../createOrUpdateUser'
+        	    		    $.post(url, {
+        	    		    	key : 'delete',
+        	    		    	user_id : user_id
+        	    		        },
+        	    		        function(data) { });
+        	    		
+        	    		
+        	    		
+        	    		swal("Done", "Your User data has been deleted", "success");
+        	    		//location.reload();
+        	    		
+        	    	}else{
+        	    		swal("Cancelled", "Something went wrong!", "error");
+        	    	}
+        	    });
+	    	});
+	    	
+	    	
 	        var x = $('#' + $(this).attr('id'));
 	        setTimeout(function() {
 	                var sel = "";
@@ -3545,19 +3599,46 @@ function admin_edit_modal_create() {
 	                    });
 
 	                $("input[name='student_list']").val(sel.substring(0, sel.length - 1));
+	                var sel = "";
+	                
+	                x.find('.multi_batch_groups_div').find('select.select2-dropdown>option:selected').each(
+		                    function() {
+		                        sel += this.value +",";
+		                    });
+	                
 	                
 	                $("input[name='batch_groups']").val(sel.substring(0, sel.length - 1));
 	                
-	             //   $("input[name='user_type']").val(sel.substring(0, sel.length - 1));
+                     var sel = "";
+	                
+	                x.find('.multi_user_type_div').find('select.select2-dropdown>option:selected').each(
+		                    function() {
+		                        sel += this.value +",";
+		                    });
+	                
+	               $("input[name='user_type']").val(sel.substring(0, sel.length - 1));
 
 	               // $('select').select2();
 	                
 	                $('.select2-dropdown').on("change",function() {
 	                        var kk = $(this).val();
 	                        $("input[name='student_list']").val(kk);
-	                        $("input[name='batch_groups']").val(kk);
-	                      //  $("input[name='user_type']").val(kk);
-	                 });
+	                 
+	                    });
+	                
+	                
+	                $('.multi_batch_groups').on('change', function(){	            		
+	                	 var kk = $(this).val();
+	                	 $("input[name='batch_groups']").val(kk);
+	            		
+	            	});
+	                $('.multi_user_type').on('change', function(){	            		
+	                	 var kk = $(this).val();
+	                	 $("input[name='user_type']").val(kk);
+	            		
+	            	});
+	                
+	                
 	            }, 1000);
 
 	    });
@@ -4644,7 +4725,7 @@ function accountmanagment_card_init() {
 
 function set_batchgroup_data(){
 
-	$('#main_batch_group_holder').on('change', function(){
+	$('.main_batch_group_holder').on('change', function(){
 		var setOfBatchGroup = []
 		var batchGroup = $(this).val();
 		
@@ -4710,7 +4791,7 @@ function init_super_admin_usermgmt(){
 	set_batchgroup_data();
 	init_student_card();
 	
-$('#college_id').on('change', function(){
+$('.college_id').on('change', function(){
 		
 		var college_id = $(this).val();
 		var url = '../event_utility_controller'
@@ -4720,9 +4801,9 @@ $('#college_id').on('change', function(){
 		        },
 		        function(data) {
 
-		      $('#batch_group_holder').html(data);
+		      $('.batch_group_holder').html(data);
 		      set_batchgroup_data();
-		      $('#main_batch_group_holder').select2();
+		      $('.main_batch_group_holder').select2();
 		     
 	
 		        });
@@ -7050,6 +7131,34 @@ function formatRepoSelectionForCustom(repo) {
 	return repo.value;
 }
 
+function viewAttendanceFunction(){
+	
+	$('.view_attendance').unbind().on("click",function(){
+		
+		var eventId = $(this).attr('id');
+		
+		$.ajax({
+	        type: "POST",
+	        url: '../task_delete',
+	        data: {
+	        	key:'view_attendance',
+	        	eventId:eventId
+	        },
+	        success: function(result) {
+	          console.log(result);
+	        	$("#addendance_data_holder").empty();
+	        	$("#addendance_data_holder").append(result);
+	        	
+	        }
+	    });
+		
+	});
+	
+	
+	
+	
+}
+
 function init_custom_report(){
 	
 	$('select').select2();
@@ -7059,7 +7168,9 @@ function init_custom_report(){
 	
 	var report_id = $('.custom_card-box').attr('data-report_id');
 	var org_id = $('.custom_card-box').attr('data-org_id');
-	
+	if(report_id === '3074'){
+		viewAttendanceFunction();
+	}
 	var filterParam=[];   
 	$('.date_range_filter').each(function() 
 	{
@@ -7233,6 +7344,58 @@ function init_custom_report(){
 	
 	
 }
+function deleteTaskFunction(){
+	
+	
+	$(".delete_task_btn").click(function(){
+		    
+			var task_id = "";
+			var student_playlist_id =  "";
+			var start_date = "";
+			var end_date = "";
+			var course = "";
+			var entity_type = "";
+			var entity_id = "";
+			
+			var key = $(this).attr("data-task_delete");
+			if(key === 'task_delete'){
+				 task_id = $(this).attr("data-task");
+				 student_playlist_id =  $(this).attr("data-student_playlist_id");
+			}if(key === 'auto_scheduler_task_delete'){
+				
+				 start_date = $(this).attr("data-start_date");
+				 end_date = $(this).attr("data-end_date");
+				 course = $(this).attr("data-course");
+				 entity_type = $(this).attr("data-entity_type");
+				 entity_id = $(this).attr("data-entity_id");
+			}
+			
+			
+			
+			$.ajax({
+		        type: "POST",
+		        url: '../task_delete',
+		        data: {
+		        	key:key,
+		        	task_id:task_id,
+		        	student_playlist_id:student_playlist_id,
+		        	start_date:start_date,
+		        	end_date:end_date,
+		        	entity_type:entity_type,
+		        	entity_id:entity_id,
+		        	course:course
+		        },
+		        success: function(result) {
+		          
+		        	
+		        	location.reload();
+		        }
+		    });
+		          
+		  });
+		
+		
+	}
 function init_custom_task_report_superadmin(){
 	$('select').select2();
 	
@@ -7413,58 +7576,7 @@ function init_custom_task_report_superadmin(){
 		return parsedDate;
 	}
 
-	function deleteTaskFunction(){
-		
-		
-		$(".delete_task_btn").click(function(){
-			    
-				var task_id = "";
-				var student_playlist_id =  "";
-				var start_date = "";
-				var end_date = "";
-				var course = "";
-				var entity_type = "";
-				var entity_id = "";
-				
-				var key = $(this).attr("data-task_delete");
-				if(key === 'task_delete'){
-					 task_id = $(this).attr("data-task");
-					 student_playlist_id =  $(this).attr("data-student_playlist_id");
-				}if(key === 'auto_scheduler_task_delete'){
-					
-					 start_date = $(this).attr("data-start_date");
-					 end_date = $(this).attr("data-end_date");
-					 course = $(this).attr("data-course");
-					 entity_type = $(this).attr("data-entity_type");
-					 entity_id = $(this).attr("data-entity_id");
-				}
-				
-				
-				
-				$.ajax({
-			        type: "POST",
-			        url: '<%=baseURL%>task_delete',
-			        data: {
-			        	key:key,
-			        	task_id:task_id,
-			        	student_playlist_id:student_playlist_id,
-			        	start_date:start_date,
-			        	end_date:end_date,
-			        	entity_type:entity_type,
-			        	entity_id:entity_id,
-			        	course:course
-			        },
-			        success: function(result) {
-			          
-			        	
-			        	location.reload();
-			        }
-			    });
-			          
-			  });
-			
-			
-		}
+	
 	
 	 $('#chart_datatable_'+report_id).on( 'draw.dt', function () {
 		 

@@ -104,7 +104,14 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 				
 			}
 
-		} else {
+		} else if(request.getParameterMap().containsKey("key")){
+			
+			int user_id = Integer.parseInt(request.getParameter("user_id"));
+			System.err.println(">>>>>>>>>>>>>>>>>>>>>>>> "+user_id);
+			new OrgAdminUserService().deleteIstarUser(user_id);
+		}
+		
+		else {
 			System.out.println("Not Created");
 		}
 

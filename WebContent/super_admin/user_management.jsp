@@ -27,7 +27,7 @@
 				<%=UIUtils.getPageHeader("User Management", brd)%>
 				<div class="ibox">
 					<div class="col-lg-12 no-padding bg-muted">
-						<div class="col-lg-3  m-t-sm bg-muted p-xs bg-muted">
+						<div class="col-lg-3  customcss_p-xs bg-muted">
 							<div class='card-box'>
 								<button type="button" class="btn btn-w-m btn-danger m-t-md bg-muted"
 									data-toggle="modal" data-target="#create_user_model">Add User</button>
@@ -39,7 +39,7 @@
 									<div>
 										<select data-placeholder="Select Organizations" multiple
 											tabindex="4" id='admin_page_orgs'>
-											<%=adminUiServcies.getAllOrganizations()%>
+											<%=adminUiServcies.getAllOrganizations(0)%>
 										</select>
 									</div>
 									<br> <label class="font-bold">Course</label>
@@ -160,14 +160,14 @@
 										<div>
 											<select name="college_id" id="college_id" required
 												class="form-control m-b college_id">
-												<%=adminUiServcies.getAllOrganizations()%>
+												<%=adminUiServcies.getAllOrganizations(0)%>
 											</select>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<div id="batch_group_holder">
+								<div class="batch_group_holder">
 									<div id="hide_group_holder">
 										<div class="col-lg-6">
 											<h3 class="m-b-n-md">Section</h3>
@@ -178,7 +178,7 @@
 												<div>
 													<select data-placeholder="Section..."
 														id="main_batch_group_holder"
-														class="select2-dropdown multi_batch_groups" multiple
+														class="select2-dropdown multi_batch_groups main_batch_group_holder" multiple
 														tabindex="4">
 													</select>
 												</div>
