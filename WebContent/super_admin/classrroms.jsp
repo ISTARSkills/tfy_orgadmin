@@ -27,7 +27,7 @@
 
 				</div>
 
-				<div class="row" style="padding-left: 22px; padding-right: 22px;">
+				<div class="row card-box" id='classromm_holder' style="margin-left: 10px;    margin-right: 10px;">
 					<%
 						ReportUtils util = new ReportUtils();
 						HashMap<String, String> conditions = new HashMap();

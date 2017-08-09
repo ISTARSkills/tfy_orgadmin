@@ -68,7 +68,7 @@
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			<div class="wrapper wrapper-content white-bg">
-				<div class='row'>
+				<div class='row card-box'>
 					<div id='redirect_url' data-url='<%=baseURL%>super_admin/classrroms.jsp' style='display: none;'></div>
 					<form class="form-horizontal" action="../create_or_update_classroom" id="edit_class_model_form" method="post">
 						<input type="hidden" value="<%=class_id%>" name="class_id" />

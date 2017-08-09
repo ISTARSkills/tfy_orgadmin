@@ -17,7 +17,7 @@ ReportUtils util = new ReportUtils();
 				<div class="ibox-content">
 					<div id="wizard">
 						<h1>Select Organization</h1>
-						<div class="step-content" style="position: relative !important;">
+						<div class="step-content customcss_scheduler-postion">
 							<div class="row">
 								<div class="col-lg-3">
 									<div class="form-group ">
@@ -35,7 +35,7 @@ ReportUtils util = new ReportUtils();
 							</div>
 						</div>
 						<h1>Select Entity Type</h1>
-						<div class="step-content" style="position: relative !important;">
+						<div class="step-content customcss_scheduler-postion" >
 							<div class="row">
 								<div class="col-lg-3">
 									<div class="form-group ">
@@ -64,7 +64,7 @@ ReportUtils util = new ReportUtils();
 						</div>
 
 						<h1>Select Course</h1>
-						<div class="step-content" style="position: relative !important;">
+						<div class="step-content customcss_scheduler-postion">
 							<div class="text-center m-t-md">
 								<div class="row">
 									<div class="col-lg-12">										
@@ -77,7 +77,7 @@ ReportUtils util = new ReportUtils();
 							</div>
 						</div>
 						<h1>Edit Course</h1>
-						<div class="step-content" style="position: relative !important;">
+						<div class="step-content customcss_scheduler-postion">
 							<div class="row m-b-lg m-t-lg">
 								<div class="col-lg-4">
 									<div id="auto_scheduler_edit_course">

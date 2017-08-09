@@ -12,54 +12,49 @@ ReportUtils util = new ReportUtils();
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-            <div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;
-    padding-left: 20px;">
-    <% 
+			<div class="row wrapper border-bottom white-bg page-heading"
+				style="padding-bottom: 10px; padding-left: 20px;">
+				<% 
 			String[] brd = {"Dashboard","Custom Reports"};
 			%>
 				<%=UIUtils.getPageHeader(reportName, brd) %>
-               
-                <div class="col-lg-2">
 
-                </div>
-            </div><div class="row " style="    margin-left: 0px;
-    margin-right: 38px;">
+				<div class="col-lg-2"></div>
+			</div>
+			<div class="row " style="margin-left: 0px; margin-right: 38px;">
 
-			<div class="col-lg-12 card-box margin-box">
-				
-				<div class="no-paddings bg-muted">
-					<%--  <div class="ibox-title">
-                        <h5><%=reportName %></h5>
-                        
-                    </div> --%>
-					<div class="ibox-content">
-						<%HashMap<String, String> conditions = new HashMap();
+				<div class="col-lg-12 card-box margin-box">
+
+					<div class="no-paddings bg-muted">
+						
+						<div class="ibox-content">
+							<%HashMap<String, String> conditions = new HashMap();
 						conditions.put("limit", "12");
 						conditions.put("offset", "0");
 						conditions.put("org_id", orgId);
 						conditions.put("static_table", "true");	
 						
 						%>
-						
-						<%= util.getTableFilters(Integer.parseInt(reportId), conditions) %>
-						
-						
-						
-                           						
-						<%= util.getTableOuterHTML(Integer.parseInt(reportId), conditions) %>
-				<%%>
+
+							<%= util.getTableFilters(Integer.parseInt(reportId), conditions) %>
+
+
+
+
+							<%= util.getTableOuterHTML(Integer.parseInt(reportId), conditions) %>
+							<%%>
+						</div>
 					</div>
 				</div>
-				</div>
-				</div>
-				
-				
+			</div>
+
+
 		</div>
 	</div>
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-<!-- Mainly scripts -->
+	<!-- Mainly scripts -->
 </body>
- 
+
 <script>
 $(document).ready(function(){
 	

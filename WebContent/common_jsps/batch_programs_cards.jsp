@@ -5,14 +5,14 @@
 int collegeId = Integer.parseInt(request.getParameter("college_id"));
 DBUTILS util = new DBUTILS();
 %>
-<div class="row border-bottom white-bg " style="margin-left: -8px;margin-right: -3px;">
-	<div class="ibox no-margins no-padding bg-muted p-xs margin-box">
+<div class="row border-bottom white-bg customcss_batchcourse-card ">
+	<div class="ibox no-margins no-padding bg-muted p-xs margin-box customcss_batchcourse-innercard">
 		<div class="ibox-title">
 			<h2 class="text-center">PROGRAMS</h2>
 		</div>
-		<div class="ibox-content " style="overflow: auto;">
+		<div class="ibox-content customcss_content-display">
 
-			<div class="row " style="display: flex;">
+			<div class="row customcss_display">
 
 				<%
 				
@@ -37,7 +37,7 @@ DBUTILS util = new DBUTILS();
 				<a href='/common_jsps/actual_report_page.jsp?course_id=<%=courseId%>&headname=<%=courseName%>&college_id=<%=collegeId%>' class='btn-link '>
 					<div class='col-lg-3' id='program_info_1'>
 						<div class='panel panel-default product-box course-card-height'>
-							<div class='panel-heading custom-theme-panal-color font-bold' style="color: white;">
+							<div class='panel-heading custom-theme-panal-color font-bold customcss_plane'>
 								<%=courseName%>
 							</div>
 							<div class='panel-body'>
@@ -48,8 +48,8 @@ DBUTILS util = new DBUTILS();
 								</div>
 								<div class='row m-t-sm'>
 									<div class='col-lg-6'>Feedback</div>
-									<div class='col-lg-6 text-center' style='float: right;'>
-										<div class='course_rating' data-report='<%=avg_feedback%>' style='float: right;'>
+									<div class='col-lg-6 text-center arrow'>
+										<div class='course_rating arrow' data-report='<%=avg_feedback%>'>
 											<div class='rateYo<%=avg_feedback%>'></div>
 										</div>
 									</div>
@@ -58,7 +58,7 @@ DBUTILS util = new DBUTILS();
 									<div class='col-lg-6'>Student Enrolled</div>
 									<div class='col-lg-6 text-center'><%=studentEnrolled%></div>
 								</div>
-								<div class='progress progress-striped active m-t-sm'>
+								<div class='progress customsccc_progress progress-striped active m-t-sm'>
 									<div style='width: <%=completionPercentage%>%' aria-valuemax='100' aria-valuemin='0' aria-valuenow='<%=completionPercentage%>' role='progressbar' class='progress-bar progress-bar-danger'>
 										<span class='text-center'><%=completionPercentage%>%</span>
 									</div>
@@ -75,14 +75,14 @@ DBUTILS util = new DBUTILS();
 		</div>
 	</div>
 </div>
-<div class="row border-bottom white-bg " style="margin-left: -8px;margin-right: -3px;">
+<div class="row border-bottom white-bg customcss_batchcourse-card" >
 
-	<div class="ibox no-margins no-padding bg-muted p-xs  margin-box">
+	<div class="ibox no-margins no-padding bg-muted p-xs  margin-box customcss_batchcourse-innercard">
 		<div class="ibox-title">
 			<h2 class="text-center">BATCHES</h2>
 		</div>
-		<div class="ibox-content " style="overflow: auto;">
-			<div class="row " style="display: flex;">
+		<div class="ibox-content customcss_content-display">
+			<div class="row customcss_display">
 
 				<%
 				
@@ -100,7 +100,7 @@ DBUTILS util = new DBUTILS();
 				<a href='/common_jsps/actual_report_page.jsp?batch_id=<%=batchId%>&headname=<%=batchName%>&college_id=<%=collegeId%>' class='btn-link '>
 					<div class='col-lg-3' id='program_info_1'>
 						<div class='panel panel-default product-box course-card-height'>
-							<div class='panel-heading custom-theme-panal-color font-bold' style="color: white;">
+							<div class='panel-heading custom-theme-panal-color font-bold customcss_plane'>
 								<%=batchName%>
 							</div>
 							<div class='panel-body'>
@@ -111,8 +111,8 @@ DBUTILS util = new DBUTILS();
 								</div>
 								<div class='row m-t-sm'>
 									<div class='col-lg-6'>Feedback</div>
-									<div class='col-lg-6 text-center' style='float: right;'>
-										<div class='course_rating' data-report='<%=avg_feedback%>' style='float: right;'>
+									<div class='col-lg-6 text-center arrow'>
+										<div class='course_rating arrow' data-report='<%=avg_feedback%>'>
 											<div class='rateYo<%=avg_feedback%>'></div>
 										</div>
 									</div>
@@ -121,7 +121,7 @@ DBUTILS util = new DBUTILS();
 									<div class='col-lg-6'>Student Enrolled</div>
 									<div class='col-lg-6 text-center'><%=studentEnrolled%></div>
 								</div>
-								<div class='progress progress-striped active m-t-sm'>
+								<div class='progress customsccc_progress progress-striped active m-t-sm'>
 									<div style='width: <%=completionPercentage%>%' aria-valuemax='100' aria-valuemin='0' aria-valuenow='<%=completionPercentage%>' role='progressbar' class='progress-bar progress-bar-danger'>
 										<span class='text-center'><%=completionPercentage%>%</span>
 									</div>

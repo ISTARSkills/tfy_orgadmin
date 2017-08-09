@@ -119,15 +119,10 @@
 				<div class="input-group" data-autoclose="true">
 					 <span class="input-group-addon"> <span
 						class="fa fa-clock-o"></span>
-					</span><!-- <input type="text" style="width: 100%; height: 28px;" name="startTime" class="timepicker"/> -->
-					<input type="text" style="width: 100%; height: 28px;" name="startTime" class="time_element"/>
-				</div> 
-				<!-- <div class="input-group clockpicker" data-autoclose="true">
-					<input type="text" class="form-control time_holder" name="startTime"
-						value="09:30"> <span class="input-group-addon"> <span
-						class="fa fa-clock-o"></span>
 					</span>
-				</div> -->
+					<input class='customcss_singlescheduler' type="text"  name="startTime" class="time_element"/>
+				</div> 
+
 
 
 			</div>

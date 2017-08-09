@@ -61,7 +61,7 @@
 						</div>
 						<div class="col-lg-9">
 							
-							<div class="row">
+							<div class="row card-box">
 								<br>
 								<%
 									ReportUtils util = new ReportUtils();

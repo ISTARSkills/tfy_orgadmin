@@ -11,7 +11,7 @@ int colegeID = -3;
 
 UIUtils ui_Util = new UIUtils();
  %>
-<div class="row border-bottom white-bg report-padding ">
+<div class="row border-bottom white-bg">
 	<div class="ibox no-margins no-padding bg-muted p-xs">
 		<div class="ibox-content">
 
@@ -44,36 +44,8 @@ UIUtils ui_Util = new UIUtils();
 		</div>
 	</div>
 </div>
-<!-- <div class="row border-bottom white-bg report-padding">
-	<div class="ibox no-margins no-padding bg-muted p-xs">
 
-		<div class="ibox-content ">
-
-			<div class="row">
-
-				<div class="col-lg-11" id="container10">
-
-					<div class="spiner-example spinner-animation-holder_User"
-						id="program_spiner">
-						<div class="sk-spinner sk-spinner-three-bounce">
-							<div class="sk-bounce1"></div>
-							<div class="sk-bounce2"></div>
-							<div class="sk-bounce3"></div>
-						</div>
-					</div>
-				</div>
-
-
-				<table id="datatable10" style="display: none"></table>
-
-
-
-			</div>
-
-		</div>
-	</div>
-</div> -->
-<div class="row border-bottom white-bg report-padding">
+<div class="row border-bottom white-bg ">
 
 	<div class="ibox no-margins no-padding bg-muted p-xs">
 		<div class="ibox-title">
@@ -95,32 +67,7 @@ UIUtils ui_Util = new UIUtils();
 				<%=util.getTableOuterHTML(3047, conditions)%>
 			
 			
-			<%-- <%
-			List<HashMap<String, Object>> getTableData = ui_Util.getProgramTabTable();
 			
-			
-			
-			%>
-			 --%>
-			<!-- <div class="table-responsive">
-						<table
-							class="table table-bordered datatable_istar" id='account_details_list' data-url='../program_graphs?accountDetails=accountDetails'>
-                                <thead>
-                                <tr>
-                                    
-                                    <th>Account Name</th>
-                                    <th>Master</th>
-                                    <th>Wizard</th>
-                                    <th>Rooki</th>
-                                    <th>Apprentice</th>
-                                </tr>
-                                </thead>
-                        
-                            </table>
-			
-			
-			
-			</div> -->
 			</div>
 		</div>
 	</div>

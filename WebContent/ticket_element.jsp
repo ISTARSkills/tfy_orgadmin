@@ -32,7 +32,7 @@
 	 
 %>
 <div class="row">
-		<div class="ibox margin-box card-box" style="    margin-left: 27px !important;margin-right: 37px !important;margin-top: 10px !important;">
+		<div class="ibox ticket_margin-box card-box" >
 			<div class="ibox-title">
 				<h5>Ticket List</h5>
 				<div class="ibox-tools">

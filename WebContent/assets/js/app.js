@@ -4799,6 +4799,8 @@ function init_super_admin_scheduler(){
 			 var url = '../super_admin/scheduler.jsp?orgID='+ orgID+'&target='+target;
 											window.location.href = url;
 											
+											
+											
 	   });
 	   
 	   $('a[data-toggle="tab"]').on('shown.bs.tab', function () {
@@ -4873,7 +4875,7 @@ function init_super_admin_analytics() {
     $('.org_holder').change(function() {
         var orgID = this.value;
         accountsData(orgID);
-
+       
     });
 
    /* coursesData($('.org_holder_programTab').val());
@@ -4921,8 +4923,9 @@ function accountsData(orgID) {
         function(data) {
 
             $('#super_admin_batch_programs').html(data);
-            
+
             accountsUtils();
+            
         });
 }
 
