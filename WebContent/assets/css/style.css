@@ -13765,3 +13765,12 @@ color: white !important;     max-height: 60px !important; min-height: 60px !impo
     padding-right: 1px;
     padding-top: 5px;
 }
+.customcss_overflowy{
+	overflow-y:hidden;
+}
+.customcss_heading{
+	padding-bottom: 10px !important; padding-left: 20px !important;
+}
+.customcss_superadmin_report{
+	margin-left: 0px !important; margin-right: 27px !important;
+}
