@@ -3,6 +3,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,10 +17,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -34,6 +42,9 @@ import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Batch;
 import com.viksitpro.core.dao.entities.BatchDAO;
+import com.viksitpro.core.dao.entities.BatchGroup;
+import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.dao.entities.BatchStudents;
 import com.viksitpro.core.dao.entities.ClassroomDetails;
 import com.viksitpro.core.dao.entities.ClassroomDetailsDAO;
 import com.viksitpro.core.dao.entities.Course;
@@ -63,106 +74,538 @@ public class MayankFarziDataCreator {
 	/**
 	 * @param args
 	 */
+	
+	public static void main(String[] args) {
+		MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		mm.main();
+	}
+	
 	public  void main() {
 		// TODO Auto-generated method stub
-		/* String csvFile = "C:\\Users\\mayank\\Documents\\it.csv";
-	        BufferedReader br = null;
-	        String line = "";
-	        String cvsSplitBy = ",";
-	        int college_id = 0;
-	        try {
-                DBUTILS db = new DBUTILS();
-	            br = new BufferedReader(new FileReader(csvFile));
-	            while ((line = br.readLine()) != null) {
-	                String[] country = line.split(cvsSplitBy);
-	                String orgName = country[0];
-	                if(college_id==0){
-	                String sql = "INSERT INTO address ( id, addressline1, addressline2, pincode_id, address_geo_longitude, address_geo_latitude ) VALUES ( (SELECT COALESCE (MAX(ID) + 1, 1) FROM address ), 'Phase 2', 'Manyata Tech Park', 154819, '73.8834149', '18.4866277' )RETURNING ID;";
-	    			int addressId = db.executeUpdateReturn(sql);
-
-	    			sql = "INSERT INTO organization (id, name, org_type, address_id, industry, profile,created_at, updated_at, iscompany, max_student) VALUES "
-	    					+ "((select COALESCE(max(id),0)+1 from organization ), '"+orgName+"', 'COLLEGE', "+addressId+", 'EDUCATION', 'NA',  now(), now(), 'f',1000) RETURNING ID;";
-	    			college_id = db.executeUpdateReturn(sql);
-	    			String  adminEmail= country[1];
-	    			
-	    			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) "
-							+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+adminEmail+"', 'test123', 		now(), 		'9856321474', 		NULL,    'f' 	)RETURNING ID;";
-					
-					//System.out.println(istarStudentSql);
-					int userID  = db.executeUpdateReturn(istarStudentSql);
-						
-					String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), 'Abhinav', 'Singh', 'MALE', "+userID+");";
-					db.executeUpdate(insertIntoUserProfile);
-
-					//Student User Role Mapping
-						String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
-						//System.out.println(userRoleMappingSql);
-						db.executeUpdate(userRoleMappingSql);
-						String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 
-						db.executeUpdate(insertIntoOrgMapping);					
-	                }
-	                else
-	                {
-	                	String roleName = country[2];
-	                	String checkIfRoleExist ="select id from batch_group where name='"+roleName+"' and college_id="+college_id;
-	                	List<HashMap<String, Object>> existingRoleData = db.executeQuery(checkIfRoleExist);
-	                	int roleId =0;
-	                	if(existingRoleData.size()>0 && existingRoleData.get(0).get("id")!=null)
-	                	{
-	                		 roleId = (int)existingRoleData.get(0).get("id");
-	                	}
-	                	else
-	                	{
-	                		//createROle
-	                		String createRole ="INSERT INTO batch_group (id, created_at, name, updated_at, college_id, batch_code, assessment_id, bg_desc, year, parent_group_id, type, is_primary, is_historical_group, mode_type, start_date, enrolled_students)  "
-	                				+ "VALUES ((select COALESCE(max(id),0)+1 from batch_group), now(), '"+roleName+"', now(), "+college_id+", "+getRandomInteger(100000, 999999)+", '10195', '"+roleName+"', '2017', '1', 'ROLE', 't', 'f','BLENDED', '2017-06-12', 1000) returning id;";
-	                		roleId = db.executeUpdateReturn(createRole);	                			                		
-	                	}
-	                	
-	                	String sectionName = country[4];
-	                	String checkIFSEctionExist ="select id from batch_group where name='"+sectionName+"' and parent_group_id="+roleId;
-	                	List<HashMap<String, Object>> existingSectionData = db.executeQuery(checkIFSEctionExist);
-	                	int sectionId=0;
-	                	if(existingSectionData.size()>0 && existingSectionData.get(0).get("id")!=null)
-	                	{
-	                		sectionId = (int)existingSectionData.get(0).get("id");
-	                	}
-	                	else
-	                	{
-	                		String createSection ="INSERT INTO batch_group (id, created_at, name, updated_at, college_id, batch_code, assessment_id, bg_desc, year, parent_group_id, type, is_primary, is_historical_group, mode_type, start_date, enrolled_students)  "
-	                				+ "VALUES ((select COALESCE(max(id),0)+1 from batch_group), now(), '"+sectionName+"', now(), "+college_id+", "+getRandomInteger(100000, 999999)+", '10195', '"+sectionName+"', '2017', '1', 'SECTION', 'f', 'f','BLENDED', '2017-06-12', 1000) returning id;";
-	                		sectionId = db.executeUpdateReturn(createSection);	                		
-	                	}
-	                	
-	                }	
-	                
-	            }
-
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            if (br != null) {
-	                try {
-	                    br.close();
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                }
-	            }
-	        }*/
+		
 	    System.out.println("start");
+	    int assessmentId = 10478;
+	    int aPlusPercentage = 25;
+	    int APercentage =50;
+	    int BPlusPercentage = 20;
+	    int BPercenatge =5;
+	    ArrayList<Integer> students = new ArrayList<>();
+	    int arr[]={7015 ,7047 ,7031 ,7484 ,7471 ,7021 ,7482 ,7072 ,9298 ,7063 ,7022 ,7009 ,7081 ,7019 ,9306 ,7070 ,7473 ,7086 ,7041 ,7017 ,7057 ,7477 ,7067 ,7037 ,7020 ,7029 ,7475 ,7084 ,7036 ,7053 ,7033 ,7014 ,7085 ,7043 ,7049 ,7074 ,7065 ,7476 ,7087 ,7073 ,9302 ,7083 ,7011 ,7078 ,7080 ,7008 ,7039 ,9299 ,9301 ,7480 ,7055 ,7076 ,7481 ,7075 ,9304 ,7486 ,7079 ,7025 ,7061 ,9305 ,9307 ,7483 ,9300 ,7077 ,7051 ,7485 ,7082 ,7045 ,6985 ,7069 ,9303 ,7059 ,9308};
+	    for(int ii : arr)
+	    {
+	    	students.add(ii);
+	    }	
+	    testGradeSize(students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
+	    geiveFarziAssessment(assessmentId,students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
+	    
+	    
+	    //kuchto();
+	    
 		//addStudentInBGOFCollege(272);
 		//addStudentInBGOFCollege(273);
-		createEventsForGroup(273);
-	    cerateAssessmentFor(273);
-	    markEventAsCompleteInOrg(273);
+		//createEventsForGroup(273);
+	   // cerateAssessmentFor(273);
+	   // markEventAsCompleteInOrg(273);
 	   
 		//markEventAsCompleteInOrg(273);
 		System.out.println("end");
 		System.exit(0);
 		
 		
+	}
+
+	private void testGradeSize(ArrayList<Integer> students, int aPlusPercentage, int aPercentage, int bPlusPercentage,
+			int bPercenatge) {
+		int APlusSize =  (aPlusPercentage*students.size())/100; 
+		int ASize =  (aPercentage*students.size())/100; 
+		int BPlusSize =  (bPlusPercentage*students.size())/100; 
+		int BSize =  (bPercenatge*students.size())/100; 
+		
+		
+		ArrayList<Integer>studentsGettingAPlus = new ArrayList<>();
+		ArrayList<Integer>studentsGettingA = new ArrayList<>();
+		ArrayList<Integer>studentsGettingBPlus = new ArrayList<>();
+		ArrayList<Integer>studentsGettingB = new ArrayList<>();
+		for(Integer userId : students)
+		{
+			if(!studentsGettingAPlus.contains(userId) && studentsGettingAPlus.size()<=APlusSize)
+			{
+				studentsGettingAPlus.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingAPlus.contains(userId)&& !studentsGettingA.contains(userId) && studentsGettingA.size()<=ASize)
+			{
+				studentsGettingA.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingA.contains(userId) && !studentsGettingAPlus.contains(userId)&& !studentsGettingBPlus.contains(userId) && studentsGettingBPlus.size()<=BPlusSize)
+			{
+				studentsGettingBPlus.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingBPlus.contains(userId) && !studentsGettingA.contains(userId) && !studentsGettingAPlus.contains(userId)&& !studentsGettingB.contains(userId) && studentsGettingB.size()<=BSize)
+			{
+				studentsGettingB.add(userId);				
+			}				
+		}
+		
+		System.out.println(studentsGettingAPlus.size());
+		System.out.println(studentsGettingA.size());
+		System.out.println(studentsGettingBPlus.size());
+		System.out.println(studentsGettingB.size());
+		System.out.println(students.size());
+		
+	}
+
+	private void kuchto() {
+		/* String csvFile = "C:\\Users\\mayank\\Documents\\it.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        int college_id = 0;
+        try {
+            DBUTILS db = new DBUTILS();
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] country = line.split(cvsSplitBy);
+                String orgName = country[0];
+                if(college_id==0){
+                String sql = "INSERT INTO address ( id, addressline1, addressline2, pincode_id, address_geo_longitude, address_geo_latitude ) VALUES ( (SELECT COALESCE (MAX(ID) + 1, 1) FROM address ), 'Phase 2', 'Manyata Tech Park', 154819, '73.8834149', '18.4866277' )RETURNING ID;";
+    			int addressId = db.executeUpdateReturn(sql);
+
+    			sql = "INSERT INTO organization (id, name, org_type, address_id, industry, profile,created_at, updated_at, iscompany, max_student) VALUES "
+    					+ "((select COALESCE(max(id),0)+1 from organization ), '"+orgName+"', 'COLLEGE', "+addressId+", 'EDUCATION', 'NA',  now(), now(), 'f',1000) RETURNING ID;";
+    			college_id = db.executeUpdateReturn(sql);
+    			String  adminEmail= country[1];
+    			
+    			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) "
+						+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+adminEmail+"', 'test123', 		now(), 		'9856321474', 		NULL,    'f' 	)RETURNING ID;";
+				
+				//System.out.println(istarStudentSql);
+				int userID  = db.executeUpdateReturn(istarStudentSql);
+					
+				String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), 'Abhinav', 'Singh', 'MALE', "+userID+");";
+				db.executeUpdate(insertIntoUserProfile);
+
+				//Student User Role Mapping
+					String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
+					//System.out.println(userRoleMappingSql);
+					db.executeUpdate(userRoleMappingSql);
+					String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 
+					db.executeUpdate(insertIntoOrgMapping);					
+                }
+                else
+                {
+                	String roleName = country[2];
+                	String checkIfRoleExist ="select id from batch_group where name='"+roleName+"' and college_id="+college_id;
+                	List<HashMap<String, Object>> existingRoleData = db.executeQuery(checkIfRoleExist);
+                	int roleId =0;
+                	if(existingRoleData.size()>0 && existingRoleData.get(0).get("id")!=null)
+                	{
+                		 roleId = (int)existingRoleData.get(0).get("id");
+                	}
+                	else
+                	{
+                		//createROle
+                		String createRole ="INSERT INTO batch_group (id, created_at, name, updated_at, college_id, batch_code, assessment_id, bg_desc, year, parent_group_id, type, is_primary, is_historical_group, mode_type, start_date, enrolled_students)  "
+                				+ "VALUES ((select COALESCE(max(id),0)+1 from batch_group), now(), '"+roleName+"', now(), "+college_id+", "+getRandomInteger(100000, 999999)+", '10195', '"+roleName+"', '2017', '1', 'ROLE', 't', 'f','BLENDED', '2017-06-12', 1000) returning id;";
+                		roleId = db.executeUpdateReturn(createRole);	                			                		
+                	}
+                	
+                	String sectionName = country[4];
+                	String checkIFSEctionExist ="select id from batch_group where name='"+sectionName+"' and parent_group_id="+roleId;
+                	List<HashMap<String, Object>> existingSectionData = db.executeQuery(checkIFSEctionExist);
+                	int sectionId=0;
+                	if(existingSectionData.size()>0 && existingSectionData.get(0).get("id")!=null)
+                	{
+                		sectionId = (int)existingSectionData.get(0).get("id");
+                	}
+                	else
+                	{
+                		String createSection ="INSERT INTO batch_group (id, created_at, name, updated_at, college_id, batch_code, assessment_id, bg_desc, year, parent_group_id, type, is_primary, is_historical_group, mode_type, start_date, enrolled_students)  "
+                				+ "VALUES ((select COALESCE(max(id),0)+1 from batch_group), now(), '"+sectionName+"', now(), "+college_id+", "+getRandomInteger(100000, 999999)+", '10195', '"+sectionName+"', '2017', '1', 'SECTION', 'f', 'f','BLENDED', '2017-06-12', 1000) returning id;";
+                		sectionId = db.executeUpdateReturn(createSection);	                		
+                	}
+                	
+                }	
+                
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }*/
+		
+	}
+
+	public  Connection getConnection()
+	{
+		try{
+			
+			Class.forName("org.postgresql.Driver");
+			Connection connection = null;
+			connection = DriverManager.getConnection(
+			   "jdbc:postgresql://cdn.talentify.in:5432/talentify","postgres", "4a626021-e55a");
+			return connection;
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	private void geiveFarziAssessment(int assessmentId, ArrayList<Integer> students, int aPlusPercentage, int aPercentage, int bPlusPercentage, int bPercenatge) {
+		MayankFarziDataCreator mm= new MayankFarziDataCreator();
+		int APlusSize =  (aPlusPercentage*students.size())/100; 
+		int ASize =  (aPercentage*students.size())/100; 
+		int BPlusSize =  (bPlusPercentage*students.size())/100; 
+		int BSize =  (bPercenatge*students.size())/100; 
+		
+		
+		ArrayList<Integer>studentsGettingAPlus = new ArrayList<>();
+		ArrayList<Integer>studentsGettingA = new ArrayList<>();
+		ArrayList<Integer>studentsGettingBPlus = new ArrayList<>();
+		ArrayList<Integer>studentsGettingB = new ArrayList<>();
+		for(Integer userId : students)
+		{
+			if(!studentsGettingAPlus.contains(userId) && studentsGettingAPlus.size()<=APlusSize)
+			{
+				studentsGettingAPlus.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingAPlus.contains(userId)&& !studentsGettingA.contains(userId) && studentsGettingA.size()<=ASize)
+			{
+				studentsGettingA.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingA.contains(userId) && !studentsGettingAPlus.contains(userId)&& !studentsGettingBPlus.contains(userId) && studentsGettingBPlus.size()<=BPlusSize)
+			{
+				studentsGettingBPlus.add(userId);				
+			}				
+		}
+		for(Integer userId : students)
+		{
+			if(!studentsGettingBPlus.contains(userId) && !studentsGettingA.contains(userId) && !studentsGettingAPlus.contains(userId)&& !studentsGettingB.contains(userId) && studentsGettingB.size()<=BSize)
+			{
+				studentsGettingB.add(userId);				
+			}				
+		}
+		
+		
+		
+		giveFarziDataWithAPlus(studentsGettingAPlus, assessmentId);
+		giveFarziDataWithA(studentsGettingA, assessmentId);
+		giveFarziDataWithBPlus(studentsGettingBPlus, assessmentId);
+		giveFarziDataWithB(studentsGettingB, assessmentId);
+		
+	}
+
+	private void giveFarziDataWithB(ArrayList<Integer> studentsGettingB, int assessmentId) {
+		// TODO Auto-generated method stub
+System.out.println("giveFarziDataWithB");
+		MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		for(Integer userId : studentsGettingB){
+		Integer percentageRequired  = ThreadLocalRandom.current().nextInt(0, 40 + 1);
+		
+		String findAssessmentTasks = "select id from task where item_type='ASSESSMENT' and actor="+userId+" and item_id="+assessmentId+"";
+		System.out.println(findAssessmentTasks);
+		try {
+			Statement statement3 = mm.getConnection().createStatement();				
+			ResultSet rs3 = statement3.executeQuery(findAssessmentTasks);
+			while(rs3.next())
+			{
+				
+				int taskId = (int)rs3.getInt("id");
+				RestClient client = new  RestClient();
+
+				AssessmentPOJO assessment = client.getAssessment(assessmentId, userId);
+				int questionsToAttend = (percentageRequired * assessment.getQuestions().size())/100;
+				System.out.println("percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
+				ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
+				int quePointer =0;
+				for(QuestionPOJO que : assessment.getQuestions())
+				{
+					if(quePointer<=questionsToAttend){
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						ArrayList<Integer>answers = (ArrayList<Integer>)que.getAnswers();
+						for(OptionPOJO op :que.getOptions())
+						{
+							if(answers.contains(op.getId()))
+							{	
+							options.add(op.getId());
+							}
+						}
+						queResponse.setOptions(options);
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					else
+					{
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						queResponse.setOptions(options);				
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					quePointer++;
+				}
+				
+				
+				try {
+					client.SubmitAssessment(taskId,userId, asses_response, assessmentId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		System.out.println("giveFarziDataWithB");
+	}
+
+	private void giveFarziDataWithBPlus(ArrayList<Integer> studentsGettingBPlus, int assessmentId) {
+		// TODO Auto-generated method stub
+		System.out.println("giveFarziDataWithBPlus");
+		MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		for(Integer userId : studentsGettingBPlus){
+		Integer percentageRequired  = ThreadLocalRandom.current().nextInt(41, 60 + 1);
+		
+		String findAssessmentTasks = "select id from task where item_type='ASSESSMENT' and actor="+userId+" and item_id="+assessmentId+"";
+		System.out.println(findAssessmentTasks);
+		try {
+			Statement statement3 = mm.getConnection().createStatement();				
+			ResultSet rs3 = statement3.executeQuery(findAssessmentTasks);
+			while(rs3.next())
+			{
+				
+				int taskId = (int)rs3.getInt("id");
+				RestClient client = new  RestClient();
+
+				AssessmentPOJO assessment = client.getAssessment(assessmentId, userId);
+				int questionsToAttend = (percentageRequired * assessment.getQuestions().size())/100;
+				System.out.println("percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
+				ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
+				int quePointer =0;
+				for(QuestionPOJO que : assessment.getQuestions())
+				{
+					if(quePointer<=questionsToAttend){
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						ArrayList<Integer>answers = (ArrayList<Integer>)que.getAnswers();
+						for(OptionPOJO op :que.getOptions())
+						{
+							if(answers.contains(op.getId()))
+							{	
+							options.add(op.getId());
+							}
+						}
+						queResponse.setOptions(options);
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					else
+					{
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						queResponse.setOptions(options);				
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					quePointer++;
+				}
+				
+				
+				try {
+					client.SubmitAssessment(taskId,userId, asses_response, assessmentId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		System.out.println("giveFarziDataWithBPlus");
+	}
+
+	private void giveFarziDataWithA(ArrayList<Integer> studentsGettingA, int assessmentId) {
+		// TODO Auto-generated method stub
+		System.out.println("giveFarziDataWithA");
+		MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		for(Integer userId : studentsGettingA){
+		Integer percentageRequired  = ThreadLocalRandom.current().nextInt(61, 75 + 1);
+		
+		String findAssessmentTasks = "select id from task where item_type='ASSESSMENT' and actor="+userId+" and item_id="+assessmentId+"";
+		System.out.println(findAssessmentTasks);
+		try {
+			Statement statement3 = mm.getConnection().createStatement();				
+			ResultSet rs3 = statement3.executeQuery(findAssessmentTasks);
+			while(rs3.next())
+			{
+				
+				int taskId = (int)rs3.getInt("id");
+				RestClient client = new  RestClient();
+
+				AssessmentPOJO assessment = client.getAssessment(assessmentId, userId);
+				int questionsToAttend = (percentageRequired * assessment.getQuestions().size())/100;
+				System.out.println("percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
+				ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
+				int quePointer =0;
+				for(QuestionPOJO que : assessment.getQuestions())
+				{
+					if(quePointer<=questionsToAttend){
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						ArrayList<Integer>answers = (ArrayList<Integer>)que.getAnswers();
+						for(OptionPOJO op :que.getOptions())
+						{
+							if(answers.contains(op.getId()))
+							{	
+							options.add(op.getId());
+							}
+						}
+						queResponse.setOptions(options);
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					else
+					{
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						queResponse.setOptions(options);				
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					quePointer++;
+				}
+				
+				
+				try {
+					client.SubmitAssessment(taskId,userId, asses_response, assessmentId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		System.out.println("giveFarziDataWithA ends ");
+	}
+
+	private void giveFarziDataWithAPlus(ArrayList<Integer> studentsGettingAPlus, int assessmentId) {
+		System.out.println("giveFarziDataWithAPlus");
+		MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		for(Integer userId : studentsGettingAPlus){
+		Integer percentageRequired  = ThreadLocalRandom.current().nextInt(76, 100 + 1);
+		
+		String findAssessmentTasks = "select id from task where item_type='ASSESSMENT' and actor="+userId+" and item_id="+assessmentId+"";
+		System.out.println(findAssessmentTasks);
+		try {
+			Statement statement3 = mm.getConnection().createStatement();				
+			ResultSet rs3 = statement3.executeQuery(findAssessmentTasks);
+			while(rs3.next())
+			{
+				
+				int taskId = (int)rs3.getInt("id");
+				RestClient client = new  RestClient();
+
+				AssessmentPOJO assessment = client.getAssessment(assessmentId, userId);
+				int questionsToAttend = (percentageRequired * assessment.getQuestions().size())/100;
+				System.out.println("percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
+				ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
+				int quePointer =0;
+				for(QuestionPOJO que : assessment.getQuestions())
+				{
+					if(quePointer<=questionsToAttend){
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						ArrayList<Integer>answers = (ArrayList<Integer>)que.getAnswers();
+						for(OptionPOJO op :que.getOptions())
+						{
+							if(answers.contains(op.getId()))
+							{	
+							options.add(op.getId());
+							}
+						}
+						queResponse.setOptions(options);
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					else
+					{
+						QuestionResponsePOJO queResponse = new QuestionResponsePOJO();
+						queResponse.setQuestionId(que.getId());	
+						
+						ArrayList<Integer>options = new ArrayList<>();
+						queResponse.setOptions(options);				
+						queResponse.setDuration(2);				
+						asses_response.add(queResponse);
+					}
+					quePointer++;
+				}
+				
+				
+				try {
+					client.SubmitAssessment(taskId,userId, asses_response, assessmentId);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+		
+		System.out.println("giveFarziDataWithAPlus ends");
 	}
 
 	private void cerateAssessmentFor(int i) {
