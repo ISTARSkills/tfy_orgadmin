@@ -116,7 +116,7 @@ AND user_role.role_id in (
 	FROM
 		ROLE
 	WHERE
-		role_name in ( 'STUDENT','TRAINER','MASTER_TRAINER')
+		role_name not in ( 'PRESENTOR')
 )</sql>
 </custom_report>
 <custom_report id="7">
@@ -124,13 +124,13 @@ AND user_role.role_id in (
 where istar_user.id = batch_students.student_id
 and batch_students.batch_group_id in ( :batch_group_ids)
 and batch_students.student_id = user_role.user_id
-and user_role.role_id in (select id from role where role_name in ( 'STUDENT','TRAINER','MASTER_TRAINER'))</sql>
+and user_role.role_id in (select id from role where role_name not in ( 'PRESENTOR'))</sql>
 </custom_report>
 <custom_report id="8"><sql>
 select DISTINCT istar_user.id, istar_user.email from batch_students, istar_user, user_role
 where batch_students.student_id = istar_user.id
 and user_role.user_id = batch_students.student_id 
-and user_role.role_id in (select id from role where role_name in ( 'STUDENT','TRAINER','MASTER_TRAINER'))
+and user_role.role_id in (select id from role where role_name not in ( 'PRESENTOR'))
 and batch_students.batch_group_id = :batch_group_id
 
 </sql></custom_report>
