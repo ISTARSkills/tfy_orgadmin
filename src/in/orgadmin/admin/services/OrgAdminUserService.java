@@ -231,10 +231,10 @@ public class OrgAdminUserService {
 				+ "delete from istar_user where id ="+presenter_id;
 				
 			}else {
-				 sql = "select email from istar_user where trainer_id =" + userId;
+				 sql = "select email from istar_user where id =" + userId;
 				 List<HashMap<String, Object>> presentor = db.executeQuery(sql);
 				 if(presentor.size()!=0) { 
-					     String[] presenterEmailaddress = isexist_trainer_presentor.get(0).get("email").toString().split("@");
+					     String[] presenterEmailaddress = presentor.get(0).get("email").toString().split("@");
 						 String presenterEmail = presenterEmailaddress[0] + "_presenter@" + presenterEmailaddress[1];
 						 presentor_sql = "delete from istar_user where email ="+presenterEmail;
 						
