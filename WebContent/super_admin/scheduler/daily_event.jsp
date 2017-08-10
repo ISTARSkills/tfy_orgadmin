@@ -82,20 +82,10 @@
 					<option value="session">Session</option>
 					<option value="webinar">Webinar (TOT)</option>
 					<option value="remote_class">Remote Class</option>
-					<!-- <option value="assessment">Assessment</option> -->
 
 				</select>
 			</div>
-			<!-- <div class="assessment_list" id="assessment_list"
-				style="display: none;">
-				<div class="form-group">
-					<label>Select Assessment</label> <select
-						class="form-control m-b assessment scheduler_select" name="assessmentID">
-						<option value="null">Select Assessment</option>
-
-					</select>
-				</div>
-			</div> -->
+			
 
 			<div class="form-group">
 				<label>Select Class-Room</label> <select class="form-control m-b scheduler_select"
@@ -105,20 +95,7 @@
 
 				</select>
 			</div>
-			<!-- <div class="form-group" id="data_2">
-				<label class="font-bold">Start Event Date</label>
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
-						type="text" name="startEventDate" class="form-control date_holder"
-						value="03/03/2017">
-				</div>
-				<label class="font-bold">End Event Date</label>
-				<div class="input-group date">
-					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input
-						type="text" name="endEventDate" class="form-control date_holder"
-						value="03/03/2017">
-				</div>
-			</div> -->
+			
 			 <div class="form-group" id="data_5">
                                 <label class="font-bold">Event Date Range</label>
                                 <div class="input-daterange input-group" id="datepicker">
@@ -133,15 +110,11 @@
 				<div class="input-group" data-autoclose="true">
 					 <span class="input-group-addon"> <span
 						class="fa fa-clock-o"></span>
-					</span><!-- <input type="text" style="width: 100%; height: 28px;" name="startTime" class="timepicker"/> -->
+					</span>
+					<!-- <input class='customcss_singlescheduler' type="text"  name="startTime" class="time_element"/> -->
 					<input type="text" style="width: 100%; height: 28px;" name="startTime" class="time_element"/>
 				</div> 
-				<!-- <div class="input-group clockpicker" data-autoclose="true">
-					<input type="text" class="form-control time_holder" name="startTime"
-						value="09:30"> <span class="input-group-addon"> <span
-						class="fa fa-clock-o"></span>
-					</span>
-				</div> -->
+				
 
 			</div>
 			<div class="form-group form-inline">

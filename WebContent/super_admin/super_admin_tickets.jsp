@@ -1,4 +1,5 @@
 
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -14,6 +15,12 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
+			
+			<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Ticket", brd) %>
+			
 			<jsp:include page="../ticket_element.jsp"></jsp:include>
 		</div>
 		<jsp:include page="../chat_element.jsp"></jsp:include>

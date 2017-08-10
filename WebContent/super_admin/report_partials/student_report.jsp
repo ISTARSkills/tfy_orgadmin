@@ -19,18 +19,30 @@
 %>
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="super_admin_report">
-	<div id="wrapper">
+	<div id="wrapper customcss_overflowy">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			
-<div class="row">
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="page-title-box">
+						<h4 class="page-title">Student Report</h4>
+						<ol class="breadcrumb p-0 m-0">
+							<li><a href="#">Dashboard</a></li>
+							<li><a href="#">Student Report</a></li>
+
+						</ol>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+<div class="row m-l-none  m-r-none bg-muted">
 
 	<!-- tab start -->
 
 	<div
 		class="ibox p-xs  b-r-lg border-left-right border-top-bottom border-size-sm gray-bg-admin">
-		<div class="tabs-container">
-			<ul class="nav nav-tabs gray-bg">
+		<div class="">
+			 <ul class="nav nav-tabs tabs-bordered nav-justified">
 				<li class="active col-lg-2 text-center no-padding bg-muted"><a
 					data-toggle="tab" id="tab_6" href="#tab6">Section Report</a></li>
 
@@ -42,13 +54,13 @@
 
 			<div class="tab-content">
 				<div id="tab6" class="active tab-pane ops-tab div-min-height">
-					<div class="panel-body">
+					<div class="panel-body no-padding bg-muted">
 						 <jsp:include page="../ops_report1.jsp" /> 
 					</div>
 				</div>
 
 				<div id="tab7" class=" tab-pane ops-tab div-min-height">
-					<div class="panel-body">
+					<div class="panel-body no-padding bg-muted" >
 						 <jsp:include page="../ops_report_2.jsp" /> 
 					</div>
 				</div>

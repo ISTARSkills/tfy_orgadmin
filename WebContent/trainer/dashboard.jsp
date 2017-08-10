@@ -88,7 +88,7 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <%
  SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+boolean flag = false;
 	String url = request.getRequestURL().toString();
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
@@ -96,15 +96,20 @@
 	IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
 	ComplexObject cp = rc.getComplexObject(user.getId());
+	if(cp == null){
+		flag =true;
+		request.setAttribute("msg", "User Does Not Have Permission To Access");
+		request.getRequestDispatcher("/login.jsp").forward(request, response);
+	}
 	request.setAttribute("cp", cp);
-	boolean flag = false;
+	
 %>
 <body class="top-navigation">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp" />
 			<div class="wrapper wrapper-content animated fadeInRight" style="padding: 10px;">
-
+<%if(!flag){ %>
 				<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
 				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
 				<% 
@@ -121,7 +126,7 @@
 			%>
 				<%=(new TaskCardFactory()).showcard(task).toString() %>
 
-				<% }}} %>
+				<% }}}} %>
 			</div>
 		</div>
 	</div>

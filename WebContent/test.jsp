@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<%@page import="com.viksitpro.core.skill.pojo.LearningObjective"%>
+<%@page import="com.viksitpro.core.skill.pojo.SessionLevelSkill"%>
+<%@page import="com.viksitpro.core.skill.pojo.ModuleLevelSkill"%>
+<%@page import="com.viksitpro.core.dao.entities.Lesson"%>
+<%@page import="com.viksitpro.core.dao.entities.Cmsession"%>
+<%@page import="com.viksitpro.core.dao.entities.Module"%>
+<%@page import="com.viksitpro.core.dao.entities.Course"%>
+<%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
+<%@page import="com.viksitpro.core.skill.pojo.CourseLevelSkill"%>
+<%@page import="com.viksitpro.core.skill.services.SkillService"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -36,20 +46,15 @@
 </head>
 
 
-
-<body class="top-navigation" id="orgadmin_dashboard">
+<%
+int course_id = Integer.parseInt(request.getParameter("course_id"));
+Course c= new CourseDAO().findById(course_id);
+%>
+<body class="top-navigation" >
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
-
-
-
-			<div class="row border-bottom white-bg">
-
-
-
-
-
-				<nav class="navbar navbar-static-top" role="navigation">
+<div class="row border-bottom white-bg">
+<nav class="navbar navbar-static-top" role="navigation">
 					<div class="navbar-header">
 						<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
 							<i class="fa fa-reorder"></i>
@@ -64,18 +69,7 @@
 
 
 
-							<li><a id="Requirement" href="/coordinator/requirement.jsp">Requirement</a></li>
-
-
-
-
-							<li><a id="TrianerWiseDetails" href="/coordinator/trainer_wise_details.jsp">Trianer Wise Details</a></li>
-
-
-
-
-							<li><a id="ClusterandCourseWiseDetails" href="/coordinator/course_city_wise_details.jsp">Cluster and Course Wise Details</a></li>
-
+							
 
 
 
@@ -107,164 +101,146 @@
 			<!-- End Table -->
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="row">
-					<div class='col-md-4'>
-						<div class="widget-head-color-box navy-bg p-lg text-center">
-                            <div class="m-b-md">
-                            <h2 class="font-bold no-margins">
-                                ppppp
-                            </h2>
-                                <small>datto@istarindia.com</small>
-                            </div>
-                            <img src="img/a4.jpg" class="img-circle circle-border m-b-md" alt="profile">
-                            <div>
-                                <span>1234567890</span> 
-                              
-                            </div>
+					<div class="col-md-4">
+                    <div id="nestable-menu">
+                        <button type="button" data-action="expand-all" class="btn btn-white btn-sm">Expand All</button>
+                        <button type="button" data-action="collapse-all" class="btn btn-white btn-sm">Collapse All</button>
+                    </div>
+                    </div>
+                  </div>  
+                    <div class="row">
+                    <div class="col-lg-6">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Delivery Tree</h5>
                         </div>
-						
-						<div class='product-box '>
-							<div class='ibox' style='height: 100%;'>
-								<div class='ibox-content ' style='height: 100%; min-height: 500px'>
-									<h3>Trainer Name : ppppp</h3>
-									<ul class='list-group clear-list m-t'>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Email</b>
-												</div>
-												<div class='col-md-8	 no-padding'>datto@istarindia.com</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Mobile</b>
-												</div>
-												<div class='col-md-8	 no-padding'>1234567890</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Gender</b>
-												</div>
-												<div class='col-md-8	 no-padding'>MALE</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>UG Degree</b>
-												</div>
-												<div class='col-md-8	 no-padding'>BCOM</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>PG Degree</b>
-												</div>
-												<div class='col-md-8	 no-padding'>MA</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Experience</b>
-												</div>
-												<div class='col-md-8	 no-padding'>2 years 3 months</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Interested Courses</b>
-												</div>
-												<div class='col-md-8	 no-padding'>Business Communication, Data Analytics, Direct Tax Theory, Retail Banking, Wealth management Level II</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-8 no-padding'>
-													<h3>Available Days and Time Slots</h3>
-												</div>
-												<div class='col-md-3	 no-padding'></div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Tuesday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>10am - 11am</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Wednesday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>8am - 6pm</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Friday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>10am - 12pm</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Thrusday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>10am - 12pm</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Monday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>10am - 11am, 12pm - 1pm, 2pm - 3pm, 4pm - 5pm</div>
-											</div>
-										</li>
-										<li class='list-group-item' style='margin-left: -16px; margin-right: -13px;'>
-											<div class='row'>
-												<div class='col-md-1  no-padding'></div>
-												<div class='col-md-3 no-padding'>
-													<b>Saturday</b>
-												</div>
-												<div class='col-md-8	 no-padding'>10am - 11am</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="ibox-content">
+
+                            
+
+                            <div class="dd">
+                                <ol class="dd-list">
+                                    
+                                    <li class="dd-item" data-id="2">
+                                        <div class="dd-handle" style="    color: RED !important;"><%=c.getCourseName()%></div>
+                                        <ol class="dd-list">
+                                            <%
+                                            for(Module m : c.getModules()){
+                                            %>
+                                            <li class="dd-item" data-id="course_<%=c.getId()%>_module<%=m.getId()%>">
+                                                <div class="dd-handle" style="    color: BLUE !important;"><%=m.getModuleName() %></div>
+                                                <ol class="dd-list">
+                                                <% for(Cmsession cms : m.getCmsessions())
+                                                {
+                                                	%>
+                                                  <li class="dd-item" data-id="course_<%=c.getId()%>_module<%=m.getId()%>_cms<%=cms.getId()%>">
+                                                <div class="dd-handle" style="    color: GREEN !important;"><%=cms.getTitle() %></div>
+                                                <%
+                                                for(Lesson l : cms.getLessons())
+                                                {
+                                                	%>
+                                                	 <ol class="dd-list">
+                                                	 <li class="dd-item" data-id="course_<%=c.getId()%>_module<%=m.getId()%>_cms<%=cms.getId()%>_lesson<%=l.getId()%>">
+                                                	 <div class="dd-handle"><%=l.getTitle() %></div>
+                                                 </ol>
+                                                	<%
+                                                }	
+                                                %>
+                                                
+                                                </li>
+                                                	<% 
+                                                }	
+                                                %>
+                                                </ol>
+                                            </li>
+                                            <%
+                                            }
+                                            %>
+                                        </ol>
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                </div>
+                <%
+                SkillService  s = new  SkillService();
+                CourseLevelSkill skillTree = s.getCourseSkillTree(c.getId());
+                
+                %>
+                <div class="col-lg-6">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Skill Tree</h5>
+                        </div>
+                        <div class="ibox-content">
+
+                           
+                            <div class="dd">
+                                <ol class="dd-list">
+                                    
+                                    <li class="dd-item" data-id="course_skill<%=skillTree.getId()%>">
+                                        <div class="dd-handle" style="    color: RED !important;"><%=c.getCourseName()%></div>
+                                         <ol class="dd-list">
+                                            <%
+                                            for(ModuleLevelSkill m : skillTree.getModuleLevelSkill()){
+                                            	String modules = "";
+                                            	for(Module mo : m.getModules())
+                                            	{
+                                            		modules += mo.getModuleName()+", ";
+                                            	}	
+                                            %>
+                                            <li class="dd-item" data-id="course_<%=skillTree.getId()%>_module<%=m.getId()%>">
+                                                <div class="dd-handle" style="    color: BLUE !important;"><%=m.getSkillName()%> (<%=m.getCreationType().charAt(0) %>)&nbsp; [<%=modules %>]</div>
+                                                 <ol class="dd-list">
+                                                <% for(SessionLevelSkill cms : m.getSessionLevelSkill())
+                                                {
+                                                	%>
+                                                  <li class="dd-item" data-id="course_<%=c.getId()%>_module<%=m.getId()%>_cms<%=cms.getId()%>">
+                                                <div class="dd-handle" style="    color: GREEN !important;"><%=cms.getSkillName() %> (<%=cms.getCreationType().charAt(0)%>)</div>
+                                                <%
+                                                for(LearningObjective l : cms.getLearningObjectives())
+                                                {
+                                                	%>
+                                                	 <ol class="dd-list">
+                                                	 <li class="dd-item" data-id="course_<%=c.getId()%>_module<%=m.getId()%>_cms<%=cms.getId()%>_lesson<%=l.getId()%>">
+                                                	 <div class="dd-handle"><%=l.getLearningObjectiveName()%></div>
+                                                 </ol>
+                                                	<%
+                                                }	
+                                                %>
+                                                
+                                                </li>
+                                                	<% 
+                                                }	
+                                                %>
+                                                </ol>
+                                            </li>
+                                            <%
+                                            }
+                                            %>
+                                        </ol> 
+                                    </li>
+                                    
+                                </ol>
+                            </div>
+                            
 
 
+                        </div>
 
+                    </div>
+                </div>
+                    </div>
+                </div>
+				
 				</div>
+				
 			</div>
-		</div>
-	</div>
+
 
 
 
@@ -293,8 +269,33 @@
 	<!-- Clock picker -->
 	<script src="http://localhost:8080/assets/js/plugins/clockpicker/clockpicker.js"></script>
 	<script src="http://localhost:8080/assets/js/plugins/select2/select2.full.min.js"></script>
-
+	 <script src="http://localhost:8080/assets/js/plugins/nestable/jquery.nestable.js"></script>
+	
 	<script src="http://localhost:8080/assets/js/app.js"></script>
+	<script>
+         $(document).ready(function(){
+
+            
+        	 $('.dd').nestable('collapseAll');
+
+
+             // output initial serialised data
+            
+
+             $('#nestable-menu').on('click', function (e) {
+                 var target = $(e.target),
+                         action = target.data('action');
+                 if (action === 'expand-all') {
+                     $('.dd').nestable('expandAll');
+                 }
+                 if (action === 'collapse-all') {
+                     $('.dd').nestable('collapseAll');
+                 }
+             });
+         });
+    </script>
+
+	
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

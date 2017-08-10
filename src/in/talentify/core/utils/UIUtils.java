@@ -804,6 +804,51 @@ public class UIUtils {
 		return returnData;
 		
 	}
+	
+	public StringBuffer getAllRoles(ArrayList<Integer> selectedRoles) {
+		String sql = "SELECT id,role_name FROM role WHERE role_name != 'PRESENTOR'";
+
+		// //System.err.println(sql);
+		DBUTILS db = new DBUTILS();
+		List<HashMap<String, Object>> data = db.executeQuery(sql);
+		StringBuffer out = new StringBuffer();
+
+		for (HashMap<String, Object> item : data) {
+
+			if (selectedRoles != null && selectedRoles.size()!=0) {
+				
+				out.append("<option " + checkAlreadyExist(selectedRoles, (int) item.get("id")) + "  value='"
+						+ item.get("role_name") + "'>" + item.get("role_name") + "</option>");
+			} else {
+				out.append("<option value='" + item.get("role_name") + "'>" + item.get("role_name") + "</option>");
+			}
+
+		}
+		out.append("");
+		return out;
+	}
+	
+	public static StringBuffer getPageHeader(String headerName, String[] breadCrums ) {
+		StringBuffer out = new StringBuffer();
+		out.append("<div class='row'>");
+		out.append("<div class='col-xs-12'>");
+		out.append("<div class='page-title-box'>");
+		out.append("<div class='row'>");
+		out.append("<div class='col-md-7'>");
+		out.append("<h4 class='page-title customcss_page-title'>"+headerName+"</h4></div>");
+		out.append("<div class='col-md-5 customcss_breadcrumb'>");
+		out.append("<ol class='breadcrumb p-0 m-0'>");
+		for (String string : breadCrums) {
+			out.append("<li><a href='#'>"+string+"</a></li>");	
+		}
+		out.append("<li><a href='#'>"+headerName+"</a></li>");
+		
+		out.append("</ol></div></div><div class='clearfix'></div></div></div></div>");
+		return out;
+	}
+	
+	
+	
 }
 
 

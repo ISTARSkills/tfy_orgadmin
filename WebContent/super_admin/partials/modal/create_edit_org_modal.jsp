@@ -57,7 +57,7 @@ DBUTILS util = new DBUTILS();
 	<div class='modal-dialog'>
 		<div class='modal-content animated flipInY'>
 
-			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+			<div class="panel panel-primary custom-theme-panel-primary customcss_m-b-none">
                  <div class="panel-heading custom-theme-panal-color">
 				<button type="button" class="close" data-dismiss="modal">
 					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -65,7 +65,7 @@ DBUTILS util = new DBUTILS();
 				<h4 class="modal-title text-center"><%=type%> Organization
 				</h4>
 			</div>
-			<div class="modal-body" style="padding-bottom: 0px">
+			<div class="modal-body customcss_p-b-none">
 
 				<form class="form-horizontal"
 					action="../create_or_update_organization" id="edit_org_model_form"
@@ -105,7 +105,7 @@ DBUTILS util = new DBUTILS();
 								data-validation="required">
 								<option>Select Pincode</option>
 								<option value="<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? college.getAddress().getPincode().getPin() : ""%>"
-									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? "selected" : ""%> style="width: 350px;" tabindex="2">
+									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? "selected" : ""%>  tabindex="2">
 									<%=(college != null && college.getAddress() != null && college.getAddress().getPincode() != null) ? college.getAddress().getPincode().getPin() : "Select Pincode"%></option>
 							</select>
 						</div>
@@ -129,7 +129,7 @@ DBUTILS util = new DBUTILS();
 						<div class="col-lg-12">
 							<label class="control-label">Organization Profile</label>
 							<textarea class="form-control" id="org_profile" placeholder="Organization Profile..."
-								style="margin: 0px -5px 0px 0px;"><%=(college != null && college.getProfile()!=null && !college.getProfile().equalsIgnoreCase("null"))? college.getProfile() : ""%></textarea>
+								><%=(college != null && college.getProfile()!=null && !college.getProfile().equalsIgnoreCase("null"))? college.getProfile() : ""%></textarea>
 						</div>
 						<br> <br>
 						
@@ -182,7 +182,7 @@ DBUTILS util = new DBUTILS();
 						
 						<br>
 					</div>
-                <div class="modal-footer" style="padding-bottom: 0px">
+                <div class="modal-footer customcss_p-b-none">
 					<div class="form-group">
 						<button type="button" id="org_modal_submit"
 							class="btn btn-primary custom-theme-btn-primary"><%=(type.equalsIgnoreCase("Create")?"Create":"Update")%></button>

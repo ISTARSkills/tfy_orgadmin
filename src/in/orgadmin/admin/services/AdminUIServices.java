@@ -70,18 +70,26 @@ public class AdminUIServices {
 		return out;
 	}
 
-	public StringBuffer getAllOrganizations() {
+	public StringBuffer getAllOrganizations(int org_id) {
 		// <option value="">Data Analytics</option>
 		String sql = "select id,name from organization";
-
+         String select= "";
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();
 		out.append("<option value=''>Select Organization</option>");
+		
+		
 		for (HashMap<String, Object> item : data) {
-			out.append("<option value='" + item.get("id") + "'>" + item.get("name") + "</option>");
+			if(org_id!=0 && org_id == (int)item.get("id")) {
+				select= "selected";
+			}
+			out.append("<option "+select+"  value='" + item.get("id") + "'>" + item.get("name") + "</option>");
+		
+			select= "";
 		}
 		out.append("");
+		System.err.println(out.toString());
 		return out;
 	}
 	

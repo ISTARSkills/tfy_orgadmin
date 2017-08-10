@@ -17,4 +17,10 @@ public class RadiButtonHandler extends ColumnHandler {
 		return  new StringBuffer("<label> <input type='radio' value='"+value+"' name='radio_button_"+reportID+"'></label>");
 	}
 
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer(string);
+		
+		return sb;
+	}
 }

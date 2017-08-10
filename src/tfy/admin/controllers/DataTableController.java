@@ -102,9 +102,10 @@ public class DataTableController extends IStarBaseServelet {
 							ColumnHandler handler= ReportColumnHandlerFactory.getInstance().getHandler(iterable_element.getColumnHandler());
 							
 							String val="";
-							
+							String order="";
 							if(handler!=null && item.get(iterable_element.getName())!=null && handler.getHTML(item.get(iterable_element.getName()).toString(), reportId)!=null){
 								val= handler.getHTML(item.get(iterable_element.getName()).toString(), reportId).toString();;
+								order = handler.getOrder(item.get(iterable_element.getName()).toString(), reportId).toString();;
 							}
 							tableRowsdata.put(val);
 						}	

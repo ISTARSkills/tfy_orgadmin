@@ -706,7 +706,7 @@ FROM
 	left join batch_group on (batch_students.batch_group_id = batch_group. ID)
 	left join batch on (batch_group. ID = batch.batch_group_id)
 	left join course on (batch.course_id = course. ID)
-	where  user_role.role_id in (select id from role where role_name in ('STUDENT','TRAINER'))
+	where  user_role.role_id in (select id from role where role_name != 'PRESENTOR')
 	GROUP BY
 		istar_user. ID,
 		user_profile.first_name,
@@ -1526,7 +1526,7 @@ order by :order_by_column :order_type limit :limit offset :offset
 <column columnHandler="NONE" display_name="Rating" isVisible="true" name="rating" />
 <column columnHandler="NONE" display_name="Comment" isVisible="true" name="comment" />
 <sql>
-SELECT 	af. ID AS student_id, 	ups.first_name AS student_name, 	upt.first_name AS trainer_name, 	af.rating AS rating,   af.comment as comment, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	student_feedback af, 	user_profile ups, 	user_profile upt, 	user_org_mapping uo WHERE 	af.student_id = ups.user_id AND af.trainer_id = upt.user_id order by :order_by_column :order_type limit :limit offset :offset
+SELECT DISTINCT	af. ID AS student_id, 	ups.first_name AS student_name, 	upt.first_name AS trainer_name, 	af.rating AS rating,   af.comment as comment, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	student_feedback af, 	user_profile ups, 	user_profile upt, 	user_org_mapping uo WHERE 	af.student_id = ups.user_id AND af.trainer_id = upt.user_id order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
 <reports id="3064" type_of_report="table">
@@ -1889,7 +1889,6 @@ select to_char(batch_schedule_event.eventdate, 'DD-Mon-yyyy HH24:MI') as eventda
 from batch_schedule_event, trainer_feedback, user_profile, batch_group, course, classroom_details
 where batch_schedule_event.id = trainer_feedback.event_id
 and batch_schedule_event.classroom_id = classroom_details.id
-and classroom_details.organization_id = :org_id
 and trainer_feedback.user_id = user_profile.user_id
 and batch_schedule_event.batch_group_id = batch_group.id
 and batch_schedule_event.course_id = course.id 
@@ -1914,134 +1913,255 @@ order by batch_schedule_event.eventdate desc
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="total_attendance_count" />
 		<column columnHandler="NONE" display_name="Session Covered" isVisible="true" name="session_covered" />
 		<column columnHandler="NONE" display_name="Trainer Comments" isVisible="true" name="trainer_comment" />
-		<column columnHandler="NONE" display_name="Trainer Rating" isVisible="true" name="trainer_rating" />
-		<column columnHandler="NONE" display_name="Avg. Student Rating" isVisible="true" name="avg_student_rating" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Trainer Rating" isVisible="true" name="trainer_rating" />
+		<!-- <column columnHandler="DECIMAL_STAR_RATING" display_name="Noise Feedback" isVisible="false" name="noise" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name=" Attendance Feedback" isVisible="false" name="attendance" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Sick Feedback" isVisible="false" name="sick" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Content Feedback" isVisible="false" name="content" />		
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Assignment Feedback" isVisible="false" name="assignment" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internals Feedback" isVisible="false" name="internals" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Internet Feedback" isVisible="false" name="internet" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Electricity Feedback" isVisible="false" name="electricity" />	
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Time Feedback" isVisible="false" name="time" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Projector Feedback" isVisible="false" name="projector" /> -->
+		<column columnHandler="BOOLEAN_HANDLER" display_name="TOT Status" isVisible="true" name="tot_happened" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Avg. Student Rating" isVisible="true" name="avg_student_rating" />
 	<sql>
 SELECT
-	T1.*, CAST (
-		COALESCE (
-			to_char(
-				MIN (
-					slide_change_log.created_at
-				),
-				'DD-Mon-yyyy HH24:MI'
-			),
-			'N/A'
-		) AS VARCHAR
-	) AS session_started,
-	CAST (
-		COALESCE (
-			to_char(
-				MAX (
-					slide_change_log.created_at
-				),
-				'DD-Mon-yyyy HH24:MI'
-			),
-			'N/A'
-		) AS VARCHAR
-	) AS session_ended,
-	COUNT (DISTINCT attendance. ID) FILTER (
-
-		WHERE
-			attendance.status = 'PRESENT'
-	) AS total_attendance_count,
+	TF1.college_name,
+	TF1.course_name,
+	TF1.batch_group_name,
+	TF1.event_date,
+	round(
+		CAST (
+			SUM (TF1.total_duration) / CAST ('60' AS FLOAT) AS NUMERIC
+		),
+		2
+	) AS total_duration,
+	TF1.student_enrolled,
+	TF1.t_name,
+	TF1.trainer_comment,
+	TF1.trainer_rating,
+	tf1.session_started,
+	tf1.session_ended,
+	tf1.total_attendance_count,
+	tf1.avg_student_rating,
+	tf1.session_covered,
+	tf1.noise,
+	tf1.attendance,
+	tf1.sick,
+	tf1. CONTENT AS CONTENT,
+	tf1. ASSIGNMENT AS ASSIGNMENT,
+	tf1.internals,
+	tf1.internet,
+	tf1.electricity,
+	tf1. TIME AS TIME,
+	tf1.projector,
 	CASE
-WHEN trainer_feedback.comments IS NULL
-OR trainer_feedback.comments = '' THEN
-	'N/A'
+WHEN COUNT (
+	DISTINCT batch_schedule_event. ID
+) != 0 THEN
+	'true'
 ELSE
-	trainer_feedback.comments
-END AS trainer_comment,
- COALESCE (
-	CAST (
-		trainer_feedback.rating AS VARCHAR
-	),
-	'N/A'
-) AS trainer_rating,
- COALESCE (
-	CAST (
-		AVG (student_feedback.rating) AS VARCHAR
-	),
-	'N/A'
-) AS avg_student_rating,
- COALESCE (
-	string_agg (
-		DISTINCT '&lt;b&gt;'|| cmsession.title || '&lt;/b&gt; (' || cmsession. ID || ')',
-		',&lt;br&gt;'
-	),
-	'N/A'
-) AS session_covered
+	'false'
+END AS tot_happened
 FROM
 	(
-		SELECT DISTINCT
-			batch_schedule_event. ID AS event_id,
-			organization. NAME AS college_name,
-			course.course_name AS course_name,
-			batch_group. NAME AS batch_group_name,
-			user_profile.first_name AS t_name,
-			batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
-			to_char(
+		SELECT
+			T1.*, CAST (
+				COALESCE (
+					to_char(
+						MIN (
+							slide_change_log.created_at
+						),
+						'DD-Mon-yyyy HH24:MI'
+					),
+					'N/A'
+				) AS VARCHAR
+			) AS session_started,
+			CAST (
+				COALESCE (
+					to_char(
+						MAX (
+							slide_change_log.created_at
+						),
+						'DD-Mon-yyyy HH24:MI'
+					),
+					'N/A'
+				) AS VARCHAR
+			) AS session_ended,
+			COUNT (DISTINCT attendance. ID) FILTER (
+
+				WHERE
+					attendance.status = 'PRESENT'
+			) AS total_attendance_count,
+			CASE
+		WHEN trainer_feedback.comments IS NULL
+		OR trainer_feedback.comments = '' THEN
+			'N/A'
+		ELSE
+			trainer_feedback.comments
+		END AS trainer_comment,
+		COALESCE (trainer_feedback.rating, 0) AS trainer_rating,
+		COALESCE (trainer_feedback.noise, '0.5') AS noise,
+		COALESCE (
+			trainer_feedback.attendance,
+			'0.5'
+		) AS attendance,
+		COALESCE (trainer_feedback.sick, '0.5') AS sick,
+		COALESCE (trainer_feedback. CONTENT, '0.5') AS CONTENT,
+		COALESCE (
+			trainer_feedback. ASSIGNMENT,
+			'0.5'
+		) AS ASSIGNMENT,
+		COALESCE (
+			trainer_feedback.internals,
+			'0.5'
+		) AS internals,
+		COALESCE (
+			trainer_feedback.internet,
+			'0.5'
+		) AS internet,
+		COALESCE (
+			trainer_feedback.electricity,
+			'0.5'
+		) AS electricity,
+		COALESCE (trainer_feedback. TIME, '0.5') AS TIME,
+		COALESCE (
+			trainer_feedback.projector,
+			'0.5'
+		) AS projector,
+		COALESCE (
+			AVG (student_feedback.rating),
+			'0.5'
+		) AS avg_student_rating,
+		COALESCE (
+			string_agg (
+				DISTINCT cmsession.title || '(' || cmsession. ID || ')',
+				', &lt;br&gt;'
+			),
+			'N/A'
+		) AS session_covered
+	FROM
+		(
+			SELECT DISTINCT
+				batch_schedule_event. ID AS event_id,
+				organization. NAME AS college_name,
+				course. ID AS course_id,
+				course.course_name AS course_name,
+				batch_group. NAME AS batch_group_name,
+				user_profile.user_id AS user_id,
+				user_profile.first_name AS t_name,
+				batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute AS total_duration,
+				to_char(
+					batch_schedule_event.eventdate,
+					'DD-Mon-yyyy HH24:MI'
+				) AS event_date,
+				COUNT (
+					DISTINCT batch_students.student_id
+				) AS student_enrolled
+			FROM
+				batch_schedule_event,
+				classroom_details,
+				organization,
+				course,
+				batch_group,
+				batch_students,
+				user_profile
+			WHERE
+				batch_schedule_event.classroom_id = classroom_details. ID
+			AND classroom_details.organization_id = organization. ID
+			AND batch_schedule_event.course_id = course. ID
+			AND batch_group. ID = batch_schedule_event.batch_group_id
+			AND batch_group. ID = batch_students.batch_group_id
+			AND user_profile.user_id = batch_schedule_event.actor_id
+			AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+			AND organization. ID != 2
+			GROUP BY
+				organization. NAME,
+				course.course_name,
+				batch_group. NAME,
+				batch_schedule_event. ID,
 				batch_schedule_event.eventdate,
-				'DD-Mon-yyyy HH24:MI'
-			) AS event_date,
-			COUNT (
-				DISTINCT batch_students.student_id
-			) AS student_enrolled
-		FROM
-			batch_schedule_event,
-			classroom_details,
-			organization,
-			course,
-			batch_group,
-			batch_students,
-			user_profile
-		WHERE
-			batch_schedule_event.classroom_id = classroom_details. ID
-		AND classroom_details.organization_id = organization. ID
-		AND batch_schedule_event.course_id = course. ID
-		AND batch_group. ID = batch_schedule_event.batch_group_id
-		AND batch_group. ID = batch_students.batch_group_id
-		AND user_profile.user_id = batch_schedule_event.actor_id
-		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
-		AND batch_schedule_event.eventdate &lt;= CURRENT_DATE
-		AND organization. ID != 2
-		GROUP BY
-			organization. NAME,
-			course.course_name,
-			batch_group. NAME,
-			batch_schedule_event. ID,
-			batch_schedule_event.eventdate,
-			total_duration,
-			user_profile.first_name
-	) T1
-LEFT JOIN slide_change_log ON (
-	slide_change_log.event_id = T1.event_id
-)
-LEFT JOIN attendance ON (
-	attendance.event_id = T1.event_id
-)
-LEFT JOIN trainer_feedback ON (
-	T1.event_id = trainer_feedback.event_id
-)
-LEFT JOIN cmsession ON (
-	slide_change_log.cmsession_id = cmsession. ID
-)
-LEFT JOIN student_feedback ON (
-	T1.event_id = student_feedback.event_id
+				total_duration,
+				user_profile.first_name,
+				user_id,
+				course. ID
+		) T1
+	LEFT JOIN slide_change_log ON (
+		slide_change_log.event_id = T1.event_id
+	)
+	LEFT JOIN attendance ON (
+		attendance.event_id = T1.event_id
+	)
+	LEFT JOIN trainer_feedback ON (
+		T1.event_id = trainer_feedback.event_id
+	)
+	LEFT JOIN cmsession ON (
+		slide_change_log.cmsession_id = cmsession. ID
+	)
+	LEFT JOIN student_feedback ON (
+		T1.event_id = student_feedback.event_id
+	)
+	GROUP BY
+		T1.college_name,
+		T1.course_name,
+		T1.batch_group_name,
+		T1.event_id,
+		T1.event_date,
+		t1.total_duration,
+		T1.student_enrolled,
+		T1.t_name,
+		t1.user_id,
+		t1.course_id,
+		trainer_feedback.comments,
+		trainer_feedback.rating,
+		trainer_feedback.noise,
+		trainer_feedback.attendance,
+		trainer_feedback.sick,
+		trainer_feedback. CONTENT,
+		trainer_feedback. ASSIGNMENT,
+		trainer_feedback.internals,
+		trainer_feedback.internet,
+		trainer_feedback.electricity,
+		trainer_feedback. TIME,
+		trainer_feedback.projector
+	ORDER BY
+		T1.event_date
+	) TF1
+LEFT JOIN batch_schedule_event ON (
+	TF1.course_id = batch_schedule_event.course_id
+	AND TF1.user_id = batch_schedule_event.actor_id
+	AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
 )
 GROUP BY
-	T1.college_name,
-	T1.course_name,
-	T1.batch_group_name,
-	T1.event_id,
-	T1.event_date,
-	T1.total_duration,
-	T1.student_enrolled,
-	T1.t_name,
-	trainer_feedback.comments,
-	trainer_feedback.rating
-ORDER BY
-	T1.event_date
+	TF1.college_name,
+	TF1.course_name,
+	TF1.batch_group_name,
+	TF1.event_id,
+	TF1.event_date,
+	TF1.total_duration,
+	TF1.student_enrolled,
+	TF1.t_name,
+	TF1.user_id,
+	TF1.course_id,
+	TF1.trainer_comment,
+	TF1.trainer_rating,
+	tf1.session_started,
+	tf1.session_ended,
+	tf1.total_attendance_count,
+	tf1.avg_student_rating,
+	tf1.session_covered,
+	tf1.noise,
+	tf1.attendance,
+	tf1.sick,
+	tf1. CONTENT,
+	tf1. ASSIGNMENT,
+	tf1.internals,
+	tf1.internet,
+	tf1.electricity,
+	tf1. TIME,
+	tf1.projector
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -2078,64 +2198,120 @@ WEEKLY REPORT
 <reports id="3072" type_of_report="table">	
 		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" name="trainer_id" />
 	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />		
-		<column columnHandler="NONE" is_selectable="true" display_name="Role" isVisible="true" data_type="string" name="role" />
+		<!-- <column columnHandler="NONE" is_selectable="true" display_name="Role" isVisible="true" data_type="string" name="role" /> -->
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<!-- <column columnHandler="NONE" display_name="Total TOT Attended" isVisible="true" name="comments" /> -->
 		<column columnHandler="NONE" display_name="Lesson Scheduled" isVisible="true" name="lessons_scheduled" />
 		<column columnHandler="NONE" display_name="Lesson Incomplete" isVisible="true" name="lessons_incomplete" />
 		<column columnHandler="NONE" display_name="Lesson Pending" isVisible="true" name="lessons_pending" />		
 		<column columnHandler="NONE" display_name="Lesson Completed" isVisible="true" name="lessons_complete" />
+		<column columnHandler="BOOLEAN_HANDLER" display_name="TOT Happended Or Not" isVisible="true" name="tot_happened_in_this_course" />
+		<column columnHandler="NONE" display_name="Total TOT Attended" isVisible="true" name="total_attendance" />
 	<sql>
 SELECT DISTINCT
-	user_profile.user_id AS trainer_id,
-	user_profile.first_name AS trainer_name,
-	ROLE .role_name AS role,
-	course.course_name AS course_name,
-	COUNT (task. ID) FILTER (
-
-		WHERE
-			task.item_type = 'LESSON'
-	) AS lessons_scheduled,
-	COUNT (task. ID) FILTER (
-
-		WHERE
-			task.item_type = 'LESSON'
-		AND task.is_active = 'f'
-		AND task.start_date &lt; now()
-	) AS lessons_incomplete,
-	COUNT (task. ID) FILTER (
-
-		WHERE
-			task.item_type = 'LESSON'
-		AND task.is_active = 't'
-		AND task.start_date &lt; now()
-	) AS lessons_complete,
-	COUNT (task. ID) FILTER (
-
-		WHERE
-			task.item_type = 'LESSON'
-		AND task.is_active = 'f'
-		AND task.start_date &gt; now()
-	) AS lessons_pending
+	t2.user_id as trainer_id,
+	t2.trainer_name,
+	t2.course_id,
+	t2.course_name,
+	t2.lessons_scheduled,
+	t2.lessons_incomplete,
+	t2.lessons_complete,
+	t2.lessons_pending, CASE
+WHEN COUNT (
+	batch_schedule_event.batch_group_code
+) &gt; 0 THEN
+	'true'
+ELSE
+	'false'
+END AS tot_happened_in_this_course,
+ COUNT ( DISTINCT attendance. ID) FILTER (
+	WHERE
+		attendance.status = 'PRESENT'
+	AND attendance.user_id = T2.user_id
+) ||'/'||  COUNT ( DISTINCT batch_schedule_event. ID) AS total_attendance
 FROM
-	batch_schedule_event,
-	task,
-	user_profile,
-	user_role,
-	ROLE,
-	course
-WHERE
-	task.item_id = batch_schedule_event. ID
-AND task.actor = user_profile.user_id
-AND user_role.user_id = user_profile.user_id
-AND user_role.role_id = ROLE . ID
-AND course. ID = batch_schedule_event.course_id
-AND ROLE . ID = 24
+	(
+		SELECT DISTINCT
+			T1.*, batch_schedule_event.batch_group_code
+		FROM
+			(
+				SELECT DISTINCT
+					user_profile.user_id,
+					user_profile.first_name AS trainer_name,
+					course. ID AS course_id,
+					course.course_name,
+					COUNT (DISTINCT task. ID) FILTER (
+
+						WHERE
+							task.item_type = 'LESSON'
+					) AS lessons_scheduled,
+					COUNT (DISTINCT task. ID) FILTER (
+
+						WHERE
+							task.item_type = 'LESSON'
+						AND task.is_active = 'f'
+						AND task.start_date &lt; now()
+					) AS lessons_incomplete,
+					COUNT (DISTINCT task. ID) FILTER (
+
+						WHERE
+							task.item_type = 'LESSON'
+						AND task.is_active = 't'
+						AND task.start_date &lt; now()
+					) AS lessons_complete,
+					COUNT (task. ID) FILTER (
+
+						WHERE
+							task.item_type = 'LESSON'
+						AND task.is_active = 'f'
+						AND task.start_date &gt; now()
+					) AS lessons_pending
+				FROM
+					task,
+					student_playlist,
+					user_profile,
+					user_role,
+					ROLE,
+					lesson,
+					course
+				WHERE
+					student_playlist.task_id = task. ID
+				AND user_profile.user_id = student_playlist.student_id
+				AND user_role.user_id = user_profile.user_id
+				AND ROLE . ID = user_role.role_id
+				AND ROLE .role_name = 'TRAINER'
+				AND task.item_type = 'LESSON'
+				AND student_playlist.course_id = course. ID
+				GROUP BY
+					user_profile.user_id,
+					user_profile.first_name,
+					course.course_name,
+					course. ID
+			) T1
+		LEFT JOIN batch_schedule_event ON (
+			batch_schedule_event.actor_id = T1.user_id
+			AND T1.course_id = batch_schedule_event.course_id
+			AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+		)
+	) T2
+LEFT JOIN batch_schedule_event ON (
+	batch_schedule_event.batch_group_code = T2.batch_group_code
+	AND T2.course_id = batch_schedule_event.course_id
+	AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+)
+LEFT JOIN attendance ON (
+	batch_schedule_event. ID = attendance.event_id
+)
 GROUP BY
-	user_profile.user_id,
-	user_profile.first_name,
-	ROLE .role_name,
-	course.course_name
+	t2.user_id,
+	t2.trainer_name,
+	t2.course_id,
+	t2.course_name,
+	t2.lessons_scheduled,
+	t2.lessons_incomplete,
+	t2.lessons_complete,
+	t2.lessons_pending
+ORDER BY t2.course_id
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -2143,115 +2319,76 @@ GROUP BY
 		<y_axis_title>Average</y_axis_title>
 </reports>
 <reports id="3073" type_of_report="table">	
-		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" name="trainer_id" />
-	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="trainer_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Trainer id" isVisible="true" name="user_id" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Trainer Name" isVisible="true" data_type="string" name="first_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" display_name="Module Name" isVisible="true" name="module_name" />
 		<column columnHandler="NONE" display_name="Session Name" isVisible="true" name="cmsession_name" />
-		<column columnHandler="NONE" display_name="Lesson Name" isVisible="true" name="lesson_id" />
+		<column columnHandler="NONE" display_name="Lesson Name" isVisible="true" name="lesson_name" />
 		<column columnHandler="NONE" display_name="Status" isVisible="true" name="status" />
 		<column columnHandler="NONE" display_name="Slides Covered" isVisible="true" name="slide_covered" />
 		<column columnHandler="NONE" display_name="Total No. of Slides" isVisible="true" name="total_slide_count" />
-		<column columnHandler="NONE" display_name="Has he taken Classroom Session for this Lesson" isVisible="true" name="class_taken_or_not" />
+		
 	<sql>
-SELECT
-	TF.user_id AS trainer_id,
-	TF.first_name AS trainer_name,
-	TF.c_title AS course_name,
-	TF.m_title AS module_name,
-	TF.cms_title AS cmsession_name,
-	TF.l_title AS lesson_name,
-	TF.l_id AS lesson_id,
-	TF.status AS status,
-	tf.slide_covered AS slide_covered,
+SELECT DISTINCT
+	t1.user_id,
+	t1.first_name,
+	t1.course_name,
+	t1.module_name,
+	t1.cmsession_name,
+	t1.lesson_name,
+	t1.status, COUNT (
+		DISTINCT user_session_log.slide_id
+	) AS slide_covered,
 	COALESCE (
-		CAST (
-			tf.total_slide_count AS VARCHAR
-		),
-		'N/A'
-	) AS total_slide_count,
-	CASE
-WHEN COUNT (event_log. ID) != 0 THEN
-	'Yes'
-ELSE
-	'No'
-END AS class_taken_or_not
+		user_session_log.total_slide_count,
+		0
+	) AS total_slide_count
 FROM
 	(
-		SELECT
-			T1.*, COUNT (user_session_log.slide_id) AS slide_covered,
-			user_session_log.total_slide_count
+		SELECT DISTINCT
+			user_profile.user_id,
+			user_profile.first_name,
+			course.course_name AS course_name,
+			MODULE .module_name AS module_name,
+			cmsession.title AS cmsession_name,
+			lesson. ID AS lesson_id,
+			lesson.title AS lesson_name,
+			student_playlist.status
 		FROM
-			(
-				SELECT DISTINCT
-					user_profile.user_id,
-					user_profile.first_name,
-					course.course_name AS c_title,
-					MODULE .module_name AS m_title,
-					cmsession.title AS cms_title,
-					lesson. ID AS l_id,
-					lesson.title AS l_title,
-					student_playlist.status
-				FROM
-					batch_schedule_event,
-					user_profile,
-					student_playlist,
-					course,
-					MODULE,
-					cmsession,
-					lesson,
-					task
-				WHERE
-					batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
-				AND user_profile.user_id = batch_schedule_event.actor_id
-				AND student_playlist.student_id = batch_schedule_event.actor_id
-				AND student_playlist.course_id = course. ID
-				AND student_playlist.cmsession_id = cmsession. ID
-				AND student_playlist.module_id = MODULE . ID
-				AND student_playlist.lesson_id = lesson. ID
-				AND task.item_id = student_playlist.lesson_id
-				GROUP BY
-					user_profile.user_id,
-					user_profile.first_name,
-					course.course_name,
-					MODULE .module_name,
-					cmsession.title,
-					lesson.title,
-					lesson. ID,
-					student_playlist.status
-				ORDER BY
-					user_id
-			) T1
-		LEFT JOIN user_session_log ON (
-			user_session_log.user_id = T1.user_id
-			AND user_session_log.lesson_id = T1.l_id
-		)
-		GROUP BY
-			T1.user_id,
-			T1.first_name,
-			T1.c_title,
-			T1.m_title,
-			T1.cms_title,
-			T1.l_title,
-			T1.l_id,
-			T1.status,
-			user_session_log.total_slide_count
-	) TF
-LEFT JOIN event_log ON (
-	event_log.trainer_id != TF.user_id
-	AND event_log.lesson_id = TF.l_id
+			student_playlist,
+			task,
+			user_profile,
+			course,
+			MODULE,
+			cmsession,
+			lesson
+		WHERE
+			student_playlist.task_id = task. ID
+		AND user_profile.user_id = student_playlist.student_id
+		AND course. ID = student_playlist.course_id
+		AND MODULE . ID = student_playlist.module_id
+		AND cmsession. ID = student_playlist.cmsession_id
+		AND lesson. ID = student_playlist.lesson_id
+		ORDER BY
+			lesson_id
+	) T1
+LEFT JOIN user_session_log ON (
+	T1.user_id = user_session_log.user_id
+	AND T1.lesson_id = user_session_log.lesson_id
+	AND user_session_log.total_slide_count IS NOT NULL
 )
 GROUP BY
-	TF.user_id,
-	TF.first_name,
-	TF.c_title,
-	TF.m_title,
-	TF.cms_title,
-	TF.l_title,
-	TF.l_id,
-	TF.status,
-	tf.slide_covered,
-	tf.total_slide_count
+	t1.user_id,
+	t1.first_name,
+	t1.course_name,
+	t1.module_name,
+	t1.cmsession_name,
+	t1.lesson_id,
+	t1.lesson_name,
+	t1.status,
+	user_session_log.total_slide_count
+ORDER BY t1.user_id
 
 	</sql>
 	<filter_sql>		
@@ -2259,85 +2396,110 @@ GROUP BY
 		<title>Trainer Detail Task Report</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
-<reports id="3074" type_of_report="table">	
-		
-		
-	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="eventdate" />
+<reports id="3074" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="event_date" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="section_name" />
-		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="master_trainer" />
+		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="master_trainer_name" />
 		<column columnHandler="NONE" display_name="Enrolled Trainer" isVisible="true" name="enrolled_trainers" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendances" />
-		<column columnHandler="NONE" display_name="Session - Lesson(slides moved / total slides) " isVisible="true" name="event_details" />
+		<column columnHandler="NONE" display_name="Session Covered " isVisible="true" name="session_covered" />
+		<column columnHandler="NONE" display_name="LessonCovered -(slides moved / total slides) " isVisible="true" name="lesson_covered" />
+		 <column columnHandler="VIEW_ATTENDANCE" display_name="View Attendance" isVisible="true" name="event_id" />
 		
 	<sql>
-select id, to_char(
-				eventdate,
+SELECT
+	TF. ID as event_id,
+	TF.event_date,
+	TF.course_name,
+	TF.section_name,
+	TF.first_name AS master_trainer_name,
+	TF.enrolled_trainers,
+	TF.PRESENT AS attendances,
+	COALESCE (
+		string_agg (
+			DISTINCT '&lt;b&gt;' || session_covered || '&lt;/b&gt;',
+			',&lt;br&gt; '
+		),
+		'N/A'
+	) AS session_covered,
+	string_agg (
+		DISTINCT '&lt;b&gt;' || TF.lesson_covered || ' &lt;/b&gt; -  (' || slidemoved_total_silde || ')',
+		',&lt;br&gt; '
+	) AS lesson_covered
+FROM
+	(
+		SELECT
+			T1. ID,
+			to_char(
+				T1.eventdate,
 				'DD-Mon-yyyy HH24:MI'
-			) as eventdate, course_name, section_name, master_trainer, enrolled_trainers, attendances,  
-COALESCE(string_agg ('&lt;b&gt;'||cms_title ||'&lt;/b&gt; - '|| lesson_title||' ('|| COALESCE(slide_details,'NA')||')', ',&lt;br&gt;'),'NA') as event_details from 
-(select T1.*, COUNT (DISTINCT attendance. ID) FILTER (
-
-				WHERE
-					attendance.status = 'PRESENT'
-			) || '/' || T1.enrolled_trainers AS attendances,      
-			cmsession.title as cms_title,
-			lesson.title AS lesson_title,
-		COALESCE('(' ||count(distinct slide_change_log.slide_id) ||' / '||max(slide_change_log.total_slide_count)||')','NA') as slide_details
-
-from (SELECT DISTINCT
-					batch_schedule_event.id ,
+			) AS event_date,
+			T1.course_name,
+			T1.section_name,
+			T1.first_name,
+			T1.enrolled_trainers,
+			COUNT (DISTINCT attendance. ID) FILTER (WHERE status = 'PRESENT') AS PRESENT,
+			COALESCE (cmsession.title, 'N/A') AS session_covered,
+			COALESCE (lesson.title, 'N/A') AS lesson_covered,
+			COUNT (DISTINCT event_log.slide_id) || '/' || COUNT (
+				DISTINCT event_log.total_slide_count
+			) AS slidemoved_total_silde
+		FROM
+			(
+				SELECT DISTINCT
+					batch_schedule_event. ID,
 					batch_schedule_event.eventdate,
 					course.course_name,
 					batch_group. NAME AS section_name,
-					user_profile.first_name as master_trainer,
-					COUNT (
-						DISTINCT batch_students.student_id
-					) AS enrolled_trainers
+					user_profile.first_name,
+					COUNT (DISTINCT batch_students. ID) AS enrolled_trainers
 				FROM
-					user_profile,					
-					batch_schedule_event,
-					course,
 					batch_group,
-					batch_students
+					batch_schedule_event,
+					batch_students,
+					course,
+					user_profile
 				WHERE
-					 batch_schedule_event.actor_id = user_profile.user_id
-			AND course. ID = batch_schedule_event.course_id
-				AND batch_group. ID = batch_schedule_event.batch_group_id
-				AND batch_students.batch_group_id = batch_group. ID
-        and	batch_schedule_event.type ='BATCH_SCHEDULE_EVENT_TRAINER'	
-				and batch_schedule_event.batch_group_id in (select id from batch_group where college_id = 2)
-GROUP BY					
-batch_schedule_event.id,
+					college_id = 2
+				AND batch_schedule_event.batch_group_id = batch_group. ID
+				AND batch_schedule_event.course_id = course. ID
+				AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+				AND batch_schedule_event.actor_id = user_profile.user_id
+				AND batch_group. ID = batch_students.batch_group_id
+				GROUP BY
+					batch_schedule_event. ID,
 					batch_schedule_event.eventdate,
 					course.course_name,
 					batch_group. NAME,
 					user_profile.first_name
-) T1
-LEFT JOIN attendance ON (
-			T1.id = attendance.event_id
+			) T1
+		LEFT JOIN attendance ON (attendance.event_id = T1. ID)
+		LEFT JOIN event_log ON (T1. ID = event_log.event_id)
+		LEFT JOIN lesson ON (
+			lesson. ID = event_log.lesson_id
 		)
-		LEFT JOIN slide_change_log ON (
-			T1.id = slide_change_log.event_id
+		LEFT JOIN cmsession ON (
+			cmsession. ID = event_log.cmsession_id
 		)
-		 left JOIN lesson ON (
-			lesson. ID = slide_change_log.lesson_id
-		)
-     left JOIN cmsession ON (
-			cmsession. ID = slide_change_log.cmsession_id
-		)
+		GROUP BY
+			t1. ID,
+			t1.eventdate,
+			t1.course_name,
+			t1.section_name,
+			t1.first_name,
+			t1.enrolled_trainers,
+			lesson.title,
+			cmsession.title
+	) TF
 GROUP BY
-			T1.id,
-			T1.eventdate,
-			T1.course_name,
-			T1.section_name,
-			T1.master_trainer,
-			T1.enrolled_trainers,
-cmsession. ID, lesson. ID
-) T2			
-group by 
-id, eventdate, course_name, section_name, master_trainer, enrolled_trainers, attendances
-order by eventdate , course_name, section_name, master_trainer
+	TF. ID,
+	TF.event_date,
+	TF.course_name,
+	TF.section_name,
+	TF.first_name,
+	TF.enrolled_trainers,
+	TF.present
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -2360,105 +2522,151 @@ order by eventdate , course_name, section_name, master_trainer
 		<column columnHandler="NONE" display_name="Hours Finished" isVisible="true" name="hours_finished" />
 	<sql>
 SELECT DISTINCT
-	user_profile.user_id as trainer_id,
-	user_profile.first_name as trainer_name,
-	organization. NAME AS org_name,
-	course.course_name as course_name,
-	batch_group. NAME AS section_name,
-	COUNT (
-		DISTINCT batch_schedule_event. ID
-	) AS classes_scheduled,
-	COUNT (
-		DISTINCT batch_schedule_event. ID
-	) FILTER (
+user_profile.user_id AS trainer_id,
+user_profile.first_name AS trainer_name,
+organization. NAME AS org_name,
+course.course_name AS course_name,
+batch_group. NAME AS section_name,
+COUNT (
+DISTINCT batch_schedule_event. ID
+) AS classes_scheduled,
+COUNT (
+DISTINCT batch_schedule_event. ID
+) FILTER (
 
-		WHERE
-			batch_schedule_event.eventdate &lt; now()
-		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	) AS classes_incomplete,
-	COUNT (DISTINCT batch_schedule_event. ID) FILTER (
+    WHERE
+        batch_schedule_event.eventdate &lt;now()
+    AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
+) AS classes_incomplete,
+COUNT (
+    DISTINCT batch_schedule_event. ID
+) FILTER (
 
-		WHERE
-			batch_schedule_event.eventdate &lt; now()
-		AND batch_schedule_event.status IN (
-			'COMPLETED',
-			'ATTENDANCE',
-			'FEEDBACK'
-		)
-	) AS classes_completed,
-	COALESCE(cast(COUNT (DISTINCT batch_schedule_event. ID) FILTER (
+    WHERE
+        batch_schedule_event.eventdate &lt;now()
+    AND batch_schedule_event.status IN (
+        'COMPLETED',
+        'ATTENDANCE',
+        'FEEDBACK'
+    )
+) AS classes_completed,
+COALESCE (
+    CAST (
+        COUNT (
+            DISTINCT batch_schedule_event. ID
+        ) FILTER (
 
-		WHERE
-			batch_schedule_event.eventdate &gt; now()
-		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	) as varchar),'N/A') AS classes_pending,
-round(cast (
-SUM (
-		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	)
-/ cast('60' as float) as numeric
-),2)
-AS hours_scheduled,
-	COALESCE(cast(
+            WHERE
+                batch_schedule_event.eventdate &gt; now()
+            AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
+        ) AS VARCHAR
+    ),
+    'N/A'
+) AS classes_pending,
 round(
-cast(((
-SUM (
-		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	) FILTER (
-		WHERE
-			batch_schedule_event.eventdate &lt; now()
-		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	))/ cast('60' as float))  as numeric),2)
- as varchar),'0') AS hours_incomplete,
-	COALESCE(cast(
-round(cast (((SUM (
-		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	) FILTER (
+    CAST (
+        SUM (
+            batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
+        ) / CAST ('60' AS FLOAT) AS NUMERIC
+    ),
+    2
+) AS hours_scheduled,
+COALESCE (
+    CAST (
+        round(
+            CAST (
+                (
+                    (
+                        SUM (
+                            batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
+                        ) FILTER (
 
-		WHERE
-			batch_schedule_event.eventdate &lt; now()
-		AND batch_schedule_event.status IN (
-			'COMPLETED',
-			'ATTENDANCE',
-			'FEEDBACK'
-		)
-	))/ cast('60' as float)) as numeric),2) as varchar),'0') AS hours_finished,
-	COALESCE(cast(
-round(cast (
+                            WHERE
+                                batch_schedule_event.eventdate &lt;now()
+                            AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
+                        )
+                    ) / CAST ('60' AS FLOAT)
+                ) AS NUMERIC
+            ),
+            2
+        ) AS VARCHAR
+    ),
+    '0'
+) AS hours_incomplete,
+COALESCE (
+    CAST (
+        round(
+            CAST (
+                (
+                    (
+                        SUM (
+                            batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
+                        ) FILTER (
+
+                            WHERE
+                                batch_schedule_event.eventdate &lt;now()
+                            AND batch_schedule_event.status IN (
+                                'COMPLETED',
+                                'ATTENDANCE',
+                                'FEEDBACK'
+                            )
+                        )
+                    ) / CAST ('60' AS FLOAT)
+                ) AS NUMERIC
+            ),
+            2
+        ) AS VARCHAR
+    ),
+    '0'
+) AS hours_finished,
+
+COALESCE (
+CAST (
+round(
+CAST (
 (
 (
 SUM (
-		batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
-	) FILTER (
+batch_schedule_event.eventhour * 60 + batch_schedule_event.eventminute
+) FILTER (
 
-		WHERE
-			batch_schedule_event.eventdate > now()
-		AND batch_schedule_event.status IN ('SCHEDULED', 'TEACHING')
-	))
-/ cast('60' as float)
-)
- as numeric),2)  as varchar),'0') AS hours_pending
+                            WHERE
+                                batch_schedule_event.eventdate &gt; now()
+                            AND batch_schedule_event.status IN (
+                                'SCHEDULED',
+                                'TEACHING'
+                                
+                            )
+                        )
+                    ) / CAST ('60' AS FLOAT)
+                ) AS NUMERIC
+            ),
+            2
+        ) AS VARCHAR
+    ),
+    '0'
+) AS hours_pending
 
 FROM
-	batch_schedule_event,
-	user_profile,
-	classroom_details,
-	organization,
-	course,
-	batch_group
+batch_schedule_event,
+user_profile,
+classroom_details,
+organization,
+course,
+batch_group
 WHERE
-	user_profile.user_id = batch_schedule_event.actor_id
+user_profile.user_id = batch_schedule_event.actor_id
 AND classroom_details. ID = batch_schedule_event.classroom_id
 AND classroom_details.organization_id = organization. ID
 AND course. ID = batch_schedule_event.course_id
 AND batch_group. ID = batch_schedule_event.batch_group_id
 AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
 GROUP BY
-	user_profile.user_id,
-	user_profile.first_name,
-	organization. NAME,
-	course.course_name,
-	batch_group. NAME
+user_profile.user_id,
+user_profile.first_name,
+organization. NAME,
+course.course_name,
+batch_group. NAME
 
 	</sql>
 	<filter_sql>		
@@ -2940,6 +3148,377 @@ UNION
 	<filter_sql>		
 	</filter_sql>	
 		<title>Superadmin List</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3083" type_of_report="table">	
+		<column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="bg_name" />
+		<column columnHandler="NONE" display_name="Student Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Student Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="Completed Events" isVisible="true"  name="total_event" />
+	    <column columnHandler="NONE" display_name="Attendance Count" isVisible="true" name="attendance_count" />
+	<sql>
+SELECT
+	T1.user_id as student_id,
+	T1.first_name as student_name,
+	T1.col_name as college_name,
+	T1.bg_name,
+	T1.tot_event as total_event,
+	T4.PRESENT as attendance_count
+FROM
+	(
+		SELECT DISTINCT
+			user_profile.user_id,
+			user_profile.first_name,
+			batch_group. ID AS bg_id,
+			batch_group. NAME AS bg_name,
+			organization. NAME AS col_name,
+			COUNT (
+				batch_schedule_event.batch_group_code
+			) AS tot_event
+		FROM
+			batch_schedule_event,
+			user_profile,
+			batch_group,
+			organization
+		WHERE
+			batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+		AND batch_schedule_event.actor_id = user_profile.user_id
+		AND batch_group. ID = batch_schedule_event.batch_group_id
+		AND organization. ID = batch_group.college_id
+		AND organization. ID != 2
+		GROUP BY
+			user_profile.user_id,
+			user_profile.first_name,
+			bg_id,
+			batch_group. NAME,
+			organization. NAME
+		ORDER BY
+			batch_group. ID 
+	) T1
+LEFT JOIN (
+	SELECT
+		t3.actor_id,
+		t3.batch_group_id,
+		COUNT (attendance. ID) FILTER (
+
+			WHERE
+				attendance.status = 'PRESENT'
+		) AS PRESENT
+	FROM
+		(
+			SELECT DISTINCT
+				T2.*, batch_schedule_event. ID
+			FROM
+				(
+					SELECT DISTINCT
+						batch_schedule_event.actor_id,
+						batch_schedule_event.batch_group_id,
+						batch_schedule_event.batch_group_code
+					FROM
+						batch_schedule_event,
+						user_profile,
+						batch_group,
+						organization
+					WHERE
+						batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+					AND batch_schedule_event.actor_id = user_profile.user_id
+					AND batch_group. ID = batch_schedule_event.batch_group_id
+					AND organization. ID = batch_group.college_id
+					AND organization. ID != 2
+					ORDER BY
+						batch_schedule_event.actor_id
+				) T2
+			LEFT JOIN batch_schedule_event ON (
+				T2.batch_group_code = batch_schedule_event.batch_group_code
+				AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+			)
+			WHERE
+				batch_schedule_event. ID IS NOT NULL
+		) T3
+	LEFT JOIN attendance ON (
+		T3. ID = attendance.event_id
+		AND T3.actor_id = attendance.user_id
+	)
+	GROUP BY
+		t3.actor_id,
+		t3.batch_group_id
+) T4 ON (
+	T1.bg_id = T4.batch_group_id
+	AND T1.user_id = T4.actor_id
+)
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>User Attendance Report</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3084" type_of_report="table">
+		<column columnHandler="NONE" display_name="Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Name" isVisible="true"  name="student_name" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Coverage" isVisible="true"  name="coverage_rate" />
+	    <column columnHandler="DECIMAL_STAR_RATING" display_name="Understanding" isVisible="true" name="ease_understanding" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Examples Quality" isVisible="true"  name="quality_of_examples" />
+	    <column columnHandler="DECIMAL_STAR_RATING" display_name="Subject Knowledge" isVisible="true" name="knowledge_of_matter" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Classroom Management" isVisible="true"  name="cls_management" />
+	    <column columnHandler="DECIMAL_STAR_RATING" display_name="Communication" isVisible="true" name="comm_style" />
+		<column columnHandler="DECIMAL_STAR_RATING" display_name="Explanation Ability" isVisible="true"  name="explain_concepts" />
+	    <column columnHandler="BOOLEAN_HANDLER" display_name="Enjoyed" isVisible="true" name="enjoying_course" />
+		<column columnHandler="BOOLEAN_HANDLER" display_name="Learning something useful" isVisible="true"  name="learning_something_useful" />
+	    <column columnHandler="BOOLEAN_HANDLER" display_name="Got the idea about jobs and industry" isVisible="true" name="is_the_course_giving_a_fair_idea" />
+	    <column columnHandler="BOOLEAN_HANDLER" display_name="Interested in Advance learning" isVisible="true" name="interested_in_learning_more_subjects" />
+	    <column columnHandler="BOOLEAN_HANDLER" display_name="Are you considering a career in this sector?" isVisible="true" name="considering_a_career_in_sector" />
+	    <column columnHandler="BOOLEAN_HANDLER" display_name="Recommend Istar to friends" isVisible="true" name="recommend_istar_course_to_your_friends" />
+	    <column columnHandler="NONE" display_name="How can istar make the course more interesting?" isVisible="false" name="istar_the_course_more_interesting" />
+	    <column columnHandler="NONE" display_name="What aspects of the course would you change/remove?" isVisible="false" name="course_would_you_change_or_remove" />
+	    <column columnHandler="NONE" display_name="What aspects would you like to see coverage of?" isVisible="false" name="aspects_to_see_coverage_of" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the most?" isVisible="false" name="session_you_enjoy_the_most" />
+	    <column columnHandler="NONE" display_name="Which session did you enjoy the least?" isVisible="false" name="session_you_enjoy_the_least" />
+	<sql>
+SELECT
+	COALESCE (
+		user_task_feedback.coverage,
+		'5.0'
+	) AS coverage_rate,
+	COALESCE (
+		user_task_feedback.ease_of_understanding,
+		'5.0'
+	) AS ease_understanding,
+	COALESCE (
+		user_task_feedback.quality_of_examples_provided,
+		'5.0'
+	) AS quality_of_examples,
+	COALESCE (
+		user_task_feedback.knowledge_of_subject_matter,
+		'5.0'
+	) AS knowledge_of_matter,
+	COALESCE (
+		user_task_feedback.classroom_management,
+		'5.0'
+	) AS cls_management,
+	COALESCE (
+		user_task_feedback.communication_style,
+		'5.0'
+	) AS comm_style,
+	COALESCE (
+		user_task_feedback.ablity_to_explain_concepts,
+		'5.0'
+	) AS explain_concepts,
+	COALESCE (
+		user_task_feedback.overall_how_would_you_rate_your_experience_in_the_course,
+		'5.0'
+	) AS rate_your_experience_in_the_course,
+	user_task_feedback.feel_like_you_are_learning_something_useful AS learning_something_useful,
+	user_task_feedback.interested_in_learning_more_subjects_related_to_the_sector AS interested_in_learning_more_subjects,
+	user_task_feedback.recommend_istar_course_to_your_friends_based_on_your_experience AS recommend_istar_course_to_your_friends,
+	COALESCE (
+		user_task_feedback.istar_make_the_course_more_interesting,
+		'N/A'
+	) AS istar_the_course_more_interesting,
+	COALESCE (
+		user_task_feedback.aspects_of_the_course_would_you_change_or_remove,
+		'N/A'
+	) AS course_would_you_change_or_remove,
+	COALESCE (
+		user_task_feedback.aspects_would_you_like_to_see_coverage_of,
+		'N/A'
+	) AS aspects_to_see_coverage_of,
+	COALESCE (
+		user_task_feedback.session_which_you_enjoy_the_most,
+		'N/A'
+	) AS session_you_enjoy_the_most,
+	COALESCE (
+		user_task_feedback.session_which_you_enjoy_the_least,
+		'N/A'
+	) AS session_you_enjoy_the_least,
+	COALESCE (
+		user_task_feedback.istar_course_compare_to_your_regular_college_curriculum,
+		'N/A'
+	) AS istar_course_compare_to_college_curriculum,
+	COALESCE (
+		user_task_feedback.istar_faculty_compared_to_regular_college_faculty,
+		'N/A'
+	) AS istar_faculty_compared_to_college_faculty,
+	user_task_feedback.enjoying_the_course AS enjoying_course,
+	user_task_feedback.is_the_course_giving_you_a_fair_idea AS is_the_course_giving_a_fair_idea,
+	user_task_feedback.considering_a_career_in_this_sector AS considering_a_career_in_sector,
+	user_task_feedback.user_id AS student_id,
+	COALESCE (
+		user_profile.first_name,
+		'N/A'
+	) AS student_name
+FROM
+	user_task_feedback,
+	user_org_mapping,
+	user_profile
+WHERE
+	user_org_mapping.user_id = user_task_feedback.user_id
+AND user_task_feedback.user_id = user_profile.user_id
+AND user_org_mapping.organization_id = :org_id
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3085" type_of_report="table">
+		<column columnHandler="NONE" display_name="Id" isVisible="true"  name="student_id" />
+		<column columnHandler="NONE" display_name="Name" isVisible="true"  name="student_name" />
+		<column columnHandler="NONE" display_name="College Name" isVisible="true"  name="col_name" />
+		<column columnHandler="NONE" display_name="Section Name" isVisible="true"  name="bg_name" />
+		<column columnHandler="NONE" display_name="Total No Events" isVisible="true"  name="total_event" />
+		<column columnHandler="NONE" display_name="Student Attendance" isVisible="true"  name="student_attendance" />
+	<sql>
+SELECT DISTINCT
+	T1.user_id as student_id,
+	T1.first_name as student_name,
+	T1.col_name,
+	T1.bg_name,
+	T4.PRESENT as student_attendance,
+	T5.total_event
+FROM
+	(
+		SELECT DISTINCT
+			user_profile.user_id,
+			user_profile.first_name,
+			batch_group. ID AS bg_id,
+			batch_group. NAME AS bg_name,
+			organization. NAME AS col_name
+		FROM
+			batch_schedule_event,
+			user_profile,
+			batch_group,
+			organization,
+			user_role,
+			ROLE
+		WHERE
+			batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+		AND batch_schedule_event.actor_id = user_profile.user_id
+		AND batch_group. ID = batch_schedule_event.batch_group_id
+		AND organization. ID = batch_group.college_id
+		AND organization. ID != 2
+		AND user_role.user_id = batch_schedule_event.actor_id
+		AND user_role.role_id = ROLE . ID
+		AND ROLE .role_name = 'STUDENT'
+		GROUP BY
+			user_profile.user_id,
+			user_profile.first_name,
+			bg_id,
+			batch_group. NAME,
+			organization. NAME
+		ORDER BY
+			batch_group. ID
+	) T1
+LEFT JOIN (
+	SELECT
+		t3.actor_id,
+		t3.batch_group_id,
+		COUNT (attendance. ID) FILTER (
+
+			WHERE
+				attendance.status = 'PRESENT'
+		) AS PRESENT,
+		COUNT (DISTINCT attendance. ID) AS total_attendance
+	FROM
+		(
+			SELECT DISTINCT
+				T2.*, batch_schedule_event. ID
+			FROM
+				(
+					SELECT DISTINCT
+						batch_schedule_event.actor_id,
+						batch_schedule_event.batch_group_id,
+						batch_schedule_event.batch_group_code
+					FROM
+						batch_schedule_event,
+						user_profile,
+						batch_group,
+						organization,
+						user_role,
+						ROLE
+					WHERE
+						batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+					AND batch_schedule_event.actor_id = user_profile.user_id
+					AND batch_group. ID = batch_schedule_event.batch_group_id
+					AND organization. ID = batch_group.college_id
+					AND organization. ID != 2
+					AND user_role.user_id = batch_schedule_event.actor_id
+					AND user_role.role_id = ROLE . ID
+					AND ROLE .role_name = 'STUDENT'
+					ORDER BY
+						batch_schedule_event.actor_id
+				) T2
+			LEFT JOIN batch_schedule_event ON (
+				T2.batch_group_code = batch_schedule_event.batch_group_code
+				AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+			)
+			WHERE
+				batch_schedule_event. ID IS NOT NULL
+		) T3
+	LEFT JOIN attendance ON (
+		T3. ID = attendance.event_id
+		AND T3.actor_id = attendance.user_id
+	)
+	GROUP BY
+		t3.actor_id,
+		t3.batch_group_id
+) T4 ON (
+	T1.bg_id = T4.batch_group_id
+	AND T1.user_id = T4.actor_id
+)
+LEFT JOIN (
+	SELECT DISTINCT
+		t2.actor_id,
+		t2.batch_group_id,
+		COUNT (batch_schedule_event. ID) FILTER (
+
+			WHERE
+				batch_schedule_event.status != 'SCHEDULED'
+		) AS total_event
+	FROM
+		(
+			SELECT DISTINCT
+				batch_schedule_event.actor_id,
+				batch_schedule_event.batch_group_id,
+				batch_schedule_event.batch_group_code
+			FROM
+				batch_schedule_event,
+				user_profile,
+				batch_group,
+				organization,
+				user_role,
+				ROLE
+			WHERE
+				batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_STUDENT'
+			AND batch_schedule_event.actor_id = user_profile.user_id
+			AND batch_group. ID = batch_schedule_event.batch_group_id
+			AND organization. ID = batch_group.college_id
+			AND organization. ID != 2
+			AND user_role.user_id = batch_schedule_event.actor_id
+			AND user_role.role_id = ROLE . ID
+			AND ROLE .role_name = 'STUDENT'
+			ORDER BY
+				batch_schedule_event.actor_id
+		) T2
+	LEFT JOIN batch_schedule_event ON (
+		T2.batch_group_code = batch_schedule_event.batch_group_code
+		AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+	)
+	WHERE
+		batch_schedule_event. ID IS NOT NULL
+	GROUP BY
+		t2.actor_id,
+		t2.batch_group_id
+) T5 ON (
+	T1.bg_id = T5.batch_group_id
+	AND T1.user_id = T5.actor_id
+)
+WHERE
+	T5.total_event > 0
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>

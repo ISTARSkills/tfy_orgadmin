@@ -61,7 +61,7 @@ public class GetDataForDropdown extends HttpServlet {
 		JSONArray jsonArray = new JSONArray();
 		for (HashMap<String, Object> row : data) {
 			try {
-				jsonArray.put(new JSONObject().put("key",row.get("key").toString()).put("value", row.get("value").toString()));
+				jsonArray.put(new JSONObject().put("key",row.get("key").toString()).put("value", row.get("key").toString()));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

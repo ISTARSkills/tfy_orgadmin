@@ -57,6 +57,11 @@ div.dataTables_wrapper div.dataTables_filter input {
 	margin-left: 0.5em;
 	display: inline-block;
 	width: auto
+	    margin-left: 0.5em;
+    display: inline-block;
+    width: auto;
+    padding: 0px;
+    margin-top: -6px;
 }
 
 div.dataTables_wrapper div.dataTables_info {

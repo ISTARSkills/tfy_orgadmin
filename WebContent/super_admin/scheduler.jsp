@@ -31,20 +31,25 @@
 				}
 				
 			%>
-			<div class="row">
+			   <%
+					String[] brd = { "Dashboard" };
+				%>
+				<%=UIUtils.getPageHeader("Scheduler", brd)%>
+			<div class="row card-box scheduler_margin-box card-box">
 				<div class="col-lg-12">
-					<div class="tabs-container">
-                        <ul class="nav nav-tabs">
+					<div class="" id='scheduler_tab_cotainer'>
+                      <ul class="nav nav-tabs tabs-bordered nav-justified">
                             <li class="active"><a data-toggle="tab" href="#tab-m" aria-expanded="true"> Manual Scheduler</a></li>
+    
                             <li class=""><a data-toggle="tab" href="#tab-a" aria-expanded="false" id="dddddddd">Auto Scheduler</a></li>
                         </ul>
                         <div class="tab-content">
-                            <div id="tab-m" class="tab-pane active">
+                            <div id="tab-m" class="active tab-pane div-min-height">
                                 <div class="panel-body">
                                    <jsp:include page="scheduler/super_admin_scheduler_wrapper.jsp"></jsp:include>
                                 </div>
                             </div>
-                            <div id="tab-a" class="tab-pane">
+                            <div id="tab-a" class="tab-pane div-min-height">
                                 <div class="panel-body">
                                    <jsp:include page="scheduler/super_admin_auto_scheduler.jsp"></jsp:include>
                                     </div>

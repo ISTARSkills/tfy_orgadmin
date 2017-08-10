@@ -174,7 +174,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 				
 				 		}
  				%>
-					<ul class="dropdown-menu mega-menu" style="background-color: #efedf9;">
+					<ul class="dropdown-menu mega-menu" style="background-color: white;left: -100px;">
 						<%
 							for (String state : orgs.keySet()) {
 									System.out.println("statte-" + state + "----- ");
@@ -248,7 +248,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 
 
 			</ul>
-			<ul class="nav navbar-top-links navbar-right">
+			<ul class="nav navbar-top-links navbar-right" style="display:flex">
 			<%if(loggedInRole.equalsIgnoreCase("TRAINER") || loggedInRole.equalsIgnoreCase("STUDENT") || loggedInRole.equalsIgnoreCase("MASTER_TRAINER")){ %>
 			
 				<span class="label" style="color: #eb384f; font-size: 15px; background: white;"><img alt="" src="/assets/img/user_images/coins_icon.png" style="width: 14px;"> <%=cp != null && cp.getStudentProfile() != null && cp.getStudentProfile().getCoins() != null
@@ -325,7 +325,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 				if (user != null && user.getUserProfile() != null) {
 					imageurl = "http://cdn.talentify.in:9999/"+user.getUserProfile().getProfileImage();
 				} %>
-				<img style="height: 34px !important; margin-right: -11px;" src="<%=imageurl%> " class="img-circle img-md">
+				<img style="height: 34px !important; margin-top: 8px;" src="<%=imageurl%> " class="img-circle img-md">
 				<li class="dropdown">
 				<a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown">  Welcome &nbsp;&nbsp;&nbsp;<%=user.getUserProfile().getFirstName()%><span class="caret"></span>
 				</a>

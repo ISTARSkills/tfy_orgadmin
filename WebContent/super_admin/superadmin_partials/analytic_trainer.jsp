@@ -7,14 +7,13 @@
 <% 
 UIUtils ui_Util = new UIUtils();
  %>
-<div class="row border-bottom white-bg report-padding ">
+<div class="row border-bottom white-bg  ">
 	<div class="ibox no-margins no-padding bg-muted p-xs">
 		<div class="ibox-content">
 
 			<div class="row">
 				<div class="col-lg-4">
-					<div id="container11"
-						style="min-width: 310px; height: 400px; margin: 0 auto">
+					<div class='customcss_dataTable' id="container11">
 
 						<div class="spiner-example spinner-animation-holder_User"
 							id="trainer_spiner1">
@@ -32,8 +31,7 @@ UIUtils ui_Util = new UIUtils();
 				</div>
 				<div class="col-lg-4">
 
-					<div id="container12"
-						style="min-width: 310px; height: 400px; margin: 0 auto">
+					<div class='customcss_dataTable' id="container12">
 
 						<div class="spiner-example spinner-animation-holder_User"
 							id="trainer_spiner2">
@@ -51,8 +49,7 @@ UIUtils ui_Util = new UIUtils();
 				</div>
 				<div class="col-lg-4">
 
-					<div id="container13"
-						style="min-width: 310px; height: 400px; margin: 0 auto">
+					<div class='customcss_dataTable' id="container13">
 
 						<div class="spiner-example spinner-animation-holder_User"
 							id="trainer_spiner3">
@@ -76,83 +73,84 @@ UIUtils ui_Util = new UIUtils();
 	</div>
 </div>
 <div class="row border-bottom white-bg">
-	<div class="col-lg-12 gray-bg">
-		<div class="tabs-container" style="padding-top: 5px">
+	<div class="col-lg-12 gray-bg custom_css-trainer_mastertrainer">
+		<div class="tabs-container">
 			<ul class="nav nav-tabs">
 				<li class="active"><a data-toggle="tab" href="#trainer_tab">Trainer</a></li>
-				<li class=""><a data-toggle="tab" href="#master_trainer_tab">Master Trainer</a></li>
+				<li class=""><a data-toggle="tab" href="#master_trainer_tab">Master
+						Trainer</a></li>
 			</ul>
 			<div class="tab-content">
 				<div id="trainer_tab" class="tab-pane active">
 					<div class="panel-body">
 						<div class="gray-bg">
-			<div class="row">
+							<div class="row">
 
-			<div class="col-lg-12">
-				
-				<div class="no-paddings bg-muted">
-					  <div class="ibox-title">
-                        <h5>Trainer List</h5>
-                        
-                    </div> 
-					<div class="ibox-content">
-						<%HashMap<String, String> conditions = new HashMap();
+								<div class="col-lg-12">
+
+									<div class="no-paddings bg-muted">
+										<div class="ibox-title">
+											<h5>Trainer List</h5>
+
+										</div>
+										<div class="ibox-content">
+											<%HashMap<String, String> conditions = new HashMap();
 						conditions.put("limit", "12");
 						conditions.put("offset", "0");
 						conditions.put("static_table", "true");	
 						ReportUtils util = new ReportUtils();
 						%>
-						
-						<%= util.getTableFilters(Integer.parseInt("3077"), conditions) %>
-						
-						
-						
-                           						
-						<%= util.getTableOuterHTML(Integer.parseInt("3077"), conditions) %>
-				<%%>
-					</div>
-				</div>
-				</div>
-				</div>
-				
-				
-		</div>
+
+											<%= util.getTableFilters(Integer.parseInt("3077"), conditions) %>
+
+
+
+
+											<%= util.getTableOuterHTML(Integer.parseInt("3077"), conditions) %>
+											<%%>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
 					</div>
 				</div>
 				<div id="master_trainer_tab" class="tab-pane">
 					<div class="panel-body">
 						<div class="gray-bg">
-			<div class="row">
+							<div class="row">
 
-			<div class="col-lg-12">
-				
-				<div class="no-paddings bg-muted">
-					<div class="ibox-title">
-                        <h5>Master Trainer List</h5>
-                        
-                    </div>
-					<div class="ibox-content">
-						<%HashMap<String, String> conditions2 = new HashMap();
+								<div class="col-lg-12">
+
+									<div class="no-paddings bg-muted">
+										<div class="ibox-title">
+											<h5>Master Trainer List</h5>
+
+										</div>
+										<div class="ibox-content">
+											<%HashMap<String, String> conditions2 = new HashMap();
 						conditions2.put("limit", "12");
 						conditions2.put("offset", "0");
 						conditions2.put("static_table", "true");	
 						ReportUtils util2 = new ReportUtils();
 						%>
-						
-						<%= util2.getTableFilters(Integer.parseInt("3078"), conditions2) %>
-						
-						
-						
-                           						
-						<%= util2.getTableOuterHTML(Integer.parseInt("3078"), conditions) %>
-				<%%>
-					</div>
-				</div>
-				</div>
-				</div>
-				
-				
-		</div>
+
+											<%= util2.getTableFilters(Integer.parseInt("3078"), conditions2) %>
+
+
+
+
+											<%= util2.getTableOuterHTML(Integer.parseInt("3078"), conditions) %>
+											<%%>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						</div>
 					</div>
 				</div>
 			</div>

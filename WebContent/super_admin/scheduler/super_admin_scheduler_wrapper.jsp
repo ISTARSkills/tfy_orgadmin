@@ -25,11 +25,9 @@
 				}
 				
 			%>
-<div class="ibox float-e-margins no-margins bg-muted">
-						<div class="ibox-content">
-							<div class="row show-grid white-bg" style="    margin: 0px;">
-								<div class="col-lg-3 white-bg no-borders whit-bg-schedular" style="    padding-left: 1px;
-    padding-top: 0px;">
+						<div class="ibox-content" id='manual_scheduler_block'>
+							<div class="row show-grid white-bg no-margins bg-muted customcss_bg_color">
+								<div class="col-lg-3 white-bg no-borders whit-bg-schedular customcss_p-t-none">
 									<h1 class="text-danger font-bold">Create A New Event</h1>
 									<div class="tabs-container">
 										<ul class="nav nav-tabs gray-bg-schedular super_admin_scheduler">
@@ -38,7 +36,7 @@
 											<li class="<%=target.equalsIgnoreCase("tab_3")? "active":"" %>"><a id="tab_3" data-toggle="tab" href="#tab-3">Weekly</a></li>
 										</ul>
 										
-										<div class="tab-content">
+										<div class="tab-content customcss_border">
 										
 										<div id="tab-1" class="<%=target.equalsIgnoreCase("tab_1")? "active":"" %> tab-pane">
 										<jsp:include page="single_event.jsp">
@@ -65,10 +63,10 @@
 
 
 								</div>
-								<div class="col-lg-9 no-padding bg-muted">
-									<div class="ibox no-padding no-margins bg-muted p-xs" style="padding-top: 5px;">
+								<div class="col-lg-9 no-padding bg-muted customcss_bg_color">
+									<div class="ibox no-padding no-margins bg-muted p-xs">
 										<%=new ColourCodeUitls().getColourCode() %>
-										<div class="ibox-content">
+										<div class="ibox-content customcss_scheduler_height">
 											<%
 											CalenderUtils  calUtil = new CalenderUtils();
 											HashMap<String, String> input_params = new HashMap();
@@ -85,7 +83,7 @@
 									<input id="orgID" type="hidden" value="<%=colegeID %>" />
 									<div class="modal-dialog modal-lg">
 										<div class="modal-content">
-											<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
+											<div class="panel panel-primary custom-theme-panel-primary no-margins bg-muted">
                                         <div class="panel-heading custom-theme-panal-color">
 												<button type="button" class="close" data-dismiss="modal">
 													<span aria-hidden="true">&times;</span><span
@@ -142,6 +140,3 @@
 							</div>
 
 						</div>
-
-
-					</div>

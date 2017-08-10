@@ -1,3 +1,4 @@
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
@@ -11,22 +12,29 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content white-bg">
+			<div class="wrapper wrapper-content white-bg" style="padding: 4px;">
+			<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Classroom(s)", brd) %>
+				<div class="row white-bg"
+					style="padding-left: 22px; padding-right: 22px;">
+					<button type="button" class="btn btn-w-m btn-danger" id="class-add"
+						data-url='<%=baseURL%>super_admin/partials/modal/create_edit_classroom_modal.jsp?type=Create'
+						style="margin-top: 16px;">Add Class Room</button>
+					<br>
+					<br>
 
-				<div class="row white-bg">
-				<button type="button" class="btn btn-w-m btn-danger" id="class-add" data-url='<%=baseURL%>super_admin/partials/modal/create_edit_classroom_modal.jsp?type=Create'  style="margin-top: 16px;">Add Class Room</button>
-								<br><br>
-					
 				</div>
 
-				<div class="row">
+				<div class="row card-box" id='classromm_holder' style="margin-left: 10px;    margin-right: 10px;">
 					<%
-				ReportUtils util = new ReportUtils();
-				HashMap<String, String> conditions = new HashMap();
-				conditions.put("limit", "12");
-				conditions.put("offset", "0");							
-				%>				
-				<%=util.getTableOuterHTML(3055, conditions)%>
+						ReportUtils util = new ReportUtils();
+						HashMap<String, String> conditions = new HashMap();
+						conditions.put("limit", "12");
+						conditions.put("offset", "0");
+					%>
+					<%=util.getTableOuterHTML(3055, conditions)%>
 				</div>
 
 			</div>

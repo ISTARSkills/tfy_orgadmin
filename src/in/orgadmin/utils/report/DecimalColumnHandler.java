@@ -4,36 +4,38 @@
 package in.orgadmin.utils.report;
 
 /**
- * @author mayank
+ * @author Istar
  *
  */
-public class RatingHandler extends ColumnHandler {
+public class DecimalColumnHandler extends ColumnHandler {
 
 	/* (non-Javadoc)
 	 * @see in.orgadmin.utils.report.ColumnHandler#getHTML(java.lang.String, int)
 	 */
 	@Override
 	public StringBuffer getHTML(String value, int reportID) {
-		int rating = Integer.parseInt(value);
+		int rating = (int)Float.parseFloat(value);
 		StringBuffer stars=new StringBuffer();
 		if(rating > 0){
 			
 			for(int i=0; i<rating ; i++)
 			{
-				stars.append("<i class='fa fa-star'></i>");
+				stars.append("<i class='fa fa-star' style='    color: #ed5565;'></i>");
 			}
 			if(rating <5){
 			for(int j=rating; j<5;j++){
-				stars.append("<i class='fa fa-star-o'></i>");
+				stars.append("<i class='fa fa-star-o' style='    color: #ed5565;'></i>");
 			}
 			}
 		}else{
-			 stars=new StringBuffer("<i class='fa fa-star-o'></i><i class='fa fa-star-o'></i><i class='fa fa-star-o'></i><i class='fa fa-star-o'></i><i class='fa fa-star-o'></i>");
+			 stars=new StringBuffer("<i class='fa fa-star-o' style='    color: #ed5565;'></i><i class='fa fa-star-o' style='    color: #ed5565;'></i><i class='fa fa-star-o' style='    color: #ed5565;'></i><i class='fa fa-star-o' style='    color: #ed5565;'></i><i class='fa fa-star-o' style='    color: #ed5565;'></i>");
 			
 		}
 		
 		return stars;
 	}
+
+	
 	@Override
 	public StringBuffer getOrder(String string, int reportID) {
 		StringBuffer sb = new StringBuffer(string);

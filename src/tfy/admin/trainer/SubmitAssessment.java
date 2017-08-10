@@ -87,46 +87,54 @@ Param -> question_time_taken_3 : Value ->-11*/
 		{
 			if(userRole.getRole().getRoleName().equalsIgnoreCase("TRAINER"))
 			{
-				String getAssessment ="select course_id, assessment_id from course_assessment_mapping where assessment_id = "+assessmentId;
-				List<HashMap<String, Object>>courseAssessment = util.executeQuery(getAssessment);
-				for(HashMap<String, Object> row: courseAssessment)
+				String checkIfTrainerIsActive ="select cast (count(*) as integer) as cnt from trainer_course_status where trainer_id = "+user.getId()+" and status ='ACTIVE'";
+				List<HashMap<String, Object>> activeDate = util.executeQuery(checkIfTrainerIsActive);
+				if(activeDate.size()>0 && activeDate.get(0).get("cnt")!=null && (int)activeDate.get(0).get("cnt")==0)
 				{
-					String courseId = row.get("course_id").toString();
-					String findPercentage="select (case when count(*) >0  then cast (((count(*) filter(where correct='t'))*100)/(count(*)) as integer)  else 0 end) as percentage from student_assessment where assessment_id= "+assessmentId+" and student_id = "+user.getId();
-					List<HashMap<String, Object>> percentageData = util.executeQuery(findPercentage);
-					if(percentageData.size()>0 && percentageData.get(0).get("percentage")!=null)
+					
+				
+					String getAssessment ="select course_id, assessment_id from course_assessment_mapping where assessment_id = "+assessmentId;
+					List<HashMap<String, Object>>courseAssessment = util.executeQuery(getAssessment);
+					for(HashMap<String, Object> row: courseAssessment)
 					{
-						int perc = (int)percentageData.get(0).get("percentage");
-						int percBenchMark = 0; 
-						try {
-							Properties  properties = new Properties();
-							String propertyFileName = "app.properties";
-							InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-							if (inputStream != null) {
-								properties.load(inputStream);
-								percBenchMark = Integer.parseInt(properties.getProperty("percentage_benchmark"));
-							}
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						String status =TrainerEmpanelmentStatusTypes.REJECTED;
-						if(perc>=percBenchMark)
+						String courseId = row.get("course_id").toString();
+						String findPercentage="select (case when count(*) >0  then cast (((count(*) filter(where correct='t'))*100)/(count(*)) as integer)  else 0 end) as percentage from student_assessment where assessment_id= "+assessmentId+" and student_id = "+user.getId();
+						List<HashMap<String, Object>> percentageData = util.executeQuery(findPercentage);
+						if(percentageData.size()>0 && percentageData.get(0).get("percentage")!=null)
 						{
-							status = TrainerEmpanelmentStatusTypes.SELECTED;
+							int perc = (int)percentageData.get(0).get("percentage");
+							int percBenchMark = 0; 
+							try {
+								Properties  properties = new Properties();
+								String propertyFileName = "app.properties";
+								InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
+								if (inputStream != null) {
+									properties.load(inputStream);
+									percBenchMark = Integer.parseInt(properties.getProperty("percentage_benchmark"));
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							String status =TrainerEmpanelmentStatusTypes.REJECTED;
+							if(perc>=percBenchMark)
+							{
+								status = TrainerEmpanelmentStatusTypes.SELECTED;
+							}
+							
+							String checkIfExist ="select cast (count(*) as integer) as total from trainer_empanelment_status where stage ='L3' and trainer_id = "+user.getId()+" and course_id = "+courseId;
+							List<HashMap<String, Object>> oldData = util.executeQuery(checkIfExist);
+							if(oldData.size()>0 && oldData.get(0).get("total")!=null && (int)oldData.get(0).get("total")==0)
+							{
+								String insertIntoEmpanelMentStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
+									+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+user.getId()+", '"+status+"', now(), 'L3', "+courseId+");";
+								util.executeUpdate(insertIntoEmpanelMentStatus);
+							}
 						}
 						
-						String checkIfExist ="select cast (count(*) as integer) as total from trainer_empanelment_status where stage ='L3' and trainer_id = "+user.getId()+" and course_id = "+courseId;
-						List<HashMap<String, Object>> oldData = util.executeQuery(checkIfExist);
-						if(oldData.size()>0 && oldData.get(0).get("total")!=null && (int)oldData.get(0).get("total")==0)
-						{
-							String insertIntoEmpanelMentStatus = "INSERT INTO trainer_empanelment_status (id, trainer_id, empanelment_status, created_at, stage, course_id) "
-								+ "VALUES ((select COALESCE(max(id),0)+1 from trainer_empanelment_status), "+user.getId()+", '"+status+"', now(), 'L3', "+courseId+");";
-							util.executeUpdate(insertIntoEmpanelMentStatus);
-						}
 					}
-					
-				}
-				break;
+					break;
+				}	
+				
 			}
 		}
 		response.sendRedirect("/student/dashboard.jsp");

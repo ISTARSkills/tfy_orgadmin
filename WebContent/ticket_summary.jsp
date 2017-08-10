@@ -79,10 +79,10 @@ Timestamp updetdat = (Timestamp)ticketData.get(0).get("updated_at");
                                     	%>
                                     	<div class="chat-message <%=align%>">
                                         <img class="message-avatar" src="http://cdn.talentify.in/video/android_images/<%=commentor.getUserProfile().getFirstName().toUpperCase().substring(0, 1)%>.png" alt="">
-                                        <div class="message">
+                                        <div class="message card-box">
                                             <a class="message-author" href="#"> <%=commentor.getUserProfile().getFirstName()%> </a>
                                             <span class="message-date"><%= pt.format(commentedAt)%></span>
-                                            <span class="message-content">
+                                            <span class="message-content ">
 											<%=row.get("comment")%>
                                             </span>
                                         </div>

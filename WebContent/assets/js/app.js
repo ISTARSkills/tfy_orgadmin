@@ -232,10 +232,11 @@ function readyFn(jQuery) {
 		init_custom_task();
 		break;
 	case 'custom_report':
-		$('select').select2();
+		init_custom_report();
+		
 		break;
 	case 'custom_task_report_superadmin':
-		$('select').select2();
+		init_custom_task_report_superadmin();
 		break;
 	default:
 		init_orgadmin_none();
@@ -266,6 +267,14 @@ function readyFn(jQuery) {
 	        data: JSON.stringify(notifications),
 	        success: function(data) {	
 	        }});
+	});
+	
+	$('#router').on("change",function(){
+		if($(this).val() == 'NO'){
+			$('#router_capacity').addClass("hidden");
+		}else{
+			$('#router_capacity').removeClass("hidden");
+		}
 	});
 	
 	
@@ -544,18 +553,26 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             { extend: 'copy'},
-			             {extend: 'csv'},
-			             {extend: 'excel', title: 'ExampleFile'},
-			             {extend: 'pdf', title: 'ExampleFile'},
-			             {extend: 'print',
-			              customize: function (win){
-			                     $(win.document.body).addClass('white-bg');
-			                     $(win.document.body).css('font-size', '10px');
-			                     $(win.document.body).find('table')
-			                             .addClass('compact')
-			                             .css('font-size', 'inherit');
-			             }
+			             {
+			                 text: 'Download CSV File',
+			                data:'CSV',
+			                 action: function ( e, dt, node, config ) {
+			                     var reportID = dt;
+			                     console.log(">>>>>>id>>>>"+id.split('_')[2]);
+			                     console.log(">>>>>>>>>>"+$('.html5buttons > div >a').attr('aria-controls').split('_')[2]);
+			                    var reportID = $('.html5buttons > div >a').attr('aria-controls').split('_')[2]
+			                    var key = $('.html5buttons > div >a').text().trim();
+			                     
+			                     $.ajax({
+			       		            type: "POST",
+			       		            url: "/ReportExtractController",
+			       		            data: {key:key, reportID:reportID},
+			       		            success: function(data){
+			       		            	  	
+			       		            }
+			       		        });
+			                     
+			                 }
 			             }
 			         ], "processing": true,
 			         "serverSide": false,
@@ -606,18 +623,13 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             { extend: 'copy'},
-			             {extend: 'csv'},
-			             {extend: 'excel', title: 'ExampleFile'},
-			             {extend: 'pdf', title: 'ExampleFile'},
-			             {extend: 'print',
-			              customize: function (win){
-			                     $(win.document.body).addClass('white-bg');
-			                     $(win.document.body).css('font-size', '10px');
-			                     $(win.document.body).find('table')
-			                             .addClass('compact')
-			                             .css('font-size', 'inherit');
-			             }
+			             {
+			                 text: 'My button605',
+			                 action: function ( e, dt, node, config ) {
+			                     this.text( 'My button ('+config.counter+')' );
+			                     config.counter++;
+			                 },
+			                 counter: 1
 			             }
 			         ], "processing": true,
 			         "serverSide": true,
@@ -3523,7 +3535,61 @@ function  create_program_view_datatable(flag) {
 
 
 function admin_edit_modal_create() {
+	
 	    $('.edit_modal').unbind().on('shown.bs.modal', function() {
+	    	
+	    	$('.college_id').on('change', function(){
+	    		
+	    		var college_id = $(this).val();
+	    		var url = '../event_utility_controller'
+	    		    $.post(url, {
+	    		    	college_id : college_id,
+	    		    	type : "userOrgfilter"
+	    		        },
+	    		        function(data) {
+
+	    		      $('.batch_group_holder').html(data);
+	    		      set_batchgroup_data();
+	    		      $('.main_batch_group_holder').select2();
+	    		     
+	    	
+	    		        });
+	    		
+	    		
+	    	});
+	    	
+	    	
+	    	$('.del_istar_user').click(function () {
+	    	    swal({
+	    	        title: "Are you sure?",
+	    	        text: "You will not be able to recover this User data!",
+	    	        type: "warning",
+	    	        showCancelButton: true,
+	    	        confirmButtonColor: "#DD6B55",
+	    	        confirmButtonText: "Yes, delete it!",
+	    	        closeOnConfirm: false
+	    	    },  function (isConfirm) {
+        	    	if(isConfirm){
+        	    		var user_id = $("input[name=user_id]").val();
+        	    		var url = '../createOrUpdateUser'
+        	    		    $.post(url, {
+        	    		    	key : 'delete',
+        	    		    	user_id : user_id
+        	    		        },
+        	    		        function(data) { });
+        	    		
+        	    		
+        	    		
+        	    		swal("Done", "Your User data has been deleted", "success");
+        	    		location.reload();
+        	    		
+        	    	}else{
+        	    		swal("Cancelled", "Something went wrong!", "error");
+        	    	}
+        	    });
+	    	});
+	    	
+	    	
 	        var x = $('#' + $(this).attr('id'));
 	        setTimeout(function() {
 	                var sel = "";
@@ -3533,15 +3599,46 @@ function admin_edit_modal_create() {
 	                    });
 
 	                $("input[name='student_list']").val(sel.substring(0, sel.length - 1));
+	                var sel = "";
+	                
+	                x.find('.multi_batch_groups_div').find('select.select2-dropdown>option:selected').each(
+		                    function() {
+		                        sel += this.value +",";
+		                    });
+	                
+	                
 	                $("input[name='batch_groups']").val(sel.substring(0, sel.length - 1));
+	                
+                     var sel = "";
+	                
+	                x.find('.multi_user_type_div').find('select.select2-dropdown>option:selected').each(
+		                    function() {
+		                        sel += this.value +",";
+		                    });
+	                
+	               $("input[name='user_type']").val(sel.substring(0, sel.length - 1));
 
 	               // $('select').select2();
 	                
 	                $('.select2-dropdown').on("change",function() {
 	                        var kk = $(this).val();
 	                        $("input[name='student_list']").val(kk);
-	                        $("input[name='batch_groups']").val(kk);
-	                 });
+	                 
+	                    });
+	                
+	                
+	                $('.multi_batch_groups').on('change', function(){	            		
+	                	 var kk = $(this).val();
+	                	 $("input[name='batch_groups']").val(kk);
+	            		
+	            	});
+	                $('.multi_user_type').on('change', function(){	            		
+	                	 var kk = $(this).val();
+	                	 $("input[name='user_type']").val(kk);
+	            		
+	            	});
+	                
+	                
 	            }, 1000);
 
 	    });
@@ -4628,7 +4725,7 @@ function accountmanagment_card_init() {
 
 function set_batchgroup_data(){
 
-	$('#main_batch_group_holder').on('change', function(){
+	$('.main_batch_group_holder').on('change', function(){
 		var setOfBatchGroup = []
 		var batchGroup = $(this).val();
 		
@@ -4640,6 +4737,51 @@ function set_batchgroup_data(){
 	});
 	
 }
+function init_student_card(){
+	
+	var progress;
+	progress = $('#progress-nos').attr('va');
+	console.log("progress------" + progress);
+	$(".my-progress-bar").circularProgress({
+		line_width : 4,
+		height : "140px",
+		width : "140px",
+		color : "#eb384f",
+		starting_position : 0, // 12.00 o' clock position, 25 stands for 3.00 o'clock (clock-wise)
+		percent : 0, // percent starts from
+		percentage : true,
+		text : "Profile Completed"
+	}).circularProgress('animate', progress, 5000);
+
+	$('.btn-white').click(function(){
+		var icon_class = $(this).find('i').attr('class');
+		var button_icon = $(this).find('i');
+		if(icon_class === 'fa fa-pencil'){
+			button_icon.removeClass(icon_class);
+			button_icon.addClass('fa fa-check');
+			$(this).parent().siblings().removeAttr('disabled');
+			
+		}else{
+			button_icon.removeClass(icon_class);
+			button_icon.addClass('fa fa-pencil');
+			$(this).parent().siblings().attr('disabled', 'disabled');
+			
+			
+			var serialized = form.serialize();
+			console.log(serialized);
+			$.ajax({
+		        type: "POST",
+		        url: "gvygv",
+		        data: {serialized},
+		        success: function(data) {
+		        	console.log('success');
+		        }});
+			
+		}
+	});
+	
+	
+}
 
 function init_super_admin_usermgmt(){
 	//use existing orgadmin scripts
@@ -4647,8 +4789,9 @@ function init_super_admin_usermgmt(){
 	user_filter_by_course_batch();
 	admin_edit_modal_create();
 	set_batchgroup_data();
+	init_student_card();
 	
-$('#college_id').on('change', function(){
+$('.college_id').on('change', function(){
 		
 		var college_id = $(this).val();
 		var url = '../event_utility_controller'
@@ -4658,46 +4801,35 @@ $('#college_id').on('change', function(){
 		        },
 		        function(data) {
 
-		      $('#batch_group_holder').html(data);
+		      $('.batch_group_holder').html(data);
 		      set_batchgroup_data();
-		      $('#main_batch_group_holder').select2();
+		      $('.main_batch_group_holder').select2();
 		     
 	
 		        });
 		
 		
 	});
-	
-	$('.userType').on('change', function(){
-		var user_type = $(this).val();
-		if(user_type === 'TRAINER'){
-			$('#hide_college_holder').hide();
-			//$('#hide_group_holder').hide();
-			$('#hide_role_holder').hide();
-			$('#user_type').val('TRAINER');
-			$('#college_id').val('2').trigger('change');
-			var url = '../event_utility_controller'
-			    $.post(url, {
-			    	college_id : '2',
-			    	type : "userOrgfilter"
-			        },
-			        function(data) {
-
-			      $('#batch_group_holder').html(data);
-			      set_batchgroup_data();
-			      $('#main_batch_group_holder').select2();
-			     
+var user_type = "";
+	$('.multi_user_type').on('change', function(){
 		
-			        });
-			
-			
-		}else{
-			$('#hide_college_holder').show();
-			//$('#hide_group_holder').show();
-			$('#hide_role_holder').show();
-			$('#user_type').val('STUDENT');
-		}
+	
+		user_type = $(this).val()+',';
+		user_type = user_type.substring(0, user_type.length - 1);
+		$('#user_type').val(user_type);
+		
+		
 		 set_batchgroup_data();
+		
+	});
+	var batch_groups = "";
+	$('.multi_batch_groups').on('change', function(){
+		
+		
+		batch_groups = $(this).val()+',';
+		batch_groups = batch_groups.substring(0, batch_groups.length - 1);
+		$('#batch_groups').val(batch_groups);
+		// set_batchgroup_data();
 		
 	});
 	
@@ -4748,6 +4880,8 @@ function init_super_admin_scheduler(){
 						 
 			 var url = '../super_admin/scheduler.jsp?orgID='+ orgID+'&target='+target;
 											window.location.href = url;
+											
+											
 											
 	   });
 	   
@@ -4823,7 +4957,7 @@ function init_super_admin_analytics() {
     $('.org_holder').change(function() {
         var orgID = this.value;
         accountsData(orgID);
-
+       
     });
 
    /* coursesData($('.org_holder_programTab').val());
@@ -4871,8 +5005,9 @@ function accountsData(orgID) {
         function(data) {
 
             $('#super_admin_batch_programs').html(data);
-            
+
             accountsUtils();
+            
         });
 }
 
@@ -6114,7 +6249,7 @@ function init_opsReport(){
 
 
 function init_reports_section(){
-	
+	$('select').select2();
 	
 	  $('.report_college').on("change", function() {
 			var orgId = $(this).val();
@@ -6675,48 +6810,61 @@ function init_custom_task(){
         onStepChanging: function (event, currentIndex, newIndex)
         {
         	//alert('onStepChanging');
-        	if(newIndex === 4 || currentIndex === 4 || newIndex === 5 || currentIndex === 5)
-        	{
-        		var checkValidation = false;
-        		$('.current textarea').each(function() { 
-        			var my_text =$('#'+$(this).attr('id')).siblings('label').text();
-        			console.log(my_text);
-            		console.log('......>>>> '+$(this).attr('id'));
-            		//console.log('......>>>> '+$('#'+$(this).attr('id')));
-            	//	console.log('......>>>> '+$('#'+$(this).attr('id')).parent().children().text());
-            		if($(this).val() === ''){	
-            			checkValidation = false;
-            			
-            		}else{
-            			checkValidation = true;
-            		}
-            		});
-        		if(checkValidation){
-        			return true;	
-        		}else{
-        			alert('Please fill all the fields');
-        			return false;
-        			
+        	var is_valid = true;
+        	$('.form-control').each(function(){
+        		var input =  $(this);
+        		var input_id = $(this).attr('id');
+        		var input_text =  $(this).val();
+        		if(input.data('validation_type')!=null && input.data('validation_type')==='PATTERN')
+        		{
+        			var pattern = input.attr('pattern');
+        			var regex =  new RegExp(pattern);
+        			if(!regex.test(input_text))
+        			{     			
+        				$('#warning_'+input_id).show();  
+        				is_valid = false;
+        				
+        			}else{
+        				$('#warning_'+input_id).hide();
+        			}
         		}
-        	}
+        		else if(input.data('validation_type')!=null && input.data('validation_type')==='ALPHANUMERIC'){
+        			var pattern = '^[a-zA-Z0-9]+$';
+        			var regex =  new RegExp(pattern);
+        			if(!regex.test(input_text))
+        			{     			
+        				$('#warning_'+input_id).show();  
+        				is_valid = false;
+        				
+        			}else{
+        				$('#warning_'+input_id).hide();
+        			}
+        		}
+        		
+        		
+        	});
         	
-            if (currentIndex > newIndex)
-            {
-            	
-                return true;
-            }
-            if (newIndex === 3 && Number($("#age").val()) < 18)
-            {
-                return false;
-            }
-            var form = $(this);
+        	
+        	
+        	
+           
             if (currentIndex < newIndex)
             {
                 $(".body:eq(" + newIndex + ") label.error", form).remove();
                 $(".body:eq(" + newIndex + ") .error", form).removeClass("error");
             }
-            form.validate().settings.ignore = ":disabled,:hidden";
-            return form.valid();
+            var form = $(this);
+    		form.validate().settings.ignore = ":disabled,:hidden";
+            if(form.valid() && is_valid)
+            {
+            	return true;
+            }
+            else
+            {
+            	return false;
+            }	
+    		
+    		
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
@@ -6778,6 +6926,25 @@ function init_custom_task(){
                 url: '/custom_task_factory',
                 data: serilaized,
                 success: function(result) {
+                	if(result != null && result != ''){
+                		swal({
+                	        title: "Are you sure to Submit Form?",
+                	        type: "warning",
+                	        showCancelButton: true,
+                	        confirmButtonColor: "#DD6B55",
+                	        confirmButtonText: "Yes, Submit!",
+                	        closeOnConfirm: false
+                	    }, function (isConfirm) {
+                	    	if(isConfirm){
+                	    		var host = window.location.host;
+                	    		swal("Done", "Thanks for your input!", "success");
+                	    		window.location.href='http://'+host;
+                	    	}else{
+                	    		swal("Cancelled", "Something went wrong!", "error");
+                	    	}
+                	    });
+                		
+                	}
                 }
             });
             
@@ -6962,4 +7129,458 @@ function formatRepoForCustom(repo) {
 
 function formatRepoSelectionForCustom(repo) {
 	return repo.value;
+}
+
+function viewAttendanceFunction(){
+	
+	$('.view_attendance').unbind().on("click",function(){
+		
+		var eventId = $(this).attr('id');
+		
+		$.ajax({
+	        type: "POST",
+	        url: '../task_delete',
+	        data: {
+	        	key:'view_attendance',
+	        	eventId:eventId
+	        },
+	        success: function(result) {
+	          console.log(result);
+	        	$("#addendance_data_holder").empty();
+	        	$("#addendance_data_holder").append(result);
+	        	
+	        }
+	    });
+		
+	});
+	
+	
+	
+	
+}
+
+function init_custom_report(){
+	
+	$('select').select2();
+	
+	var startDateVar;
+	var endDateVar;
+	
+	var report_id = $('.custom_card-box').attr('data-report_id');
+	var org_id = $('.custom_card-box').attr('data-org_id');
+	if(report_id === '3074'){
+		viewAttendanceFunction();
+	}
+	var filterParam=[];   
+	$('.date_range_filter').each(function() 
+	{
+		var id = $(this).attr('id');
+		var min_date = $(this).data('min_date'); //June 12, 2017
+		var max_date = $(this).data('max_date');
+		var monthArray= [];
+		monthArray['January']='01';
+		monthArray['February']='02';
+		monthArray['March']='03';
+		monthArray['April']='04';
+		monthArray['May']='05';
+		monthArray['June']='06';
+		monthArray['July']='07';
+		monthArray['August']='08';
+		monthArray['September']='09';
+		monthArray['October']='10';
+		monthArray['November']='11';
+		monthArray['December']='12';
+		
+		startDateVar = min_date.split(" ")[2]+monthArray[min_date.split(" ")[0]]+min_date.split(" ")[1].replace(",","");
+		endDateVar = max_date.split(" ")[2]+monthArray[max_date.split(" ")[0]]+max_date.split(" ")[1].replace(",","");
+		$('#'+id+' span').html(min_date + ' - ' + max_date);
+		var column_number = $(this).data('column_number');
+		$(this).daterangepicker({
+	         format: 'MM/DD/YYYY',
+	         startDate: moment().subtract(29, 'days'),
+	         endDate: moment(),
+	         minDate: '01/01/2016',
+	         maxDate: '12/31/2020',
+	         dateLimit: { days: 120 },
+	         showDropdowns: true,
+	         showWeekNumbers: true,
+	         timePicker: false,
+	         timePickerIncrement: 1,
+	         timePicker12Hour: true,
+	         ranges: {
+	             'Today': [moment(), moment()],
+	             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	             'This Month': [moment().startOf('month'), moment().endOf('month')],
+	             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	         },
+	         opens: 'right',
+	         drops: 'down',
+	         buttonClasses: ['btn', 'btn-sm'],
+	         applyClass: 'btn-primary',
+	         cancelClass: 'btn-default',
+	         separator: ' to ',
+	         locale: {
+	             applyLabel: 'Submit',
+	             cancelLabel: 'Cancel',
+	             fromLabel: 'From',
+	             toLabel: 'To',
+	             customRangeLabel: 'Custom',
+	             daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+	             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	             firstDay: 1
+	         }
+	     }, function(start, end, label) {	         	  
+	    	 $('#'+id+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));	
+	         console.log(start.toISOString(), end.toISOString(), label);
+	         startDateVar = start.format('YYYYMMDD');
+	         endDateVar =end.format('YYYYMMDD');
+	          var id = '#chart_datatable_'+report_id;
+        	  var table = $(id).DataTable();
+        	  table.draw(); 
+        	 
+	     });
+		
+		
+		$.fn.dataTableExt.afnFiltering.push(
+				function(oSettings, aData, iDataIndex){
+					var dateStart = startDateVar;
+					var dateEnd = endDateVar;
+					// aData represents the table structure as an array of columns, so the script access the date value 
+					// in the first column of the table via aData[0]
+					var evalDate= parseDateValue(aData[column_number]);
+					
+					if (evalDate >= dateStart && evalDate <= dateEnd) {
+						return true;
+					}
+					else {
+						return false;
+					}
+					
+				});
+
+	});
+	 
+     
+       $( ".int_filter" ).each(function() {
+    	   $this =   $(this);
+    	   var filter_name=$(this).data('filter_name');
+    	   var column_number = $this.data('column_number');
+    	   $this.ionRangeSlider({
+    	         type: 'double',
+    	         prettify: false,
+    	         hasGrid: true, 
+    	         onChange: function (data) {
+					
+    	         },
+    	         onFinish: function (data) {
+    	        	 var id = '#chart_datatable_'+report_id;
+    	        	 var table = $(id).DataTable();
+    	        	 table.draw();
+    	        	 $.fn.dataTable.ext.search.push(
+ 	        			    function( settings, data, dataIndex ) {
+ 	        			        var min = parseInt($this.attr("value").split(';')[0]);
+ 	        			        var max = parseInt(  $this.attr("value").split(';')[1]);
+ 	        			        var age = parseFloat( data[column_number] ) || 0; // use data for the age column 	        			 
+ 	        			        if ( ( isNaN( min ) && isNaN( max ) ) ||
+ 	        			             ( isNaN( min ) && age <= max ) ||
+ 	        			             ( min <= age   && isNaN( max ) ) ||
+ 	        			             ( min <= age   && age <= max ) )
+ 	        			        {
+ 	        			            return true;
+ 	        			        }
+ 	        			        return false;
+ 	        			    }
+ 	        	);
+    	        	
+    	         },
+    	     });
+    	}); 
+     
+   
+	$('.data_table_filter').unbind().on('select2:select select2:unselecting', function(){
+	   var id = $(this).attr('id');
+	   
+	   var tableId = '#chart_datatable_'+report_id;
+  	   var table = $(tableId).DataTable();
+  	   if($("#"+id+" option:selected")!=null && $("#"+id+" option:selected").val()!=null && $("#"+id+" option:selected").val()!=''){
+  		 var filter_name = $(this).data('filter_name');
+  	     var filter_value =$("#"+id+" option:selected").text();
+  	     var column_number = $('#'+id).data('column_number');
+  	     table.columns(column_number).search(filter_value).draw();
+  	   }
+  	   else
+  		{ var column_number = $('#'+id).data('column_number');
+  		 table.columns(column_number).search('').draw();
+  		}	   
+  	   
+  	   $('#'+id).select2();
+	});  
+	
+	function parseDateValue(rawDate) {
+		var monthArray= [];
+		monthArray['Jan']='01';
+		monthArray['Feb']='02';
+		monthArray['Mar']='03';
+		monthArray['Apr']='04';
+		monthArray['May']='05';
+		monthArray['Jun']='06';
+		monthArray['Jul']='07';
+		monthArray['Aug']='08';
+		monthArray['Sep']='09';
+		monthArray['Oct']='10';
+		monthArray['Nov']='11';
+		monthArray['Dec']='12';
+		
+		var dateArray= rawDate.split(" ")[0].split("-");
+		var parsedDate= dateArray[2] + monthArray[dateArray[1]] + dateArray[0];
+		return parsedDate;
+	}
+
+	
+  
+   
+	
+	
+}
+function deleteTaskFunction(){
+	
+	
+	$(".delete_task_btn").click(function(){
+		    
+			var task_id = "";
+			var student_playlist_id =  "";
+			var start_date = "";
+			var end_date = "";
+			var course = "";
+			var entity_type = "";
+			var entity_id = "";
+			
+			var key = $(this).attr("data-task_delete");
+			if(key === 'task_delete'){
+				 task_id = $(this).attr("data-task");
+				 student_playlist_id =  $(this).attr("data-student_playlist_id");
+			}if(key === 'auto_scheduler_task_delete'){
+				
+				 start_date = $(this).attr("data-start_date");
+				 end_date = $(this).attr("data-end_date");
+				 course = $(this).attr("data-course");
+				 entity_type = $(this).attr("data-entity_type");
+				 entity_id = $(this).attr("data-entity_id");
+			}
+			
+			
+			
+			$.ajax({
+		        type: "POST",
+		        url: '../task_delete',
+		        data: {
+		        	key:key,
+		        	task_id:task_id,
+		        	student_playlist_id:student_playlist_id,
+		        	start_date:start_date,
+		        	end_date:end_date,
+		        	entity_type:entity_type,
+		        	entity_id:entity_id,
+		        	course:course
+		        },
+		        success: function(result) {
+		          
+		        	
+		        	location.reload();
+		        }
+		    });
+		          
+		  });
+		
+		
+	}
+function init_custom_task_report_superadmin(){
+	$('select').select2();
+	
+	var startDateVar;
+	var endDateVar;
+	
+	var report_id = $('.card-box').attr('data-report_id');
+	
+	
+	deleteTaskFunction();
+	
+	
+	var filterParam=[];   
+	$('.date_range_filter').each(function() 
+	{
+		var id = $(this).attr('id');
+		var min_date = $(this).data('min_date'); //June 12, 2017
+		var max_date = $(this).data('max_date');
+		var monthArray= [];
+		monthArray['January']='01';
+		monthArray['February']='02';
+		monthArray['March']='03';
+		monthArray['April']='04';
+		monthArray['May']='05';
+		monthArray['June']='06';
+		monthArray['July']='07';
+		monthArray['August']='08';
+		monthArray['September']='09';
+		monthArray['October']='10';
+		monthArray['November']='11';
+		monthArray['December']='12';
+		
+		startDateVar = min_date.split(" ")[2]+monthArray[min_date.split(" ")[0]]+min_date.split(" ")[1].replace(",","");
+		endDateVar = max_date.split(" ")[2]+monthArray[max_date.split(" ")[0]]+max_date.split(" ")[1].replace(",","");
+		$('#'+id+' span').html(min_date + ' - ' + max_date);
+		var column_number = $(this).data('column_number');
+		$(this).daterangepicker({
+	         format: 'MM/DD/YYYY',
+	         startDate: moment().subtract(29, 'days'),
+	         endDate: moment(),
+	         minDate: '01/01/2016',
+	         maxDate: '12/31/2020',
+	         dateLimit: { days: 120 },
+	         showDropdowns: true,
+	         showWeekNumbers: true,
+	         timePicker: false,
+	         timePickerIncrement: 1,
+	         timePicker12Hour: true,
+	         ranges: {
+	             'Today': [moment(), moment()],
+	             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	             'This Month': [moment().startOf('month'), moment().endOf('month')],
+	             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+	         },
+	         opens: 'right',
+	         drops: 'down',
+	         buttonClasses: ['btn', 'btn-sm'],
+	         applyClass: 'btn-primary',
+	         cancelClass: 'btn-default',
+	         separator: ' to ',
+	         locale: {
+	             applyLabel: 'Submit',
+	             cancelLabel: 'Cancel',
+	             fromLabel: 'From',
+	             toLabel: 'To',
+	             customRangeLabel: 'Custom',
+	             daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+	             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	             firstDay: 1
+	         }
+	     }, function(start, end, label) {	         	  
+	    	 $('#'+id+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));	
+	         console.log(start.toISOString(), end.toISOString(), label);
+	         startDateVar = start.format('YYYYMMDD');
+	         endDateVar =end.format('YYYYMMDD');
+	          var id = '#chart_datatable_'+report_id;
+        	  var table = $(id).DataTable();
+               table.draw(); 
+        	  
+	     });
+		
+		
+		$.fn.dataTableExt.afnFiltering.push(
+				function(oSettings, aData, iDataIndex){
+					var dateStart = startDateVar;
+					var dateEnd = endDateVar;
+					// aData represents the table structure as an array of columns, so the script access the date value 
+					// in the first column of the table via aData[0]
+					var evalDate= parseDateValue(aData[column_number]);
+					
+					if (evalDate >= dateStart && evalDate <= dateEnd) {
+						return true;
+					}
+					else {
+						return false;
+					}
+					
+				});
+
+	});
+	 
+     
+       $( ".int_filter" ).each(function() {
+    	   $this =   $(this);
+    	   var filter_name=$(this).data('filter_name');
+    	   var column_number = $this.data('column_number');
+    	   $this.ionRangeSlider({
+    	         type: 'double',
+    	         prettify: false,
+    	         hasGrid: true, 
+    	         onChange: function (data) {
+					
+    	         },
+    	         onFinish: function (data) {
+    	        	 var id = '#chart_datatable_'+report_id;
+    	        	 var table = $(id).DataTable();
+    	        	 table.draw();
+    	        	 $.fn.dataTable.ext.search.push(
+ 	        			    function( settings, data, dataIndex ) {
+ 	        			        var min = parseInt($this.attr("value").split(';')[0]);
+ 	        			        var max = parseInt(  $this.attr("value").split(';')[1]);
+ 	        			        var age = parseFloat( data[column_number] ) || 0; // use data for the age column 	        			 
+ 	        			        if ( ( isNaN( min ) && isNaN( max ) ) ||
+ 	        			             ( isNaN( min ) && age <= max ) ||
+ 	        			             ( min <= age   && isNaN( max ) ) ||
+ 	        			             ( min <= age   && age <= max ) )
+ 	        			        {
+ 	        			            return true;
+ 	        			        }
+ 	        			        return false;
+ 	        			    }
+ 	        	);
+    	        	
+    	         },
+    	     });
+    	}); 
+     
+   
+	$('.data_table_filter').unbind().on('select2:select select2:unselecting', function(){
+	   var id = $(this).attr('id');
+	   
+	   var tableId = '#chart_datatable_'+report_id;
+  	   var table = $(tableId).DataTable();
+  	   if($("#"+id+" option:selected")!=null && $("#"+id+" option:selected").val()!=null && $("#"+id+" option:selected").val()!=''){
+  		 var filter_name = $(this).data('filter_name');
+  	     var filter_value =$("#"+id+" option:selected").text();
+  	     var column_number = $('#'+id).data('column_number');
+  	     table.columns(column_number).search(filter_value).draw();
+  	   }
+  	   else
+  		{ var column_number = $('#'+id).data('column_number');
+  		 table.columns(column_number).search('').draw();
+  		}	   
+  	   
+  	   $('#'+id).select2();
+  	 deleteTaskFunction();
+	});  
+	
+	function parseDateValue(rawDate) {
+		var monthArray= [];
+		monthArray['Jan']='01';
+		monthArray['Feb']='02';
+		monthArray['Mar']='03';
+		monthArray['Apr']='04';
+		monthArray['May']='05';
+		monthArray['Jun']='06';
+		monthArray['Jul']='07';
+		monthArray['Aug']='08';
+		monthArray['Sep']='09';
+		monthArray['Oct']='10';
+		monthArray['Nov']='11';
+		monthArray['Dec']='12';
+		
+		var dateArray= rawDate.split(" ")[0].split("-");
+		var parsedDate= dateArray[2] + monthArray[dateArray[1]] + dateArray[0];
+		return parsedDate;
+	}
+
+	
+	
+	 $('#chart_datatable_'+report_id).on( 'draw.dt', function () {
+		 
+		    deleteTaskFunction();
+	  } );
+  	
 }

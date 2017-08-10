@@ -20,4 +20,11 @@ public class CLASSROOM_HANDLER extends ColumnHandler {
 		}
 	}
 
+	
+	@Override
+	public StringBuffer getOrder(String string, int reportID) {
+		StringBuffer sb = new StringBuffer(string);
+		
+		return sb;
+	}
 }
