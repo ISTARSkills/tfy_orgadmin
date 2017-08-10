@@ -149,9 +149,9 @@
 						%>
 
 						<%
-							String[] brd = {"Batches", request.getParameter("headname").toString()};
+							String[] brd = {"Analytics", "Batches"};
 						%>
-						<%=UIUtils.getPageHeader("Analytics", brd)%>
+						<%=UIUtils.getPageHeader(request.getParameter("headname").toString(), brd)%>
 
 
 
@@ -159,9 +159,9 @@
 							} else {
 						%>
 						<%
-							String[] brd = {"Program", request.getParameter("headname").toString()};
+							String[] brd = {"Analytics","Program" };
 						%>
-						<%=UIUtils.getPageHeader("Analytics", brd)%>
+						<%=UIUtils.getPageHeader(request.getParameter("headname").toString(), brd)%>
 
 						<%
 							}

@@ -101,7 +101,7 @@ UIUtils ui_Util = new UIUtils();
 						ReportUtils util = new ReportUtils();
 						%>
 
-											<%= util.getTableFilters(Integer.parseInt("3077"), conditions) %>
+											<%-- <%= util.getTableFilters(Integer.parseInt("3077"), conditions) %> --%>
 
 
 
@@ -137,7 +137,7 @@ UIUtils ui_Util = new UIUtils();
 						ReportUtils util2 = new ReportUtils();
 						%>
 
-											<%= util2.getTableFilters(Integer.parseInt("3078"), conditions2) %>
+										<%-- 	<%= util2.getTableFilters(Integer.parseInt("3078"), conditions2) %> --%>
 
 
 

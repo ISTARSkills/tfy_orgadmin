@@ -43,24 +43,8 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 
 		request.setAttribute("cp", cp);
 	%>
-	<style>
-.navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover
-	{
-	background-color: transparent !important;
-	.
-	dropdown-submenu
-	{
-	position
-	:
-	relative;
-}
+<link href="<%=basePath%>assets/css/style.css" rel="stylesheet">
 
-.dropdown-submenu .dropdown-menu {
-	top: 0;
-	left: 100%;
-	margin-top: -1px;
-}
-</style>
 	<nav class="navbar navbar-static-top" role="navigation">
 		<div class="navbar-header">
 			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
@@ -83,7 +67,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 				<%
 					} else {
 				%>
-				'
+				
 				<li class="dropdown"><a aria-expanded="false" role="button" href="<%=link.getUrl()%>" class="dropdown-toggle" data-toggle="dropdown"><%=link.getDisplayName()%><span class="caret"></span> </a>
 					<ul role="menu" class="dropdown-menu">
 						<%
@@ -128,7 +112,7 @@ String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().len
 						List<HashMap<String, Object>> data = utils.executeQuery(sql);
 						if (data.size() > 0) {
 				%>
-				<li class="dropdown"><a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown">Custom Reports </a>
+				<li class="dropdown"><a aria-expanded="true" role="button" href="" class="dropdown-toggle" data-toggle="dropdown">Custom Reports</a>
 					<ul role="menu" class="dropdown-menu">
 						<%
 							for (HashMap<String, Object> row : data) {

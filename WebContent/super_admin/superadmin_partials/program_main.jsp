@@ -11,11 +11,11 @@ int colegeID = -3;
 
 UIUtils ui_Util = new UIUtils();
  %>
-<div class="row border-bottom white-bg">
+<%-- <div class="row border-bottom white-bg">
 	<div class="ibox no-margins no-padding bg-muted p-xs">
 		<div class="ibox-content">
 
-			<div class="row">
+			 <div class="row">
 			<div class="col-lg-2">
 			<div class="form-group">
 				<label>Choose Organization</label> 
@@ -39,11 +39,11 @@ UIUtils ui_Util = new UIUtils();
 				</div>
 			
 					
-				</div>
+				</div> 
 
 		</div>
 	</div>
-</div>
+</div> --%>
 
 <div class="row border-bottom white-bg ">
 

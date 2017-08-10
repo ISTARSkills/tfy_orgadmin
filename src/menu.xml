@@ -16,7 +16,7 @@
 	<parent_links display_name="Assessment Report" is_visible_in_menu="true" jsp_file="/super_admin/ops_report_2.jsp" url="/super_admin/ops_report_2.jsp" valid_role="super_admin"/>
 	-->
 
-	 <parent_links display_name="Utilities" is_visible_in_menu="true" valid_role="super_admin">
+	 <parent_links display_name="Utilities" is_visible_in_menu="true" jsp_file="#" url="#" valid_role="super_admin">
 
 	 <child_links display_name="Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
 	<child_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/super_admin/classrroms.jsp" url="/super_admin/classrroms.jsp" valid_role="super_admin"/>
