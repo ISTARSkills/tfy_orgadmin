@@ -227,7 +227,8 @@ public class OrgAdminUserService {
 		String presentor_sql ="";
 		 if(isexist_trainer_presentor.size()!=0) {
 				int presenter_id = (int)isexist_trainer_presentor.get(0).get("presentor_id");
-				presentor_sql = "delete from istar_user where id ="+presenter_id;
+				presentor_sql = "delete from professional_profile where user_id ="+presenter_id+";"
+				+ "delete from istar_user where id ="+presenter_id;
 				
 			}else {
 				 sql = "select email from istar_user where trainer_id =" + userId;
@@ -258,7 +259,7 @@ public class OrgAdminUserService {
 				+ "delete from task where actor =" + userId+ ";" 
 				+ "delete from user_profile where user_id =" + userId + ";"
 				+ "delete from professional_profile where user_id =" + userId + "; "
-				+ "delete from user_gamification where user_id =" + userId + "; "
+				+ "delete from user_gamification where istar_user =" + userId + "; "
 				+ "delete from student_assessment where student_id =" + userId + ";"
 				+ "delete  from student_playlist where student_id=" + userId +";"
 				+ "delete  from istar_notification where receiver_id="+userId+";"

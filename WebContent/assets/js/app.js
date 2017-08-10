@@ -3581,7 +3581,7 @@ function admin_edit_modal_create() {
         	    		
         	    		
         	    		swal("Done", "Your User data has been deleted", "success");
-        	    		//location.reload();
+        	    		location.reload();
         	    		
         	    	}else{
         	    		swal("Cancelled", "Something went wrong!", "error");
