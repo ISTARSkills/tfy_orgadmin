@@ -1,13 +1,20 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
@@ -117,7 +125,7 @@ public class MAIN {
 		//reportUtilTesting();
 		//ss();
 		//jsontesting();
-		//System.out.println("start");
+		System.out.println("start");
 		//createInterviewSkill();
 		//createFarziData();
 		//for(int i=0;i<15;i++)
@@ -133,11 +141,213 @@ public class MAIN {
 		//testingTask();
 		//System.out.println((int)Math.ceil(Float.parseFloat("2.5")));
 		//xmlTesting();
-		appPropertiesTesting();
-		//System.out.println("end");
+		//appPropertiesTesting();
+		
+		rinScriptsfromfile();
+		System.out.println("end");
 	}
 	
 	
+
+
+	private static void rinScriptsfromfile() {
+		mAYANKtEST mt = new mAYANKtEST();
+		Connection sourceConnection = mt.getBetaConnection();
+		
+		Connection destConnection = mt.getLocalConnection();
+		
+		ArrayList<String> needTruncate = new ArrayList<>();
+		ArrayList<String> tableNames =new ArrayList<>();
+		ArrayList<String> tableNamesWithOutId =new ArrayList<>();
+		//tableNames.add("course");
+		//tableNames.add("module");
+	    //tableNames.add("cmsession");
+		//tableNames.add("lesson");
+		//tableNamesWithOutId.add("module_course");
+		//tableNamesWithOutId.add("cmsession_module");
+		//tableNamesWithOutId.add("lesson_cmsession");
+		//tableNames.add("context");
+		//tableNames.add("assessment");
+		//tableNames.add("question");
+		//tableNames.add("assessment_question");
+		//tableNames.add("assessment_option");
+		
+		//tableNames.add("skill_objective");		
+		
+		
+		//tableNamesWithOutId.add("cmsession_skill_objective");		
+		
+		
+		//tableNamesWithOutId.add("module_skill_objective");		
+		
+		
+		//tableNamesWithOutId.add("question_skill_objective");
+		//tableNamesWithOutId.add("lesson_skill_objective");
+		
+		
+		/*needTruncate.add("question_skill_objective");
+		needTruncate.add("module_skill_objective");
+		needTruncate.add("cmsession_skill_objective");
+		needTruncate.add("assessment_benchmark");
+		needTruncate.add("lesson_skill_objective");
+		needTruncate.add("skill_objective");
+		needTruncate.add("context");*/
+		for(String tableName: needTruncate)
+		{
+			try {
+				String trucatequery = "TRUNCATE  "+tableName+"  cascade;";
+				System.out.println(trucatequery);
+				Statement deStatement = destConnection.createStatement();
+				deStatement.execute(trucatequery);
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}
+		
+		for(String tableName : tableNames)
+		{
+			
+				try {
+					String query =" select * from "+tableName;
+					System.out.println(query);
+					Statement s1 = sourceConnection.createStatement();
+					 ResultSet rs = s1.executeQuery(query);
+					 ResultSetMetaData meta = rs.getMetaData();
+
+					    List<String> columns = new ArrayList<>();
+					    for (int i = 1; i <= meta.getColumnCount(); i++)
+					        columns.add(meta.getColumnName(i));
+
+					  
+					    	PreparedStatement s2 = destConnection.prepareStatement(
+					                "INSERT INTO " + tableName + " ("
+					              + columns.stream().collect(Collectors.joining(", "))
+					              + ") VALUES ("
+					              + columns.stream().map(c -> "?").collect(Collectors.joining(", "))
+					              + ")"
+					        );
+					        while (rs.next()) {	
+					        	
+					        	int oldId = rs.getInt("id");
+					        	String checkIfExist ="select * from "+tableName+ " where id ="+oldId;
+					        	Statement oldIdchekState = destConnection.createStatement();
+					        	ResultSet oldResultSet = oldIdchekState.executeQuery(checkIfExist);
+					        	if(!oldResultSet.next())
+					        	{
+					        		for (int i = 1; i <= meta.getColumnCount(); i++)
+						                s2.setObject(i, rs.getObject(i));
+						            s2.addBatch();	
+					        	}
+					        	
+					        }
+
+					        try {
+								s2.executeBatch();
+							} catch (BatchUpdateException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					        
+					        
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			       
+			   
+		}	
+		
+		for(String tableName : tableNamesWithOutId)
+		{
+			
+				try {
+					String query =" select * from "+tableName;
+					System.out.println(query);
+					Statement s1 = sourceConnection.createStatement();
+					 ResultSet rs = s1.executeQuery(query);
+					 ResultSetMetaData meta = rs.getMetaData();
+
+					    List<String> columns = new ArrayList<>();
+					    for (int i = 1; i <= meta.getColumnCount(); i++)
+					        columns.add(meta.getColumnName(i));
+
+					  
+					    	PreparedStatement s2 = destConnection.prepareStatement(
+					                "INSERT INTO " + tableName + " ("
+					              + columns.stream().collect(Collectors.joining(", "))
+					              + ") VALUES ("
+					              + columns.stream().map(c -> "?").collect(Collectors.joining(", "))
+					              + ")"
+					        );
+					        while (rs.next()) {	
+					        	
+					        	String oldcheck ="select * from "+tableName+" where ";
+					        	for(String col : columns)
+					        	{
+					        		oldcheck += " "+col+" = "+rs.getInt(col)+ " and ";
+					        	}
+					        	
+					        oldcheck = 	oldcheck.substring(0, oldcheck.lastIndexOf("and"));
+					        	System.out.println(oldcheck);
+					        	Statement oldIdchekState = destConnection.createStatement();
+					        	ResultSet oldResultSet = oldIdchekState.executeQuery(oldcheck);
+					        	if(!oldResultSet.next())
+					        	{
+					        		for (int i = 1; i <= meta.getColumnCount(); i++)
+						                s2.setObject(i, rs.getObject(i));
+						            s2.addBatch();	
+					        	}
+					        	
+					        	/*for (int i = 1; i <= meta.getColumnCount(); i++)
+					                s2.setObject(i, rs.getObject(i));
+					            s2.addBatch();	*/
+					        	
+					        }
+
+					        try {
+								s2.executeBatch();
+							} catch (BatchUpdateException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					        
+					        
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			       
+			   
+		}	
+		
+		
+		
+		
+		/*ResultSet rs = statement.executeQuery(getUserDetails);
+         DBUTILS util = new DBUTILS();
+		 try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+
+				String sCurrentLine;
+
+				while ((sCurrentLine = br.readLine()) != null) {
+					System.out.println(sCurrentLine);
+					try {
+						System.err.println(sCurrentLine);
+						util.executeUpdate(sCurrentLine);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+					}
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}*/		
+	}
+
+
 
 
 	private static void appPropertiesTesting() {
@@ -525,7 +735,7 @@ List<HashMap<String, Object>> listsNotHaveProffesionProfile=dbutils.executeQuery
 	private static void scheduleMeeting() {
 		CreateInterviewSchedule cc= new CreateInterviewSchedule();
 		//cc.createInterviewForTrainer(6991, 174, 7000, 90, "27/06/2017", "18:22", 14,"S$");				
-		cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
+		//cc.createZoomSchedule("2017-06-27T12:00:00Z", "", 90);
 	}
 
 	private static void createInterviewSkill() {

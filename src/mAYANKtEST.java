@@ -37,6 +37,23 @@ public class mAYANKtEST {
 		return null;
 	}
 	
+	public Connection getBetaConnection()
+	{
+		try{
+			
+			Class.forName("org.postgresql.Driver");
+			Connection connection = null;
+			connection = DriverManager.getConnection(
+			   "jdbc:postgresql://beta.talentify.in:5432/talentify","postgres", "4a626021-e55a");
+			return connection;
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
 	public Connection getTalentifyConnection()
 	{
 		try{
@@ -45,6 +62,23 @@ public class mAYANKtEST {
 			Connection connection = null;
 			connection = DriverManager.getConnection(
 			   "jdbc:postgresql://cdn.talentify.in:5432/talentify","postgres", "4a626021-e55a");
+			return connection;
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Connection getLocalConnection()
+	{
+		try{
+			
+			Class.forName("org.postgresql.Driver");
+			Connection connection = null;
+			connection = DriverManager.getConnection(
+			   "jdbc:postgresql://localhost:5432/talentify","postgres", "4a626021-e55a");
 			return connection;
 		}
 		catch(Exception ex)

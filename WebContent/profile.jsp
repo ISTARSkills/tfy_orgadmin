@@ -319,7 +319,7 @@ ul>p {
 
 								<ul class="nav nav-tabs scroll-horizontally-div" style="overflow: visible !important;">
 									<%
-										int min = Math.min(5, co.getSkills().size());
+										int min = co.getSkills().size();
 										for (int i = 0; i < co.getSkills().size(); i++) {
 											String class_tag = "";
 											if (i == 1) {
