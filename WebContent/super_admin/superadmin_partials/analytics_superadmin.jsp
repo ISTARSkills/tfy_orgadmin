@@ -24,7 +24,7 @@ UIUtils ui_Util = new UIUtils();
 								conditions.put("static_table", "true");
 								ReportUtils util = new ReportUtils();
 							%>
-							<%=util.getTableFilters(Integer.parseInt("3080"), conditions)%>
+							<%-- <%=util.getTableFilters(Integer.parseInt("3080"), conditions)%> --%>
 							<%=util.getTableOuterHTML(Integer.parseInt("3080"), conditions)%>
 							<%%>
 						</div>
