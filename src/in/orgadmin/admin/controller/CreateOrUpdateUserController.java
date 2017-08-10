@@ -54,7 +54,10 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			String user_f_name = request.getParameter("user_f_name");
 			String user_l_name = request.getParameter("user_l_name")!=null ? request.getParameter("user_l_name").toString(): " ";
 			String user_gender = request.getParameter("user_gender");
+			
 			String user_email = request.getParameter("user_email");
+			user_email = user_email.toLowerCase().trim();
+			
 			Integer college_id = request.getParameter("college_id") != ""
 					? Integer.parseInt(request.getParameter("college_id")) : 2;
 			String user_types;
@@ -62,7 +65,7 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 			String batch_groups;
 			List<Integer> bg_list = new ArrayList<Integer>();
 			List<String> user_type = new ArrayList<String>();
-
+			
 			if (request.getParameterMap().containsKey("batch_groups")
 					&& !request.getParameter("batch_groups").equalsIgnoreCase("")) {
 				batch_groups = request.getParameter("batch_groups");

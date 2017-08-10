@@ -105,6 +105,9 @@ String batchCode ="";
 		firstName = request.getParameter("f_name") != null ? request.getParameter("f_name") : "";
 		lastName = request.getParameter("l_name") != null ? request.getParameter("l_name") : "";
 		email = request.getParameter("email") != null ? request.getParameter("email") : "";
+		
+		
+		
 		password = request.getParameter("password") != null ? request.getParameter("password") : "";
 		ugDegree = request.getParameter("ug_degree") != null ? request.getParameter("ug_degree") : null;
 		pgDegree = request.getParameter("pg_degree") != null ? request.getParameter("pg_degree") : null;
@@ -149,6 +152,11 @@ String batchCode ="";
 		experinceYears = request.getParameter("experince_years") != null ? request.getParameter("experince_years") : "";
 		 batchCode = request.getParameter("batch_code") != null ? request.getParameter("batch_code") : "";
 		userType = request.getParameter("user_type");
+		
+		//conver email to lower-case
+		email = email.toLowerCase();
+		
+		
 		String presentor[] = email.split("@");
 		String part1 = presentor[0];
 		String part2 = presentor[1];

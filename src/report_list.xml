@@ -1526,7 +1526,7 @@ order by :order_by_column :order_type limit :limit offset :offset
 <column columnHandler="NONE" display_name="Rating" isVisible="true" name="rating" />
 <column columnHandler="NONE" display_name="Comment" isVisible="true" name="comment" />
 <sql>
-SELECT DISTINCT	af. ID AS student_id, 	ups.first_name AS student_name, 	upt.first_name AS trainer_name, 	af.rating AS rating,   af.comment as comment, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	student_feedback af, 	user_profile ups, 	user_profile upt, 	user_org_mapping uo WHERE 	af.student_id = ups.user_id AND af.trainer_id = upt.user_id order by :order_by_column :order_type limit :limit offset :offset
+SELECT 	TF.*, CAST (COUNT(TF.*) OVER() AS INTEGER) AS total_rows FROM 	( 		SELECT DISTINCT 			af. ID AS student_id, 			ups.first_name AS student_name, 			upt.first_name AS trainer_name, 			af.rating AS rating, 			af. COMMENT AS COMMENT 		FROM 			student_feedback af, 			user_profile ups, 			user_profile upt, 			user_org_mapping uo 		WHERE 			af.student_id = ups.user_id 		AND af.trainer_id = upt.user_id 	)TF order by :order_by_column :order_type limit :limit offset :offset
 </sql>
 </reports>
 <reports id="3064" type_of_report="table">

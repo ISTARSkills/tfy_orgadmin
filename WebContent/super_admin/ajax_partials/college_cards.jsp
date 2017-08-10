@@ -14,7 +14,7 @@
 Boolean isCollegeExist = false;
 	List<HashMap<String, Object>> collegeList = services.getAllCollegeList(firstLetter);
 	for (HashMap<String, Object> item : collegeList) {
-		if ((int) item.get("count") != 0) {
+		if (firstLetter.equalsIgnoreCase("0") || (int) item.get("count") != 0) {
 			isCollegeExist = true;
 %>
 <div

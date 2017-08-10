@@ -36,8 +36,10 @@ ReportUtils util = new ReportUtils();
 						<div class="ibox-content card-box margin-box "
 							data-report_id='<%=reportId%>'>
 							<%HashMap<String, String> conditions = new HashMap();
-						conditions.put("limit", "10");
-						conditions.put("offset", "0");
+							
+							conditions.put("limit", "10");
+						    conditions.put("offset", "0");
+						
 						/* conditions.put("org_id", orgId); */
 						conditions.put("static_table", "true");	
 						

@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.UserRole"%>
 <%@page import="com.viksitpro.core.dao.entities.UserProfile"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUserDAO"%>
@@ -22,7 +23,8 @@
 	}
 
 	IstarUser user = new IstarUserDAO().findById(user_id);
-	
+	OrganizationDAO organizationDAO = new OrganizationDAO();
+	organizationDAO.getSession().clear();
 	try {
 		 colegeID = user.getUserOrgMappings().iterator().next().getOrganization().getId();
 	}catch(Exception e){
@@ -58,6 +60,8 @@
 		firstName = stuProfileData.getFirstName()!=null?stuProfileData.getFirstName():"";
 		userMobile = user.getMobile()!=null?(Long.toString(user.getMobile())):"";
 		userGender = stuProfileData.getGender()!=null?stuProfileData.getGender():"";
+		
+		System.out.println(userGender);
 	}
 	AdminUIServices ui = new AdminUIServices();
 	
@@ -81,7 +85,7 @@
 					<form class="form-horizontal"
 						action="<%=baseURL%>createOrUpdateUser" method="post">
 						<input type="hidden" value="super_admin" name="creation_type" />
-						<input type="hidden" value="<%=colegeID%>" name="college_id" /> <input
+						<input type="hidden" value="<%=colegeID%>" name="college_id"  /> <input
 							type="hidden" value="<%=user_id%>" name="user_id" />
 						<div class="form-group">
 
@@ -122,9 +126,8 @@
 								<label class="control-label">Gender</label> <select
 									class="form-control m-b" name="user_gender">
 									<option value="MALE"
-										<%= userGender == "MALE" ? "selected" : ""%>>Male</option>
-									<option value="FEMALE"
-										<%= userGender == "FEMALE" ? "selected" : ""%>>Female</option>
+										<%= userGender.equalsIgnoreCase("MALE") ? "selected" : ""%>>Male</option>
+									<option value="FEMALE" <%= userGender.equalsIgnoreCase("FEMALE") ? "selected" : ""%> >Female</option>
 								</select>
 							</div>
 							<div class="col-lg-4 multi_user_type_div">

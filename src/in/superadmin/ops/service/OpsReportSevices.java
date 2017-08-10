@@ -12,7 +12,7 @@ public class OpsReportSevices {
 	public int getTotalNoOfQuestions(int assessmentId) {
 		
 		int totQuestion =0;
-		String sql = "SELECT number_of_questions FROM assessment WHERE id = "+assessmentId;
+		String sql = "SELECT CAST(count(*) as INTEGER) as number_of_questions FROM assessment_question WHERE assessmentid = "+assessmentId;
 		List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 		if(data.size() > 0){
 		totQuestion =(int) data.get(0).get("number_of_questions");

@@ -236,7 +236,7 @@ public class OrgAdminUserService {
 				 if(presentor.size()!=0) { 
 					     String[] presenterEmailaddress = presentor.get(0).get("email").toString().split("@");
 						 String presenterEmail = presenterEmailaddress[0] + "_presenter@" + presenterEmailaddress[1];
-						 presentor_sql = "delete from istar_user where email ="+presenterEmail;
+						 presentor_sql = "delete from istar_user where email ='"+presenterEmail+"'";
 						
 				 }
 				     

@@ -29,13 +29,13 @@
 			<div class="ibox-content">
 
 				<div class="row">
-					<div class="col-lg-6 p-xxs bg-muted">
+					<div class="col-lg-6 no-padding bg-muted">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 								<h5>Student Attendance Table</h5>
 
 							</div>
-							<div class="ibox-content p-xxs bg-muted" id="">
+							<div class="ibox-content no-padding bg-muted" id="">
 
 								<%=opsReport.getStudentReportDetailsForTable(assessmentId,batchId)%>
 
@@ -44,13 +44,13 @@
 							</div>
 						</div>
 					</div>
-					  <div class="col-lg-1 p-xxs bg-muted" style="display:none">
+					  <div class="col-lg-1 no-padding bg-muted" style="display:none">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 								<h5>Student Score Table</h5>
 
 							</div>
-							<div class="ibox-content p-xxs bg-muted">
+							<div class="ibox-content no-padding bg-muted">
 
 
 								<%=opsReport.getStudentScoreDetailsForTable(assessmentId,batchId)%>
@@ -59,13 +59,13 @@
 							</div>
 						</div>
 					</div>   
-					<div class="col-lg-3 p-xxs bg-muted">
+					<div class="col-lg-3 no-padding bg-muted">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 								<h5>Student Percentage Table</h5>
 
 							</div>
-							<div class="ibox-content p-xxs bg-muted">
+							<div class="ibox-content no-padding bg-muted">
 
 								<%=opsReport.getStudentPercentageDetailsForTable(assessmentId,batchId)%>
 
@@ -73,14 +73,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-3 p-xxs bg-muted">
+					<div class="col-lg-3 no-padding bg-muted">
 						<div class="ibox float-e-margins">
 							<div class="ibox-title">
 							<% int totalQuestion = opsReport.getTotalNoOfQuestions(assessmentId); %>
 								<h5>Total No Of Questions: <%=totalQuestion %></h5>
 
 							</div>
-							<div class="ibox-content p-xxs bg-muted">
+							<div class="ibox-content no-padding bg-muted">
 
 
 								<%--  <%=opsReport.getStudentScoreDetailsForTable(assessmentId,batchId)%>  --%>

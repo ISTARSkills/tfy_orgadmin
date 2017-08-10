@@ -76,7 +76,7 @@ public class GetNotificationData extends IStarBaseServelet {
 				}
 				else
 				{
-					 sql = "SELECT 	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR') );";
+					 sql = "SELECT DISTINCT	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR') );";
 					//System.out.println("Get NotificationData 54>>sql"+sql);
 				}	
 				

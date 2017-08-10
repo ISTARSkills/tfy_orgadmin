@@ -58,6 +58,7 @@ public class DataTableController extends IStarBaseServelet {
 		String searchTerm = request.getParameter("search[value]");
 		//System.out.println("search term>>>"+searchTerm);
 		if (searchTerm != null && searchTerm.equalsIgnoreCase("")) {
+		
 			conditions.put("limit", request.getParameter("length"));
 			conditions.put("offset", request.getParameter("start"));
 		}
@@ -80,13 +81,14 @@ public class DataTableController extends IStarBaseServelet {
 			}			
 		}
 		
-		//System.out.println("-------------------------->"+sql1);
+		System.out.println("-------------------------->"+sql1);
 		
 		JSONArray array = new JSONArray();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);		
 		String resultSize ="0";
 		for (HashMap<String, Object> item : data) {
 			resultSize = item.get("total_rows").toString();
+			
 			
 			if (condition(item, searchTerm) || searchTerm.equalsIgnoreCase("")) {
 				JSONArray tableRowsdata = new JSONArray();
@@ -112,8 +114,12 @@ public class DataTableController extends IStarBaseServelet {
 					} 
 				}				
 				array.put(tableRowsdata);
+			}if(!searchTerm.equalsIgnoreCase("")) {
+				resultSize = "0";
 			}
-		}	
+			
+		}
+		
 		
 		JSONObject jsonObject = new JSONObject();
 		try{	

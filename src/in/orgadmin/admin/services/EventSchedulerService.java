@@ -409,7 +409,7 @@ public class EventSchedulerService {
 					+ trainerData + "'>" + "<div class='panel panel-primary custom-theme-panel-primary'> ");
 		}
 
-		out.append("" + "<div class='panel-body'>" + "<h3>New-Session</h3>" + "<p>Course: " + data.get("courseName")
+		out.append("" + "<div class='panel-body' style='height:225px'>" + "<h3>New-Session</h3>" + "<p>Course: " + data.get("courseName")
 				+ ".</p>" + "<p class='trainer_id_holder' data-trainer_id=''>Trainer : " + data.get("trainerName")
 				+ "</p>" + "<p class='current_session_holder' >Current Session : " + data.get("CurrentSession") + "</p>"
 				+ "<hr>" + "<p class=''><i class='fa fa-calendar'> Date: " + data.get("eventDate") + "</i>"
@@ -777,7 +777,7 @@ public class EventSchedulerService {
 				out.append("<div class='col-lg-4'>" + "<div class='panel panel-success'>");
 			}
 
-			out.append("<div class='panel-body'>" + "<h3>Existing Session</h3>" + "<p>Course: " + courseName + ".</p>"
+			out.append("<div class='panel-body' style='height:225px'>" + "<h3>Existing Session</h3>" + "<p>Course: " + courseName + ".</p>"
 					+ "<p>Trainer : " + item.get("name") + "</p><p class='current_session_holder' >Current Session : " + getCurrentSession(batchId) + "</p>"
 					+ "<hr>" + "<p><i class='fa fa-calendar'> Date: "
 					+ evdate + "</i>" + "<i class='fa fa-clock-o pull-right'> Time: " + evetime + "</i> </p> </div> "

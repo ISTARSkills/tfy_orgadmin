@@ -40,7 +40,7 @@ public class OpsReportController extends IStarBaseServelet {
 		
 		if(request.getParameter("type")!=null&&request.getParameter("type").equalsIgnoreCase("org") &&request.getParameter("orgId")!=null){
 		
-			String sql="select b.id,b.name from batch b,batch_group bg where bg.id=b.batch_group_id and bg.college_id="+request.getParameter("orgId");
+			String sql="select DISTINCT b.id,b.name from batch b,batch_group bg where bg.id=b.batch_group_id and bg.college_id="+request.getParameter("orgId");
 			
 			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 			StringBuffer out = new StringBuffer();
@@ -54,7 +54,7 @@ public class OpsReportController extends IStarBaseServelet {
 		
 		if(request.getParameter("type")!=null&&request.getParameter("type").equalsIgnoreCase("batch") &&request.getParameter("batch")!=null){
 			
-			String sql="SELECT  DISTINCT assessment.id, assessment.assessmenttitle, task.start_date FROM 	task, 	batch, 	batch_group, 	batch_students, assessment WHERE 	item_type = 'ASSESSMENT' AND batch.batch_group_id = batch_group.id AND batch_group.id = batch_students.batch_group_id AND task.actor = batch_students.student_id AND assessment.id = task.item_id AND batch.id ="+request.getParameter("batch");
+			String sql="SELECT DISTINCT 	assessment. ID, 	assessment.assessmenttitle, 	CAST ( 		COALESCE ( 			to_char( 				MIN (task.start_date), 				'DD-Mon-yyyy HH24:MI' 			), 			'N/A' 		) AS VARCHAR 	) AS start_date FROM 	task, 	batch, 	batch_group, 	batch_students, 	assessment WHERE 	item_type = 'ASSESSMENT' AND batch.batch_group_id = batch_group. ID AND batch_group. ID = batch_students.batch_group_id AND task.actor = batch_students.student_id AND assessment. ID = task.item_id AND batch. ID = "+request.getParameter("batch")+" GROUP BY assessment.id ";
 			
 			List<HashMap<String, Object>> data = dbutils.executeQuery(sql);
 			StringBuffer out = new StringBuffer();
@@ -65,6 +65,7 @@ public class OpsReportController extends IStarBaseServelet {
 				out.append("<option value='" + item.get("id") + "'>" + item.get("assessmenttitle")+" ("+item.get("start_date")+ ") </option>");
 			}
 			out.append("");
+			
 			response.getWriter().print(out);
 		}
 			

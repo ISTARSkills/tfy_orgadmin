@@ -2468,8 +2468,11 @@ function user_filter_by_course_batch() {
 	var tableID = $('.datatable_istar').attr('id');
 	
     $('#admin_page_course').on('change', function() {
-        var key = $('#admin_page_course').val();
+        var key = $('#admin_page_course').val();    
         var prevKey=$('#admin_page_batchgroup').val();
+        var orgskey = $('#admin_page_orgs').val();
+   	
+        
         var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
     	
@@ -2507,6 +2510,8 @@ function user_filter_by_course_batch() {
     $('#admin_page_batchgroup').on('change', function() {
     	var prevKey=$('#admin_page_course').val();
     	var key = $('#admin_page_batchgroup').val();
+    	var orgskey = $('#admin_page_orgs').val();
+    	
     	var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
     	if(key!=null){
@@ -2538,6 +2543,10 @@ function user_filter_by_course_batch() {
     
     $('#admin_page_orgs').on('change', function() {
 		var key = $('#admin_page_orgs').val();
+		var prevcourseKey=$('#admin_page_course').val();
+		var prevbatchgroupkey = $('#admin_page_batchgroup').val();
+		
+		
 		var selectBox = $($('#admin_page_orgs >option'));
 		var searchArray = [];
 		if (key != null) {
@@ -2552,6 +2561,7 @@ function user_filter_by_course_batch() {
 		var searchKey = "";
 		key = searchArray;
 		if (key != null) {
+			
 			$.each(key, function(index, value) {
 				if (index != 0) {
 					searchKey = searchKey + "," + value;
@@ -3540,7 +3550,9 @@ function admin_edit_modal_create() {
 	    	
 	    	$('.college_id').on('change', function(){
 	    		
+	    		
 	    		var college_id = $(this).val();
+	    		  $("input[name='college_id']").val(college_id);
 	    		var url = '../event_utility_controller'
 	    		    $.post(url, {
 	    		    	college_id : college_id,
@@ -3550,6 +3562,7 @@ function admin_edit_modal_create() {
 
 	    		      $('.batch_group_holder').html(data);
 	    		      set_batchgroup_data();
+	    		      set_batchgroupfilter_data();
 	    		      $('.main_batch_group_holder').select2();
 	    		     
 	    	
@@ -3619,27 +3632,15 @@ function admin_edit_modal_create() {
 	               $("input[name='user_type']").val(sel.substring(0, sel.length - 1));
 
 	               // $('select').select2();
-	                
+	               set_batchgroupfilter_data();
 	                $('.select2-dropdown').on("change",function() {
 	                        var kk = $(this).val();
 	                        $("input[name='student_list']").val(kk);
 	                 
 	                    });
-	                
-	                
-	                $('.multi_batch_groups').on('change', function(){	            		
-	                	 var kk = $(this).val();
-	                	 $("input[name='batch_groups']").val(kk);
-	            		
-	            	});
-	                $('.multi_user_type').on('change', function(){	            		
-	                	 var kk = $(this).val();
-	                	 $("input[name='user_type']").val(kk);
-	            		
-	            	});
-	                
-	                
+   
 	            }, 1000);
+	       
 
 	    });
 }
@@ -3651,6 +3652,11 @@ function admin_course_batch_init() {
 	
     $('#admin_page_course').on('change', function() {
         var key = $('#admin_page_course').val();
+		if(key != null){
+			$('.paging_simple_numbers').hide();
+		}else{
+			$('.paging_simple_numbers').show();
+		}
         var prevKey=$('#admin_page_batchgroup').val();
         var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
@@ -3689,6 +3695,11 @@ function admin_course_batch_init() {
     $('#admin_page_batchgroup').on('change', function() {
     	var prevKey=$('#admin_page_course').val();
     	var key = $('#admin_page_batchgroup').val();
+		if(key != null){
+			$('.paging_simple_numbers').hide();
+		}else{
+			$('.paging_simple_numbers').show();
+		}
     	var selectBox=$($('#admin_page_batchgroup >option'));
     	var searchArray=[];
     	if(key!=null){
@@ -4735,6 +4746,20 @@ function set_batchgroup_data(){
 		$('#batch_groups').val(setOfBatchGroup);
 		
 	});
+	
+}
+function set_batchgroupfilter_data(){
+
+	 $('.multi_batch_groups').on('change', function(){	            		
+       	 var kk = $(this).val();
+       	 $("input[name='batch_groups']").val(kk);
+   		
+   	});
+       $('.multi_user_type').on('change', function(){	            		
+       	 var kk = $(this).val();
+       	 $("input[name='user_type']").val(kk);
+   		
+   	});
 	
 }
 function init_student_card(){
