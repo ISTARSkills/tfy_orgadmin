@@ -553,7 +553,7 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             {
+			            /* {
 			                 text: 'Download CSV File',
 			                data:'CSV',
 			                 action: function ( e, dt, node, config ) {
@@ -573,7 +573,7 @@ function createDataTables()
 			       		        });
 			                     
 			                 }
-			             }
+			             }*/
 			         ], "processing": true,
 			         "serverSide": false,
 			        
@@ -623,14 +623,14 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			             {
+			            /* {
 			                 text: 'My button605',
 			                 action: function ( e, dt, node, config ) {
 			                     this.text( 'My button ('+config.counter+')' );
 			                     config.counter++;
 			                 },
 			                 counter: 1
-			             }
+			             }*/
 			         ], "processing": true,
 			         "serverSide": true,
 			         "ajax": url,

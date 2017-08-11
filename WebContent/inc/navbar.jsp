@@ -344,7 +344,7 @@
 					}
 				
 
- if (userRoles.size() > 1) { %>
+ if (userRoles.size() > 1 || userRoles.iterator().next().getRoleName().equalsIgnoreCase("SUPER_ADMIN")) { %>
 				<li class="dropdown"><a aria-expanded="false" role="button" href="#" class="dropdown-toggle" data-toggle="dropdown">Switch Role<span class="caret"></span> </a> 
 				<ul role="menu" class="dropdown-menu">
 				<%
