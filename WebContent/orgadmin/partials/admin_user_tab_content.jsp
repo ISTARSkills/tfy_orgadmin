@@ -20,11 +20,10 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 <div class="panel-body">
 <div class="modal inmodal" id="admin_student_card_modal" tabindex="-1" role="dialog" aria-hidden="true">
 </div>
-<div class="ibox">
-	<div class="col-lg-12">
+	<div class="col-lg-12 gray-bg-admin no-paddings">
 		<div class="col-lg-2">
 		
-			
+			<div class="row card-box customcss_admin-card">
 			<div class="form-group">
 			<h3 class="font-bold">Filter by</h3>
 				<label class="font-bold">Program</label>
@@ -45,13 +44,13 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 								data-target="#create_user_model" style="margin-top: 16px;">Add New User</button></div>
 				
 			</div>
-		</div>
-		<div class="col-lg-10">
+		</div></div>
+		<div class="col-lg-10 ">
 			
 			
 
 
-			<div class="row">
+			<div class="row card-box customcss_admin-card1">
 				<br>
 				<%
 				ReportUtils util = new ReportUtils();
@@ -67,7 +66,6 @@ AdminUIServices adminUiServcies = new AdminUIServices();
 		</div>
 
 	</div>
-</div>
 
 <div class="modal inmodal" id="create_user_model" tabindex="-1"
 	role="dialog" aria-hidden="true" style="display: none;">

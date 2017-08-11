@@ -22,7 +22,7 @@
 	<hr>
 	<div class="row">
 		<div class="col-md-12">
-		<div class="ibox white-bg" style="padding-top: 5px;"">
+		<div class="ibox white-bg card-box">
 			<%=new ColourCodeUitls().getColourCode() %>
 			<div class="ibox">
 				<div class="ibox-content">

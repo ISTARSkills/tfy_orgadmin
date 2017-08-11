@@ -1,8 +1,14 @@
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <body class="top-navigation" id="orgadmin_admin">
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
+			
+			<%
+				String[] brd = { "Dashboard" };
+			%>
+			<%=UIUtils.getPageHeader("Admin", brd)%>
 
 			<%
 				String tab = "";
@@ -16,20 +22,18 @@
 
 				<!-- tab start -->
 
-				<div
-					class="ibox p-xs  b-r-lg border-left-right border-top-bottom border-size-sm gray-bg-admin"
-					>
-					<div class="tabs-container">
-						<ul class="nav nav-tabs">
-							<li class="<%=tab.equalsIgnoreCase("user")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
+				<div class="ibox p-xs  b-r-lg border-left-right border-top-bottom border-size-sm customcss_adminmaintab">
+					<div class="">
+						<ul class="nav nav-tabs tabs-bordered nav-justified">
+							<li class="<%=tab.equalsIgnoreCase("user")? "active":"" %> col-lg-3 text-center no-padding "><a
 								data-toggle="tabajax" data-target="#admintab1" href="partials/admin_user_tab_content.jsp" id="admin_user_tab">Users</a></li>
 
-							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
+							<li class="<%=tab.equalsIgnoreCase("group")? "active":"" %> col-lg-3 text-center no-padding "><a
 								data-toggle="tabajax" data-target="#admintab2" href="partials/admin_group_tab_content.jsp" id="admin_section_tab">Section / Roles</a></li>
 
 							
 
-							<li class="<%=tab.equalsIgnoreCase("content")? "active":"" %> col-lg-3 text-center no-padding bg-muted"><a
+							<li class="<%=tab.equalsIgnoreCase("content")? "active":"" %> col-lg-3 text-center no-padding "><a
 								data-toggle="tabajax" data-target="#admintab4" href="partials/admin_content_map_tab_content.jsp" id="admin_content_map">Content Mapping</a></li>
 							
 						</ul>

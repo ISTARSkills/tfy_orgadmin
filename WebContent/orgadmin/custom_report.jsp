@@ -1,3 +1,4 @@
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="in.orgadmin.utils.report.ReportUtils"%>
 <%@page import="java.util.HashMap"%>
 <%
@@ -11,26 +12,18 @@ ReportUtils util = new ReportUtils();
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			<div class="row wrapper border-bottom white-bg page-heading" style="padding-bottom: 10px;
-    padding-left: 20px;">
-                <div class="col-lg-10">
-                    <h2><%=reportName %></h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="dashboard.jsp">Dashboard</a>
-                        </li>
-                        <li>
-                            <a>Custom Reports</a>
-                        </li>
-                        <li class="active">
-                            <strong><%=reportName %></strong>
-                        </li>
-                    </ol>
-                </div>
+			<div class="row wrapper border-bottom white-bg page-heading no-margins">
+			
+			<% 
+			String[] brd = {"Dashboard","Custom Reports"};
+			%>
+				<%=UIUtils.getPageHeader(reportName, brd) %>
+			
+               
                 <div class="col-lg-2">
 
                 </div>
-            </div><div class="row">
+            </div><div class="row customcss_customcard">
 
 			<div class="col-lg-12">
 				

@@ -69,10 +69,12 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content white-bg">
+                <% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Classroom(s)", brd) %>
 
-
-				<div class='row'>
+				<div class='row card-box scheduler_margin-box'>
 					<div id='redirect_url' data-url='<%=baseURL%>orgadmin/classrroms.jsp' style='display: none;'></div>
 					
 					<form class="form-horizontal" action="../create_or_update_classroom" id="edit_class_model_form" method="post">
@@ -183,7 +185,6 @@
 						</div>
 					</form>
 				</div>
-			</div>
 		</div>
 	</div>
 	<!-- Mainly scripts -->

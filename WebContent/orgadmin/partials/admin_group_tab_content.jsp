@@ -25,7 +25,6 @@ Organization college=new OrganizationDAO().findById(colegeID);
 
 %>
 <div class="panel-body">
-	<div class="ibox">
 		<button type="button" class="btn btn-w-m btn-danger" data-toggle="modal" data-target="#create_group_model" style="margin-bottom: 10px;">Add Section / Role</button>
 		<div class="col-lg-12">
 			<div class="row">
@@ -240,4 +239,3 @@ Organization college=new OrganizationDAO().findById(colegeID);
 
 
 	</div>
-</div>

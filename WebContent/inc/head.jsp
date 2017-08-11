@@ -22,7 +22,7 @@ try {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="shortcut icon" href="<%=basePath%>img/user_images/new_talentify_logo.png" />
+<link href="/logo.png" type="image/png"  rel="shortcut icon">
 <title>Talentify | Admin-Portal</title>
 <link href="<%=basePath%>assets/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/dataTables/datatables.min.css"

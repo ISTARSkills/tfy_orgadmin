@@ -40,9 +40,9 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 			%>
 				<%=UIUtils.getPageHeader("Notification", brd) %>
 			
-			<div class="row" style="    margin-top: 15px; margin-right: 8px; margin-left: 8px; margin-bottom: 10px;">
+			<div class="row customcss_istarnotification" >
 			<div class=''>
-			<div class="col-lg-12 card-box" style="margin-bottom:0px!important;">
+			<div class="col-lg-12 card-box m-r-none bg-muted">
 				
 					<div class="col-lg-2">
 						<div class="form-group">
@@ -208,7 +208,7 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 						</div>
 						<div class="col-lg-6">
 							<div class="ibox">
-								<div class="ibox-content">
+								<div class="ibox-content ">
 
 									<h3 class="m-b-xxs">
 										Student List <label class="checkbox-inline pull-right">

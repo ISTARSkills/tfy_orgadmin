@@ -17,17 +17,19 @@
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			<div class="wrapper wrapper-content white-bg">
-
-				<div class="row white-bg">
+			
+<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Classroom(s)", brd) %>
+				
+				<div class="row white-bg customcss_classroom">
 				<button type="button" class="btn btn-w-m btn-danger" id="class-add"  data-url='<%=baseURL%>orgadmin/partials/modal/create_edit_classroom_modal.jsp?type=Create' style="margin-top: 16px;">Add Class Room</button>
 								<br><br>
-					<!-- <button class="btn btn-default dim pull-right" id="class-add" type="button">
-						<i class="fa fa-plus-circle"></i>
-					</button> -->
+					
 				</div>
 
-				<div class="row">
+				<div class="row card-box custom_css_classroom">
 					<%
 				ReportUtils util = new ReportUtils();
 				HashMap<String, String> conditions = new HashMap();

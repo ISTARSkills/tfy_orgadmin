@@ -101,6 +101,7 @@ public class ReportUtils {
 			List<HashMap<String, Object>> data = db.executeQuery(sql1);
 			out.append("<tbody>");
 			for (HashMap<String, Object> hashMap : data) {
+				//String resultSize = hashMap.get("total_rows").toString();
 				out.append("<tr>");
 				for (IStarColumn iterable_element : report.getColumns()) {
 					if (iterable_element.isVisible) {

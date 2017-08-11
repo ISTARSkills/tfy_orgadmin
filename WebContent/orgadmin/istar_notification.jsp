@@ -35,8 +35,14 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 		<jsp:include page="/inc/navbar.jsp"></jsp:include>
-			<div class="row p-xl">
-			
+		
+		<% 
+			String[] brd = {"Dashboard"};
+			%>
+				<%=UIUtils.getPageHeader("Notification", brd) %>
+				
+			<div class="row customcss_istarnotification">
+			<div class="col-lg-12 card-box m-r-none bg-muted">
 				<div class="col-lg-2">
 					<div class="form-group">
 						<label class="font-bold">Choose Section/ Role</label>
@@ -156,7 +162,7 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 				</div>
 
 	<div class="col-lg-2">					
-				</div>
+				</div></div>
 			</div>
 			<div style="display: none" id="spinner_holder">
 				<div style="width: 100%; z-index: 6; position: fixed;"
@@ -176,7 +182,7 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 
 						<div class="col-lg-6 white-bg">
 							<div class="ibox">
-								<div class="ibox-content">
+								<div class="ibox-content  customcss_iboxcontent">
 									<div class="form-group">
 										<label>Title</label> <input type="text" id="title"
 											placeholder="Write Title..." class="form-control">
