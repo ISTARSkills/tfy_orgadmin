@@ -7161,7 +7161,7 @@ function viewAttendanceFunction(){
 	$('.view_attendance').unbind().on("click",function(){
 		
 		var eventId = $(this).attr('id');
-		
+		$("#addendance_data_holder").empty();
 		$.ajax({
 	        type: "POST",
 	        url: '../task_delete',
@@ -7171,7 +7171,7 @@ function viewAttendanceFunction(){
 	        },
 	        success: function(result) {
 	          console.log(result);
-	        	$("#addendance_data_holder").empty();
+	        	
 	        	$("#addendance_data_holder").append(result);
 	        	
 	        }
@@ -7302,6 +7302,9 @@ function init_custom_report(){
     	         onFinish: function (data) {
     	        	 var id = '#chart_datatable_'+report_id;
     	        	 var table = $(id).DataTable();
+    	        	 if(report_id === '3074'){
+    	        			viewAttendanceFunction();
+    	        		}
     	        	 table.draw();
     	        	 $.fn.dataTable.ext.search.push(
  	        			    function( settings, data, dataIndex ) {

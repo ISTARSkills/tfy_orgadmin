@@ -135,26 +135,28 @@ public class TaskDeleteController extends HttpServlet {
 			
 			stringBuffer.append("<div class='ibox-content'>"
 					+ "<table class='table'>"
-					+ "<thead><tr><th>PRESENT</th>" 
-					+ " <th>ABSENT</th>"
+					+ "<thead><tr><th>User Name</th>" 
+					+ " <th>Attendance</th>"
 					+ "</tr></thead><tbody>");
 			
 			if (data.size() != 0) {
 
+				
 				for (HashMap<String, Object> row : data) {
-
-					if (row.get("status").toString().equalsIgnoreCase("PRESENT")) {
-						stringBuffer.append("<tr><td>"+row.get("first_name").toString()+"</td>");
-						stringBuffer.append("<td> </td></tr>");
-
-					}
-
-					if (row.get("status").toString().equalsIgnoreCase("ABSENT")) {
-						stringBuffer.append("<tr><td> </td>");
-						stringBuffer.append("<td>"+row.get("first_name").toString()+"</td></tr>");
+					String style = "";
+					if(row.get("status").toString().equalsIgnoreCase("ABSENT")) {
+						style = "class='text-danger'";
+					}else {
 						
-
 					}
+
+					
+						stringBuffer.append("<tr><td "+style+">"+row.get("first_name").toString()+"</td>");
+						stringBuffer.append("<td "+style+">"+row.get("status").toString()+"</td></tr>");
+
+				
+
+					
 
 				}
 

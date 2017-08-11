@@ -806,7 +806,7 @@ public class UIUtils {
 	}
 	
 	public StringBuffer getAllRoles(ArrayList<Integer> selectedRoles) {
-		String sql = "SELECT id,role_name FROM role WHERE role_name != 'PRESENTOR'";
+		String sql = "SELECT id,role_name FROM role WHERE role_name not in  ('PRESENTOR','ORG_ADMIN')";
 
 		// //System.err.println(sql);
 		DBUTILS db = new DBUTILS();
