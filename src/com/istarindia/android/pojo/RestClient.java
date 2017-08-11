@@ -148,6 +148,7 @@ public class RestClient {
 		
 		
 		String url = AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId+"/"+taskId+"";
+		System.out.println(url);
 		URL obj = new URL(url);
 		HttpURLConnection con =  (HttpURLConnection) obj.openConnection();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();

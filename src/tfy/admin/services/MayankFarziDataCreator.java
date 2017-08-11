@@ -60,6 +60,7 @@ import com.viksitpro.core.utilities.TaskItemCategory;
 import com.viksitpro.core.utilities.TrainerWorkflowStages;
 
 import in.orgadmin.admin.services.EventSchedulerService;
+import tfy.admin.farzidata.services.FarziDataCreatorServices;
 
 /**
  * 
@@ -95,8 +96,8 @@ public class MayankFarziDataCreator {
 	    {
 	    	students.add(ii);
 	    }	
-	    testGradeSize(students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
-	    geiveFarziAssessment(assessmentId,students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
+	    //testGradeSize(students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
+	   // geiveFarziAssessment(assessmentId,students,aPlusPercentage,APercentage,BPlusPercentage,BPercenatge);
 	    
 	    
 	    //kuchto();
@@ -108,9 +109,17 @@ public class MayankFarziDataCreator {
 	   // markEventAsCompleteInOrg(273);
 	   
 		//markEventAsCompleteInOrg(273);
+	    
+	    testingOrgSimulation();
+	    
 		System.out.println("end");
 		System.exit(0);
 		
+		
+	}
+
+	private void testingOrgSimulation() {
+		// TODO Auto-generated method stub
 		
 	}
 
