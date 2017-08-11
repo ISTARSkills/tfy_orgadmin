@@ -114,7 +114,7 @@ public class RestClient {
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");
-			//conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 			conn.setRequestProperty("Accept", "application/json");
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());

@@ -80,15 +80,28 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 
 		// check is Exist
 		boolean isexist = false;
-		String checkIFExist="select cast (count(*) as integer) as count from istar_user where email ='"+org_admin_email+"'";
-		List<HashMap<String, Object>> existingUsers = db.executeQuery(checkIFExist);
+		if(org_admin_id != 0) {
+			
+			String  checkIFExistID = "select cast (count(*) as integer) as count from istar_user where id ="+org_admin_id; 
+			List<HashMap<String, Object>> existingUsers = db.executeQuery(checkIFExistID);
+			if ((int)existingUsers.get(0).get("count") > 0) {
+				isexist = true;
+			}
+			
+		}else {
+			
+			String checkIFExist="select cast (count(*) as integer) as count from istar_user where email ='"+org_admin_email+"'";
+			List<HashMap<String, Object>> existingUsers = db.executeQuery(checkIFExist);
 
-		if ((int)existingUsers.get(0).get("count") > 0) {
-			String findAdmin ="select id from istar_user where email='"+org_admin_email+"' limit 1";
-			List<HashMap<String, Object>> adminDddd = db.executeQuery(findAdmin);
-			org_admin_id = (int)adminDddd.get(0).get("id");
-			isexist = true;
+			if ((int)existingUsers.get(0).get("count") > 0) {
+				String findAdmin ="select id from istar_user where email='"+org_admin_email+"' limit 1";
+				List<HashMap<String, Object>> adminDddd = db.executeQuery(findAdmin);
+				org_admin_id = (int)adminDddd.get(0).get("id");
+				isexist = true;
+			}
 		}
+		
+		
 
 		if (isCreate) {
 			sql = "INSERT INTO address ( id, addressline1, addressline2, pincode_id, address_geo_longitude, address_geo_latitude ) VALUES ( (SELECT COALESCE (MAX(ID) + 1, 1) FROM address ), '"
