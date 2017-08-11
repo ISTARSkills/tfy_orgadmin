@@ -23,7 +23,7 @@
 			
 			<jsp:include page="../ticket_element.jsp"></jsp:include>
 		</div>
-		<jsp:include page="../chat_element.jsp"></jsp:include>
+		<%-- <jsp:include page="../chat_element.jsp"></jsp:include> --%>
 	</div>
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<!-- Mainly scripts -->
