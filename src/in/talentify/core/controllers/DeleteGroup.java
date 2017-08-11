@@ -38,7 +38,7 @@ public class DeleteGroup extends IStarBaseServelet {
 		finalSql +=trainerEventLog; 
 		String deleteBatchStudents = "delete from batch_students where batch_group_id="+groupId+";";
 		finalSql +=deleteBatchStudents; 
-		String deleteBatchScheduleEvent ="delete from batch_schedule_event where batch_id in (select id from batch where batch_group_id="+groupId+");";
+		String deleteBatchScheduleEvent ="delete from batch_schedule_event where  batch_group_id="+groupId+";";
 		finalSql +=deleteBatchScheduleEvent; 
 		String deleteFromBatchStats ="delete from batch_stats where batch_group_id="+groupId+";";
 		finalSql +=deleteFromBatchStats; 
@@ -62,7 +62,7 @@ public class DeleteGroup extends IStarBaseServelet {
 		finalSql +=deleteBatch; 
 		String deleteGroup = "delete from batch_group where id ="+groupId+";";
 		finalSql +=deleteGroup;			
-		//System.out.println(finalSql);
+		System.out.println(finalSql);
 		util.executeUpdate(finalSql);
 		
 	}
