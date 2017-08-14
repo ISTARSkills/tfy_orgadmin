@@ -662,8 +662,6 @@ System.out.println("giveFarziDataWithB");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		for(int j = 0; j< 16;j++)
 		{
-			
-			
 			String findBG ="select * from batch_group where college_id = "+orgid+" order by id limit 15";
 			List<HashMap<String, Object>> bgs = util.executeQuery(findBG);
 			int k=0;

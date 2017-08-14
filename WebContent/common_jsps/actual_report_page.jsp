@@ -473,6 +473,7 @@
 $(document).ready(function(){
 	$(function () {
 
+		
 		var flag = <%=flag%>;
 		var queryString ='';
 		if(flag)
@@ -497,10 +498,9 @@ $(document).ready(function(){
 	          success: function(data){
 	        	  var data = JSON.parse(data);
 	        	  moduleLevelData = data;
-	        	  
+	        	
 	        	  $.ajax({
-	    	          url: "<%=baseURL%>
-		/get_admin_skill_graph",
+	    	          url: "<%=baseURL%>/get_admin_skill_graph",
 									cache : false,
 									type : "POST",
 									data : "type=SESSION_LEVEL&" + queryString,
@@ -509,6 +509,7 @@ $(document).ready(function(){
 										sessionLevelData = data2;
 										loadSkillChart(moduleLevelData,
 												sessionLevelData);
+										
 									}
 								});
 
@@ -516,11 +517,10 @@ $(document).ready(function(){
 						});
 
 					});
-
+	
 				});
 
 		function loadSkillChart(moduleLevelData, sessionLevelData) {
-
 			$('#container')
 					.highcharts(
 							{

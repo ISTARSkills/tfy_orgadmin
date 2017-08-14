@@ -152,7 +152,7 @@ public class GraphCustomServices {
 		StringBuffer out = new StringBuffer();
 		String id = UUID.randomUUID().toString();
 		out.append("<div class='graph_holder' id='graph_container_"+id+"' ></div> ");
-		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+id+"' data-y_axis_title='Average Adjusted Score' data-report_title='Average Performance of Section Over Time' "
+		out.append("<table style='display:none' class='data_holder datatable_report' data-graph_containter='graph_container_"+id+"' data-y_axis_title='Average Adjusted Points' data-report_title='Average Performance of Section Over Time' "
 				+ " data-graph_holder='container" + id + "' id='chart_datatable_"+id+"'");
 		out.append(" data-graph_type='line'>");				
 		out.append(""

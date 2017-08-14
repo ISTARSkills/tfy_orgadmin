@@ -168,7 +168,7 @@ Course c= new CourseDAO().findById(course_id);
                 </div>
                 <%
                 SkillService  s = new  SkillService();
-                CourseLevelSkill skillTree = s.getCourseSkillTree(c.getId());
+                CourseLevelSkill skillTree = s.createOrUpdateCourseSkillTree(c.getId());
                 
                 %>
                 <div class="col-lg-6">
