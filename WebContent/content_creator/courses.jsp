@@ -34,15 +34,16 @@
 			%>
 				<%=UIUtils.getPageHeader("Courses Grid", brd) %>
 				<div class="row card-box scheduler_margin-box">
-				<div class="col-lg-1">
+				<div class="col-lg-2">
 					<!-- <button class="btn btn-primary dim" type="button" id="create_course">
 						<i class="fa fa-plus-circle" style="font-size: 30px" aria-hidden="true" title="Create a Course"></i>
 					</button> -->
-					<button class="btn btn-primary dim" type="button" id="create_course">
+					<!-- <button class="btn btn-primary dim" type="button" id="create_course">
 						<i class="fa fa-plus-circle" title="Create a Course"></i>&nbsp;Create
-					</button>
+					</button> -->
+					<button type="button" id="create_course" class="btn btn-w-m btn-danger"><i class="fa fa-plus"></i> Create Course</button>
 				</div>
-				<div class="col-lg-2 form-group">
+				<div class="col-lg-1 form-group customcss_search-box" >
 					<input type="text" id="quicksearch" placeholder="Search" />
 				</div></div>
 
@@ -56,7 +57,7 @@
 							if(course.getImage_url()!= null && !course.getImage_url().equalsIgnoreCase("") && course.getImage_url().endsWith(".png")){
 								img_url = cdnPath+course.getImage_url();
 							}
-							System.out.println(">>>>>>>>"+img_url);
+							
 								try {
 									course_category = course.getCategory();
 								} catch (Exception e) {
@@ -64,8 +65,8 @@
 					%>
 
 					<div class="col-md-2 pageitem <%=course_category%>">
-						<div class="ibox">
-							<div class="ibox-content product-box customcss_ibox_product_border" >
+						<div class="ibox product-box customcss_height-prod-box" >
+							<div class="ibox-content  customcss_ibox_product_border"  >
 
 								<div class="imgWrap">
 									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
@@ -88,15 +89,16 @@
 											}
 										%>
 									</div>
-									<div class="m-t text-righ customcss_float-right">
+									
+								</div>
+							</div>
+							<div class="m-t text-righ customcss_float-right-edit " >
 
 										<a href="/content_creator/course.jsp?course=<%=course.getId()%>" class="btn btn-xs btn-outline btn-primary">Edit <i class="fa fa-pencil"></i>
 										</a>
 										<%-- <a data-course_id='<%=course.getId()%>' href="#" class="btn btn-xs btn-outline btn-primary delete_course">Delete <i class="fa fa-trash-o"></i>
 										</a> --%>
 									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 					<%

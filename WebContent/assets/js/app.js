@@ -7664,7 +7664,13 @@ function initSearch() {
 	});
 }
 
-
+function match_height() {
+	var maxHeight = Math.max.apply(null, $("div.product-box").map(function() {
+		return $(this).height();
+	}).get());
+	$('div.product-box').css('min-height', maxHeight);
+	$('div.product-box').css('max-height', maxHeight);
+} 
 jQuery.expr[':'].icontains = function(a, i, m) {
 	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };

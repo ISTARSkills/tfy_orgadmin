@@ -14857,6 +14857,9 @@ ul>p {
 	margin-top: 11px;
 }
 
+.customcss_search-box{
+	margin-right: 30px !important;float: right;
+}
 .customcss_studentcard-profile_img {
 	width: 98px;
 	height: 98px;
@@ -15107,6 +15110,13 @@ margin-left: 21px;
 }
 .customcss_ibox_product_border{
     border: none !important;
+    padding: 0px;
+}
+.customcss_float-right-edit{
+	    position: absolute;    right: 30px;  bottom: 13px;
+}
+.customcss_height-prod-box{
+	height: 340px !important;
 }
 
 .navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover
