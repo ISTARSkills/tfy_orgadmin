@@ -15118,6 +15118,11 @@ margin-left: 21px;
 .customcss_height-prod-box{
 	height: 340px !important;
 }
+.customcss_dashboard_buttons{
+    position: absolute;
+    right: 34px;
+    bottom: 13px;
+}
 
 .navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover
 	{

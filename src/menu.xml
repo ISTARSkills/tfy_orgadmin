@@ -77,7 +77,7 @@
 	</parent_links>
 	<parent_links display_name="Course Administration" is_visible_in_menu="true" jsp_file="/content_creator/courses.jsp" url="/content_creator/courses.jsp" valid_role="content_creator">
 		<child_links display_name="Course(s)" is_visible_in_menu="true" jsp_file="/content_creator/courses.jsp" url="/content_creator/courses.jsp" valid_roles="content_creator" />
-		<child_links display_name="Module(s)" is_visible_in_menu="true" jsp_file="/content_creator/modules.jsp" url="/content/modules.jsp" valid_roles="content_creator" />
+		<child_links display_name="Module(s)" is_visible_in_menu="true" jsp_file="/content_creator/modules.jsp" url="/content_creator/modules.jsp" valid_roles="content_creator" />
 		<child_links display_name="CMSession(s)" is_visible_in_menu="true" jsp_file="/content_creator/content_creator/cmsessions.jsp" url="/content_creator/cmsessions.jsp" valid_roles="content_creator" />
 		<child_links display_name="Lesson(s)" is_visible_in_menu="true" jsp_file="/content_creator/lessons.jsp" url="/content_creator/lessons.jsp" valid_roles="content_creator" />
 		<child_links display_name="Assessment(s)" is_visible_in_menu="true" jsp_file="/content_creator/assessments.jsp" url="/content_creator/assessments.jsp" valid_roles="content_creator" />
@@ -100,7 +100,7 @@
 
 	<!-- <parent_links display_name="Team Management" is_visible_in_menu="true" jsp_file="" url="" valid_role="content_creator"></parent_links> -->
 
-	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/content/content_admin/dashboard.jsp" url="/content/content_admin/dashboard.jsp" valid_role="content_admin">
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/content_admin/dashboard.jsp" url="/content_admin/dashboard.jsp" valid_role="content_admin">
 	</parent_links>
 	<parent_links display_name="Course Administration" is_visible_in_menu="true" jsp_file="/content_creator/course_list.jsp" url="/content_creator/course_list.jsp" valid_role="content_admin">
 		<child_links display_name="Course(s)" is_visible_in_menu="true" jsp_file="/content_creator/course_list.jsp" url="/content_creator/course_list.jsp" valid_roles="content_admin" />
@@ -109,9 +109,9 @@
 		<child_links display_name="Lesson(s)" is_visible_in_menu="true" jsp_file="/content_creator/lesson_list.jsp" url="/content_creator/lesson_list.jsp" valid_roles="content_admin" />
 	</parent_links>
 
-	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tree.jsp" url="/content/content_admin/skill_tree.jsp" valid_role="content_admin">
-		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tasks.jsp" url="/content/content_admin/skill_tasks.jsp" valid_roles="content_admin" />
-		<child_links display_name="Add skill(s)" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tree_creation_workflow.jsp" url="/content/content_admin/skill_tree_creation_workflow.jsp" valid_roles="content_admin" />
+	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content_admin/skill_tree.jsp" url="/content_admin/skill_tree.jsp" valid_role="content_admin">
+		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content_admin/skill_tasks.jsp" url="/content_admin/skill_tasks.jsp" valid_roles="content_admin" />
+		<child_links display_name="Add skill(s)" is_visible_in_menu="true" jsp_file="/content_admin/skill_tree_creation_workflow.jsp" url="/content_admin/skill_tree_creation_workflow.jsp" valid_roles="content_admin" />
 	</parent_links>
 
 </menu>

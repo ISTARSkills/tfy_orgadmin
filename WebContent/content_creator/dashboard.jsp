@@ -39,7 +39,7 @@
 	
 %>
 <body class="top-navigation" id='super_admin_classroom'>
-	<div id="wrapper">
+	<div id="wrapper" class='customcss_overflowy'>
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="/inc/navbar.jsp"></jsp:include>
 			
@@ -51,7 +51,7 @@
 				<div class="row white-bg card-box scheduler_margin-box">
 				
 				
-				<div class="row" style="margin: 5px">
+				<div class="row">
 					<%
 						for (Task task : tasks) {
 
@@ -68,6 +68,10 @@
 									Stage currentStage = (new LessonTaskStageServices()).getCurrentStage(task.getState());
 									Set<Stage> stages = (new LessonTaskStageServices()).getNextStages(currentStage);
 									String desc = "empty description";
+									String img_url = "/assets/img/no_course_module_lesson_image/l_1.png";
+									if(lesson.getImage_url()!= null && !lesson.getImage_url().equalsIgnoreCase("") && lesson.getImage_url().endsWith(".png")){
+										img_url = cdnPath+lesson.getImage_url();
+									}
 									if (lesson.getDescription() != null) {
 										if (lesson.getDescription().length() > 55) {
 											desc = lesson.getDescription().substring(0, 55);
@@ -77,17 +81,15 @@
 									}
 									String edit_url = "/creator/lesson.jsp?lesson=" + lesson.getId();
 					%>
-					<div class="col-md-3 pageitem null"
-						style="padding-left: 7px; padding-right: 7px">
+					<div class="col-md-2 pageitem null">
 						<div class="ribbon">
 							<span><%=lesson.getType()%></span>
 						</div>
-						<div class="ibox">
-							<div class="ibox-content product-box">
+						<div class="ibox product-box customcss_height-prod-box">
+							<div class="ibox-content customcss_ibox_product_border">
 
 								<div class="imgWrap">
-									<img alt="image" style="width: 100%" class=" "
-										src="<%=cdnPath + lesson.getImage_url()%>">
+									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
 								<div class="product-desc">
 									<span class="product-price"><span
@@ -96,7 +98,11 @@
 										class="product-name"><%=lesson.getTitle()%></a>
 
 									<div class="small m-t-xs"><%=desc%></div>
-									<div class="m-t text-righ">
+									
+								</div>
+							</div>
+							
+							<div class="m-t text-righ customcss_dashboard_buttons">
 										<%
 											if (lesson.getType().equalsIgnoreCase("PRESENTATION")) {
 										%>
@@ -128,9 +134,9 @@
 										</a>
 										<%} %> --%>
 									</div>
-								</div>
-							</div>
+							
 						</div>
+						
 					</div>
 					<%
 						}
