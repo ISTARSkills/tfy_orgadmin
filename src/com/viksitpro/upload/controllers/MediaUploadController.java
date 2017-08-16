@@ -49,7 +49,8 @@ public class MediaUploadController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -58,41 +59,30 @@ public class MediaUploadController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		MediaUploadServices mediaUploadServices = new MediaUploadServices();
-		out.append(mediaUploadServices.getAnyPath("media_url_path"));
 		Set<PosixFilePermission> perms = mediaUploadServices.getPermissions();
 		if (!ServletFileUpload.isMultipartContent(request)) {
-			throw new IllegalArgumentException("Request is not multipart, please 'multipart/form-data' enctype for your form.");
+			throw new IllegalArgumentException(
+					"Request is not multipart, please 'multipart/form-data' enctype for your form.");
 		}
 		PrintWriter writer = response.getWriter();
 		String lesson_id = "";
 		Lesson lesson = new Lesson();
 		try {
-			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(new ServletRequestContext(request));
-			for (FileItem item : items) {
-				if (item.getFieldName().equalsIgnoreCase("lesson")) {
-					lesson_id = item.getString();
-					System.err.println(lesson_id);
-					lesson = (new LessonDAO()).findById(Integer.parseInt(lesson_id));
-				}
-			}			
-			LessonServices services = new LessonServices();
-			if(services.checkLessonFolderExists(lesson)){
-				
-			} else {
-				services.createLessonFolder(lesson);
-			}
+			List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory())
+					.parseRequest(new ServletRequestContext(request));
 			for (FileItem item : items) {
 				if (!item.isFormField()) {
 					if (item.getName().toLowerCase().endsWith(".PNG".toLowerCase())) {
-						out = mediaUploadServices.writeToFile(lesson, item, perms, out, ".png");
+						out = mediaUploadServices.writeToFile(item, perms, out, ".png");
 					} else if (item.getName().endsWith(".mp4")) {
-						out = mediaUploadServices.writeToFile(lesson, item, perms, out, ".mp4");
+						out = mediaUploadServices.writeToFile(item, perms, out, ".mp4");
 					} else if (item.getName().endsWith(".gif")) {
-						out = mediaUploadServices.writeToFile(lesson, item, perms, out, ".gif");
+						out = mediaUploadServices.writeToFile(item, perms, out, ".gif");
 					}
 				}
 			}

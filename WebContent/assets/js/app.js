@@ -253,6 +253,10 @@ function readyFn(jQuery) {
 			console.log(err);
 		}
 		break;
+	case 'course_edit':
+		courseEditVariables();
+		courseEditWizard();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -293,6 +297,247 @@ function readyFn(jQuery) {
 	});
 	
 	
+}
+
+
+function courseEditVariables() {
+	window.isNewCourse = Boolean($("input[name='isNew']").val() === "true");
+	window.courseID = $("input[name='cmsID']").val();
+	window.image_url = $("input[name='baseProdURL']").val();
+	window.module_hash = {};
+	window.is_sortable = Boolean(false);
+}
+
+function courseEditWizard() {
+	$("#form").steps({
+		bodyTag : "fieldset",
+		transitionEffect : 'fade',
+		transitionEffectSpeed : 135,
+		showFinishButtonAlways : false,
+		onStepChanging : function(event, currentIndex, newIndex) {
+			courseStepChanger(event, currentIndex, newIndex);
+			return true;
+		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			if (currentIndex === 1) {
+				initImageUpload($("#course_image"));
+				// initImageUploader($("#course_image"), 1);
+				// return true;
+			}
+			if (currentIndex === 2 && !window.is_sortable) {
+				createSortable(updateModuleHash);
+			}
+
+		},
+		onFinishing : function(event, currentIndex) {
+			courseFinisher(event, currentIndex);
+			return true;
+		}
+	});
+}
+function courseStepChanger(event, currentIndex, newIndex) {
+
+	if (newIndex === 2) {
+		moduleHashInit();
+		initModuleSearch();
+		addModulesManually();
+		return true;
+	}
+}
+function initImageUpload(cmsItem) {
+	$('#uploadImage').on('click', function() {
+		var formData = new FormData();
+		// Attach file
+		formData.append('image.png', $('#fileupload')[0].files[0]); 
+	    $.ajax({
+	        // Your server script to process the upload
+	        url: '/upload_media',
+	        type: 'POST',
+
+	        // Form data
+	        data: formData,
+
+	        // Tell jQuery not to process data or worry about content-type
+	        // You *must* include these options!
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+
+	        // Custom XMLHttpRequest
+	        xhr: function() {
+	            var myXhr = $.ajaxSettings.xhr();
+	            if (myXhr.upload) {
+	                // For handling the progress of the upload
+	                myXhr.upload.addEventListener('progress', function(e) {
+	                    if (e.lengthComputable) {
+	                        $('progress').attr({
+	                            value: e.loaded,
+	                            max: e.total,
+	                        });
+	                    }
+	                } , false);
+	            }
+	            return myXhr;
+	        },
+	    }).done(function(data) {
+	    	  cmsItem.attr("src", data);
+	    });
+	});
+}
+function moduleHashInit() {
+	$('#editable > .something').each(
+			function(k, v) {
+				window.module_hash[$(v).data('module_id')] = v.innerText.split(
+						'| ').slice(2).toString();
+			});
+}
+function initModuleSearch() {
+	$('#searchModules')
+			.keydown(
+					function(event) {
+						if ((event.keyCode == 13)
+								&& ($.trim($(this).val()) != '')) {
+
+							if($.trim($(this).val()).length>2){
+								var searchString = $("#searchModules").val();
+
+								var datapost = {
+									'searchString' : searchString
+								};
+								$
+										.get("/SeachModules", datapost)
+										.done(
+												function(data) {
+													var addition = '';
+													$
+															.each(
+																	data.modules,
+																	function(k, v) {
+																		/*
+																		 * console
+																		 * .log(v.id +
+																		 * '>>' +
+																		 * v.name);
+																		 * module_hash[v.id] =
+																		 * v.name;
+																		 */
+																		addition+="<span class='simple_tag' id='"
+																								+ v.id
+																								+ "'><i class='js-remove fa fa-plus'> </i> | "
+																								+ v.id
+																								+ " | "
+																								+ v.name
+																								+ "</span>";
+																	});
+													$(
+													'#searchModulesResult')
+													.html(addition);
+															
+												}).fail(function() {
+											alert("error");
+										}).always(function() {
+
+										});
+							} else {
+								alert('Type atleast 3 characters to search');
+							}
+
+						}
+					});
+
+	$('#searchModulesResult')
+			.on(
+					'click',
+					".fa-plus",
+					function() {
+
+						var v = {
+							id : this.parentElement.id,
+							name : this.parentElement.innerText
+						}
+						if (!(window.module_hash[v.id] == undefined)) {
+							alert('Module already there in the list.');
+						} else {
+							$('#editable')
+									.append(
+											"<li class='something' data-module_id='"
+													+ v.id
+													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ v.name + "</li>");
+							window.module_hash[v.id] = v.name;
+						}
+					});
+
+}
+function addModulesManually() {
+	$('#addChildren')
+			.keydown(
+					function(event) {
+						if ((event.keyCode == 13)
+								&& ($.trim($(this).val()) != '')) {
+							var args = {
+								'args' : $('#addChildren').val()
+							};
+							$
+									.ajax({
+										type : "GET",
+										url : '/content/AddModulesManually',
+										data : args
+									})
+									.done(
+											function(data) {
+
+												if (data.modules.length == 0) {
+													alert('No module with this ID was found!');
+												} else {
+													$
+															.each(
+																	data.modules,
+																	function(k,
+																			v) {
+																		console
+																				.log(v.id
+																						+ '>>'
+																						+ v.name);
+																		if (!(window.module_hash[v.id] == undefined)) {
+																			alert('Module already there in the list.');
+																		} else {
+																			$(
+																					'#editable')
+																					.append(
+																							"<li class='something' data-module_id='"
+																									+ v.id
+																									+ "'><i class='js-remove fa fa-trash-o'> </i> | "
+																									+ v.id
+																									+ " | "
+																									+ v.name
+																									+ "</li>");
+																			window.module_hash[v.id] = v.name;
+																		}
+																	});
+												}
+
+											}).fail(function() {
+										alert("error");
+									}).always(function() {
+										$('#addChildren').val('');
+									});
+						}
+					});
+}
+function createSortable(updateCMSHash) {
+	var editableList = Sortable.create(document.getElementById('editable'), {
+		animation : 150,
+		filter : '.js-remove',
+		onFilter : function(evt) {
+			evt.item.parentNode.removeChild(evt.item);
+			updateCMSHash(evt);
+		}
+	});
+	is_sortable = Boolean(true);
+}
+function updateModuleHash(evt) {
+	delete window.module_hash[evt.item.getAttribute('data-module_id')];
 }
 
 function initUnreadChatAndNotification()

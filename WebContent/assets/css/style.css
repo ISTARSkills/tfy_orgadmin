@@ -6737,7 +6737,10 @@ body.body-small .vote-icon {
 
 
 
+
+
 :
+
 
 
 
@@ -6749,7 +6752,10 @@ body.body-small .vote-icon {
 
 
 
+
 perspective
+
+
 
 
 
@@ -6770,8 +6776,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6794,6 +6804,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -6806,8 +6818,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -6828,7 +6844,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -6840,7 +6859,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -6861,8 +6883,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6885,6 +6911,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -6897,8 +6925,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -6922,7 +6954,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -6934,7 +6969,10 @@ deg
 
 
 
+
 perspective
+
+
 
 
 
@@ -6955,8 +6993,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6977,6 +7019,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -6989,8 +7033,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7013,7 +7061,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7025,7 +7076,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7046,8 +7100,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7068,6 +7126,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7080,8 +7140,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7114,7 +7178,10 @@ keyframes sk-rotatePlane { 0% {
 
 
 
+
+
 :
+
 
 
 
@@ -7126,7 +7193,10 @@ keyframes sk-rotatePlane { 0% {
 
 
 
+
 perspective
+
+
 
 
 
@@ -7147,8 +7217,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7171,6 +7245,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -7183,8 +7259,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -7205,7 +7285,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7217,7 +7300,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7238,8 +7324,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7262,6 +7352,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -7274,8 +7366,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -7299,7 +7395,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -7311,7 +7410,10 @@ deg
 
 
 
+
 perspective
+
+
 
 
 
@@ -7332,8 +7434,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7354,6 +7460,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7366,8 +7474,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7390,7 +7502,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7402,7 +7517,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7423,8 +7541,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7445,6 +7567,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7457,8 +7581,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7526,7 +7654,10 @@ rotateY
 
 
 
+
+
 :
+
 
 
 
@@ -7538,7 +7669,10 @@ rotateY
 
 
 
+
 scale
+
+
 
 
 
@@ -7561,7 +7695,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7573,7 +7710,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -7606,7 +7746,10 @@ keyframes sk-doubleBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -7618,7 +7761,10 @@ keyframes sk-doubleBounce { 0%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -7641,7 +7787,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7653,7 +7802,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -7735,7 +7887,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -7747,7 +7902,10 @@ scale
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7770,7 +7928,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7782,7 +7943,10 @@ transform
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7815,7 +7979,10 @@ keyframes sk-waveStretchDelay { 0%, 40%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -7827,7 +7994,10 @@ keyframes sk-waveStretchDelay { 0%, 40%, 100% {
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7850,7 +8020,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7862,7 +8035,10 @@ transform
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7929,13 +8105,17 @@ scaleY
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -7952,8 +8132,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -7974,8 +8158,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -7996,8 +8184,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8018,13 +8210,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8041,8 +8237,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8063,8 +8263,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8085,8 +8289,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8103,7 +8311,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -8119,12 +8329,16 @@ deg
 
 
 
+
+
 :
 
 
 
 
+
  
+
 
 
 
@@ -8138,8 +8352,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8156,8 +8374,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8174,8 +8396,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8192,12 +8418,16 @@ transform
 
 
 
+
+
 :
 
 
 
 
+
  
+
 
 
 
@@ -8211,8 +8441,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8229,8 +8463,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8247,8 +8485,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8270,13 +8512,17 @@ deg
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8293,8 +8539,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -8315,8 +8565,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8337,8 +8591,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -8359,8 +8617,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -8383,13 +8645,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8406,8 +8672,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -8428,8 +8698,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8450,8 +8724,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -8472,8 +8750,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -8499,13 +8781,17 @@ scale
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8522,8 +8808,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -8544,13 +8834,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8567,8 +8861,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -8600,13 +8898,17 @@ keyframes sk-wanderingCubeMove { 25% {
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8623,8 +8925,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8645,8 +8951,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8667,8 +8977,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8689,13 +9003,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8712,8 +9030,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8734,8 +9056,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8756,8 +9082,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8774,7 +9104,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -8790,12 +9122,16 @@ deg
 
 
 
+
+
 :
 
 
 
 
+
  
+
 
 
 
@@ -8809,8 +9145,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8827,8 +9167,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8845,8 +9189,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8863,12 +9211,16 @@ transform
 
 
 
+
+
 :
 
 
 
 
+
  
+
 
 
 
@@ -8882,8 +9234,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8900,8 +9256,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8918,8 +9278,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8941,13 +9305,17 @@ deg
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8964,8 +9332,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -8986,8 +9358,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9008,8 +9384,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -9030,8 +9410,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -9054,13 +9438,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9077,8 +9465,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -9099,8 +9491,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9121,8 +9517,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -9143,8 +9543,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -9170,13 +9574,17 @@ scale
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9193,8 +9601,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -9215,13 +9627,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9238,8 +9654,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -9286,7 +9706,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -9298,7 +9721,10 @@ deg
 
 
 
+
 scale
+
+
 
 
 
@@ -9321,7 +9747,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9333,7 +9762,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9356,13 +9788,17 @@ opacity
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9390,7 +9826,10 @@ keyframes sk-pulseScaleOut { 0% {
 
 
 
+
+
 :
+
 
 
 
@@ -9402,7 +9841,10 @@ keyframes sk-pulseScaleOut { 0% {
 
 
 
+
 scale
+
+
 
 
 
@@ -9425,7 +9867,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9437,7 +9882,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9460,13 +9908,17 @@ opacity
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9546,7 +9998,10 @@ keyframes sk-chasingDotsRotate { 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -9558,7 +10013,10 @@ keyframes sk-chasingDotsRotate { 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -9581,7 +10039,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9593,7 +10054,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9626,7 +10090,10 @@ keyframes sk-chasingDotsBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -9638,7 +10105,10 @@ keyframes sk-chasingDotsBounce { 0%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -9661,7 +10131,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9673,7 +10146,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9745,7 +10221,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -9757,7 +10236,10 @@ scale
 
 
 
+
 scale
+
+
 
 
 
@@ -9780,7 +10262,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9792,7 +10277,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9825,7 +10313,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -9837,7 +10328,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -9860,7 +10354,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9872,7 +10369,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10075,7 +10575,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -10087,7 +10590,10 @@ scale
 
 
 
+
 scale
+
+
 
 
 
@@ -10110,7 +10616,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10122,7 +10631,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10155,7 +10667,10 @@ keyframes sk-circleBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10167,7 +10682,10 @@ keyframes sk-circleBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -10190,7 +10708,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10202,7 +10723,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10321,7 +10845,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -10333,7 +10860,10 @@ scale
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10359,7 +10889,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10371,7 +10904,10 @@ transform
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10407,7 +10943,10 @@ keyframes sk-cubeGridScaleDelay { 0%, 70%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10419,7 +10958,10 @@ keyframes sk-cubeGridScaleDelay { 0%, 70%, 100% {
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10445,7 +10987,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10457,7 +11002,10 @@ transform
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10523,13 +11071,17 @@ scale3D
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -10546,8 +11098,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -10568,13 +11124,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -10591,8 +11151,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -10623,13 +11187,17 @@ keyframes sk-innerCircle { 0% {
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -10646,8 +11214,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -10668,13 +11240,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -10691,8 +11267,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -10892,13 +11472,17 @@ opacity
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -10925,13 +11509,17 @@ opacity
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -14123,7 +14711,10 @@ tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selecte
 
 
 
+
+
 :
+
 
 
 
@@ -14133,7 +14724,10 @@ tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selecte
 
 
 
+
 scale
+
+
 
 
 
@@ -14152,7 +14746,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -14162,7 +14759,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -14191,7 +14791,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -14201,7 +14804,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -14220,7 +14826,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -14230,7 +14839,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -14857,9 +15469,11 @@ ul>p {
 	margin-top: 11px;
 }
 
-.customcss_search-box{
-	margin-right: 30px !important;float: right;
+.customcss_search-box {
+	margin-right: 30px !important;
+	float: right;
 }
+
 .customcss_studentcard-profile_img {
 	width: 98px;
 	height: 98px;
@@ -15036,8 +15650,9 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 .customcss_overflowy {
 	overflow-y: hidden;
 }
-.customcss_img-size{
-	    width: 100% !important;
+
+.customcss_img-size {
+	width: 100% !important;
 }
 
 .customcss_heading {
@@ -15060,22 +15675,26 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 .customcssuser_edit {
 	float: inherit !important;
 }
-.customcss_istarnotification{
+
+.customcss_istarnotification {
 	margin-top: 15px !important;
 	margin-right: 8px !important;
 	margin-left: 8px !important;
 	margin-bottom: 10px !important;
 }
-.customcss_classroom{
-padding-left: 22px !important; 
-padding-right: 22px !important;
+
+.customcss_classroom {
+	padding-left: 22px !important;
+	padding-right: 22px !important;
 }
-.custom_css_classroom{
-margin-left: 10px !important;    
-margin-right: 10px !important;
+
+.custom_css_classroom {
+	margin-left: 10px !important;
+	margin-right: 10px !important;
 }
-.customcss_wrapcontent{
-padding: 4px !important;
+
+.customcss_wrapcontent {
+	padding: 4px !important;
 }
 
 #student_holder {
@@ -15086,53 +15705,61 @@ padding: 4px !important;
 .customcss_iboxcontent {
 	height: 220px;
 }
+
 .customcss_iboxcontent {
 	height: 220px;
 }
-.customcss_customcard{
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 10px;
-}
-.customcss_admin-card{
-	margin-left: -27px !important;
-    margin-right: -11px !important;
-    margin-top: 8px !important;
-}
-.customcss_admin-card1{
-    margin-top: 8px;
-    margin-right: -24px;
 
+.customcss_customcard {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 10px;
 }
-.customcss_adminmaintab{
-margin-left: 21px;
-    margin-right: 21px
+
+.customcss_admin-card {
+	margin-left: -27px !important;
+	margin-right: -11px !important;
+	margin-top: 8px !important;
 }
-.customcss_ibox_product_border{
-    border: none !important;
-    padding: 0px;
+
+.customcss_admin-card1 {
+	margin-top: 8px;
+	margin-right: -24px;
 }
-.customcss_float-right-edit{
-	    position: absolute;    right: 30px;  bottom: 13px;
+
+.customcss_adminmaintab {
+	margin-left: 21px;
+	margin-right: 21px
 }
-.customcss_height-prod-box{
+
+.customcss_ibox_product_border {
+	border: none !important;
+	padding: 0px;
+}
+
+.customcss_float-right-edit {
+	position: absolute;
+	right: 30px;
+	bottom: 13px;
+}
+
+.customcss_height-prod-box {
 	height: 340px !important;
 }
-.customcss_dashboard_buttons{
-    position: absolute;
-    right: 34px;
-    bottom: 13px;
+
+.customcss_dashboard_buttons {
+	position: absolute;
+	right: 34px;
+	bottom: 13px;
 }
 
 .navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover
 	{
 	background-color: transparent !important;
 }
-	.dropdown-submenu
-	{
-	position
-	:
-	relative;
+
+.dropdown-submenu {
+	position: relative;
 }
 
 .dropdown-submenu .dropdown-menu {
@@ -15141,4 +15768,24 @@ margin-left: 21px;
 	margin-top: -1px;
 }
 
-.no_padding_box { padding:  0px !important}
+.no_padding_box {
+	padding: 0px !important
+}
+
+.fieldset-border-margin {
+	margin-top: 1px !important;
+}
+
+#searchModules {
+	margin-bottom: 5px;
+	min-width: 449px;
+}
+
+#searchModulesResult {
+	overflow-y: auto;
+	max-height: 100vh;
+}
+
+#course_image {
+	height: 200px;
+}

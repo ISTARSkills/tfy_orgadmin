@@ -20,15 +20,15 @@ public class MediaUploadServices {
 	public MediaUploadServices() {
 		super();
 	}
-	
+
 	public String getAnyPath(String nick) throws IOException {
 		Properties properties = new Properties();
 		properties.load(LessonServices.class.getClassLoader().getResourceAsStream("app.properties"));
 		String lessonXMLPath = properties.getProperty(nick);
 		return lessonXMLPath;
 	}
-	
-	public Set<PosixFilePermission> getPermissions () {
+
+	public Set<PosixFilePermission> getPermissions() {
 		Set<PosixFilePermission> perms = new HashSet<PosixFilePermission>();
 		// add owners permission
 		perms.add(PosixFilePermission.OWNER_READ);
@@ -44,11 +44,12 @@ public class MediaUploadServices {
 		perms.add(PosixFilePermission.OTHERS_EXECUTE);
 		return perms;
 	}
-	
-	public PrintWriter writeToFile(Lesson lesson, FileItem item, Set<PosixFilePermission> perms, PrintWriter out, String extension) throws Exception {
+
+	public PrintWriter writeToFile(FileItem item, Set<PosixFilePermission> perms, PrintWriter out, String extension)
+			throws Exception {
 		MediaUploadServices mediaUploadServices = new MediaUploadServices();
 		UUID uui = UUID.randomUUID();
-		File file = new File(mediaUploadServices.getAnyPath("mediaLessonPath")+ lesson.getId() + "/" + lesson.getId(), uui.toString() + extension);
+		File file = new File(mediaUploadServices.getAnyPath("imagePath"), uui.toString() + extension);
 		System.err.println(file.getAbsolutePath());
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
 		// perms);
@@ -60,21 +61,22 @@ public class MediaUploadServices {
 		file.setWritable(true, false);
 		file.createNewFile();
 		item.write(file);
-		if(mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")){
+		if (mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")) {
 			Files.setPosixFilePermissions(file.toPath(), perms);
 		}
-		System.err.println(mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/" + lesson.getId() + uui.toString() + extension);
+		System.err.println(mediaUploadServices.getAnyPath("imagePath") + uui.toString() + extension);
 		System.out.println("UPLOADED" + item.getContentType());
 		System.err.println(file.getAbsolutePath());
-		out.println(mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/" + lesson.getId() + "/" + file.getName());
+		out.println(mediaUploadServices.getAnyPath("media_url_path") + "course_images/" + file.getName());
 		return out;
 	}
-	
-	public StringBuffer writeToFileForSlide(String uuID,Lesson lesson, FileItem item, Set<PosixFilePermission> perms, StringBuffer out, String extension) throws Exception {
+
+	public StringBuffer writeToFileForSlide(String uuID, Lesson lesson, FileItem item, Set<PosixFilePermission> perms,
+			StringBuffer out, String extension) throws Exception {
 		MediaUploadServices mediaUploadServices = new MediaUploadServices();
-		
-		
-		File file = new File(mediaUploadServices.getAnyPath("mediaLessonPath")+ lesson.getId() + "/" + lesson.getId(), uuID + extension);
+
+		File file = new File(mediaUploadServices.getAnyPath("mediaLessonPath") + lesson.getId() + "/" + lesson.getId(),
+				uuID + extension);
 		System.err.println(file.getAbsolutePath());
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
 		// perms);
@@ -86,14 +88,15 @@ public class MediaUploadServices {
 		file.setWritable(true, false);
 		file.createNewFile();
 		item.write(file);
-		if(mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")){
+		if (mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")) {
 			Files.setPosixFilePermissions(file.toPath(), perms);
 		}
-		System.err.println(mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/" + lesson.getId() + uuID + extension);
+		System.err.println(mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/"
+				+ lesson.getId() + uuID + extension);
 		System.out.println("UPLOADED" + item.getContentType());
 		System.err.println(file.getAbsolutePath());
 		out.append("/lessonXMLs/" + lesson.getId() + "/" + lesson.getId() + "/" + file.getName());
-		System.out.println("inside>>>>>>>>> "+out.toString());
+		System.out.println("inside>>>>>>>>> " + out.toString());
 		return out;
 	}
 }

@@ -98,6 +98,7 @@ try{
 <script src="<%=basePath %>assets/js/jquery.flip.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
 <script src="<%=basePath %>assets/js/switchery.min.js"></script>
+<script src="<%=basePath%>assets/js/plugins/sortable/Sortable.js"></script>
 
 <script src="<%=basePath %>assets/js/app.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
