@@ -60,11 +60,7 @@ public class LoginController extends HttpServlet {
 				if (roles.size() > 0 && roles.get(0).get("role_name") != null) {
 					userRole = roles.get(0).get("role_name").toString();
 				}
-				if (userRole.equalsIgnoreCase("CONTENT_CREATOR") ||userRole.equalsIgnoreCase("CONTENT_ADMIN")) {
-					url = "/content/auth/login?email=" + request.getParameter("email") + "&password="
-							+ request.getParameter("password");
-					response.sendRedirect(url);
-				} else {
+				
 					try {
 
 						if (user.getPassword().equals(request.getParameter("password"))) {
@@ -105,6 +101,9 @@ public class LoginController extends HttpServlet {
 							} else if (userRole.equalsIgnoreCase("STUDENT")) {
 								url = "/student/dashboard.jsp";
 								request.getRequestDispatcher(url).forward(request, response);
+							} else if (userRole.equalsIgnoreCase("CONTENT_CREATOR")) {
+								url = "/content_creator/dashboard.jsp";
+								request.getRequestDispatcher(url).forward(request, response);
 							}
 
 							else {
@@ -124,7 +123,7 @@ public class LoginController extends HttpServlet {
 						request.setAttribute("msg", "Wrong Username");
 						request.getRequestDispatcher("/login.jsp").forward(request, response);
 					}
-				}
+				
 			} else {
 				request.setAttribute("msg", "Missing Username or Password");
 				request.getRequestDispatcher("/login.jsp").forward(request, response);

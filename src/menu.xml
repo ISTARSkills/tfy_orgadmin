@@ -1,63 +1,117 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <menu>
-	
+
 	<!-- Super Admin -->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/super_admin/dashboard.jsp" url="/super_admin/dashboard.jsp" valid_role="super_admin" />
 	<parent_links display_name="Account Management" is_visible_in_menu="true" jsp_file="/super_admin/account_management.jsp" url="/super_admin/account_management.jsp" valid_role="super_admin" />
 	<parent_links display_name="User Management" is_visible_in_menu="true" jsp_file="/super_admin/user_management.jsp" url="/super_admin/user_management.jsp" valid_role="super_admin" />
 	<parent_links display_name="Analytics" is_visible_in_menu="true" jsp_file="/super_admin/analytics.jsp" url="/super_admin/analytics.jsp" valid_role="super_admin" />
-	 <parent_links display_name="Utilities" is_visible_in_menu="true" jsp_file="#" url="#" valid_role="super_admin">
-	 <child_links display_name="Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin"/>
-	<child_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/super_admin/classrroms.jsp" url="/super_admin/classrroms.jsp" valid_role="super_admin"/>
-	<child_links display_name="Students Reports" is_visible_in_menu="true" jsp_file="/super_admin/report_partials/student_report.jsp" url="/super_admin/report_partials/student_report.jsp" valid_role="super_admin"/>
-	<child_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/super_admin/super_admin_tickets.jsp" url="/super_admin/super_admin_tickets.jsp" valid_role="super_admin"/> 
+	<parent_links display_name="Utilities" is_visible_in_menu="true" jsp_file="#" url="#" valid_role="super_admin">
+		<child_links display_name="Notification" is_visible_in_menu="true" jsp_file="/super_admin/istar_notification.jsp" url="/super_admin/istar_notification.jsp" valid_role="super_admin" />
+		<child_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/super_admin/classrroms.jsp" url="/super_admin/classrroms.jsp" valid_role="super_admin" />
+		<child_links display_name="Students Reports" is_visible_in_menu="true" jsp_file="/super_admin/report_partials/student_report.jsp" url="/super_admin/report_partials/student_report.jsp" valid_role="super_admin" />
+		<child_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/super_admin/super_admin_tickets.jsp" url="/super_admin/super_admin_tickets.jsp" valid_role="super_admin" />
 
-	<child_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
+		<child_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
 	</parent_links>
-	
+
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/orgadmin/dashboard.jsp" url="/orgadmin/dashboard.jsp" valid_role="org_admin" />
 	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/orgadmin/scheduler.jsp" url="/orgadmin/scheduler.jsp" valid_role="org_admin" />
 	<parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/orgadmin/report.jsp" url="/orgadmin/report.jsp" valid_role="org_admin" />
 	<parent_links display_name="Admin" is_visible_in_menu="true" jsp_file="/orgadmin/admin.jsp" url="/orgadmin/admin.jsp" valid_role="org_admin" />
-	<parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/orgadmin/istar_notification.jsp" url="/orgadmin/istar_notification.jsp" valid_role="org_admin"/>
-		<parent_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/orgadmin/classrroms.jsp" url="/orgadmin/classrroms.jsp" valid_role="org_admin"/>
-	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin"/>	
-	
+	<parent_links display_name="Notification" is_visible_in_menu="true" jsp_file="/orgadmin/istar_notification.jsp" url="/orgadmin/istar_notification.jsp" valid_role="org_admin" />
+	<parent_links display_name="Classrooms" is_visible_in_menu="true" jsp_file="/orgadmin/classrroms.jsp" url="/orgadmin/classrroms.jsp" valid_role="org_admin" />
+	<parent_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/orgadmin/org_admin_tickets.jsp" url="/orgadmin/org_admin_tickets.jsp" valid_role="org_admin" />
 
-	<!-- coordinator starts here-->
+
+	<!-- coordinator starts here -->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/coordinator/dashboard.jsp" url="/coordinator/dashboard.jsp" valid_role="coordinator" />
- 	<parent_links display_name="Recruitment Details" is_visible_in_menu="true" jsp_file="/coordinator/coordinator_recruitment.jsp" url="/coordinator/coordinator_recruitment.jsp" valid_role="coordinator" /> 	
- 	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />	
- 	<parent_links display_name="Cluster Details" is_visible_in_menu="true" jsp_file="/coordinator/cluster_all.jsp" url="/coordinator/cluster_all.jsp" valid_role="coordinator" />	
- 	<parent_links display_name="Pending Interviews" is_visible_in_menu="true" jsp_file="/coordinator/dashboard2.jsp" url="/coordinator/dashboard2.jsp" valid_role="coordinator" />	
-	<!-- coordinator ends here-->
-	
+	<parent_links display_name="Recruitment Details" is_visible_in_menu="true" jsp_file="/coordinator/coordinator_recruitment.jsp" url="/coordinator/coordinator_recruitment.jsp" valid_role="coordinator" />
+	<parent_links display_name="Cluster and Course Wise Details" is_visible_in_menu="true" jsp_file="/coordinator/over_all.jsp" url="/coordinator/over_all.jsp" valid_role="coordinator" />
+	<parent_links display_name="Cluster Details" is_visible_in_menu="true" jsp_file="/coordinator/cluster_all.jsp" url="/coordinator/cluster_all.jsp" valid_role="coordinator" />
+	<parent_links display_name="Pending Interviews" is_visible_in_menu="true" jsp_file="/coordinator/dashboard2.jsp" url="/coordinator/dashboard2.jsp" valid_role="coordinator" />
+	<!-- coordinator ends here -->
+
 	<!--student specific starts here -->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/student/dashboard.jsp" url="/student/dashboard.jsp" valid_role="student" />
 	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="student" />
 	<parent_links display_name="Timeline" is_visible_in_menu="true" jsp_file="/student/timeline.jsp" url="/student/timeline.jsp" valid_role="student" />
-<!-- 	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/calendar/calendar.jsp" valid_role="student" />
- -->	<!-- <parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="student" /> -->
+	<!-- <parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/calendar/calendar.jsp" valid_role="student" /> -->	<!-- <parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="student" /> -->
 	<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/profile.jsp" url="/profile.jsp" valid_role="student" />
-	<!-- student specific ends here-->
-	
-	
+	<!-- student specific ends here -->
+
+
 	<!--trainer specific starts here -->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/student/task/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
 	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="trainer" />
-<!-- 	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
- -->	<!-- <parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="trainer" /> -->
-		<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/profile.jsp" url="/profile.jsp" valid_role="trainer" />
-	
-	<!-- trainer specific ends here-->
-	
+	<!-- <parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" /> -->	<!-- <parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="trainer" /> -->
+	<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/profile.jsp" url="/profile.jsp" valid_role="trainer" />
+
+	<!-- trainer specific ends here -->
+
 	<!--master trainer specific starts here -->
-			<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/student/task/dashboard.jsp" url="/student/dashboard.jsp" valid_role="master_trainer" />
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/student/task/dashboard.jsp" url="/student/dashboard.jsp" valid_role="master_trainer" />
 	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles/roles_course.jsp" url="/student/roles/roles_course.jsp" valid_role="master_trainer" />
-<!-- 	<parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" />
- -->	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="master_trainer" />
-		<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="master_trainer" />
-	<!--master trainer specific ends here-->
-	
-	
+	<!-- <parent_links display_name="Calendar" is_visible_in_menu="true" jsp_file="/student/calendar/dashboard.jsp" url="/student/dashboard.jsp" valid_role="trainer" /> -->
+	<parent_links display_name="Profile" is_visible_in_menu="true" jsp_file="/student/edit_profile.jsp" url="/student/edit_profile.jsp" valid_role="master_trainer" />
+	<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/student/profile.jsp" url="/student/profile.jsp" valid_role="master_trainer" />
+	<!--master trainer specific ends here -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- Contnet related items -->
+
+
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/content_creator/dashboard.jsp" url="/content_creator/dashboard.jsp" valid_role="content_creator">
+	</parent_links>
+	<parent_links display_name="Course Administration" is_visible_in_menu="true" jsp_file="/content_creator/courses.jsp" url="/content_creator/courses.jsp" valid_role="content_creator">
+		<child_links display_name="Course(s)" is_visible_in_menu="true" jsp_file="/content_creator/courses.jsp" url="/content_creator/courses.jsp" valid_roles="content_creator" />
+		<child_links display_name="Module(s)" is_visible_in_menu="true" jsp_file="/content_creator/modules.jsp" url="/content/modules.jsp" valid_roles="content_creator" />
+		<child_links display_name="CMSession(s)" is_visible_in_menu="true" jsp_file="/content_creator/content_creator/cmsessions.jsp" url="/content_creator/cmsessions.jsp" valid_roles="content_creator" />
+		<child_links display_name="Lesson(s)" is_visible_in_menu="true" jsp_file="/content_creator/lessons.jsp" url="/content_creator/lessons.jsp" valid_roles="content_creator" />
+		<child_links display_name="Assessment(s)" is_visible_in_menu="true" jsp_file="/content_creator/assessments.jsp" url="/content_creator/assessments.jsp" valid_roles="content_creator" />
+		<child_links display_name="Question(s)" is_visible_in_menu="true" jsp_file="/content_creator/questions.jsp" url="/content_creator/questions.jsp" valid_roles="content_creator" />
+		<child_links display_name="Course Tree" is_visible_in_menu="true" jsp_file="/content_creator/cms.jsp" url="/content_creator/cms.jsp" valid_roles="content_creator" />
+	</parent_links>
+
+	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content_creator/skillTree.jsp" url="/content_creator/skillTree.jsp" valid_role="content_creator">
+		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content_creator/skill_tasks.jsp" url="/content_creator/skill_tasks.jsp" valid_roles="content_creator" />
+		<child_links display_name="Skill List" is_visible_in_menu="true" jsp_file="/content_creator/skills.jsp" url="/content_creator/skills.jsp" valid_roles="content_creator" />
+		<child_links display_name="Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/skillTree.jsp" url="/content_creator/skillTree.jsp" valid_roles="content_creator" />
+	</parent_links>
+
+	<parent_links display_name="Delivery Administration" is_visible_in_menu="true" jsp_file="/content_creator/delivery.jsp" url="/content_creator/delivery.jsp" valid_role="content_creator">
+		<child_links display_name="Course Delivery Progress" is_visible_in_menu="true" jsp_file="/content_creator/delivery.jsp" url="/content_creator/delivery.jsp" valid_roles="content_creator" />
+		<child_links display_name="Trainer Study Progress" is_visible_in_menu="true" jsp_file="/content_creator/trainerStudy.jsp" url="/content_creator/trainerStudy.jsp" valid_roles="content_creator" />
+		<!-- <child_links display_name="Lesson Duration Report" is_visible_in_menu="true" jsp_file="/content_creator/lessonDuration.jsp" url="/content_creator/lessonDuration.jsp" valid_roles="content_creator" /> -->
+	</parent_links>
+
+
+	<!-- <parent_links display_name="Team Management" is_visible_in_menu="true" jsp_file="" url="" valid_role="content_creator"></parent_links> -->
+
+	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/content/content_admin/dashboard.jsp" url="/content/content_admin/dashboard.jsp" valid_role="content_admin">
+	</parent_links>
+	<parent_links display_name="Course Administration" is_visible_in_menu="true" jsp_file="/content_creator/course_list.jsp" url="/content_creator/course_list.jsp" valid_role="content_admin">
+		<child_links display_name="Course(s)" is_visible_in_menu="true" jsp_file="/content_creator/course_list.jsp" url="/content_creator/course_list.jsp" valid_roles="content_admin" />
+		<child_links display_name="Module(s)" is_visible_in_menu="true" jsp_file="/content_creator/module_list.jsp" url="/content_creator/module_list.jsp" valid_roles="content_admin" />
+		<child_links display_name="CMSession(s)" is_visible_in_menu="true" jsp_file="/content_creator/session_list.jsp" url="/content_creator/session_list.jsp" valid_roles="content_admin" />
+		<child_links display_name="Lesson(s)" is_visible_in_menu="true" jsp_file="/content_creator/lesson_list.jsp" url="/content_creator/lesson_list.jsp" valid_roles="content_admin" />
+	</parent_links>
+
+	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tree.jsp" url="/content/content_admin/skill_tree.jsp" valid_role="content_admin">
+		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tasks.jsp" url="/content/content_admin/skill_tasks.jsp" valid_roles="content_admin" />
+		<child_links display_name="Add skill(s)" is_visible_in_menu="true" jsp_file="/content/content_admin/skill_tree_creation_workflow.jsp" url="/content/content_admin/skill_tree_creation_workflow.jsp" valid_roles="content_admin" />
+	</parent_links>
+
 </menu>

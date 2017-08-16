@@ -14862,7 +14862,7 @@ ul>p {
 	height: 98px;
 }
 
-.customcss_float-left {
+.customcss_float-right {
 	float: right;
 }
 
@@ -15033,6 +15033,9 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 .customcss_overflowy {
 	overflow-y: hidden;
 }
+.customcss_img-size{
+	    width: 100% !important;
+}
 
 .customcss_heading {
 	padding-bottom: 10px !important;
@@ -15101,6 +15104,9 @@ padding: 4px !important;
 .customcss_adminmaintab{
 margin-left: 21px;
     margin-right: 21px
+}
+.customcss_ibox_product_border{
+    border: none !important;
 }
 
 .navbar .nav li.dropdown>.dropdown-toggle:hover, .navbar .nav li.dropdown.open>.dropdown-toggle:hover

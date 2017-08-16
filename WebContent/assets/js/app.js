@@ -232,11 +232,26 @@ function readyFn(jQuery) {
 		init_custom_task();
 		break;
 	case 'custom_report':
-		init_custom_report();
-		
+		init_custom_report();	
 		break;
 	case 'custom_task_report_superadmin':
 		init_custom_task_report_superadmin();
+		break;
+	case 'content_creator_dashboard':
+		initPublishLesson();
+		setTimeout(function() {
+			match_height();
+		}, 200);
+		break;
+	case 'course_list':
+		initCreateCourse();
+		initSearch();
+		try {
+			$('#course_list_holder .pageitem .ibox').equalHeights();
+		
+		} catch (err) {
+			console.log(err);
+		}
 		break;
 	default:
 		init_orgadmin_none();
@@ -7612,3 +7627,44 @@ function init_custom_task_report_superadmin(){
 	  } );
   	
 }
+
+function initPublishLesson() {
+	$(document).on('click', '.publish_lesson', function() {
+		var taskID = $(this).data('lesson_id');
+		// console.log('taskID-> '+ taskID +' task_new_stage->'+task_new_stage);
+		$.ajax({
+			method : "GET",
+			url : "/content/publish_lesson?lesson=" + taskID,
+		}).done(function(msg) {
+			if ($.trim(msg) === 'true') {
+				alert('Publishing successful!');
+				window.location.reload();
+			} else {
+				alert('Publishing failed contact support');
+			}
+		});
+	});
+}
+
+function initCreateCourse() {
+	$('#create_course').click(function(e) {
+		e.preventDefault();
+		var url = '/content_creator/course.jsp';
+		window.open(url, '_blank');
+	});
+}
+
+
+
+function initSearch() {
+	$("#quicksearch").keyup(function() {
+		searchtext = $(this).val();
+		$(".pageitem").hide();
+		$('.pageitem' + ':icontains(' + searchtext + ')').show();
+	});
+}
+
+
+jQuery.expr[':'].icontains = function(a, i, m) {
+	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};

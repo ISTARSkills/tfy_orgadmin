@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workflow category="LESSON" description="The process of creating a lesson will go through these stages." id="1" name="Stages for Lesson Creation">
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_CREATOR" description="The  stage for initial creation of presentation." id="1" name="CREATED" next_stages="2,3,10" order="1" icon="fa-plus" />
+    <stage allowed_roles="CONTENT_ADMIN" description="The stage for assigning content items to a Content Creator." id="2" name="CONTENT_ASSIGNED" next_stages="3,10" order="2" icon="fa-user" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_CREATOR" description="The stage when the content creator starts creating content." id="3" name="DRAFT" next_stages="4,10" order="3" icon="fa-pencil" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_CREATOR" description="The stage when the content creator finishes creating content." id="4" name="COMPLETED" next_stages="5,10" order="4" icon="fa-hand-o-up" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_REVIEWER" description="The stage for Review of the created content." id="5" name="REVIEW" next_stages="6,9,10" order="5" icon="fa-search" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_REVIEWER" description="The stage if the content is approved by reviewer." id="6" name="APPROVED" next_stages="7,10" order="6" icon="fa-thumbs-o-up" />
+    <stage allowed_roles="CONTENT_ADMIN" description="The stage when the content is published." id="7" name="PUBLISHED" next_stages="8,10" order="7" icon="fa-eye" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_REVIEWER" description="The stage when the content is un-published." id="8" name="UNPUBLISHED" next_stages="2,10" order="8" icon="fa-eye-slash" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_REVIEWER" description="The stage if the content is dis-approved by reviewer." id="9" name="DISAPPROVED" next_stages="3,10" order="9" icon="fa-thumbs-o-down" />
+    <stage allowed_roles="CONTENT_ADMIN,CONTENT_CREATOR,CONTENT_REVIEWER" description="The stage if the content is deleted." id="10" name="DELETED" next_stages="-1" order="10" icon="fa-trash" />
+</workflow>
+
