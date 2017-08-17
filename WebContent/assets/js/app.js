@@ -302,6 +302,10 @@ function readyFn(jQuery) {
 		sessionEditVariables();
 		sessionEditWizard();
 		break;
+	case 'assessment_list':
+		assessmentListScripts();
+		initIsotopFunction();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -8454,4 +8458,11 @@ function initIsotopFunction() {
 		   
 		  });
 		});
+}
+function assessmentListScripts() {
+	initSearch();
+	$('#create_assessment').click(function() {
+		window.open("/content_creator/assessment.jsp", '_blank');
+
+	});
 }

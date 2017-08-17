@@ -55,7 +55,7 @@
 					<%
 						for (Task task : tasks) {
 
-							System.out.println(task.getId() + " -----  " + task.getItemId());
+							//System.out.println(task.getId() + " -----  " + task.getItemId());
 
 							if (task.getItemType().equals(TaskItemCategory.LESSON)
 									&& task.getName().equalsIgnoreCase(LessonTaskNames.CREATE_LESSON) && task.getIsActive()) {
@@ -157,8 +157,6 @@
 
 			</div>
 		</div>
-		<%-- <jsp:include page="../chat_element.jsp"></jsp:include> --%>
-	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>

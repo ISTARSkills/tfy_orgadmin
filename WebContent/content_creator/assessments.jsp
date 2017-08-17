@@ -6,6 +6,7 @@
 <%@page import="com.viksitpro.core.dao.entities.SkillObjectiveDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.SkillObjective"%>
 <%@page import="com.viksitpro.core.dao.entities.Task"%>
+<%@page import="com.viksitpro.cms.services.LessonServices"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.utils.task.TaskServices"%>
@@ -16,6 +17,7 @@
 	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 			+ request.getContextPath() + "/";
 	IstarUser istarUser = (IstarUser) request.getSession(false).getAttribute("user");
+	String cdnPath = new LessonServices().getAnyPath("media_url_path");
 	TaskServices taskServices = new TaskServices();
 	List<Task> tasks = new ArrayList<Task>();
 	AssessmentDAO assessmentDAO = new AssessmentDAO();
@@ -23,54 +25,55 @@
 %>
 <body class="top-navigation" id="assessment_list"
 	data-helper='This page is used to show list of assessments. '>
-	<div id="wrapper">
+	<div id="wrapper" class='customcss_overflowy'>
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			<%
-				String[] brd = { "Dashboard", "Assessments" };
+				String[] brd = {"Dashboard", "Assessments"};
 			%>
 			<%=UIUtils.getPageHeader("Assessment List", brd)%>
-			
+
 			<div class="row card-box scheduler_margin-box">
-				
-				
-				<div class="col-lg-2" >
-					
+
+
+				<div class="col-lg-2">
+
 					<button type="button" id="create_assessment"
 						class="btn btn-w-m btn-danger">
 						<i class="fa fa-plus"></i> Create Assessment
 					</button>
 				</div>
-                 <div class="col-lg-2 form-group customcss_search-box">
-					<input class="form-control quicksearch" autocomplete="off" type="text"
-						id="quicksearch" placeholder="Search Assessment" />
+				<div class="col-lg-2 form-group customcss_search-box">
+					<input class="form-control quicksearch" autocomplete="off"
+						type="text" id="quicksearch" placeholder="Search Assessment" />
 				</div>
 			</div>
-			
+
 			<div class="row card-box scheduler_margin-box">
-			
-			<div class="ui-group ">
+
+				<div class="ui-group ">
 					<h3 class="ui-group__title">Filter</h3>
 					<div class="filters button-group js-radio-button-group btn-group">
-						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
+						<button class="button btn button_spaced btn-xs btn-danger"
+							data-filter="*">show all</button>
 						<%
-						ArrayList<String> arrayList = new ArrayList<>();
-						ArrayList<String> displayList = new ArrayList<>();
+							ArrayList<String> arrayList = new ArrayList<>();
+							ArrayList<String> displayList = new ArrayList<>();
 							for (Assessment assessment : assessments) {
 								String courseStringLong = "";
 								int course_id = assessment.getCourse();
 								Course course = new CourseDAO().findById(course_id);
-								
 
 								try {
 									courseStringLong = course.getCourseName();
-									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
-							
-									 if(!arrayList.contains(courseString)){
-										 arrayList.add(courseString);
-										 displayList.add(courseStringLong);
-									 }
-									 
+									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "")
+											.toLowerCase();
+
+									if (!arrayList.contains(courseString)) {
+										arrayList.add(courseString);
+										displayList.add(courseStringLong);
+									}
+
 								} catch (Exception e) {
 
 								}
@@ -82,45 +85,103 @@
 						<button class="button btn button_spaced btn-xs btn-white"
 							data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
 						<%
-						i++;}
+							i++;
+							}
 						%>
 					</div>
 				</div>
-			
+
 			</div>
+			<div
+				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box ">
+				<div class="row grid">
+					<%
+						for (Assessment assessment : assessments) {
 
-			<div class="wrapper wrapper-content animated fadeInUp">
+							String courseStringLong = "";
+							String courseString = "";
+							String img_url = "/assets/img/no_course_module_lesson_image/c_1.png";
+							try {
 
-				<div class="ibox">
-					<div class="ibox-title">
-						<h5>All Assessments</h5>
-					</div>
-					<div class="ibox-content">
-						<div class="project-list">
-							<table class="table table-hover">
-								<tbody>
-									<%
-										for (Assessment assessment : assessments) {
-											
-									%>
-									<tr id="<%=assessment.getId()%>" class="pageitem">
-										<td class="project-status"><span
-											class="label label-primary"><%=assessment.getAssessmentType()%></span></td>
-										<td class="project-title"><a href="<%=baseURL%>content_creator/assessment.jsp?assessment=<%=assessment.getId()%>"><%=assessment.getAssessmenttitle()%></a></td>
-										<td class="project-actions"><a
-											href="<%=baseURL%>content_creator/assessment.jsp?assessment=<%=assessment.getId()%>"
-											class="btn btn-white btn-sm"><i class="fa fa-folder"></i>
-												Edit </a> <%-- <a href="<%=baseURL%>creator/preview_assessment.jsp?assessment=<%=assessment.getId()%>" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Preview </a>--%></td> 
-									</tr>
-									<%
-										}
-									%>
-								</tbody>
-							</table>
+								int course_id = assessment.getCourse();
+								Course course = new CourseDAO().findById(course_id);
+								courseStringLong = course.getCourseName();
+								if (course.getImage_url() != null && !course.getImage_url().equalsIgnoreCase("")
+										&& course.getImage_url().endsWith(".png")) {
+									img_url = cdnPath + course.getImage_url();
+								}
+								courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "")
+										.toLowerCase();
+							} catch (Exception e) {
+							}
+					%>
+
+					<div
+						class="col-md-2 pageitem transition element-item  <%=courseString%> ">
+						<div class="ibox product-box customcss_height-prod-box">
+							<div class="ibox-content  customcss_ibox_product_border">
+
+								<div class="imgWrap">
+									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
+								</div>
+								<div class="product-desc">
+									<span
+										class="product-price customcss_product_price customcss_font-size"><span
+										class="label label-primary"><%=courseStringLong%></span> </span> <small
+										class="text-muted"> </small> <a
+										href="/content_creator/assessment.jsp?course=<%=assessment.getId()%>"
+										class="product-name"><%=assessment.getAssessmenttitle()%>
+									</a>
+
+
+								</div>
+								<div class="col-lg-12 customcss_lesson-button1">
+									<div class="col-md-3 text-center"></div>
+									<div class="col-md-6 text-center">
+									
+									   <a href="#" target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Preview
+											<i class="fa fa-desktop"></i>
+										</a>
+									
+									
+									
+										
+									</div>
+									<div class="col-md-3 text-center"></div>
+								</div>
+								<div class="col-lg-12 customcss_dashboard_buttons">
+										<div class="col-md-7 text-center">
+										
+										<a href="#" target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Link-Skills
+											<i class="fa fa-link"></i>
+										</a>
+										</div>
+										<div class="col-md-5 text-center">
+										
+										<a href="/content_creator/assessment.jsp?course=<%=assessment.getId()%>"
+											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
+											class="fa fa-pencil"></i>
+										</a>
+										</div>
+										</div>
+							</div>
+
 						</div>
 					</div>
+					<%
+						}
+					%>
+
 				</div>
+
+
+
+
 			</div>
+
+
+
+
 		</div>
 	</div>
 	<!-- Mainly scripts -->
@@ -128,6 +189,6 @@
 </body>
 
 <script type="text/javascript">
-
+	
 </script>
 </html>
