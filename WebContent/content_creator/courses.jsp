@@ -72,7 +72,7 @@
 									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price"><span class="label label-primary">Context - <%=course_category%></span> </span> <small class="text-muted"> <%--  <span class="badge badge-warning">Module - <%=moduleStringLong%></span> --%>
+									<small class="text-muted"> <%--  <span class="badge badge-warning">Module - <%=moduleStringLong%></span> --%>
 									</small> <a href="/creator/course.jsp?course=<%=course.getId()%>" class="product-name"><%=course.getCourseName()%> </a>
 
 									<div class="small m-t-xs">
