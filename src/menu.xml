@@ -88,7 +88,7 @@
 	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content_creator/skillTree.jsp" url="/content_creator/skillTree.jsp" valid_role="content_creator">
 		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content_creator/skill_tasks.jsp" url="/content_creator/skill_tasks.jsp" valid_roles="content_creator" />
 		<child_links display_name="Skill List" is_visible_in_menu="true" jsp_file="/content_creator/skills.jsp" url="/content_creator/skills.jsp" valid_roles="content_creator" />
-		<child_links display_name="Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/skillTree.jsp" url="/content_creator/skillTree.jsp" valid_roles="content_creator" />
+		<child_links display_name="Course Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/course_skill_tree.jsp" url="/content_creator/course_skill_tree.jsp" valid_roles="content_creator" />
 	</parent_links>
 
 	<parent_links display_name="Delivery Administration" is_visible_in_menu="true" jsp_file="/content_creator/delivery.jsp" url="/content_creator/delivery.jsp" valid_role="content_creator">
