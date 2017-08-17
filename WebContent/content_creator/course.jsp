@@ -69,9 +69,6 @@
 
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="row card-box">
-					<div class="ibox-title">
-						<h5>Course Wizard</h5>
-					</div>
 					<div class="ibox-content">
 						<h2>
 							<%

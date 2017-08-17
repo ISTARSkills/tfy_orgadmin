@@ -291,6 +291,10 @@ function readyFn(jQuery) {
 	case 'course_tree':
 		skillTreeWizard();
 		break;
+	case 'module_edit':
+		moduleEditVariables();
+		moduleEditWizard();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -333,7 +337,7 @@ function readyFn(jQuery) {
 	
 }
 
-
+/*Course wizard start*/
 function courseEditVariables() {
 	window.isNewCourse = Boolean($("input[name='isNew']").val() === "true");
 	window.courseID = $("input[name='cmsID']").val();
@@ -374,7 +378,7 @@ function courseStepChanger(event, currentIndex, newIndex) {
 	if (newIndex === 2) {
 		moduleHashInit();
 		initModuleSearch();
-		addModulesManually();
+		//addModulesManually();
 		return true;
 	}
 }
@@ -503,62 +507,7 @@ function initModuleSearch() {
 					});
 
 }
-function addModulesManually() {
-	$('#addChildren')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-							var args = {
-								'args' : $('#addChildren').val()
-							};
-							$
-									.ajax({
-										type : "GET",
-										url : '/content/AddModulesManually',
-										data : args
-									})
-									.done(
-											function(data) {
 
-												if (data.modules.length == 0) {
-													alert('No module with this ID was found!');
-												} else {
-													$
-															.each(
-																	data.modules,
-																	function(k,
-																			v) {
-																		console
-																				.log(v.id
-																						+ '>>'
-																						+ v.name);
-																		if (!(window.module_hash[v.id] == undefined)) {
-																			alert('Module already there in the list.');
-																		} else {
-																			$(
-																					'#editable')
-																					.append(
-																							"<li class='something' data-module_id='"
-																									+ v.id
-																									+ "'><i class='js-remove fa fa-trash-o'> </i> | "
-																									+ v.id
-																									+ " | "
-																									+ v.name
-																									+ "</li>");
-																			window.module_hash[v.id] = v.name;
-																		}
-																	});
-												}
-
-											}).fail(function() {
-										alert("error");
-									}).always(function() {
-										$('#addChildren').val('');
-									});
-						}
-					});
-}
 function createSortable(updateCMSHash) {
 	var editableList = Sortable.create(document.getElementById('editable'), {
 		animation : 150,
@@ -573,6 +522,130 @@ function createSortable(updateCMSHash) {
 function updateModuleHash(evt) {
 	delete window.module_hash[evt.item.getAttribute('data-module_id')];
 }
+/*Course wizard end*/
+/*Module wizard start*/
+function moduleEditWizard() {
+	$("#form").steps({
+		bodyTag : "fieldset",
+		transitionEffect : 'fade',
+		transitionEffectSpeed : 135,
+		onStepChanging : function(event, currentIndex, newIndex) {
+			moduleStepChanger(event, currentIndex, newIndex);
+			return true;
+		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			if (currentIndex === 1) {
+				initImageUpload($("#module_image"));
+				//initImageUploader($("#module_image"), 1);
+				// return true;
+			}
+			if (currentIndex === 2 && !is_sortable) {
+				createSortable(updateSessionHash);
+			}
+
+		},
+		onFinishing : function(event, currentIndex) {
+			moduleFinisher(event, currentIndex);
+			return true;
+		},
+	});
+}
+
+function moduleEditVariables() {
+
+	window.isNewModule = Boolean($("input[name='isNew']").val() === "true");
+	window.moduleID = $("input[name='cmsID']").val();
+	window.image_url = $("input[name='baseProdURL']").val();
+	window.session_hash = {};
+	window.is_sortable = Boolean(false);
+}
+function updateSessionHash(evt) {
+	delete window.session_hash[evt.item.getAttribute('data-session_id')];
+}
+function moduleStepChanger(event, currentIndex, newIndex) {
+	if (newIndex === 2) {
+		sessionHashInit();
+		initSessionSearch();
+		//addSessionManually();
+	}
+	return true;
+}
+function sessionHashInit() {
+	$('#editable > .something').each(
+			function(k, v) {
+				session_hash[$(v).data('lesson_id')] = v.innerText.split('| ')
+						.slice(2).toString();
+			});
+}
+function initSessionSearch() {
+	$('#searchSessions')
+			.keydown(
+					function(event) {
+						if ((event.keyCode == 13)
+								&& ($.trim($(this).val()) != '')) {
+							if($.trim($(this).val()).length>2){
+								var searchString = $("#searchSessions").val();
+
+								var datapost = {
+									'searchString' : searchString
+								};
+								$
+										.get("/SearchSessions", datapost)
+										.done(
+												function(data) {
+
+													$
+															.each(
+																	data.sessions,
+																	function(k, v) {
+																		$(
+																				'#searchSessionsResult')
+																				.html(
+																						"<span class='simple_tag' id='"
+																								+ v.id
+																								+ "'><i class='js-remove fa fa-plus'> </i> | "
+																								+ v.id
+																								+ " | "
+																								+ v.name
+																								+ "</span>");
+																	});
+												}).fail(function() {
+											alert("error");
+										}).always(function() {
+
+										});
+							}else{
+								alert('Type atleast 3 characters to search');
+							}
+
+						}
+					});
+
+	$('#searchSessionsResult')
+			.on(
+					'click',
+					".fa-plus",
+					function() {
+
+						var v = {
+							id : this.parentElement.id,
+							name : this.parentElement.innerText
+						}
+						if (!(window.session_hash[v.id] == undefined)) {
+							alert('Session already there in the list.');
+						} else {
+							$('#editable')
+									.append(
+											"<li class='something' data-session_id='"
+													+ v.id
+													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ v.name + "</li>");
+							window.session_hash[v.id] = v.name;
+						}
+					});
+
+}
+/*Module wizard end*/
 
 function initUnreadChatAndNotification()
 {
