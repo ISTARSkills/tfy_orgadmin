@@ -638,26 +638,16 @@ function initSessionSearch() {
 								var datapost = {
 									'searchString' : searchString
 								};
-								$
-										.get("/SearchSessions", datapost)
-										.done(
-												function(data) {
-
-													$
-															.each(
-																	data.sessions,
-																	function(k, v) {
-																		$(
-																				'#searchSessionsResult')
-																				.html(
-																						"<span class='simple_tag' id='"
+								$.get("/SearchSessions", datapost).done(function(data) {
+													$.each(data.sessions,function(k, v) {
+														$('#searchSessionsResult').html("<span class='simple_tag' id='"
 																								+ v.id
 																								+ "'><i class='js-remove fa fa-plus'> </i> | "
 																								+ v.id
 																								+ " | "
 																								+ v.name
 																								+ "</span>");
-																	});
+													});
 												}).fail(function() {
 											alert("error");
 										}).always(function() {
@@ -801,26 +791,16 @@ function initLessonSearch() {
 								var datapost = {
 									'searchString' : searchString
 								};
-								$
-										.get("/SearchLessons", datapost)
-										.done(
-												function(data) {
-
-													$
-															.each(
-																	data.lessons,
-																	function(k, v) {
-																		$(
-																				'#searchLessonsResult')
-																				.html(
-																						"<span class='simple_tag' id='"
-																								+ v.id
-																								+ "'><i class='js-remove fa fa-plus'> </i> | "
-																								+ v.id
-																								+ " | "
-																								+ v.name
-																								+ "</span>");
-																	});
+								$.get("/SearchLessons", datapost).done(function(data) {
+									$.each(data.lessons,function(k, v) {
+										$('#searchLessonsResult').html("<span class='simple_tag' id='"
+																+ v.id
+																+ "'><i class='js-remove fa fa-plus'> </i> | "
+																+ v.id
+																+ " | "
+																+ v.name
+																+ "</span>");
+										});
 												}).fail(function() {
 											alert("error");
 										}).always(function() {
