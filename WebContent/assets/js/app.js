@@ -8060,15 +8060,7 @@ function initCreateLesson() {
 	});
 }
 function initLessonList() {
-	var url = 'lesson_list_partial.jsp';
-	$.get(url, function(data) {
-		$('#only_lesson_items').empty();
-		$('#only_lesson_items').append(data);
-	}).done(function() {
-		setTimeout(function() {
-			match_height();
-		}, 800);
-	});
+	
 }
 function initCreateCMSession() {
 	$('#create_cmsession').click(function(e) {
