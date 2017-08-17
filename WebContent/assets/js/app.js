@@ -622,10 +622,8 @@ function moduleStepChanger(event, currentIndex, newIndex) {
 	return true;
 }
 function sessionHashInit() {
-	$('#editable > .something').each(
-			function(k, v) {
-				session_hash[$(v).data('lesson_id')] = v.innerText.split('| ')
-						.slice(2).toString();
+	$('#editable > .something').each(function(k, v) {
+				session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
 			});
 }
 function initSessionSearch() {
@@ -741,6 +739,7 @@ function sessionEditVariables() {
 	window.sessionID = $("input[name='cmsID']").val();
 	window.image_url = $("input[name='baseProdURL']").val();
 	window.lesson_hash = {};
+	window.session_hash = {};
 	window.is_sortable = Boolean(false);
 }
 function sessionEditWizard() {
@@ -783,13 +782,11 @@ function sessionStepChanger(event, currentIndex, newIndex) {
 	}
 	return true;
 }
-function sessionStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 2) {
-		lessonHashInit();
-		initLessonSearch();
-		addLessonManually();
-	}
-	return true;
+
+function lessonHashInit() {
+	$('#editable > .something').each(function(k, v) {
+				window.session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
+			});
 }
 function initLessonSearch() {
 	$('#searchLessons')
