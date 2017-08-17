@@ -67,8 +67,8 @@
 				String[] brd = {"Dashboard", "Courses"};
 			%>
 			<%=UIUtils.getPageHeader(sessionName, brd)%>
-			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row card-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box">
+				<div class="row">
 							<div class="ibox-content">
 								<h2>
 									<%
@@ -76,7 +76,7 @@
 									%>New Session<%
 										} else {
 									%>Session name:
-									<%=cmsession.getTitle()%>
+									<%=cmsession.getTitle().trim()%>
 									<%
 										}
 									%>
@@ -95,33 +95,15 @@
 													<label>Name *</label> <input id="cmsession_name_idd"
 														name="cmsession_name" type="text"
 														class="form-control required" <%if (!is_new) {%>
-														value="<%=cmsession.getTitle()%>" <%}%>>
+														value="<%=cmsession.getTitle().trim()%>" <%}%>>
 												</div>
 												<div class="form-group">
 													<label>Description *</label>
 													<textarea class="form-control required"
-														name="cmsession_desc" rows="3" id="cmsession_desc_idd"><%if (!is_new) {%><%=cmsession.getDescription()%><%}%></textarea>
+														name="cmsession_desc" rows="3" id="cmsession_desc_idd"><%if (!is_new) {%><%=cmsession.getDescription().trim()%><%}%></textarea>
 												</div>
 											</div>
 											<div class="col-lg-4">
-												<%-- <div class="form-group" id="filezz">
-													<input id="fileupload" type="file" accept="image/png"
-														name="files[]" data-url="/content/upload_media" multiple>
-													<img src='<%=image_url%>' class="form-group"
-														id='cmsession_image'
-														style="float: right; /* width: 100%; */ height: 200px;">
-												</div> --%>
-											</div>
-										</div>
-									</fieldset>
-
-									<h1>Media Upload</h1>
-									<fieldset class="fieldset-border-margin">
-										<h2>Session Image Upload</h2>
-										<div class="row">
-											<div class="col-lg-12">
-										<div class="row">
-											<div class="col-md-4">
 												<div class="form-group" id="filezz">
 													<input id="fileupload" type="file" accept="image/png"
 														name="files[]" multiple>
@@ -129,17 +111,12 @@
 													<button type="button" id='uploadImage'
 														class="btn btn-danger btn-xs m-t-xs">Upload Image</button>
 												</div>
-											</div>
-											<div class="col-md-8">
-												<h4>Preview image</h4>
+												<br/>
 												<img src='<%=image_url%>' class="form-group"
 													id='session_image'>
 											</div>
 										</div>
-									</div>
-										</div>
 									</fieldset>
-
 									<h1>Lessons</h1>
 									<fieldset class="fieldset-border-margin">
 									<div class="col-md-6">

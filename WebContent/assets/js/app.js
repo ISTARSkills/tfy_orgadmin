@@ -17,11 +17,11 @@ function readyFn(jQuery) {
 	          }
 	        };
 	        
-	          //initialize each of the top levels
+	          // initialize each of the top levels
 	          var tree = $(this);
 	          tree.addClass("tree");
 	          tree.find('li').has("ul").each(function () {
-	              var branch = $(this); //li with children ul
+	              var branch = $(this); // li with children ul
 	              branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
 	              branch.addClass('branch');
 	              branch.on('click', function (e) {
@@ -33,7 +33,7 @@ function readyFn(jQuery) {
 	              })
 	              branch.children().children().toggle();
 	          });
-	          //fire event from the dynamically added icon
+	          // fire event from the dynamically added icon
 	        tree.find('.branch .indicator').each(function(){
 	          $(this).on('click', function () {
 	              $(this).closest('li').click();
@@ -41,7 +41,8 @@ function readyFn(jQuery) {
 	              $('div.progress div').show();
 	          });
 	        });
-	          //fire event to open branch if the li contains an anchor instead of text
+	          // fire event to open branch if the li contains an anchor
+				// instead of text
 	          tree.find('.branch>a').each(function () {
 	              $(this).on('click', function (e) {
 	                  $(this).closest('li').click();
@@ -49,7 +50,8 @@ function readyFn(jQuery) {
 	                  e.preventDefault();
 	              });
 	          });
-	          //fire event to open branch if the li contains a button instead of text
+	          // fire event to open branch if the li contains a button instead
+				// of text
 	          tree.find('.branch>button').each(function () {
 	              $(this).on('click', function (e) {
 	                  $(this).closest('li').click();
@@ -101,7 +103,7 @@ function readyFn(jQuery) {
 	    			
 	    			
 	    } catch (err) {
-	    	//console.log('71->'+err);
+	    	// console.log('71->'+err);
 		}
 		//
 	
@@ -119,7 +121,7 @@ function readyFn(jQuery) {
 	 * Page specific js
 	 */
 	var body_id = document.getElementsByTagName("body")[0].id;
-	//$('select').select2();
+	// $('select').select2();
 
 	$('.top_navbar_holder').css('color',' #676a6c');	
 	switch (body_id) {
@@ -177,11 +179,11 @@ function readyFn(jQuery) {
 
 	case 'super_admin_comp_prof':
 		init_super_admin_comp_prof();
-		//$('#Dashboard').css('color',' #eb384f');
+		// $('#Dashboard').css('color',' #eb384f');
 		break;
 	case 'super_admin_placemenet':
 		init_super_admin_placemenet();
-	//	$('#Dashboard').css('color',' #eb384f');
+	// $('#Dashboard').css('color',' #eb384f');
 		break;
 	case 'super_admin_classroom':
 		init_superadmin_class_room();
@@ -322,7 +324,7 @@ function readyFn(jQuery) {
 		// TODO: handle exception
 	}
 	
-	//org admin student notiifcation READ status
+	// org admin student notiifcation READ status
 	$('.notification_holder_status').unbind().on("click",function(){		
 		var notifiction=$(this).data('notifiction');
 		var url=$(this).data('url');
@@ -348,7 +350,7 @@ function readyFn(jQuery) {
 	
 }
 
-/*Course wizard start*/
+/* Course wizard start */
 function courseEditVariables() {
 	window.isNewCourse = Boolean($("input[name='isNew']").val() === "true");
 	window.courseID = $("input[name='cmsID']").val();
@@ -358,6 +360,7 @@ function courseEditVariables() {
 }
 
 function courseEditWizard() {
+	initImageUpload('#course_image');
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
@@ -368,12 +371,7 @@ function courseEditWizard() {
 			return true;
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
-			if (currentIndex === 1) {
-				initImageUpload($("#course_image"));
-				// initImageUploader($("#course_image"), 1);
-				// return true;
-			}
-			if (currentIndex === 2 && !window.is_sortable) {
+			if (currentIndex === 1 && !window.is_sortable) {
 				createSortable(updateModuleHash);
 			}
 
@@ -389,15 +387,15 @@ function courseFinisher(event, currentIndex) {
 }
 function courseStepChanger(event, currentIndex, newIndex) {
 
-	if (newIndex === 2) {
+	if (newIndex === 1) {
 		moduleHashInit();
 		initModuleSearch();
-		//addModulesManually();
+		// addModulesManually();
 		return true;
 	}
 }
 function initImageUpload(cmsItem) {
-	$('#uploadImage').on('click', function() {
+	$(document).on('click', '#uploadImage' ,function() {
 		var formData = new FormData();
 		// Attach file
 		formData.append('image.png', $('#fileupload')[0].files[0]); 
@@ -432,15 +430,14 @@ function initImageUpload(cmsItem) {
 	            return myXhr;
 	        },
 	    }).done(function(data) {
-	    	  cmsItem.attr("src", data);
+	    	  $(cmsItem).attr("src", data);
 	    });
 	});
 }
 function moduleHashInit() {
 	$('#editable > .something').each(
 			function(k, v) {
-				window.module_hash[$(v).data('module_id')] = v.innerText.split(
-						'| ').slice(2).toString();
+				window.module_hash[$(v).data('module_id')] = v.innerText.split('|').slice(1).toString().trim();
 			});
 }
 function initModuleSearch() {
@@ -473,13 +470,8 @@ function initModuleSearch() {
 																		 * module_hash[v.id] =
 																		 * v.name;
 																		 */
-																		addition+="<span class='simple_tag' id='"
-																								+ v.id
-																								+ "'><i class='js-remove fa fa-plus'> </i> | "
-																								+ v.id
-																								+ " | "
-																								+ v.name
-																								+ "</span>";
+																		addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+																		
 																	});
 													$(
 													'#searchModulesResult')
@@ -504,17 +496,17 @@ function initModuleSearch() {
 					function() {
 
 						var v = {
-							id : this.parentElement.id,
-							name : this.parentElement.innerText
+							id : this.parentElement.parentElement.id,
+							name : this.parentElement.parentElement.innerText
 						}
 						if (!(window.module_hash[v.id] == undefined)) {
 							alert('Module already there in the list.');
 						} else {
 							$('#editable')
 									.append(
-											"<li class='something' data-module_id='"
+											"<li class='list-group-item something' data-module_id='"
 													+ v.id
-													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
 													+ v.name + "</li>");
 							window.module_hash[v.id] = v.name;
 						}
@@ -557,7 +549,7 @@ function saveCourse() {
 				+ module_list + '&course_image=' + course_image;
 		var url = '/update_course';
 	}
-	alert(dataPost);
+	// alert(dataPost);
 	$.ajax({
 		type : "POST",
 		url : url,
@@ -566,12 +558,11 @@ function saveCourse() {
 			function(data) {
 				if (window.isNewCourse) {
 					window.location.replace(
-							"/content_creator/course.jsp?course=" + data,
+							"/content_creator/courses.jsp",
 							"_self");
 				} else {
 					window.location.replace(
-							"/content_creator/course.jsp?course="
-									+ window.courseID, "_self");
+							"/content_creator/courses.jsp", "_self");
 				}
 			});
 }
@@ -583,9 +574,10 @@ function getModules() {
 	module_list = module_list.substring(0, module_list.length - 1);
 	return module_list;
 }
-/*Course wizard end*/
-/*Module wizard start*/
+/* Course wizard end */
+/* Module wizard start */
 function moduleEditWizard() {
+	initImageUpload('#module_image');
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
@@ -595,12 +587,8 @@ function moduleEditWizard() {
 			return true;
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
-			if (currentIndex === 1) {
-				initImageUpload($("#module_image"));
-				//initImageUploader($("#module_image"), 1);
-				// return true;
-			}
-			if (currentIndex === 2 && !is_sortable) {
+			
+			if (currentIndex === 1 && !is_sortable) {
 				createSortable(updateSessionHash);
 			}
 
@@ -626,10 +614,10 @@ function updateSessionHash(evt) {
 	delete window.session_hash[evt.item.getAttribute('data-session_id')];
 }
 function moduleStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 2) {
+	if (newIndex === 1) {
 		sessionHashInit();
 		initSessionSearch();
-		//addSessionManually();
+		// addSessionManually();
 	}
 	return true;
 }
@@ -741,8 +729,8 @@ function getSessions() {
 	session_list = session_list.substring(0, session_list.length - 1);
 	return session_list;
 }
-/*Module wizard end*/
-/*Session wizard start*/
+/* Module wizard end */
+/* Session wizard start */
 function sessionEditVariables() {
 
 	window.isNewSession = Boolean($("input[name='isNew']").val() === "true");
@@ -753,6 +741,7 @@ function sessionEditVariables() {
 	window.is_sortable = Boolean(false);
 }
 function sessionEditWizard() {
+	initImageUpload('#session_image');
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
@@ -762,12 +751,8 @@ function sessionEditWizard() {
 			return true;
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
-			if (currentIndex === 1) {
-				initImageUpload($("#session_image"));
-				//initImageUploader($("#session_image"), 1);
-				// return true;
-			}
-			if (currentIndex === 2 && !is_sortable) {
+			
+			if (currentIndex === 1 && !is_sortable) {
 				createSortable(updateLessonHash);
 			}
 
@@ -785,10 +770,10 @@ function sessionFinisher(event, currentIndex) {
 	saveSession();
 }
 function sessionStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 2) {
+	if (newIndex === 1) {
 		lessonHashInit();
 		initLessonSearch();
-		//addLessonManually();
+		// addLessonManually();
 	}
 	return true;
 }
@@ -807,20 +792,21 @@ function initLessonSearch() {
 							
 							if($.trim($(this).val()).length>2){
 								var searchString = $("#searchLessons").val();
-								
+								var addition = '';
 								var datapost = {
 									'searchString' : searchString
 								};
 								$.get("/SearchLessons", datapost).done(function(data) {
 									$.each(data.lessons,function(k, v) {
-										$('#searchLessonsResult').html("<span class='simple_tag' id='"
+										addition +="<span class='simple_tag' id='"
 																+ v.id
 																+ "'><i class='js-remove fa fa-plus'> </i> | "
 																+ v.id
 																+ " | "
 																+ v.name
-																+ "</span>");
+																+ "</span>";
 										});
+								$('#searchLessonsResult').html(addition);
 												}).fail(function() {
 											alert("error");
 										}).always(function() {
@@ -907,19 +893,21 @@ function getLessons() {
 	lesson_list = lesson_list.substring(0, lesson_list.length - 1);
 	return lesson_list;
 }
-/*Session wizard end*/
+/* Session wizard end */
 
 function initUnreadChatAndNotification()
 {
-	//here last 8 unread notifications will be displayed in screen in the form of alert notification.
-	//apart from top 8 other messages will be available in notification tab.
+	// here last 8 unread notifications will be displayed in screen in the form
+	// of alert notification.
+	// apart from top 8 other messages will be available in notification tab.
 		
-		//alert message will disappear automatically and can be removed manually
+		// alert message will disappear automatically and can be removed
+		// manually
 		$('.notification_item').delay(8000).fadeOut('slow', function () {
 		     $(this).remove();	
 		});
 	
-	//if notification is removed manually it will be marked as read.	
+	// if notification is removed manually it will be marked as read.
 	$('.notification_close').unbind().on('click',function(){
 		var notice_id = $(this).data("notice_id");
 		var group_code = $(this).data("group_code");
@@ -960,8 +948,8 @@ function initUnreadChatAndNotification()
 		    });
 	});
 	
-	//update notification count in notification tab
-	//hidden id defined in dashboard_notification.jsp 
+	// update notification count in notification tab
+	// hidden id defined in dashboard_notification.jsp
 	var notice_count = $('#total_unread_notice').val();
 	if(notice_count==0){
 		$('.read_more_notification').hide();
@@ -980,7 +968,7 @@ function initUnreadChatAndNotification()
 			$('#dashboard_notice_count').text(notice_count);
 		}		
 	}
-	//get more notoification and append to notification tab 
+	// get more notoification and append to notification tab
 	$('.read_more_notification').unbind().on('click',function(){
 		var prevOffset = $('.alert-dismissable').length;
 		var newOffset = prevOffset+8;
@@ -1030,37 +1018,17 @@ function initTicket()
 	});
 	
 	
-/*$('#create_new_ticket').unbind().on('click', function(e) {	
-		 e.preventDefault();
-		 $("#new_ticket_form").validate({
-		        rules: {
-		            title: {
-		                required: true
-		            },
-		            details: {
-		                required: true
-		            },
-		            ticket_type: {
-		                required: true
-		                
-		            },
-		            receivers: {
-		                required: true		               
-		            }
-		        }
-		    });
-		 
-		 
-		 var url = "../../create_new_ticket";
-		 $.ajax({
-		        type: "POST",
-		        url: url,
-		        data: $("#new_ticket_form").serialize(), // serializes the form's elements.
-		        success: function(data) {
-		        	location.reload();
-		        }
-		    });
-	});*/
+/*
+ * $('#create_new_ticket').unbind().on('click', function(e) {
+ * e.preventDefault(); $("#new_ticket_form").validate({ rules: { title: {
+ * required: true }, details: { required: true }, ticket_type: { required: true },
+ * receivers: { required: true } } });
+ * 
+ * 
+ * var url = "../../create_new_ticket"; $.ajax({ type: "POST", url: url, data:
+ * $("#new_ticket_form").serialize(), // serializes the form's elements.
+ * success: function(data) { location.reload(); } }); });
+ */
 	
 	
 	$('.ticket_summary_button').unbind().on('click', function() {
@@ -1068,7 +1036,7 @@ function initTicket()
     	var your_jsp_page_to_request = "/ticket_summary.jsp";			 			 
 		$.post(your_jsp_page_to_request,{ticket_id:ticket_id},		     
 		     function(data){			
-			//alert(data);
+			// alert(data);
 				$(".ticket_summary_body").empty();
 				$(".ticket_summary_body").append(data);		  			
   		  		$('#ticket_summary_modal').modal();
@@ -1078,7 +1046,7 @@ function initTicket()
   		    	  
   		    	});
   		  		$('.ticket_status_change').on('click', function() {
-  				//alert("asdas");
+  				// alert("asdas");
   		  		var ticketId = null;
   		  	    var status = null;
   		  	    var ticket_status= $(this);
@@ -1093,19 +1061,19 @@ function initTicket()
   		            	var res = data;
   		            	if(res==='CLOSED')
   		            	{
-  		            		//$(this).data("status","REOPENED");
+  		            		// $(this).data("status","REOPENED");
   		            		$(ticket_status).data("status","REOPENED");
   	  		            	$(ticket_status).html("Re Open Ticket");
   	  		                $('#ticket_modal_status').html("CLOSED");
-  	  		              //  $('#ticket_table_status').html("CLOSED");
+  	  		              // $('#ticket_table_status').html("CLOSED");
   		            	}
   		            	else if(res==='REOPENED')
   		            	{
-  		            		//$(this).data("status","CLOSED");
+  		            		// $(this).data("status","CLOSED");
   		            		 $(ticket_status).data("status","CLOSED");
   	  		            	 $(ticket_status).html("Close Ticket");
   	  		                 $('#ticket_modal_status').html("REOPENED");
-  	  		               //  $('#ticket_table_status').html("REOPENED");
+  	  		               // $('#ticket_table_status').html("REOPENED");
   		            	}  	
   		            	$('#admin_page_loader').hide();
   		            }
@@ -1169,8 +1137,8 @@ function createDataTables()
 			});		
 		
 		if ( $.fn.dataTable.isDataTable(this) ) {
-		    //console.log('dddd');
-		    //this.DataTable();
+		    // console.log('dddd');
+		    // this.DataTable();
 		}
 		else
 		{
@@ -1182,53 +1150,42 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			            /* {
-			                 text: 'Download CSV File',
-			                data:'CSV',
-			                 action: function ( e, dt, node, config ) {
-			                     var reportID = dt;
-			                     console.log(">>>>>>id>>>>"+id.split('_')[2]);
-			                     console.log(">>>>>>>>>>"+$('.html5buttons > div >a').attr('aria-controls').split('_')[2]);
-			                    var reportID = $('.html5buttons > div >a').attr('aria-controls').split('_')[2]
-			                    var key = $('.html5buttons > div >a').text().trim();
-			                     
-			                     $.ajax({
-			       		            type: "POST",
-			       		            url: "/ReportExtractController",
-			       		            data: {key:key, reportID:reportID},
-			       		            success: function(data){
-			       		            	  	
-			       		            }
-			       		        });
-			                     
-			                 }
-			             }*/
+			            /*
+						 * { text: 'Download CSV File', data:'CSV', action:
+						 * function ( e, dt, node, config ) { var reportID = dt;
+						 * console.log(">>>>>>id>>>>"+id.split('_')[2]);
+						 * console.log(">>>>>>>>>>"+$('.html5buttons > div
+						 * >a').attr('aria-controls').split('_')[2]); var
+						 * reportID = $('.html5buttons > div
+						 * >a').attr('aria-controls').split('_')[2] var key =
+						 * $('.html5buttons > div >a').text().trim();
+						 * 
+						 * $.ajax({ type: "POST", url:
+						 * "/ReportExtractController", data: {key:key,
+						 * reportID:reportID}, success: function(data){ } }); } }
+						 */
 			         ], "processing": true,
 			         "serverSide": false,
 			        
 			         
 			         initComplete: function () {
-			             /*this.api().columns().every( function () {
-			                 var column = this;
-			                 console.log("kamini123->"+column.data('selectable'));
-			                 if(column.data('selectable')) {
-			                 var select = $('<select><option value="">Select ALL</option></select>')
-			                     .appendTo( $(column.footer()).empty() )
-			                     .on( 'change', function () {
-			                         var val = $.fn.dataTable.util.escapeRegex(
-			                             $(this).val()
-			                         );
-			  
-			                         column
-			                             .search( val ? '^'+val+'$' : '', true, false )
-			                             .draw();
-			                     } );
-			  
-			                 column.data().unique().sort().each( function ( d, j ) {
-			                     select.append( '<option class="date_selector" value="'+d+'">'+d+'</option>' )
-			                 } );
-			             }
-			             } );*/
+			             /*
+							 * this.api().columns().every( function () { var
+							 * column = this;
+							 * console.log("kamini123->"+column.data('selectable'));
+							 * if(column.data('selectable')) { var select = $('<select><option
+							 * value="">Select ALL</option></select>')
+							 * .appendTo( $(column.footer()).empty() ) .on(
+							 * 'change', function () { var val =
+							 * $.fn.dataTable.util.escapeRegex( $(this).val() );
+							 * 
+							 * column .search( val ? '^'+val+'$' : '', true,
+							 * false ) .draw(); } );
+							 * 
+							 * column.data().unique().sort().each( function ( d,
+							 * j ) { select.append( '<option
+							 * class="date_selector" value="'+d+'">'+d+'</option>' ) } ); } } );
+							 */
 			         }
 			     });
 				
@@ -1252,14 +1209,12 @@ function createDataTables()
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
 			         buttons: [
-			            /* {
-			                 text: 'My button605',
-			                 action: function ( e, dt, node, config ) {
-			                     this.text( 'My button ('+config.counter+')' );
-			                     config.counter++;
-			                 },
-			                 counter: 1
-			             }*/
+			            /*
+						 * { text: 'My button605', action: function ( e, dt,
+						 * node, config ) { this.text( 'My button
+						 * ('+config.counter+')' ); config.counter++; },
+						 * counter: 1 }
+						 */
 			         ], "processing": true,
 			         "serverSide": true,
 			         "ajax": url,
@@ -1443,7 +1398,7 @@ function initEditGroupModalCall()
 	    	    $('select').select2();
 	    		$('#edit_group_modal').modal();	    		   		 
 	    		});
-	    	// open modal using js now 
+	    	// open modal using js now
 	    	// action goes here!!
 	    });
 }
@@ -1487,7 +1442,7 @@ function initEditUserModalCall()
 	    		  userValidation();
 	    		 
 	    		});
-	    	// open modal using js now 
+	    	// open modal using js now
 	    	// action goes here!!
 	    });
 }
@@ -1568,11 +1523,11 @@ function createGraphs()
  			   
  			});
  			
- 			//Hide Table
+ 			// Hide Table
  			$('.data_holder.datatable_report').hide();
 
  		} catch (err) {
- 		//console.log(err);
+ 		// console.log(err);
  		}
 
 
@@ -1612,7 +1567,7 @@ $(containerID).highcharts({
 		},
         tooltip: {
             crosshairs: [true,true],
-            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
             formatter: function() {
                 return this.series.name+': <b>'+this.y+'</b>';
             }
@@ -1664,7 +1619,7 @@ $(containerID).highcharts({
 		},
         tooltip: {
             crosshairs: [true,true],
-            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
             formatter: function() {
                 return this.series.name+': <b>'+this.y+'</b>';
             }
@@ -1716,7 +1671,7 @@ $(containerID).highcharts({
 		},
         tooltip: {
             crosshairs: [true,true],
-            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
             formatter: function() {
                 return this.series.name+': <b>'+this.y+'</b>';
             }
@@ -1770,7 +1725,7 @@ $(containerID).highcharts({
 		},
         tooltip: {
             crosshairs: [true,true],
-            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+            // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
             formatter: function() {
                 return this.series.name+': <b>'+this.y+'</b>';
             }
@@ -1793,7 +1748,7 @@ $(containerID).highcharts({
 
 function create_column_graph(tableID) {
 	
-	//	var tableID  = $(this).attr('id');
+	// var tableID = $(this).attr('id');
 	    var containerID = '#'+$('#'+tableID).data('graph_containter');
 	    var graph_type = $('#'+tableID).data('graph_type');
 	    var graph_title =$('#'+tableID).data('report_title'); 
@@ -1825,7 +1780,7 @@ function create_column_graph(tableID) {
 			},
 	        tooltip: {
 	            crosshairs: [true,true],
-	            //pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
+	            // pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
 	            formatter: function() {
 	                return this.series.name+': <b>'+this.y+'</b>';
 	            }
@@ -1965,7 +1920,7 @@ function initChat()
 		$('#chat_element_holder').show();
 		if($('#chat_holder').length >0)
 		{
-			//$('#chat_holder').removeClass("active")
+			// $('#chat_holder').removeClass("active")
 			$('#chat_holder').empty();
 			$('#chat_holder').hide();
 		}
@@ -1976,13 +1931,13 @@ function initChat()
 		$('#chat_element_holder').toggle();
 		if($('#chat_holder').length >0)
 		{
-			//$('#chat_holder').removeClass("active")
+			// $('#chat_holder').removeClass("active")
 			$('#chat_holder').empty();
 			$('#chat_holder').hide();
 		}
 	});
 	
-//load first tabe by default
+// load first tabe by default
 	
 	var $firstTab = $('[data-toggle="tab_chat"]').first();
 	var urll = $firstTab.attr('href');
@@ -2010,9 +1965,9 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 
 	function connect() {
 		try {
-			//variables defined in foot.jsp
+			// variables defined in foot.jsp
 			var userEmail = $('#current_user_email').val();
-			//console.log('>>>>>>>' + userEmail);
+			// console.log('>>>>>>>' + userEmail);
 			if (userEmail != undefined && userEmail != null) {
 				var host_name = location.hostname;
 				console.log("ws://" + host_name + ":" + "4568" + "/chat/" + userEmail);
@@ -2043,7 +1998,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 		
 	}catch(err)
 	{
-		//console.log(err);
+		// console.log(err);
 	}
 	
 	function getElement(id) {
@@ -2054,7 +2009,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 		try {
 			var str = JSON.stringify(msg, null, 2);
 			console.log('got message in js'+str);
-			//console.log('got message in js'+str);
+			// console.log('got message in js'+str);
 			var data = JSON.parse(msg.data);
 			var type = data.type;
 			
@@ -2062,15 +2017,16 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 			{
 				var senderId = data.senderId;
 				var senderName = data.currUserName;
-				//chat window is not open then need to highlight incoming messages 
+				// chat window is not open then need to highlight incoming
+				// messages
 				if(($('#chat_holder').data('receiver_id')!= senderId) && ($('#chat_holder').data('receiver_type')!= 'USER'))
 				{
-					//highlight the tab
+					// highlight the tab
 					$('#user_tab').css("background", "antiquewhite");
-					//create a chat user tab and append to list on top
+					// create a chat user tab and append to list on top
 					if($('#entity_user_'+senderId).length!=0)
 					{
-						//unread user tab already exist
+						// unread user tab already exist
 						
 						
 						var alreadyUnreadMessageCount = 0;
@@ -2087,7 +2043,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					}	
 					else{
 						
-						//add tab
+						// add tab
 						var alreadyUnreadMessageCount = 1;
 						var htmlDiv ="<div class='chat-user' id='entity_user_"+senderId+"' data-user_id='"+senderId+"' data-user_type='USER' " +
 						"data-user_name='"+senderName+"' data-user_image='"+data.currUserImage+"'>" +
@@ -2128,14 +2084,15 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 			}else if(type === 'ORG_CHAT')
 			{
 				var senderId = data.senderId;				
-				//chat window is not open then need to highlight incoming messages 
+				// chat window is not open then need to highlight incoming
+				// messages
 				if(($('#chat_holder').data('receiver_id')!= senderId) && ($('#chat_holder').data('receiver_type')!= 'ORG'))
 				{
-					//highlight the tab
+					// highlight the tab
 					$('#org_tab').css("background", "antiquewhite");
 					if($('#entity_user_'+senderId).length!=0)
 					{
-						//unread user tab already exist 
+						// unread user tab already exist
 						var alreadyUnreadMessageCount = 0;
 						if($('#entity_user_'+senderId+'_chat_count').text()!=null)
 						{
@@ -2149,7 +2106,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 						$('#tab-orgs .users-list').prepend(html);
 					}	
 					else{						
-						//add tab
+						// add tab
 						var alreadyUnreadMessageCount = 1;
 						
 						var htmlDiv ="<div class='chat-user' id='entity_user_"+senderId+"' data-user_id='"+senderId+"' data-user_type='ORG' " +
@@ -2162,7 +2119,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 						
 					}
 					initChatEntityClick();
-					//highlight the user
+					// highlight the user
 					$('#entity_user_'+senderId).css("background", "antiquewhite");
 					var audio = new Audio('/assets/sound/stuffed-and-dropped.mp3');
 					audio.play();
@@ -2197,17 +2154,18 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 			{				
 				var senderId = data.senderId;
 				var groupId = data.groupId;
-				//alert(senderId);
-				//alert(groupId);
-				//chat window is not open then need to highlight incoming messages 
+				// alert(senderId);
+				// alert(groupId);
+				// chat window is not open then need to highlight incoming
+				// messages
 				if(($('#chat_holder').data('receiver_id')!= groupId) && ($('#chat_holder').data('receiver_type')!= 'BG_GROUP'))
 				{
-					//highlight the tab
+					// highlight the tab
 					$('#group_tab').css("background", "antiquewhite");
-					//highlight the entity_bg_group_15
+					// highlight the entity_bg_group_15
 					if($('#entity_bg_group_'+groupId).length!=0)
 					{
-						//unread user tab already exist 
+						// unread user tab already exist
 						var alreadyUnreadMessageCount = 0;
 						if($('#entity_bg_group_'+groupId+'_chat_count').text()!=null)
 						{
@@ -2223,7 +2181,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					}	
 					else
 					{						
-						//add tab
+						// add tab
 						var alreadyUnreadMessageCount = 1;
 						var htmlDiv ="<div class='chat-user' id='entity_bg_group_"+groupId+"' data-user_id='"+groupId+"' data-user_type='BG_GROUP' " +
 						"data-user_name='"+senderName+"' data-user_image='"+data.currUserImage+"'>" +
@@ -2241,7 +2199,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 				var senderName = data.currUserName;						
 				var chatMessage = createMessageHtml(message, senderId,senderName, 'user');				
 				var commentsCount = $('#chat_content').children('.comment').length;
-				//console.log('commentsCount>>>'+commentsCount);
+				// console.log('commentsCount>>>'+commentsCount);
 				if(commentsCount >6)
 					{					
 					$('#chat_content > .chat_comment').slice(0,1).remove();
@@ -2255,7 +2213,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 			{
 				var senderId = data.senderId;
 				var groupId = data.groupId;
-				//chat window is not open then need to highlight incoming messages 
+				// chat window is not open then need to highlight incoming
+				// messages
 				if($('#chat_holder #convo_wrap_group_'+groupId).length ==0)
 				{				
 					$('a[data-user_id="chat_entity_group_'+groupId+'"]').css("background", "antiquewhite");;
@@ -2269,7 +2228,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 				var chatMessage = createMessageHtml(message, senderId,senderName, 'user');
 				
 				var commentsCount = $('#'+targetId).children('.comment').length;
-				//console.log('commentsCount>>>'+commentsCount);
+				// console.log('commentsCount>>>'+commentsCount);
 				if(commentsCount >6)
 					{					
 					$('#chat_content > .chat_comment').slice(0,1).remove();
@@ -2301,7 +2260,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					var username = userList[i].username
 					var userId =userList[i].userId;
 					var onlineStatus = userList[i].online;
-					//console.log('online status>>>>'+onlineStatus);
+					// console.log('online status>>>>'+onlineStatus);
 					if(onlineStatus==='true')
 					{
 						var divId = 'status_user_'+userId;
@@ -2313,7 +2272,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 					}
 					else
 					{
-						//$('#chat_entity_user_'+userId).attr( "class", "item chat_entity offine" );
+						// $('#chat_entity_user_'+userId).attr( "class", "item
+						// chat_entity offine" );
 						$('a[data-user_id="chat_entity_user_'+userId+'"]').hide();
 					}	
 				}
@@ -2335,7 +2295,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      	{
 	      		var profileImage='';
 	      		var userName ='';
-	      		//these varible defined in foot.jsp
+	      		// these varible defined in foot.jsp
 	      		var currentUserImage = $('#current_user_image').val();;
 	    		var currentUserName =$('#current_user_name').val();
 	    		var currUserId  = $('#current_user_id').val();
@@ -2357,13 +2317,14 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	    			 
 	    			 var senderUserID = 'entity_'+user_type+'_' + senderId;
 	    	  		 userName = senderName;	    	  		 
-	    			 //profileImage = $('#'+senderUserID).data('user_image');	    			 
+	    			 // profileImage =
+						// $('#'+senderUserID).data('user_image');
 	    			 messageHTML="<div class='right'> <div class='author-name'>"+userName+"<small class='chat-date'> moments ago</small>   " +
 	       	 		"              </div>                 <div class='chat-message'>                    "+message+"                </div>    </div>"	;
 	      		
 	    		}
-	    		//console.log('username'+userName);
-	    		//console.log('profileImage'+profileImage);
+	    		// console.log('username'+userName);
+	    		// console.log('profileImage'+profileImage);
 	      	
 	      		
 	      								
@@ -2377,12 +2338,12 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	    	$(document).on('keypress','.chat_message', function (e) {
 
 	      		if (e.keyCode === 13) {
-	      			//sendMessage(e.target.value); 
+	      			// sendMessage(e.target.value);
 	      			var buttonId = $(this).attr('id');
-	      			//console.log('button id is '+buttonId);
+	      			// console.log('button id is '+buttonId);
 	      			var message = $(this).val();
 	      			if(message !=''){
-	      			//these varible defined in chat_element.jsp
+	      			// these varible defined in chat_element.jsp
 	      			var currUserId  = $('#current_user_id').val();
 	      			var currUserOrgId = $('#current_user_org_id').val();
 	      			var currUserType = $('#current_user_type').val();
@@ -2390,9 +2351,10 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      			var currUserImage = $('#current_user_image').val();
 	      			var jsonMessage = '';
 	      			if (buttonId.indexOf('user') != -1) {
-	      				//it is user to user chat
+	      				// it is user to user chat
 	      				var receiverId = buttonId.replace("user_", "");
-	      				//console.log("sending message " + message + " to user>" + receiverId);
+	      				// console.log("sending message " + message + " to
+						// user>" + receiverId);
 	      				if (message !== "") {
 	      					jsonMessage = JSON.stringify({
 	      						receiverId : receiverId,
@@ -2404,11 +2366,11 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      					});
 	      				}
 	      				var chatMessage = createMessageHtml(message, currUserId, 'user');  				
-	      				//var receivUserID = 'convo_wrap_' + buttonId;
+	      				// var receivUserID = 'convo_wrap_' + buttonId;
 	      				
 	      				
 	      				var commentsCount = $('#chat_content').children('.chat_comment').length;
-	    			//	console.log('commentsCount>>>'+commentsCount);
+	    			// console.log('commentsCount>>>'+commentsCount);
 	    				if(commentsCount >8)
 	    					{	    						
 	    						$('#chat_content > .chat_comment').slice(0,1).remove();
@@ -2423,7 +2385,8 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      			else if (buttonId.indexOf('org') != -1)
 	      			{
 	      				var receiverId = buttonId.replace("org_", "");
-	      				//console.log("sending message " + message + " to user>" + receiverId);
+	      				// console.log("sending message " + message + " to
+						// user>" + receiverId);
 	      				if (message !== "") {
 	      					jsonMessage = JSON.stringify({
 	      						receiverId : receiverId,
@@ -2434,11 +2397,11 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      					});
 	      				}
 	      				var chatMessage = createMessageHtml(message, currUserId, 'org');  				
-	      				//var receivUserID = 'convo_wrap_' + buttonId;
+	      				// var receivUserID = 'convo_wrap_' + buttonId;
 	      				
 	      				
 	      				var commentsCount = $('#chat_content').children('.chat_comment').length;
-	    			//	console.log('commentsCount>>>'+commentsCount);
+	    			// console.log('commentsCount>>>'+commentsCount);
 	    				if(commentsCount >8)
 	    					{
 	    						
@@ -2449,7 +2412,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      				d.scrollTop(d.prop("scrollHeight"));
 	      			}
 	      			else  if (buttonId.indexOf('bg_group_') != -1) {
-	      				//it is batch group chat
+	      				// it is batch group chat
 	      				var receiverGroupId = buttonId.replace("bg_group_", "");;
 	      				if (message !== "") {
 	      					jsonMessage = JSON.stringify({
@@ -2461,21 +2424,22 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 	      						senderId : currUserId, currUserName: currUserName, currUserImage:currUserImage
 	      					});
 	      				}
-	      				/*var chatMessage = createMessageHtml(message, currUserId, 'bg_group');  				
-	      				var commentsCount = $('#chat_content').children('.chat_comment').length;
-	    				if(commentsCount >8)
-	    					{	    						
-	    						$('#chat_content > .chat_comment').slice(0,1).remove();
-	    					}	    				
-	    				$('#chat_content').append(chatMessage);
-	      				
-	      				var d = $('#chat_content');
-	      				d.scrollTop(d.prop("scrollHeight"));*/
+	      				/*
+						 * var chatMessage = createMessageHtml(message,
+						 * currUserId, 'bg_group'); var commentsCount =
+						 * $('#chat_content').children('.chat_comment').length;
+						 * if(commentsCount >8) { $('#chat_content >
+						 * .chat_comment').slice(0,1).remove(); }
+						 * $('#chat_content').append(chatMessage);
+						 * 
+						 * var d = $('#chat_content');
+						 * d.scrollTop(d.prop("scrollHeight"));
+						 */
 	      				
 	      			}
 	      			else if(buttonId.indexOf('custom_group') != -1)
 	      			{
-	      				//its custom group chat
+	      				// its custom group chat
 	      				var receiverGroupId = buttonId.replace("custom_group_", "");;
 	      				if (message !== "") {
 	      					jsonMessage = JSON.stringify({
@@ -2501,7 +2465,7 @@ $('[data-toggle="tab_chat"]').click(function(e) {
 
 }
 function init_session_logs(){
-	//console.log("called"+new Date());
+	// console.log("called"+new Date());
 	$('.ajax-session-holder').each(function(e){
 		
 		if($('#childtab1'+$(this).data('event-id')).hasClass('active') && $($(this).parent()).hasClass('active'))
@@ -2547,7 +2511,10 @@ function init_edit_delete_event(eventID,status){
 										  $.ajax({
 										       type: "POST",
 										       url: '/add_entry_in_deleted_events',
-										       data: $("#delete_event_form").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+										       data: $("#delete_event_form").serialize()+ "&action_type=DELETE", // serializes
+																													// the
+																													// form's
+																													// elements.
 										       success: function(data)
 										       { 
 										       }
@@ -2639,60 +2606,43 @@ $('.fc-event').unbind().on('click', function() {
 
 
 function loadTables(){
-	/*var url=$('.datatable').attr('url');
-	
-	$('table.datatable_istar').each(function(){
-	  var id=$(this).attr('id');
-	  var url=$(this).data('url');
-	  
-	  $('#'+id).on( 'draw.dt', function () {   
-		 
-		  $('#classroom_list_info').css('display','none');
-		  $('#feedback_list_info').css('display','none');
-		  $('#trainer_details_list_info').css('display','none');
-		  $('#account_details_list_info').css('display','none');
-		  
-		  
-		  $(".class-room-edit-popup").click(function(){
-		    	var classRoomId =  $(this).data('class_id');
-		    	var urls = 'partials/modal/create_edit_classroom_modal.jsp?type=Edit&class_id='+classRoomId;
-		    	$.get( urls, function( data ) {
-		    		  $('#edit_class_room_model').remove(); 
-		    		  $("body").append(data);
-		    		  init_classRoom_Modal();
-		    		  $('#edit_class_room_model').modal();
-		    		});
-		    });
-		} );
-	  
-	  
-	  $('#'+id).DataTable({
-	         pageLength: 10,
-	         responsive: true,
-	         dom: '<"html5buttons"B>lTfgitp',
-	         buttons: [
-	             { extend: 'copy'},
-	             {extend: 'csv'},
-	             {extend: 'excel', title: 'ExampleFile'},
-	             {extend: 'pdf', title: 'ExampleFile'},
-
-	             {extend: 'print',
-	              customize: function (win){
-	                     $(win.document.body).addClass('white-bg');
-	                     $(win.document.body).css('font-size', '10px');
-
-	                     $(win.document.body).find('table')
-	                             .addClass('compact')
-	                             .css('font-size', 'inherit');
-	             }
-	             }
-	         ], "processing": true,
-	         "serverSide": true,
-	         "ajax": url
-
-	     });
-	  
-	});*/
+	/*
+	 * var url=$('.datatable').attr('url');
+	 * 
+	 * $('table.datatable_istar').each(function(){ var id=$(this).attr('id');
+	 * var url=$(this).data('url');
+	 * 
+	 * $('#'+id).on( 'draw.dt', function () {
+	 * 
+	 * $('#classroom_list_info').css('display','none');
+	 * $('#feedback_list_info').css('display','none');
+	 * $('#trainer_details_list_info').css('display','none');
+	 * $('#account_details_list_info').css('display','none');
+	 * 
+	 * 
+	 * $(".class-room-edit-popup").click(function(){ var classRoomId =
+	 * $(this).data('class_id'); var urls =
+	 * 'partials/modal/create_edit_classroom_modal.jsp?type=Edit&class_id='+classRoomId;
+	 * $.get( urls, function( data ) { $('#edit_class_room_model').remove();
+	 * $("body").append(data); init_classRoom_Modal();
+	 * $('#edit_class_room_model').modal(); }); }); } );
+	 * 
+	 * 
+	 * $('#'+id).DataTable({ pageLength: 10, responsive: true, dom: '<"html5buttons"B>lTfgitp',
+	 * buttons: [ { extend: 'copy'}, {extend: 'csv'}, {extend: 'excel', title:
+	 * 'ExampleFile'}, {extend: 'pdf', title: 'ExampleFile'},
+	 * 
+	 * {extend: 'print', customize: function (win){
+	 * $(win.document.body).addClass('white-bg');
+	 * $(win.document.body).css('font-size', '10px');
+	 * 
+	 * $(win.document.body).find('table') .addClass('compact') .css('font-size',
+	 * 'inherit'); } } ], "processing": true, "serverSide": true, "ajax": url
+	 * 
+	 * });
+	 * 
+	 * });
+	 */
 
 	
 }
@@ -2705,7 +2655,7 @@ function init_orgadmin_none() {
 
 function mark_as_read_notification(){
 	 $(".notification_read").click(function(){
-	//$('.notification_read').unbind().on("click", function() {
+	// $('.notification_read').unbind().on("click", function() {
        var notificationEventID = $(this).attr('id');
        var parentID = $('#'+notificationEventID).parent().parent().attr('id');;
        var notice_count = $('#admin_notice_count').text();
@@ -2715,7 +2665,7 @@ function mark_as_read_notification(){
 		    	type : "markasread"
 		        },
 		        function(data) {
-		        	//location.reload();	
+		        	// location.reload();
 		        	
 		        	$("#"+parentID ).remove();
 		        	if(notice_count != 0){
@@ -2735,7 +2685,7 @@ function init_orgadmin_dashboard() {
 
     $('#myModal2').on('shown.bs.modal', function() {
 		var otherEventData = []
-		//$('#myModal5').modal('toggle');
+		// $('#myModal5').modal('toggle');
 		 scheduler_createOldEvent();
 		 scheduler_DeleteEvent();
 		 scheduler_init_edit_new_trainer_associated();
@@ -2745,8 +2695,8 @@ function init_orgadmin_dashboard() {
 		
 
 	});
-  //  create_progress_view_chart(true);
-    //create_competetion_view_calendar(true);
+  // create_progress_view_chart(true);
+    // create_competetion_view_calendar(true);
     create_dashboard_calendar();
    // create_course_view_datatable(true);
    // create_program_view_datatable(true);
@@ -2760,7 +2710,7 @@ function init_orgadmin_dashboard() {
 
 function init_orgadmin_admin() {
     console.log('intiliazing Admin');
-    //Edit User Call goes here
+    // Edit User Call goes here
     initEditUserModalCall();
 	$.get('partials/admin_user_tab_content.jsp', function(data) {        	
     $('#admintab1').html(data);
@@ -2794,7 +2744,7 @@ function init_orgadmin_admin() {
         	createDataTables();
         	user_filter_by_course_batch();
         	initCreateSectionCall();
-        	//admin_load_resources();
+        	// admin_load_resources();
             load_content_mapping();
             $.extend($.expr[":"], {
                 "containsIN": function(elem, i,match, array) {
@@ -2843,7 +2793,7 @@ function load_content_mapping()
 	        	$.get(loadurl, function(data) {        	
 	            $(targ).html(data);
 	            $('#admin_page_loader').hide();	            	        	
-	        	//admin_load_resources();
+	        	// admin_load_resources();
 	        	 $('.full-height-scroll').each(function(){
 				    	$(this).slimscroll({height:$(this).parent().height()});
 				    });	        	 
@@ -2910,7 +2860,7 @@ function init_child_entity_tabs()
 
 function init_admin_skill_addition()
 {
-	//add_content
+	// add_content
 	$('.add_content').unbind().on('click',function(){
 		var skillId = $(this).data('skill_id');
 		var entityId = $(this).data('entity_id');
@@ -3024,7 +2974,7 @@ function init_user_pagination_in_user_tab()
 	$('#user_page-selection').bootpag({
         total: parseInt($('#user_page-selection').data('size')/10+1),
         maxVisible: 10
-    }).on("page", function(event, /* page number  here */ num){
+    }).on("page", function(event, /* page number here */ num){
     		$('#admin_page_loader').show();
 			var offset=(num*10)-10;						
 			var tab=$(this);			
@@ -3048,7 +2998,7 @@ function init_role_pagination_in_role_tab()
 	$('#role_page-selection').bootpag({
         total: parseInt($('#role_page-selection').data('size')/10+1),
         maxVisible: 10
-    }).on("page", function(event, /* page number  here */ num){
+    }).on("page", function(event, /* page number here */ num){
     		$('#admin_page_loader').show();
 			var offset=(num*10)-10;						
 			var tab=$(this);			
@@ -3072,7 +3022,7 @@ function init_section_pagination_in_section_tab()
 	$('#section_page-selection').bootpag({
         total: parseInt($('#section_page-selection').data('size')/10+1),
         maxVisible: 10
-    }).on("page", function(event, /* page number  here */ num){
+    }).on("page", function(event, /* page number here */ num){
     		$('#admin_page_loader').show();
 			var offset=(num*10)-10;						
 			var tab=$(this);			
@@ -3111,7 +3061,7 @@ function user_filter_by_course_batch() {
         
         if(prevKey!=null)
         	{
-        	//searchKey = prevKey+",";
+        	// searchKey = prevKey+",";
 	        	if(prevKey!=null){
 	        		$.each(prevKey, function(index, value) {
 	        			selectBox.each(function(){
@@ -3293,38 +3243,38 @@ function init_orgadmin_scheduler() {
     	$('.associateTrainer').select2();
     	});
     
-  //---form submiton function
+  // ---form submiton function
     scheduler_submitModal();
     
     scheduler_init_trainer_associated();
     scheduler_init_edit_new_trainer_associated();
     scheduler_init_edit_old_trainer_associated();
 	
-	//---clock Date 
+	// ---clock Date
     scheduler_ClockDate(true);
     
-    //onChange filter function for batchGroup,course and assessment
+    // onChange filter function for batchGroup,course and assessment
     scheduler_onChange_init();
     
     var otherEventData = [];
     
-    //delete assessment
+    // delete assessment
     scheduler_DeleteAssessment();
-    //delete event
+    // delete event
     scheduler_DeleteEvent();
-     //create new assessment and event 
+     // create new assessment and event
     scheduler_createNewEventAssessment();
-     //modify old event
+     // modify old event
     scheduler_createOldEvent();
-    //UI to modify old event
+    // UI to modify old event
     scheduler_modifyOldEventModal2();
-    //UI to modify new event
+    // UI to modify new event
     scheduler_newSchedularmodifyModal();
-    //create modified event  
+    // create modified event
     scheduler_createEditedNewModal5();
-    //function to add another function on show of modal
+    // function to add another function on show of modal
     scheduler_onShowOfModal();  
-    //auto scheduler
+    // auto scheduler
      
 }
 
@@ -3373,7 +3323,7 @@ function init_auto_scheduler()
 					$('#entity_list_holder').empty();
 					$('#entity_list_holder').append(data);
 					
-					//starts here
+					// starts here
 					$("table.datatable_istar" ).each(function() {
 						var id = $(this).attr('id');
 					
@@ -3385,7 +3335,7 @@ function init_auto_scheduler()
 						});							
 					if ( $.fn.dataTable.isDataTable(this) ) {
 					    console.log('dddd');
-					    //this.DataTable();
+					    // this.DataTable();
 					}
 					else
 					{
@@ -3449,9 +3399,14 @@ function init_auto_scheduler()
 												         "serverSide": true,
 												         "ajax": url2,
 														"drawCallback": function( settings ) {
-													    	//to preserve selected entityId after data table refresh.
-															//$('input[name=radio_button_'+reportId+'][value='+selectedEntityId+']').attr('checked',true);
-															// now what happens after selecting a course
+													    	// to preserve
+															// selected entityId
+															// after data table
+															// refresh.
+															// $('input[name=radio_button_'+reportId+'][value='+selectedEntityId+']').attr('checked',true);
+															// now what happens
+															// after selecting a
+															// course
 															$('input[name=radio_button_'+course_report_id+']:radio').unbind().on('change', function(){
 																$('#admin_page_loader').show();
 																var courseId = $('input[name=radio_button_'+course_report_id+']:checked').val();
@@ -3491,7 +3446,7 @@ function init_auto_scheduler()
 						
 					}						
 				});
-					//ends here
+					// ends here
 					
 								
 					$('#entity_list_holder').show();
@@ -3512,30 +3467,34 @@ function init_edit_course_changes()
 	$.each( $('input[name=scheduled_days]:checked'), function() {
 		console.log($(this).val());
 		schedule_days.push($(this).val());
-		  // or you can do something to the actual checked checkboxes by working directly with  'this'
-		  // something like $(this).hide() (only something useful, probably) :P
+		  // or you can do something to the actual checked checkboxes by
+			// working directly with 'this'
+		  // something like $(this).hide() (only something useful, probably)
+			// :P
 		});
 	
-	//$('input[name=scheduled_days][type=checkbox]:checked').serialize();
+	// $('input[name=scheduled_days][type=checkbox]:checked').serialize();
 	var start_date = $('#sd').val();
 	var end_date = $('#ed').val();
-	//scheduled_days
+	// scheduled_days
 	$('input[name=scheduled_days][type=checkbox]').unbind().on('change',function(){
 		schedule_days = new Array();
 		$.each( $('input[name=scheduled_days]:checked'), function() {
 			schedule_days.push($(this).val());
-			  // or you can do something to the actual checked checkboxes by working directly with  'this'
-			  // something like $(this).hide() (only something useful, probably) :P
+			  // or you can do something to the actual checked checkboxes by
+				// working directly with 'this'
+			  // something like $(this).hide() (only something useful,
+				// probably) :P
 			});
 	});
 	
 	$('#sd').on('change', function(){
-		//alert($('#sd').val());
+		// alert($('#sd').val());
 		start_date = $('#sd').val();		
 	});
 	
 	$('#ed').on('change', function(){
-		//alert($('#ed').val());
+		// alert($('#ed').val());
 		end_date = $('#ed').val();		
 	});
 	
@@ -3581,7 +3540,7 @@ function init_edit_course_changes()
 		}
 		else
 			{
-			//alert('null ');
+			// alert('null ');
 			}
 	});
 }
@@ -3614,7 +3573,7 @@ function init_orgadmin_report_detail(){
         total: $('#nosofpages').data('content'),
         maxVisible: 10
 
-    }).on("page", function(event, /* page number  here */ num) {
+    }).on("page", function(event, /* page number here */ num) {
         console.log("num --> " + num);
         console.log("ddd " + $('#myid').attr('data-course'));
         console.log("ccc " + $('#myid').attr('collegeid'));
@@ -3636,7 +3595,7 @@ function init_orgadmin_report_detail(){
 	
 	  $('#myModal2').on('shown.bs.modal', function() {
 			var otherEventData = []
-			//$('#myModal5').modal('toggle');
+			// $('#myModal5').modal('toggle');
 			 scheduler_createOldEvent();
 			 scheduler_DeleteEvent();
 			 scheduler_init_edit_new_trainer_associated();
@@ -3646,11 +3605,11 @@ function init_orgadmin_report_detail(){
 			
 
 		});
-	//session
+	// session
 	$('#session-page-selection').bootpag({
         total: parseInt($('#session-page-selection').data('size')/3)+1,
         maxVisible: 10
-    }).on("page", function(event, /* page number  here */ num) {
+    }).on("page", function(event, /* page number here */ num) {
         console.log("num --> " + num);
         console.log("batch " + $('#session-page-selection').data('batch'));
         if(num==1){
@@ -3677,12 +3636,12 @@ function init_orgadmin_report_detail(){
 	
 		bind_report_session_clicks();
 		
-	//assessment
+	// assessment
 	$('#assessment-page-selection').bootpag({
         total: parseInt($('#assessment-page-selection').data('size')/3)+1,
         maxVisible: 10
 
-    }).on("page", function(event, /* page number  here */ num) {
+    }).on("page", function(event, /* page number here */ num) {
         console.log("num --> " + num);
         console.log("batch " + $('#assessment-page-selection').data('batch'));
         if(num==1){
@@ -3820,7 +3779,7 @@ function bind_report_session_clicks() {
                     });
                 });
 
-                //onload 
+                // onload
                 if ($($('.modal-student')[0])) {
                     var assessment_id = $($('.modal-student')[0]).data('assessment');
                     var batch_id = $($('.modal-student')[0]).data('batch');
@@ -3867,9 +3826,11 @@ function createCalender()
 						center : 'title',
 						right : 'month,agendaWeek,agendaDay,listWeek'
 					},
-					navLinks : true, // can click day/week names to navigate views
+					navLinks : true, // can click day/week names to navigate
+										// views
 					editable : true,
-					eventLimit : true, // allow "more" link when too many events
+					eventLimit : true, // allow "more" link when too many
+										// events
 					events: data_url,
 					
 					eventRender: function(event, element) { 
@@ -3897,12 +3858,16 @@ function createCalender()
 						
 						
 						eventDrop: function (event, delta, revertFunc) {
-				            //inner column movement drop so get start and call the ajax function......	
-				          //  console.log(event.start.format());
-				          //  console.log(event.id);
-				          //  var defaultDuration = moment.duration($('#calendar').fullCalendar('option', 'defaultTimedEventDuration'));
-				           // var end = event.end || event.start.clone().add(defaultDuration);
-				         //   console.log('end is ' + end.format());
+				            // inner column movement drop so get start and call
+							// the ajax function......
+				          // console.log(event.start.format());
+				          // console.log(event.id);
+				          // var defaultDuration =
+							// moment.duration($('#calendar').fullCalendar('option',
+							// 'defaultTimedEventDuration'));
+				           // var end = event.end ||
+							// event.start.clone().add(defaultDuration);
+				         // console.log('end is ' + end.format());
 				            
 				            var editEventId =  event.id;
 				            var eventDateTime = event.start.format();
@@ -3983,7 +3948,7 @@ function create_dashboard_calendar() {
              center: 'title',
              right: 'month,agendaWeek,agendaDay,listWeek'
          },
-         //defaultDate: '2016-12-12',
+         // defaultDate: '2016-12-12',
          navLinks: true, // can click day/week names to navigate views
          editable: true,
          eventLimit: true, // allow "more" link when too many events
@@ -4296,7 +4261,7 @@ function admin_course_batch_init() {
         
         if(prevKey!=null)
         	{
-        	//searchKey = prevKey+",";
+        	// searchKey = prevKey+",";
 	        	if(prevKey!=null){
 	        		$.each(prevKey, function(index, value) {
 	        			selectBox.each(function(){
@@ -4422,7 +4387,9 @@ function admin_skill_alertBinding() {
             }
 
             console.log("typeId " + typeId + " , " + "userType " + userType + " , " + "skillId " + skillId + " , " + "lessonType " + lessonType);
-            var url = "../create_delete_content_map"; // the script where you handle the form input.
+            var url = "../create_delete_content_map"; // the script where you
+														// handle the form
+														// input.
             $.ajax({
                 type: "POST",
                 url: url,
@@ -4430,7 +4397,7 @@ function admin_skill_alertBinding() {
                 success: function(data) {
                     $('#role_associated_' + roleIdType).prepend(data);
                     $('#role_skill_count_' + roleIdType).html(parseInt($('#role_skill_count_' + roleIdType).text()) + parseInt($(data).length));
-                    //admin_skill_alertBinding();
+                    // admin_skill_alertBinding();
                 }
             });
 
@@ -4448,7 +4415,8 @@ function admin_skill_alertBinding() {
              });
         	
         	if (avialable) {
-        	var url = "../create_or_update_batch"; // the script where you handle the form input.
+        	var url = "../create_or_update_batch"; // the script where you
+													// handle the form input.
             $.ajax({
                 type: "POST",
                 url: url,
@@ -4456,7 +4424,7 @@ function admin_skill_alertBinding() {
                 success: function(data) {
                 		if($(data).length>0){
                     $('#batch_associated_'+batch_group).prepend(data);
-                    //admin_skill_alertBinding();
+                    // admin_skill_alertBinding();
                 		}
                 }
             });
@@ -4471,7 +4439,8 @@ function admin_skill_alertBinding() {
             var userType = $($(this).find('.skill-map')).data('content-type');
             var lessonId = $($(this).find('.skill-map')).data('role_skill');
 
-            var url = "../roleSkillCreateOrDelete"; // the script where you handle the form input.
+            var url = "../roleSkillCreateOrDelete"; // the script where you
+													// handle the form input.
             $.ajax({
                 type: "POST",
                 url: url,
@@ -4484,7 +4453,7 @@ function admin_skill_alertBinding() {
     });
 }
 
-//function to delete Assessment
+// function to delete Assessment
 function scheduler_DeleteAssessment() {
 	 
 	 $(".deleteAssessment-modal").click(function(){ 
@@ -4502,7 +4471,7 @@ function scheduler_DeleteAssessment() {
 
 					}
 
-//function to associated trainer 
+// function to associated trainer
 function scheduler_init_trainer_associated() {
 	 
 	 $(".associateTrainer").change(function(){ 
@@ -4514,7 +4483,7 @@ function scheduler_init_trainer_associated() {
 						});
 
 					}
-//function to edit old event associated trainer 
+// function to edit old event associated trainer
 function scheduler_init_edit_old_trainer_associated() {
 	 
 	 $("#edit_old_associateTrainerID").change(function(){ 
@@ -4527,7 +4496,7 @@ function scheduler_init_edit_old_trainer_associated() {
 					}
 
 
-//function to edit new event associated trainer 
+// function to edit new event associated trainer
 function scheduler_init_edit_new_trainer_associated() {
 	 
 	 $("#edit_associateTrainerID").change(function(){ 
@@ -4540,7 +4509,7 @@ function scheduler_init_edit_new_trainer_associated() {
 					}
 
 
-//function to delete Event
+// function to delete Event
 function scheduler_DeleteEvent() {
 	
 	 $(".delete-event").unbind().on('click', function(){ 
@@ -4552,7 +4521,10 @@ function scheduler_DeleteEvent() {
 			  $.ajax({
 			       type: "POST",
 			       url: '/add_entry_in_deleted_events',
-			       data: $("#idForm4").serialize()+ "&action_type=DELETE", // serializes the form's elements.
+			       data: $("#idForm4").serialize()+ "&action_type=DELETE", // serializes
+																			// the
+																			// form's
+																			// elements.
 			       success: function(data)
 			       { 
 			       }
@@ -4584,7 +4556,7 @@ function scheduler_DeleteEvent() {
 
 					}
 
-//form submission for validation with existing events and assessments 
+// form submission for validation with existing events and assessments
 function scheduler_submitModal() {
     $(".form-submit-btn").unbind().click(function(e) {
 
@@ -4596,7 +4568,8 @@ function scheduler_submitModal() {
         
 if(flag == true){
 	
-	  var url = "../createorupdate_events"; // the script where you handle the form input.
+	  var url = "../createorupdate_events"; // the script where you handle the
+											// form input.
 
       $.ajax({
         type: "POST",
@@ -4637,10 +4610,10 @@ if(flag == true){
     });
 }
 
-//validations
+// validations
 function scheduler_formValidation(formID,flag){
 	
-	//console.log('-formID-'+formID);
+	// console.log('-formID-'+formID);
 	if($('#'+formID+' select.eventType').val() === 'session'){
 		
 		$('#'+formID).find(':input,select').each(function(){
@@ -4683,7 +4656,7 @@ function scheduler_formValidation(formID,flag){
 }
 
 // adding clock and date js
-//adding clock and date js
+// adding clock and date js
 function scheduler_ClockDate(flag) {
 
 
@@ -4718,35 +4691,38 @@ function scheduler_ClockDate(flag) {
             format : "dd/mm/yyyy"
         });
 	if(flag === true){
-	//$('.time_holder').val(d.getHours()+':'+d.getMinutes());
-//	$('.date_holder').val($.date(d));
-/*	$('.date_holder').val($.date(d));
-	$('.date_holder').val($.date(d));*/
+	// $('.time_holder').val(d.getHours()+':'+d.getMinutes());
+// $('.date_holder').val($.date(d));
+/*
+ * $('.date_holder').val($.date(d)); $('.date_holder').val($.date(d));
+ */
 	 time = d.getHours()+':'+d.getMinutes();
 	 $('.time_element').val(time);
 	}else{
-		//time = $('#currenTime').val();
+		// time = $('#currenTime').val();
 		 $('#currenTime').val();
 	}
-	/* var options = {
-  		    now: time, //hh:mm 24 hour format only, defaults to current time
-  	        twentyFour: true,  //Display 24 hour format, defaults to false
-  	        upArrow: 'wickedpicker__controls__control-up',  //The up arrow class selector to use, for custom CSS
-  	        downArrow: 'wickedpicker__controls__control-down', //The down arrow class selector to use, for custom CSS
-  	        close: 'wickedpicker__close', //The close class selector to use, for custom CSS
-  	        hoverState: 'hover-state', //The hover state class to use, for custom CSS
-  	        title: 'Event Time', //The Wickedpicker's title,
-  	        showSeconds: false, //Whether or not to show seconds,
-  	        timeSeparator: ':', // The string to put in between hours and minutes (and seconds)
-  	        secondsInterval: 1, //Change interval for seconds, defaults to 1,
-  	        minutesInterval: 1, //Change interval for minutes, defaults to 1
-  	        beforeShow: null, //A function to be called before the Wickedpicker is shown
-  	        afterShow: null, //A function to be called after the Wickedpicker is closed/hidden
-  	        show: null, //A function to be called when the Wickedpicker is shown
-  	        clearable: false, //Make the picker's input clearable (has clickable "x")
-	    };
-	   
-	 $('.timepicker').wickedpicker(options);*/
+	/*
+	 * var options = { now: time, //hh:mm 24 hour format only, defaults to
+	 * current time twentyFour: true, //Display 24 hour format, defaults to
+	 * false upArrow: 'wickedpicker__controls__control-up', //The up arrow class
+	 * selector to use, for custom CSS downArrow:
+	 * 'wickedpicker__controls__control-down', //The down arrow class selector
+	 * to use, for custom CSS close: 'wickedpicker__close', //The close class
+	 * selector to use, for custom CSS hoverState: 'hover-state', //The hover
+	 * state class to use, for custom CSS title: 'Event Time', //The
+	 * Wickedpicker's title, showSeconds: false, //Whether or not to show
+	 * seconds, timeSeparator: ':', // The string to put in between hours and
+	 * minutes (and seconds) secondsInterval: 1, //Change interval for seconds,
+	 * defaults to 1, minutesInterval: 1, //Change interval for minutes,
+	 * defaults to 1 beforeShow: null, //A function to be called before the
+	 * Wickedpicker is shown afterShow: null, //A function to be called after
+	 * the Wickedpicker is closed/hidden show: null, //A function to be called
+	 * when the Wickedpicker is shown clearable: false, //Make the picker's
+	 * input clearable (has clickable "x") };
+	 * 
+	 * $('.timepicker').wickedpicker(options);
+	 */
 	
 	 $('.time_element').timepicki({
 			show_meridian:false,
@@ -4763,7 +4739,7 @@ function scheduler_ClockDate(flag) {
 
 function scheduler_onChange_init(){
 	
-	//-----course filter
+	// -----course filter
 	 $('.batchGroupID').change(function() {
 				
                $.ajax({
@@ -4778,21 +4754,16 @@ function scheduler_onChange_init(){
 	
 	
 	
-	/*//-----BatchGroup filter
-	 $('.courseID').change(function() {
-				
-               $.ajax({
-                   type: "POST",
-                   url: '../event_utility_controller',
-                   data: {courseID: this.value },
-                   success: function(data){
-                   	
-                    $('.batchGroupID').html(data);
-                   }
-               });
-           });*/
+	/*
+	 * //-----BatchGroup filter $('.courseID').change(function() {
+	 * 
+	 * $.ajax({ type: "POST", url: '../event_utility_controller', data:
+	 * {courseID: this.value }, success: function(data){
+	 * 
+	 * $('.batchGroupID').html(data); } }); });
+	 */
 	
-	//-----eventType filter
+	// -----eventType filter
 	 $('.eventType').change(function() {
 		 var eventType = this.value
 		 var course_id = $($('.courseID>option:selected')).data('course');
@@ -4827,7 +4798,7 @@ function scheduler_onChange_init(){
            });
 }
 
-//final-submit to create event or assessment 
+// final-submit to create event or assessment
 function scheduler_createNewEventAssessment() {
 	 var fID = null;
 	 var fullEventData = [];
@@ -4838,11 +4809,12 @@ $(".final-submit-btn").unbind().click(function(event ){
 	    if( $target.is('.disabled') ) {
 	        return false;
 	    }
-	 var url = "../createorupdate_events"; // the script where you handle the form input.
+	 var url = "../createorupdate_events"; // the script where you handle the
+											// form input.
 	 	 		 
 	 $(".new_schedule").each(function(index ){
 		  
-		 //Assessment Event creation
+		 // Assessment Event creation
 		 if($(this).data('trainer_data') === undefined ){
 			 
 			 
@@ -4851,7 +4823,7 @@ $(".final-submit-btn").unbind().click(function(event ){
 				 eventType = $(this).data('assessment_data').eventType;
 
 		 }
-		 //Event creation
+		 // Event creation
 		 else if($(this).data('assessment_data') === undefined ){
 			 
 			 fullEventData.push($(this).data('trainer_data'));
@@ -4893,20 +4865,24 @@ $(".final-submit-btn").unbind().click(function(event ){
 }
 
 
-// old event  submit to create the changed event
+// old event submit to create the changed event
 function scheduler_createOldEvent() {
 	 var fID = null;
 	 $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 	 
 $(".edit-submit-btn").unbind().click(function(){
-	  var url = "../createorupdate_events"; // the script where you handle the form input.
+	  var url = "../createorupdate_events"; // the script where you handle the
+											// form input.
 	  if($('#idForm4 #reason_for_edit_delete').val()!=null && $('#idForm4 #reason_for_edit_delete').val()!='')
       {
 		  
 		  $.ajax({
 		       type: "POST",
 		       url: '/add_entry_in_deleted_events',
-		       data: $("#idForm4").serialize()+ "&action_type=UPDATE", // serializes the form's elements.
+		       data: $("#idForm4").serialize()+ "&action_type=UPDATE", // serializes
+																		// the
+																		// form's
+																		// elements.
 		       success: function(data)
 		       { 
 		       }
@@ -4915,7 +4891,10 @@ $(".edit-submit-btn").unbind().click(function(){
 		  $.ajax({
 		       type: "POST",
 		       url: url,
-		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes the form's elements.
+		       data: $("#idForm4").serialize()+ "&eventValue=" + 'updateEvent', // serializes
+																				// the
+																				// form's
+																				// elements.
 		       success: function(data)
 		       { 
 		       }
@@ -4936,7 +4915,7 @@ $(".edit-submit-btn").unbind().click(function(){
    });
 }
 
-//edit_old_event ui
+// edit_old_event ui
 function scheduler_modifyOldEventModal2() {
 	 
 $(".modify-modal").click(function(){ 
@@ -4969,7 +4948,8 @@ $(".modify-modal").click(function(){
 				}
 
 
-//add new events data into otherEventData using this function and send it to edit_event_modal.jsp
+// add new events data into otherEventData using this function and send it to
+// edit_event_modal.jsp
 function scheduler_newSchedularmodifyModal() {
 	 
 	 $(".modify-modal-newSchedular").unbind().click(function(){ 
@@ -5046,7 +5026,8 @@ $(".newschedule_edit-submit-btn").unbind().click(function(){
 	 var data = {};
 	 $("#idForm4").serializeArray().map(function(x){data[x.name] = x.value;}); 
 
-	  var url = "../createorupdate_events"; // the script where you handle the form input.
+	  var url = "../createorupdate_events"; // the script where you handle the
+											// form input.
 	  otherEventData.push(data);
 	 
 		
@@ -5101,7 +5082,7 @@ function scheduler_onShowOfModal(){
 			}
 			 scheduler_submitModal();
 			 scheduler_createOldEvent();
-			//deletenewSchedulareditModal();
+			// deletenewSchedulareditModal();
 			 scheduler_init_edit_new_trainer_associated();
 			 scheduler_init_edit_old_trainer_associated();
 			 scheduler_DeleteEvent();
@@ -5122,7 +5103,7 @@ function init_super_admin_dashboard(){
 	 
 	 $('#myModal2').on('shown.bs.modal', function() {
 			var otherEventData = []
-			//$('#myModal5').modal('toggle');
+			// $('#myModal5').modal('toggle');
 			 scheduler_createOldEvent();
 			 scheduler_DeleteEvent();
 			 scheduler_init_edit_new_trainer_associated();
@@ -5145,27 +5126,27 @@ function init_super_admin_dashboard(){
 				  $('#dashboard_holder').prepend(data);				      				    
 				});	
 			
-			/* Calendar FUnctionality*/
+			/* Calendar FUnctionality */
 			
 			$("#dashoboard_cal").fullCalendar('destroy');
 			$('#dashoboard_cal').data('url','/get_events_controller?org_id='+id);
 			console.log($('#dashoboard_cal').data('url'));
 			createCalender();
-			//mark_as_read_notification();
+			// mark_as_read_notification();
 		}
-			//mark_as_read_notification();			
+			// mark_as_read_notification();
 		});
 	
-// load js via ajax 
+// load js via ajax
 	 mark_as_read_notification();
 	 
 }
 
 function update_dashboard_left() {
-	 /*$.get("response.php", function(data) {
-	   $("#some_div").html(data);
-	   window.setTimeout(update, 10000);
-	 });*/
+	 /*
+		 * $.get("response.php", function(data) { $("#some_div").html(data);
+		 * window.setTimeout(update, 10000); });
+		 */
 	
 	$.ajax({
 	 url: "/super_admin/ajax_partials/dashboard_left.jsp",
@@ -5211,7 +5192,7 @@ if(firstChar!='add'){
 
 
 	    });
-	//accountmanagment_card_init();
+	// accountmanagment_card_init();
 	$('.paginatedalphabet')[1].click();
 }
 
@@ -5401,7 +5382,8 @@ function init_student_card(){
 		height : "140px",
 		width : "140px",
 		color : "#eb384f",
-		starting_position : 0, // 12.00 o' clock position, 25 stands for 3.00 o'clock (clock-wise)
+		starting_position : 0, // 12.00 o' clock position, 25 stands for 3.00
+								// o'clock (clock-wise)
 		percent : 0, // percent starts from
 		percentage : true,
 		text : "Profile Completed"
@@ -5438,7 +5420,7 @@ function init_student_card(){
 }
 
 function init_super_admin_usermgmt(){
-	//use existing orgadmin scripts
+	// use existing orgadmin scripts
 	$('select').select2();
 	user_filter_by_course_batch();
 	admin_edit_modal_create();
@@ -5544,36 +5526,36 @@ function init_super_admin_scheduler(){
 	    	});
 	    
 	   
-	   //---form submiton function
+	   // ---form submiton function
 	    scheduler_submitModal();
 	    
 	    scheduler_init_trainer_associated();
 	    scheduler_init_edit_new_trainer_associated();
 	    scheduler_init_edit_old_trainer_associated();
 		
-		//---clock Date 
+		// ---clock Date
 	    scheduler_ClockDate(true);
 	    
-	    //onChange filter function for batchGroup,course and assessment
+	    // onChange filter function for batchGroup,course and assessment
 	    scheduler_onChange_init();
 	    
 	    var otherEventData = [];
 	    
-	    //delete assessment
+	    // delete assessment
 	    scheduler_DeleteAssessment();
-	    //delete event
+	    // delete event
 	    scheduler_DeleteEvent();
-	     //create new assessment and event 
+	     // create new assessment and event
 	    scheduler_createNewEventAssessment();
-	     //modify old event
+	     // modify old event
 	    scheduler_createOldEvent();
-	    //UI to modify old event
+	    // UI to modify old event
 	    scheduler_modifyOldEventModal2();
-	    //UI to modify new event
+	    // UI to modify new event
 	    scheduler_newSchedularmodifyModal();
-	    //create modified event  
+	    // create modified event
 	    scheduler_createEditedNewModal5();
-	    //function to add another function on show of modal
+	    // function to add another function on show of modal
 	    scheduler_onShowOfModal();   
 	
 	
@@ -5591,9 +5573,9 @@ function init_super_admin_placemenet()
 	company_profile();
 	}
 
-//analytics js start
+// analytics js start
 function init_super_admin_analytics() {
-		//init org report js
+		// init org report js
 		init_orgadmin_report();
 	try{
     trainerRatingGraph();
@@ -5602,33 +5584,30 @@ function init_super_admin_analytics() {
 	{}
     trainerLevelGraph();
     trainerSkillGraph();
-    //studentFeedBackGraph();
-    //studentFeedbackDetailsTable();
+    // studentFeedBackGraph();
+    // studentFeedbackDetailsTable();
    
     accountsData($('.org_holder').val());
 
-    //-----account org filter
+    // -----account org filter
     $('.org_holder').change(function() {
         var orgID = this.value;
         accountsData(orgID);
        
     });
 
-   /* coursesData($('.org_holder_programTab').val());
-    $('.course_holder').change(function() {
-        var courseID = this.value;
-        var orgID = $('.org_holder_programTab').val();
-        $('#program_spiner').css('cssText', 'display:block !important');
-        programGraph(courseID, orgID);
-    });
-
-    $('.org_holder_programTab').change(function() {
-        var orgID = this.value;
-        coursesData(orgID);
-        var courseID = $('.course_holder').val();
-        programGraph(courseID, orgID);
-        $('#program_spiner').css('cssText', 'display:block !important');
-    });*/
+   /*
+	 * coursesData($('.org_holder_programTab').val());
+	 * $('.course_holder').change(function() { var courseID = this.value; var
+	 * orgID = $('.org_holder_programTab').val();
+	 * $('#program_spiner').css('cssText', 'display:block !important');
+	 * programGraph(courseID, orgID); });
+	 * 
+	 * $('.org_holder_programTab').change(function() { var orgID = this.value;
+	 * coursesData(orgID); var courseID = $('.course_holder').val();
+	 * programGraph(courseID, orgID); $('#program_spiner').css('cssText',
+	 * 'display:block !important'); });
+	 */
     
   
 }
@@ -5713,34 +5692,16 @@ function programGraph(cID, oID) {
             }
         });
 
-        /*Highcharts.chart('container10', {
-            data: {
-                table: document.getElementById('datatable10')
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Program Statistics'
-            },
-            yAxis: {
-                allowDecimals: false,
-                title: {
-                    text: 'Units'
-                }
-            },
-            showInLegend: true,
-            tooltip: {
-                formatter: function() {
-                    return '<b>' + this.series.name + '</b><br/>' +
-                        this.point.y + ' ' + this.point.name.toLowerCase();
-                }
-            },
-
-            legend: {
-                enabled: false
-            }
-        });*/
+        /*
+		 * Highcharts.chart('container10', { data: { table:
+		 * document.getElementById('datatable10') }, chart: { type: 'column' },
+		 * title: { text: 'Program Statistics' }, yAxis: { allowDecimals: false,
+		 * title: { text: 'Units' } }, showInLegend: true, tooltip: { formatter:
+		 * function() { return '<b>' + this.series.name + '</b><br/>' +
+		 * this.point.y + ' ' + this.point.name.toLowerCase(); } },
+		 * 
+		 * legend: { enabled: false } });
+		 */
     });
 
 
@@ -6232,13 +6193,11 @@ function trainerRatingGraph() {
 
 
 
-/*function trainerDetailsTable() {
-    var urls = '../program_graphs?trainerDetails=trainerDetails';
-    $.get(urls, function(data) {
-        $("#trainer_details_body").html(data);
-        trainerDataTable();
-    });
-}*/
+/*
+ * function trainerDetailsTable() { var urls =
+ * '../program_graphs?trainerDetails=trainerDetails'; $.get(urls, function(data) {
+ * $("#trainer_details_body").html(data); trainerDataTable(); }); }
+ */
 
 
 
@@ -6601,7 +6560,7 @@ function init_istar_notification(){
 		
 		var flag = false;
 		var notification_type = $('#notification_type_holder').val();
-		//defined in istar_notification
+		// defined in istar_notification
 		
 		var adminId = $('#hidden_admin_id').val();
 		//
@@ -7066,7 +7025,7 @@ function init_coordinator_trainer_details(){
 	
 	 var $quicksearch = $('#user_keyword').keyup(debounce(function () {
 	        var regexVal = $quicksearch.val().split(/\s+/).join('\\b.*');
-	        //var regexVal = $quicksearch.val().split(/\s+/).join('.*');
+	        // var regexVal = $quicksearch.val().split(/\s+/).join('.*');
 	        qsRegex = new RegExp(regexVal, 'gi');
 	        $container.isotope({
 	            filter: function () {
@@ -7161,7 +7120,7 @@ function init_coordinator_trainer_profile(){
 	});
 	
 	$('.submit_feedback').unbind().on("click",function(){
-		//var holder_id='#trainer_rating_7035_14';
+		// var holder_id='#trainer_rating_7035_14';
 		
 		var course_id=$(this).data('course_id');
 		var user_id=$(this).data('user_id');
@@ -7245,7 +7204,7 @@ function init_coordinator_dashboard(){
 	
 	var $quicksearch = $('#user_keyword').keyup(debounce(function () {
         var regexVal = $quicksearch.val().split(/\s+/).join('\\b.*');
-        //var regexVal = $quicksearch.val().split(/\s+/).join('.*');
+        // var regexVal = $quicksearch.val().split(/\s+/).join('.*');
         qsRegex = new RegExp(regexVal, 'gi');
         $container.isotope({
             filter: function () {
@@ -7352,14 +7311,14 @@ $('.inactive_button').unbind().on('click',function(){
 function init_new_feedback(){ 
 	
 	$(".feedback_rateYo").each(function(){
- 		//console.log($(this).data('star_rating')); 
+ 		// console.log($(this).data('star_rating'));
  		 var rating = $(this).data('star_rating');
  		 $(this).rateYo({
  			    rating: rating,
  			        starWidth: "25px",
  			    onSet: function (rating, rateYoInstance) {
  			    	$(this).attr('data-star_rating',rating);
- 			        //alert("Rating is set to: " + rating);
+ 			        // alert("Rating is set to: " + rating);
  			      }
  
  		  });
@@ -7376,9 +7335,9 @@ function init_new_feedback(){
 		var comment={'name': 'Comment','rating': $('textarea#feedbackTextarea').val()}
 		feedback_values.push(comment);
 		value_to_send_to_server['feedbacks']=feedback_values;
-		//alert('clicked '+JSON.stringify(value_to_send_to_server));
+		// alert('clicked '+JSON.stringify(value_to_send_to_server));
 		$.post( "http://localhost:8080/HttpUtil/Hello",{'response' :JSON.stringify(value_to_send_to_server)} ).done(function( data ) {
-		    //alert( "Data Loaded: " + data );
+		    // alert( "Data Loaded: " + data );
 		  });;
 		
 	});
@@ -7439,7 +7398,7 @@ function init_coordinator_overall_cluster(){
 		        data: {pincode:pincode,course:course,requirement:req},
 		        success: function(data) {
 		        	toastr.success('Successfully Added Requirment!');
-		        	//$('#chart_datatable_3066').DataTable().ajax.reload();
+		        	// $('#chart_datatable_3066').DataTable().ajax.reload();
 		        },
 		        error: function(data) {
 		        	toastr.error('Failed To Add Requirement. Please Contact Admin!');
@@ -7456,14 +7415,14 @@ function init_custom_task(){
 	
 	
 	
-	//$('.select2-container--default').hide();
+	// $('.select2-container--default').hide();
 	
 		$("#form").steps({
         bodyTag: "fieldset",
         enableCancelButton:false,
         onStepChanging: function (event, currentIndex, newIndex)
         {
-        	//alert('onStepChanging');
+        	// alert('onStepChanging');
         	var is_valid = true;
         	$('.form-control').each(function(){
         		var input =  $(this);
@@ -7522,7 +7481,7 @@ function init_custom_task(){
         },
         onStepChanged: function (event, currentIndex, priorIndex)
         {
-        	//alert('onStepChanged');
+        	// alert('onStepChanged');
           if (currentIndex === 2 && Number($("#age").val()) >= 18)
             {
                 $(this).steps("next");
@@ -7536,24 +7495,16 @@ function init_custom_task(){
         onFinishing: function (event, currentIndex)
         {
         	
-        	//alert('onFinishing');
-        	/*var checkValidation = false;
-    		$('.current textarea').each(function() { 
-        		console.log('......>>>> '+$(this).val());
-        		if($(this).val() === ''){	
-        			checkValidation = false;
-        			
-        		}else{
-        			checkValidation = true;
-        		}
-        		});
-    		if(checkValidation){
-    			return true;	
-    		}else{
-    			alert('Please fill all the fields');
-    			return false;
-    			
-    		}*/
+        	// alert('onFinishing');
+        	/*
+			 * var checkValidation = false; $('.current
+			 * textarea').each(function() { console.log('......>>>>
+			 * '+$(this).val()); if($(this).val() === ''){ checkValidation =
+			 * false;
+			 * 
+			 * }else{ checkValidation = true; } }); if(checkValidation){ return
+			 * true; }else{ alert('Please fill all the fields'); return false; }
+			 */
         	
             var form = $(this);
             form.validate().settings.ignore = ":disabled";
@@ -7661,9 +7612,12 @@ function init_custom_task(){
 					      };
 					    },
 					    processResults: function (data, params) {
-					      // parse the results into the format expected by Select2
-					      // since we are using custom formatting functions we do not need to
-					      // alter the remote JSON data, except to indicate that infinite
+					      // parse the results into the format expected by
+							// Select2
+					      // since we are using custom formatting functions we
+							// do not need to
+					      // alter the remote JSON data, except to indicate
+							// that infinite
 					      // scrolling can be used
 					      params.page = params.page || 1;
 
@@ -7682,10 +7636,18 @@ function init_custom_task(){
 					    },
 					    cache: true
 					  },
-					  escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+					  escapeMarkup: function (markup) { return markup; }, // let
+																			// our
+																			// custom
+																			// formatter
+																			// work
 					  minimumInputLength: 1,
-					  templateResult: formatRepo1, // omitted for brevity, see the source of this page
-					  templateSelection: formatRepoSelection1 // omitted for brevity, see the source of this page
+					  templateResult: formatRepo1, // omitted for brevity, see
+													// the source of this page
+					  templateSelection: formatRepoSelection1 // omitted for
+																// brevity, see
+																// the source of
+																// this page
 					});	
 		}	
 		else
@@ -7693,7 +7655,7 @@ function init_custom_task(){
 			$(this).select2();
 		}
 		
-		//$('#'+selectId).prop('tabindex', $('#'+selectId).data('tabindex'));
+		// $('#'+selectId).prop('tabindex', $('#'+selectId).data('tabindex'));
 	});
 	var recognition = new webkitSpeechRecognition();
 	recognition.continuous = true;
@@ -7709,7 +7671,7 @@ function init_custom_task(){
 	
 	$('.stop_mic').unbind().on('click',function(){
 		var micId = $(this).attr('id');
-		//stop_speaking_200_1_1
+		// stop_speaking_200_1_1
 		recognition.stop();
 		$(this).hide();
 		var StartButtonId = micId.replace('stop_speaking_','start_speaking_');				
@@ -7739,9 +7701,9 @@ function init_custom_task(){
 	  var switchery = new Switchery(html,{ color: '#eb384f' });
 	});
 	$('.ibox-content  .wizard > .content > .body').equalHeights();
-	//$('.wizard-big.wizard > .content').css('cssText','min-height:450px');
+	// $('.wizard-big.wizard > .content').css('cssText','min-height:450px');
 	
-	//$('.scroll_content').slimscroll({height:'auto'});
+	// $('.scroll_content').slimscroll({height:'auto'});
 }
 
 function formatRepo1 (repo) {
@@ -7757,9 +7719,12 @@ function formatRepo1 (repo) {
     }
 
     markup += "<div class='select2-result-repository__statistics'>" +
-      //"<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> " + repo.forks_count + " Forks</div>" +
-      //"<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> " + repo.stargazers_count + " Stars</div>" +
-     // "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> " + repo.watchers_count + " Watchers</div>" +
+      // "<div class='select2-result-repository__forks'><i class='fa
+		// fa-flash'></i> " + repo.forks_count + " Forks</div>" +
+      // "<div class='select2-result-repository__stargazers'><i class='fa
+		// fa-star'></i> " + repo.stargazers_count + " Stars</div>" +
+     // "<div class='select2-result-repository__watchers'><i class='fa
+		// fa-eye'></i> " + repo.watchers_count + " Watchers</div>" +
     "</div>" +
     "</div></div>";
 
@@ -7829,7 +7794,7 @@ function init_custom_report(){
 	$('.date_range_filter').each(function() 
 	{
 		var id = $(this).attr('id');
-		var min_date = $(this).data('min_date'); //June 12, 2017
+		var min_date = $(this).data('min_date'); // June 12, 2017
 		var max_date = $(this).data('max_date');
 		var monthArray= [];
 		monthArray['January']='01';
@@ -7901,7 +7866,8 @@ function init_custom_report(){
 				function(oSettings, aData, iDataIndex){
 					var dateStart = startDateVar;
 					var dateEnd = endDateVar;
-					// aData represents the table structure as an array of columns, so the script access the date value 
+					// aData represents the table structure as an array of
+					// columns, so the script access the date value
 					// in the first column of the table via aData[0]
 					var evalDate= parseDateValue(aData[column_number]);
 					
@@ -7939,7 +7905,12 @@ function init_custom_report(){
  	        			    function( settings, data, dataIndex ) {
  	        			        var min = parseInt($this.attr("value").split(';')[0]);
  	        			        var max = parseInt(  $this.attr("value").split(';')[1]);
- 	        			        var age = parseFloat( data[column_number] ) || 0; // use data for the age column 	        			 
+ 	        			        var age = parseFloat( data[column_number] ) || 0; // use
+																					// data
+																					// for
+																					// the
+																					// age
+																					// column
  	        			        if ( ( isNaN( min ) && isNaN( max ) ) ||
  	        			             ( isNaN( min ) && age <= max ) ||
  	        			             ( min <= age   && isNaN( max ) ) ||
@@ -8069,7 +8040,7 @@ function init_custom_task_report_superadmin(){
 	$('.date_range_filter').each(function() 
 	{
 		var id = $(this).attr('id');
-		var min_date = $(this).data('min_date'); //June 12, 2017
+		var min_date = $(this).data('min_date'); // June 12, 2017
 		var max_date = $(this).data('max_date');
 		var monthArray= [];
 		monthArray['January']='01';
@@ -8141,7 +8112,8 @@ function init_custom_task_report_superadmin(){
 				function(oSettings, aData, iDataIndex){
 					var dateStart = startDateVar;
 					var dateEnd = endDateVar;
-					// aData represents the table structure as an array of columns, so the script access the date value 
+					// aData represents the table structure as an array of
+					// columns, so the script access the date value
 					// in the first column of the table via aData[0]
 					var evalDate= parseDateValue(aData[column_number]);
 					
@@ -8176,7 +8148,12 @@ function init_custom_task_report_superadmin(){
  	        			    function( settings, data, dataIndex ) {
  	        			        var min = parseInt($this.attr("value").split(';')[0]);
  	        			        var max = parseInt(  $this.attr("value").split(';')[1]);
- 	        			        var age = parseFloat( data[column_number] ) || 0; // use data for the age column 	        			 
+ 	        			        var age = parseFloat( data[column_number] ) || 0; // use
+																					// data
+																					// for
+																					// the
+																					// age
+																					// column
  	        			        if ( ( isNaN( min ) && isNaN( max ) ) ||
  	        			             ( isNaN( min ) && age <= max ) ||
  	        			             ( min <= age   && isNaN( max ) ) ||
@@ -8395,7 +8372,7 @@ function initIsotopFunction() {
 		    }
 		  }
 		});
-//	bbc = $grid;
+// bbc = $grid;
 		// filter functions
 		var filterFns = {
 		  // show if number is greater than 50
@@ -8414,7 +8391,7 @@ function initIsotopFunction() {
 		$('.filters').on( 'click', 'button', function() {
 		  var filterValue = $( this ).attr('data-filter');
 		  // use filterFn if matches value
-		//  filterValue = filterFns[ filterValue ] || filterValue;
+		// filterValue = filterFns[ filterValue ] || filterValue;
 		  var i = filter_list.length;
 		  var flag = false;   
 		    while (i--) {

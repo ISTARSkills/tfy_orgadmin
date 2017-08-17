@@ -66,26 +66,22 @@
 				String[] brd = {"Dashboard", "Modules"};
 			%>
 			<%=UIUtils.getPageHeader(moduleName, brd)%>
-			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row card-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box">
+				<div class="row">
 							<div class="ibox-content">
-								<h2>
-									<%
-										if (is_new) {
-									%>New Module<%
-										} else {
-									%>Module name:
-									<%=module.getModuleName()%>
-									<%
+								<%
+								String name = "New Module";
+										if (!is_new) {
+									name="Module name: "+module.getModuleName();
 										}
 									%>
-								</h2>
+								<h2><%=name %></h2>
 								<p>Follow these steps to create/update a Module.</p>
 								<input type='hidden' name='isNew' value='<%=is_new.toString()%>'/>
 								<input type='hidden' name='cmsID' value='<%=module.getId()%>'/>
 								<input type='hidden' name='baseProdURL' value='<%=baseProdURL%>'/>
 								<form id="form" action="#" class="wizard-big">
-									<h1>Basic</h1>
+									<h1>Basic Details</h1>
 									<fieldset class="fieldset-border-margin">
 										<h2>Module Information</h2>
 										<div class="row">
@@ -102,42 +98,19 @@
 												</div>
 											</div>
 											<div class="col-lg-4">
-												<%-- <div class="form-group" id="filezz">
-													<input id="fileupload" type="file" accept="image/png"
-														name="files[]" data-url="/content/upload_media" multiple>
-													<img src='<%=image_url%>' class="form-group"
-														id='cmsession_image'
-														style="float: right; /* width: 100%; */ height: 200px;">
-												</div> --%>
-											</div>
-										</div>
-									</fieldset>
-
-									<h1>Media Upload</h1>
-									<fieldset class="fieldset-border-margin">
-										<h2>Module Image Upload</h2>
-										<div class="row">
-											<div class="col-lg-12">
-												<div class="row">
-													<div class="col-md-4">
-													<div class="form-group" id="filezz">
+												<div class="form-group" id="filezz">
 													<input id="fileupload" type="file" accept="image/png"
 														name="files[]" multiple>
 														<!-- <input type="button" value="Upload" id='uploadImage'/> -->
 													<button type="button" id='uploadImage' class="btn btn-danger btn-xs m-t-xs">Upload Image</button>
 												</div>
-													</div>
-													<div class="col-md-8">
-														<h4>Preview image</h4>
+												<br/>
 												<img src='<%=image_url%>' class="form-group"
 														id='module_image'>
-													</div>
-												</div>
 											</div>
 										</div>
 									</fieldset>
-
-									<h1>Sessions</h1>
+									<h1>Map Sessions</h1>
 									<fieldset class="fieldset-border-margin">
 										<div class="col-md-6">
 											<ul class="list-unstyled file-list" id="editable">
