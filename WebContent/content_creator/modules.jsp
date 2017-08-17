@@ -40,7 +40,7 @@
 
 			<div class="row card-box scheduler_margin-box">
 				
-				<div class="col-lg-1">
+				<div class="col-lg-2">
 					<!-- <button class="btn btn-primary dim" type="button" id="create_module" style="float: right;">
 						<i class="fa fa-plus-circle" title="Create a Module"></i>&nbsp;Create
 					</button> -->

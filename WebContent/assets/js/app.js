@@ -311,6 +311,9 @@ function readyFn(jQuery) {
 		assessmentListScripts();
 		initIsotopFunction();
 		break;
+	case 'question_list':
+		questionListVariables();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -8471,4 +8474,94 @@ function assessmentListScripts() {
 		window.open("/content_creator/assessment.jsp", '_blank');
 
 	});
+}
+function questionListVariables() {
+	initSearch();
+	initQuestionListDatatable();
+	initDifficultyLevel();
+	
+	
+	$(document).on('click', '.question-edit-popup',function() {
+		var question_id = $(this).data('question_id');
+		// initQuestionModal(question_id);
+		if(question_id.toString()==='-3'){
+			var url = './question.jsp';
+			window.open(url, "_blank");
+		} else {
+			var url = './question.jsp?question=' + question_id;
+			window.open(url, "_blank");
+		}
+	});
+	 
+	
+}
+
+function initQuestionListPageination(total_count){
+	
+	if(total_count === undefined || total_count==null || total_count ==='') {
+		total_count= 0;
+		$('#page-selection').empty();
+	}else {
+	}
+	 $('#page-selection').bootpag({
+         total: total_count,
+         maxVisible: 10
+     }).on("page", function(event, /* page number here */ num){
+	     	//alert("num -> "+num)
+	        
+	     	$.ajax({
+		        type: "POST",
+		        url: $('#question_list_table').data('url'),
+		        data: {key:'get_all_question',offset:num},
+		        success: function(result) {
+		        	
+		        	$('#question_data').empty();
+		        	$('#question_data').append(result);
+		        	
+		          }
+		    });
+	     	
+	     });
+}
+function initQuestionListDatatable() {
+	var url = $('#question_list_table').data('url');
+	
+	$.ajax({
+	        type: "POST",
+	        url: url,
+	        data: {key:'get_all_question'},
+	        success: function(result) {
+	        	
+	        	$('#question_data').empty();
+	        	$('#question_data').append(result);
+	        	initQuestionListPageination($('#total_rows').html());
+	          }
+	    });
+	
+	
+}
+function initDifficultyLevel(){
+	
+	
+	
+	$('.difficult_level').unbind().on('click',function(){
+		$('.difficult_level').find('btn-danger').removeClass('btn-danger');
+		$('.difficult_level').css("color","gray");
+		$(this).addClass('btn-danger');
+		$(this).css("color","white");
+		var difficult_level = $(this).data('difficult_level');
+		$.ajax({
+	        type: "POST",
+	        url: $('#question_list_table').data('url'),
+	        data: {key:'difficult_level_type',difficult_level:difficult_level},
+	        success: function(result) {
+	        	
+	        	$('#question_data').empty();
+	        	$('#question_data').append(result);
+	        	initQuestionListPageination($('#total_rows').html());
+	          }
+	    });
+		  
+	});
+	
 }
