@@ -259,6 +259,7 @@ function readyFn(jQuery) {
 		initCreateModule();
 		initIsotopFunction();
 		initDeleteModule();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -269,6 +270,7 @@ function readyFn(jQuery) {
 		initCreateCMSession();
 		initDeleteCMSession();
 		initIsotopFunction();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -280,6 +282,7 @@ function readyFn(jQuery) {
 		initPublishLesson();
 		initLessonList();
 		initIsotopFunction();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);

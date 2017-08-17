@@ -92,7 +92,7 @@
 									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price"><span
+									<span class="product-price customcss_product_price"><span
 										class="label label-primary">Status - <%=task.getState()%></span>
 									</span> <small class="text-muted"> </small> <a href="<%=edit_url%>"
 										class="product-name"><%=lesson.getTitle()%></a>

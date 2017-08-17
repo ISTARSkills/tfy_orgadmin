@@ -138,7 +138,7 @@
 								</div>
 								<div class="product-desc">
 									<span class="product-price customcss_product_price"><span
-										class="label label-primary">Course Name - <%=courseStringLong%></span>
+										class="label label-primary" style="font-size: 9px;">Course Name - <%=courseStringLong%></span>
 									</span> <a
 										href="/content_creator/cmsession.jsp?session=<%=cmsession.getId()%>"
 										class="product-name"><%=cmsession.getTitle()%> </a>
