@@ -48,7 +48,7 @@
 			%>
 				<%=UIUtils.getPageHeader("Dashboard", brd) %>
 				
-				<div class="row white-bg card-box scheduler_margin-box">
+				<div class="row white-bg card-box scheduler_margin-box no_padding_box">
 				
 				
 				<div class="row">

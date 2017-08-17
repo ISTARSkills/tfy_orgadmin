@@ -14906,8 +14906,8 @@ hr {
 
 .ribbon {
 	position: absolute;
-	right: 9px;
-	top: -5px;
+	right: 19px;
+    top: 4px;
 	z-index: 1;
 	overflow: hidden;
 	width: 75px;
@@ -15794,4 +15794,23 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 {
 background: rgba(235, 56, 79, 0.61) !important;
 color: #fff;
+}
+
+.customcss_product_price{
+	padding: 0px; margin-top: 11px;
+}
+.customcss_lesson-button{
+position: absolute;bottom: 14px; right: 0px;
+}
+.customcss_lesson-button_btn{
+width: 100%;
+}
+.customcss_lesson-margin{
+margin-top: 10px;
+}
+
+
+.button_spaced {
+	margin-bottom: 5px;margin-right: 5px;
+	padding: 3px;
 }

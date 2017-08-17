@@ -332,6 +332,8 @@ public class TaskCardFactory {
 
 	private StringBuffer showTrainerWebinarCard(TaskSummaryPOJO task) {
 		StringBuffer sb = new StringBuffer();
+		System.err.println("enter");
+		
 		if (task.getHeader() == null) {
 			task.setHeader("");
 		}

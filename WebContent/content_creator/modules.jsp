@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="com.viksitpro.cms.services.LessonServices"%>
 <%@page import="com.viksitpro.core.dao.entities.Cmsession"%>
 <%@page import="java.util.Set"%>
@@ -23,89 +25,140 @@
 	List<Course> courses = (List<Course>) courseDAO.findAll();
 	LessonServices lessonServices = new LessonServices();
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
-	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
+	cdnPath = cdnPath.substring(0, cdnPath.length() - 1);
 %>
 
-<body class="top-navigation" id="module_list" data-helper='This page is used to show list of modules. '>
+<body class="top-navigation" id="module_list"
+	data-helper='This page is used to show list of modules. '>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
-			<div class="row wrapper border-bottom white-bg page-heading" style="padding-left: 30px; padding-bottom: 13px;">
-				<div class="col-lg-5">
-					<h2>Modules grid</h2>
-					<ol class="breadcrumb">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a>Modules</a></li>
-						<li class="active"><strong>Modules grid</strong></li>
-					</ol>
-				</div>
-				<div class="col-lg-4 form-group" style="margin-top: 26px; padding: 7px">
-					<select class="js-example-basic-single" id="filters">
-						<option></option>
-						<%
-							for (Course course : courses) {
-								String courseSearchString = course.getCourseName().replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
-						%>
-						<option value="<%=courseSearchString%>"><%=course.getCourseName()%></option>
-						<%
-							}
-						%>
-					</select>
-				</div>
-				<div class="col-lg-1" style="margin-top: 26px; padding: 0px">
-					<button class="btn btn-primary dim" type="button" id="create_module" style="float: right;">
+			<%
+				String[] brd = { "Dashboard", "Modules" };
+			%>
+			<%=UIUtils.getPageHeader("Modules Grid", brd)%>
+
+			<div class="row card-box scheduler_margin-box">
+				
+				<div class="col-lg-1">
+					<!-- <button class="btn btn-primary dim" type="button" id="create_module" style="float: right;">
 						<i class="fa fa-plus-circle" title="Create a Module"></i>&nbsp;Create
+					</button> -->
+					<button type="button" id="create_module"
+						class="btn btn-w-m btn-danger">
+						<i class="fa fa-plus"></i> Create Module
 					</button>
 				</div>
-				<div class="col-lg-2 form-group">
-					<input style="margin-top: 26px; padding: 7px;" type="text" id="quicksearch" placeholder="Search" />
+				<div class="col-lg-2 form-group customcss_search-box quicksearch">
+					<input class="form-control quicksearch" autocomplete="off" type="text"
+						id="quicksearch" placeholder="Search Modules" />
 				</div>
 			</div>
 
-			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row">
+			<div class="row card-box scheduler_margin-box">
+				
+				<div class="ui-group ">
+					<h3 class="ui-group__title">Filter</h3>
+					<div class="filters button-group js-radio-button-group btn-group">
+						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
+						<%
+							ArrayList<String> arrayList = new ArrayList<>();
+						ArrayList<String> displayList = new ArrayList<>();
+							for (Module module : modules) {
+								String course_category = "";
+
+								try {
+									String courseStringLong = module.getCourses().iterator().next().getCourseName();
+									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
+									 course_category = module.getCourses().iterator().next().getCategory();
+									 if(!arrayList.contains(courseString)){
+										 arrayList.add(courseString);
+										 displayList.add(courseStringLong);
+									 }
+									 
+								} catch (Exception e) {
+
+								}
+							}
+							int i = 0;
+							for (String c_category : arrayList) {
+						%>
+
+						<button class="button btn button_spaced btn-xs btn-white"
+							data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
+						<%
+						i++;}
+						%>
+					</div>
+				</div>
+				
+				</div>
+
+			<div
+				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
+				<div class="row grid">
 					<%
 						for (Module module : modules) {
 							if (!module.getIsDeleted()) {
 								String courseString = "NONE";
 								String courseStringLong = "NONE";
 								String course_category = "NONE";
+								String img_url = "/assets/img/no_course_module_lesson_image/m_1.png";
+								if (module.getImage_url() != null && !module.getImage_url().equalsIgnoreCase("")
+										&& module.getImage_url().endsWith(".png")) {
+									img_url = cdnPath + module.getImage_url();
+								}
 								String moduleDescription = module.getModule_description();
-								if(module.getModule_description().length() > 100) {
+								if (module.getModule_description().length() > 100) {
 									moduleDescription = module.getModule_description().substring(0, 100);
 								}
-										
+
 								try {
 									courseStringLong = module.getCourses().iterator().next().getCourseName();
-									courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
+									courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "")
+											.toLowerCase();
 									course_category = module.getCourses().iterator().next().getCategory();
 								} catch (Exception e) {
 
 								}
 					%>
 
-					<div class="col-md-3  pageitem <%=courseString%>" style="padding-left: 7px; padding-right: 7px">
-						<div class="ibox">
-							<div class="ibox-content product-box">
+					<div class="col-md-2  element-item pageitem <%=courseString%>">
+						<div class="ibox product-box customcss_height-prod-box">
+							<div class="ibox-content customcss_ibox_product_border">
 
 								<div class="imgWrap">
-									<img alt="image" style="width: 100%" class=" " src="<%=cdnPath+module.getImage_url()%>">
+									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <span class="badge badge-warning">Course - <%=courseStringLong%></span></small> <a href="/content/content_creator/edit_module.jsp?module=<%=module.getId()%>" class="product-name"><%=module.getModuleName()%> </a>
+									<span class="product-price customcss_product_price"><span
+										class="label label-primary">Course - <%=courseStringLong%></span>
+									</span> <a
+										href="/content_creator/edit_module.jsp?module=<%=module.getId()%>"
+										class="product-name"><%=module.getModuleName()%> </a>
 
 									<div class="small m-t-xs">
 										<%=moduleDescription%>
 									</div>
-									<div class="m-t text-righ">
-
-										<a href="/content/creator/module.jsp?module=<%=module.getId()%>" class="btn btn-xs btn-outline btn-primary">Edit <i class="fa fa-pencil"></i>
-										</a> <a data-module='<%=module.getId()%>' href="#" class="btn btn-xs btn-outline btn-primary delete_module">Delete <i class="fa fa-trash-o"></i>
+								</div>
+								<div class="col-md-12 customcss_lesson-button">
+									<div class="col-md-6 text-center">
+										<a
+											href="/content_creator/module.jsp?module=<%=module.getId()%>"
+											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit
+											<i class="fa fa-pencil"></i>
+										</a>
+									</div>
+									<div class="col-md-6 text-center">
+										<a data-module='<%=module.getId()%>' href="#"
+											class="btn btn-xs btn-outline btn-primary delete_module customcss_lesson-button_btn">Delete
+											<i class="fa fa-trash-o"></i>
 										</a>
 									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
 					<%
 						}

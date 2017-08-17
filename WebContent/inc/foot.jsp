@@ -101,6 +101,7 @@ try{
 <script src="<%=basePath%>assets/js/plugins/sortable/Sortable.js"></script>
 <script src="https://static.jstree.com/3.3.4/assets/dist/jstree.min.js"
 		type="text/javascript"></script>
+		<script src="<%=basePath %>assets/js/isotope.pkgd.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
 

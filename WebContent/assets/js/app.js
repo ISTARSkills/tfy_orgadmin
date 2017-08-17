@@ -245,6 +245,7 @@ function readyFn(jQuery) {
 		break;
 	case 'course_list':
 		initCreateCourse();
+		initIsotopFunction();
 		initSearch();
 		try {
 			$('#course_list_holder .pageitem .ibox').equalHeights();
@@ -252,6 +253,36 @@ function readyFn(jQuery) {
 		} catch (err) {
 			console.log(err);
 		}
+		break;
+	case 'module_list':
+		initSearchFilter('course', 'modules');
+		initCreateModule();
+		initIsotopFunction();
+		initDeleteModule();
+		setTimeout(function() {
+			match_height();
+		}, 200);
+		break;
+
+	case 'sesssion_list':
+		initSearchFilter('module', 'sessions');
+		initCreateCMSession();
+		initDeleteCMSession();
+		initIsotopFunction();
+		setTimeout(function() {
+			match_height();
+		}, 200);
+		break;
+
+	case 'lesson_list':
+		initSearchFilter('session', 'lessons');
+		initCreateLesson();
+		initPublishLesson();
+		initLessonList();
+		initIsotopFunction();
+		setTimeout(function() {
+			match_height();
+		}, 200);
 		break;
 	case 'course_edit':
 		courseEditVariables();
@@ -7924,4 +7955,227 @@ jQuery.expr[':'].icontains = function(a, i, m) {
 };
 function skillTreeWizard() {
 	$('#courseTree').jstree();
+}
+
+function initCreateModule() {
+	$('#create_module').click(function(e) {
+		e.preventDefault();
+		// alert('Hello');
+		var url = '/content_creator/module.jsp';
+		window.open(url, '_blank');
+	});
+}
+function initDeleteModule() {
+	$('.delete_module').click(function() {
+
+		var taskID = $(this).data('module');
+		// console.log('taskID-> '+ taskID +' task_new_stage->'+task_new_stage);
+		$.ajax({
+			method : "GET",
+			url : "/delete_module?module_id=" + taskID,
+		}).done(function(msg) {
+			window.location.reload();
+		});
+		// alert('Handler for delete_module.click() called. taskID-> '+ taskID);
+	});
+}
+
+function initCreateLesson() {
+	$('#create_lessonzz').click(function() {
+		var url = '/content_creator/lesson.jsp';
+		window.open(url, '_blank');
+	});
+}
+function initLessonList() {
+	var url = 'lesson_list_partial_user.jsp';
+	$.get(url, function(data) {
+		$('#only_lesson_items').empty();
+		$('#only_lesson_items').append(data);
+	}).done(function() {
+		setTimeout(function() {
+			match_height();
+		}, 800);
+	});
+	$('#show_all_lessons').click(function() {
+		var urll;
+		var url1 = 'lesson_list_partial.jsp';
+		var url2 = 'lesson_list_partial_user.jsp';
+		if ($('#show_all_lessons').is(':checked')) {
+			urll = url1;
+		} else {
+			urll = url2;
+		}
+		$.get(urll, function(data) {
+			$('#only_lesson_items').empty();
+			$('#only_lesson_items').append(data);
+		}).done(function() {
+			setTimeout(function() {
+				match_height();
+			}, 1000);
+		});
+	});
+}
+function initLessonList() {
+	var url = 'lesson_list_partial_user.jsp';
+	$.get(url, function(data) {
+		$('#only_lesson_items').empty();
+		$('#only_lesson_items').append(data);
+	}).done(function() {
+		setTimeout(function() {
+			match_height();
+		}, 800);
+	});
+	$('#show_all_lessons').click(function() {
+		var urll;
+		var url1 = 'lesson_list_partial.jsp';
+		var url2 = 'lesson_list_partial_user.jsp';
+		if ($('#show_all_lessons').is(':checked')) {
+			urll = url1;
+		} else {
+			urll = url2;
+		}
+		$.get(urll, function(data) {
+			$('#only_lesson_items').empty();
+			$('#only_lesson_items').append(data);
+		}).done(function() {
+			setTimeout(function() {
+				match_height();
+			}, 1000);
+		});
+	});
+}
+function initCreateCMSession() {
+	$('#create_cmsession').click(function(e) {
+		e.preventDefault();
+		// alert('Hello');
+		var url = '/content_creator/cmsession.jsp';
+		window.open(url, '_blank');
+	});
+}
+function initDeleteCMSession() {
+	$('.delete_cmsession').click(function() {
+
+		var taskID = $(this).data('cmsession_id');
+		// console.log('taskID-> '+ taskID +'
+		// task_new_stage->'+task_new_stage);
+		$.ajax({
+			method : "GET",
+			url : "/delete_cmsession?cmsession_id=" + taskID,
+		}).done(function(msg) {
+			window.location.reload();
+		});
+		// alert('Handler for delete_session.click() called. session
+		// ID-> '+ taskID);
+	});
+}
+function initSearchFilter(parent, children) {
+	$("#quicksearch").keyup(
+			function() {
+				searchtext = $(this).val();
+				$(".pageitem").hide();
+				if ($("#filters").val() == "") {
+					$('.pageitem:icontains(' + searchtext + ')').show();
+				} else {
+					$('.pageitem.' + $("#filters").val() + ':icontains('+ searchtext + ')').show();
+				}
+			});
+
+	$("#filters").select2({
+		placeholder : "Select a " + parent + " to filter " + children,
+		allowClear : true,
+		val : null
+	});
+
+	$("#filters").change(function(event) {
+		$("#quicksearch").val('');
+		$(".pageitem").hide();
+		if ($("#filters").val() == "") {
+			$(".pageitem").show();
+		} else {
+			$("div." + $(this).val()).show();
+		}
+	});
+}
+
+var bbc;
+function initIsotopFunction() {
+	var filter_list = []
+	
+	var $grid = $('.grid').isotope({
+		  itemSelector: '.element-item',
+		  layoutMode: 'fitRows',
+		  getSortData: {
+		    name: '.name',
+		    symbol: '.symbol',
+		    number: '.number parseInt',
+		    category: '[data-category]',
+		    weight: function( itemElem ) {
+		      var weight = $( itemElem ).find('.weight').text();
+		      return parseFloat( weight.replace( /[\(\)]/g, '') );
+		    }
+		  }
+		});
+//	bbc = $grid;
+		// filter functions
+		var filterFns = {
+		  // show if number is greater than 50
+		  numberGreaterThan50: function() {
+		    var number = $(this).find('.number').text();
+		    return parseInt( number, 10 ) > 50;
+		  },
+		  // show if name ends with -ium
+		  ium: function() {
+		    var name = $(this).find('.name').text();
+		    return name.match( /ium$/ );
+		  }
+		};
+
+		// bind filter button click
+		$('.filters').on( 'click', 'button', function() {
+		  var filterValue = $( this ).attr('data-filter');
+		  // use filterFn if matches value
+		//  filterValue = filterFns[ filterValue ] || filterValue;
+		  var i = filter_list.length;
+		  var flag = false;   
+		    while (i--) {
+		        if (filter_list.length != 0 && filter_list[i] === filterValue)
+		        {	flag = true;
+		        filter_list.splice(i,1);
+		        }	        
+		    }
+		    if(!flag){
+		    	filter_list.push(filterValue);
+		    }
+		     console.log(">>>>>>>>>>>>>"+filter_list.join(","));
+		   
+		  $grid.isotope({ filter: filter_list.join(",") });
+		  $grid.isotope({ sortBy: filter_list.join(",") })
+
+		  
+		});
+
+	
+
+		// change is-checked class on buttons
+		$('.button-group').each( function( i, buttonGroup ) {
+		  var $buttonGroup = $( buttonGroup );
+		  $buttonGroup.on( 'click', 'button', function() {
+		  
+			if($( this ).hasClass('is-checked') == true){
+				$( this ).removeClass('is-checked');
+			}else{
+				$( this ).addClass('is-checked');
+			}
+			
+            if($( this ).hasClass('btn-danger') == true){
+            	   $( this ).removeClass('btn-danger');
+				    $( this ).addClass('btn-white');
+			}else{
+				    $( this ).removeClass('btn-white');
+				    $( this ).addClass('btn-danger');
+			}
+		    
+		   
+		  });
+		});
 }
