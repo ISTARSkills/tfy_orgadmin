@@ -23,10 +23,12 @@
 	LessonServices lessonServices = new LessonServices();
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0, cdnPath.length() - 1);
+	String courseName = "Create Course";
 	if (request.getParameterMap().containsKey("course")) {
 		course = (new CourseDAO()).findById(Integer.parseInt(request.getParameter("course")));
 		is_new = false;
 		image_url = cdnPath.substring(0, cdnPath.length()) + course.getImage_url();
+		courseName = course.getCourseName();
 	}
 %>
 <body class="top-navigation" id="course_edit"
@@ -65,7 +67,7 @@
 			<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
-			<%=UIUtils.getPageHeader(course.getCourseName(), brd)%>
+			<%=UIUtils.getPageHeader(courseName, brd)%>
 
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="row card-box">

@@ -571,6 +571,14 @@ function saveCourse() {
 				}
 			});
 }
+function getModules() {
+	var module_list = "";
+	$("#editable .something").each(function(index) {
+		module_list = module_list + $(this).data('module_id') + ",";
+	});
+	module_list = module_list.substring(0, module_list.length - 1);
+	return module_list;
+}
 /*Course wizard end*/
 /*Module wizard start*/
 function moduleEditWizard() {
@@ -720,6 +728,14 @@ function saveModule() {
 									+ window.moduleID, "_self");
 				}
 			});
+}
+function getSessions() {
+	var session_list = "";
+	$("#editable .something").each(function(index) {
+		session_list = session_list + $(this).data('session_id') + ",";
+	});
+	session_list = session_list.substring(0, session_list.length - 1);
+	return session_list;
 }
 /*Module wizard end*/
 /*Session wizard start*/
@@ -878,6 +894,14 @@ function saveSession() {
 
 			});
 
+}
+function getLessons() {
+	var lesson_list = "";
+	$("#editable .something").each(function(index) {
+		lesson_list = lesson_list + $(this).data('lesson_id') + ",";
+	});
+	lesson_list = lesson_list.substring(0, lesson_list.length - 1);
+	return lesson_list;
 }
 /*Session wizard end*/
 

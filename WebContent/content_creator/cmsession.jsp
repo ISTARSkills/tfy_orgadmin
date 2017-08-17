@@ -23,10 +23,12 @@
 	LessonServices lessonServices = new LessonServices();
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
+	String sessionName = "Create Session";
 	if (request.getParameterMap().containsKey("session")) {
 		cmsession = (new CmsessionDAO()).findById(Integer.parseInt(request.getParameter("session")));
 		is_new = false;
 		image_url = cdnPath.substring(0,cdnPath.length())+cmsession.getImage_url();
+		sessionName = cmsession.getTitle();
 	}
 %>
 <body class="top-navigation" id="session_edit"
@@ -64,7 +66,7 @@
 				<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
-			<%=UIUtils.getPageHeader(cmsession.getTitle(), brd)%>
+			<%=UIUtils.getPageHeader(sessionName, brd)%>
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="row card-box">
 							<div class="ibox-content">

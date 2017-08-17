@@ -22,10 +22,12 @@
 	LessonServices lessonServices = new LessonServices();
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
+	String moduleName = "Create Module";
 	if (request.getParameterMap().containsKey("module")) {
 		module = (new ModuleDAO()).findById(Integer.parseInt(request.getParameter("module")));
 		is_new = false;
 		image_url = cdnPath.substring(0,cdnPath.length())+module.getImage_url();
+		moduleName = module.getModuleName();
 	}
 %>
 <body class="top-navigation" id="module_edit"
@@ -63,7 +65,7 @@
 				<%
 				String[] brd = {"Dashboard", "Modules"};
 			%>
-			<%=UIUtils.getPageHeader(module.getModuleName(), brd)%>
+			<%=UIUtils.getPageHeader(moduleName, brd)%>
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="row card-box">
 							<div class="ibox-content">
