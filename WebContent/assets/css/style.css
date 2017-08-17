@@ -15802,6 +15802,9 @@ color: #fff;
 .customcss_lesson-button{
 position: absolute;bottom: 14px; right: 0px;
 }
+.customcss_lesson-button1{
+position: absolute;bottom: 39px; right: 0px;
+}
 .customcss_lesson-button_btn{
 width: 100%;
 }

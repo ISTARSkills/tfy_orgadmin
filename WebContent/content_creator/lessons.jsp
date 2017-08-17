@@ -182,7 +182,7 @@
 						
 							}
 						%>
-								<div class="col-md-12 customcss_lesson-button">
+								<div class="col-lg-12 customcss_lesson-button1">
 						<div class="col-md-6 text-center">
 						<a href="<%=href_url %>" target="_blank"
 							class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Preview <i
@@ -190,7 +190,7 @@
 						</a></div><div class="col-md-6 text-center"> <a href="<%=lesson_edit_url%>"
 							class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 							class="fa fa-pencil"></i>
-						</a></div><div class="col-md-6 text-center customcss_lesson-margin" > <a  data-lesson_id='<%=lesson.getId()%>' href="#"
+						</a></div></div><div class="col-lg-12 customcss_lesson-button"><div class="col-md-6 text-center customcss_lesson-margin" > <a  data-lesson_id='<%=lesson.getId()%>' href="#"
 							class="btn btn-xs btn-outline btn-primary delete_lesson customcss_lesson-button_btn">Delete
 							<i class="fa fa-trash-o"></i>
 						</a></div><div class="col-md-6 text-center customcss_lesson-margin"> <a data-lesson_id='<%=lesson.getId()%>' href="#"
