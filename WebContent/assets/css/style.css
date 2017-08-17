@@ -15749,7 +15749,7 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 .customcss_dashboard_buttons {
 	position: absolute;
-	right: 34px;
+	right: 0px;
 	bottom: 13px;
 }
 

@@ -101,14 +101,16 @@
 									
 								</div>
 							</div>
-							
-							<div class="m-t text-righ customcss_dashboard_buttons">
+							<div class="col-lg-12 customcss_lesson-button1">
+							<!-- <div class="m-t text-righ customcss_dashboard_buttons"> -->
+							<div class="col-md-3 text-center"></div>
+							<div class="col-md-6 text-center">
 										<%
 											if (lesson.getType().equalsIgnoreCase("PRESENTATION")) {
 										%>
 										<a
 											href="/content_creator/presentation.jsp?lesson_id=<%=lesson.getId()%>"
-											target="_blank" class="btn btn-xs btn-outline btn-primary">Preview
+											target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Preview
 											<i class="fa fa-desktop"></i>
 										</a>
 										<%
@@ -122,13 +124,18 @@
 										<%
 											}
 										%>
+										</div>
+										<div class="col-md-3 text-center"></div>
+										</div>
+										<div class="col-lg-12 customcss_dashboard_buttons">
+										<div class="col-md-6 text-center">
 										<a href="<%=edit_url%>"
-											class="btn btn-xs btn-outline btn-primary">Edit <i
+											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 											class="fa fa-pencil"></i>
-										</a> <a data-lesson_id='<%=lesson.getId()%>' href="#"
-											class="btn btn-xs btn-outline btn-primary publish_lesson">Publish
+										</a></div><div class="col-md-6 text-center"> <a data-lesson_id='<%=lesson.getId()%>' href="#"
+											class="btn btn-xs btn-outline btn-primary publish_lesson customcss_lesson-button_btn">Publish
 											<i class="fa fa-print"></i>
-										</a>
+										</a></div>
 										<%-- <%for(Stage stage : stages){ %>
 										<a title="<%=stage.getName() %>" href="#" class="btn btn-xs btn-outline btn-primary"><i class="fa <%=stage.getIcon()%>"></i>
 										</a>
