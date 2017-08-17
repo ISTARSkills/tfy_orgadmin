@@ -15790,6 +15790,14 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 	height: 200px;
 }
 
+#module_image {
+	height: 200px;
+}
+
+#session_image {
+	height: 200px;
+}
+
 .wizard>.steps .done a, .wizard>.steps .done a:hover, .wizard>.steps .done a:active
 {
 background: rgba(235, 56, 79, 0.61) !important;
