@@ -86,6 +86,7 @@
 
 						<%
 							}
+						 if (loggedInRole.equalsIgnoreCase("SUPER_ADMIN")) { 
 										DBUTILS utils = new DBUTILS();
 										String sql = "select * from super_admin_reports where type='UTILITY_REPORT' ";
 										List<HashMap<String, Object>> data = utils.executeQuery(sql);
@@ -108,6 +109,7 @@
 
 						<%
 							}
+						}
 						%>
 					</ul></li>
 				<%

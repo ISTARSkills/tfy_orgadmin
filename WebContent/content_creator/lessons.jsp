@@ -1,6 +1,7 @@
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.cms.services.LessonServices"%>
+<%@page import="com.viksitpro.cms.utilities.LessonTypeNames"%>
 <%@page import="com.viksitpro.core.dao.entities.Cmsession"%>
 <%@page import="com.viksitpro.core.dao.entities.Lesson"%>
 <%@page import="java.util.List"%>
@@ -26,7 +27,7 @@
 %>
 
 <body class="top-navigation" id="lesson_list" data-helper='This page is used to show list of lessons. '>
-	<div id="wrapper">
+	<div id="wrapper" class='customcss_overflowy'>
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			
@@ -85,19 +86,127 @@
 				</div>
 
 				<div class="col-lg-2 form-group customcss_search-box">
-					<input class="form-control quicksearch" autocomplete="off" type="text" id="quicksearch" placeholder="Search" />
+					<input class="form-control quicksearch" autocomplete="off" type="text" id="quicksearch" placeholder="Search Lesson" />
 				</div>
 </div>
 <div class="row card-box scheduler_margin-box">
-			 This is where we will put course context for filters
+			
+			<div class="ui-group ">
+					<h3 class="ui-group__title">Filter</h3>
+					<div class="filters button-group js-radio-button-group btn-group">
+						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
+						<%
+							ArrayList<String> arrayList = new ArrayList<>();
+					     	ArrayList<String> displayList = new ArrayList<>();
+							for (Lesson lesson : lessons) {
+								String cmsessionString = "NONE";
+								String cmsessionStringLong = "NONE";
+								String courseStringLong = "";
+
+								try {
+									cmsessionStringLong = lesson.getCmsessions().iterator().next().getTitle();
+									cmsessionString = cmsessionStringLong.replaceAll(" ", "").toLowerCase();
+									courseStringLong = lesson.getCmsessions().iterator().next().getModules().iterator().next().getCourses().iterator().next().getCategory();
+									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
+									 if(!arrayList.contains(courseString)){
+										 arrayList.add(courseString);
+										 displayList.add(courseStringLong);
+									 }
+									 
+								} catch (Exception e) {
+
+								}
+							}
+							int i = 0;
+							for (String c_category : arrayList) {
+						%>
+
+						<button class="button btn button_spaced btn-xs btn-white"
+							data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
+						<%
+						i++;}
+						%>
+					</div>
+				</div>
 			
 			</div>
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box " id='only_lesson_items'>
 
-				<div class="sk-spinner sk-spinner-three-bounce">
-					<div class="sk-bounce1"></div>
-					<div class="sk-bounce2"></div>
-					<div class="sk-bounce3"></div>
+				<div class="row grid">
+					<%
+						for (Lesson lesson : lessons) {
+							if (!lesson.getIsDeleted()) {
+								String lesson_edit_url = "/content_creator/lesson.jsp?lesson="+lesson.getId();
+								String cmsessionString = "NONE";
+								String cmsessionStringLong = "NONE";
+								String course_category = "NONE";
+								String courseString ="";
+								try {
+									cmsessionStringLong = lesson.getCmsessions().iterator().next().getTitle();
+									cmsessionString = cmsessionStringLong.replaceAll(" ", "").toLowerCase();
+									course_category = lesson.getCmsessions().iterator().next().getModules().iterator().next().getCourses().iterator().next().getCategory();
+									 courseString = course_category.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
+								} catch (Exception e) {
+
+								}
+					%>
+
+					<div class="col-md-2 box transition element-item pageitem <%=cmsessionString%> <%=courseString%>">
+						<div class="ribbon">
+							<span><%=lesson.getType()%></span>
+						</div>
+						<div class="ibox product-box customcss_height-prod-box">
+							<div class="ibox-content customcss_ibox_product_border">
+
+								<div class="imgWrap">
+									<img alt="image" class="customcss_img-size" src="<%=cdnPath+lesson.getImage_url()%>">
+								</div>
+								<div class="product-desc">
+									<span class="product-price customcss_product_price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <h5 class="badge badge-warning customcss_font-size">Session - <%=cmsessionStringLong%></h5></small> <a href="/content/creator/lesson.jsp?lesson_id=<%=lesson.getId()%>" class="product-name"><%=lesson.getTitle()%> </a>
+
+									<div class="small m-t-xs">
+										<%=(lesson.getDescription() != null && lesson.getDescription().length() > 100)? lesson.getDescription().substring(0, 100): lesson.getDescription()%>
+									</div>
+									
+								</div>
+								<%
+						String href_url = "";
+							if (lesson.getType().equalsIgnoreCase("PRESENTATION")) {
+								 href_url = "/content_creator/presentation.jsp?lesson_id="+lesson.getId();
+								 
+							} else if (lesson.getType().equalsIgnoreCase(LessonTypeNames.ASSESSMENT)) {
+								 href_url = "/creator/assessment.jsp?lesson="+lesson.getId();
+						
+							} else if (lesson.getType().equalsIgnoreCase(LessonTypeNames.INTERACTIVE)) {
+								 href_url = "/content_creator/interactive_template/ui_builder.jsp?ppt_id="+lesson.getId();
+						
+							}
+						%>
+								<div class="col-lg-12 customcss_lesson-button1">
+						<div class="col-md-6 text-center">
+						<a href="<%=href_url %>" target="_blank"
+							class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Preview <i
+							class="fa fa-desktop"></i>
+						</a></div><div class="col-md-6 text-center"> <a href="<%=lesson_edit_url%>"
+							class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
+							class="fa fa-pencil"></i>
+						</a></div></div><div class="col-lg-12 customcss_lesson-button"><div class="col-md-6 text-center customcss_lesson-margin" > <a  data-lesson_id='<%=lesson.getId()%>' href="#"
+							class="btn btn-xs btn-outline btn-primary delete_lesson customcss_lesson-button_btn">Delete
+							<i class="fa fa-trash-o"></i>
+						</a></div><div class="col-md-6 text-center customcss_lesson-margin"> <a data-lesson_id='<%=lesson.getId()%>' href="#"
+							class="btn btn-xs btn-outline btn-primary publish_lesson customcss_lesson-button_btn">Publish
+							<i class="fa fa-print"></i>
+						</a></div>
+						
+					</div>
+							</div>
+						</div>
+					</div>
+					<%
+						}
+						}
+					%>
+
 				</div>
 
 			</div>

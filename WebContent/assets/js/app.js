@@ -259,6 +259,7 @@ function readyFn(jQuery) {
 		initCreateModule();
 		initIsotopFunction();
 		initDeleteModule();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -269,6 +270,7 @@ function readyFn(jQuery) {
 		initCreateCMSession();
 		initDeleteCMSession();
 		initIsotopFunction();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -280,6 +282,7 @@ function readyFn(jQuery) {
 		initPublishLesson();
 		initLessonList();
 		initIsotopFunction();
+		initSearch();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -293,6 +296,18 @@ function readyFn(jQuery) {
 		break;
 	case 'course_skill_tree':	
 		courseSkillTreeWizard();
+		break;
+	case 'module_edit':
+		moduleEditVariables();
+		moduleEditWizard();
+		break;
+	case 'session_edit':
+		sessionEditVariables();
+		sessionEditWizard();
+		break;
+	case 'assessment_list':
+		assessmentListScripts();
+		initIsotopFunction();
 		break;
 	default:
 		init_orgadmin_none();
@@ -336,7 +351,7 @@ function readyFn(jQuery) {
 	
 }
 
-
+/*Course wizard start*/
 function courseEditVariables() {
 	window.isNewCourse = Boolean($("input[name='isNew']").val() === "true");
 	window.courseID = $("input[name='cmsID']").val();
@@ -372,12 +387,15 @@ function courseEditWizard() {
 		}
 	});
 }
+function courseFinisher(event, currentIndex) {
+	saveCourse();
+}
 function courseStepChanger(event, currentIndex, newIndex) {
 
 	if (newIndex === 2) {
 		moduleHashInit();
 		initModuleSearch();
-		addModulesManually();
+		//addModulesManually();
 		return true;
 	}
 }
@@ -506,62 +524,7 @@ function initModuleSearch() {
 					});
 
 }
-function addModulesManually() {
-	$('#addChildren')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-							var args = {
-								'args' : $('#addChildren').val()
-							};
-							$
-									.ajax({
-										type : "GET",
-										url : '/content/AddModulesManually',
-										data : args
-									})
-									.done(
-											function(data) {
 
-												if (data.modules.length == 0) {
-													alert('No module with this ID was found!');
-												} else {
-													$
-															.each(
-																	data.modules,
-																	function(k,
-																			v) {
-																		console
-																				.log(v.id
-																						+ '>>'
-																						+ v.name);
-																		if (!(window.module_hash[v.id] == undefined)) {
-																			alert('Module already there in the list.');
-																		} else {
-																			$(
-																					'#editable')
-																					.append(
-																							"<li class='something' data-module_id='"
-																									+ v.id
-																									+ "'><i class='js-remove fa fa-trash-o'> </i> | "
-																									+ v.id
-																									+ " | "
-																									+ v.name
-																									+ "</li>");
-																			window.module_hash[v.id] = v.name;
-																		}
-																	});
-												}
-
-											}).fail(function() {
-										alert("error");
-									}).always(function() {
-										$('#addChildren').val('');
-									});
-						}
-					});
-}
 function createSortable(updateCMSHash) {
 	var editableList = Sortable.create(document.getElementById('editable'), {
 		animation : 150,
@@ -576,6 +539,378 @@ function createSortable(updateCMSHash) {
 function updateModuleHash(evt) {
 	delete window.module_hash[evt.item.getAttribute('data-module_id')];
 }
+function saveCourse() {
+	var module_list = getModules();
+	var course_image = '/'
+			+ $.trim($('#course_image').attr('src')).split('/').splice(3).join(
+					'/');
+	if (window.isNewCourse) {
+		var dataPost = 'course_name=' + $("input[name=course_name]").val()
+				+ '&course_category=' + $("input[name=course_category").val()
+				+ '&course_desc=' + $("textarea[name=course_desc]").val()
+				+ '&module_list=' + module_list + '&course_image='
+				+ course_image;
+
+		var url = '/create_course';
+	} else {
+		var dataPost = 'course_name=' + $("input[name=course_name]").val()
+				+ '&course_id=' + window.courseID + '&course_category='
+				+ $("input[name=course_category").val() + '&course_desc='
+				+ $("textarea[name=course_desc]").val() + '&module_list='
+				+ module_list + '&course_image=' + course_image;
+		var url = '/update_course';
+	}
+	alert(dataPost);
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : dataPost,
+	}).done(
+			function(data) {
+				if (window.isNewCourse) {
+					window.location.replace(
+							"/content_creator/course.jsp?course=" + data,
+							"_self");
+				} else {
+					window.location.replace(
+							"/content_creator/course.jsp?course="
+									+ window.courseID, "_self");
+				}
+			});
+}
+function getModules() {
+	var module_list = "";
+	$("#editable .something").each(function(index) {
+		module_list = module_list + $(this).data('module_id') + ",";
+	});
+	module_list = module_list.substring(0, module_list.length - 1);
+	return module_list;
+}
+/*Course wizard end*/
+/*Module wizard start*/
+function moduleEditWizard() {
+	$("#form").steps({
+		bodyTag : "fieldset",
+		transitionEffect : 'fade',
+		transitionEffectSpeed : 135,
+		onStepChanging : function(event, currentIndex, newIndex) {
+			moduleStepChanger(event, currentIndex, newIndex);
+			return true;
+		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			if (currentIndex === 1) {
+				initImageUpload($("#module_image"));
+				//initImageUploader($("#module_image"), 1);
+				// return true;
+			}
+			if (currentIndex === 2 && !is_sortable) {
+				createSortable(updateSessionHash);
+			}
+
+		},
+		onFinishing : function(event, currentIndex) {
+			moduleFinisher(event, currentIndex);
+			return true;
+		},
+	});
+}
+function moduleFinisher(event, currentIndex) {
+	saveModule();
+}
+function moduleEditVariables() {
+
+	window.isNewModule = Boolean($("input[name='isNew']").val() === "true");
+	window.moduleID = $("input[name='cmsID']").val();
+	window.image_url = $("input[name='baseProdURL']").val();
+	window.session_hash = {};
+	window.is_sortable = Boolean(false);
+}
+function updateSessionHash(evt) {
+	delete window.session_hash[evt.item.getAttribute('data-session_id')];
+}
+function moduleStepChanger(event, currentIndex, newIndex) {
+	if (newIndex === 2) {
+		sessionHashInit();
+		initSessionSearch();
+		//addSessionManually();
+	}
+	return true;
+}
+function sessionHashInit() {
+	$('#editable > .something').each(function(k, v) {
+				session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
+			});
+}
+function initSessionSearch() {
+	$('#searchSessions')
+			.keydown(
+					function(event) {
+						if ((event.keyCode == 13)
+								&& ($.trim($(this).val()) != '')) {
+							if($.trim($(this).val()).length>2){
+								var searchString = $("#searchSessions").val();
+
+								var datapost = {
+									'searchString' : searchString
+								};
+								$.get("/SearchSessions", datapost).done(function(data) {
+													$.each(data.sessions,function(k, v) {
+														$('#searchSessionsResult').html("<span class='simple_tag' id='"
+																								+ v.id
+																								+ "'><i class='js-remove fa fa-plus'> </i> | "
+																								+ v.id
+																								+ " | "
+																								+ v.name
+																								+ "</span>");
+													});
+												}).fail(function() {
+											alert("error");
+										}).always(function() {
+
+										});
+							}else{
+								alert('Type atleast 3 characters to search');
+							}
+
+						}
+					});
+
+	$('#searchSessionsResult')
+			.on(
+					'click',
+					".fa-plus",
+					function() {
+
+						var v = {
+							id : this.parentElement.id,
+							name : this.parentElement.innerText
+						}
+						if (!(window.session_hash[v.id] == undefined)) {
+							alert('Session already there in the list.');
+						} else {
+							$('#editable')
+									.append(
+											"<li class='something' data-session_id='"
+													+ v.id
+													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ v.name + "</li>");
+							window.session_hash[v.id] = v.name;
+						}
+					});
+
+}
+function saveModule() {
+	var session_list = getSessions();
+	var module_image = '/'
+			+ $.trim($('#module_image').attr('src')).split('/').splice(3).join(
+					'/');
+	if (window.isNewModule) {
+		var dataPost = 'module_name=' + $("input[name=module_name]").val()
+				+ '&module_desc=' + $("textarea[name=module_desc]").val()
+				+ '&session_list=' + session_list + '&module_image='
+				+ module_image;
+		var url = '/create_module';
+	} else {
+		var dataPost = 'module_name=' + $("input[name=module_name]").val()
+				+ '&module_id=' + window.moduleID + '&module_desc='
+				+ $("textarea[name=module_desc]").val() + '&session_list='
+				+ session_list + '&module_image=' + module_image;
+		var url = '/update_module';
+	}
+	// alert(dataPost);
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : dataPost,
+		dataType : "text"
+	}).done(
+			function(data) {
+				if (window.isNewModule) {
+					window.location.replace(
+							"/content_creator/module.jsp?module=" + data,
+							"_self");
+				} else {
+					window.location.replace(
+							"/content_creator/module.jsp?module="
+									+ window.moduleID, "_self");
+				}
+			});
+}
+function getSessions() {
+	var session_list = "";
+	$("#editable .something").each(function(index) {
+		session_list = session_list + $(this).data('session_id') + ",";
+	});
+	session_list = session_list.substring(0, session_list.length - 1);
+	return session_list;
+}
+/*Module wizard end*/
+/*Session wizard start*/
+function sessionEditVariables() {
+
+	window.isNewSession = Boolean($("input[name='isNew']").val() === "true");
+	window.sessionID = $("input[name='cmsID']").val();
+	window.image_url = $("input[name='baseProdURL']").val();
+	window.lesson_hash = {};
+	window.session_hash = {};
+	window.is_sortable = Boolean(false);
+}
+function sessionEditWizard() {
+	$("#form").steps({
+		bodyTag : "fieldset",
+		transitionEffect : 'fade',
+		transitionEffectSpeed : 135,
+		onStepChanging : function(event, currentIndex, newIndex) {
+			sessionStepChanger(event, currentIndex, newIndex);
+			return true;
+		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			if (currentIndex === 1) {
+				initImageUpload($("#session_image"));
+				//initImageUploader($("#session_image"), 1);
+				// return true;
+			}
+			if (currentIndex === 2 && !is_sortable) {
+				createSortable(updateLessonHash);
+			}
+
+		},
+		onFinishing : function(event, currentIndex) {
+			sessionFinisher(event, currentIndex);
+			return true;
+		}
+	});
+}
+function updateLessonHash(evt) {
+	delete window.lesson_hash[evt.item.getAttribute('data-lesson_id')];
+}
+function sessionFinisher(event, currentIndex) {
+	saveSession();
+}
+function sessionStepChanger(event, currentIndex, newIndex) {
+	if (newIndex === 2) {
+		lessonHashInit();
+		initLessonSearch();
+		//addLessonManually();
+	}
+	return true;
+}
+
+function lessonHashInit() {
+	$('#editable > .something').each(function(k, v) {
+				window.session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
+			});
+}
+function initLessonSearch() {
+	$('#searchLessons')
+			.keydown(
+					function(event) {
+						if ((event.keyCode == 13)
+								&& ($.trim($(this).val()) != '')) {
+							
+							if($.trim($(this).val()).length>2){
+								var searchString = $("#searchLessons").val();
+								
+								var datapost = {
+									'searchString' : searchString
+								};
+								$.get("/SearchLessons", datapost).done(function(data) {
+									$.each(data.lessons,function(k, v) {
+										$('#searchLessonsResult').html("<span class='simple_tag' id='"
+																+ v.id
+																+ "'><i class='js-remove fa fa-plus'> </i> | "
+																+ v.id
+																+ " | "
+																+ v.name
+																+ "</span>");
+										});
+												}).fail(function() {
+											alert("error");
+										}).always(function() {
+
+										});
+							}else{
+								alert('Type atleast 3 characters to search');
+							}
+
+						}
+					});
+
+	$('#searchLessonsResult')
+			.on(
+					'click',
+					".fa-plus",
+					function() {
+
+						var v = {
+							id : this.parentElement.id,
+							name : this.parentElement.innerText
+						}
+						if (!(window.lesson_hash[v.id] == undefined)) {
+							alert('Lesson already there in the list.');
+						} else {
+							$('#editable')
+									.append(
+											"<li class='something' data-lesson_id='"
+													+ v.id
+													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ v.name + "</li>");
+							window.lesson_hash[v.id] = v.name;
+						}
+					});
+
+}
+function saveSession() {
+	var lesson_list = getLessons();
+	var sessionImage = '/'
+			+ $.trim($('#session_image').attr('src')).split('/').splice(3)
+					.join('/');
+	if (window.isNewSession) {
+		var dataPost = 'cmsession_name='
+				+ $("input[name=cmsession_name]").val() + '&cmsession_desc='
+				+ $.trim($("textarea[name=cmsession_desc]").val())
+				+ '&lesson_list=' + lesson_list + '&cmsession_image='
+				+ sessionImage;
+		var url = '/create_cmsession';
+	} else {
+		var dataPost = 'cmsession_name='
+				+ $("input[name=cmsession_name]").val() + '&cmsession_id='
+				+ window.sessionID + '&cmsession_desc='
+				+ $.trim($("textarea[name=cmsession_desc]").val())
+				+ '&lesson_list=' + lesson_list + '&cmsession_image='
+				+ sessionImage;
+		var url = '/update_session';
+	}
+	// alert(dataPost);
+	$.ajax({
+		type : "POST",
+		url : url,
+		data : dataPost,
+		dataType : "text"
+	}).done(
+			function(data) {
+				if (window.isNewSession) {
+					window.location.replace(
+							"/content_creator/cmsession.jsp?session=" + data,
+							"_self");
+				} else {
+					window.location.replace(
+							"/content_creator/cmsession.jsp?session="
+									+ window.sessionID, "_self");
+				}
+
+			});
+
+}
+function getLessons() {
+	var lesson_list = "";
+	$("#editable .something").each(function(index) {
+		lesson_list = lesson_list + $(this).data('lesson_id') + ",";
+	});
+	lesson_list = lesson_list.substring(0, lesson_list.length - 1);
+	return lesson_list;
+}
+/*Session wizard end*/
 
 function initUnreadChatAndNotification()
 {
@@ -8017,62 +8352,7 @@ function initCreateLesson() {
 	});
 }
 function initLessonList() {
-	var url = 'lesson_list_partial_user.jsp';
-	$.get(url, function(data) {
-		$('#only_lesson_items').empty();
-		$('#only_lesson_items').append(data);
-	}).done(function() {
-		setTimeout(function() {
-			match_height();
-		}, 800);
-	});
-	$('#show_all_lessons').click(function() {
-		var urll;
-		var url1 = 'lesson_list_partial.jsp';
-		var url2 = 'lesson_list_partial_user.jsp';
-		if ($('#show_all_lessons').is(':checked')) {
-			urll = url1;
-		} else {
-			urll = url2;
-		}
-		$.get(urll, function(data) {
-			$('#only_lesson_items').empty();
-			$('#only_lesson_items').append(data);
-		}).done(function() {
-			setTimeout(function() {
-				match_height();
-			}, 1000);
-		});
-	});
-}
-function initLessonList() {
-	var url = 'lesson_list_partial_user.jsp';
-	$.get(url, function(data) {
-		$('#only_lesson_items').empty();
-		$('#only_lesson_items').append(data);
-	}).done(function() {
-		setTimeout(function() {
-			match_height();
-		}, 800);
-	});
-	$('#show_all_lessons').click(function() {
-		var urll;
-		var url1 = 'lesson_list_partial.jsp';
-		var url2 = 'lesson_list_partial_user.jsp';
-		if ($('#show_all_lessons').is(':checked')) {
-			urll = url1;
-		} else {
-			urll = url2;
-		}
-		$.get(urll, function(data) {
-			$('#only_lesson_items').empty();
-			$('#only_lesson_items').append(data);
-		}).done(function() {
-			setTimeout(function() {
-				match_height();
-			}, 1000);
-		});
-	});
+	
 }
 function initCreateCMSession() {
 	$('#create_cmsession').click(function(e) {
@@ -8207,4 +8487,11 @@ function initIsotopFunction() {
 		   
 		  });
 		});
+}
+function assessmentListScripts() {
+	initSearch();
+	$('#create_assessment').click(function() {
+		window.open("/content_creator/assessment.jsp", '_blank');
+
+	});
 }

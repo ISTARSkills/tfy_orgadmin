@@ -55,7 +55,7 @@
 					<%
 						for (Task task : tasks) {
 
-							System.out.println(task.getId() + " -----  " + task.getItemId());
+							//System.out.println(task.getId() + " -----  " + task.getItemId());
 
 							if (task.getItemType().equals(TaskItemCategory.LESSON)
 									&& task.getName().equalsIgnoreCase(LessonTaskNames.CREATE_LESSON) && task.getIsActive()) {
@@ -92,7 +92,7 @@
 									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price"><span
+									<span class="product-price customcss_product_price"><span
 										class="label label-primary">Status - <%=task.getState()%></span>
 									</span> <small class="text-muted"> </small> <a href="<%=edit_url%>"
 										class="product-name"><%=lesson.getTitle()%></a>
@@ -101,14 +101,16 @@
 									
 								</div>
 							</div>
-							
-							<div class="m-t text-righ customcss_dashboard_buttons">
+							<div class="col-lg-12 customcss_lesson-button1">
+							<!-- <div class="m-t text-righ customcss_dashboard_buttons"> -->
+							<div class="col-md-3 text-center"></div>
+							<div class="col-md-6 text-center">
 										<%
 											if (lesson.getType().equalsIgnoreCase("PRESENTATION")) {
 										%>
 										<a
 											href="/content_creator/presentation.jsp?lesson_id=<%=lesson.getId()%>"
-											target="_blank" class="btn btn-xs btn-outline btn-primary">Preview
+											target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Preview
 											<i class="fa fa-desktop"></i>
 										</a>
 										<%
@@ -122,13 +124,18 @@
 										<%
 											}
 										%>
+										</div>
+										<div class="col-md-3 text-center"></div>
+										</div>
+										<div class="col-lg-12 customcss_dashboard_buttons">
+										<div class="col-md-6 text-center">
 										<a href="<%=edit_url%>"
-											class="btn btn-xs btn-outline btn-primary">Edit <i
+											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 											class="fa fa-pencil"></i>
-										</a> <a data-lesson_id='<%=lesson.getId()%>' href="#"
-											class="btn btn-xs btn-outline btn-primary publish_lesson">Publish
+										</a></div><div class="col-md-6 text-center"> <a data-lesson_id='<%=lesson.getId()%>' href="#"
+											class="btn btn-xs btn-outline btn-primary publish_lesson customcss_lesson-button_btn">Publish
 											<i class="fa fa-print"></i>
-										</a>
+										</a></div>
 										<%-- <%for(Stage stage : stages){ %>
 										<a title="<%=stage.getName() %>" href="#" class="btn btn-xs btn-outline btn-primary"><i class="fa <%=stage.getIcon()%>"></i>
 										</a>
@@ -150,8 +157,6 @@
 
 			</div>
 		</div>
-		<%-- <jsp:include page="../chat_element.jsp"></jsp:include> --%>
-	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>

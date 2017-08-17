@@ -82,8 +82,7 @@
 				</div>
 
 			</div>
-			<div
-				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box ">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box ">
 				<div class="row grid">
 					<%
 						for (Course course : courses) {

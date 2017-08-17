@@ -6739,7 +6739,10 @@ body.body-small .vote-icon {
 
 
 
+
+
 :
+
 
 
 
@@ -6753,7 +6756,10 @@ body.body-small .vote-icon {
 
 
 
+
 perspective
+
+
 
 
 
@@ -6778,8 +6784,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6806,6 +6816,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -6820,8 +6832,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -6846,7 +6862,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -6860,7 +6879,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -6885,8 +6907,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -6913,6 +6939,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -6927,8 +6955,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -6956,7 +6988,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -6970,7 +7005,10 @@ deg
 
 
 
+
 perspective
+
+
 
 
 
@@ -6995,8 +7033,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7021,6 +7063,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7035,8 +7079,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7063,7 +7111,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7077,7 +7128,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7102,8 +7156,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7128,6 +7186,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7142,8 +7202,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7180,7 +7244,10 @@ keyframes sk-rotatePlane { 0% {
 
 
 
+
+
 :
+
 
 
 
@@ -7194,7 +7261,10 @@ keyframes sk-rotatePlane { 0% {
 
 
 
+
 perspective
+
+
 
 
 
@@ -7219,8 +7289,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7247,6 +7321,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -7261,8 +7337,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -7287,7 +7367,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7301,7 +7384,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7326,8 +7412,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7354,6 +7444,8 @@ rotateX
 
 
 
+
+
 )
 rotateY
 
@@ -7368,8 +7460,12 @@ rotateY
 
 
 
+
+
 (0
 deg
+
+
 
 
 
@@ -7397,7 +7493,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -7411,7 +7510,10 @@ deg
 
 
 
+
 perspective
+
+
 
 
 
@@ -7436,8 +7538,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7462,6 +7568,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7476,8 +7584,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7504,7 +7616,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7518,7 +7633,10 @@ transform
 
 
 
+
 perspective
+
+
 
 
 
@@ -7543,8 +7661,12 @@ px
 
 
 
+
+
 )
 rotateX
+
+
 
 
 
@@ -7569,6 +7691,8 @@ deg
 
 
 
+
+
 )
 rotateY
 
@@ -7583,8 +7707,12 @@ rotateY
 
 
 
+
+
 (-179
 .9deg
+
+
 
 
 
@@ -7656,7 +7784,10 @@ rotateY
 
 
 
+
+
 :
+
 
 
 
@@ -7670,7 +7801,10 @@ rotateY
 
 
 
+
 scale
+
+
 
 
 
@@ -7697,7 +7831,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7711,7 +7848,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -7748,7 +7888,10 @@ keyframes sk-doubleBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -7762,7 +7905,10 @@ keyframes sk-doubleBounce { 0%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -7789,7 +7935,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7803,7 +7952,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -7889,7 +8041,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -7903,7 +8058,10 @@ scale
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7930,7 +8088,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -7944,7 +8105,10 @@ transform
 
 
 
+
 scaleY
+
+
 
 
 
@@ -7981,7 +8145,10 @@ keyframes sk-waveStretchDelay { 0%, 40%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -7995,7 +8162,10 @@ keyframes sk-waveStretchDelay { 0%, 40%, 100% {
 
 
 
+
 scaleY
+
+
 
 
 
@@ -8022,7 +8192,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -8036,7 +8209,10 @@ transform
 
 
 
+
 scaleY
+
+
 
 
 
@@ -8107,6 +8283,8 @@ scaleY
 
 
 
+
+
 :
 
 
@@ -8114,7 +8292,9 @@ scaleY
 
 
 
+
  
+
 
 
 
@@ -8134,8 +8314,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8160,8 +8344,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8186,8 +8374,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8212,6 +8404,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -8219,7 +8413,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -8239,8 +8435,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8265,8 +8465,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8291,8 +8495,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -8312,7 +8520,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -8331,13 +8541,17 @@ deg
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8354,8 +8568,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8376,8 +8594,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8398,8 +8620,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8420,13 +8646,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -8443,8 +8673,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8465,8 +8699,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8487,8 +8725,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -8514,6 +8756,8 @@ deg
 
 
 
+
+
 :
 
 
@@ -8521,7 +8765,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -8541,8 +8787,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -8567,8 +8817,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8593,8 +8847,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -8619,8 +8877,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -8647,6 +8909,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -8654,7 +8918,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -8674,8 +8940,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -8700,8 +8970,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8726,8 +9000,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -8752,8 +9030,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -8783,6 +9065,8 @@ scale
 
 
 
+
+
 :
 
 
@@ -8790,7 +9074,9 @@ scale
 
 
 
+
  
+
 
 
 
@@ -8810,8 +9096,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -8836,6 +9126,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -8843,7 +9135,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -8863,8 +9157,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -8900,6 +9198,8 @@ keyframes sk-wanderingCubeMove { 25% {
 
 
 
+
+
 :
 
 
@@ -8907,7 +9207,9 @@ keyframes sk-wanderingCubeMove { 25% {
 
 
 
+
  
+
 
 
 
@@ -8927,8 +9229,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8953,8 +9259,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -8979,8 +9289,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -9005,6 +9319,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -9012,7 +9328,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -9032,8 +9350,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9058,8 +9380,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9084,8 +9410,12 @@ rotate
 
 
 
+
+
 (-179
 deg
+
+
 
 
 
@@ -9105,7 +9435,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -9124,13 +9456,17 @@ deg
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9147,8 +9483,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9169,8 +9509,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9191,8 +9535,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -9213,13 +9561,17 @@ transform
 
 
 
+
+
 :
 
 
 
 
 
+
  
+
 
 
 
@@ -9236,8 +9588,12 @@ translateX
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9258,8 +9614,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9280,8 +9640,12 @@ rotate
 
 
 
+
+
 (-180
 deg
+
+
 
 
 
@@ -9307,6 +9671,8 @@ deg
 
 
 
+
+
 :
 
 
@@ -9314,7 +9680,9 @@ deg
 
 
 
+
  
+
 
 
 
@@ -9334,8 +9702,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -9360,8 +9732,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9386,8 +9762,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -9412,8 +9792,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -9440,6 +9824,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -9447,7 +9833,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -9467,8 +9855,12 @@ translateX
 
 
 
+
+
 (0
 px
+
+
 
 
 
@@ -9493,8 +9885,12 @@ translateY
 
 
 
+
+
 (42
 px
+
+
 
 
 
@@ -9519,8 +9915,12 @@ rotate
 
 
 
+
+
 (-270
 deg
+
+
 
 
 
@@ -9545,8 +9945,12 @@ scale
 
 
 
+
+
 (0
 .5
+
+
 
 
 
@@ -9576,6 +9980,8 @@ scale
 
 
 
+
+
 :
 
 
@@ -9583,7 +9989,9 @@ scale
 
 
 
+
  
+
 
 
 
@@ -9603,8 +10011,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -9629,6 +10041,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -9636,7 +10050,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -9656,8 +10072,12 @@ rotate
 
 
 
+
+
 (-360
 deg
+
+
 
 
 
@@ -9708,7 +10128,10 @@ deg
 
 
 
+
+
 :
+
 
 
 
@@ -9722,7 +10145,10 @@ deg
 
 
 
+
 scale
+
+
 
 
 
@@ -9749,7 +10175,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9763,7 +10192,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9790,6 +10222,8 @@ opacity
 
 
 
+
+
 :
 
 
@@ -9797,7 +10231,9 @@ opacity
 
 
 
+
  
+
 
 
 
@@ -9828,7 +10264,10 @@ keyframes sk-pulseScaleOut { 0% {
 
 
 
+
+
 :
+
 
 
 
@@ -9842,7 +10281,10 @@ keyframes sk-pulseScaleOut { 0% {
 
 
 
+
 scale
+
+
 
 
 
@@ -9869,7 +10311,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -9883,7 +10328,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -9910,6 +10358,8 @@ opacity
 
 
 
+
+
 :
 
 
@@ -9917,7 +10367,9 @@ opacity
 
 
 
+
  
+
 
 
 
@@ -10000,7 +10452,10 @@ keyframes sk-chasingDotsRotate { 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10014,7 +10469,10 @@ keyframes sk-chasingDotsRotate { 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -10041,7 +10499,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10055,7 +10516,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10092,7 +10556,10 @@ keyframes sk-chasingDotsBounce { 0%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10106,7 +10573,10 @@ keyframes sk-chasingDotsBounce { 0%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -10133,7 +10603,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10147,7 +10620,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10223,7 +10699,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -10237,7 +10716,10 @@ scale
 
 
 
+
 scale
+
+
 
 
 
@@ -10264,7 +10746,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10278,7 +10763,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10315,7 +10803,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10329,7 +10820,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -10356,7 +10850,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10370,7 +10867,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10577,7 +11077,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -10591,7 +11094,10 @@ scale
 
 
 
+
 scale
+
+
 
 
 
@@ -10618,7 +11124,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10632,7 +11141,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10669,7 +11181,10 @@ keyframes sk-circleBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10683,7 +11198,10 @@ keyframes sk-circleBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -10710,7 +11228,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10724,7 +11245,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -10847,7 +11371,10 @@ scale
 
 
 
+
+
 :
+
 
 
 
@@ -10861,7 +11388,10 @@ scale
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10891,7 +11421,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -10905,7 +11438,10 @@ transform
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10945,7 +11481,10 @@ keyframes sk-cubeGridScaleDelay { 0%, 70%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -10959,7 +11498,10 @@ keyframes sk-cubeGridScaleDelay { 0%, 70%, 100% {
 
 
 
+
 scale3D
+
+
 
 
 
@@ -10989,7 +11531,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -11003,7 +11548,10 @@ transform
 
 
 
+
 scale3D
+
+
 
 
 
@@ -11073,6 +11621,8 @@ scale3D
 
 
 
+
+
 :
 
 
@@ -11080,7 +11630,9 @@ scale3D
 
 
 
+
  
+
 
 
 
@@ -11100,8 +11652,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -11126,6 +11682,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -11133,7 +11691,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -11153,8 +11713,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -11189,6 +11753,8 @@ keyframes sk-innerCircle { 0% {
 
 
 
+
+
 :
 
 
@@ -11196,7 +11762,9 @@ keyframes sk-innerCircle { 0% {
 
 
 
+
  
+
 
 
 
@@ -11216,8 +11784,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -11242,6 +11814,8 @@ transform
 
 
 
+
+
 :
 
 
@@ -11249,7 +11823,9 @@ transform
 
 
 
+
  
+
 
 
 
@@ -11269,8 +11845,12 @@ rotate
 
 
 
+
+
 (360
 deg
+
+
 
 
 
@@ -11474,6 +12054,8 @@ opacity
 
 
 
+
+
 :
 
 
@@ -11481,7 +12063,9 @@ opacity
 
 
 
+
  
+
 
 
 
@@ -11511,6 +12095,8 @@ opacity
 
 
 
+
+
 :
 
 
@@ -11518,7 +12104,9 @@ opacity
 
 
 
+
  
+
 
 
 
@@ -14713,7 +15301,10 @@ tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selecte
 
 
 
+
+
 :
+
 
 
 
@@ -14725,7 +15316,10 @@ tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selecte
 
 
 
+
 scale
+
+
 
 
 
@@ -14748,7 +15342,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -14760,7 +15357,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -14793,7 +15393,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
+
 :
+
 
 
 
@@ -14805,7 +15408,10 @@ keyframes sk-threeBounceDelay { 0%, 80%, 100% {
 
 
 
+
 scale
+
+
 
 
 
@@ -14828,7 +15434,10 @@ transform
 
 
 
+
+
 :
+
 
 
 
@@ -14840,7 +15449,10 @@ transform
 
 
 
+
 scale
+
+
 
 
 
@@ -14907,7 +15519,7 @@ hr {
 .ribbon {
 	position: absolute;
 	right: 19px;
-    top: 4px;
+	top: 4px;
 	z-index: 1;
 	overflow: hidden;
 	width: 75px;
@@ -15749,7 +16361,7 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 .customcss_dashboard_buttons {
 	position: absolute;
-	right: 34px;
+	right: 0px;
 	bottom: 13px;
 }
 
@@ -15790,27 +16402,51 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 	height: 200px;
 }
 
+#module_image {
+	height: 200px;
+}
+
+#session_image {
+	height: 200px;
+}
+
 .wizard>.steps .done a, .wizard>.steps .done a:hover, .wizard>.steps .done a:active
-{
-background: rgba(235, 56, 79, 0.61) !important;
-color: #fff;
+	{
+	background: rgba(235, 56, 79, 0.61) !important;
+	color: #fff;
 }
 
-.customcss_product_price{
-	padding: 0px; margin-top: 11px;
-}
-.customcss_lesson-button{
-position: absolute;bottom: 14px; right: 0px;
-}
-.customcss_lesson-button_btn{
-width: 100%;
-}
-.customcss_lesson-margin{
-margin-top: 10px;
+.customcss_product_price {
+	padding: 0px;
+	margin-top: 11px;
 }
 
+.customcss_lesson-button {
+	position: absolute;
+	bottom: 14px;
+	right: 0px;
+}
+
+.customcss_lesson-button1 {
+	position: absolute;
+	bottom: 39px;
+	right: 0px;
+}
+
+.customcss_lesson-button_btn {
+	width: 100%;
+}
+
+.customcss_lesson-margin {
+	margin-top: 10px;
+}
 
 .button_spaced {
-	margin-bottom: 5px;margin-right: 5px;
+	margin-bottom: 5px;
+	margin-right: 5px;
 	padding: 3px;
+}
+
+.customcss_font-size {
+	font-size: 9px;
 }
