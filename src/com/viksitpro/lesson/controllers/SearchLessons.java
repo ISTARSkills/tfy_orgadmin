@@ -53,7 +53,7 @@ public class SearchLessons extends HttpServlet {
 					if (lesson.getTitle().toLowerCase().contains(search)) {
 						is_contained = true;
 					}
-					if (lesson.getDescription().toLowerCase().contains(search)) {
+					if (lesson.getDescription() != null && lesson.getDescription().toLowerCase().contains(search)) {
 						is_contained = true;
 					}
 					if (lesson.getId().toString().contains(search)) {
