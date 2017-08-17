@@ -8060,7 +8060,7 @@ function initCreateLesson() {
 	});
 }
 function initLessonList() {
-	var url = 'lesson_list_partial_user.jsp';
+	var url = 'lesson_list_partial.jsp';
 	$.get(url, function(data) {
 		$('#only_lesson_items').empty();
 		$('#only_lesson_items').append(data);
@@ -8068,53 +8068,6 @@ function initLessonList() {
 		setTimeout(function() {
 			match_height();
 		}, 800);
-	});
-	$('#show_all_lessons').click(function() {
-		var urll;
-		var url1 = 'lesson_list_partial.jsp';
-		var url2 = 'lesson_list_partial_user.jsp';
-		if ($('#show_all_lessons').is(':checked')) {
-			urll = url1;
-		} else {
-			urll = url2;
-		}
-		$.get(urll, function(data) {
-			$('#only_lesson_items').empty();
-			$('#only_lesson_items').append(data);
-		}).done(function() {
-			setTimeout(function() {
-				match_height();
-			}, 1000);
-		});
-	});
-}
-function initLessonList() {
-	var url = 'lesson_list_partial_user.jsp';
-	$.get(url, function(data) {
-		$('#only_lesson_items').empty();
-		$('#only_lesson_items').append(data);
-	}).done(function() {
-		setTimeout(function() {
-			match_height();
-		}, 800);
-	});
-	$('#show_all_lessons').click(function() {
-		var urll;
-		var url1 = 'lesson_list_partial.jsp';
-		var url2 = 'lesson_list_partial_user.jsp';
-		if ($('#show_all_lessons').is(':checked')) {
-			urll = url1;
-		} else {
-			urll = url2;
-		}
-		$.get(urll, function(data) {
-			$('#only_lesson_items').empty();
-			$('#only_lesson_items').append(data);
-		}).done(function() {
-			setTimeout(function() {
-				match_height();
-			}, 1000);
-		});
 	});
 }
 function initCreateCMSession() {

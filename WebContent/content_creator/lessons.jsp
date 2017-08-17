@@ -26,7 +26,7 @@
 %>
 
 <body class="top-navigation" id="lesson_list" data-helper='This page is used to show list of lessons. '>
-	<div id="wrapper">
+	<div id="wrapper" class='customcss_overflowy'>
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			
@@ -89,7 +89,44 @@
 				</div>
 </div>
 <div class="row card-box scheduler_margin-box">
-			 This is where we will put course context for filters
+			
+			<div class="ui-group ">
+					<h3 class="ui-group__title">Filter</h3>
+					<div class="filters button-group js-radio-button-group btn-group">
+						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
+						<%
+							ArrayList<String> arrayList = new ArrayList<>();
+						ArrayList<String> displayList = new ArrayList<>();
+							for (Lesson lesson : lessons) {
+								String cmsessionString = "NONE";
+								String cmsessionStringLong = "NONE";
+								String courseStringLong = "";
+
+								try {
+									cmsessionStringLong = lesson.getCmsessions().iterator().next().getTitle();
+									cmsessionString = cmsessionStringLong.replaceAll(" ", "").toLowerCase();
+									courseStringLong = lesson.getCmsessions().iterator().next().getModules().iterator().next().getCourses().iterator().next().getCategory();
+									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
+									 if(!arrayList.contains(courseString)){
+										 arrayList.add(courseString);
+										 displayList.add(courseStringLong);
+									 }
+									 
+								} catch (Exception e) {
+
+								}
+							}
+							int i = 0;
+							for (String c_category : arrayList) {
+						%>
+
+						<button class="button btn button_spaced btn-xs btn-white"
+							data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
+						<%
+						i++;}
+						%>
+					</div>
+				</div>
 			
 			</div>
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box " id='only_lesson_items'>
