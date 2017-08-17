@@ -86,7 +86,7 @@
 				</div>
 
 				<div class="col-lg-2 form-group customcss_search-box">
-					<input class="form-control quicksearch" autocomplete="off" type="text" id="quicksearch" placeholder="Search" />
+					<input class="form-control quicksearch" autocomplete="off" type="text" id="quicksearch" placeholder="Search Lesson" />
 				</div>
 </div>
 <div class="row card-box scheduler_margin-box">
@@ -97,7 +97,7 @@
 						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
 						<%
 							ArrayList<String> arrayList = new ArrayList<>();
-						ArrayList<String> displayList = new ArrayList<>();
+					     	ArrayList<String> displayList = new ArrayList<>();
 							for (Lesson lesson : lessons) {
 								String cmsessionString = "NONE";
 								String cmsessionStringLong = "NONE";
@@ -162,7 +162,7 @@
 									<img alt="image" class="customcss_img-size" src="<%=cdnPath+lesson.getImage_url()%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price customcss_product_price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <h5 class="badge badge-warning" style="font-size: 9px">Session - <%=cmsessionStringLong%></h5></small> <a href="/content/creator/lesson.jsp?lesson_id=<%=lesson.getId()%>" class="product-name"><%=lesson.getTitle()%> </a>
+									<span class="product-price customcss_product_price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <h5 class="badge badge-warning customcss_font-size">Session - <%=cmsessionStringLong%></h5></small> <a href="/content/creator/lesson.jsp?lesson_id=<%=lesson.getId()%>" class="product-name"><%=lesson.getTitle()%> </a>
 
 									<div class="small m-t-xs">
 										<%=(lesson.getDescription() != null && lesson.getDescription().length() > 100)? lesson.getDescription().substring(0, 100): lesson.getDescription()%>

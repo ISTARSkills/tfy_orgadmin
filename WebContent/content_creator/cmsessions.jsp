@@ -63,7 +63,7 @@
 				</div>
 				<div class="col-lg-2 form-group customcss_search-box">
 					<input class="form-control quicksearch" autocomplete="off" type="text"
-						id="quicksearch" placeholder="Search" />
+						id="quicksearch" placeholder="Search Session" />
 				</div>
 
 			</div>
@@ -74,15 +74,13 @@
 					<div class="filters button-group js-radio-button-group btn-group">
 						<button class="button btn button_spaced btn-xs btn-danger" data-filter="*">show all</button>
 						<%
-							ArrayList<String> arrayList = new ArrayList<>();
+						ArrayList<String> arrayList = new ArrayList<>();
 						ArrayList<String> displayList = new ArrayList<>();
 							for (Cmsession cmsession : cmsessions) {
 								String course_category = "";
 
 								try {
-									/* String courseStringLong = cmsession.getCourses().iterator().next().getCourseName();
-									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
-									 course_category = cmsession.getCourses().iterator().next().getCategory(); */
+									
 									 String moduleStringLong = cmsession.getModules().iterator().next().getModuleName();
 									 String moduleString = moduleStringLong.replaceAll(" ", "").toLowerCase();
 									 String courseStringLong = cmsession.getModules().iterator().next().getCourses().iterator().next().getCourseName();
@@ -138,7 +136,7 @@
 								</div>
 								<div class="product-desc">
 									<span class="product-price customcss_product_price"><span
-										class="label label-primary" style="font-size: 9px;">Course Name - <%=courseStringLong%></span>
+										class="label label-primary customcss_font-size">Course Name - <%=courseStringLong%></span>
 									</span> <a
 										href="/content_creator/cmsession.jsp?session=<%=cmsession.getId()%>"
 										class="product-name"><%=cmsession.getTitle()%> </a>
