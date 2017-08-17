@@ -294,7 +294,10 @@ function readyFn(jQuery) {
 		courseEditWizard();
 		break;
 	case 'course_tree':
-		skillTreeWizard();
+		courseTreeWizard();
+		break;
+	case 'course_skill_tree':	
+		courseSkillTreeWizard();
 		break;
 	case 'module_edit':
 		moduleEditVariables();
@@ -8265,8 +8268,35 @@ function match_height() {
 jQuery.expr[':'].icontains = function(a, i, m) {
 	return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
-function skillTreeWizard() {
+function courseTreeWizard() {
 	$('#courseTree').jstree();
+}
+
+function courseSkillTreeWizard() {
+
+	$('#skillTree').jstree();
+	
+	$('#course_skill_course_selector').unbind().on('change',function(){
+		var courseId = $('#course_skill_course_selector option:selected').val();
+		$('#admin_page_loader').show();
+		var url = "/skill_partails/course_skill_tree_partial.jsp";
+		 $.ajax({
+		        type: "POST",
+		        url: url,
+		        data: {course_id:courseId},
+		        success: function(data) {	
+		        	$('#skillTree').jstree().destroy();
+		        	$('#skillTree').empty();		        	
+		        	$('#skillTree').append(data);		        	
+		        	$('#skillTree').jstree();
+		        	$('#admin_page_loader').hide();
+		        }		        
+		    });
+	});
+	
+	$('#course_skill_course_selector').val($('#course_skill_course_selector option:first').val()).change();
+	 
+	
 }
 
 function initCreateModule() {
@@ -8356,8 +8386,7 @@ function initSearchFilter(parent, children) {
 
 var bbc;
 function initIsotopFunction() {
-	var filter_list = []
-	
+	var filter_list = []	
 	var $grid = $('.grid').isotope({
 		  itemSelector: '.element-item',
 		  layoutMode: 'fitRows',
