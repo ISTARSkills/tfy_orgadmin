@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.dao.entities.Question"%>
 <%@page import="com.viksitpro.core.dao.entities.Lesson"%>
 <%@page import="com.viksitpro.core.skill.pojo.LearningObjective"%>
 <%@page import="com.viksitpro.core.skill.pojo.SessionLevelSkill"%>
@@ -5,13 +6,13 @@
 <%@page import="com.viksitpro.core.skill.pojo.CourseLevelSkill"%>
 <%@page import="com.viksitpro.core.skill.services.CoreSkillService"%>
 <%
-int courseId = Integer.parseInt(request.getParameter("course_id"));
+int assessId = Integer.parseInt(request.getParameter("assessment_id"));
 %>
 
 <%								
 										
 												CoreSkillService skillService = new CoreSkillService();																							
-												CourseLevelSkill courseSkill = skillService.getShellSkillTreeForCourse(courseId);
+												CourseLevelSkill courseSkill = skillService.getShellTreeForAssessment(assessId);
 												if(courseSkill!=null && courseSkill.getModuleLevelSkill()!=null )
 												{
 											%>
@@ -41,13 +42,12 @@ int courseId = Integer.parseInt(request.getParameter("course_id"));
 																										%>
 																					<li data-title="Learning Objective" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=learningObjective.getId() %> - <%=learningObjective.getLearningObjectiveName()%>
 																					<ul><%
-																						for(Lesson lesson : learningObjective.getLessons())	
+																						for(Question lesson : learningObjective.getQuestions())	
 																						{
 																							%>
-																							<li data-title="Lesson" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lesson.getId() %> - <%=lesson.getTitle()%>
+																							<li data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lesson.getId() %> - <%=lesson.getQuestionText().trim()%>
 																							<%
-																						}
-																					
+																						}																					
 																					%></ul><%
 																						}
 																					%>
@@ -74,7 +74,7 @@ int courseId = Integer.parseInt(request.getParameter("course_id"));
 													%>
 													<ul>
 													<li data-jstree='{"icon":"glyphicon glyphicon-asterisk"}'>
-														<span class="label label-danger">No Skill Tree Available For Course</span>
+														<span class="label label-danger">No Skill Tree Available For Context</span>
 													</li>
 													</ul>	
 													<%

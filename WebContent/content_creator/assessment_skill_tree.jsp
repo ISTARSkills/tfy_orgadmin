@@ -1,3 +1,6 @@
+<%@page import="com.viksitpro.core.skill.pojo.DeliveryAssessmentTree"%>
+<%@page import="com.viksitpro.core.dao.entities.Assessment"%>
+<%@page import="com.viksitpro.core.dao.entities.AssessmentDAO"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.skill.pojo.LearningObjective"%>
@@ -25,6 +28,7 @@
 <%
 CourseDAO courseDao = new CourseDAO();
 List<Course> courses = courseDao.findAll();
+
 %>
 <style>
 .jstree-anchor {
@@ -37,7 +41,7 @@ List<Course> courses = courseDao.findAll();
 }
 </style>
 <link rel="stylesheet"	href="//static.jstree.com/3.3.4/assets/dist/themes/default/style.min.css" />
-<body class="top-navigation" id="course_skill_tree" data-helper='This page is used to show skill tree of Courses.'>
+<body class="top-navigation" id="assessment_skill_tree" data-helper='This page is used to show skill tree of Context'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
@@ -45,26 +49,57 @@ List<Course> courses = courseDao.findAll();
 			<% 
 			   String[] brd = {"Dashboard","Skill Administration"};
 			%>
-			<%=UIUtils.getPageHeader("Course Skill Tree", brd) %>
-				
-				
+			<%=UIUtils.getPageHeader("Assessment Skill Tree", brd) %>
 
 		<div class="row card-box scheduler_margin-box">
 
 				<div class="ui-group">
 					<h3 class="ui-group__title">Filter</h3>
+					<div class="row card-box scheduler_margin-box">
+			
+			<div class="col-md-4">
+                                    <p>
+                                       Select Course
+                                    </p>
+                                    <select class="select2_demo_1 form-control" id="assessment_skill_course_selector" title ="Select Course to get assessments under that course">
+                                        <%
+                                        for(Course course : courses)
+                                        {
+                                        	%>
+                                        	<option value="<%=course.getId()%>"><%=course.getCourseName()%></option>
+                                        	<%
+                                        }	
+                                        %>
+                                    </select>
+             </div>
+           	 </div>
 					<div class="filters button-group js-radio-button-group btn-group">						
 						<%
-							DBUTILS util = new DBUTILS();	
-							String getCourses = "select id, course_name from course order by course_name";
+						DBUTILS util = new DBUTILS();
+						CoreSkillService serv = new CoreSkillService();
+						
+						String getCourses = "select id, course_id, assessmenttitle from assessment order by assessmenttitle";
 						List<HashMap<String	, Object>> courseData = util.executeQuery(getCourses);
 						for(HashMap<String	, Object> row: courseData){
+							int assessmentId = (int)row.get("id");
+							DeliveryAssessmentTree assessmentTree = serv.getDeliveryTreeForAssessment(assessmentId);
+							String buttonClass = "btn-warning";
+							boolean isValid = false;
+							String error="";
+							if(assessmentTree!=null && assessmentTree.isValid())
+							{
+								buttonClass ="btn-white";
+								isValid = true;
+							}
+							if(!isValid)
+							{
+								error="One or more question is not mapped to Learning Objective.";
+							}	
 						%>
 
-						<button class="button btn btn-white button_spaced btn-xs course_skill_course_selector"
-							data-course_id="<%=row.get("id").toString()%>"><%=row.get("course_name").toString()%></button>
-						<%
-							
+						<button title="<%=error%>" class="button btn <%=buttonClass%> button_spaced btn-xs assessment_skill_assessment_selector"
+						data-course_id="<%=row.get("course_id").toString() %>" data-is_valid="<%=isValid%>"	data-assessment_id="<%=row.get("id").toString()%>" style="display:none"><%=row.get("assessmenttitle").toString()%></button>
+						<%							
 							}
 						%>
 					</div>
@@ -77,29 +112,27 @@ List<Course> courses = courseDao.findAll();
 			<div class="row">
 			<div class="col-md-6">	
 			<div class="ibox-title">
-                                    <h5>Course Skill Tree</h5>
+                                    <h5>Assessment Skill Tree</h5>
                                     
                                 </div>
 							<div class="ibox-content">
-								<div id="skillTree">
+								<div id="assessment_tree">
 									
-								</div>
+								</div> 
 							</div>
 			</div>
 			<div class="col-md-6">	
 			<div class="ibox-title">
-                                    <h5>Course Delivery Tree</h5>
+                                    <h5>Assessment Delivery Tree</h5>
                                     
                                 </div>
 							<div class="ibox-content">
-								<div id="course_delivery_tree">
+								<div id="assessment_delivery_tree">
 									
 								</div> 
 							</div>
 			</div>				
-			</div>	
-							
-						
+			</div>						
 			</div>
 			
 		</div>

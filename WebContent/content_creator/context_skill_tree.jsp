@@ -26,18 +26,8 @@
 CourseDAO courseDao = new CourseDAO();
 List<Course> courses = courseDao.findAll();
 %>
-<style>
-.jstree-anchor {
-    /*enable wrapping*/
-    white-space : normal !important;
-    /*ensure lower nodes move down*/
-    height : auto !important;
-    /*offset icon width*/
-    padding-right : 24px;
-}
-</style>
 <link rel="stylesheet"	href="//static.jstree.com/3.3.4/assets/dist/themes/default/style.min.css" />
-<body class="top-navigation" id="course_skill_tree" data-helper='This page is used to show skill tree of Courses.'>
+<body class="top-navigation" id="context_skill_tree" data-helper='This page is used to show skill tree of Context'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
@@ -45,9 +35,7 @@ List<Course> courses = courseDao.findAll();
 			<% 
 			   String[] brd = {"Dashboard","Skill Administration"};
 			%>
-			<%=UIUtils.getPageHeader("Course Skill Tree", brd) %>
-				
-				
+			<%=UIUtils.getPageHeader("Context Skill Tree", brd) %>
 
 		<div class="row card-box scheduler_margin-box">
 
@@ -55,14 +43,14 @@ List<Course> courses = courseDao.findAll();
 					<h3 class="ui-group__title">Filter</h3>
 					<div class="filters button-group js-radio-button-group btn-group">						
 						<%
-							DBUTILS util = new DBUTILS();	
-							String getCourses = "select id, course_name from course order by course_name";
+						DBUTILS util = new DBUTILS();	
+						String getCourses = "select id, title from context order by title";
 						List<HashMap<String	, Object>> courseData = util.executeQuery(getCourses);
 						for(HashMap<String	, Object> row: courseData){
 						%>
 
-						<button class="button btn btn-white button_spaced btn-xs course_skill_course_selector"
-							data-course_id="<%=row.get("id").toString()%>"><%=row.get("course_name").toString()%></button>
+						<button class="button btn btn-white button_spaced btn-xs context_skill_context_selector"
+							data-context_id="<%=row.get("id").toString()%>"><%=row.get("title").toString()%></button>
 						<%
 							
 							}
@@ -74,31 +62,12 @@ List<Course> courses = courseDao.findAll();
 			
 			
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
-			<div class="row">
-			<div class="col-md-6">	
-			<div class="ibox-title">
-                                    <h5>Course Skill Tree</h5>
-                                    
-                                </div>
+				
 							<div class="ibox-content">
-								<div id="skillTree">
-									
-								</div>
-							</div>
-			</div>
-			<div class="col-md-6">	
-			<div class="ibox-title">
-                                    <h5>Course Delivery Tree</h5>
-                                    
-                                </div>
-							<div class="ibox-content">
-								<div id="course_delivery_tree">
+								<div id="context_tree">
 									
 								</div> 
 							</div>
-			</div>				
-			</div>	
-							
 						
 			</div>
 			
