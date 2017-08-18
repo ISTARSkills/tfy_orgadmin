@@ -62,36 +62,7 @@
 				String[] brd = { "Dashboard", "Questions" };
 			%>
 			<%=UIUtils.getPageHeader(type+" Question", brd)%>
-			<%-- <div class="row wrapper border-bottom white-bg page-heading"
-				style="padding-left: 30px; padding-bottom: 13px;">
-				<div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Question
-						<%
-							} else {
-						%>
-						Edit Question
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/questions.jsp">Question(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Session
-						</strong></li>
-					</ol>
-				</div>
-			</div> --%>
+			
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 				<div class="row">
 					<div class="col-lg-12">

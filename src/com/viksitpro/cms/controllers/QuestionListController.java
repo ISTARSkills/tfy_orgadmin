@@ -31,14 +31,18 @@ public class QuestionListController extends HttpServlet {
 
 		if (request.getParameter("key") != null && request.getParameter("key").equalsIgnoreCase("get_all_question")) {
 
-			String limit = "11";
+			String limit = "10";
 			String offset = "0";
 			offset = request.getParameter("offset") != null ? request.getParameter("offset") : "0";
-			
-			String sql = "SELECT 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level, 	COALESCE ( 		string_agg (skill_objective. NAME, ', '), 		'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 	) AS skills, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	question LEFT JOIN question_skill_objective ON ( 	question. ID = question_skill_objective.questionid ) LEFT JOIN skill_objective ON ( 	skill_objective. ID = question_skill_objective.learning_objectiveid ) GROUP BY 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level  ORDER BY 	ID DESC LIMIT 11 OFFSET '"+offset+"';";
+			int offsetnew = 0;
+			if(!offset.equalsIgnoreCase("0")) {
+				offsetnew =  Integer.parseInt(offset) -1;
+				offsetnew = offsetnew * 11;
+			}
+			String sql = "SELECT 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level, 	COALESCE ( 		string_agg (skill_objective. NAME, ', '), 		'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 	) AS skills, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	question LEFT JOIN question_skill_objective ON ( 	question. ID = question_skill_objective.questionid ) LEFT JOIN skill_objective ON ( 	skill_objective. ID = question_skill_objective.learning_objectiveid ) GROUP BY 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level  ORDER BY 	ID DESC LIMIT 11 OFFSET '"+offsetnew+"';";
 			
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
-			//System.err.println(sql);
+			System.err.println(sql);
 			if (question_lists.size() != 0) {
 				for (HashMap<String, Object> question_list : question_lists) {
 					int pageination = (int) question_list.get("total_rows") / 11;
@@ -61,6 +65,12 @@ public class QuestionListController extends HttpServlet {
 		}if (request.getParameter("key") != null && request.getParameter("key").equalsIgnoreCase("difficult_level_type")) {
 			String offset = "0";
 			offset = request.getParameter("offset") != null ? request.getParameter("offset") : "0";
+			int offsetnew = 0;
+			if(!offset.equalsIgnoreCase("") && !offset.equalsIgnoreCase("0")) {
+				offsetnew =  Integer.parseInt(offset) -1;
+				offsetnew = offsetnew * 11;
+			}
+			
 			String difficult_level = request.getParameter("difficult_level") != null ? request.getParameter("difficult_level") : "0";
 			String context_filter = request.getParameter("context_filter") != null ? request.getParameter("context_filter") : "0";
 			String searchTearm = "";
@@ -75,7 +85,7 @@ public class QuestionListController extends HttpServlet {
 			}
 			
 			String sql = "SELECT DISTINCT 	CAST (COUNT(*) OVER() AS INTEGER) AS total_rows, 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level, 	COALESCE ( 		string_agg (skill_objective. NAME, ', '), 		'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 	) AS skills FROM 	question LEFT JOIN question_skill_objective ON ( 	question. ID = question_skill_objective.questionid ) LEFT JOIN skill_objective ON ( 	skill_objective. ID = question_skill_objective.learning_objectiveid ) "+searchTearm+" GROUP BY 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level ORDER BY 	ID DESC LIMIT 11 OFFSET '"
-					+ offset + "';";
+					+ offsetnew + "';";
 			System.err.println(sql);
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
 			

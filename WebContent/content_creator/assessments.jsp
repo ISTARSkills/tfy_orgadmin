@@ -129,7 +129,7 @@
 										class="product-price customcss_product_price customcss_font-size"><span
 										class="label label-primary"><%=courseStringLong%></span> </span> <small
 										class="text-muted"> </small> <a
-										href="/content_creator/assessment.jsp?course=<%=assessment.getId()%>"
+										href="/content_creator/assessment.jsp?assessment=<%=assessment.getId()%>"
 										class="product-name"><%=assessment.getAssessmenttitle()%>
 									</a>
 
@@ -158,7 +158,7 @@
 										</div>
 										<div class="col-md-5 text-center">
 										
-										<a href="/content_creator/assessment.jsp?course=<%=assessment.getId()%>"
+										<a href="/content_creator/assessment.jsp?assessment=<%=assessment.getId()%>"
 											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 											class="fa fa-pencil"></i>
 										</a>
