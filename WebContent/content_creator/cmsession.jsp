@@ -25,7 +25,9 @@
 	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
 	String sessionName = "Create Session";
 	if (request.getParameterMap().containsKey("session")) {
-		cmsession = (new CmsessionDAO()).findById(Integer.parseInt(request.getParameter("session")));
+		CmsessionDAO cmsessionDAO = new CmsessionDAO();
+		cmsessionDAO.getSession().clear();
+		cmsession = cmsessionDAO.findById(Integer.parseInt(request.getParameter("session")));
 		is_new = false;
 		image_url = cdnPath.substring(0,cdnPath.length())+cmsession.getImage_url();
 		sessionName = cmsession.getTitle();
@@ -34,41 +36,16 @@
 <body class="top-navigation" id="session_edit"
 	data-helper='This page is used to edit an individual session.'>
 	<div id="wrapper">
-		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-				<%-- <div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Session
-						<%
-							} else {
-						%>
-						<%=cmsession.getTitle()%>
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/cmsessions.jsp">Session(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Session
-						</strong></li>
-					</ol>
-				</div> --%>
+		<jsp:include page="../inc/navbar.jsp"></jsp:include>
+	
+				
 				<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
 			<%=UIUtils.getPageHeader(sessionName, brd)%>
-			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row card-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box wizard-padding">
+				<div class="row">
 							<div class="ibox-content">
 								<h2>
 									<%
@@ -76,7 +53,7 @@
 									%>New Session<%
 										} else {
 									%>Session name:
-									<%=cmsession.getTitle()%>
+									<%=cmsession.getTitle().trim()%>
 									<%
 										}
 									%>
@@ -95,33 +72,15 @@
 													<label>Name *</label> <input id="cmsession_name_idd"
 														name="cmsession_name" type="text"
 														class="form-control required" <%if (!is_new) {%>
-														value="<%=cmsession.getTitle()%>" <%}%>>
+														value="<%=cmsession.getTitle().trim()%>" <%}%>>
 												</div>
 												<div class="form-group">
 													<label>Description *</label>
 													<textarea class="form-control required"
-														name="cmsession_desc" rows="3" id="cmsession_desc_idd"><%if (!is_new) {%><%=cmsession.getDescription()%><%}%></textarea>
+														name="cmsession_desc" rows="3" id="cmsession_desc_idd"><%if (!is_new) {%><%=cmsession.getDescription().trim()%><%}%></textarea>
 												</div>
 											</div>
 											<div class="col-lg-4">
-												<%-- <div class="form-group" id="filezz">
-													<input id="fileupload" type="file" accept="image/png"
-														name="files[]" data-url="/content/upload_media" multiple>
-													<img src='<%=image_url%>' class="form-group"
-														id='cmsession_image'
-														style="float: right; /* width: 100%; */ height: 200px;">
-												</div> --%>
-											</div>
-										</div>
-									</fieldset>
-
-									<h1>Media Upload</h1>
-									<fieldset class="fieldset-border-margin">
-										<h2>Session Image Upload</h2>
-										<div class="row">
-											<div class="col-lg-12">
-										<div class="row">
-											<div class="col-md-4">
 												<div class="form-group" id="filezz">
 													<input id="fileupload" type="file" accept="image/png"
 														name="files[]" multiple>
@@ -129,52 +88,53 @@
 													<button type="button" id='uploadImage'
 														class="btn btn-danger btn-xs m-t-xs">Upload Image</button>
 												</div>
-											</div>
-											<div class="col-md-8">
-												<h4>Preview image</h4>
+												<br/>
 												<img src='<%=image_url%>' class="form-group"
 													id='session_image'>
 											</div>
 										</div>
-									</div>
-										</div>
 									</fieldset>
-
 									<h1>Lessons</h1>
-									<fieldset class="fieldset-border-margin">
-									<div class="col-md-6">
-										<ul class="list-unstyled file-list" id="editable">
+							<fieldset class="fieldset-border-margin">
+								<div class="col-md-6">
+									<div class="ibox-content custom-scroll">
+										<ul class="list-group custom-li-padding" id="editable">
 											<%
 												if (!is_new) {
-													String sql = "select * from lesson_cmsession where cmsession_id = "+cmsession.getId();
+													String sql = "select * from lesson_cmsession where cmsession_id = " + cmsession.getId();
 													List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 													for (HashMap<String, Object> item : items) {
 														Lesson lesson = (new LessonDAO()).findById(Integer.parseInt(item.get("lesson_id").toString()));
 														if (lesson.getId() >= 0 && !lesson.getIsDeleted()) {
 											%>
-											<li class="something" data-lesson_id="<%=lesson.getId()%>"><i
-												class="js-remove fa fa-trash-o"> </i> | <%=lesson.getId()%>
-												| <%=lesson.getTitle()%></li>
+											<li class="list-group-item something"
+												data-lesson_id="<%=lesson.getId()%>"><span
+												class="badge badge-primary"><i
+													class="js-remove fa fa-trash-o"> </i></span> <%=lesson.getId()%> |
+												<%=lesson.getTitle()%></li>
 											<%
-												}
+														}
 													}
 												}
 											%>
 										</ul>
-										</div>
-										<div class="col-md-6">
-									<input id="searchLessons"
-										placeholder="Search for lesson by title, description.." style="margin-bottom: 5px; min-width: 449px;">
-									<div class="ibox float-e-margins">
-										<div class="ibox-content text-center p-md"
-											id="searchLessonsResult">
-
-										</div>
 									</div>
 								</div>
-									</fieldset>
-								</form>
-							</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input id="searchLessons" type="text" class="form-control"
+												placeholder="Search for lesson by title, description..">
+										</div>
+									</div>
+										<div class="ibox-content no-padding custom-scroll">
+											<ul class="list-group custom-li-padding" id="searchLessonsResult">
+											</ul>
+										</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

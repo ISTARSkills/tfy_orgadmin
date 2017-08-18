@@ -16386,6 +16386,7 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 .fieldset-border-margin {
 	margin-top: 1px !important;
+	width: 98% !important;
 }
 
 #searchModules {
@@ -16400,14 +16401,17 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 #course_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 #module_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 #session_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 .wizard>.steps .done a, .wizard>.steps .done a:hover, .wizard>.steps .done a:active
@@ -16449,4 +16453,27 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 .customcss_font-size {
 	font-size: 9px;
+}
+
+.custom-li-padding>li {
+	padding: 10px 15px !important;
+	display: block !important;
+}
+
+.custom-li-padding>li .badge {
+	font-size: 15px !important;
+}
+
+.custom-scroll {
+	overflow: auto;
+	max-height: 50vh;
+}
+
+.custom-badge {
+	background-color: #1ab394 !important;
+	color: white !important;
+}
+
+.wizard-padding {
+	padding: 0 20px 0 20px !important;
 }

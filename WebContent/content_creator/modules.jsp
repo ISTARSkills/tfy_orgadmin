@@ -37,13 +37,8 @@
 				String[] brd = { "Dashboard", "Modules" };
 			%>
 			<%=UIUtils.getPageHeader("Modules Grid", brd)%>
-
 			<div class="row card-box scheduler_margin-box">
-				
-				<div class="col-lg-1">
-					<!-- <button class="btn btn-primary dim" type="button" id="create_module" style="float: right;">
-						<i class="fa fa-plus-circle" title="Create a Module"></i>&nbsp;Create
-					</button> -->
+				<div class="col-lg-2">
 					<button type="button" id="create_module"
 						class="btn btn-w-m btn-danger">
 						<i class="fa fa-plus"></i> Create Module
@@ -54,9 +49,7 @@
 						id="quicksearch" placeholder="Search Modules" />
 				</div>
 			</div>
-
 			<div class="row card-box scheduler_margin-box">
-				
 				<div class="ui-group ">
 					<h3 class="ui-group__title">Filter</h3>
 					<div class="filters button-group js-radio-button-group btn-group">
@@ -66,7 +59,6 @@
 						ArrayList<String> displayList = new ArrayList<>();
 							for (Module module : modules) {
 								String course_category = "";
-
 								try {
 									String courseStringLong = module.getCourses().iterator().next().getCourseName();
 									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "").toLowerCase();
@@ -75,7 +67,6 @@
 										 arrayList.add(courseString);
 										 displayList.add(courseStringLong);
 									 }
-									 
 								} catch (Exception e) {
 
 								}
@@ -93,7 +84,6 @@
 				</div>
 				
 				</div>
-
 			<div
 				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 				<div class="row grid">
@@ -112,7 +102,6 @@
 								if (module.getModule_description().length() > 100) {
 									moduleDescription = module.getModule_description().substring(0, 100);
 								}
-
 								try {
 									courseStringLong = module.getCourses().iterator().next().getCourseName();
 									courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "")
@@ -122,11 +111,9 @@
 
 								}
 					%>
-
 					<div class="col-md-2  element-item pageitem <%=courseString%>">
 						<div class="ibox product-box customcss_height-prod-box">
 							<div class="ibox-content customcss_ibox_product_border">
-
 								<div class="imgWrap">
 									<img alt="image" class="customcss_img-size" src="<%=img_url%>">
 								</div>
@@ -136,7 +123,6 @@
 									</span> <a
 										href="/content_creator/edit_module.jsp?module=<%=module.getId()%>"
 										class="product-name"><%=module.getModuleName()%> </a>
-
 									<div class="small m-t-xs">
 										<%=moduleDescription%>
 									</div>
@@ -150,26 +136,20 @@
 										</a>
 									</div>
 									<div class="col-md-6 text-center">
-										<a data-module='<%=module.getId()%>' href="#"
-											class="btn btn-xs btn-outline btn-primary delete_module customcss_lesson-button_btn">Delete
+										<a data-entity_id='<%=module.getId()%>' data-delete_type='module'
+											class="btn btn-xs btn-outline btn-primary master_delete customcss_lesson-button_btn">Delete
 											<i class="fa fa-trash-o"></i>
 										</a>
 									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 					<%
 						}
 						}
 					%>
-
 				</div>
-
-
-
-
 			</div>
 		</div>
 	</div>

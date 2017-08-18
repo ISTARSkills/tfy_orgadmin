@@ -52,10 +52,9 @@ public class ModuleUpdateController extends HttpServlet {
 				&& (request.getParameterMap().containsKey("module_name"))
 				&& (request.getParameterMap().containsKey("module_desc"))
 				&& (request.getParameterMap().containsKey("session_list"))
-				&& (request.getParameterMap().containsKey("module_image"))
-				&& (request.getParameterMap().containsKey("skill_objective_list"))) {
+				&& (request.getParameterMap().containsKey("module_image"))) {
 			String[] cmsession_ids = request.getParameter("session_list").toString().split(",");
-			String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
+			//String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
 			ModuleServices moduleServices = new ModuleServices();
 			ModuleDAO moduleDAO = new ModuleDAO();
 			Module module = moduleDAO.findById(Integer.parseInt(request.getParameter("module_id").toString()));
@@ -68,7 +67,7 @@ public class ModuleUpdateController extends HttpServlet {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
-			module = moduleServices.saveModuleSkillObjectivesMapping(module, moduleDAO, skill_objective_ids);
+			//module = moduleServices.saveModuleSkillObjectivesMapping(module, moduleDAO, skill_objective_ids);
 			module = moduleServices.saveModuleDetails(module, moduleDAO);
 		}
 

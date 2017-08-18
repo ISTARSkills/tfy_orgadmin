@@ -24,53 +24,30 @@
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0, cdnPath.length() - 1);
 	String courseName = "Create Course";
+	String context_name ="";
 	if (request.getParameterMap().containsKey("course")) {
-		course = (new CourseDAO()).findById(Integer.parseInt(request.getParameter("course")));
+		CourseDAO courseDAO = new CourseDAO();
+		courseDAO.getSession().clear();
+		course = courseDAO.findById(Integer.parseInt(request.getParameter("course")));
 		is_new = false;
 		image_url = cdnPath.substring(0, cdnPath.length()) + course.getImage_url();
 		courseName = course.getCourseName();
+		context_name = course.getCategory()!=null?course.getCategory():"";
+		System.out.print(">>>> "+ context_name);
 	}
 %>
 <body class="top-navigation" id="course_edit"
 	data-helper='This page is used to edit an individual course.'>
 	<div id="wrapper">
-		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-
-			<%-- <div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Course
-						<%
-							} else {
-						%>
-						<%=course.getCourseName()%>
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/courses.jsp">Course(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Course
-						</strong></li>
-					</ol>
-				</div> --%>
+		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
 			<%=UIUtils.getPageHeader(courseName, brd)%>
 
-			<div class="wrapper wrapper-content animated fadeInRight">
-				<div class="row card-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box wizard-padding">
+				<div class="row">
 					<div class="ibox-content">
 						<h2>
 							<%
@@ -88,7 +65,7 @@
 						<input type='hidden' name='cmsID' value='<%=course.getId()%>' />
 						<input type='hidden' name='baseProdURL' value='<%=baseProdURL%>' />
 						<form id="form" action="#" class="wizard-big">
-							<h1>Basic</h1>
+							<h1>Basic Details</h1>
 							<fieldset class="fieldset-border-margin">
 								<h2>Course Information</h2>
 								<div class="row">
@@ -96,28 +73,47 @@
 										<div class="form-group">
 											<label>Name *</label> <input id="course_name_idd"
 												name="course_name" type="text" class="form-control required"
-												<%if (!is_new) {%> value="<%=course.getCourseName()%>" <%}%>>
+												<%if (!is_new) {%> value="<%=course.getCourseName().trim()%>" <%}%>>
 										</div>
 										<div class="form-group">
 											<label>Description *</label>
-											<textarea class="form-control required" name="course_desc"
-												rows="3" id="course_desc_idd">
-												<%
+											<%
+												String desc = "";
 													if (!is_new) {
-												%><%=course.getCourseDescription()%>
-												<%
+														desc = course.getCourseDescription().trim();
 													}
 												%>
-											</textarea>
+											<textarea class="form-control required" name="course_desc"
+												rows="3" id="course_desc_idd"><%=desc %></textarea>
 										</div>
 										<div class="form-group">
-											<label>Category *</label> <input id="course_category_idd"
-												name="course_category" type="text"
-												class="form-control required" <%if (!is_new) {%>
-												value="<%=course.getCategory()%>" <%}%>>
+										<label>Category *</label> 
+											<select name="course_category" 	class="form-control" id="course_category_idd">
+										<% 
+										List<Context> contexts = new ContextDAO().findAll();
+										for(Context context:contexts){
+										%>
+											
+											<option <%=context_name.equalsIgnoreCase(context.getTitle())?"selected":"" %> value="<%=context.getId()%>"><%=context.getTitle() %></option>
+											
+											<%}%>
+											
+												
+												
+											</select>
 										</div>
 									</div>
 									<div class="col-lg-4">
+									<h2>Image Upload</h2>
+									<div class="form-group" id="filezz">
+													<input id="fileupload" type="file" accept="image/png"
+														name="files[]" multiple>
+														<!-- <input type="button" value="Upload" id='uploadImage'/> -->
+													<button type="button" id='uploadImage' class="btn btn-danger btn-xs m-t-xs">Upload Image</button>
+												</div>
+												<br/>
+												<img src='<%=image_url%>'
+														id='course_image' alt="Course Image">
 										<%-- <div class="form-group" id="filezz">
 													<input id="fileupload" type="file" accept="image/png" name="files[]" data-url="/content/upload_media" multiple> <img src='<%=image_url%>' class="form-group" id='course_image' style="float: right; /* width: 100%; */ height: 200px;">
 												</div> --%>
@@ -125,60 +121,44 @@
 									</div>
 								</div>
 							</fieldset>
-							<h1>Media Upload</h1>
+							<h1>Map Modules</h1>
 							<fieldset class="fieldset-border-margin">
-								<h2>Course Image Upload</h2>
-								<div class="row">
-									<div class="col-lg-12">
-										<div class="row">
-											<div class="col-md-4">
-												<div class="form-group" id="filezz">
-													<input id="fileupload" type="file" accept="image/png"
-														name="files[]" multiple>
-														<!-- <input type="button" value="Upload" id='uploadImage'/> -->
-													<button type="button" id='uploadImage' class="btn btn-danger btn-xs m-t-xs">Upload Image</button>
-												</div>
-											</div>
-											<div class="col-md-8">
-												<h4>Preview image</h4>
-												<img src='<%=image_url%>' class="form-group"
-														id='course_image'>
-											</div>
-										</div>
+								<div class="col-md-6">
+									<div class="ibox-content custom-scroll">
+										<ul class="list-group custom-li-padding" id="editable">
+											<%
+												if (!is_new) {
+													String sql = "select * from module_course where course_id = " + course.getId();
+													List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
+													for (HashMap<String, Object> item : items) {
+														Module module = (new ModuleDAO()).findById(Integer.parseInt(item.get("module_id").toString()));
+														if (module.getId() >= 0 && !module.getIsDeleted()) {
+											%>
+											<li class="list-group-item something"
+												data-module_id="<%=module.getId()%>"><span class="badge badge-primary"><i
+													class="js-remove fa fa-trash-o"> </i></span> <%=module.getId()%> |
+												<%=module.getModuleName()%></li>
+											<%
+														}
+													}
+												}
+											%>
+										</ul>
 									</div>
 								</div>
-							</fieldset>
-
-							<h1>Modules</h1>
-							<fieldset class="fieldset-border-margin">
 								<div class="col-md-6">
-									<ul class="list-unstyled file-list" id="editable">
-										<%
-											if (!is_new) {
-												String sql = "select * from module_course where course_id = " + course.getId();
-												List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-												for (HashMap<String, Object> item : items) {
-													Module module = (new ModuleDAO()).findById(Integer.parseInt(item.get("module_id").toString()));
-													if (module.getId() >= 0 && !module.getIsDeleted()) {
-										%>
-										<li class="something" data-module_id="<%=module.getId()%>"><i
-											class="js-remove fa fa-trash-o"> </i> | <%=module.getId()%> |
-											<%=module.getModuleName()%></li>
-										<%
-											}
-												}
-											}
-										%>
-									</ul>
-								</div>
-								<div class="col-md-6">
-									<input id="searchModules"
-										placeholder="Search for modules by title, description..">
-									<div class="ibox float-e-margins">
-										<div class="ibox-content text-center p-md"
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input id="searchModules" type="text" class="form-control"
+												placeholder="Search for modules by title, description..">
+										</div>
+									</div>
+									<div class="ibox-content no-padding custom-scroll">
+										<ul class="list-group custom-li-padding"
 											id="searchModulesResult">
+										</ul>
 
-											<!-- <h4 class="m-b-xxs">Top navigation, centered content layout</h4>
+										<!-- <h4 class="m-b-xxs">Top navigation, centered content layout</h4>
 								                    <small>(optional layout)</small>
 								                    <p>Available configure options</p>
 								                    
@@ -193,7 +173,6 @@
 								                        	<a href="dashboard_4.html"><img class="img-responsive img-shadow" src="img/dashboard4_2.jpg" alt=""></a>
 								                        </div>
 								                    </div> -->
-										</div>
 									</div>
 								</div>
 							</fieldset>

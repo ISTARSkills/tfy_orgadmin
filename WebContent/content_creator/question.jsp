@@ -1,3 +1,4 @@
+<%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="com.viksitpro.cms.services.AssessmentEngineService"%>
 <%@page import="com.viksitpro.core.dao.entities.ContextDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.Context"%>
@@ -57,7 +58,11 @@
 	<div id="wrapper">
 		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-			<div class="row wrapper border-bottom white-bg page-heading"
+		<%
+				String[] brd = { "Dashboard", "Questions" };
+			%>
+			<%=UIUtils.getPageHeader(type+" Question", brd)%>
+			<%-- <div class="row wrapper border-bottom white-bg page-heading"
 				style="padding-left: 30px; padding-bottom: 13px;">
 				<div class="col-lg-6">
 					<h2>
@@ -86,20 +91,15 @@
 						</strong></li>
 					</ol>
 				</div>
-			</div>
-			<div class="wrapper wrapper-content animated fadeInRight">
+			</div> --%>
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="ibox">
+						<div class="ibox no-margins">
 							<div class="ibox-title">
 								<h5><%=type%>
 									a Question
 								</h5>
-								<div class="ibox-tools">
-									<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
-									</a> <a class="close-link"> <i class="fa fa-times"></i>
-									</a>
-								</div>
 							</div>
 							<div class="ibox-content">
 								<form class="form-horizontal" action="../question_engine"
@@ -111,20 +111,20 @@
 										type='hidden' name='operation_mode' value='<%=type%>' />
 
 									<div class="form-group">
-
-										<div class="col-lg-12">
+                                <div class="col-lg-12">
+										<div class="col-lg-6">
 											<label>Question Text</label>
 											<textarea name="question_text" id="question_text" rows="5"
-												cols="80" placeholder="Question Text.."><%=question_text%></textarea>
+												cols="80" placeholder="Question Text.."><%=question_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
 
 										</div>
-										<br>
-										<div class="col-lg-12">
+									
+										<div class="col-lg-6">
 											<label>Explanation</label>
 											<textarea name="question_explain" id="question_explain"
-												rows="3" cols="80" placeholder="Question Explaination.."><%=explanation%></textarea>
+												rows="3" cols="80" placeholder="Question Explaination.."><%=explanation.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
 										</div>
-										<br>
+										</div>
 										<div class="col-lg-6">
 											<label class="control-label">Type</label> <select
 												class="form-control m-b" id='question_type'
@@ -172,7 +172,7 @@
 												%>
 												<label>Passage</label>
 												<textarea name="question_passage" id="question_passage"
-													rows="3" cols="80" placeholder="Question Passage.."><%=comprehensive_passage_text%></textarea>
+													rows="3" cols="80" placeholder="Question Passage.."><%=comprehensive_passage_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
 											</div>
 										</div>
 										<div class="row">

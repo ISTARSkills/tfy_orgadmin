@@ -67,7 +67,7 @@ public class MediaUploadServices {
 		System.err.println(mediaUploadServices.getAnyPath("imagePath") + uui.toString() + extension);
 		System.out.println("UPLOADED" + item.getContentType());
 		System.err.println(file.getAbsolutePath());
-		out.println(mediaUploadServices.getAnyPath("media_url_path") + "course_images/" + file.getName());
+		out.print(mediaUploadServices.getAnyPath("media_url_path") + "course_images/" + file.getName());
 		return out;
 	}
 

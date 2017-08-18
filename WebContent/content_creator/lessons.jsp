@@ -30,39 +30,16 @@
 	<div id="wrapper" class='customcss_overflowy'>
 		<div id="page-wrapper" class="gray-bg">
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
-			
 			<% 
 			   String[] brd = {"Dashboard","Lessons"};
 			%>
 			<%=UIUtils.getPageHeader("Lessons Grid", brd) %>
-				
 				<div class="row card-box scheduler_margin-box">
-				<%-- <div class="col-lg-4 form-group">
-					<select class="js-example-basic-single" id="filters">
-						<option></option>
-						<option value="NONE">None</option>
-						<%
-							for (Cmsession cmsession : cmsessions) {
-								String cmsessionSearchString = cmsession.getTitle().replaceAll(" ", "").toLowerCase();
-						%>
-						<option value="<%=cmsessionSearchString%>"><%=cmsession.getTitle()%></option>
-						<%
-							}
-						%>
-					</select>
-				</div> --%>
 				<div class="col-lg-1" >
-					<!-- <button class="btn btn-primary dim" type="button" style="float: right;" id="create_lessonzz">
-						<i class="fa fa-plus-circle" title="Create a Lesson"></i>&nbsp;Create
-					</button> -->
 					<button type="button" id="create_lessonzz" class="btn btn-w-m btn-danger">
 						<i class="fa fa-plus"></i> Create Lesson
 					</button>
 				</div>
-				<!-- <div class="col-lg-1" style="margin-top: 26px; padding: 0px">
-					<p style="text-align: center;">All lessons</p>
-					<input  type="checkbox" id="show_all_lessons" />
-				</div> -->
 				<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
 					<div class="modal-dialog modal-sm">
 						<div class="modal-content">
@@ -79,7 +56,6 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-								<!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 							</div>
 						</div>
 					</div>
@@ -190,8 +166,8 @@
 						</a></div><div class="col-md-6 text-center"> <a href="<%=lesson_edit_url%>"
 							class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 							class="fa fa-pencil"></i>
-						</a></div></div><div class="col-lg-12 customcss_lesson-button"><div class="col-md-6 text-center customcss_lesson-margin" > <a  data-lesson_id='<%=lesson.getId()%>' href="#"
-							class="btn btn-xs btn-outline btn-primary delete_lesson customcss_lesson-button_btn">Delete
+						</a></div></div><div class="col-lg-12 customcss_lesson-button"><div class="col-md-6 text-center customcss_lesson-margin" > <a  data-entity_id='<%=lesson.getId()%>'
+							data-delete_type='lesson' class="btn btn-xs btn-outline btn-primary master_delete customcss_lesson-button_btn">Delete
 							<i class="fa fa-trash-o"></i>
 						</a></div><div class="col-md-6 text-center customcss_lesson-margin"> <a data-lesson_id='<%=lesson.getId()%>' href="#"
 							class="btn btn-xs btn-outline btn-primary publish_lesson customcss_lesson-button_btn">Publish

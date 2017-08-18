@@ -78,7 +78,7 @@ try{
 <script src="<%=basePath %>assets/js/plugins/select2/select2.full.min.js"></script>
 
 <script src="<%=basePath%>assets/js/jquery.rateyo.min.js"></script>
-
+<script src="<%=basePath%>assets/js/plugins/ckeditor/ckeditor.js"></script>
 <!-- 	<script src="https://code.highcharts.com/modules/data.js"></script>
  -->
  <script src="<%=basePath %>assets/js//jquery.equalheights.js"></script>

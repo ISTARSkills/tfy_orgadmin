@@ -48,10 +48,9 @@ public class ModuleCreateController extends HttpServlet {
 		if ((request.getParameterMap().containsKey("module_name")) 
 				&& (request.getParameterMap().containsKey("module_desc")) 
 				&& (request.getParameterMap().containsKey("session_list")) 
-				&& (request.getParameterMap().containsKey("module_image"))
-				&& (request.getParameterMap().containsKey("skill_objective_list"))) {
+				&& (request.getParameterMap().containsKey("module_image"))) {
 			String[] cmsession_ids = request.getParameter("session_list").toString().split(",");
-			String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
+			//String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
 			ModuleServices moduleServices = new ModuleServices();
 			ModuleDAO moduleDAO = new ModuleDAO();
 			Module module = new Module();
@@ -59,7 +58,7 @@ public class ModuleCreateController extends HttpServlet {
 			module.setModule_description(request.getParameter("module_desc").toString());
 			module.setImage_url(request.getParameter("module_image").toString());
 			module.setIsDeleted(false);
-			module = moduleServices.saveModuleSkillObjectivesMapping(module, moduleDAO, skill_objective_ids);
+			//module = moduleServices.saveModuleSkillObjectivesMapping(module, moduleDAO, skill_objective_ids);
 			try {
 				module = moduleServices.saveModuleCMSessionMapping(module, moduleDAO, cmsession_ids);
 			} catch (Exception e) {
