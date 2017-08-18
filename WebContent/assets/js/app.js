@@ -300,6 +300,12 @@ function readyFn(jQuery) {
 	case 'course_skill_tree':	
 		courseSkillTreeWizard();
 		break;
+	case 'context_skill_tree':	
+		contextSkillTreeWizard();
+		break;
+	case 'assessment_skill_tree':	
+		assessmentSkillTreeWizard();
+		break;		
 	case 'module_edit':
 		moduleEditVariables();
 		moduleEditWizard();
@@ -8256,12 +8262,157 @@ function courseTreeWizard() {
 	$('#courseTree').jstree();
 }
 
+function assessmentSkillTreeWizard()
+{
+	$('#assessment_skill_course_selector').select2();
+	$('.assessment_skill_assessment_selector').hide();
+	$('#assessment_skill_course_selector').unbind().on('select2:select select2:unselecting',function(){
+		$('.assessment_skill_assessment_selector').hide();
+		var courseId = $('#assessment_skill_course_selector option:selected').val();
+		$('.assessment_skill_assessment_selector').filter(function(){return $(this).data('course_id')==courseId}).show();		
+		$('#assessment_tree').empty();
+		$('#assessment_delivery_tree').empty();
+		$('#assessment_skill_course_selector').select2();
+	});
+	
+	//context_skill_tree
+	$('#assessment_tree').jstree();
+	$('#assessment_tree').jstree("open_all");
+	$('#assessment_delivery_tree').jstree();
+	$('#assessment_delivery_tree').jstree("open_all");
+	$('.assessment_skill_assessment_selector').unbind().on('click',function(){
+		$('.assessment_skill_assessment_selector').removeClass('is-checked');
+		$( this ).addClass('is-checked');
+		$('.assessment_skill_assessment_selector').removeClass('btn-danger');
+		$('.assessment_skill_assessment_selector').filter(function(){return $(this).data('is_valid')==false}).addClass('btn-warning');;
+		$('.assessment_skill_assessment_selector').filter(function(){return $(this).data('is_valid')==true}).addClass('btn-white');;
+	    $( this ).removeClass('btn-white');
+	    $( this ).removeClass('btn-warning');
+	    $( this ).addClass('btn-danger');
+		
+		
+		var assessment_id = $(this).data("assessment_id");
+		$('#admin_page_loader').show();
+		var url = "/skill_partails/assessment_skill_tree_partial.jsp";
+		$.ajax({
+		        type: "POST",
+		        url: url,
+		        data: {assessment_id:assessment_id},
+		        success: function(data) {	
+		        	$('#assessment_tree').jstree().destroy();
+		        	$('#assessment_tree').empty();		        	
+		        	$('#assessment_tree').append(data);		        	
+		        	$('#assessment_tree').jstree();
+		        	$('#assessment_tree').jstree("open_all");
+		        	$('#admin_page_loader').hide();
+		        }		        
+		    });
+		
+		$('#admin_page_loader').show();
+		var url2 = "/skill_partails/assessment_delivery_tree_partial.jsp";
+		$.ajax({
+		        type: "POST",
+		        url: url2,
+		        data: {assessment_id:assessment_id},
+		        success: function(data) {	
+		        	$('#assessment_delivery_tree').jstree().destroy();
+		        	$('#assessment_delivery_tree').empty();		        	
+		        	$('#assessment_delivery_tree').append(data);		        	
+		        	$('#assessment_delivery_tree').jstree();
+		        	$('#assessment_delivery_tree').jstree("open_all");
+		        	$('#admin_page_loader').hide();		
+		        	setTimeout(function(){ 
+		        		
+		            	$xx= $('.jstree-anchor').filter(function(){
+		        			return $(this).parent('li').data('is_valid')==true}
+		        		);
+		            	
+		            	$xx.each(function(){
+		            		$(this).css('background-color','#ec4758').css('color','white').css('border','1px solid white')		        		
+		            	})
+		            	
+		            	$('.jstree-anchor').each(function(){
+		            		
+		            		$('.jstree-anchor').each(function() {
+		            			 
+		            			  $(this).attr('title',$(this).parent('li').data('title')+"");
+		            			
+		            			});
+		            	})
+		            	
+		            	
+		            	}, 500);
+		        }		        
+		    });
+		
+		
+				
+	});
+}
+
+function contextSkillTreeWizard()
+{
+	//context_skill_tree
+	$('#context_tree').jstree();
+	
+	$('.context_skill_context_selector').unbind().on('click',function(){
+		$('.context_skill_context_selector').removeClass('is-checked');
+		$( this ).addClass('is-checked');
+		$('.context_skill_context_selector').removeClass('btn-danger');
+		$('.context_skill_context_selector').addClass('btn-white');
+	    $( this ).removeClass('btn-white');
+	    $( this ).addClass('btn-danger');
+		
+		
+		var context_id = $(this).data("context_id");
+		$('#admin_page_loader').show();
+		var url = "/skill_partails/context_skill_tree_partial.jsp";
+		 $.ajax({
+		        type: "POST",
+		        url: url,
+		        data: {context_id:context_id},
+		        success: function(data) {	
+		        	$('#context_tree').jstree().destroy();
+		        	$('#context_tree').empty();		        	
+		        	$('#context_tree').append(data);		        	
+		        	$('#context_tree').jstree();
+		        	$('#context_tree').jstree("open_all");
+		        	$('#admin_page_loader').hide();
+		        	
+		        	setTimeout(function(){ 
+		         		$('.jstree-anchor').each(function(){
+			        		
+			        		$('.jstree-anchor').each(function() {
+			        			 
+			        			  $(this).attr('title',$(this).parent('li').data('title')+"");
+			        			
+			        			});
+			        	})
+			        	
+			        	
+			        	}, 500); 
+		        }		        
+		    });
+		 
+		 
+	});
+	 
+}
+
 function courseSkillTreeWizard() {
 
 	$('#skillTree').jstree();
-	
-	$('#course_skill_course_selector').unbind().on('change',function(){
-		var courseId = $('#course_skill_course_selector option:selected').val();
+	$('#course_delivery_tree').jstree();
+	$('.course_skill_course_selector').unbind().on('click',function(){
+		$('.course_skill_course_selector').removeClass('is-checked');
+		$( this ).addClass('is-checked');
+		$('.course_skill_course_selector').removeClass('btn-danger');
+		$('.course_skill_course_selector').addClass('btn-white');
+	    $( this ).removeClass('btn-white');
+	    $( this ).addClass('btn-danger');
+		
+		
+		var courseId = $(this).data("course_id");
 		$('#admin_page_loader').show();
 		var url = "/skill_partails/course_skill_tree_partial.jsp";
 		 $.ajax({
@@ -8273,12 +8424,48 @@ function courseSkillTreeWizard() {
 		        	$('#skillTree').empty();		        	
 		        	$('#skillTree').append(data);		        	
 		        	$('#skillTree').jstree();
+		        	$('#skillTree').jstree("open_all");
 		        	$('#admin_page_loader').hide();
 		        }		        
 		    });
+		 
+		 $('#admin_page_loader').show();
+			var url2 = "/skill_partails/course_delivery_tree_partial.jsp";
+			 $.ajax({
+			        type: "POST",
+			        url: url2,
+			        data: {course_id:courseId},
+			        success: function(data) {	
+			        	$('#course_delivery_tree').jstree().destroy();
+			        	$('#course_delivery_tree').empty();		        	
+			        	$('#course_delivery_tree').append(data);		        	
+			        	$('#course_delivery_tree').jstree();
+			        	$('#course_delivery_tree').jstree("open_all");
+			        	$('#admin_page_loader').hide();
+			        	
+			        	 setTimeout(function(){ 
+				        		var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+				        		$filtered.each(function() {
+				        			  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+				        			});
+				        			
+				        		$('.jstree-anchor').each(function() {
+					        			  $(this).attr('title',$(this).parent('li').data('title')+"");
+					        			
+					        			});
+				        		
+				        		
+				        	}, 500);
+			        	
+			        }		        
+			    });
+			 
+			 
+			
 	});
 	
-	$('#course_skill_course_selector').val($('#course_skill_course_selector option:first').val()).change();
+	
+	//$('#course_skill_course_selector').val($('#course_skill_course_selector option:first').val()).change();
 	 
 	
 }

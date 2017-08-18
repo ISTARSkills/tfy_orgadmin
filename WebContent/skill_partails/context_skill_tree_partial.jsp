@@ -5,13 +5,13 @@
 <%@page import="com.viksitpro.core.skill.pojo.CourseLevelSkill"%>
 <%@page import="com.viksitpro.core.skill.services.CoreSkillService"%>
 <%
-int courseId = Integer.parseInt(request.getParameter("course_id"));
+int contextId = Integer.parseInt(request.getParameter("context_id"));
 %>
 
 <%								
 										
 												CoreSkillService skillService = new CoreSkillService();																							
-												CourseLevelSkill courseSkill = skillService.getShellSkillTreeForCourse(courseId);
+												CourseLevelSkill courseSkill = skillService.getShellTreeForContext(contextId);
 												if(courseSkill!=null && courseSkill.getModuleLevelSkill()!=null )
 												{
 											%>
@@ -74,7 +74,7 @@ int courseId = Integer.parseInt(request.getParameter("course_id"));
 													%>
 													<ul>
 													<li data-jstree='{"icon":"glyphicon glyphicon-asterisk"}'>
-														<span class="label label-danger">No Skill Tree Available For Course</span>
+														<span class="label label-danger">No Skill Tree Available For Context</span>
 													</li>
 													</ul>	
 													<%
