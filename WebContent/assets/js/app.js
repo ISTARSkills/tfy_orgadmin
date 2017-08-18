@@ -8494,28 +8494,81 @@ function initQuestionListDatatable() {
 	
 	
 }
+
+function initGeneralAjax(difficult_level,context_filter){
+	
+	console.log('>>> '+ difficult_level);		
+	console.log('>>> '+ context_filter);
+	
+	$.ajax({
+        type: "POST",
+        url: $('#question_list_table').data('url'),
+        data: {key:'difficult_level_type',difficult_level:difficult_level,context_filter:context_filter},
+        success: function(result) {
+        	
+        	$('#question_data').empty();
+        	$('#question_data').append(result);
+        	initQuestionListPageination($('#total_rows').html());
+          }
+    });
+	
+}
 function initDifficultyLevel(){
 	
-	
+	var difficult_level = [];
+	var context_filter = [];
 	
 	$('.difficult_level').unbind().on('click',function(){
-		$('.difficult_level').find('btn-danger').removeClass('btn-danger');
-		$('.difficult_level').css("color","gray");
+		if($(this).hasClass('btn-danger') == true){
+			 $(this).css("color","gray");
+			 $(this).removeClass('btn-danger');
+		}else{
 		$(this).addClass('btn-danger');
-		$(this).css("color","white");
-		var difficult_level = $(this).data('difficult_level');
-		$.ajax({
-	        type: "POST",
-	        url: $('#question_list_table').data('url'),
-	        data: {key:'difficult_level_type',difficult_level:difficult_level},
-	        success: function(result) {
-	        	
-	        	$('#question_data').empty();
-	        	$('#question_data').append(result);
-	        	initQuestionListPageination($('#total_rows').html());
-	          }
-	    });
+	    $(this).css("color","white");
+	     }
+		   var i = difficult_level.length;
+		    var flag = false; 
+		    var filterValue = $(this).data('difficult_level');
+ 
+				    while (i--) {
+				        if (difficult_level.length != 0 && difficult_level[i] === filterValue)
+				        {	flag = true;
+				        difficult_level.splice(i,1);
+				        }	        
+				    }
+				    if(!flag){
+				    	difficult_level.push(filterValue);
+				    } 
+
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
 		  
+	});
+	
+	$('.context_filter').unbind().on('click',function(){
+		
+		if($(this).hasClass('btn-danger') == true){
+			 $(this).css("color","gray");
+			 $(this).removeClass('btn-danger');
+		}else{
+		$(this).addClass('btn-danger');
+	    $(this).css("color","white");
+	     }
+		    var i = context_filter.length;
+		    var flag = false; 
+		    var filterValue = $(this).data('context_filter');
+
+				    while (i--) {
+				        if (context_filter.length != 0 && context_filter[i] === filterValue)
+				        {	flag = true;
+				        context_filter.splice(i,1);
+				        }	        
+				    }
+				    if(!flag){
+				    	context_filter.push(filterValue);
+				    } 
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
+		
+		
 	});
 	
 }

@@ -43,7 +43,7 @@
 
 				<div class="ui-group">
 					<h3 class="ui-group__title">Filter</h3>
-					<div class="filters button-group js-radio-button-group btn-group">
+					 <div data-toggle="buttons" class="btn-group">
 						<button class="button btn btn-danger button_spaced btn-xs"
 							data-filter="*">show all</button>
 						<%
@@ -54,12 +54,12 @@
 							for (Question question : questions) {
 								int context = question.getContext_id();
 								Context contexts = (Context)new ContextDAO().findById(context);
-								String context_name = "";
+								String context_id = "";
 								
 								if (contexts != null && contexts.getTitle() != null && !contexts.getTitle().contentEquals("")) {
-									context_name = contexts.getTitle().trim().replace(" ", "_").replace("/", "_").toLowerCase();
-									if (!arrayList.contains(context_name)) {
-										arrayList.add(context_name);
+									context_id = contexts.getId().toString();
+									if (!arrayList.contains(context_id)) {
+										arrayList.add(context_id);
 										displayList.add(contexts.getTitle());
 									}
 								}else{
@@ -78,8 +78,8 @@
 							int i = 0;
 							for (String c_category : arrayList) {
 						%>
-
-						<button class="button btn btn-white button_spaced btn-xs" data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
+                        <label class="btn btn-sm btn-white context_filter button_spaced" data-context_filter="<%=c_category%>"> <input type="checkbox" id="option_<%=c_category%>" name="options"> <%=displayList.get(i)%> </label>
+						<%-- <button class="button btn btn-white button_spaced btn-xs" data-filter=".<%=c_category%>"><%=displayList.get(i)%></ button>--%>
 						<%
 							i++;
 							}
@@ -99,11 +99,11 @@
                                 <div class="col-sm-8 m-b-xs">
                                     <div data-toggle="buttons" class="btn-group">
                                     
-                                        <label class="btn btn-sm btn-white difficult_level" data-difficult_level="1"> <input type="radio" id="option1" name="options"> Difficulty Level 1 </label>
-                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="2"> <input type="radio" id="option2" name="options"> Difficulty Level 2 </label>
-                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="3"> <input type="radio" id="option3" name="options"> Difficulty Level 3 </label>
-                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="4"> <input type="radio" id="option4" name="options"> Difficulty Level 4 </label>
-                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="5"> <input type="radio" id="option5" name="options"> Difficulty Level 5 </label>
+                                        <label class="btn btn-sm btn-white difficult_level" data-difficult_level="1"> <input type="checkbox" id="option1" name="options"> Difficulty Level 1 </label>
+                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="2"> <input type="checkbox" id="option2" name="options"> Difficulty Level 2 </label>
+                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="3"> <input type="checkbox" id="option3" name="options"> Difficulty Level 3 </label>
+                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="4"> <input type="checkbox" id="option4" name="options"> Difficulty Level 4 </label>
+                                        <label class="btn btn-sm btn-white difficult_level"  data-difficult_level="5"> <input type="checkbox" id="option5" name="options"> Difficulty Level 5 </label>
                                         
                                     </div>
                                 </div>
