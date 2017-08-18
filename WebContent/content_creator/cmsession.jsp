@@ -118,40 +118,46 @@
 										</div>
 									</fieldset>
 									<h1>Lessons</h1>
-									<fieldset class="fieldset-border-margin">
-									<div class="col-md-6">
-										<ul class="list-unstyled file-list" id="editable">
+							<fieldset class="fieldset-border-margin">
+								<div class="col-md-6">
+									<div class="ibox-content custom-scroll">
+										<ul class="list-group custom-li-padding" id="editable">
 											<%
 												if (!is_new) {
-													String sql = "select * from lesson_cmsession where cmsession_id = "+cmsession.getId();
+													String sql = "select * from lesson_cmsession where cmsession_id = " + cmsession.getId();
 													List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
 													for (HashMap<String, Object> item : items) {
 														Lesson lesson = (new LessonDAO()).findById(Integer.parseInt(item.get("lesson_id").toString()));
 														if (lesson.getId() >= 0 && !lesson.getIsDeleted()) {
 											%>
-											<li class="something" data-lesson_id="<%=lesson.getId()%>"><i
-												class="js-remove fa fa-trash-o"> </i> | <%=lesson.getId()%>
-												| <%=lesson.getTitle()%></li>
+											<li class="list-group-item something"
+												data-lesson_id="<%=lesson.getId()%>"><span
+												class="badge badge-primary"><i
+													class="js-remove fa fa-trash-o"> </i></span> <%=lesson.getId()%> |
+												<%=lesson.getTitle()%></li>
 											<%
-												}
+														}
 													}
 												}
 											%>
 										</ul>
-										</div>
-										<div class="col-md-6">
-									<input id="searchLessons"
-										placeholder="Search for lesson by title, description.." style="margin-bottom: 5px; min-width: 449px;">
-									<div class="ibox float-e-margins">
-										<div class="ibox-content text-center p-md"
-											id="searchLessonsResult">
-
-										</div>
 									</div>
 								</div>
-									</fieldset>
-								</form>
-							</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input id="searchLessons" type="text" class="form-control"
+												placeholder="Search for lesson by title, description..">
+										</div>
+									</div>
+										<div class="ibox-content no-padding custom-scroll">
+											<ul class="list-group custom-li-padding" id="searchLessonsResult">
+											</ul>
+										</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

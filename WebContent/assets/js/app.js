@@ -625,51 +625,47 @@ function sessionHashInit() {
 			});
 }
 function initSessionSearch() {
-	$('#searchSessions')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-							if($.trim($(this).val()).length>2){
-								var searchString = $("#searchSessions").val();
+	$('#searchSessions').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
+				var searchString = $("#searchSessions").val();
+				var datapost = {
+					'searchString' : searchString
+				};
+				$.get("/SearchSessions", datapost).done(function(data) {
+					var addition = '';
+									$.each(data.sessions,function(k, v) {
+										addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+										
+									});
+									$('#searchSessionsResult').html(addition);
+								}).fail(function() {
+							alert("error");
+						}).always(function() {
 
-								var datapost = {
-									'searchString' : searchString
-								};
-								$.get("/SearchSessions", datapost).done(function(data) {
-									var addition = '';
-													$.each(data.sessions,function(k, v) {
-														addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-														
-													});
-													$('#searchSessionsResult').html(addition);
-												}).fail(function() {
-											alert("error");
-										}).always(function() {
-
-										});
-							}else{
-								alert('Type atleast 3 characters to search');
-							}
+						});
+			}else{
+				alert('Type atleast 3 characters to search');
+		}
 
 						}
-					});
+	});
 
 	$('#searchSessionsResult').on('click',".fa-plus",function() {
-						var v = {
-							id : this.parentElement.parentElement.id,
-							name : this.parentElement.parentElement.innerText
-						}
-						if (!(window.session_hash[v.id] == undefined)) {
-							alert('Session already there in the list.');
-						} else {
-							$('#editable').append("<li class='list-group-item something' data-session_id='"
-													+ v.id
-													+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
-													+ v.name + "</li>");
-							window.session_hash[v.id] = v.name;
-						}
-					});
+		var v = {
+			id : this.parentElement.parentElement.id,
+			name : this.parentElement.parentElement.innerText
+		}
+		if (!(window.session_hash[v.id] == undefined)) {
+			alert('Session already there in the list.');
+		} else {
+			$('#editable').append("<li class='list-group-item something' data-session_id='"
+									+ v.id
+									+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
+									+ v.name + "</li>");
+			window.session_hash[v.id] = v.name;
+		}
+	});
 
 }
 function saveModule() {
@@ -696,18 +692,17 @@ function saveModule() {
 		url : url,
 		data : dataPost,
 		dataType : "text"
-	}).done(
-			function(data) {
-				if (window.isNewModule) {
-					window.location.replace(
-							"/content_creator/module.jsp?module=" + data,
-							"_self");
-				} else {
-					window.location.replace(
-							"/content_creator/module.jsp?module="
-									+ window.moduleID, "_self");
-				}
-			});
+	}).done(function(data) {
+		if (window.isNewModule) {
+			window.location.replace(
+					"/content_creator/module.jsp?module=" + data,
+					"_self");
+		} else {
+			window.location.replace(
+					"/content_creator/module.jsp?module="
+							+ window.moduleID, "_self");
+		}
+	});
 }
 function getSessions() {
 	var session_list = "";
@@ -725,7 +720,6 @@ function sessionEditVariables() {
 	window.sessionID = $("input[name='cmsID']").val();
 	window.image_url = $("input[name='baseProdURL']").val();
 	window.lesson_hash = {};
-	window.session_hash = {};
 	window.is_sortable = Boolean(false);
 }
 function sessionEditWizard() {
@@ -768,67 +762,49 @@ function sessionStepChanger(event, currentIndex, newIndex) {
 
 function lessonHashInit() {
 	$('#editable > .something').each(function(k, v) {
-				window.session_hash[$(v).data('lesson_id')] = v.innerText.split('|').slice(1).toString().trim();
+				window.lesson_hash[$(v).data('lesson_id')] = v.innerText.split('|').slice(1).toString().trim();
 			});
 }
 function initLessonSearch() {
-	$('#searchLessons')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-							
-							if($.trim($(this).val()).length>2){
-								var searchString = $("#searchLessons").val();
-								var addition = '';
-								var datapost = {
-									'searchString' : searchString
-								};
-								$.get("/SearchLessons", datapost).done(function(data) {
-									$.each(data.lessons,function(k, v) {
-										addition +="<span class='simple_tag' id='"
-																+ v.id
-																+ "'><i class='js-remove fa fa-plus'> </i> | "
-																+ v.id
-																+ " | "
-																+ v.name
-																+ "</span>";
-										});
-								$('#searchLessonsResult').html(addition);
-												}).fail(function() {
-											alert("error");
-										}).always(function() {
-
-										});
-							}else{
-								alert('Type atleast 3 characters to search');
-							}
-
-						}
+	$('#searchLessons').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
+				var searchString = $("#searchLessons").val();
+				var addition = '';
+				var datapost = {
+					'searchString' : searchString
+				};
+				$.get("/SearchLessons", datapost).done(function(data) {
+					$.each(data.lessons,function(k, v) {
+						addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 					});
+					$('#searchLessonsResult').html(addition);
+				}).fail(function() {
+							alert("error");
+					}).always(function() {
 
-	$('#searchLessonsResult')
-			.on(
-					'click',
-					".fa-plus",
-					function() {
+						});
+			}else{
+				alert('Type atleast 3 characters to search');
+			}
+		}
+	});
 
-						var v = {
-							id : this.parentElement.id,
-							name : this.parentElement.innerText
-						}
-						if (!(window.lesson_hash[v.id] == undefined)) {
-							alert('Lesson already there in the list.');
-						} else {
-							$('#editable')
-									.append(
-											"<li class='something' data-lesson_id='"
-													+ v.id
-													+ "'><i class='js-remove fa fa-trash-o'> </i>"
-													+ v.name + "</li>");
-							window.lesson_hash[v.id] = v.name;
-						}
-					});
+	$('#searchLessonsResult').on('click',".fa-plus",function() {
+		var v = {
+			id : this.parentElement.parentElement.id,
+			name : this.parentElement.parentElement.innerText
+		}
+		if (!(window.lesson_hash[v.id] == undefined)) {
+			alert('Lesson already there in the list.');
+		} else {
+			$('#editable').append("<li class='list-group-item something' data-lesson_id='"
+									+ v.id
+									+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
+									+ v.name + "</li>");
+			window.lesson_hash[v.id] = v.name;
+		}
+	});
 
 }
 function saveSession() {
@@ -861,13 +837,9 @@ function saveSession() {
 	}).done(
 			function(data) {
 				if (window.isNewSession) {
-					window.location.replace(
-							"/content_creator/cmsession.jsp?session=" + data,
-							"_self");
+					window.location.replace("/content_creator/cmsessions.jsp","_self");
 				} else {
-					window.location.replace(
-							"/content_creator/cmsession.jsp?session="
-									+ window.sessionID, "_self");
+					window.location.replace("/content_creator/cmsessions.jsp", "_self");
 				}
 
 			});
