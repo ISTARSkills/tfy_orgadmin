@@ -113,7 +113,8 @@
 									<h1>Map Sessions</h1>
 									<fieldset class="fieldset-border-margin">
 										<div class="col-md-6">
-											<ul class="list-unstyled file-list" id="editable">
+										<div class="ibox-content custom-scroll">
+											<ul class="list-group custom-li-padding" id="editable">
 												<%
 													if (!is_new) {
 														String sql = "select * from cmsession_module where module_id = "+module.getId();
@@ -122,9 +123,9 @@
 															Cmsession cmsession = (new CmsessionDAO()).findById(Integer.parseInt(item.get("cmsession_id").toString()));
 															if (cmsession.getId() >= 0 && !cmsession.getIsDeleted()) {
 												%>
-												<li class="something"
-													data-session_id="<%=cmsession.getId()%>"><i
-													class="js-remove fa fa-trash-o"> </i> | <%=cmsession.getId()%>
+												<li class="list-group-item something"
+													data-session_id="<%=cmsession.getId()%>"><span class="badge badge-primary"><i
+													class="js-remove fa fa-trash-o"> </i></span> <%=cmsession.getId()%>
 													| <%=cmsession.getTitle()%></li>
 												<%
 													}
@@ -132,15 +133,23 @@
 													}
 												%>
 											</ul>
+											</div>
 										</div>
-										<div class="col-md-6">
-											<input id="searchSessions" placeholder="Search for sessions by title, description, id.." style="margin-bottom: 5px; min-width: 449px;">
-											<div class="ibox float-e-margins">
-								                <div class="ibox-content text-center p-md" id="searchSessionsResult" >								
-								                </div>
-							                </div>
-						                </div>
-									</fieldset>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<input id="searchSessions" type="text" class="form-control"
+												placeholder="Search for sessions by title, description, id..">
+										</div>
+									</div>
+									<div class="ibox-content no-padding custom-scroll"
+										id="searchSessionsResult">
+										<ul class="list-group custom-li-padding"
+											id="searchSessionsResult">
+										</ul>
+									</div>
+								</div>
+							</fieldset>
 								</form>
 							</div>
 				</div>

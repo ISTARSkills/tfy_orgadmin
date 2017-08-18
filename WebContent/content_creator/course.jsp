@@ -117,7 +117,7 @@
 										</div>
 									</div>
 									<div class="col-lg-4">
-									<h2>Course Image Upload</h2>
+									<h2>Image Upload</h2>
 									<div class="form-group" id="filezz">
 													<input id="fileupload" type="file" accept="image/png"
 														name="files[]" multiple>
@@ -137,7 +137,7 @@
 							<h1>Map Modules</h1>
 							<fieldset class="fieldset-border-margin">
 								<div class="col-md-6">
-									<div class="ibox-content">
+									<div class="ibox-content custom-scroll">
 										<ul class="list-group custom-li-padding" id="editable">
 											<%
 												if (!is_new) {
@@ -148,8 +148,7 @@
 														if (module.getId() >= 0 && !module.getIsDeleted()) {
 											%>
 											<li class="list-group-item something"
-												data-module_id="<%=module.getId()%>"><span
-												class="badge badge-primary"><i
+												data-module_id="<%=module.getId()%>"><span class="badge badge-primary"><i
 													class="js-remove fa fa-trash-o"> </i></span> <%=module.getId()%> |
 												<%=module.getModuleName()%></li>
 											<%
@@ -167,7 +166,7 @@
 												placeholder="Search for modules by title, description..">
 										</div>
 									</div>
-									<div class="ibox-content no-padding">
+									<div class="ibox-content no-padding custom-scroll">
 										<ul class="list-group custom-li-padding"
 											id="searchModulesResult">
 										</ul>

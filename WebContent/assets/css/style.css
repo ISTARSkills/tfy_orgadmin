@@ -16401,14 +16401,17 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 
 #course_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 #module_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 #session_image {
 	height: 200px;
+	max-width: 100vh;
 }
 
 .wizard>.steps .done a, .wizard>.steps .done a:hover, .wizard>.steps .done a:active
@@ -16461,9 +16464,9 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 	font-size: 15px !important;
 }
 
-.custom-li-padding {
+.custom-scroll {
 	overflow: auto;
-	max-height: 100vh;
+	max-height: 50vh;
 }
 
 .custom-badge {

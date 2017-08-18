@@ -459,15 +459,9 @@ function initModuleSearch() {
 								var datapost = {
 									'searchString' : searchString
 								};
-								$
-										.get("/SeachModules", datapost)
-										.done(
-												function(data) {
+								$.get("/SeachModules", datapost).done(function(data) {
 													var addition = '';
-													$
-															.each(
-																	data.modules,
-																	function(k, v) {
+													$.each(data.modules,function(k, v) {
 																		/*
 																		 * console
 																		 * .log(v.id +
@@ -479,9 +473,7 @@ function initModuleSearch() {
 																		addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 																		
 																	});
-													$(
-													'#searchModulesResult')
-													.html(addition);
+													$('#searchModulesResult').html(addition);
 															
 												}).fail(function() {
 											alert("error");
@@ -629,7 +621,7 @@ function moduleStepChanger(event, currentIndex, newIndex) {
 }
 function sessionHashInit() {
 	$('#editable > .something').each(function(k, v) {
-				session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
+				window.session_hash[$(v).data('session_id')] = v.innerText.split('|').slice(1).toString().trim();
 			});
 }
 function initSessionSearch() {
@@ -645,15 +637,12 @@ function initSessionSearch() {
 									'searchString' : searchString
 								};
 								$.get("/SearchSessions", datapost).done(function(data) {
+									var addition = '';
 													$.each(data.sessions,function(k, v) {
-														$('#searchSessionsResult').html("<span class='simple_tag' id='"
-																								+ v.id
-																								+ "'><i class='js-remove fa fa-plus'> </i> | "
-																								+ v.id
-																								+ " | "
-																								+ v.name
-																								+ "</span>");
+														addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+														
 													});
+													$('#searchSessionsResult').html(addition);
 												}).fail(function() {
 											alert("error");
 										}).always(function() {
@@ -666,24 +655,17 @@ function initSessionSearch() {
 						}
 					});
 
-	$('#searchSessionsResult')
-			.on(
-					'click',
-					".fa-plus",
-					function() {
-
+	$('#searchSessionsResult').on('click',".fa-plus",function() {
 						var v = {
-							id : this.parentElement.id,
-							name : this.parentElement.innerText
+							id : this.parentElement.parentElement.id,
+							name : this.parentElement.parentElement.innerText
 						}
 						if (!(window.session_hash[v.id] == undefined)) {
 							alert('Session already there in the list.');
 						} else {
-							$('#editable')
-									.append(
-											"<li class='something' data-session_id='"
+							$('#editable').append("<li class='list-group-item something' data-session_id='"
 													+ v.id
-													+ "'><i class='js-remove fa fa-trash-o'> </i>"
+													+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
 													+ v.name + "</li>");
 							window.session_hash[v.id] = v.name;
 						}
@@ -786,7 +768,7 @@ function sessionStepChanger(event, currentIndex, newIndex) {
 
 function lessonHashInit() {
 	$('#editable > .something').each(function(k, v) {
-				window.session_hash[$(v).data('lesson_id')] = v.innerText.split('| ').slice(2).toString();
+				window.session_hash[$(v).data('lesson_id')] = v.innerText.split('|').slice(1).toString().trim();
 			});
 }
 function initLessonSearch() {
