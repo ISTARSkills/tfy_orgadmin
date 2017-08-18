@@ -24,7 +24,9 @@
 	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
 	String moduleName = "Create Module";
 	if (request.getParameterMap().containsKey("module")) {
-		module = (new ModuleDAO()).findById(Integer.parseInt(request.getParameter("module")));
+		ModuleDAO moduleDAO = new ModuleDAO();
+		moduleDAO.getSession().clear();
+		module = moduleDAO.findById(Integer.parseInt(request.getParameter("module")));
 		is_new = false;
 		image_url = cdnPath.substring(0,cdnPath.length())+module.getImage_url();
 		moduleName = module.getModuleName();
@@ -33,36 +35,9 @@
 <body class="top-navigation" id="module_edit"
 	data-helper='This page is used to edit an individual module.'>
 	<div id="wrapper">
-		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-				<%-- <div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Module
-						<%
-							} else {
-						%>
-						<%=module.getModuleName()%>
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/modules.jsp">Module(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Module
-						</strong></li>
-					</ol>
-				</div> --%>
-				<%
+		<jsp:include page="../inc/navbar.jsp"></jsp:include>
+			<%
 				String[] brd = {"Dashboard", "Modules"};
 			%>
 			<%=UIUtils.getPageHeader(moduleName, brd)%>

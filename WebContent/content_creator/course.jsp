@@ -24,46 +24,23 @@
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0, cdnPath.length() - 1);
 	String courseName = "Create Course";
+	String context_name ="";
 	if (request.getParameterMap().containsKey("course")) {
-		course = (new CourseDAO()).findById(Integer.parseInt(request.getParameter("course")));
+		CourseDAO courseDAO = new CourseDAO();
+		courseDAO.getSession().clear();
+		course = courseDAO.findById(Integer.parseInt(request.getParameter("course")));
 		is_new = false;
 		image_url = cdnPath.substring(0, cdnPath.length()) + course.getImage_url();
 		courseName = course.getCourseName();
+		context_name = course.getCategory()!=null?course.getCategory():"";
+		System.out.print(">>>> "+ context_name);
 	}
 %>
 <body class="top-navigation" id="course_edit"
 	data-helper='This page is used to edit an individual course.'>
 	<div id="wrapper">
-		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-
-			<%-- <div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Course
-						<%
-							} else {
-						%>
-						<%=course.getCourseName()%>
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/courses.jsp">Course(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Course
-						</strong></li>
-					</ol>
-				</div> --%>
+		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
@@ -110,10 +87,20 @@
 												rows="3" id="course_desc_idd"><%=desc %></textarea>
 										</div>
 										<div class="form-group">
-											<label>Category *</label> <input id="course_category_idd"
-												name="course_category" type="text"
-												class="form-control required" <%if (!is_new) {%>
-												value="<%=course.getCategory().trim()%>" <%}%>>
+										<label>Category *</label> 
+											<select name="course_category" 	class="form-control" id="course_category_idd">
+										<% 
+										List<Context> contexts = new ContextDAO().findAll();
+										for(Context context:contexts){
+										%>
+											
+											<option <%=context_name.equalsIgnoreCase(context.getTitle())?"selected":"" %> value="<%=context.getId()%>"><%=context.getTitle() %></option>
+											
+											<%}%>
+											
+												
+												
+											</select>
 										</div>
 									</div>
 									<div class="col-lg-4">

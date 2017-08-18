@@ -25,7 +25,9 @@
 	cdnPath = cdnPath.substring(0,cdnPath.length()-1);
 	String sessionName = "Create Session";
 	if (request.getParameterMap().containsKey("session")) {
-		cmsession = (new CmsessionDAO()).findById(Integer.parseInt(request.getParameter("session")));
+		CmsessionDAO cmsessionDAO = new CmsessionDAO();
+		cmsessionDAO.getSession().clear();
+		cmsession = cmsessionDAO.findById(Integer.parseInt(request.getParameter("session")));
 		is_new = false;
 		image_url = cdnPath.substring(0,cdnPath.length())+cmsession.getImage_url();
 		sessionName = cmsession.getTitle();
@@ -34,35 +36,10 @@
 <body class="top-navigation" id="session_edit"
 	data-helper='This page is used to edit an individual session.'>
 	<div id="wrapper">
-		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-				<%-- <div class="col-lg-6">
-					<h2>
-						<%
-							if (is_new) {
-						%>New Session
-						<%
-							} else {
-						%>
-						<%=cmsession.getTitle()%>
-						<%
-							}
-						%>
-					</h2>
-					<ol class="breadcrumb"
-						style="background-color: transparent !important;">
-						<li><a href="/content/content_creator/dashboard.jsp">Home</a></li>
-						<li><a href="/content/creator/cmsessions.jsp">Session(s)</a></li>
-						<li class="active"><strong> <%
- 	if (is_new) {
- %>Create <%
- 	} else {
- %>Edit <%
- 	}
- %>Session
-						</strong></li>
-					</ol>
-				</div> --%>
+		<jsp:include page="../inc/navbar.jsp"></jsp:include>
+	
+				
 				<%
 				String[] brd = {"Dashboard", "Courses"};
 			%>
