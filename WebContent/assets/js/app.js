@@ -695,12 +695,10 @@ function saveModule() {
 	}).done(function(data) {
 		if (window.isNewModule) {
 			window.location.replace(
-					"/content_creator/module.jsp?module=" + data,
-					"_self");
+					"/content_creator/modules.jsp","_self");
 		} else {
 			window.location.replace(
-					"/content_creator/module.jsp?module="
-							+ window.moduleID, "_self");
+					"/content_creator/modules.jsp", "_self");
 		}
 	});
 }
