@@ -260,8 +260,8 @@ function readyFn(jQuery) {
 		initSearchFilter('course', 'modules');
 		initCreateModule();
 		initIsotopFunction();
-		initDeleteModule();
 		initSearch();
+		initMasterDelete();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -270,9 +270,9 @@ function readyFn(jQuery) {
 	case 'sesssion_list':
 		initSearchFilter('module', 'sessions');
 		initCreateCMSession();
-		initDeleteCMSession();
 		initIsotopFunction();
 		initSearch();
+		initMasterDelete();
 		setTimeout(function() {
 			match_height();
 		}, 200);
@@ -284,6 +284,7 @@ function readyFn(jQuery) {
 		initPublishLesson();
 		initLessonList();
 		initIsotopFunction();
+		initMasterDelete();
 		initSearch();
 		setTimeout(function() {
 			match_height();
@@ -856,6 +857,27 @@ function getLessons() {
 	return lesson_list;
 }
 /* Session wizard end */
+
+/*Delete Module Session Lesson start*/
+function initMasterDelete() {
+	$('.master_delete').click(function() {
+		var id = $(this).data("entity_id");
+		var type = $(this).data("delete_type");
+		
+		$.ajax({
+			method : "POST",
+			url : "/master_delete",
+			data : {
+				type : type,
+				id : id
+			}
+		}).done(function(msg) {
+			window.location.reload();
+		});
+	});
+}
+/*Delete Module Session Lesson end*/
+
 
 function initUnreadChatAndNotification()
 {

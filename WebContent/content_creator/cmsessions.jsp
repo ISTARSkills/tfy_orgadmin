@@ -33,27 +33,6 @@
 				String[] brd = { "Dashboard", "Sessions" };
 			%>
 			<%=UIUtils.getPageHeader("Sessions Grid", brd)%>
-
-
-			<%-- <div class="col-lg-4 form-group" >
-					<select class="js-example-basic-single" id="filters">
-						<option></option>
-						<option value="NONE">None</option>
-						<%
-							for (Module module : modules) {
-								String modulesearchstring = module.getModuleName().replaceAll(" ", "").toLowerCase();
-						%>
-						<option value="<%=modulesearchstring%>"><%=module.getModuleName()%></option>
-						<%
-							}
-						%>
-					</select>
-				</div> --%>
-			<!-- <div class="col-lg-1">
-					<button class="btn btn-primary dim" type="button" id="create_cmsession">
-						<i class="fa fa-plus-circle" title="Create a Session"></i>&nbsp;Create
-					</button>
-				</div> -->
 			<div class="row card-box scheduler_margin-box">
 				<div class="col-lg-2">
 					<button type="button" id="create_cmsession"
@@ -65,10 +44,8 @@
 					<input class="form-control quicksearch" autocomplete="off" type="text"
 						id="quicksearch" placeholder="Search Session" />
 				</div>
-
 			</div>
 			<div class="row card-box scheduler_margin-box">
-			
 			<div class="ui-group ">
 					<h3 class="ui-group__title">Filter</h3>
 					<div class="filters button-group js-radio-button-group btn-group">
@@ -78,9 +55,7 @@
 						ArrayList<String> displayList = new ArrayList<>();
 							for (Cmsession cmsession : cmsessions) {
 								String course_category = "";
-
 								try {
-									
 									 String moduleStringLong = cmsession.getModules().iterator().next().getModuleName();
 									 String moduleString = moduleStringLong.replaceAll(" ", "").toLowerCase();
 									 String courseStringLong = cmsession.getModules().iterator().next().getCourses().iterator().next().getCourseName();
@@ -89,7 +64,6 @@
 										 arrayList.add(courseString);
 										 displayList.add(courseStringLong);
 									 }
-									 
 								} catch (Exception e) {
 
 								}
@@ -97,7 +71,6 @@
 							int i = 0;
 							for (String c_category : arrayList) {
 						%>
-
 						<button class="button btn button_spaced btn-xs btn-white"
 							data-filter=".<%=c_category%>"><%=displayList.get(i)%></button>
 						<%
@@ -105,7 +78,6 @@
 						%>
 					</div>
 				</div>
-			
 			</div>
 			<div
 				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
@@ -126,7 +98,6 @@
 
 								}
 					%>
-
 					<div class="col-md-2 transition element-item pageitem <%=moduleString%> <%=courseString%>">
 						<div class="ibox product-box customcss_height-prod-box">
 							<div class="ibox-content  customcss_ibox_product_border">
@@ -153,7 +124,6 @@
 											}
 										%>
 									</div>
-									
 								</div>
 								<div class="col-md-12 customcss_lesson-button">
 <div class="col-md-6 text-center">
@@ -161,8 +131,8 @@
 											href="/content_creator/cmsession.jsp?session=<%=cmsession.getId()%>"
 											class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Edit <i
 											class="fa fa-pencil"></i>
-										</a> </div><div class="col-md-6 text-center"> <a data-cmsession_id='<%=cmsession.getId()%>' href="#"
-											class="btn btn-xs btn-outline btn-primary delete_cmsession customcss_lesson-button_btn">Delete
+										</a> </div><div class="col-md-6 text-center"> <a data-entity_id='<%=cmsession.getId()%>'
+											data-delete_type='session' class="btn btn-xs btn-outline btn-primary master_delete customcss_lesson-button_btn">Delete
 											<i class="fa fa-trash-o"></i>
 										</a>
 										</div>
@@ -174,12 +144,7 @@
 						}
 						}
 					%>
-
 				</div>
-
-
-
-
 			</div>
 		</div>
 	</div>
