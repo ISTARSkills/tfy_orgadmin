@@ -40,10 +40,9 @@ public class SessionCreateController extends HttpServlet {
 		if ((request.getParameterMap().containsKey("cmsession_name")) 
 				&& (request.getParameterMap().containsKey("cmsession_desc")) 
 				&& (request.getParameterMap().containsKey("lesson_list")) 
-				&& (request.getParameterMap().containsKey("cmsession_image"))
-				&& (request.getParameterMap().containsKey("skill_objective_list"))) {
+				&& (request.getParameterMap().containsKey("cmsession_image"))) {
 			String[] lesson_ids = request.getParameter("lesson_list").toString().split(",");
-			String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
+			//String[] skill_objective_ids = request.getParameter("skill_objective_list").toString().split(",");
 			SessionServices cmsessionServices = new SessionServices();
 			CmsessionDAO cmsessionDAO = new CmsessionDAO();
 			Cmsession cmsession = new Cmsession();
@@ -58,7 +57,7 @@ public class SessionCreateController extends HttpServlet {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
 			}
-			cmsession = cmsessionServices.createCmsessionSkillObjectivesMapping(cmsession,cmsessionDAO, skill_objective_ids);
+			//cmsession = cmsessionServices.createCmsessionSkillObjectivesMapping(cmsession,cmsessionDAO, skill_objective_ids);
 			cmsession = cmsessionServices.saveCmsessionDetails(cmsession, cmsessionDAO);
 			response.setContentType("text/html");
 			// Actual logic goes here.
