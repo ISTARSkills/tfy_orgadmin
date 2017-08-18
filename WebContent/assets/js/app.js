@@ -459,68 +459,49 @@ function moduleHashInit() {
 			});
 }
 function initModuleSearch() {
-	$('#searchModules')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-
-							if($.trim($(this).val()).length>2){
-								var searchString = $("#searchModules").val();
-
-								var datapost = {
-									'searchString' : searchString
-								};
-								$.get("/SeachModules", datapost).done(function(data) {
-													var addition = '';
-													$.each(data.modules,function(k, v) {
-																		/*
-																		 * console
-																		 * .log(v.id +
-																		 * '>>' +
-																		 * v.name);
-																		 * module_hash[v.id] =
-																		 * v.name;
-																		 */
-																		addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-																		
-																	});
-													$('#searchModulesResult').html(addition);
-															
-												}).fail(function() {
-											alert("error");
-										}).always(function() {
-
-										});
-							} else {
-								alert('Type atleast 3 characters to search');
-							}
-
-						}
+	$('#searchModules').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
+				var searchString = $("#searchModules").val();
+				var datapost = {
+					'searchString' : searchString
+				};
+				$.get("/SeachModules", datapost).done(function(data) {
+					if(data.modules.length === 0){
+						alert("No Modules found like '"+searchString+"'");
+					}
+					var addition = '';
+					$.each(data.modules,function(k, v) {
+						addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 					});
+					$('#searchModulesResult').html(addition);
+				}).fail(function() {
+					alert("error");
+				}).always(function() {
 
-	$('#searchModulesResult')
-			.on(
-					'click',
-					".fa-plus",
-					function() {
+				});
+			} else {
+				alert('Type atleast 3 characters to search');
+			}
 
-						var v = {
-							id : this.parentElement.parentElement.id,
-							name : this.parentElement.parentElement.innerText
-						}
-						if (!(window.module_hash[v.id] == undefined)) {
-							alert('Module already there in the list.');
-						} else {
-							$('#editable')
-									.append(
-											"<li class='list-group-item something' data-module_id='"
-													+ v.id
-													+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
-													+ v.name + "</li>");
-							window.module_hash[v.id] = v.name;
-						}
-					});
+		}
+});
+
+	$('#searchModulesResult').on('click',".fa-plus",function() {
+		var v = {
+			id : this.parentElement.parentElement.id,
+			name : this.parentElement.parentElement.innerText
+		}
+		if (!(window.module_hash[v.id] == undefined)) {
+			alert('Module already there in the list.');
+		} else {
+			$('#editable').append("<li class='list-group-item something' data-module_id='"
+									+ v.id
+									+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
+									+ v.name + "</li>");
+			window.module_hash[v.id] = v.name;
+		}
+	});
 
 }
 
@@ -564,17 +545,13 @@ function saveCourse() {
 		type : "POST",
 		url : url,
 		data : dataPost,
-	}).done(
-			function(data) {
+	}).done(function(data) {
 				if (window.isNewCourse) {
-					window.location.replace(
-							"/content_creator/courses.jsp",
-							"_self");
+					window.location.replace("/content_creator/courses.jsp","_self");
 				} else {
-					window.location.replace(
-							"/content_creator/courses.jsp", "_self");
+					window.location.replace("/content_creator/courses.jsp", "_self");
 				}
-			});
+	});
 }
 function getModules() {
 	var module_list = "";
@@ -646,22 +623,24 @@ function initSessionSearch() {
 					'searchString' : searchString
 				};
 				$.get("/SearchSessions", datapost).done(function(data) {
+					if(data.sessions.length === 0){
+						alert("No session found like '"+searchString+"'");
+					}
 					var addition = '';
-									$.each(data.sessions,function(k, v) {
-										addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-										
-									});
-									$('#searchSessionsResult').html(addition);
-								}).fail(function() {
-							alert("error");
-						}).always(function() {
+					$.each(data.sessions,function(k, v) {
+						addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+						
+					});
+					$('#searchSessionsResult').html(addition);
+				}).fail(function() {
+						alert("error");
+					}).always(function() {
 
-						});
+					});
 			}else{
 				alert('Type atleast 3 characters to search');
+			}
 		}
-
-						}
 	});
 
 	$('#searchSessionsResult').on('click',".fa-plus",function() {
@@ -707,11 +686,9 @@ function saveModule() {
 		dataType : "text"
 	}).done(function(data) {
 		if (window.isNewModule) {
-			window.location.replace(
-					"/content_creator/modules.jsp","_self");
+			window.location.replace("/content_creator/modules.jsp","_self");
 		} else {
-			window.location.replace(
-					"/content_creator/modules.jsp", "_self");
+			window.location.replace("/content_creator/modules.jsp", "_self");
 		}
 	});
 }
@@ -787,6 +764,9 @@ function initLessonSearch() {
 					'searchString' : searchString
 				};
 				$.get("/SearchLessons", datapost).done(function(data) {
+					if(data.lessons.length === 0){
+						alert("No Modules found like '"+searchString+"'");
+					}
 					$.each(data.lessons,function(k, v) {
 						addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 					});
@@ -795,7 +775,7 @@ function initLessonSearch() {
 							alert("error");
 					}).always(function() {
 
-						});
+					});
 			}else{
 				alert('Type atleast 3 characters to search');
 			}
