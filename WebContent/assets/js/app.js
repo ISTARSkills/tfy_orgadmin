@@ -314,6 +314,10 @@ function readyFn(jQuery) {
 	case 'question_list':
 		questionListVariables();
 		break;
+	case 'question_edit':
+		questionEditVariables();
+		questionEditWizard();
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -8569,4 +8573,364 @@ function initDifficultyLevel(){
 		
 	});
 	
+}
+function questionEditVariables() {
+	window.is_new_question = Boolean(true);
+	window.question = $('#hidden_question_id').val();
+	window.question_selected_context = [];
+	window.question_selected_session_skill = [];
+	window.question_selected_module_skill = [];
+	window.question_selected_learning_objectives = [];
+	window.skill_objective_id_list = '';
+}
+function questionEditWizard() {
+	var url = '';
+	if (window.question == -3) {
+		window.is_new_question = Boolean(true);
+	} else {
+		window.is_new_question = Boolean(false);
+	}
+	for (name in CKEDITOR.instances) {
+		CKEDITOR.instances[name].destroy()
+	}
+	optionCount = $('#question_options_holder').children().length;
+	initQuestionEditCKEDITOR();
+	initQuestionEditFields();
+}
+function initQuestionEditCKEDITOR() {
+	CKEDITOR.config.removePlugins = 'elementspath,save,flash,iframe,link,smiley,find,pagebreak,about,showblocks,newpage,language';
+	CKEDITOR.config.removeButtons = 'Form,TextField,Textarea,Button,CreateDiv,Select,HiddenField,Radio,ImageButton,Checkbox';
+
+	CKEDITOR.replace('question_text', {
+		toolbar : 'removePlugins',
+		toolbar : 'removeButtons'
+	});
+	CKEDITOR.replace('question_explain', {
+		toolbar : 'removePlugins',
+		toolbar : 'removeButtons'
+	});
+	CKEDITOR.replace('question_passage', {
+		toolbar : 'removePlugins',
+		toolbar : 'removeButtons'
+	});
+
+	for (var i = 0; i < optionCount; i++) {
+		CKEDITOR.replace('option_' + i, {
+			toolbar : 'removePlugins',
+			toolbar : 'removeButtons'
+		});
+	}
+}
+function initQuestionEditFields() {
+	$('#question_type').on('change', function() {
+
+		$('.option-correct-holder').each(function() {
+			$(this).removeAttr('checked');
+		});
+
+		if ($(this).val() == 1 || $(this).val() == 2) {
+			$('#question_passage_holder').removeClass('show-holder');
+			$('#question_passage_holder').addClass('hidden-holder');
+		} else {
+			$('#question_passage_holder').removeClass('hidden-holder');
+			$('#question_passage_holder').addClass('show-holder');
+		}
+
+		if ($(this).val() == 1 || $(this).val() == 3) {
+
+		} else {
+
+		}
+
+	});
+
+	$('#add_options')
+			.on(
+					'click',
+					function() {
+
+						if (optionCount >= 5) {
+							$('#add_options').addClass('hidden-holder');
+						} else {
+							optionCount = optionCount + 1;
+							var appendingString = "<div class='col-lg-6'> <label>option "
+									+ optionCount
+									+ "</label> <div class='input-group m-b'>"
+									+ "<textarea name='option_"+optionCount+"' id='option_"+optionCount+"' rows='3' cols='80' placeholder='option 1..'></textarea> <span class='input-group-addon'> <input type='checkbox' class='option-correct-holder' name='option_correct_"+optionCount+"' data-optnum='"+optionCount+"'> </span> </div> </div>";
+
+							$('#question_options_holder').append(
+									appendingString);
+							CKEDITOR.replace('option_' + optionCount);
+							setup_markingScheme();
+						}
+					});
+
+	$('#question-create-submit').on(
+			"click",
+			function() {
+				var url = $('#create-question-form').attr('action');
+				for (instance in CKEDITOR.instances) {
+					CKEDITOR.instances[instance].updateElement();
+				}
+				var learningObjectiveList = "";
+				learningObjectiveList = get_los(learningObjectiveList);
+				$.ajax({
+					type : "POST",
+					url : url,
+					data : $('#create-question-form').serialize()
+							+ '&optionCount=' + optionCount + '&context='
+							+ $('#context_skill_question').val()
+							+ '&question_lob=' + learningObjectiveList,
+					success : function(data) {
+						console.log('successfullly Created');
+						// $('.create-edit-question-model').modal('hide');
+						// $('.create-edit-question-model').remove();
+						// $('#question_list').DataTable().search('').draw();
+						window.open("/content_creator/question.jsp?question="
+								+ data, "_self");
+					}
+				});
+			});
+
+	initSkillQuestionModal();
+}
+
+
+function get_los(skill_objective_id_list) {
+	skill_objective_id_list = "";
+	var skill_hash = $("#learn_obj_question").select2('data');
+	$(skill_hash).each(
+			function(index) {
+				skill_objective_id_list = skill_objective_id_list
+						+ skill_hash[index].id + ',';
+				// console.log(skill_objective_id_list);
+			});
+	return skill_objective_id_list.substring(0,
+			(skill_objective_id_list.length - 1));
+}
+function setup_markingScheme() {
+	$('.option-correct-holder').unbind().on(
+			"change",
+			function() {
+				var selectedCheckBox = $(this);
+				if ($('#question_type').val() == '1'
+						|| $('#question_type').val() == '3') {
+					$('.option-correct-holder').each(function() {
+						$(this).removeAttr('checked');
+					});
+					selectedCheckBox.prop('checked', true);
+				}
+			});
+}
+
+
+function initSkillQuestionModal() {
+	if(window.is_new_question){
+		initContextQuestion();		
+	} else {
+		loadContextQuestion();
+	}
+	initContextListenerQuestion();
+	initModuleSkillListenerQuestion();
+	initSessionSkillListenerQuestion();
+}
+function initContextQuestion() {
+	$
+				.get("../get_all_contexts")
+				.done(
+						function(data) {
+							var addition = "";
+							for ( var j in data.contexts) {
+								if(!question_selected_context[0]==undefined){
+									if (window.question_selected_context[0] === data.contexts[j].id) {
+										addition += "<option value="+data.contexts[j].id+ " selected> "
+												+ data.contexts[j].text
+												+ " </option>";
+									} else {
+										addition += "<option value="+data.contexts[j].id+ "> "
+												+ data.contexts[j].text
+												+ " </option>";
+									}
+								} else {
+									addition += "<option value="+data.contexts[j].id+ "> "
+									+ data.contexts[j].text
+									+ " </option>";
+						}
+							}
+							$("#context_skill_question").html(addition);
+							$("#context_skill_question").select2();
+							if (!window.is_new_question) {
+								loadModuleSkillQuestion();
+							} else {
+								var selected_module_skills = [];
+								initModuleSkillQuestion(selected_module_skills);
+							}
+						});
+}
+function loadContextQuestion() {
+	var dataPost = {
+			question : window.question
+		};
+		$
+				.get("../GetContextFromQuestion", dataPost)
+				.done(
+						function(data) {
+							for ( var j in data.selected_contexts) {
+								window.question_selected_context
+										.push(data.selected_contexts[j].id);
+							}
+							initContextQuestion();
+						});
+}
+function initContextListenerQuestion() {
+	$("#context_skill_question").on("select2:select", function(e) {
+		var selected_module_skills = [];
+		initModuleSkillQuestion(selected_module_skills);
+	});
+}
+function initModuleSkillListenerQuestion() {
+	$("#module_skill_question").on("select2:select", function(e) {
+		var selected_session_skills = [];
+		initSessionSkillQuestion(selected_session_skills);
+	});
+}
+function initSessionSkillListenerQuestion() {
+	$("#session_skill_question").on("select2:select", function(e) {
+		var selected_learning_objectives = [];
+		initLearningObjQuestion(selected_learning_objectives);
+	});
+}
+
+function loadModuleSkillQuestion() {
+	var dataPost = {
+		question : window.question
+	};
+
+	$
+			.get("../module_skill_from_question", dataPost)
+			.done(
+					function(data) {
+						for ( var j in data.selected_module_skills) {
+							window.question_selected_module_skill
+									.push(data.selected_module_skills[j].id);
+						}
+						initModuleSkillQuestion(window.question_selected_module_skill);
+					});
+}
+function initModuleSkillQuestion(selected_module_skills) {
+	var dataPost = {
+		context_id : $("#context_skill_question").select2('data')[0].id
+	};
+	$
+			.get("../get_module_skills", dataPost)
+			.done(
+					function(data) {
+						var addition = "";
+						for ( var j in data.skills) {
+							if (selected_module_skills[0] === data.skills[j].id) {
+								addition += "<option value="+data.skills[j].id+ " selected> "
+										+ data.skills[j].text
+										+ " </option>";
+							} else {
+								addition += "<option value="+data.skills[j].id+ "> "
+										+ data.skills[j].text
+										+ " </option>";
+							}
+						}
+						$("#module_skill_question").html(addition);
+						$("#module_skill_question").select2();
+						if (!window.is_new_question) {
+							loadSessionSkillQuestion();
+						} else {
+							var selected_session_skills = [];
+							initSessionSkillQuestion(selected_session_skills);
+						}
+					});
+}
+function loadSessionSkillQuestion() {
+	var dataPost = {
+		question : window.question
+	};
+	$
+			.get("../session_skills_from_question", dataPost)
+			.done(
+					function(data) {
+						for ( var j in data.selected_session_skills) {
+							window.question_selected_session_skill
+									.push(data.selected_session_skills[j].id);
+						}
+						initSessionSkillQuestion(window.question_selected_session_skill);
+					});
+}
+function initSessionSkillQuestion(selected_session_skills) {
+	var dataPost = {
+		context_id : $('#context_skill_question').select2('data')[0].id,
+		module_skill_id : $("#module_skill_question").select2('data')[0].id
+	};
+	$
+			.get("../get_session_skills", dataPost)
+			.done(
+					function(data) {
+						var addition = "";
+						for ( var j in data.skills) {
+							if (selected_session_skills[0] === (data.skills[j].id)) {
+								addition += "<option value="+data.skills[j].id+ " selected> "
+										+ data.skills[j].text
+										+ " </option>";
+							} else {
+								addition += "<option value="+data.skills[j].id+ "> "
+										+ data.skills[j].text
+										+ " </option>";
+							}
+						}
+						$("#session_skill_question").html(addition);
+						$("#session_skill_question").select2();
+						if (!window.is_new_question) {
+							loadLearningObjectiveQuestion();
+						} else {
+							var question_selected_learning_objectives = [];
+							initLearningObjQuestion(question_selected_learning_objectives);
+						}
+					});
+}
+function loadLearningObjectiveQuestion() {
+	var dataPost = {
+		question : window.question
+	};
+	$
+			.get("../lo_from_question", dataPost)
+			.done(
+					function(data) {
+						for ( var j in data.selected_learning_objectives) {
+							window.question_selected_learning_objectives
+									.push(data.selected_learning_objectives[j].id);
+						}
+						initLearningObjQuestion(window.question_selected_learning_objectives);
+					});
+}
+function initLearningObjQuestion(selected_learning_objectives) {
+	var dataPost = {
+		context_id : $("#context_skill_question").select2('data')[0].id,
+		session_skill_id : $("#session_skill_question").select2('data')[0].id
+	};
+	$
+			.get("../get_learning_objectives", dataPost)
+			.done(
+					function(data) {
+						var addition = "";
+						for ( var j in data.skills) {
+							if (selected_learning_objectives
+									.includes(data.skills[j].id)) {
+								addition += "<option value="+data.skills[j].id+ " selected> "
+										+ data.skills[j].text
+										+ " </option>";
+							} else {
+								addition += "<option value="+data.skills[j].id+ "> "
+										+ data.skills[j].text
+										+ " </option>";
+							}
+						}
+						$("#learn_obj_question").html(addition);
+						$("#learn_obj_question").select2();
+					});
 }
