@@ -378,8 +378,9 @@ function courseEditWizard() {
 		transitionEffectSpeed : 135,
 		showFinishButtonAlways : false,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			courseStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			if (currentIndex === 1 && !window.is_sortable) {
@@ -586,8 +587,9 @@ function moduleEditWizard() {
 		transitionEffect : 'fade',
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			moduleStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			
@@ -732,8 +734,9 @@ function sessionEditWizard() {
 		transitionEffect : 'fade',
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			sessionStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			
