@@ -16473,3 +16473,7 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 	background-color: #1ab394 !important;
 	color: white !important;
 }
+
+.wizard-padding {
+	padding: 0 20px 0 20px !important;
+}

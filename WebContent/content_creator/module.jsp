@@ -66,7 +66,7 @@
 				String[] brd = {"Dashboard", "Modules"};
 			%>
 			<%=UIUtils.getPageHeader(moduleName, brd)%>
-			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box wizard-padding">
 				<div class="row">
 							<div class="ibox-content">
 								<%

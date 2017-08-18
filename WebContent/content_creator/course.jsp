@@ -69,7 +69,7 @@
 			%>
 			<%=UIUtils.getPageHeader(courseName, brd)%>
 
-			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box">
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box wizard-padding">
 				<div class="row">
 					<div class="ibox-content">
 						<h2>
