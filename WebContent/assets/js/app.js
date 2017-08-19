@@ -9153,23 +9153,47 @@ function assessmentEditVariables() {
 }
 
 function assessmentEditWizard() {
+	
+	
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
 		transitionEffectSpeed : 135,
-		onStepChanging : function(event, currentIndex, newIndex) {
-			assessmentStepChanger(event, currentIndex, newIndex);
-			return true;
+		
+		onStepChanging : function(event, currentIndex, newIndex) {			
+			  var form = $(this);
+			 var flag =  form.valid();
+			 if(flag){
+					assessmentStepChanger(event, currentIndex, newIndex);
+			 }
+			 return flag;
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			assessmentStepChangerPost(event, currentIndex, priorIndex);
 			return true;
 		},
 		onFinishing : function(event, currentIndex) {
-			assessmentFinisher(event, currentIndex);
-			return true;
+			
+			
+			 var form = $(this);
+			 var flag =  form.valid();
+			 if(flag){
+				 assessmentFinisher(event, currentIndex); 
+			 }
+			 return flag;
 		}
-	});
+	}).validate({
+        errorPlacement: function (error, element)
+        {
+            element.before(error);
+        },
+        rules: {
+            confirm: {
+                equalTo: "#password"
+            }
+        }
+});
+	$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
 	if (newIndex === 1 && currentIndex === 0) {

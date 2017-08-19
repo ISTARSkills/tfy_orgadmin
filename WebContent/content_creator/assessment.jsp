@@ -90,19 +90,19 @@ display:inline !important;
 										<fieldset class='fieldset-border-margin'>
 											<div class="row">
 												<div class="col-lg-8">
-													<div class="form-group">
+													<div class="form-group" >
 														<label>Assessment Title</label> <input
-															class="form-control" id="assessment_name_idd" type="text"
+															class="form-control required"  id="assessment_name_idd" type="text"
 															name="assessment_name" style="width: 30vw !important"
 															<%if (!is_new) {%>
 															value='<%=assessment.getAssessmenttitle()%>' <%}%>>
 													</div>
-													<div class="form-group">
+													<div class="form-group" >
 														<label>Assessment Description</label>
 														<textarea class="form-control required"
-															name="assessment_desc" rows="3" id="assessment_desc_idd"> <%if (!is_new) {%><%=assessment.getDescription()%> <%}%> </textarea>
+															 name="assessment_desc" rows="3" id="assessment_desc_idd"> <%if (!is_new) {%><%=assessment.getDescription()%> <%}%> </textarea>
 													</div>
-													<div class="form-group">
+													<div class="form-group" >
 														<label>Assessment Retryable </label> <input
 															id="assessment_retry_idd" type="checkbox"
 															<%if (!is_new) {
@@ -110,9 +110,9 @@ display:inline !important;
 															checked <%}
 			}%>>
 													</div>
-													<div class="form-group">
+													<div class="form-group" >
 														<label>Assessment Duration (minutes)</label> <input
-															class="form-control" id="assessment_duration_idd"
+															 class="form-control required" id="assessment_duration_idd"
 															type="number" name="assessment_duration" step="5"
 															style="max-width: 70px;" <%if (!is_new) {%>
 															value="<%=assessment.getAssessmentdurationminutes()%>"
@@ -120,7 +120,7 @@ display:inline !important;
 													</div>
 												</div>
 												<div class="col-lg-3">
-													<div class="form-group">
+													<div class="form-group ">
 														<label>Select Assessment Type</label> <select
 															class="form-control" name="assessment_type"
 															id='assessment_type_idd' style="max-width: 200px;">
