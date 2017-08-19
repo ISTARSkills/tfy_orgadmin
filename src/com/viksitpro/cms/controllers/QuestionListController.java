@@ -73,19 +73,25 @@ public class QuestionListController extends HttpServlet {
 			
 			String difficult_level = request.getParameter("difficult_level") != null ? request.getParameter("difficult_level") : "0";
 			String context_filter = request.getParameter("context_filter") != null ? request.getParameter("context_filter") : "0";
-			String searchTearm = "";
-			if(!difficult_level.equalsIgnoreCase("0") && !difficult_level.trim().equalsIgnoreCase("") && !context_filter.equalsIgnoreCase("0") && !context_filter.trim().equalsIgnoreCase("")) {
-				 searchTearm = "WHERE question.difficulty_level in ("+difficult_level+") AND question.context_id in ("+context_filter+")";	
-			}
-			else if(!context_filter.equalsIgnoreCase("0") && !context_filter.trim().equalsIgnoreCase("")) {
-				 searchTearm = "WHERE question.context_id in ("+context_filter+")";	
-			}
-			else if(!difficult_level.equalsIgnoreCase("0") && !difficult_level.trim().equalsIgnoreCase("")) {
-				 searchTearm = "WHERE question.difficulty_level in ("+difficult_level+")";	
+			String search_tearm = request.getParameter("search_tearm") != null ? request.getParameter("search_tearm") : "";
+			String finalSearchTearm = "";
+			String filterTearm = "";
+			
+			 if( !search_tearm.trim().equalsIgnoreCase("")) {
+				finalSearchTearm = search_tearm;	
 			}
 			
-			String sql = "SELECT DISTINCT 	CAST (COUNT(*) OVER() AS INTEGER) AS total_rows, 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level, 	COALESCE ( 		string_agg (skill_objective. NAME, ', '), 		'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 	) AS skills FROM 	question LEFT JOIN question_skill_objective ON ( 	question. ID = question_skill_objective.questionid ) LEFT JOIN skill_objective ON ( 	skill_objective. ID = question_skill_objective.learning_objectiveid ) "+searchTearm+" GROUP BY 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level ORDER BY 	ID DESC LIMIT 11 OFFSET '"
-					+ offsetnew + "';";
+			if(!difficult_level.equalsIgnoreCase("0") && !difficult_level.trim().equalsIgnoreCase("") && !context_filter.equalsIgnoreCase("0") && !context_filter.trim().equalsIgnoreCase("")) {
+				filterTearm = "WHERE question.difficulty_level in ("+difficult_level+") AND question.context_id in ("+context_filter+")";	
+			}
+			else if(!context_filter.equalsIgnoreCase("0") && !context_filter.trim().equalsIgnoreCase("")) {
+				filterTearm = "WHERE question.context_id in ("+context_filter+")";	
+			}
+			else if(!difficult_level.equalsIgnoreCase("0") && !difficult_level.trim().equalsIgnoreCase("")) {
+				filterTearm = "WHERE question.difficulty_level in ("+difficult_level+")";	
+			}
+			
+			String sql = "SELECT 	CAST (COUNT(*) OVER() AS INTEGER) AS total_rows, TF.* FROM 	( 		SELECT DISTINCT 	question. ID, 			question.question_text, 			question.question_type, 			question.difficulty_level, 			COALESCE ( 				string_agg (skill_objective. NAME, ', '), 				'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 			) AS skills 		FROM 			question 		LEFT JOIN question_skill_objective ON ( 			question. ID = question_skill_objective.questionid 		) 		LEFT JOIN skill_objective ON ( 			skill_objective. ID = question_skill_objective.learning_objectiveid 		) "+filterTearm+" 		 GROUP BY 			question. ID, 			question.question_text, 			question.question_type, 			question.difficulty_level  	) TF WHERE   CAST(TF.id as VARCHAR) LIKE '%"+finalSearchTearm+"%' OR	TF.question_text LIKE '%"+finalSearchTearm+"%' OR TF.question_type LIKE '%"+finalSearchTearm+"%' OR TF.skills LIKE '%"+finalSearchTearm+"%' ORDER BY 			TF.ID DESC 		LIMIT 11 OFFSET '"+offsetnew+"';";
 			System.err.println(sql);
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
 			

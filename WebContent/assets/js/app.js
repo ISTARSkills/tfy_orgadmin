@@ -8676,10 +8676,13 @@ function initQuestionListDatatable() {
 	    });	
 }
 
-function initGeneralAjax(difficult_level,context_filter,offset){
+function initGeneralAjax(difficult_level,context_filter,offset,searchTearm){
 	
-	if(offset == undefined || offset == ''){
-		offset = null;
+	if(offset == undefined){
+		offset = '0';
+	}
+	if(searchTearm == undefined){
+		searchTearm = '';
 	}
 	console.log('>>> '+ difficult_level);		
 	console.log('>>> '+ context_filter);
@@ -8687,7 +8690,7 @@ function initGeneralAjax(difficult_level,context_filter,offset){
 	$.ajax({
         type: "POST",
         url: $('#question_list_table').data('url'),
-        data: {key:'difficult_level_type',difficult_level:difficult_level,context_filter:context_filter,offset:offset},
+        data: {key:'difficult_level_type',difficult_level:difficult_level,context_filter:context_filter,offset:offset,search_tearm:searchTearm},
         success: function(result) {
         	
         	$('#question_data').empty();
@@ -8701,7 +8704,7 @@ function initDifficultyLevel(){
 	
 	var difficult_level = [];
 	var context_filter = [];
-	
+	var search_tearm ="";
 	$('.difficult_level').unbind().on('click',function(){
 		if($(this).hasClass('btn-danger') == true){
 			 $(this).css("color","gray");
@@ -8724,7 +8727,7 @@ function initDifficultyLevel(){
 				    	difficult_level.push(filterValue);
 				    } 
 
-				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,search_tearm);
 		  
 	});
 	
@@ -8750,7 +8753,7 @@ function initDifficultyLevel(){
 				    if(!flag){
 				    	context_filter.push(filterValue);
 				    } 
-				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,search_tearm);
 		
 		
 	});
@@ -8758,7 +8761,7 @@ function initDifficultyLevel(){
 	 $('#page-selection').bootpag({}).on("page", function(event, /* page number here */ num){
 	     	alert("num -> "+num)
 	     	
-	     	 initGeneralAjax(difficult_level.join(','),context_filter.join(','),num);
+	     	 initGeneralAjax(difficult_level.join(','),context_filter.join(','),num,search_tearm);
 	     	/*$.ajax({
 		        type: "POST",
 		        url: $('#question_list_table').data('url'),
@@ -8772,6 +8775,12 @@ function initDifficultyLevel(){
 		    });*/
 	     	
 	     });
+	 
+	 $( ".search_able_input" ).keyup(function() {
+		 console.log(">>>> "+$(this).val());
+		 search_tearm = $(this).val();
+		 initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,$(this).val());
+		});
 	
 	
 }
@@ -9194,20 +9203,6 @@ function initAssessmentContext() {
 			});
 }
 
-function initPreviewAsssessmentTable(){
-	
-	var addition = "";
-	addition += "<table class='table table-bordered' id='preview_assessment_list_table'>" +
-			"<thead> <tr> <th data-visisble='true'>#</th> " +
-			"<th data-visisble='true'>Question Text</th>" +
-			"<th data-visisble='true'>Question Type</th>" +
-			"<th data-visisble='true'>Difficulty Level</th> " +
-			"<tbody id='preview_assessment_data'>";
-	
-	
-			addition +="</tbody></table>";
-	
-}
 function initAssessmentHighlighter() {
 	
 	$("#assessment_list_table").on('click','tr',function() {
@@ -9242,22 +9237,7 @@ function initAssessmentHighlighter() {
 							}
 						}
 					});
-		}
-		
-		 /*var i = question_id_list.length;
-		    var flag = false; 
-		    var filterValue = $($(this).children()[1]).text();
-
-				    while (i--) {
-				        if (question_id_list.length != 0 && question_id_list[i] === filterValue)
-				        {	flag = true;
-				        question_id_list.splice(i,1);
-				        }	        
-				    }
-				    if(!flag){
-				    	question_id_list.push(filterValue);
-				    }*/
-		
+		}		
 		
 			});
 }
@@ -9376,6 +9356,10 @@ var url = $('#assessment_list_table').data('url');
 	        	initAssessmentHighlighter();
 	        	highlightSelectedAssessmentQuestions();
 	        	initAssessmentListPageination($('#total_rows').html());
+
+	        	$('#table_holder_div').slimScroll({
+	                height: '250px'
+	            });
 	          }
 	    });
 	
@@ -9383,6 +9367,12 @@ var url = $('#assessment_list_table').data('url');
 
 
 function initAssessmentTrashIcon() {
+	
+	$('#editable').slimScroll({
+        height: '250px'
+    });
+	
+	
 	$("#editable")
 	.on(
 			'click',
@@ -9393,4 +9383,57 @@ function initAssessmentTrashIcon() {
 					window.questionList.delete($(this.parentElement).data('question_id').toString());
 				}
 			});
+}
+
+function assessmentFinisher(event, currentIndex) {
+	var question_list = "";
+	$("#editable .something").each(function(index) {
+		question_list = question_list + $(this).data('question_id') + ",";
+	});
+	console.log(question_list);
+	question_list = question_list.substring(0, question_list.length - 1);
+	if (window.isNewAssessment) {
+		var dataPost = 'assessment_name=' + $("#assessment_name_idd").val()
+				+ '&assessment_desc=' + $('#assessment_desc_idd').val()
+				+ '&assessment_type=' + $('#assessment_type_idd').val()
+				+ '&assessment_retriable='
+				+ $('#assessment_retry_idd').is(":checked")
+				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
+				+ '&assessment_category=' + $('#assessment_category_idd').val()
+				+ '&question_list=' + question_list + '&course='
+				+ $('#course').val();
+		var url = '../create_assessment';
+	} else {
+		var dataPost = 'assessment_id=' + $('#assessment_id_idd').val()
+				+ '&assessment_desc=' + $.trim($('#assessment_desc_idd').val())
+				+ '&assessment_name=' + $("#assessment_name_idd").val()
+				+ '&assessment_type=' + $('#assessment_type_idd').val()
+				+ '&assessment_retriable='
+				+ $('#assessment_retry_idd').is(":checked")
+				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
+				+ '&assessment_category=' + $('#assessment_category_idd').val()
+				+ '&question_list=' + question_list + '&course='
+				+ $('#course').val();
+		var url = '../update_assessment';
+	}
+	// alert(dataPost);
+	$
+			.ajax({
+				type : "POST",
+				url : url,
+				data : dataPost,
+				dataType : "json"
+			})
+			.done(
+					function(data) {
+						if (window.isNewAssessment) {
+							window.location
+									.replace("/content_creator/assessment.jsp?assessment="
+											+ data);
+						} else {
+							window.location
+									.replace("/content_creator/assessment.jsp?assessment="
+											+ window.assessmentID);
+						}
+					});
 }
