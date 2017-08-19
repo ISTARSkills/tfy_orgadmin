@@ -55,7 +55,7 @@
 %>
 <body class="top-navigation" id="question_edit"
 	data-helper='This page is used to edit an individual question.'>
-	<div id="wrapper">
+	<div id="wrapper" class='customcss_overflowy'>
 		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
 		<%
