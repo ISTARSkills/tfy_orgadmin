@@ -329,6 +329,18 @@ function readyFn(jQuery) {
 		assessmentEditVariables();
 		assessmentEditWizard();
 		break;
+	case 'trainer_study_list':
+		$('#course').select2();
+		var course = $('#course').select2('data')[0].id;
+		initCourseChangeListener();
+		tableDataLoader(course);
+		break;
+	case 'delivery_list':
+		$('#course').select2();
+		var course = $('#course').select2('data')[0].id;
+		initCourseChangeDiliverListener();
+		tableDataLoaderDeliverList(course);
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -385,6 +397,7 @@ function courseEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		showFinishButtonAlways : false,
 		onStepChanging : function(event, currentIndex, newIndex) {
@@ -399,8 +412,12 @@ function courseEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
-			courseFinisher(event, currentIndex);
-			return true;
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
+				courseFinisher(event, currentIndex);
+			}
+			return flag;
 		}
 	});
 }
@@ -572,6 +589,7 @@ function moduleEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
 			var form = $(this);
@@ -586,8 +604,12 @@ function moduleEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
 			moduleFinisher(event, currentIndex);
-			return true;
+			}
+			return flag;
 		},
 	});
 }
@@ -719,6 +741,7 @@ function sessionEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
 			var form = $(this);
@@ -733,8 +756,12 @@ function sessionEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
 			sessionFinisher(event, currentIndex);
-			return true;
+			}
+			return flag;
 		}
 	});
 }
@@ -9170,7 +9197,7 @@ function assessmentEditWizard() {
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
 		transitionEffectSpeed : 135,
-		
+		enableCancelButton:false,
 		onStepChanging : function(event, currentIndex, newIndex) {			
 			  var form = $(this);
 			 var flag =  form.valid();
@@ -9204,7 +9231,7 @@ function assessmentEditWizard() {
             }
         }
 });
-	$( 'a[href*="#cancel"]' ).parent().remove();
+	//$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
 	if (newIndex === 1 && currentIndex === 0) {
@@ -9471,4 +9498,56 @@ function assessmentFinisher(event, currentIndex) {
 											+ window.assessmentID);
 						}
 					});
+}
+
+function initCourseChangeListener(){
+	$('#course').change(function(event) {
+		var course = $(this).val();
+		tableDataLoader(course);
+	});
+}
+function tableDataLoader(course) {
+	$.get( "../TrainerSelfStudyReport", {course: course}, function( data ) {
+		$('#tableHead').html('');
+		var Headaddition = '<tr><th>Lesson Name</th>';
+		$.each(data.trainerNames, function(key,value){
+			Headaddition += '<th>' + value;
+			Headaddition +='</th>';
+		});	
+		Bodyaddition = '';
+		$('#tableHead').html(Headaddition);
+		$('#tableBody').html('');
+		$.each(data.allLessons, function(key,value){
+			Bodyaddition +='<tr>';
+			Bodyaddition += '<td>'+value+'</td>';
+			$.each(data.trainerNames, function(k,v){
+				Bodyaddition += '<td>';
+				if(data.trainerbrowses[k].includes(key)){
+					Bodyaddition += '<i class="fa  fa-check"></i>';
+				} else {
+					Bodyaddition += '<i class="fa  fa-times"></i>';
+				}
+				Bodyaddition += '</td>';
+			});
+			Bodyaddition +='</tr>';
+		});
+		$('#tableBody').html(Bodyaddition);
+	});
+}
+function initCourseChangeDiliverListener(){
+	$('#course').change(function(event) {
+		var course = $(this).val();
+		tableDataLoader(course);
+	});
+}
+function tableDataLoaderDeliverList(course) {
+	$.get( "../batch_report", {course: course}, function( data ) {
+		$('#tableBody').html('');
+		$.each(data, function(key,value){
+		    var kamini = '<tr><td>'+value.batchID+'</td><td>'+value.bgName+'</td><td>'+value.collName+'</td><td>'+value.totalLessons+' ('+value.netDuration+')</td>'+
+		    '<td>'+value.lessonsTaught+' ('+value.netDurationTaught+')</td>';
+		    kamini+='<td><a href="/content_content_creator/presentation.jsp?lesson_id='+value.lastLessonID+'">'+value.lastLessonName+'</td><td>'+value.trainerNames+'</td></tr>';
+		    $('#tableBody').append(kamini);
+	});
+});
 }
