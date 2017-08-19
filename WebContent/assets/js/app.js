@@ -8950,22 +8950,27 @@ function initContextQuestion() {
 				.done(
 						function(data) {
 							var addition = "";
+							addition += "<option value=0>Choose a course to filter questions</option>";
+							if(data.length != 0){
 							for ( var j in data.contexts) {
-								if(!question_selected_context[0]==undefined){
-									if (window.question_selected_context[0] === data.contexts[j].id) {
-										addition += "<option value="+data.contexts[j].id+ " selected> "
-												+ data.contexts[j].text
-												+ " </option>";
+								
+									if(!question_selected_context[0]==undefined){
+										if (window.question_selected_context[0] === data.contexts[j].id) {
+											addition += "<option value="+data.contexts[j].id+ " selected> "
+													+ data.contexts[j].text
+													+ " </option>";
+										} else {
+											addition += "<option value="+data.contexts[j].id+ "> "
+													+ data.contexts[j].text
+													+ " </option>";
+										}
 									} else {
 										addition += "<option value="+data.contexts[j].id+ "> "
-												+ data.contexts[j].text
-												+ " </option>";
-									}
-								} else {
-									addition += "<option value="+data.contexts[j].id+ "> "
-									+ data.contexts[j].text
-									+ " </option>";
-						}
+										+ data.contexts[j].text
+										+ " </option>";
+							}	
+								}
+								
 							}
 							$("#context_skill_question").html(addition);
 							$("#context_skill_question").select2();
@@ -9036,6 +9041,8 @@ function initModuleSkillQuestion(selected_module_skills) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_module_skills[0] === data.skills[j].id) {
 								addition += "<option value="+data.skills[j].id+ " selected> "
@@ -9047,6 +9054,7 @@ function initModuleSkillQuestion(selected_module_skills) {
 										+ " </option>";
 							}
 						}
+					}
 						$("#module_skill_question").html(addition);
 						$("#module_skill_question").select2();
 						if (!window.is_new_question) {
@@ -9082,6 +9090,8 @@ function initSessionSkillQuestion(selected_session_skills) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_session_skills[0] === (data.skills[j].id)) {
 								addition += "<option value="+data.skills[j].id+ " selected> "
@@ -9092,6 +9102,7 @@ function initSessionSkillQuestion(selected_session_skills) {
 										+ data.skills[j].text
 										+ " </option>";
 							}
+						}
 						}
 						$("#session_skill_question").html(addition);
 						$("#session_skill_question").select2();
@@ -9128,6 +9139,8 @@ function initLearningObjQuestion(selected_learning_objectives) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_learning_objectives
 									.includes(data.skills[j].id)) {
@@ -9140,6 +9153,7 @@ function initLearningObjQuestion(selected_learning_objectives) {
 										+ " </option>";
 							}
 						}
+					}
 						$("#learn_obj_question").html(addition);
 						$("#learn_obj_question").select2();
 					});
