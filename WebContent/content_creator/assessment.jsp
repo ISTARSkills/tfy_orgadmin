@@ -33,6 +33,7 @@ display:inline !important;
 	String baseProdURL = (new URLServices()).getBaseUrl();
 	if (request.getParameterMap().containsKey("assessment")) {
 		assessment_type = "Edit Assessment";
+		
 		is_new = false;
 		assessment = (new AssessmentDAO())
 				.findById(Integer.parseInt(request.getParameter("assessment").toString()));
@@ -70,7 +71,10 @@ display:inline !important;
 								<div class="ibox-content">
 									<p>Please follow the following steps</p>
 									<input type='hidden' name='isNew'
-										value='<%=is_new.toString()%>' /> <input type='hidden'
+										value='<%=is_new.toString()%>' /> 
+										<input type='hidden' name='isNew'
+										value='<%=is_new.toString()%>' /> 
+										<input type='hidden'
 										name='cmsID' value='<%=assessment.getId()%>' /> <input
 										type='hidden' name='baseProdURL' value='<%=baseProdURL%>' />
 									<form id="form" class="wizard-big">
@@ -222,7 +226,7 @@ display:inline !important;
 										<fieldset class='fieldset-border-margin'>
 											<div class="form-group">
 												<h3>Questions in this assessment</h3>
-												<ul class="list-unstyled file-list" id="editable">
+												<ul class="list-unstyled file-list" id="editable" style="    max-height: 54vh; overflow-y: scroll;">
 													<%
 														Set<AssessmentQuestion> aqs = new HashSet<AssessmentQuestion>();
 														aqs = assessment.getAssessmentQuestions();

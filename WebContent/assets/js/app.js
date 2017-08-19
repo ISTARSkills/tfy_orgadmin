@@ -9163,7 +9163,7 @@ function assessmentEditWizard() {
 	});
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 1 && currentIndex === 0 && !window.isDatatable) {
+	if (newIndex === 1 && currentIndex === 0) {
 			initAssessmentContext();
 			initAssessmentContextListener();
 			
@@ -9175,7 +9175,7 @@ function assessmentStepChanger(event, currentIndex, newIndex) {
 }
 function assessmentStepChangerPost(event, currentIndex, priorIndex) {
 	if(currentIndex === 1) {
-		//highlightSelectedAssessmentQuestions();
+		highlightSelectedAssessmentQuestions();
 	}
 }
 function initAssessmentContext() {
@@ -9194,11 +9194,78 @@ function initAssessmentContext() {
 			});
 }
 
-/*function highlightSelectedAssessmentQuestions() {
+function initPreviewAsssessmentTable(){
+	
+	var addition = "";
+	addition += "<table class='table table-bordered' id='preview_assessment_list_table'>" +
+			"<thead> <tr> <th data-visisble='true'>#</th> " +
+			"<th data-visisble='true'>Question Text</th>" +
+			"<th data-visisble='true'>Question Type</th>" +
+			"<th data-visisble='true'>Difficulty Level</th> " +
+			"<tbody id='preview_assessment_data'>";
+	
+	
+			addition +="</tbody></table>";
+	
+}
+function initAssessmentHighlighter() {
+	
+	$("#assessment_list_table").on('click','tr',function() {
+				
+		if ($(this).hasClass('row_selected')) {
+					$(this).removeClass('row_selected');
+				} else {
+					$(this).addClass('row_selected');
+				}
+		
+		
+		var questin_id = this.children[1].innerText;
+	
+		if(!questionList.has(questin_id)) {
+			$('#editable')
+					.append(
+							"<li data-question_id='"+this.children[1].innerText
+	+"' class='something'><i class='js-remove fa fa-trash-o'> </i> |"
+									+ this.children[1].innerText
+									+ "| "
+									+ this
+											.getElementsByTagName('td')[2].innerText
+									+ "</li>");
+			questionList.add(this.children[1].innerText);
+		} else {
+			$(".something").each(function(index) {
+						if (($(this)
+								.attr('data-question_id')) === questin_id) {
+							this.remove();
+							if(window.questionList.has(($(this).attr('data-question_id')))){
+								window.questionList.delete(($(this).attr('data-question_id')));
+							}
+						}
+					});
+		}
+		
+		 /*var i = question_id_list.length;
+		    var flag = false; 
+		    var filterValue = $($(this).children()[1]).text();
+
+				    while (i--) {
+				        if (question_id_list.length != 0 && question_id_list[i] === filterValue)
+				        {	flag = true;
+				        question_id_list.splice(i,1);
+				        }	        
+				    }
+				    if(!flag){
+				    	question_id_list.push(filterValue);
+				    }*/
+		
+		
+			});
+}
+function highlightSelectedAssessmentQuestions() {
 	updateSelectedAssessmentQuestions();
-	var table = document.getElementById("question_list");
+	var table = document.getElementById("assessment_list_table");
 	for (var i = 0, row; row = table.rows[i]; i++) {
-	 	if(window.questionList.has(row.cells[0].innerText)) {
+	 	if(window.questionList.has(row.cells[1].innerText)) {
 	 		$(row).addClass('row_selected');
 	 	} else {
 	 		if ($(row).hasClass('row_selected')) {
@@ -9213,7 +9280,7 @@ function updateSelectedAssessmentQuestions() {
 			function(index) {
 					window.questionList.add(($(this).attr('data-question_id')));
 			});
-}*/
+}
 function filterSkillData(context){
 	
 	console.log(context);
@@ -9238,14 +9305,25 @@ function filterSkillData(context){
 }
 function initAssessmentContextListener() {
 	$("#context_skill").on("select2:select", function(e) {
-		// alert(e.params.data);
-		// initModuleSkill();
+		
 		filterAssessmentDatatableBySkills($(this).val());
 		filterSkillData($(this).val());
 		
 	});
 }
 
+function initAssessmentTrashIcon() {
+	$("#editable")
+	.on(
+			'click',
+			'.js-remove',
+			function() {
+				$(this.parentElement).remove();
+				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
+					window.questionList.delete($(this.parentElement).data('question_id').toString());
+				}
+			});
+}
 
 function initAssessmentListPageination(total_count){
 	
@@ -9269,6 +9347,7 @@ function initAssessmentListPageination(total_count){
 		        	
 		        	$('#assessment_data').empty();
 		        	$('#assessment_data').append(result);
+		        	highlightSelectedAssessmentQuestions();
 		        	
 		          }
 		    });
@@ -9294,6 +9373,8 @@ var url = $('#assessment_list_table').data('url');
 	        	$( "#assessment_data" ).on( "custom", function() {
 	        		$('.pagination > li').css("display", "inline", 'important'); 
 	        		});
+	        	initAssessmentHighlighter();
+	        	highlightSelectedAssessmentQuestions();
 	        	initAssessmentListPageination($('#total_rows').html());
 	          }
 	    });
