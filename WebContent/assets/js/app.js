@@ -5385,7 +5385,7 @@ function init_student_card(){
 			$.ajax({
 		        type: "POST",
 		        url: "gvygv",
-		        data: {serialized},
+		        data: serialized,
 		        success: function(data) {
 		        	console.log('success');
 		        }});
@@ -8954,7 +8954,7 @@ function initContextQuestion() {
 							if(data.length != 0){
 							for ( var j in data.contexts) {
 								
-									if(!question_selected_context[0]==undefined){
+									if(question_selected_context[0]!=undefined){
 										if (window.question_selected_context[0] === data.contexts[j].id) {
 											addition += "<option value="+data.contexts[j].id+ " selected> "
 													+ data.contexts[j].text
@@ -8986,13 +8986,10 @@ function loadContextQuestion() {
 	var dataPost = {
 			question : window.question
 		};
-		$
-				.get("../GetContextFromQuestion", dataPost)
-				.done(
+		$.get("../GetContextFromQuestion", dataPost).done(
 						function(data) {
 							for ( var j in data.selected_contexts) {
-								window.question_selected_context
-										.push(data.selected_contexts[j].id);
+								window.question_selected_context.push(data.selected_contexts[j].id);
 							}
 							initContextQuestion();
 						});
