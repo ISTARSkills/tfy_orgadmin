@@ -152,7 +152,7 @@
 								<div class="col-lg-12 customcss_dashboard_buttons">
 										<div class="col-md-7 text-center">
 										
-										<a href="#" target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Link-Skills
+										<a href="assessment_skill_tree.jsp?assessment_id=<%=assessment.getId()%>" target="_blank" class="btn btn-xs btn-outline btn-primary customcss_lesson-button_btn">Link-Skills
 											<i class="fa fa-link"></i>
 										</a>
 										</div>

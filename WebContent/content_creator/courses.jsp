@@ -67,7 +67,6 @@
 									}
 								}
 							}
-
 							int i = 0;
 							for (String c_category : arrayList) {
 						%>
@@ -140,6 +139,10 @@
 
 								<a href="/content_creator/course.jsp?course=<%=course.getId()%>"
 									class="btn btn-xs btn-outline btn-primary">Edit <i
+									class="fa fa-pencil"></i>
+								</a>
+								<a href="/content_creator/course_skill_tree.jsp?course_id=<%=course.getId()%>"
+									class="btn btn-xs btn-outline btn-primary">Skill Tree <i
 									class="fa fa-pencil"></i>
 								</a>
 								<%-- <a data-course_id='<%=course.getId()%>' href="#" class="btn btn-xs btn-outline btn-primary delete_course">Delete <i class="fa fa-trash-o"></i>

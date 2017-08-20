@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.ContextDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Context"%>
 <%@page import="com.viksitpro.core.dao.entities.Lesson"%>
 <%@page import="com.viksitpro.core.skill.pojo.LearningObjective"%>
 <%@page import="com.viksitpro.core.skill.pojo.SessionLevelSkill"%>
@@ -6,37 +8,51 @@
 <%@page import="com.viksitpro.core.skill.services.CoreSkillService"%>
 <%
 int contextId = Integer.parseInt(request.getParameter("context_id"));
+Context context = new ContextDAO().findById(contextId);
+CoreSkillService skillService = new CoreSkillService();																							
+CourseLevelSkill courseSkill = skillService.getShellTreeForContext(contextId);
+boolean validContext = false;
+String txt ="This context do not contain any child module";
+if(courseSkill!=null && courseSkill.getModuleLevelSkill()!=null && courseSkill.getModuleLevelSkill().size()>0)
+{
+	validContext=true;
+	txt ="Context";
+}	
 %>
-
+<ul>
+<li data-entity_type="CONTEXT" data-entity_id="<%=contextId%>" data-title="<%=txt %>" data-is_valid="<%=validContext%>"
+															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=context.getId()%> - <%=context.getTitle()%>
 <%								
-										
-												CoreSkillService skillService = new CoreSkillService();																							
-												CourseLevelSkill courseSkill = skillService.getShellTreeForContext(contextId);
-												if(courseSkill!=null && courseSkill.getModuleLevelSkill()!=null )
+												if(courseSkill!=null )
 												{
 											%>
-<ul>										
-										<li data-jstree='{"icon":"glyphicon glyphicon-asterisk"}'><a
-											><%=courseSkill.getId() %> - <%=courseSkill.getSkillName()%></a>
-											<ul>
-												<%
-												if(courseSkill.getModuleLevelSkill()!=null)
-												{
+											
+<ul>										<%
 													for (ModuleLevelSkill moduleskill : courseSkill.getModuleLevelSkill()) {
+														String modTitle="This module level Skill is not mapped to any session level skill.";
+														boolean isValid =false;
+														if(moduleskill.getSessionLevelSkill()!=null && moduleskill.getSessionLevelSkill().size()>0)
+														{
+															modTitle="Module Level Skill";
+															isValid= true;
+														}	
 														%>
-														<li data-title="Module Level Skill"
+														<li data-entity_type="MODULE_LEVEL_SKILL" data-entity_id="<%=moduleskill.getId()%>" data-title="<%=modTitle%>" data-is_valid="<%=isValid%>"
 															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=moduleskill.getId() %> - <%=moduleskill.getSkillName()%>
 															<ul>
 																<%
-																
-																	if(moduleskill.getSessionLevelSkill()!=null)
-																	{
-																		for (SessionLevelSkill sessionskill : moduleskill.getSessionLevelSkill()) {
+																	for (SessionLevelSkill sessionskill : moduleskill.getSessionLevelSkill()) {
+																		String sessionTitle="This session level skill is not mapped to any learning objective.";
+																		boolean isSessionValid =false;
+																		if(sessionskill.getLearningObjectives()!=null && sessionskill.getLearningObjectives().size()>0)
+																		{
+																			sessionTitle="Session Level Skill";
+																			isSessionValid=true;
+																		}	
 																			%>
-																			<li data-title="Session Level Skill" data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><%=sessionskill.getId() %> - <%=sessionskill.getSkillName()%>
+																			<li data-entity_type="SESSION_LEVEL_SKILL" data-entity_id="<%=sessionskill.getId()%>" data-title="<%=sessionTitle %>" data-is_valid="<%=isSessionValid%>" data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><%=sessionskill.getId() %> - <%=sessionskill.getSkillName()%>
 																				<ul>
 																					<%
-																						
 																						for (LearningObjective learningObjective : sessionskill.getLearningObjectives()) {
 																										%>
 																					<li data-title="Learning Objective" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=learningObjective.getId() %> - <%=learningObjective.getLearningObjectiveName()%>
@@ -50,23 +66,24 @@ int contextId = Integer.parseInt(request.getParameter("context_id"));
 																					
 																					%></ul><%
 																						}
+																	
 																					%>
 																					
 																					</li>
 																					
 																				</ul></li>
 																			<%
-																				}
-																	}	
+																				
+													}
+																		
 																%>
 															</ul></li>
 														<%
 															}
-												}	
+													
 												%>
-											</ul></li>
-										
-									</ul>											
+											</ul>
+																		
 											<%
 												}
 												else
@@ -81,3 +98,5 @@ int contextId = Integer.parseInt(request.getParameter("context_id"));
 													
 												}	
 										%>
+										</li>
+										</ul>

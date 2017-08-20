@@ -26,9 +26,10 @@
 			+ request.getContextPath() + "/";
 %>
 <%
-CourseDAO courseDao = new CourseDAO();
-List<Course> courses = courseDao.findAll();
-
+//CourseDAO courseDao = new CourseDAO();
+//List<Course> courses = courseDao.findAll();
+int assessment_id = Integer.parseInt(request.getParameter("assessment_id"));
+Assessment assessment = new AssessmentDAO().findById(assessment_id);
 %>
 <style>
 .jstree-anchor {
@@ -47,11 +48,11 @@ List<Course> courses = courseDao.findAll();
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			
 			<% 
-			   String[] brd = {"Dashboard","Skill Administration"};
+			   String[] brd = {"Dashboard","Assessments"};
 			%>
-			<%=UIUtils.getPageHeader("Assessment Skill Tree", brd) %>
+			<%=UIUtils.getPageHeader("Assessment Delivery Tree / "+assessment.getAssessmenttitle(), brd) %>
 
-		<div class="row card-box scheduler_margin-box">
+		<%-- <div class="row card-box scheduler_margin-box">
 
 				<div class="ui-group">
 					<h3 class="ui-group__title">Filter</h3>
@@ -105,12 +106,14 @@ List<Course> courses = courseDao.findAll();
 					</div>
 				</div>
 
-			</div>	
+			</div> --%>	
 			
-			
+			<div id="modal-form" class="modal fade" aria-hidden="true" style="display: none;">
+                                
+                        </div>
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 			<div class="row">
-			<div class="col-md-6">	
+			<!-- <div class="col-md-6">	
 			<div class="ibox-title">
                                     <h5>Assessment Skill Tree</h5>
                                     
@@ -120,15 +123,16 @@ List<Course> courses = courseDao.findAll();
 									
 								</div> 
 							</div>
-			</div>
-			<div class="col-md-6">	
+			</div> -->
+			<div class="col-md-12">	
 			<div class="ibox-title">
-                                    <h5>Assessment Delivery Tree</h5>
-                                    
+                                    <h5>Assessment Delivery Tree</h5>                                    
                                 </div>
 							<div class="ibox-content">
 								<div id="assessment_delivery_tree">
-									
+								<jsp:include page="/skill_partails/assessment_delivery_tree_partial.jsp">
+								<jsp:param value="<%=assessment_id%>" name="assessment_id"/>
+								</jsp:include>	
 								</div> 
 							</div>
 			</div>				

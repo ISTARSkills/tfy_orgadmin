@@ -44,8 +44,8 @@ List<Course> courses = courseDao.findAll();
 					<div class="filters button-group js-radio-button-group btn-group">						
 						<%
 						DBUTILS util = new DBUTILS();	
-						String getCourses = "select id, title from context order by title";
-						List<HashMap<String	, Object>> courseData = util.executeQuery(getCourses);
+						String getContext = "select id, title from context where id in (select distinct context from skill_objective) order by title";
+						List<HashMap<String	, Object>> courseData = util.executeQuery(getContext);
 						for(HashMap<String	, Object> row: courseData){
 						%>
 
@@ -60,7 +60,9 @@ List<Course> courses = courseDao.findAll();
 
 			</div>	
 			
-			
+			<div id="modal-form" class="modal fade" aria-hidden="true" style="display: none;">
+                                
+                        </div>
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 				
 							<div class="ibox-content">

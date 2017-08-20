@@ -1,3 +1,5 @@
+<%@page import="com.viksitpro.core.dao.entities.ContextDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Context"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
 <%@page import="com.viksitpro.core.skill.pojo.LearningObjective"%>
@@ -23,10 +25,13 @@
 			+ request.getContextPath() + "/";
 %>
 <%
-CourseDAO courseDao = new CourseDAO();
-List<Course> courses = courseDao.findAll();
+
+int courseId = Integer.parseInt(request.getParameter("course_id"));
+Course course = new CourseDAO().findById(courseId);
+/* CourseDAO courseDao = new CourseDAO();
+List<Course> courses = courseDao.findAll(); */
 %>
-<style>
+<!-- <style>
 .jstree-anchor {
     /*enable wrapping*/
     white-space : normal !important;
@@ -35,7 +40,7 @@ List<Course> courses = courseDao.findAll();
     /*offset icon width*/
     padding-right : 24px;
 }
-</style>
+</style> -->
 <link rel="stylesheet"	href="//static.jstree.com/3.3.4/assets/dist/themes/default/style.min.css" />
 <body class="top-navigation" id="course_skill_tree" data-helper='This page is used to show skill tree of Courses.'>
 	<div id="wrapper">
@@ -43,13 +48,10 @@ List<Course> courses = courseDao.findAll();
 			<jsp:include page="../inc/navbar.jsp"></jsp:include>
 			
 			<% 
-			   String[] brd = {"Dashboard","Skill Administration"};
+			   String[] brd = {"Dashboard","Courses"};
 			%>
-			<%=UIUtils.getPageHeader("Course Skill Tree", brd) %>
-				
-				
-
-		<div class="row card-box scheduler_margin-box">
+			<%=UIUtils.getPageHeader("Course Delivery Tree / "+course.getCourseName(), brd) %>
+		<%-- <div class="row card-box scheduler_margin-box">
 
 				<div class="ui-group">
 					<h3 class="ui-group__title">Filter</h3>
@@ -70,12 +72,14 @@ List<Course> courses = courseDao.findAll();
 					</div>
 				</div>
 
-			</div>	
+			</div> --%>	
 			
-			
+			<div id="modal-form" class="modal fade" aria-hidden="true" style="display: none;">
+                                
+                        </div>
 			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 			<div class="row">
-			<div class="col-md-6">	
+			<!-- <div class="col-md-6">	
 			<div class="ibox-title">
                                     <h5>Course Skill Tree</h5>
                                     
@@ -85,15 +89,17 @@ List<Course> courses = courseDao.findAll();
 									
 								</div>
 							</div>
-			</div>
-			<div class="col-md-6">	
+			</div> -->
+			<div class="col-md-12">	
 			<div class="ibox-title">
                                     <h5>Course Delivery Tree</h5>
                                     
                                 </div>
 							<div class="ibox-content">
 								<div id="course_delivery_tree">
-									
+									<jsp:include page="/skill_partails/course_delivery_tree_partial.jsp">
+									<jsp:param value="<%=courseId%>" name="course_id"/> 
+									</jsp:include>
 								</div> 
 							</div>
 			</div>				
@@ -108,6 +114,9 @@ List<Course> courses = courseDao.findAll();
 	<jsp:include page="../inc/foot.jsp"></jsp:include>
 	<script src="https://static.jstree.com/3.3.4/assets/dist/jstree.min.js"
 		type="text/javascript"></script>
+		
+	<script type="text/javascript">
+	</script>	
 </body>
 
 

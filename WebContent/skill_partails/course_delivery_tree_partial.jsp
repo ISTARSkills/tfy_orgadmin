@@ -13,26 +13,27 @@
 int courseId = Integer.parseInt(request.getParameter("course_id"));
 CoreSkillService skillService = new CoreSkillService();																							
 DeliveryCourse courseTree = skillService.getDeliveryTreeForCourse(courseId);
-%><ul>										
-										<li data-jstree='{"icon":"glyphicon glyphicon-asterisk"}'><a
-											><%=courseTree.getId() %> - <%=courseTree.getCourseName()%></a>
-											<ul>
+
+%>
+
 												<%
-												if(courseTree.getModules()!=null)
-												{
-													for (DeliveryModule deliveryMod : courseTree.getModules()) {
+												if(courseTree.getModules()!=null && courseTree.getModules().size()>0)
+												{%>
+												<ul><%
+													for (DeliveryModule deliveryMod : courseTree.getModules())
+													{
 															String titleInModule="Delivery Module";
 															if(deliveryMod.getSessions().size()==0)
 															{
 																titleInModule="Module is empty";
 															}
-															else 
+															else if(!deliveryMod.getIsPerfect())
 															{
 																titleInModule="One or more lesson in this module is not mapped to Learning objective";
 															}
 															
 														%>
-														<li data-is_valid="<%=deliveryMod.getIsPerfect()%>" data-title="<%=titleInModule%>"
+														<li data-entity_type="module" data-is_valid="<%=deliveryMod.getIsPerfect()%>" data-title="<%=titleInModule%>" 
 															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=deliveryMod.getId() %> - <%=deliveryMod.getModuleName()%>
 															<ul>
 																<%
@@ -45,12 +46,12 @@ DeliveryCourse courseTree = skillService.getDeliveryTreeForCourse(courseId);
 																			{
 																				titleInSession ="This session is empty";
 																			}
-																			else {
+																			else if(!deliverySesion.getIsPerfect()){
 																				titleInSession="One or more lesson in this session is not mapped to Learning objective";
 																			}
 																				
 																			%>
-																			<li data-is_valid="<%=deliverySesion.getIsPerfect()%>" data-title="<%=titleInSession%>" data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><%=deliverySesion.getId() %> - <%=deliverySesion.getSessionName()%>
+																			<li data-entity_type="session" data-is_valid="<%=deliverySesion.getIsPerfect()%>" data-title="<%=titleInSession%>" data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><%=deliverySesion.getId() %> - <%=deliverySesion.getSessionName()%>
 																				<ul>
 																					<%
 																						
@@ -74,7 +75,7 @@ DeliveryCourse courseTree = skillService.getDeliveryTreeForCourse(courseId);
 																						}	
 																							
 																							%>
-																					<li data-is_valid="<%=lesson.getIsPerfect()%>" data-title="<%=titleInLesson%>" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lesson.getId() %> - <%=lesson.getLessonName()%>
+																					<li data-entity_type="lesson"  data-lesson_id="<%=lesson.getId()%>" data-course_id="<%=courseId%>" data-is_valid="<%=lesson.getIsPerfect()%>" data-title="<%=titleInLesson%>" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lesson.getId() %> - <%=lesson.getLessonName()%>
 																				<%
 																				if(lesson.getMappedModuleLevelSkill()!=null){
 																				%>
@@ -82,17 +83,17 @@ DeliveryCourse courseTree = skillService.getDeliveryTreeForCourse(courseId);
 																						for(ModuleLevelSkill modSkill : lesson.getMappedModuleLevelSkill())	
 																						{
 																							%>
-																							<li data-title="Module Level Skill" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=modSkill.getId() %> - <%=modSkill.getSkillName()%>
+																							<li data-entity_type="module_level_skill" data-title="Module Level Skill" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=modSkill.getId() %> - <%=modSkill.getSkillName()%>
 																							<ul><%
 																							for(SessionLevelSkill sessionSkill:  modSkill.getSessionLevelSkill())
 																							{
 																							%>
-																							<li data-title="Session Level Skill" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=sessionSkill.getId() %> - <%=sessionSkill.getSkillName()%>	
+																							<li data-entity_type="session_level_skill" data-title="Session Level Skill" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=sessionSkill.getId() %> - <%=sessionSkill.getSkillName()%>	
 																							<ul><%
 																							for(LearningObjective lobj : sessionSkill.getLearningObjectives())
 																							{
 																								%>
-																								<li data-title="Learning Objective" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lobj.getId() %> - <%=lobj.getLearningObjectiveName()%>
+																								<li data-entity_type="learning_objective" data-title="Learning Objective" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lobj.getId() %> - <%=lobj.getLearningObjectiveName()%>
 																								</li>
 																								<%
 																							}
@@ -123,8 +124,16 @@ DeliveryCourse courseTree = skillService.getDeliveryTreeForCourse(courseId);
 															</ul></li>
 														<%
 															}
+												%>
+												</ul>
+												<%
+												}
+												else
+												{
+													%><ul><li data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'>
+													No Delivery Tree Available
+													</li></ul>
+													<%
 												}	
 												%>
-											</ul></li>
-										
-									</ul>
+											

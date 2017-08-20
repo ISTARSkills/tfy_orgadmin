@@ -9,23 +9,21 @@
 int assessmentId = Integer.parseInt(request.getParameter("assessment_id"));
 CoreSkillService skillService = new CoreSkillService();																							
 DeliveryAssessmentTree asessTree = skillService.getDeliveryTreeForAssessment(assessmentId);
-%><ul>										
-										<li data-jstree='{"icon":"glyphicon glyphicon-asterisk"}'><a
-											><%=asessTree.getId() %> - <%=asessTree.getAssessmentTitle()%></a>
+%>
 											<ul>
 												<%
-												if(asessTree.getQuestions()!=null)
+												if(asessTree.getQuestions()!=null && asessTree.getQuestions().size()>0)
 												{
 													for (DeliveryQuestion question : asessTree.getQuestions()) {
-														boolean orhpan = true;
-														String errorInQuestion ="Delivery Question";
+														boolean is_valid = false;
+														String errorInQuestion ="This Question is not mapped to any Learning Objective";
 														if(question.getModuleLevelSkill()!=null && question.getModuleLevelSkill().size()>0)
 														{
-															orhpan =false;
-															errorInQuestion="This Question is not mapped to any Learning Objective";
+															is_valid =true;
+															errorInQuestion="Delivery Question";
 														}	
 														%>
-														<li data-is_valid="<%=orhpan%>" data-title="<%=errorInQuestion%>"
+														<li data-entity_type="question" data-question_id="<%=question.getId()%>" data-is_valid="<%=is_valid%>" data-title="<%=errorInQuestion%>"
 															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=question.getId() %> - <%=question.getQuestion().getQuestionText()%>
 															<ul>
 																<%
@@ -63,8 +61,12 @@ DeliveryAssessmentTree asessTree = skillService.getDeliveryTreeForAssessment(ass
 															</ul></li>
 														<%
 															}
+												}
+												else
+												{
+													%>
+													<li data-jstree='{"icon":"glyphicon glyphicon-apple"}'>No Delivery Tree Available</li>
+													<%
 												}	
 												%>
-											</ul></li>
-										
-									</ul>
+											</ul>

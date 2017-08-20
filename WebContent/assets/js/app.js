@@ -8261,6 +8261,115 @@ function courseTreeWizard() {
 
 function assessmentSkillTreeWizard()
 {
+	$('#assessment_delivery_tree').jstree();
+	var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+	$filtered.each(function() {
+		  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+		});
+	
+	$('#assessment_delivery_tree').bind("after_open.jstree", function (event, data) { 		  
+		  var parent = data.node.id;
+		  
+		  $('#'+parent+' .jstree-anchor').each(function () {
+			  var nodeid = $(this).attr('id');			  
+			  $('#'+nodeid).data('toggle','popover');
+			  $('#'+nodeid).data('placement','right');
+			  $('#'+nodeid).data('html','true');
+			  	
+			  $('#'+nodeid).data('trigger','outsideClick');
+			  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+			  $('#'+nodeid).popover();		  		  
+		});
+		  
+		 
+		  
+		});
+	
+	
+	$('.jstree-anchor').each(function () {
+		  var nodeid = $(this).attr('id');
+		  $('#'+nodeid).data('toggle','popover');
+		  $('#'+nodeid).data('placement','right');
+		  $('#'+nodeid).data('html','true');
+		  $('#'+nodeid).data('trigger','outsideClick');
+
+		  if($('#'+nodeid).parent('li').data('entity_type')!=null && $('#'+nodeid).parent('li').data('entity_type')=='question')
+		  {//lesson_id
+			  $('#'+nodeid).data('content','<button class="btn btn-primary add_remove_lo" id="add_remove_lo_'+$('#'+nodeid).parent('li').data('question_id')+'" type="button">Add / Remove Learning Objective.</button>');				  
+			  $(document).unbind().on("click", ".add_remove_lo", function() {
+			  	
+				var questionId = $(this).attr("id").replace("add_remove_lo_","");
+				  
+				  $('#admin_page_loader').show();
+					var url = "/skill_partails/add_lo_question.jsp";
+					 $.ajax({
+					        type: "POST",
+					        url: url,
+					        data: {question_id:questionId},
+					        success: function(data) {	
+					        	
+					        	$('#modal-form').empty();		        	
+					        	$('#modal-form').append(data);		        	
+					        	
+					        	var $states = $(".js-source-states");	  
+								var statesOptions = $states.html();
+								  $states.remove();
+								  $(".js-states").append(statesOptions);	  
+								  	
+								  
+								  
+								function formatState (state) {
+								      if (!state.id) {
+								        return state.text;
+								      }
+								      var $state = $(
+								        '<span>' +
+								          '' +
+								          state.text +
+								        '</span>'
+								      );
+								      return $state;
+								    };
+								
+								 $(".js-example-templating").select2({
+									 width: 'resolve',
+									 templateResult: formatState
+								    });
+					        	
+								 $(document).unbind().on("click", "#update_lo", function() {
+									var los = $('#lo_selector').val();
+									if(los!=null && los.length!=0)
+									{
+										$.ajax({
+									        type: "POST",
+									        url: '/add_lo_to_question',
+									        data: {question_id:questionId, los: los},
+									        success: function(data) {
+									        	window.location.reload();
+									        }
+									 });
+									}
+										
+									$('#modal-form').modal('toggle');
+								 });
+								 
+								 $('#modal-form').modal();
+								 
+								 $('#admin_page_loader').hide();
+					        }		        
+					    });
+				  
+				  
+			  });
+		  
+		  }
+		  $('#'+nodeid).data('trigger','outsideClick');
+		  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+		  $('#'+nodeid).popover();	
+		 		  		  
+	});
+	
+	/*
 	$('#assessment_skill_course_selector').select2();
 	$('.assessment_skill_assessment_selector').hide();
 	$('#assessment_skill_course_selector').unbind().on('select2:select select2:unselecting',function(){
@@ -8344,7 +8453,7 @@ function assessmentSkillTreeWizard()
 		
 		
 				
-	});
+	});*/
 }
 
 function contextSkillTreeWizard()
@@ -8373,21 +8482,111 @@ function contextSkillTreeWizard()
 		        	$('#context_tree').empty();		        	
 		        	$('#context_tree').append(data);		        	
 		        	$('#context_tree').jstree();
-		        	$('#context_tree').jstree("open_all");
-		        	$('#admin_page_loader').hide();
 		        	
-		        	setTimeout(function(){ 
-		         		$('.jstree-anchor').each(function(){
-			        		
-			        		$('.jstree-anchor').each(function() {
-			        			 
-			        			  $(this).attr('title',$(this).parent('li').data('title')+"");
-			        			
-			        			});
-			        	})
-			        	
-			        	
-			        	}, 500); 
+		        	var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+		        	$filtered.each(function() {
+		        		  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+		        		});
+	//
+		        	
+		        	
+		        	
+		        	
+		        	//
+		        	
+		        	$('#context_tree').bind("after_open.jstree", function (event, data) { 		  
+		   			  var parent = data.node.id;
+		   			  //alert(parent);
+		   			var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+		   			$filtered.each(function() {
+		   				  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+		   				});
+		   			
+		   			  
+		   			  $('#'+parent+' .jstree-anchor').each(function () {
+		   				  var nodeid = $(this).attr('id');			  
+		   				  $('#'+nodeid).data('toggle','popover');
+		   				  $('#'+nodeid).data('placement','right');
+		   				  $('#'+nodeid).data('html','true');
+		   				  $('#'+nodeid).data('trigger','outsideClick');
+		   				  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+		   				  
+		   				  
+		   				  //
+		   				  //alert($('#'+nodeid).parent('li').data('entity_type'));
+		   				  if($('#'+nodeid).parent('li').data('entity_type')!=null)
+		   				  {
+		   					  var buttonText ="";
+		   					  var parentEntityType ="";
+		   					  if($('#'+nodeid).parent('li').data('entity_type')==='MODULE_LEVEL_SKILL')
+		   					  {
+		   						buttonText= "Add Session Level Skill";
+		   						parentEntityType ="MODULE_LEVEL_SKILL";
+		   					  }
+		   					  else if($('#'+nodeid).parent('li').data('entity_type')==='SESSION_LEVEL_SKILL')
+		   					  {
+		   						buttonText= "Add Learning Objective";  
+		   						parentEntityType ="SESSION_LEVEL_SKILL";
+		   					  }if($('#'+nodeid).parent('li').data('entity_type')==='CONTEXT')
+		   					  {
+		   						buttonText= "Add Module Level Skill";
+		   						parentEntityType ="CONTEXT";
+		   					  }	  
+		   					  
+		   					  $('#'+nodeid).data('content','<button class="btn btn-primary add_remove_entity" data-parent_entity_type="'+parentEntityType+'" id="add_remove_entity_'+$('#'+nodeid).parent('li').data('entity_id')+'" type="button">'+buttonText+'</button>');				  
+		   					  $('#'+nodeid).popover();
+		   					  
+		   					  $(document).unbind().on("click", ".add_remove_entity", function() {
+		   					  
+		   						var parentId = $(this).attr("id").replace("add_remove_entity_","");
+		   						var parent_entity_type = $(this).data('parent_entity_type')   
+		   						  $('#admin_page_loader').show();
+		   							var url = "/skill_partails/add_remove_entity.jsp";
+		   							 $.ajax({
+		   							        type: "POST",
+		   							        url: url,
+		   							        data: {parent_id:parentId, parent_entity_type:parent_entity_type},
+		   							        success: function(data) {	
+		   							        	
+		   							        	$('#modal-form').empty();		        	
+		   							        	$('#modal-form').append(data);		        	
+		   							        	
+		   							        	$(document).unbind().on("click", "#update_entity", function() {
+		   											var child_name = $('#new_child_entity').val();
+		   											var parent_id = $(this).data('parent_id');
+		   											var parent_type = $(this).data('parent_type');
+		   											if(child_name!=null && child_name!='')
+		   											{
+		   												$.ajax({
+		   											        type: "POST",
+		   											        url: '/add_entity',
+		   											        data: {parent_skill_id:parent_id, parent_type: parent_type, new_child_name: child_name},
+		   											        success: function(data) {
+		   											        	window.location.reload();
+		   											        }
+		   											 });
+		   											}
+		   												
+		   											$('#modal-form').modal('toggle');
+		   										 });
+		   										 
+		   										 $('#modal-form').modal();
+		   										 
+		   										 $('#admin_page_loader').hide();
+		   							        }		        
+		   							    });
+		   						  
+		   						  
+		   					  });
+		   				  
+		   				  }
+		   				  $('#'+nodeid).data('trigger','outsideClick');
+		   				  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+		   				  $('#'+nodeid).popover();
+		   				  //
+		   			});
+		   			}); 
+		        	$('#admin_page_loader').hide();		        	 
 		        }		        
 		    });
 		 
@@ -8397,8 +8596,121 @@ function contextSkillTreeWizard()
 }
 
 function courseSkillTreeWizard() {
-
-	$('#skillTree').jstree();
+$('#course_delivery_tree').jstree();
+	var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+	$filtered.each(function() {
+		  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+		});
+	
+	$('.jstree-anchor').each(function () {
+		  var nodeid = $(this).attr('id');
+		  //console.log($(this).attr('id')+"="+$('#'+$(this).attr('id')).parent('li').data('title'));
+		  $('#'+nodeid).data('toggle','popover');
+		  $('#'+nodeid).data('placement','right');
+		  $('#'+nodeid).data('html','true');
+		  $('#'+nodeid).data('trigger','outsideClick');
+		  //$('#'+nodeid).data('content','<a data-toggle="modal" class="btn btn-primary" href="#modal-form">Form in simple modal box</a>');
+		  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+		  $('#'+nodeid).popover();		  		  
+	});
+		
+	$('#course_delivery_tree').bind("after_open.jstree", function (event, data) { 		  
+		  var parent = data.node.id;
+		  
+		  var $filtered = 	$('.jstree-anchor').filter(function(){return $(this).parent('li').data('is_valid')==false	});	        		
+			$filtered.each(function() {
+				  $( this ).css('background-color','#ec4758').css('color','white').css('border','1px solid white');			        			 			        			
+				});
+		  
+		  $('#'+parent+' .jstree-anchor').each(function () {
+			  var nodeid = $(this).attr('id');			  
+			  $('#'+nodeid).data('toggle','popover');
+			  $('#'+nodeid).data('placement','right');
+			  $('#'+nodeid).data('html','true');
+			  if($('#'+nodeid).parent('li').data('entity_type')!=null && $('#'+nodeid).parent('li').data('entity_type')=='lesson')
+			  {//lesson_id
+				  $('#'+nodeid).data('content','<button class="btn btn-primary add_remove_lo" id="add_remove_lo_'+$('#'+nodeid).parent('li').data('lesson_id')+'" type="button">Add / Remove Learning Objective.</button>');				  
+				  $(document).unbind().on("click", ".add_remove_lo", function() {
+				  //$('.add_remove_lo').unbind().on('click',function(){			 
+					//alert("exys");	
+					var lessonId = $(this).attr("id").replace("add_remove_lo_","");
+					  
+					  $('#admin_page_loader').show();
+						var url = "/skill_partails/add_lo_lesson.jsp";
+						 $.ajax({
+						        type: "POST",
+						        url: url,
+						        data: {lesson_id:lessonId},
+						        success: function(data) {	
+						        	
+						        	$('#modal-form').empty();		        	
+						        	$('#modal-form').append(data);		        	
+						        	
+						        	var $states = $(".js-source-states");	  
+									var statesOptions = $states.html();
+									  $states.remove();
+									  $(".js-states").append(statesOptions);	  
+									  	
+									  
+									  
+									function formatState (state) {
+									      if (!state.id) {
+									        return state.text;
+									      }
+									      var $state = $(
+									        '<span>' +
+									          '' +
+									          state.text +
+									        '</span>'
+									      );
+									      return $state;
+									    };
+									
+									 $(".js-example-templating").select2({
+										 width: 'resolve',
+										 templateResult: formatState
+									    });
+						        	
+									 $(document).unbind().on("click", "#update_lo", function() {
+										var los = $('#lo_selector').val();
+										if(los!=null && los.length!=0)
+										{
+											$.ajax({
+										        type: "POST",
+										        url: '/add_lo_to_lesson',
+										        data: {lesson_id:lessonId, los: los},
+										        success: function(data) {
+										        	window.location.reload();
+										        }
+										 });
+										}
+											
+										$('#modal-form').modal('toggle');
+									 });
+									 
+									 $('#modal-form').modal();
+									 
+									 $('#admin_page_loader').hide();
+						        }		        
+						    });
+					  
+					  
+				  });
+			  
+			  }
+			  $('#'+nodeid).data('trigger','outsideClick');
+			  $('#'+nodeid).attr('title',''+$('#'+nodeid).parent('li').data('title'));
+			  $('#'+nodeid).popover();		  		  
+		});
+		  
+		 
+		  
+		});
+	
+	
+	//uncomment below to add onclick
+	
+	/*$('#skillTree').jstree();
 	$('#course_delivery_tree').jstree();
 	$('.course_skill_course_selector').unbind().on('click',function(){
 		$('.course_skill_course_selector').removeClass('is-checked');
@@ -8459,7 +8771,7 @@ function courseSkillTreeWizard() {
 			 
 			 
 			
-	});
+	});*/
 	
 	
 	//$('#course_skill_course_selector').val($('#course_skill_course_selector option:first').val()).change();
