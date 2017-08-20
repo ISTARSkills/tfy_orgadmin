@@ -16477,3 +16477,14 @@ components.css: 1067 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus,
 .wizard-padding {
 	padding: 0 20px 0 20px !important;
 }
+
+tr.row_selected {
+	background: silver;
+}
+
+tr.selected, tr:hover.selected, .table-striped>tbody>tr:nth-of-type(odd).selected
+	{
+	background-color: rgba(26, 179, 148, 0.45) !important;
+	background-color: rgba(18, 220, 179, 1) !important;
+	color: #000 !important;
+}

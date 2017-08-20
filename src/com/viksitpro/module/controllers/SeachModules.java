@@ -42,7 +42,7 @@ public class SeachModules extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray module_array = new JSONArray();
 		if (request.getParameterMap().containsKey("searchString")) {
-			String[] searchString = request.getParameter("searchString").toString().split(" ");
+			String[] searchString = request.getParameter("searchString").toString().toLowerCase().split(" ");
 			Set<Module> modules = new HashSet<Module>();
 			ModuleDAO dao = new ModuleDAO();
 			Module module;

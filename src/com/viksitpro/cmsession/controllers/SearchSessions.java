@@ -41,7 +41,7 @@ public class SearchSessions extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONArray session_array = new JSONArray();
 		if (request.getParameterMap().containsKey("searchString")) {
-			String[] searchString = request.getParameter("searchString").toString().split(" ");
+			String[] searchString = request.getParameter("searchString").toString().toLowerCase().split(" ");
 			Set<Cmsession> cmsessions = new HashSet<Cmsession>();
 			CmsessionDAO dao = new CmsessionDAO();
 			Cmsession cmsession;

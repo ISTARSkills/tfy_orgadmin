@@ -325,6 +325,22 @@ function readyFn(jQuery) {
 		questionEditVariables();
 		questionEditWizard();
 		break;
+	case 'assessment_edit':
+		assessmentEditVariables();
+		assessmentEditWizard();
+		break;
+	case 'trainer_study_list':
+		$('#course').select2();
+		var course = $('#course').select2('data')[0].id;
+		initCourseChangeListener();
+		tableDataLoader(course);
+		break;
+	case 'delivery_list':
+		$('#course').select2();
+		var course = $('#course').select2('data')[0].id;
+		initCourseChangeDiliverListener();
+		tableDataLoaderDeliverList(course);
+		break;
 	default:
 		init_orgadmin_none();
 	}
@@ -381,11 +397,13 @@ function courseEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		showFinishButtonAlways : false,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			courseStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			if (currentIndex === 1 && !window.is_sortable) {
@@ -394,8 +412,12 @@ function courseEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
-			courseFinisher(event, currentIndex);
-			return true;
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
+				courseFinisher(event, currentIndex);
+			}
+			return flag;
 		}
 	});
 }
@@ -458,68 +480,49 @@ function moduleHashInit() {
 			});
 }
 function initModuleSearch() {
-	$('#searchModules')
-			.keydown(
-					function(event) {
-						if ((event.keyCode == 13)
-								&& ($.trim($(this).val()) != '')) {
-
-							if($.trim($(this).val()).length>2){
-								var searchString = $("#searchModules").val();
-
-								var datapost = {
-									'searchString' : searchString
-								};
-								$.get("/SeachModules", datapost).done(function(data) {
-													var addition = '';
-													$.each(data.modules,function(k, v) {
-																		/*
-																		 * console
-																		 * .log(v.id +
-																		 * '>>' +
-																		 * v.name);
-																		 * module_hash[v.id] =
-																		 * v.name;
-																		 */
-																		addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-																		
-																	});
-													$('#searchModulesResult').html(addition);
-															
-												}).fail(function() {
-											alert("error");
-										}).always(function() {
-
-										});
-							} else {
-								alert('Type atleast 3 characters to search');
-							}
-
-						}
+	$('#searchModules').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
+				var searchString = $("#searchModules").val();
+				var datapost = {
+					'searchString' : searchString
+				};
+				$.get("/SeachModules", datapost).done(function(data) {
+					if(data.modules.length === 0){
+						alert("No Modules found like '"+searchString+"'");
+					}
+					var addition = '';
+					$.each(data.modules,function(k, v) {
+						addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 					});
+					$('#searchModulesResult').html(addition);
+				}).fail(function() {
+					alert("error");
+				}).always(function() {
 
-	$('#searchModulesResult')
-			.on(
-					'click',
-					".fa-plus",
-					function() {
+				});
+			} else {
+				alert('Type atleast 3 characters to search');
+			}
 
-						var v = {
-							id : this.parentElement.parentElement.id,
-							name : this.parentElement.parentElement.innerText
-						}
-						if (!(window.module_hash[v.id] == undefined)) {
-							alert('Module already there in the list.');
-						} else {
-							$('#editable')
-									.append(
-											"<li class='list-group-item something' data-module_id='"
-													+ v.id
-													+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
-													+ v.name + "</li>");
-							window.module_hash[v.id] = v.name;
-						}
-					});
+		}
+});
+
+	$('#searchModulesResult').on('click',".fa-plus",function() {
+		var v = {
+			id : this.parentElement.parentElement.id,
+			name : this.parentElement.parentElement.innerText
+		}
+		if (!(window.module_hash[v.id] == undefined)) {
+			alert('Module already there in the list.');
+		} else {
+			$('#editable').append("<li class='list-group-item something' data-module_id='"
+									+ v.id
+									+ "'><span class='badge badge-primary'><i class='js-remove fa fa-trash-o'> </i></span>"
+									+ v.name + "</li>");
+			window.module_hash[v.id] = v.name;
+		}
+	});
 
 }
 
@@ -563,17 +566,13 @@ function saveCourse() {
 		type : "POST",
 		url : url,
 		data : dataPost,
-	}).done(
-			function(data) {
+	}).done(function(data) {
 				if (window.isNewCourse) {
-					window.location.replace(
-							"/content_creator/courses.jsp",
-							"_self");
+					window.location.replace("/content_creator/courses.jsp","_self");
 				} else {
-					window.location.replace(
-							"/content_creator/courses.jsp", "_self");
+					window.location.replace("/content_creator/courses.jsp", "_self");
 				}
-			});
+	});
 }
 function getModules() {
 	var module_list = "";
@@ -590,10 +589,12 @@ function moduleEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			moduleStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			
@@ -603,8 +604,12 @@ function moduleEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
 			moduleFinisher(event, currentIndex);
-			return true;
+			}
+			return flag;
 		},
 	});
 }
@@ -644,22 +649,24 @@ function initSessionSearch() {
 					'searchString' : searchString
 				};
 				$.get("/SearchSessions", datapost).done(function(data) {
+					if(data.sessions.length === 0){
+						alert("No session found like '"+searchString+"'");
+					}
 					var addition = '';
-									$.each(data.sessions,function(k, v) {
-										addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-										
-									});
-									$('#searchSessionsResult').html(addition);
-								}).fail(function() {
-							alert("error");
-						}).always(function() {
+					$.each(data.sessions,function(k, v) {
+						addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+						
+					});
+					$('#searchSessionsResult').html(addition);
+				}).fail(function() {
+						alert("error");
+					}).always(function() {
 
-						});
+					});
 			}else{
 				alert('Type atleast 3 characters to search');
+			}
 		}
-
-						}
 	});
 
 	$('#searchSessionsResult').on('click',".fa-plus",function() {
@@ -705,11 +712,9 @@ function saveModule() {
 		dataType : "text"
 	}).done(function(data) {
 		if (window.isNewModule) {
-			window.location.replace(
-					"/content_creator/modules.jsp","_self");
+			window.location.replace("/content_creator/modules.jsp","_self");
 		} else {
-			window.location.replace(
-					"/content_creator/modules.jsp", "_self");
+			window.location.replace("/content_creator/modules.jsp", "_self");
 		}
 	});
 }
@@ -736,10 +741,12 @@ function sessionEditWizard() {
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
+		enableCancelButton:false,
 		transitionEffectSpeed : 135,
 		onStepChanging : function(event, currentIndex, newIndex) {
+			var form = $(this);
 			sessionStepChanger(event, currentIndex, newIndex);
-			return true;
+			return form.valid();
 		},
 		onStepChanged : function(event, currentIndex, priorIndex) {
 			
@@ -749,8 +756,12 @@ function sessionEditWizard() {
 
 		},
 		onFinishing : function(event, currentIndex) {
+			var form = $(this);
+			var flag = form.valid();
+			if(flag){
 			sessionFinisher(event, currentIndex);
-			return true;
+			}
+			return flag;
 		}
 	});
 }
@@ -784,6 +795,9 @@ function initLessonSearch() {
 					'searchString' : searchString
 				};
 				$.get("/SearchLessons", datapost).done(function(data) {
+					if(data.lessons.length === 0){
+						alert("No Modules found like '"+searchString+"'");
+					}
 					$.each(data.lessons,function(k, v) {
 						addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
 					});
@@ -792,7 +806,7 @@ function initLessonSearch() {
 							alert("error");
 					}).always(function() {
 
-						});
+					});
 			}else{
 				alert('Type atleast 3 characters to search');
 			}
@@ -5398,7 +5412,7 @@ function init_student_card(){
 			$.ajax({
 		        type: "POST",
 		        url: "gvygv",
-		        data: {serialized},
+		        data: serialized,
 		        success: function(data) {
 		        	console.log('success');
 		        }});
@@ -8983,22 +8997,7 @@ function initQuestionListPageination(total_count){
 	 $('#page-selection').bootpag({
          total: total_count,
          maxVisible: 10
-     }).on("page", function(event, /* page number here */ num){
-	     	//alert("num -> "+num)
-	        
-	     	$.ajax({
-		        type: "POST",
-		        url: $('#question_list_table').data('url'),
-		        data: {key:'get_all_question',offset:num},
-		        success: function(result) {
-		        	
-		        	$('#question_data').empty();
-		        	$('#question_data').append(result);
-		        	
-		          }
-		    });
-	     	
-	     });
+     });
 }
 function initQuestionListDatatable() {
 	var url = $('#question_list_table').data('url');
@@ -9013,20 +9012,24 @@ function initQuestionListDatatable() {
 	        	$('#question_data').append(result);
 	        	initQuestionListPageination($('#total_rows').html());
 	          }
-	    });
-	
-	
+	    });	
 }
 
-function initGeneralAjax(difficult_level,context_filter){
+function initGeneralAjax(difficult_level,context_filter,offset,searchTearm){
 	
+	if(offset == undefined){
+		offset = '0';
+	}
+	if(searchTearm == undefined){
+		searchTearm = '';
+	}
 	console.log('>>> '+ difficult_level);		
 	console.log('>>> '+ context_filter);
 	
 	$.ajax({
         type: "POST",
         url: $('#question_list_table').data('url'),
-        data: {key:'difficult_level_type',difficult_level:difficult_level,context_filter:context_filter},
+        data: {key:'difficult_level_type',difficult_level:difficult_level,context_filter:context_filter,offset:offset,search_tearm:searchTearm},
         success: function(result) {
         	
         	$('#question_data').empty();
@@ -9040,7 +9043,7 @@ function initDifficultyLevel(){
 	
 	var difficult_level = [];
 	var context_filter = [];
-	
+	var search_tearm ="";
 	$('.difficult_level').unbind().on('click',function(){
 		if($(this).hasClass('btn-danger') == true){
 			 $(this).css("color","gray");
@@ -9063,7 +9066,7 @@ function initDifficultyLevel(){
 				    	difficult_level.push(filterValue);
 				    } 
 
-				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,search_tearm);
 		  
 	});
 	
@@ -9089,10 +9092,35 @@ function initDifficultyLevel(){
 				    if(!flag){
 				    	context_filter.push(filterValue);
 				    } 
-				    initGeneralAjax(difficult_level.join(','),context_filter.join(','));
+				    initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,search_tearm);
 		
 		
 	});
+	
+	 $('#page-selection').bootpag({}).on("page", function(event, /* page number here */ num){
+	     	alert("num -> "+num)
+	     	
+	     	 initGeneralAjax(difficult_level.join(','),context_filter.join(','),num,search_tearm);
+	     	/*$.ajax({
+		        type: "POST",
+		        url: $('#question_list_table').data('url'),
+		        data: {key:'get_all_question',offset:num},
+		        success: function(result) {
+		        	
+		        	$('#question_data').empty();
+		        	$('#question_data').append(result);
+		        	
+		          }
+		    });*/
+	     	
+	     });
+	 
+	 $( ".search_able_input" ).keyup(function() {
+		 console.log(">>>> "+$(this).val());
+		 search_tearm = $(this).val();
+		 initGeneralAjax(difficult_level.join(','),context_filter.join(','),0,$(this).val());
+		});
+	
 	
 }
 function questionEditVariables() {
@@ -9261,22 +9289,27 @@ function initContextQuestion() {
 				.done(
 						function(data) {
 							var addition = "";
+							addition += "<option value=0>Choose a course to filter questions</option>";
+							if(data.length != 0){
 							for ( var j in data.contexts) {
-								if(!question_selected_context[0]==undefined){
-									if (window.question_selected_context[0] === data.contexts[j].id) {
-										addition += "<option value="+data.contexts[j].id+ " selected> "
-												+ data.contexts[j].text
-												+ " </option>";
+								
+									if(question_selected_context[0]!=undefined){
+										if (window.question_selected_context[0] === data.contexts[j].id) {
+											addition += "<option value="+data.contexts[j].id+ " selected> "
+													+ data.contexts[j].text
+													+ " </option>";
+										} else {
+											addition += "<option value="+data.contexts[j].id+ "> "
+													+ data.contexts[j].text
+													+ " </option>";
+										}
 									} else {
 										addition += "<option value="+data.contexts[j].id+ "> "
-												+ data.contexts[j].text
-												+ " </option>";
-									}
-								} else {
-									addition += "<option value="+data.contexts[j].id+ "> "
-									+ data.contexts[j].text
-									+ " </option>";
-						}
+										+ data.contexts[j].text
+										+ " </option>";
+							}	
+								}
+								
 							}
 							$("#context_skill_question").html(addition);
 							$("#context_skill_question").select2();
@@ -9292,13 +9325,10 @@ function loadContextQuestion() {
 	var dataPost = {
 			question : window.question
 		};
-		$
-				.get("../GetContextFromQuestion", dataPost)
-				.done(
+		$.get("../GetContextFromQuestion", dataPost).done(
 						function(data) {
 							for ( var j in data.selected_contexts) {
-								window.question_selected_context
-										.push(data.selected_contexts[j].id);
+								window.question_selected_context.push(data.selected_contexts[j].id);
 							}
 							initContextQuestion();
 						});
@@ -9347,6 +9377,8 @@ function initModuleSkillQuestion(selected_module_skills) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_module_skills[0] === data.skills[j].id) {
 								addition += "<option value="+data.skills[j].id+ " selected> "
@@ -9358,6 +9390,7 @@ function initModuleSkillQuestion(selected_module_skills) {
 										+ " </option>";
 							}
 						}
+					}
 						$("#module_skill_question").html(addition);
 						$("#module_skill_question").select2();
 						if (!window.is_new_question) {
@@ -9393,6 +9426,8 @@ function initSessionSkillQuestion(selected_session_skills) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_session_skills[0] === (data.skills[j].id)) {
 								addition += "<option value="+data.skills[j].id+ " selected> "
@@ -9403,6 +9438,7 @@ function initSessionSkillQuestion(selected_session_skills) {
 										+ data.skills[j].text
 										+ " </option>";
 							}
+						}
 						}
 						$("#session_skill_question").html(addition);
 						$("#session_skill_question").select2();
@@ -9439,6 +9475,8 @@ function initLearningObjQuestion(selected_learning_objectives) {
 			.done(
 					function(data) {
 						var addition = "";
+						addition += "<option value=0>Choose a course to filter questions</option>";
+						if(data.length !=0){
 						for ( var j in data.skills) {
 							if (selected_learning_objectives
 									.includes(data.skills[j].id)) {
@@ -9451,7 +9489,377 @@ function initLearningObjQuestion(selected_learning_objectives) {
 										+ " </option>";
 							}
 						}
+					}
 						$("#learn_obj_question").html(addition);
 						$("#learn_obj_question").select2();
 					});
+}
+function assessmentEditVariables() {
+	window.isNewAssessment = Boolean($("input[name='isNew']").val() === "true");
+	window.assessmentID = $("input[name='cmsID']").val();
+	window.baseProdURL = $("input[name='baseProdURL']").val();
+	window.questionList = new Set();
+	window.isDatatable = Boolean(false);
+}
+
+function assessmentEditWizard() {
+	
+	
+	$("#form").steps({
+		bodyTag : "fieldset",
+		transitionEffect : 'fade',
+		transitionEffectSpeed : 135,
+		enableCancelButton:false,
+		onStepChanging : function(event, currentIndex, newIndex) {			
+			  var form = $(this);
+			 var flag =  form.valid();
+			 if(flag){
+					assessmentStepChanger(event, currentIndex, newIndex);
+			 }
+			 return flag;
+		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			assessmentStepChangerPost(event, currentIndex, priorIndex);
+			return true;
+		},
+		onFinishing : function(event, currentIndex) {
+			
+			
+			 var form = $(this);
+			 var flag =  form.valid();
+			 if(flag){
+				 assessmentFinisher(event, currentIndex); 
+			 }
+			 return flag;
+		}
+	}).validate({
+        errorPlacement: function (error, element)
+        {
+            element.before(error);
+        },
+        rules: {
+            confirm: {
+                equalTo: "#password"
+            }
+        }
+});
+	//$( 'a[href*="#cancel"]' ).parent().remove();
+}
+function assessmentStepChanger(event, currentIndex, newIndex) {
+	if (newIndex === 1 && currentIndex === 0) {
+			initAssessmentContext();
+			initAssessmentContextListener();
+			
+		}
+	if (newIndex === 2) {
+		initAssessmentTrashIcon();
+	}
+	return true;
+}
+function assessmentStepChangerPost(event, currentIndex, priorIndex) {
+	if(currentIndex === 1) {
+		highlightSelectedAssessmentQuestions();
+	}
+}
+function initAssessmentContext() {
+	$.get("../get_all_contexts").done(
+			function(data) {
+				var addition = "";
+				addition += "<option value=0>Choose a course to filter questions</option>";
+				for ( var j in data.contexts) {
+					addition += "<option value="+data.contexts[j].id+ "> "
+							+ data.contexts[j].text + " </option>";
+				}
+				$("#context_skill").html(addition);
+				$("#context_skill").select2();
+				filterSkillData(0);
+				
+			});
+}
+
+function initAssessmentHighlighter() {
+	
+	$("#assessment_list_table").on('click','tr',function() {
+				
+		if ($(this).hasClass('row_selected')) {
+					$(this).removeClass('row_selected');
+				} else {
+					$(this).addClass('row_selected');
+				}
+		
+		
+		var questin_id = this.children[1].innerText;
+	
+		if(!questionList.has(questin_id)) {
+			$('#editable')
+					.append(
+							"<li data-question_id='"+this.children[1].innerText
+	+"' class='something'><i class='js-remove fa fa-trash-o'> </i> |"
+									+ this.children[1].innerText
+									+ "| "
+									+ this
+											.getElementsByTagName('td')[2].innerText
+									+ "</li>");
+			questionList.add(this.children[1].innerText);
+		} else {
+			$(".something").each(function(index) {
+						if (($(this)
+								.attr('data-question_id')) === questin_id) {
+							this.remove();
+							if(window.questionList.has(($(this).attr('data-question_id')))){
+								window.questionList.delete(($(this).attr('data-question_id')));
+							}
+						}
+					});
+		}		
+		
+			});
+}
+function highlightSelectedAssessmentQuestions() {
+	updateSelectedAssessmentQuestions();
+	var table = document.getElementById("assessment_list_table");
+	for (var i = 0, row; row = table.rows[i]; i++) {
+	 	if(window.questionList.has(row.cells[1].innerText)) {
+	 		$(row).addClass('row_selected');
+	 	} else {
+	 		if ($(row).hasClass('row_selected')) {
+	 			$(row).removeClass('row_selected');
+			}
+	 	}
+	}
+}
+function updateSelectedAssessmentQuestions() {
+	$(".something")
+	.each(
+			function(index) {
+					window.questionList.add(($(this).attr('data-question_id')));
+			});
+}
+function filterSkillData(context){
+	
+	console.log(context);
+	$.ajax({
+        type: "POST",
+        url: '../get_all_skills',
+        data: {context:context},
+        success: function(data) {      	
+        	var addition = "";
+			addition += "<option value=0>Choose a skill to filter questions</option>";
+			for ( var j in data.skills) {
+				addition += "<option value="+data.skills[j].id+ "> "
+						+ data.skills[j].text + " </option>";
+			}
+			
+			$("#skills_data").html(addition);
+			$("#skills_data").select2();
+        	
+          }
+    });
+	
+}
+function initAssessmentContextListener() {
+	$("#context_skill").on("select2:select", function(e) {
+		
+		filterAssessmentDatatableBySkills($(this).val());
+		filterSkillData($(this).val());
+		
+	});
+}
+
+function initAssessmentTrashIcon() {
+	$("#editable")
+	.on(
+			'click',
+			'.js-remove',
+			function() {
+				$(this.parentElement).remove();
+				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
+					window.questionList.delete($(this.parentElement).data('question_id').toString());
+				}
+			});
+}
+
+function initAssessmentListPageination(total_count){
+	
+	if(total_count === undefined || total_count==null || total_count ==='') {
+		total_count= 0;
+		$('#page-selection').empty();
+	}else {
+	}
+
+	 $('#page-selection').bootpag({
+         total: total_count,
+         maxVisible: 10
+     }).on("page", function(event, /* page number here */ num){
+	     	//alert("num -> "+num)
+	        var context_id =$('#context_skill').val();
+	     	$.ajax({
+		        type: "POST",
+		        url: $('#assessment_list_table').data('url'),
+		        data: {key:'get_all_question',offset:num,context_id:context_id},
+		        success: function(result) {
+		        	
+		        	$('#assessment_data').empty();
+		        	$('#assessment_data').append(result);
+		        	highlightSelectedAssessmentQuestions();
+		        	
+		          }
+		    });
+	     	
+	     });
+	 $('#assessment_data').trigger( "custom" );
+}
+
+function filterAssessmentDatatableBySkills(context) {
+	
+	console.log('>>>> '+context);
+var url = $('#assessment_list_table').data('url');
+	
+	$.ajax({
+	        type: "POST",
+	        url: url,
+	        data: {key:'get_all_question',context_id:context},
+	        success: function(result) {
+	        	
+	        	$('#assessment_data').empty();
+	        	$('#assessment_data').append(result);
+	        	
+	        	$( "#assessment_data" ).on( "custom", function() {
+	        		$('.pagination > li').css("display", "inline", 'important'); 
+	        		});
+	        	initAssessmentHighlighter();
+	        	highlightSelectedAssessmentQuestions();
+	        	initAssessmentListPageination($('#total_rows').html());
+
+	        	$('#table_holder_div').slimScroll({
+	                height: '250px'
+	            });
+	          }
+	    });
+	
+}
+
+
+function initAssessmentTrashIcon() {
+	
+	$('#editable').slimScroll({
+        height: '250px'
+    });
+	
+	
+	$("#editable")
+	.on(
+			'click',
+			'.js-remove',
+			function() {
+				$(this.parentElement).remove();
+				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
+					window.questionList.delete($(this.parentElement).data('question_id').toString());
+				}
+			});
+}
+
+function assessmentFinisher(event, currentIndex) {
+	var question_list = "";
+	$("#editable .something").each(function(index) {
+		question_list = question_list + $(this).data('question_id') + ",";
+	});
+	console.log(question_list);
+	question_list = question_list.substring(0, question_list.length - 1);
+	if (window.isNewAssessment) {
+		var dataPost = 'assessment_name=' + $("#assessment_name_idd").val()
+				+ '&assessment_desc=' + $('#assessment_desc_idd').val()
+				+ '&assessment_type=' + $('#assessment_type_idd').val()
+				+ '&assessment_retriable='
+				+ $('#assessment_retry_idd').is(":checked")
+				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
+				+ '&assessment_category=' + $('#assessment_category_idd').val()
+				+ '&question_list=' + question_list + '&course='
+				+ $('#course').val();
+		var url = '../create_assessment';
+	} else {
+		var dataPost = 'assessment_id=' + $('#assessment_id_idd').val()
+				+ '&assessment_desc=' + $.trim($('#assessment_desc_idd').val())
+				+ '&assessment_name=' + $("#assessment_name_idd").val()
+				+ '&assessment_type=' + $('#assessment_type_idd').val()
+				+ '&assessment_retriable='
+				+ $('#assessment_retry_idd').is(":checked")
+				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
+				+ '&assessment_category=' + $('#assessment_category_idd').val()
+				+ '&question_list=' + question_list + '&course='
+				+ $('#course').val();
+		var url = '../update_assessment';
+	}
+	// alert(dataPost);
+	$
+			.ajax({
+				type : "POST",
+				url : url,
+				data : dataPost,
+				dataType : "json"
+			})
+			.done(
+					function(data) {
+						if (window.isNewAssessment) {
+							window.location
+									.replace("/content_creator/assessment.jsp?assessment="
+											+ data);
+						} else {
+							window.location
+									.replace("/content_creator/assessment.jsp?assessment="
+											+ window.assessmentID);
+						}
+					});
+}
+
+function initCourseChangeListener(){
+	$('#course').change(function(event) {
+		var course = $(this).val();
+		tableDataLoader(course);
+	});
+}
+function tableDataLoader(course) {
+	$.get( "../TrainerSelfStudyReport", {course: course}, function( data ) {
+		$('#tableHead').html('');
+		var Headaddition = '<tr><th>Lesson Name</th>';
+		$.each(data.trainerNames, function(key,value){
+			Headaddition += '<th>' + value;
+			Headaddition +='</th>';
+		});	
+		Bodyaddition = '';
+		$('#tableHead').html(Headaddition);
+		$('#tableBody').html('');
+		$.each(data.allLessons, function(key,value){
+			Bodyaddition +='<tr>';
+			Bodyaddition += '<td>'+value+'</td>';
+			$.each(data.trainerNames, function(k,v){
+				Bodyaddition += '<td>';
+				if(data.trainerbrowses[k].includes(key)){
+					Bodyaddition += '<i class="fa  fa-check"></i>';
+				} else {
+					Bodyaddition += '<i class="fa  fa-times"></i>';
+				}
+				Bodyaddition += '</td>';
+			});
+			Bodyaddition +='</tr>';
+		});
+		$('#tableBody').html(Bodyaddition);
+	});
+}
+function initCourseChangeDiliverListener(){
+	$('#course').change(function(event) {
+		var course = $(this).val();
+		tableDataLoader(course);
+	});
+}
+function tableDataLoaderDeliverList(course) {
+	$.get( "../batch_report", {course: course}, function( data ) {
+		$('#tableBody').html('');
+		$.each(data, function(key,value){
+		    var kamini = '<tr><td>'+value.batchID+'</td><td>'+value.bgName+'</td><td>'+value.collName+'</td><td>'+value.totalLessons+' ('+value.netDuration+')</td>'+
+		    '<td>'+value.lessonsTaught+' ('+value.netDurationTaught+')</td>';
+		    kamini+='<td><a href="/content_content_creator/presentation.jsp?lesson_id='+value.lastLessonID+'">'+value.lastLessonName+'</td><td>'+value.trainerNames+'</td></tr>';
+		    $('#tableBody').append(kamini);
+	});
+});
 }

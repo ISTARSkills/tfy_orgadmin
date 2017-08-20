@@ -108,8 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                                    <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control search_able_input"> </div>
                                 </div>
                             </div>
                             <div class="table-responsive">

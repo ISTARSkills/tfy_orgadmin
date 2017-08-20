@@ -138,7 +138,7 @@
 									<img alt="image" class="customcss_img-size" src="<%=cdnPath+lesson.getImage_url()%>">
 								</div>
 								<div class="product-desc">
-									<span class="product-price customcss_product_price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <h5 class="badge badge-warning customcss_font-size">Session - <%=cmsessionStringLong%></h5></small> <a href="/content/creator/lesson.jsp?lesson_id=<%=lesson.getId()%>" class="product-name"><%=lesson.getTitle()%> </a>
+									<span class="product-price customcss_product_price"><span class="label label-primary">Course Category - <%=course_category%></span> </span> <small class="text-muted"> <h5 class="badge badge-warning customcss_font-size">Session - <%=cmsessionStringLong%></h5></small> <a href="/content_creator/lesson.jsp?lesson_id=<%=lesson.getId()%>" class="product-name"><%=lesson.getTitle()%> </a>
 
 									<div class="small m-t-xs">
 										<%=(lesson.getDescription() != null && lesson.getDescription().length() > 100)? lesson.getDescription().substring(0, 100): lesson.getDescription()%>
@@ -147,13 +147,13 @@
 								</div>
 								<%
 						String href_url = "";
-							if (lesson.getType().equalsIgnoreCase("PRESENTATION")) {
+							if (lesson.getType() != null && lesson.getType().equalsIgnoreCase("PRESENTATION")) {
 								 href_url = "/content_creator/presentation.jsp?lesson_id="+lesson.getId();
 								 
-							} else if (lesson.getType().equalsIgnoreCase(LessonTypeNames.ASSESSMENT)) {
-								 href_url = "/creator/assessment.jsp?lesson="+lesson.getId();
+							} else if (lesson.getType() != null && lesson.getType().equalsIgnoreCase(LessonTypeNames.ASSESSMENT)) {
+								 href_url = "/content_creator/assessment.jsp?lesson="+lesson.getId();
 						
-							} else if (lesson.getType().equalsIgnoreCase(LessonTypeNames.INTERACTIVE)) {
+							} else if (lesson.getType() != null && lesson.getType().equalsIgnoreCase(LessonTypeNames.INTERACTIVE)) {
 								 href_url = "/content_creator/interactive_template/ui_builder.jsp?ppt_id="+lesson.getId();
 						
 							}
