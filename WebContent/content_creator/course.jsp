@@ -97,9 +97,6 @@
 											<option <%=context_name.equalsIgnoreCase(context.getTitle())?"selected":"" %> value="<%=context.getId()%>"><%=context.getTitle() %></option>
 											
 											<%}%>
-											
-												
-												
 											</select>
 										</div>
 									</div>
@@ -114,10 +111,6 @@
 												<br/>
 												<img src='<%=image_url%>'
 														id='course_image' alt="Course Image">
-										<%-- <div class="form-group" id="filezz">
-													<input id="fileupload" type="file" accept="image/png" name="files[]" data-url="/content/upload_media" multiple> <img src='<%=image_url%>' class="form-group" id='course_image' style="float: right; /* width: 100%; */ height: 200px;">
-												</div> --%>
-
 									</div>
 								</div>
 							</fieldset>
@@ -157,22 +150,6 @@
 										<ul class="list-group custom-li-padding"
 											id="searchModulesResult">
 										</ul>
-
-										<!-- <h4 class="m-b-xxs">Top navigation, centered content layout</h4>
-								                    <small>(optional layout)</small>
-								                    <p>Available configure options</p>
-								                    
-								                    <span class="simple_tag">Scroll navbar</span>
-								                    <span class="simple_tag">Top fixed navbar</span>
-								                    <span class="simple_tag">Boxed layout</span>
-								                    <span class="simple_tag">Scroll footer</span>
-								                    <span class="simple_tag">Fixed footer</span>
-								                    <div class="m-t-md">
-								                        <p>Check the Dashboard v.4 with top navigation layout</p>
-								                        <div class="p-lg ">
-								                        	<a href="dashboard_4.html"><img class="img-responsive img-shadow" src="img/dashboard4_2.jpg" alt=""></a>
-								                        </div>
-								                    </div> -->
 									</div>
 								</div>
 							</fieldset>

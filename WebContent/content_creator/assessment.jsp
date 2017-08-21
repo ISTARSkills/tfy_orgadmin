@@ -1,3 +1,4 @@
+<%@page import="java.util.HashMap"%>
 <%@page import="in.talentify.core.utils.UIUtils"%>
 <%@page import="com.viksitpro.cms.utilities.URLServices"%>
 <%@page import="com.viksitpro.cms.utilities.LessonTypeNames"%>
@@ -89,11 +90,11 @@ display:inline !important;
 										<h1>Basic details</h1>
 										<fieldset class='fieldset-border-margin'>
 											<div class="row">
-												<div class="col-lg-8">
+												<div class="col-lg-6">
 													<div class="form-group" >
 														<label>Assessment Title</label> <input
 															class="form-control required"  id="assessment_name_idd" type="text"
-															name="assessment_name" style="width: 30vw !important"
+															name="assessment_name""
 															<%if (!is_new) {%>
 															value='<%=assessment.getAssessmenttitle()%>' <%}%>>
 													</div>
@@ -102,44 +103,46 @@ display:inline !important;
 														<textarea class="form-control required"
 															 name="assessment_desc" rows="3" id="assessment_desc_idd"> <%if (!is_new) {%><%=assessment.getDescription()%> <%}%> </textarea>
 													</div>
-													<div class="form-group" >
-														<label>Assessment Retryable </label> <input
-															id="assessment_retry_idd" type="checkbox"
-															<%if (!is_new) {
-				if (assessment.getRetryAble()) {%>
-															checked <%}
-			}%>>
-													</div>
-													<div class="form-group" >
-														<label>Assessment Duration (minutes)</label> <input
-															 class="form-control required" id="assessment_duration_idd"
-															type="number" name="assessment_duration" step="5"
-															style="max-width: 70px;" <%if (!is_new) {%>
-															value="<%=assessment.getAssessmentdurationminutes()%>"
-															<%}%>>
+													<div class="row">
+														<div class="col-lg-6">
+															<div class="form-group">
+																<label>Assessment Duration (minutes)</label> <input
+																	class="form-control required"
+																	id="assessment_duration_idd" type="number"
+																	name="assessment_duration" step="5" <%if (!is_new) {%>
+																	value="<%=assessment.getAssessmentdurationminutes()%>"
+																	<%}%>>
+															</div>
+														</div>
+														<div class="col-lg-6">
+															<div class="form-group">
+																<label>Is Retriable </label> 
+																<input id="assessment_retry_idd" type="checkbox"
+																	<%if (!is_new) {
+																		if (assessment.getRetryAble()) {%>
+																	checked <%}
+																	}%>>
+															</div>
+														</div>
 													</div>
 												</div>
-												<div class="col-lg-3">
+												<div class="col-lg-6">
 													<div class="form-group ">
 														<label>Select Assessment Type</label> <select
 															class="form-control" name="assessment_type"
-															id='assessment_type_idd' style="max-width: 200px;">
+															id='assessment_type_idd'>
 															<option value="STATIC"
 																<%if (!is_new) {
 				if (assessment.getAssessmentType().equalsIgnoreCase("STATIC")) {%>
 																selected <%}
 			}%>>Static Assessment</option>
-															<%-- <option value="ADAPTIVE"
-																<%if (!is_new) {
-				if (assessment.getAssessmentType().equalsIgnoreCase("ADAPTIVE")) {%>
-																selected <%}
-			}%>>Adaptive Assessment</option> --%>
+														
 														</select>
 													</div>
 													<div class="form-group">
 														<label>Assessment Category</label> <select
 															class="form-control" name="assessment_category"
-															id='assessment_category_idd' style="max-width: 200px;">
+															id='assessment_category_idd'>
 															<option value="JOBS"
 																<%if (!is_new) {
 				if (assessment.getCategory().equalsIgnoreCase("JOBS")) {%>
@@ -150,6 +153,11 @@ display:inline !important;
 				if (assessment.getCategory().equalsIgnoreCase("TRAINER_ASSESSMENT")) {%>
 																selected <%}
 			}%>>TRAINER Assessment</option>
+			<option value="COURSE_ASSESSMENT"
+																<%if (!is_new) {
+				if (assessment.getCategory().equalsIgnoreCase("COURSE_ASSESSMENT")) {%>
+																selected <%}
+			}%>>Course Assessment</option>
 														</select>
 													</div>
 													<%-- <div class="form-group">
@@ -170,6 +178,18 @@ display:inline !important;
 															%>
 														</select>
 													</div> --%>
+													<div class="form-group">
+														<label>Assessment Category</label> <select
+															class="form-control">
+															<%
+															String sql = "select id,course_name from course";
+															List<HashMap<String,Object>> coursess = dbutils.executeQuery(sql);
+															for(HashMap<String,Object> course: coursess){
+															%>
+															<option <%if (assessment.getCourse() == course.get("id")){%>selected<%} %> value="<%=course.get("id")%>"><%=course.get("course_name") %></option>
+															<%}%>
+														</select>
+													</div>
 												</div>
 											</div>
 										</fieldset>
@@ -226,7 +246,7 @@ display:inline !important;
 										<fieldset class='fieldset-border-margin'>
 											<div class="form-group">
 												<h3>Questions in this assessment</h3>
-												<ul class="list-unstyled file-list" id="editable" style="    max-height: 54vh; overflow-y: scroll;">
+												<ul class="list-group custom-li-padding" id="editable" style="    max-height: 54vh; overflow-y: scroll;">
 													<%
 														Set<AssessmentQuestion> aqs = new HashSet<AssessmentQuestion>();
 														aqs = assessment.getAssessmentQuestions();
@@ -234,9 +254,9 @@ display:inline !important;
 															String questionText = aq.getQuestion().getQuestionText().replaceAll("<p>", "").replaceAll("</p>", "")
 																	.replaceAll("<strong>", "").replaceAll("</strong>", "");
 													%>
-													<li class="something"
-														data-question_id="<%=aq.getQuestion().getId()%>"><i
-														class="js-remove fa fa-trash-o"> </i> | <%=aq.getQuestion().getId()%>
+													<li class="list-group-item something"
+														data-question_id="<%=aq.getQuestion().getId()%>"><span class="badge badge-primary"><i
+														class="js-remove fa fa-trash-o"> </i></span> | <%=aq.getQuestion().getId()%>
 														| <%=questionText%></li>
 													<%
 														}

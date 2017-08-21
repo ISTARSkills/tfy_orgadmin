@@ -9543,6 +9543,8 @@ function assessmentEditWizard() {
             }
         }
 });
+
+	$('select').select2();
 	//$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
@@ -9667,16 +9669,12 @@ function initAssessmentContextListener() {
 }
 
 function initAssessmentTrashIcon() {
-	$("#editable")
-	.on(
-			'click',
-			'.js-remove',
-			function() {
+	$("#editable").on('click','.js-remove',function() {
 				$(this.parentElement).remove();
 				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
 					window.questionList.delete($(this.parentElement).data('question_id').toString());
 				}
-			});
+	});
 }
 
 function initAssessmentListPageination(total_count){
