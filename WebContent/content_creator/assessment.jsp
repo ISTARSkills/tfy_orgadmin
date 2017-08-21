@@ -122,7 +122,7 @@
 													</div>
 
 													<div class="form-group">
-														<label>Select Course</label> <select class="form-control">
+														<label>Select Course</label> <select class="form-control" id='assessmentCourse'>
 															<%
 																String sql = "select id,course_name from course";
 																List<HashMap<String, Object>> coursess = dbutils.executeQuery(sql);
@@ -157,7 +157,7 @@
 																String questionText = aq.getQuestion().getQuestionText().replaceAll("<p>", "").replaceAll("</p>", "")
 																		.replaceAll("<strong>", "").replaceAll("</strong>", "");
 														%>
-														<li class="question list-group-item" data-assessmentQuestionID="<%=aq.getQuestion().getId()%>"><span class="badge badge-primary"><i class="fa fa-trash-o"> </i></span> | <%=aq.getQuestion().getId()%> | <%=questionText%></li>
+														<li class="question list-group-item" data-assessmentquestionid="<%=aq.getQuestion().getId()%>"><span class="badge badge-primary"><i class="fa fa-trash-o"> </i></span> | <%=aq.getQuestion().getId()%> | <%=questionText%></li>
 														<%
 															}
 														%>

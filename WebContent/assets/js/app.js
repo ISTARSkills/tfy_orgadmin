@@ -9499,7 +9499,6 @@ function assessmentEditVariables() {
 	window.assessmentID = $("input[name='cmsID']").val();
 	window.baseProdURL = $("input[name='baseProdURL']").val();
 	window.questionList = new Set();
-	window.isDatatable = Boolean(false);
 }
 
 function assessmentEditWizard() {
@@ -9539,17 +9538,18 @@ function assessmentEditWizard() {
 	//$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 1 && currentIndex === 0 && !window.isDatatable) {
+	if (newIndex === 1 && currentIndex === 0) {
 		initAssessmentQuestionSearch();
-		//initAssessmentTrashIcon();
+		initAssessmentQuestionTrashIcon();
 		}
 	return true;
 }
 function initAssessmentQuestionList() {
-	
+	$.each($('#editable').children(), function( index, value ) {
+		  window.questionList.add($(value).data('assessmentquestionid'));
+	});
 }
 function initAssessmentQuestionSearch() {
-	function initModuleSearch() {
 		$('#searchQuestions').keydown(function(event) {
 			if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
 				if($.trim($(this).val()).length>2){
@@ -9581,28 +9581,23 @@ function initAssessmentQuestionSearch() {
 
 		$('#searchQuestionsResult').on('click',".fa-plus",function() {
 			var v = {
-				id : this.parentElement.parentElement.id,
+				id : $(this).data('assessmentquestionid'),
 				name : this.parentElement.parentElement.innerText
 			}
-			if (!(window.questionList.has(v.id) == undefined)) {
+			if ((window.questionList.has(v.id))) {
 				alert('Question already there in the list.');
 			} else {
-				$('#editable').append("<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-trash-o' data-assessmentquestionid='"+v.id+"'> </i></span> | "+v.id+" | "+ v.name +"</li>");
+				$('#editable').append("<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-trash-o' data-assessmentquestionid='"+v.id+"'> </i></span> "+ v.name +"</li>");
 				window.questionList.add(v.id);
 			}
 		});
 
-	}
 }
-
-
-
-
 function assessmentFinisher(event, currentIndex) {
 	var question_list = "";
-	$("#editable .something").each(function(index) {
-		question_list = question_list + $(this).data('question_id') + ",";
-	});
+	for (let item of window.questionList) {
+		question_list += item + ",";
+	}
 	console.log(question_list);
 	question_list = question_list.substring(0, question_list.length - 1);
 	if (window.isNewAssessment) {
@@ -9614,7 +9609,7 @@ function assessmentFinisher(event, currentIndex) {
 				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
 				+ '&assessment_category=' + $('#assessment_category_idd').val()
 				+ '&question_list=' + question_list + '&course='
-				+ $('#course').val();
+				+ $('#assessmentCourse').val();
 		var url = '../create_assessment';
 	} else {
 		var dataPost = 'assessment_id=' + $('#assessment_id_idd').val()
@@ -9626,7 +9621,7 @@ function assessmentFinisher(event, currentIndex) {
 				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
 				+ '&assessment_category=' + $('#assessment_category_idd').val()
 				+ '&question_list=' + question_list + '&course='
-				+ $('#course').val();
+				+ $('#assessmentCourse').val();
 		var url = '../update_assessment';
 	}
 	// alert(dataPost);
@@ -9650,7 +9645,18 @@ function assessmentFinisher(event, currentIndex) {
 						}
 					});
 }
-
+function initAssessmentQuestionTrashIcon() {
+	$("#editable")
+	.on(
+			'click',
+			'.fa-trash-o',
+			function() {
+				this.parentElement.parentElement.remove();
+				if(window.questionList.has($(this.parentElement.parentElement).data('assessmentquestionid'))){
+					window.questionList.delete($(this.parentElement.parentElement).data('assessmentquestionid'));
+				}
+			});
+}
 function initCourseChangeListener(){
 	$('#course').change(function(event) {
 		var course = $(this).val();
