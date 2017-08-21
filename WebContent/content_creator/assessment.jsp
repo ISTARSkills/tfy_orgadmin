@@ -16,8 +16,8 @@
 <%@page import="java.util.List"%>
 <jsp:include page="../inc/head.jsp"></jsp:include>
 <style>
-.pagination .bootpag > li{
-display:inline !important;
+.pagination .bootpag>li {
+	display: inline !important;
 }
 </style>
 <%
@@ -34,7 +34,7 @@ display:inline !important;
 	String baseProdURL = (new URLServices()).getBaseUrl();
 	if (request.getParameterMap().containsKey("assessment")) {
 		assessment_type = "Edit Assessment";
-		
+
 		is_new = false;
 		assessment = (new AssessmentDAO())
 				.findById(Integer.parseInt(request.getParameter("assessment").toString()));
@@ -50,14 +50,13 @@ display:inline !important;
 		}
 	}
 %>
-<body class="top-navigation" id="assessment_edit"
-	data-helper='This page is used to edit an individual assessment'>
+<body class="top-navigation" id="assessment_edit" data-helper='This page is used to edit an individual assessment'>
 	<div id="wrapper">
 		<div id="page-wrapper" class="gray-bg">
 			<div id="page-wrapper" class="gray-bg">
 				<jsp:include page="../inc/navbar.jsp"></jsp:include>
 				<%
-					String[] brd = { "Dashboard", "Assessments" };
+					String[] brd = {"Dashboard", "Assessments"};
 				%>
 				<%=UIUtils.getPageHeader(assessment_type, brd)%>
 
@@ -71,18 +70,11 @@ display:inline !important;
 								</div>
 								<div class="ibox-content">
 									<p>Please follow the following steps</p>
-									<input type='hidden' name='isNew'
-										value='<%=is_new.toString()%>' /> 
-										<input type='hidden' name='isNew'
-										value='<%=is_new.toString()%>' /> 
-										<input type='hidden'
-										name='cmsID' value='<%=assessment.getId()%>' /> <input
-										type='hidden' name='baseProdURL' value='<%=baseProdURL%>' />
+									<input type='hidden' name='isNew' value='<%=is_new.toString()%>' /> <input type='hidden' name='isNew' value='<%=is_new.toString()%>' /> <input type='hidden' name='cmsID' value='<%=assessment.getId()%>' /> <input type='hidden' name='baseProdURL' value='<%=baseProdURL%>' />
 									<form id="form" class="wizard-big">
 										<%
 											if (!is_new) {
-										%><input type="hidden" name="assessment_id"
-											value="<%=assessment.getId()%>" id='assessment_id_idd' />
+										%><input type="hidden" name="assessment_id" value="<%=assessment.getId()%>" id='assessment_id_idd' />
 										<%
 											}
 										%>
@@ -91,177 +83,97 @@ display:inline !important;
 										<fieldset class='fieldset-border-margin'>
 											<div class="row">
 												<div class="col-lg-6">
-													<div class="form-group" >
-														<label>Assessment Title</label> <input
-															class="form-control required"  id="assessment_name_idd" type="text"
-															name="assessment_name""
-															<%if (!is_new) {%>
-															value='<%=assessment.getAssessmenttitle()%>' <%}%>>
+													<div class="form-group">
+														<label>Assessment Title</label> <input class="form-control required" id="assessment_name_idd" type="text" name="assessment_name" <%if (!is_new) {%> value='<%=assessment.getAssessmenttitle()%>' <%}%>>
 													</div>
-													<div class="form-group" >
+													<div class="form-group">
 														<label>Assessment Description</label>
-														<textarea class="form-control required"
-															 name="assessment_desc" rows="3" id="assessment_desc_idd"> <%if (!is_new) {%><%=assessment.getDescription()%> <%}%> </textarea>
+														<textarea class="form-control required" name="assessment_desc" rows="3" id="assessment_desc_idd"> <%
+ 	if (!is_new) {
+ %><%=assessment.getDescription()%> <%
+ 	}
+ %> </textarea>
 													</div>
-													<div class="row">
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label>Assessment Duration (minutes)</label> <input
-																	class="form-control required"
-																	id="assessment_duration_idd" type="number"
-																	name="assessment_duration" step="5" <%if (!is_new) {%>
-																	value="<%=assessment.getAssessmentdurationminutes()%>"
-																	<%}%>>
-															</div>
-														</div>
-														<div class="col-lg-6">
-															<div class="form-group">
-																<label>Is Retriable </label> 
-																<input id="assessment_retry_idd" type="checkbox"
-																	<%if (!is_new) {
-																		if (assessment.getRetryAble()) {%>
-																	checked <%}
-																	}%>>
-															</div>
-														</div>
+													<div class="form-group">
+														<label>Assessment Duration (minutes)</label> <input class="form-control required" id="assessment_duration_idd" type="number" name="assessment_duration" step="5" <%if (!is_new) {%> value="<%=assessment.getAssessmentdurationminutes()%>" <%}%>>
 													</div>
 												</div>
 												<div class="col-lg-6">
 													<div class="form-group ">
-														<label>Select Assessment Type</label> <select
-															class="form-control" name="assessment_type"
-															id='assessment_type_idd'>
-															<option value="STATIC"
-																<%if (!is_new) {
-				if (assessment.getAssessmentType().equalsIgnoreCase("STATIC")) {%>
-																selected <%}
+														<label>Select Assessment Type</label> <select class="form-control" name="assessment_type" id='assessment_type_idd'>
+															<option value="STATIC" <%if (!is_new) {
+				if (assessment.getAssessmentType().equalsIgnoreCase("STATIC")) {%> selected <%}
 			}%>>Static Assessment</option>
-														
+
 														</select>
 													</div>
 													<div class="form-group">
-														<label>Assessment Category</label> <select
-															class="form-control" name="assessment_category"
-															id='assessment_category_idd'>
-															<option value="JOBS"
-																<%if (!is_new) {
-				if (assessment.getCategory().equalsIgnoreCase("JOBS")) {%>
-																selected <%}
+														<label>Assessment Category</label> <select class="form-control" name="assessment_category" id='assessment_category_idd'>
+															<option value="JOBS" <%if (!is_new) {
+				if (assessment.getCategory().equalsIgnoreCase("JOBS")) {%> selected <%}
 			}%>>JOBS Assessment</option>
-															<option value="TRAINER_ASSESSMENT"
-																<%if (!is_new) {
-				if (assessment.getCategory().equalsIgnoreCase("TRAINER_ASSESSMENT")) {%>
-																selected <%}
+															<option value="TRAINER_ASSESSMENT" <%if (!is_new) {
+				if (assessment.getCategory().equalsIgnoreCase("TRAINER_ASSESSMENT")) {%> selected <%}
 			}%>>TRAINER Assessment</option>
-			<option value="COURSE_ASSESSMENT"
-																<%if (!is_new) {
-				if (assessment.getCategory().equalsIgnoreCase("COURSE_ASSESSMENT")) {%>
-																selected <%}
+															<option value="COURSE_ASSESSMENT" <%if (!is_new) {
+				if (assessment.getCategory().equalsIgnoreCase("COURSE_ASSESSMENT")) {%> selected <%}
 			}%>>Course Assessment</option>
 														</select>
 													</div>
-													<%-- <div class="form-group">
-														<label>Choose course</label> <select id="course"
-															class="form-control"
-															data-placeholder="Choose a Course..."
-															style="width: 240px !important;">
+
+													<div class="form-group">
+														<label>Select Course</label> <select class="form-control">
 															<%
-																for (Course course : courses) {
+																String sql = "select id,course_name from course";
+																List<HashMap<String, Object>> coursess = dbutils.executeQuery(sql);
+																for (HashMap<String, Object> course : coursess) {
 															%>
-															<option value="<%=course.getId()%>"
-																<%if (!is_new) {
-					if (assessment.getCourse() == course.getId()) {%>
-																selected <%}
-				}%>><%=course.getCourseName()%></option>
+															<option <%if (assessment.getCourse() == course.get("id")) {%> selected <%}%> value="<%=course.get("id")%>"><%=course.get("course_name")%></option>
 															<%
 																}
 															%>
 														</select>
-													</div> --%>
-													<div class="form-group">
-														<label>Assessment Category</label> <select
-															class="form-control">
-															<%
-															String sql = "select id,course_name from course";
-															List<HashMap<String,Object>> coursess = dbutils.executeQuery(sql);
-															for(HashMap<String,Object> course: coursess){
-															%>
-															<option <%if (assessment.getCourse() == course.get("id")){%>selected<%} %> value="<%=course.get("id")%>"><%=course.get("course_name") %></option>
-															<%}%>
-														</select>
+													</div>
+													<div>
+														<label> <input id="assessment_retry_idd" type="checkbox" class="i-checks" <%if (!is_new) {
+				if (assessment.getRetryAble()) {%> checked <%}
+			}%>> Is Retriable 
+														</label>
 													</div>
 												</div>
 											</div>
 										</fieldset>
-										<h1>Questions</h1>
-										<fieldset class='fieldset-border-margin'>
-											<h3>Select Questions for this assessment</h3>
-											<p>First Select the parent skill to filter learning
-												objectives.</p>
-												<div class="row">
-												<div class="col-lg-6" >
-											<div class="form-group">
-												<label class="font-normal">Select context skill</label> <select
-													id="context_skill"
-													data-placeholder="Choose a Context Skill..." class=""
-													tabindex="-1">
-													<option value="">Select</option>
-												</select>
-											</div>
-											</div>
-											<div class="col-lg-6" >
-											<div class="form-group">
-												<label class="font-normal">Select Skill</label> <select
-													multiple id="skills_data"
-													data-placeholder="Choose a Skill..." class=""
-													tabindex="-1">
-													<option value="">Select</option>
-												</select>
-											</div>
-											</div></div>
-											<div class="row " id="table_holder_div" style=' max-height: 42vh; overflow-y: auto;'>
-											<!-- table start -->
-											
 
-											<table class="table table-bordered" id='assessment_list_table' data-url='../assessment_list'>
-												<thead>
-													<tr>
-														<th data-visisble='true'>#</th>
-														<th data-visisble='true'>Question Text</th>
-														<th data-visisble='true'>Question Type</th>
-														<th data-visisble='true'>Difficulty Level</th>
-														<th data-visisble='true'>action</th>
-													</tr>
-												</thead>
-												<tbody id="assessment_data">
-
-												</tbody>
-											</table>
-											 <div id="page-selection" style="text-align: center"></div>
-											 </div>
-											 
-											<!-- table end -->
-										</fieldset>
-										<h1>Review Questions</h1>
+										<h1>Add/Review Questions</h1>
 										<fieldset class='fieldset-border-margin'>
-											<div class="form-group">
-												<h3>Questions in this assessment</h3>
-												<ul class="list-group custom-li-padding" id="editable" style="    max-height: 54vh; overflow-y: scroll;">
-													<%
-														Set<AssessmentQuestion> aqs = new HashSet<AssessmentQuestion>();
-														aqs = assessment.getAssessmentQuestions();
-														for (AssessmentQuestion aq : aqs) {
-															String questionText = aq.getQuestion().getQuestionText().replaceAll("<p>", "").replaceAll("</p>", "")
-																	.replaceAll("<strong>", "").replaceAll("</strong>", "");
-													%>
-													<li class="list-group-item something"
-														data-question_id="<%=aq.getQuestion().getId()%>"><span class="badge badge-primary"><i
-														class="js-remove fa fa-trash-o"> </i></span> | <%=aq.getQuestion().getId()%>
-														| <%=questionText%></li>
-													<%
-														}
-													%>
-												</ul>
+											<div class="col-md-6">
+												<div class="form-group">
+													<h3>Questions in this assessment</h3>
+													<ul class="list-group custom-li-padding" id="editable" style="max-height: 54vh; overflow-y: scroll;">
+														<%
+															Set<AssessmentQuestion> aqs = new HashSet<AssessmentQuestion>();
+															aqs = assessment.getAssessmentQuestions();
+															for (AssessmentQuestion aq : aqs) {
+																String questionText = aq.getQuestion().getQuestionText().replaceAll("<p>", "").replaceAll("</p>", "")
+																		.replaceAll("<strong>", "").replaceAll("</strong>", "");
+														%>
+														<li class="question list-group-item" data-assessmentQuestionID="<%=aq.getQuestion().getId()%>"><span class="badge badge-primary"><i class="fa fa-trash-o"> </i></span> | <%=aq.getQuestion().getId()%> | <%=questionText%></li>
+														<%
+															}
+														%>
+													</ul>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="col-sm-12">
+														<input id="searchQuestions" type="text" class="form-control" placeholder="Search for questions by text, skill..">
+													</div>
+												</div>
+												<div class="ibox-content no-padding custom-scroll">
+													<ul class="list-group custom-li-padding" id="searchQuestionsResult">
+													</ul>
+												</div>
 											</div>
 										</fieldset>
 									</form>
@@ -271,9 +183,11 @@ display:inline !important;
 					</div>
 				</div>
 			</div>
-		</div></div>
+		</div>
+	</div>
 </body>
 <!-- Mainly scripts -->
 <jsp:include page="../inc/foot.jsp"></jsp:include>
 <script type="text/javascript">
+	
 </script>

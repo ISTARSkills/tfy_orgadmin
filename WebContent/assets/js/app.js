@@ -9503,8 +9503,7 @@ function assessmentEditVariables() {
 }
 
 function assessmentEditWizard() {
-	
-	
+	initAssessmentQuestionList();
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
@@ -9518,13 +9517,7 @@ function assessmentEditWizard() {
 			 }
 			 return flag;
 		},
-		onStepChanged : function(event, currentIndex, priorIndex) {
-			assessmentStepChangerPost(event, currentIndex, priorIndex);
-			return true;
-		},
 		onFinishing : function(event, currentIndex) {
-			
-			
 			 var form = $(this);
 			 var flag =  form.valid();
 			 if(flag){
@@ -9536,226 +9529,74 @@ function assessmentEditWizard() {
         errorPlacement: function (error, element)
         {
             element.before(error);
-        },
-        rules: {
-            confirm: {
-                equalTo: "#password"
-            }
         }
 });
-
+	$('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
 	$('select').select2();
 	//$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
-	if (newIndex === 1 && currentIndex === 0) {
-			initAssessmentContext();
-			initAssessmentContextListener();
-			
+	if (newIndex === 1 && currentIndex === 0 && !window.isDatatable) {
+		initAssessmentQuestionSearch();
+		//initAssessmentTrashIcon();
 		}
-	if (newIndex === 2) {
-		initAssessmentTrashIcon();
-	}
 	return true;
 }
-function assessmentStepChangerPost(event, currentIndex, priorIndex) {
-	if(currentIndex === 1) {
-		highlightSelectedAssessmentQuestions();
-	}
-}
-function initAssessmentContext() {
-	$.get("../get_all_contexts").done(
-			function(data) {
-				var addition = "";
-				addition += "<option value=0>Choose a course to filter questions</option>";
-				for ( var j in data.contexts) {
-					addition += "<option value="+data.contexts[j].id+ "> "
-							+ data.contexts[j].text + " </option>";
-				}
-				$("#context_skill").html(addition);
-				$("#context_skill").select2();
-				filterSkillData(0);
-				
-			});
-}
-
-function initAssessmentHighlighter() {
+function initAssessmentQuestionList() {
 	
-	$("#assessment_list_table").on('click','tr',function() {
-				
-		if ($(this).hasClass('row_selected')) {
-					$(this).removeClass('row_selected');
-				} else {
-					$(this).addClass('row_selected');
-				}
-		
-		
-		var questin_id = this.children[1].innerText;
-	
-		if(!questionList.has(questin_id)) {
-			$('#editable')
-					.append(
-							"<li data-question_id='"+this.children[1].innerText
-	+"' class='something'><i class='js-remove fa fa-trash-o'> </i> |"
-									+ this.children[1].innerText
-									+ "| "
-									+ this
-											.getElementsByTagName('td')[2].innerText
-									+ "</li>");
-			questionList.add(this.children[1].innerText);
-		} else {
-			$(".something").each(function(index) {
-						if (($(this)
-								.attr('data-question_id')) === questin_id) {
-							this.remove();
-							if(window.questionList.has(($(this).attr('data-question_id')))){
-								window.questionList.delete(($(this).attr('data-question_id')));
-							}
+}
+function initAssessmentQuestionSearch() {
+	function initModuleSearch() {
+		$('#searchQuestions').keydown(function(event) {
+			if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+				if($.trim($(this).val()).length>2){
+					var searchString = $("#searchQuestions").val();
+					var datapost = {
+						'searchString' : searchString
+					};
+					$.get("/SeachQuestions", datapost).done(function(data) {
+						if(data.questions.length === 0){
+							alert("No Questions found like '"+searchString+"'");
 						}
+						var addition = '';
+						$.each(data.questions,function(k, v) {
+							addition += "<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-plus' data-assessmentquestionid='"+v.id+"'> </i></span> | "+v.id+" | "+v.name+"</li>";
+							//addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+						});
+						$('#searchQuestionsResult').html(addition);
+					}).fail(function() {
+						alert("error");
+					}).always(function() {
+
 					});
-		}		
-		
-			});
-}
-function highlightSelectedAssessmentQuestions() {
-	updateSelectedAssessmentQuestions();
-	var table = document.getElementById("assessment_list_table");
-	for (var i = 0, row; row = table.rows[i]; i++) {
-	 	if(window.questionList.has(row.cells[1].innerText)) {
-	 		$(row).addClass('row_selected');
-	 	} else {
-	 		if ($(row).hasClass('row_selected')) {
-	 			$(row).removeClass('row_selected');
+				} else {
+					alert('Type atleast 3 characters to search');
+				}
+
 			}
-	 	}
+	});
+
+		$('#searchQuestionsResult').on('click',".fa-plus",function() {
+			var v = {
+				id : this.parentElement.parentElement.id,
+				name : this.parentElement.parentElement.innerText
+			}
+			if (!(window.questionList.has(v.id) == undefined)) {
+				alert('Question already there in the list.');
+			} else {
+				$('#editable').append("<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-trash-o' data-assessmentquestionid='"+v.id+"'> </i></span> | "+v.id+" | "+ v.name +"</li>");
+				window.questionList.add(v.id);
+			}
+		});
+
 	}
 }
-function updateSelectedAssessmentQuestions() {
-	$(".something")
-	.each(
-			function(index) {
-					window.questionList.add(($(this).attr('data-question_id')));
-			});
-}
-function filterSkillData(context){
-	
-	console.log(context);
-	$.ajax({
-        type: "POST",
-        url: '../get_all_skills',
-        data: {context:context},
-        success: function(data) {      	
-        	var addition = "";
-			addition += "<option value=0>Choose a skill to filter questions</option>";
-			for ( var j in data.skills) {
-				addition += "<option value="+data.skills[j].id+ "> "
-						+ data.skills[j].text + " </option>";
-			}
-			
-			$("#skills_data").html(addition);
-			$("#skills_data").select2();
-        	
-          }
-    });
-	
-}
-function initAssessmentContextListener() {
-	$("#context_skill").on("select2:select", function(e) {
-		
-		filterAssessmentDatatableBySkills($(this).val());
-		filterSkillData($(this).val());
-		
-	});
-}
-
-function initAssessmentTrashIcon() {
-	$("#editable").on('click','.js-remove',function() {
-				$(this.parentElement).remove();
-				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
-					window.questionList.delete($(this.parentElement).data('question_id').toString());
-				}
-	});
-}
-
-function initAssessmentListPageination(total_count){
-	
-	if(total_count === undefined || total_count==null || total_count ==='') {
-		total_count= 0;
-		$('#page-selection').empty();
-	}else {
-	}
-
-	 $('#page-selection').bootpag({
-         total: total_count,
-         maxVisible: 10
-     }).on("page", function(event, /* page number here */ num){
-	     	//alert("num -> "+num)
-	        var context_id =$('#context_skill').val();
-	     	$.ajax({
-		        type: "POST",
-		        url: $('#assessment_list_table').data('url'),
-		        data: {key:'get_all_question',offset:num,context_id:context_id},
-		        success: function(result) {
-		        	
-		        	$('#assessment_data').empty();
-		        	$('#assessment_data').append(result);
-		        	highlightSelectedAssessmentQuestions();
-		        	
-		          }
-		    });
-	     	
-	     });
-	 $('#assessment_data').trigger( "custom" );
-}
-
-function filterAssessmentDatatableBySkills(context) {
-	
-	console.log('>>>> '+context);
-var url = $('#assessment_list_table').data('url');
-	
-	$.ajax({
-	        type: "POST",
-	        url: url,
-	        data: {key:'get_all_question',context_id:context},
-	        success: function(result) {
-	        	
-	        	$('#assessment_data').empty();
-	        	$('#assessment_data').append(result);
-	        	
-	        	$( "#assessment_data" ).on( "custom", function() {
-	        		$('.pagination > li').css("display", "inline", 'important'); 
-	        		});
-	        	initAssessmentHighlighter();
-	        	highlightSelectedAssessmentQuestions();
-	        	initAssessmentListPageination($('#total_rows').html());
-
-	        	$('#table_holder_div').slimScroll({
-	                height: '250px'
-	            });
-	          }
-	    });
-	
-}
 
 
-function initAssessmentTrashIcon() {
-	
-	$('#editable').slimScroll({
-        height: '250px'
-    });
-	
-	
-	$("#editable")
-	.on(
-			'click',
-			'.js-remove',
-			function() {
-				$(this.parentElement).remove();
-				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
-					window.questionList.delete($(this.parentElement).data('question_id').toString());
-				}
-			});
-}
+
 
 function assessmentFinisher(event, currentIndex) {
 	var question_list = "";
@@ -9766,7 +9607,7 @@ function assessmentFinisher(event, currentIndex) {
 	question_list = question_list.substring(0, question_list.length - 1);
 	if (window.isNewAssessment) {
 		var dataPost = 'assessment_name=' + $("#assessment_name_idd").val()
-				+ '&assessment_desc=' + $('#assessment_desc_idd').val()
+				+ '&assessment_desc=' + $.trim($('#assessment_desc_idd').val())
 				+ '&assessment_type=' + $('#assessment_type_idd').val()
 				+ '&assessment_retriable='
 				+ $('#assessment_retry_idd').is(":checked")
