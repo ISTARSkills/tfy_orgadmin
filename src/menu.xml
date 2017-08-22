@@ -82,13 +82,13 @@
 		<child_links display_name="Lesson(s)" is_visible_in_menu="true" jsp_file="/content_creator/lessons.jsp" url="/content_creator/lessons.jsp" valid_roles="content_creator" />
 		<child_links display_name="Assessment(s)" is_visible_in_menu="true" jsp_file="/content_creator/assessments.jsp" url="/content_creator/assessments.jsp" valid_roles="content_creator" />
 		<child_links display_name="Question(s)" is_visible_in_menu="true" jsp_file="/content_creator/questions.jsp" url="/content_creator/questions.jsp" valid_roles="content_creator" />
-		<child_links display_name="Course Tree" is_visible_in_menu="true" jsp_file="/content_creator/cms.jsp" url="/content_creator/cms.jsp" valid_roles="content_creator" />
-	</parent_links>
+		<!-- <child_links display_name="Course Tree" is_visible_in_menu="true" jsp_file="/content_creator/cms.jsp" url="/content_creator/cms.jsp" valid_roles="content_creator" />
+	 --></parent_links>
 
 	<parent_links display_name="Skill Administration" is_visible_in_menu="true" jsp_file="/content_creator/skillTree.jsp" url="/content_creator/skillTree.jsp" valid_role="content_creator">
-		<child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content_creator/skill_tasks.jsp" url="/content_creator/skill_tasks.jsp" valid_roles="content_creator" />
+		<!-- <child_links display_name="Skill Tasks" is_visible_in_menu="true" jsp_file="/content_creator/skill_tasks.jsp" url="/content_creator/skill_tasks.jsp" valid_roles="content_creator" />
 		<child_links display_name="Skill List" is_visible_in_menu="true" jsp_file="/content_creator/skills.jsp" url="/content_creator/skills.jsp" valid_roles="content_creator" />
-		<child_links display_name="Context Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/context_skill_tree.jsp" url="/content_creator/context_skill_tree.jsp" valid_roles="content_creator" />		
+		 --><child_links display_name="Context Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/context_skill_tree.jsp" url="/content_creator/context_skill_tree.jsp" valid_roles="content_creator" />		
 		<!-- <child_links display_name="Course Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/course_skill_tree.jsp" url="/content_creator/course_skill_tree.jsp" valid_roles="content_creator" />
 		<child_links display_name="Assessment Skill Tree" is_visible_in_menu="true" jsp_file="/content_creator/assessment_skill_tree.jsp" url="/content_creator/assessment_skill_tree.jsp" valid_roles="content_creator" /> -->
 	</parent_links>
