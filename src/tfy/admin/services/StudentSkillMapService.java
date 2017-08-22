@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
@@ -23,6 +24,10 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.utils.user.IstarUserServices;
+import com.viksitpro.core.skill.pojo.CourseLevelSkill;
+import com.viksitpro.core.skill.pojo.ModuleLevelSkill;
+import com.viksitpro.core.skill.pojo.SessionLevelSkill;
+import com.viksitpro.core.skill.services.CoreSkillService;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
@@ -675,112 +680,132 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 		{
 			stuCount = (int)stuData.get(0).get("stu_count");
 		}
-		{	
-			String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'rookie_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'rookie_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-			List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-			ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-			for(HashMap<String, Object> row: modData)
-			{
-				AdminModuleSkill modSkill = new AdminModuleSkill();
-				modSkill.setDrilldown(true);
-				modSkill.setName(row.get("name").toString());
-				int rookieCount = (int)row.get("rookie_count"); 
-				float percenatge = 0f;
-				if(stuCount!=0)
-				{
-					percenatge = (rookieCount*100)/stuCount;
-				}
-				DecimalFormat df = new DecimalFormat("#.##");
-				modSkill.setY(new Float(df.format(percenatge)));
-				moduleSkills.add(modSkill);
-			}
-			
-			AdminSkillGraph rookie = new AdminSkillGraph();
-			rookie.setName("ROOKIE");		
-			rookie.setData(moduleSkills);
-			moduleSkillGraph.add(rookie);
-	}
 		
-		
+		CoreSkillService core = new CoreSkillService();
+		CourseLevelSkill csSkill = core.getShellSkillTreeForCourse(courseId);
+		ArrayList<Integer> modSkillId = new ArrayList<>();
+		if(csSkill!=null && csSkill.getModuleLevelSkill()!=null && csSkill.getModuleLevelSkill().size()>0)
 		{
-			
-			String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'apprentice_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'apprentice_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-			List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-			ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-			for(HashMap<String, Object> row: modData)
+			for(ModuleLevelSkill modSkill : csSkill.getModuleLevelSkill())
 			{
-				AdminModuleSkill modSkill = new AdminModuleSkill();
-				modSkill.setDrilldown(true);
-				modSkill.setName(row.get("name").toString());
-				int rookieCount = (int)row.get("rookie_count"); 
-				float percenatge = 0f;
-				if(stuCount!=0)
+				if(!modSkillId.contains(modSkill.getId()))
 				{
-					percenatge = (rookieCount*100)/stuCount;
+					modSkillId.add(modSkill.getId());
 				}
-				DecimalFormat df = new DecimalFormat("#.##");
-				modSkill.setY(new Float(df.format(percenatge)));
-				moduleSkills.add(modSkill);
-			}
-			
-		AdminSkillGraph apprentice = new AdminSkillGraph();
-		apprentice.setName("APPRENTICE");		
-		apprentice.setData(moduleSkills);
-		moduleSkillGraph.add(apprentice);
+			}	
 		}
 		
+		if(modSkillId.size()>0)
 		{
-			
-			String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'master_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'master_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-			List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-			ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-			for(HashMap<String, Object> row: modData)
-			{
-				AdminModuleSkill modSkill = new AdminModuleSkill();
-				modSkill.setDrilldown(true);
-				modSkill.setName(row.get("name").toString());
-				int rookieCount = (int)row.get("rookie_count"); 
-				float percenatge = 0f;
-				if(stuCount!=0)
+			{	
+				String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'rookie_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'rookie_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+				List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+				ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+				for(HashMap<String, Object> row: modData)
 				{
-					percenatge = (rookieCount*100)/stuCount;
+					AdminModuleSkill modSkill = new AdminModuleSkill();
+					modSkill.setDrilldown(true);
+					modSkill.setName(row.get("name").toString());
+					int rookieCount = (int)row.get("rookie_count"); 
+					float percenatge = 0f;
+					if(stuCount!=0)
+					{
+						percenatge = (rookieCount*100)/stuCount;
+					}
+					DecimalFormat df = new DecimalFormat("#.##");
+					modSkill.setY(new Float(df.format(percenatge)));
+					moduleSkills.add(modSkill);
 				}
-				DecimalFormat df = new DecimalFormat("#.##");
-				modSkill.setY(new Float(df.format(percenatge)));
-				moduleSkills.add(modSkill);
+				
+				AdminSkillGraph rookie = new AdminSkillGraph();
+				rookie.setName("ROOKIE");		
+				rookie.setData(moduleSkills);
+				moduleSkillGraph.add(rookie);
+		}
+			
+			
+			{
+				
+				String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'apprentice_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'apprentice_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID  group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+				List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+				ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+				for(HashMap<String, Object> row: modData)
+				{
+					AdminModuleSkill modSkill = new AdminModuleSkill();
+					modSkill.setDrilldown(true);
+					modSkill.setName(row.get("name").toString());
+					int rookieCount = (int)row.get("rookie_count"); 
+					float percenatge = 0f;
+					if(stuCount!=0)
+					{
+						percenatge = (rookieCount*100)/stuCount;
+					}
+					DecimalFormat df = new DecimalFormat("#.##");
+					modSkill.setY(new Float(df.format(percenatge)));
+					moduleSkills.add(modSkill);
+				}
+				
+			AdminSkillGraph apprentice = new AdminSkillGraph();
+			apprentice.setName("APPRENTICE");		
+			apprentice.setData(moduleSkills);
+			moduleSkillGraph.add(apprentice);
 			}
 			
-		AdminSkillGraph master = new AdminSkillGraph();
-		master.setName("MASTER");		
-		master.setData(moduleSkills);
-		moduleSkillGraph.add(master);
-		}
+			{
+				
+				String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'master_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'master_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective ) T2, module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+				List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+				ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+				for(HashMap<String, Object> row: modData)
+				{
+					AdminModuleSkill modSkill = new AdminModuleSkill();
+					modSkill.setDrilldown(true);
+					modSkill.setName(row.get("name").toString());
+					int rookieCount = (int)row.get("rookie_count"); 
+					float percenatge = 0f;
+					if(stuCount!=0)
+					{
+						percenatge = (rookieCount*100)/stuCount;
+					}
+					DecimalFormat df = new DecimalFormat("#.##");
+					modSkill.setY(new Float(df.format(percenatge)));
+					moduleSkills.add(modSkill);
+				}
+				
+			AdminSkillGraph master = new AdminSkillGraph();
+			master.setName("MASTER");		
+			master.setData(moduleSkills);
+			moduleSkillGraph.add(master);
+			}
+			
+			{
+				
+				String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'wizard_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'wizard_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective ) T2, module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID  group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+				List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+				ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+				for(HashMap<String, Object> row: modData)
+				{
+					AdminModuleSkill modSkill = new AdminModuleSkill();
+					modSkill.setDrilldown(true);
+					modSkill.setName(row.get("name").toString());
+					int rookieCount = (int)row.get("rookie_count"); 
+					float percenatge = 0f;
+					if(stuCount!=0)
+					{
+						percenatge = (rookieCount*100)/stuCount;
+					}
+					DecimalFormat df = new DecimalFormat("#.##");
+					modSkill.setY(new Float(df.format(percenatge)));
+					moduleSkills.add(modSkill);
+				}
+			AdminSkillGraph wizard = new AdminSkillGraph();
+			wizard.setName("WIZARD");		
+			wizard.setData(moduleSkills);
+			moduleSkillGraph.add(wizard);
+			}
+		}	
 		
-		{
-			
-			String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'wizard_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'wizard_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+courseId+" 							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-			List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-			ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-			for(HashMap<String, Object> row: modData)
-			{
-				AdminModuleSkill modSkill = new AdminModuleSkill();
-				modSkill.setDrilldown(true);
-				modSkill.setName(row.get("name").toString());
-				int rookieCount = (int)row.get("rookie_count"); 
-				float percenatge = 0f;
-				if(stuCount!=0)
-				{
-					percenatge = (rookieCount*100)/stuCount;
-				}
-				DecimalFormat df = new DecimalFormat("#.##");
-				modSkill.setY(new Float(df.format(percenatge)));
-				moduleSkills.add(modSkill);
-			}
-		AdminSkillGraph wizard = new AdminSkillGraph();
-		wizard.setName("WIZARD");		
-		wizard.setData(moduleSkills);
-		moduleSkillGraph.add(wizard);
-		}
+		
 		return moduleSkillGraph;
 	}
 
@@ -797,112 +822,132 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 				{
 					stuCount = (int)stuData.get(0).get("stu_count");
 				}
-				{	
-					String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'rookie_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'rookie_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+"    and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-					List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-					ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-					for(HashMap<String, Object> row: modData)
-					{
-						AdminModuleSkill modSkill = new AdminModuleSkill();
-						modSkill.setDrilldown(true);
-						modSkill.setName(row.get("name").toString());
-						int rookieCount = (int)row.get("rookie_count"); 
-						float percenatge = 0f;
-						if(stuCount!=0)
-						{
-							percenatge = (rookieCount*100)/stuCount;
-						}
-						DecimalFormat df = new DecimalFormat("#.##");
-						modSkill.setY(new Float(df.format(percenatge)));
-						moduleSkills.add(modSkill);
-					}
-					
-					AdminSkillGraph rookie = new AdminSkillGraph();
-					rookie.setName("ROOKIE");		
-					rookie.setData(moduleSkills);
-					moduleSkillGraph.add(rookie);
-			}
 				
-				
+				CoreSkillService core = new CoreSkillService();
+				CourseLevelSkill csSkill = core.getShellSkillTreeForCourse(b.getCourse().getId());
+				ArrayList<Integer> modSkillId = new ArrayList<>();
+				if(csSkill!=null && csSkill.getModuleLevelSkill()!=null && csSkill.getModuleLevelSkill().size()>0)
 				{
-					
-					String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'apprentice_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'apprentice_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+"  and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-					List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-					ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-					for(HashMap<String, Object> row: modData)
+					for(ModuleLevelSkill modSkill : csSkill.getModuleLevelSkill())
 					{
-						AdminModuleSkill modSkill = new AdminModuleSkill();
-						modSkill.setDrilldown(true);
-						modSkill.setName(row.get("name").toString());
-						int rookieCount = (int)row.get("rookie_count"); 
-						float percenatge = 0f;
-						if(stuCount!=0)
+						if(!modSkillId.contains(modSkill.getId()))
 						{
-							percenatge = (rookieCount*100)/stuCount;
+							modSkillId.add(modSkill.getId());
 						}
-						DecimalFormat df = new DecimalFormat("#.##");
-						modSkill.setY(new Float(df.format(percenatge)));
-						moduleSkills.add(modSkill);
-					}
-					
-				AdminSkillGraph apprentice = new AdminSkillGraph();
-				apprentice.setName("APPRENTICE");		
-				apprentice.setData(moduleSkills);
-				moduleSkillGraph.add(apprentice);
+					}	
 				}
 				
+				if(modSkillId.size()>0)
 				{
-					
-					String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'master_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'master_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-					List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-					ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-					for(HashMap<String, Object> row: modData)
-					{
-						AdminModuleSkill modSkill = new AdminModuleSkill();
-						modSkill.setDrilldown(true);
-						modSkill.setName(row.get("name").toString());
-						int rookieCount = (int)row.get("rookie_count"); 
-						float percenatge = 0f;
-						if(stuCount!=0)
+					{	
+						String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'rookie_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'rookie_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+"    and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2,module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+						List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+						ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+						for(HashMap<String, Object> row: modData)
 						{
-							percenatge = (rookieCount*100)/stuCount;
+							AdminModuleSkill modSkill = new AdminModuleSkill();
+							modSkill.setDrilldown(true);
+							modSkill.setName(row.get("name").toString());
+							int rookieCount = (int)row.get("rookie_count"); 
+							float percenatge = 0f;
+							if(stuCount!=0)
+							{
+								percenatge = (rookieCount*100)/stuCount;
+							}
+							DecimalFormat df = new DecimalFormat("#.##");
+							modSkill.setY(new Float(df.format(percenatge)));
+							moduleSkills.add(modSkill);
 						}
-						DecimalFormat df = new DecimalFormat("#.##");
-						modSkill.setY(new Float(df.format(percenatge)));
-						moduleSkills.add(modSkill);
+						
+						AdminSkillGraph rookie = new AdminSkillGraph();
+						rookie.setName("ROOKIE");		
+						rookie.setData(moduleSkills);
+						moduleSkillGraph.add(rookie);
+				}
+					
+					
+					{
+						
+						String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'apprentice_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'apprentice_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+"  and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2,module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+						List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+						ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+						for(HashMap<String, Object> row: modData)
+						{
+							AdminModuleSkill modSkill = new AdminModuleSkill();
+							modSkill.setDrilldown(true);
+							modSkill.setName(row.get("name").toString());
+							int rookieCount = (int)row.get("rookie_count"); 
+							float percenatge = 0f;
+							if(stuCount!=0)
+							{
+								percenatge = (rookieCount*100)/stuCount;
+							}
+							DecimalFormat df = new DecimalFormat("#.##");
+							modSkill.setY(new Float(df.format(percenatge)));
+							moduleSkills.add(modSkill);
+						}
+						
+					AdminSkillGraph apprentice = new AdminSkillGraph();
+					apprentice.setName("APPRENTICE");		
+					apprentice.setData(moduleSkills);
+					moduleSkillGraph.add(apprentice);
 					}
 					
-				AdminSkillGraph master = new AdminSkillGraph();
-				master.setName("MASTER");		
-				master.setData(moduleSkills);
-				moduleSkillGraph.add(master);
-				}
+					{
+						
+						String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'master_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'master_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2,module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+						List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+						ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+						for(HashMap<String, Object> row: modData)
+						{
+							AdminModuleSkill modSkill = new AdminModuleSkill();
+							modSkill.setDrilldown(true);
+							modSkill.setName(row.get("name").toString());
+							int rookieCount = (int)row.get("rookie_count"); 
+							float percenatge = 0f;
+							if(stuCount!=0)
+							{
+								percenatge = (rookieCount*100)/stuCount;
+							}
+							DecimalFormat df = new DecimalFormat("#.##");
+							modSkill.setY(new Float(df.format(percenatge)));
+							moduleSkills.add(modSkill);
+						}
+						
+					AdminSkillGraph master = new AdminSkillGraph();
+					master.setName("MASTER");		
+					master.setData(moduleSkills);
+					moduleSkillGraph.add(master);
+					}
+					
+					{
+						
+						String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where id in ("+StringUtils.join(modSkillId,",")+") and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'wizard_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'wizard_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2,module_skill_session_skill_map , skill_objective module_skill WHERE T2.skill_objective = module_skill_session_skill_map.session_skill_id module_skill_session_skill_map.module_skill_id= module_skill. ID group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
+						List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
+						ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
+						for(HashMap<String, Object> row: modData)
+						{
+							AdminModuleSkill modSkill = new AdminModuleSkill();
+							modSkill.setDrilldown(true);
+							modSkill.setName(row.get("name").toString());
+							int rookieCount = (int)row.get("rookie_count"); 
+							float percenatge = 0f;
+							if(stuCount!=0)
+							{
+								percenatge = (rookieCount*100)/stuCount;
+							}
+							DecimalFormat df = new DecimalFormat("#.##");
+							modSkill.setY(new Float(df.format(percenatge)));
+							moduleSkills.add(modSkill);
+						}
+					AdminSkillGraph wizard = new AdminSkillGraph();
+					wizard.setName("WIZARD");		
+					wizard.setData(moduleSkills);
+					moduleSkillGraph.add(wizard);
+					}
+				}	
 				
-				{
-					
-					String findModuleSkill = " select id , name, COALESCE(rookie_count,0) as rookie_count from (	select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='MODULE' ) TL left join (select module_skill_id , CAST ( 		COUNT (*) FILTER (  			WHERE 				percentage >= ( 					SELECT 						CAST (property_value AS INTEGER) 					FROM 						constant_properties 					WHERE 						property_name = 'wizard_min' 				) 			AND percentage < ( 				SELECT 					CAST (property_value AS INTEGER) 				FROM 					constant_properties 				WHERE 					property_name = 'wizard_max' 			) 		) AS INTEGER 	) rookie_count  from (select istar_user, module_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, module_skill.id as  module_skill_id, module_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (					WITH summary AS ( 							SELECT 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS points, 								custom_eval ( 									CAST ( 										REPLACE ( 											REPLACE ( 												REPLACE ( 													COALESCE (P .max_points, '0'), 													':per_lesson_points', 													( 														SELECT 															CAST (property_value AS VARCHAR) 														FROM 															constant_properties 														WHERE 															property_name = 'per_lesson_points' 													) 												), 												':per_assessment_points', 												( 													SELECT 														CAST (property_value AS VARCHAR) 													FROM 														constant_properties 													WHERE 														property_name = 'per_assessment_points' 												) 											), 											':per_question_points', 											( 												SELECT 													CAST (property_value AS VARCHAR) 												FROM 													constant_properties 												WHERE 													property_name = 'per_question_points' 											) 										) AS TEXT 									) 								) AS max_points, 								P .istar_user, 								P .skill_objective, 								P .item_id, 								P .item_type, 								P .batch_group_id, 								ROW_NUMBER () OVER ( 									PARTITION BY P .istar_user, 									P .skill_objective, 									P .item_id, 									P .item_type, 									P .batch_group_id 								ORDER BY 									P .created_at DESC 								) AS rk 							FROM 								user_gamification P 							WHERE 								P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+"							AND P .org_id = "+collegeId+" 						) SELECT 							s.* 						FROM 							summary s 						WHERE 							s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id group by istar_user, module_skill.id, module_skill.name ) TBF ) TF group by Tf.module_skill_id )TR on (TL.id =TR.module_skill_id)";
-					List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkill);
-					ArrayList<AdminModuleSkill> moduleSkills = new ArrayList<>(); 
-					for(HashMap<String, Object> row: modData)
-					{
-						AdminModuleSkill modSkill = new AdminModuleSkill();
-						modSkill.setDrilldown(true);
-						modSkill.setName(row.get("name").toString());
-						int rookieCount = (int)row.get("rookie_count"); 
-						float percenatge = 0f;
-						if(stuCount!=0)
-						{
-							percenatge = (rookieCount*100)/stuCount;
-						}
-						DecimalFormat df = new DecimalFormat("#.##");
-						modSkill.setY(new Float(df.format(percenatge)));
-						moduleSkills.add(modSkill);
-					}
-				AdminSkillGraph wizard = new AdminSkillGraph();
-				wizard.setName("WIZARD");		
-				wizard.setData(moduleSkills);
-				moduleSkillGraph.add(wizard);
-				}
+				
 				return moduleSkillGraph;
 	}
 
@@ -919,79 +964,55 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 			stuCount = (int)stuData.get(0).get("stu_count");
 		}
 		
-		String findModuleSkills = "select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='MODULE'";
-		List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkills);
-		for(HashMap<String, Object> mod: modData)
+		CoreSkillService core = new CoreSkillService();
+		CourseLevelSkill csSkill = core.getShellSkillTreeForCourse(courseId);
+		ArrayList<Integer> modSkillId = new ArrayList<>();
+		HashMap<Integer, ModuleLevelSkill> modskills = new HashMap<>();
+		if(csSkill!=null && csSkill.getModuleLevelSkill()!=null && csSkill.getModuleLevelSkill().size()>0)
 		{
-			int modId = (int)mod.get("id");
-			ArrayList<AdminCMSessionSkillData> list = new ArrayList<>();
+			for(ModuleLevelSkill modSkill : csSkill.getModuleLevelSkill())
 			{
-				// rookie starts here
-				
-				AdminCMSessionSkillData rookie= new AdminCMSessionSkillData();
-				rookie.setName("ROOKIE");			
-				ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-				String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
-				List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
-				for(HashMap<String, Object> cms : cmsData)
+				if(!modSkillId.contains(modSkill.getId()))
 				{
-
-					int rookieCount = (int)cms.get("rookie_count"); 
-					float percenatge = 0f;
-					if(stuCount!=0)
-					{
-						percenatge = (rookieCount*100)/stuCount;
-					}
-					DecimalFormat df = new DecimalFormat("#.##");
-					String skillName = cms.get("name").toString();
-					ArrayList<Object> cmsSkill = new ArrayList<>();
-					cmsSkill.add(skillName);
-					cmsSkill.add(new Float(df.format(percenatge)));
-					cmsessionData.add(cmsSkill);		
-				}							
-				rookie.setData(cmsessionData);
-				list.add(rookie);
-		 }
-			// rookie ends here
-			
-			// apprentice starts here
-			{	
-				
-				
-				AdminCMSessionSkillData apprentice= new AdminCMSessionSkillData();
-				apprentice.setName("APPRENTICE");			
-				ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-				String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
-				List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
-				for(HashMap<String, Object> cms : cmsData)
+					modSkillId.add(modSkill.getId());
+					modskills.put(modSkill.getId(), modSkill);
+				}
+			}	
+		}
+		
+		if(modSkillId.size()>0)
+		{
+			for(int  modId : modskills.keySet())
+			{
+				ModuleLevelSkill mod = modskills.get(modId);
+				ArrayList<Integer>sesisonSkillId = new ArrayList<>();
+				if(mod.getSessionLevelSkill()!=null)
 				{
-					int rookieCount = (int)cms.get("rookie_count"); 
-					float percenatge = 0f;
-					if(stuCount!=0)
+					for(SessionLevelSkill sk : mod.getSessionLevelSkill())
 					{
-						percenatge = (rookieCount*100)/stuCount;
+						if(sesisonSkillId.contains(sk.getId()))
+						{
+							sesisonSkillId.add(sk.getId());
+						}	
 					}
-					DecimalFormat df = new DecimalFormat("#.##");
-					String skillName = cms.get("name").toString();
-					ArrayList<Object> cmsSkill = new ArrayList<>();
-					cmsSkill.add(skillName);
-					cmsSkill.add(new Float(df.format(percenatge)));
-					cmsessionData.add(cmsSkill);
-				}							
-				apprentice.setData(cmsessionData);
-				list.add(apprentice);
-			}		
-						// apprentice ends here
+				}
+				
+				
+				ArrayList<AdminCMSessionSkillData> list = new ArrayList<>();
+				
+				if(sesisonSkillId.size()>0)
+				{
+					{
+						// rookie starts here
 						
-						// master starts here
-			{			
-						AdminCMSessionSkillData master= new AdminCMSessionSkillData();
-						master.setName("MASTER");			
+						AdminCMSessionSkillData rookie= new AdminCMSessionSkillData();
+						rookie.setName("ROOKIE");			
 						ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+")) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
 						List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
 						for(HashMap<String, Object> cms : cmsData)
 						{
+
 							int rookieCount = (int)cms.get("rookie_count"); 
 							float percenatge = 0f;
 							if(stuCount!=0)
@@ -1003,20 +1024,21 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 							ArrayList<Object> cmsSkill = new ArrayList<>();
 							cmsSkill.add(skillName);
 							cmsSkill.add(new Float(df.format(percenatge)));
-							cmsessionData.add(cmsSkill);	
+							cmsessionData.add(cmsSkill);		
 						}							
-						master.setData(cmsessionData);
-						list.add(master);
-			}		
-						// master ends here
+						rookie.setData(cmsessionData);
+						list.add(rookie);
+				 }
+					// rookie ends here
+					
+					// apprentice starts here
+					{	
 						
 						
-						// wizard starts here
-			{		
-						AdminCMSessionSkillData wizard= new AdminCMSessionSkillData();
-						wizard.setName("WIZARD");			
+						AdminCMSessionSkillData apprentice= new AdminCMSessionSkillData();
+						apprentice.setName("APPRENTICE");			
 						ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+courseId+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
 						List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
 						for(HashMap<String, Object> cms : cmsData)
 						{
@@ -1033,12 +1055,72 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 							cmsSkill.add(new Float(df.format(percenatge)));
 							cmsessionData.add(cmsSkill);
 						}							
-						wizard.setData(cmsessionData);
-						list.add(wizard);
-			}		
-						// wizard ends here			
-			data.put(mod.get("name").toString(),list);
+						apprentice.setData(cmsessionData);
+						list.add(apprentice);
+					}		
+								// apprentice ends here
+								
+								// master starts here
+					{			
+								AdminCMSessionSkillData master= new AdminCMSessionSkillData();
+								master.setName("MASTER");			
+								ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
+								String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+								List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
+								for(HashMap<String, Object> cms : cmsData)
+								{
+									int rookieCount = (int)cms.get("rookie_count"); 
+									float percenatge = 0f;
+									if(stuCount!=0)
+									{
+										percenatge = (rookieCount*100)/stuCount;
+									}
+									DecimalFormat df = new DecimalFormat("#.##");
+									String skillName = cms.get("name").toString();
+									ArrayList<Object> cmsSkill = new ArrayList<>();
+									cmsSkill.add(skillName);
+									cmsSkill.add(new Float(df.format(percenatge)));
+									cmsessionData.add(cmsSkill);	
+								}							
+								master.setData(cmsessionData);
+								list.add(master);
+					}		
+								// master ends here
+								
+								
+								// wizard starts here
+					{		
+								AdminCMSessionSkillData wizard= new AdminCMSessionSkillData();
+								wizard.setName("WIZARD");			
+								ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
+								String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+courseId+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+								List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
+								for(HashMap<String, Object> cms : cmsData)
+								{
+									int rookieCount = (int)cms.get("rookie_count"); 
+									float percenatge = 0f;
+									if(stuCount!=0)
+									{
+										percenatge = (rookieCount*100)/stuCount;
+									}
+									DecimalFormat df = new DecimalFormat("#.##");
+									String skillName = cms.get("name").toString();
+									ArrayList<Object> cmsSkill = new ArrayList<>();
+									cmsSkill.add(skillName);
+									cmsSkill.add(new Float(df.format(percenatge)));
+									cmsessionData.add(cmsSkill);
+								}							
+								wizard.setData(cmsessionData);
+								list.add(wizard);
+					}
+				}	
+				
+						
+							// wizard ends here			
+				data.put(mod.getSkillName(),list);
+			}	
 		}
+		
 		
 		return data;
 	}
@@ -1056,79 +1138,53 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 			stuCount = (int)stuData.get(0).get("stu_count");
 		}
 		
-		String findModuleSkills = "select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='MODULE'";
-		List<HashMap<String, Object>> modData= util.executeQuery(findModuleSkills);
-		for(HashMap<String, Object> mod: modData)
+		CoreSkillService core = new CoreSkillService();
+		CourseLevelSkill csSkill = core.getShellSkillTreeForCourse(b.getCourse().getId());
+		ArrayList<Integer> modSkillId = new ArrayList<>();
+		HashMap<Integer, ModuleLevelSkill> modskills = new HashMap<>();
+		if(csSkill!=null && csSkill.getModuleLevelSkill()!=null && csSkill.getModuleLevelSkill().size()>0)
 		{
-			int modId = (int)mod.get("id");
-			ArrayList<AdminCMSessionSkillData> list = new ArrayList<>();
+			for(ModuleLevelSkill modSkill : csSkill.getModuleLevelSkill())
 			{
-				// rookie starts here
-				
-				AdminCMSessionSkillData rookie= new AdminCMSessionSkillData();
-				rookie.setName("ROOKIE");			
-				ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-				String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id ="+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
-				List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
-				for(HashMap<String, Object> cms : cmsData)
+				if(!modSkillId.contains(modSkill.getId()))
 				{
-
-					int rookieCount = (int)cms.get("rookie_count"); 
-					float percenatge = 0f;
-					if(stuCount!=0)
-					{
-						percenatge = (rookieCount*100)/stuCount;
-					}
-					DecimalFormat df = new DecimalFormat("#.##");
-					String skillName = cms.get("name").toString();
-					ArrayList<Object> cmsSkill = new ArrayList<>();
-					cmsSkill.add(skillName);
-					cmsSkill.add(new Float(df.format(percenatge)));
-					cmsessionData.add(cmsSkill);		
-				}							
-				rookie.setData(cmsessionData);
-				list.add(rookie);
-		 }
-			// rookie ends here
+					modSkillId.add(modSkill.getId());
+					modskills.put(modSkill.getId(), modSkill);
+				}
+			}
 			
-			// apprentice starts here
-			{	
-				
-				
-				AdminCMSessionSkillData apprentice= new AdminCMSessionSkillData();
-				apprentice.setName("APPRENTICE");			
-				ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-				String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id = "+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
-				List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
-				for(HashMap<String, Object> cms : cmsData)
+		}
+		
+		if(modSkillId.size()>0)
+		{
+			for(int  modId : modskills.keySet())
+			{
+				ModuleLevelSkill mod = modskills.get(modId);
+				ArrayList<Integer>sesisonSkillId = new ArrayList<>();
+				if(mod.getSessionLevelSkill()!=null)
 				{
-					int rookieCount = (int)cms.get("rookie_count"); 
-					float percenatge = 0f;
-					if(stuCount!=0)
+					for(SessionLevelSkill sk : mod.getSessionLevelSkill())
 					{
-						percenatge = (rookieCount*100)/stuCount;
+						if(sesisonSkillId.contains(sk.getId()))
+						{
+							sesisonSkillId.add(sk.getId());
+						}	
 					}
-					DecimalFormat df = new DecimalFormat("#.##");
-					String skillName = cms.get("name").toString();
-					ArrayList<Object> cmsSkill = new ArrayList<>();
-					cmsSkill.add(skillName);
-					cmsSkill.add(new Float(df.format(percenatge)));
-					cmsessionData.add(cmsSkill);
-				}							
-				apprentice.setData(cmsessionData);
-				list.add(apprentice);
-			}		
-						// apprentice ends here
+				}
+				ArrayList<AdminCMSessionSkillData> list = new ArrayList<>();
+				if(sesisonSkillId.size()>0)
+				{
+					{
+						// rookie starts here
 						
-						// master starts here
-			{			
-						AdminCMSessionSkillData master= new AdminCMSessionSkillData();
-						master.setName("MASTER");			
+						AdminCMSessionSkillData rookie= new AdminCMSessionSkillData();
+						rookie.setName("ROOKIE");			
 						ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'rookie_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id ="+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
 						List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
 						for(HashMap<String, Object> cms : cmsData)
 						{
+
 							int rookieCount = (int)cms.get("rookie_count"); 
 							float percenatge = 0f;
 							if(stuCount!=0)
@@ -1140,20 +1196,21 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 							ArrayList<Object> cmsSkill = new ArrayList<>();
 							cmsSkill.add(skillName);
 							cmsSkill.add(new Float(df.format(percenatge)));
-							cmsessionData.add(cmsSkill);	
+							cmsessionData.add(cmsSkill);		
 						}							
-						master.setData(cmsessionData);
-						list.add(master);
-			}		
-						// master ends here
+						rookie.setData(cmsessionData);
+						list.add(rookie);
+				 }
+					// rookie ends here
+					
+					// apprentice starts here
+					{	
 						
 						
-						// wizard starts here
-			{		
-						AdminCMSessionSkillData wizard= new AdminCMSessionSkillData();
-						wizard.setName("WIZARD");			
+						AdminCMSessionSkillData apprentice= new AdminCMSessionSkillData();
+						apprentice.setName("APPRENTICE");			
 						ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
-						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where context ="+b.getCourse().getId()+" and skill_level_type='CMSESSION' and parent_skill="+modId+" ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id ="+b.getBatchGroup().getId()+"  AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill where T2.skill_objective = cms_skill.id and cms_skill.parent_skill = module_skill.id and module_skill.id ="+modId+"  group by istar_user, cms_skill.id, cms_skill.name ) TBF ) TF group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+						String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'apprentice_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id = "+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
 						List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
 						for(HashMap<String, Object> cms : cmsData)
 						{
@@ -1170,12 +1227,73 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 							cmsSkill.add(new Float(df.format(percenatge)));
 							cmsessionData.add(cmsSkill);
 						}							
-						wizard.setData(cmsessionData);
-						list.add(wizard);
-			}		
-						// wizard ends here			
-			data.put(mod.get("name").toString(),list);
-		}
+						apprentice.setData(cmsessionData);
+						list.add(apprentice);
+					}		
+								// apprentice ends here
+								
+								// master starts here
+					{			
+								AdminCMSessionSkillData master= new AdminCMSessionSkillData();
+								master.setName("MASTER");			
+								ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
+								String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'master_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id="+b.getBatchGroup().getId()+" AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+								List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
+								for(HashMap<String, Object> cms : cmsData)
+								{
+									int rookieCount = (int)cms.get("rookie_count"); 
+									float percenatge = 0f;
+									if(stuCount!=0)
+									{
+										percenatge = (rookieCount*100)/stuCount;
+									}
+									DecimalFormat df = new DecimalFormat("#.##");
+									String skillName = cms.get("name").toString();
+									ArrayList<Object> cmsSkill = new ArrayList<>();
+									cmsSkill.add(skillName);
+									cmsSkill.add(new Float(df.format(percenatge)));
+									cmsessionData.add(cmsSkill);	
+								}							
+								master.setData(cmsessionData);
+								list.add(master);
+					}		
+								// master ends here
+								
+								
+								// wizard starts here
+					{		
+								AdminCMSessionSkillData wizard= new AdminCMSessionSkillData();
+								wizard.setName("WIZARD");			
+								ArrayList<ArrayList<Object>> cmsessionData = new ArrayList<>(); 			
+								String findCMSessionData =" select id , name, COALESCE(rookie_count,0) as rookie_count from (select distinct id, name from skill_objective where id in ("+StringUtils.join(sesisonSkillId,",")+") ) TL left join (select cms_skill_id , CAST ( COUNT (*) FILTER (  WHERE percentage >= ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_min' ) AND percentage < ( SELECT CAST (property_value AS INTEGER) FROM constant_properties WHERE property_name = 'wizard_max' ) ) AS INTEGER ) rookie_count  from (select istar_user, cms_skill_id, case when max_points is  null or max_points =0 then 0 else (points*100/(max_points)) end  as percentage    from (select istar_user, cms_skill.id as  cms_skill_id, cms_skill.name, sum (points) as points, sum(max_points) as max_points from (select istar_user, skill_objective, sum(points) as points, sum(max_points) as max_points from (WITH summary AS ( SELECT custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_lesson_points' ) ), ':per_assessment_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_assessment_points' ) ), ':per_question_points', ( SELECT CAST (property_value AS VARCHAR) FROM constant_properties WHERE property_name = 'per_question_points' ) ) AS TEXT ) ) AS max_points, P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P .item_type, P .batch_group_id ORDER BY P .created_at DESC ) AS rk FROM user_gamification P WHERE P .course_id = "+b.getCourse().getId()+" and P.batch_group_id ="+b.getBatchGroup().getId()+"  AND P .org_id = "+collegeId+" ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 group by istar_user, skill_objective )T2, skill_objective cms_skill, skill_objective module_skill, module_skill_session_skill_map WHERE T2.skill_objective = cms_skill. ID and module_skill_session_skill_map.module_skill_id =  module_skill. ID and module_skill_session_skill_map.session_skill_id = cms_skill.id AND module_skill. ID = "+modId+" group by Tf.cms_skill_id )TR on (TL.id =TR.cms_skill_id)";
+								List<HashMap<String, Object>> cmsData = util.executeQuery(findCMSessionData);
+								for(HashMap<String, Object> cms : cmsData)
+								{
+									int rookieCount = (int)cms.get("rookie_count"); 
+									float percenatge = 0f;
+									if(stuCount!=0)
+									{
+										percenatge = (rookieCount*100)/stuCount;
+									}
+									DecimalFormat df = new DecimalFormat("#.##");
+									String skillName = cms.get("name").toString();
+									ArrayList<Object> cmsSkill = new ArrayList<>();
+									cmsSkill.add(skillName);
+									cmsSkill.add(new Float(df.format(percenatge)));
+									cmsessionData.add(cmsSkill);
+								}							
+								wizard.setData(cmsessionData);
+								list.add(wizard);
+					}
+				}
+				
+					
+							// wizard ends here			
+				data.put(mod.getSkillName(),list);
+			}
+		}	
+		
+		
 		
 		return data;
 

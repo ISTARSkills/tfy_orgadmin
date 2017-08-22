@@ -52,6 +52,7 @@ public class getModuleLevelAdminSkillGraph extends IStarBaseServelet {
 			
 				List<AdminSkillGraph> moduleSkillGraph = serv.getModuleSkillGraphForCourse(courseId, collegeId);						
 				result = gson.toJson(moduleSkillGraph);
+				System.out.println(result);
 
 			}else if (request.getParameterMap().containsKey("batch_id"))
 			{
