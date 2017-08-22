@@ -117,7 +117,7 @@
 			}%>>TRAINER Assessment</option>
 															<option value="COURSE_ASSESSMENT" <%if (!is_new) {
 				if (assessment.getCategory().equalsIgnoreCase("COURSE_ASSESSMENT")) {%> selected <%}
-			}%>>Course Assessment</option>
+			}%>>COURSE Assessment</option>
 														</select>
 													</div>
 
@@ -170,7 +170,7 @@
 														<input id="searchQuestions" type="text" class="form-control" placeholder="Search for questions by text, skill..">
 													</div>
 												</div>
-												<div class="ibox-content no-padding custom-scroll">
+												<div class="ibox-content no-padding custom-scroll ">
 													<ul class="list-group custom-li-padding" id="searchQuestionsResult">
 													</ul>
 												</div>

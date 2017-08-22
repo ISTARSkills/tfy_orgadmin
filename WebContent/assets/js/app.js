@@ -9570,7 +9570,9 @@ function initAssessmentQuestionSearch() {
 					}).fail(function() {
 						alert("error");
 					}).always(function() {
-
+						$('#searchQuestionsResult').slimScroll({
+					   
+					    })
 					});
 				} else {
 					alert('Type atleast 3 characters to search');

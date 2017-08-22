@@ -61,10 +61,11 @@
 							ArrayList<String> displayList = new ArrayList<>();
 							for (Assessment assessment : assessments) {
 								String courseStringLong = "";
-								int course_id = assessment.getCourse();
-								Course course = new CourseDAO().findById(course_id);
+								
 
 								try {
+									int course_id = assessment.getCourse();
+									Course course = new CourseDAO().findById(course_id);
 									courseStringLong = course.getCourseName();
 									String courseString = courseStringLong.replaceAll(" ", "").replaceAll("&", "").replaceAll("/", "")
 											.toLowerCase();
