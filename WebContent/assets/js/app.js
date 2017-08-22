@@ -480,9 +480,8 @@ function moduleHashInit() {
 			});
 }
 function initModuleSearch() {
-	$('#searchModules').keydown(function(event) {
-		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
-			if($.trim($(this).val()).length>2){
+	$('#searchModules').keyup(function(event) {
+		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
 				var searchString = $("#searchModules").val();
 				var datapost = {
 					'searchString' : searchString
@@ -501,10 +500,6 @@ function initModuleSearch() {
 				}).always(function() {
 
 				});
-			} else {
-				alert('Type atleast 3 characters to search');
-			}
-
 		}
 });
 
@@ -542,12 +537,13 @@ function updateModuleHash(evt) {
 }
 function saveCourse() {
 	var module_list = getModules();
+	var x = $('#course_category_idd').val();
 	var course_image = '/'
 			+ $.trim($('#course_image').attr('src')).split('/').splice(3).join(
 					'/');
 	if (window.isNewCourse) {
 		var dataPost = 'course_name=' + $("input[name=course_name]").val()
-				+ '&course_category=' + $("input[name=course_category").val()
+				+ '&course_category=' + $("#course_category_idd option[value='"+x+"']").text()
 				+ '&course_desc=' + $("textarea[name=course_desc]").val()
 				+ '&module_list=' + module_list + '&course_image='
 				+ course_image;
@@ -556,7 +552,7 @@ function saveCourse() {
 	} else {
 		var dataPost = 'course_name=' + $("input[name=course_name]").val()
 				+ '&course_id=' + window.courseID + '&course_category='
-				+ $("input[name=course_category").val() + '&course_desc='
+				+ $("#course_category_idd option[value='"+x+"']").text() + '&course_desc='
 				+ $("textarea[name=course_desc]").val() + '&module_list='
 				+ module_list + '&course_image=' + course_image;
 		var url = '/update_course';
@@ -641,9 +637,8 @@ function sessionHashInit() {
 			});
 }
 function initSessionSearch() {
-	$('#searchSessions').keydown(function(event) {
-		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
-			if($.trim($(this).val()).length>2){
+	$('#searchSessions').keyup(function(event) {
+		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
 				var searchString = $("#searchSessions").val();
 				var datapost = {
 					'searchString' : searchString
@@ -663,9 +658,6 @@ function initSessionSearch() {
 					}).always(function() {
 
 					});
-			}else{
-				alert('Type atleast 3 characters to search');
-			}
 		}
 	});
 
@@ -786,30 +778,26 @@ function lessonHashInit() {
 			});
 }
 function initLessonSearch() {
-	$('#searchLessons').keydown(function(event) {
-		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
-			if($.trim($(this).val()).length>2){
-				var searchString = $("#searchLessons").val();
-				var addition = '';
-				var datapost = {
-					'searchString' : searchString
-				};
-				$.get("/SearchLessons", datapost).done(function(data) {
-					if(data.lessons.length === 0){
-						alert("No Modules found like '"+searchString+"'");
-					}
-					$.each(data.lessons,function(k, v) {
-						addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-					});
-					$('#searchLessonsResult').html(addition);
-				}).fail(function() {
-							alert("error");
-					}).always(function() {
-
-					});
-			}else{
-				alert('Type atleast 3 characters to search');
-			}
+	$('#searchLessons').keyup(function(event) {
+		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
+			var searchString = $("#searchLessons").val();
+			var addition = '';
+			var datapost = {
+				'searchString' : searchString
+			};
+			$.get("/SearchLessons", datapost).done(function(data) {
+				if(data.lessons.length === 0){
+					alert("No Modules found like '"+searchString+"'");
+				}
+				$.each(data.lessons,function(k, v) {
+					addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+				});
+				$('#searchLessonsResult').html(addition);
+			}).fail(function() {
+						alert("error");
+				}).always(function() {
+	
+				});
 		}
 	});
 
