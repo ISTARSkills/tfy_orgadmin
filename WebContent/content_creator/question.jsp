@@ -146,7 +146,7 @@
 												rows="3" cols="80" placeholder="Question Passage.."><%=comprehensive_passage_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
 										</div>
 									</div>
-									<div class="hr-line-dashed" <%=questionPassageStyle%>></div>
+									<div class="hr-line-dashed" id='question_passage_holder_divide' <%=questionPassageStyle%>></div>
 									<div class="form-group">
 										<label class="col-sm-2">Select learning objectives</label>
 										<div class="col-sm-10">
@@ -177,7 +177,7 @@
 													<%=(int) item.get("marking_scheme") == 1 ? "checked" : ""%>>
 												</span>
 												<div class="input-group-btn">
-													<button tabindex="-1" class="btn btn-white" type="button">Delete</button>
+													<button tabindex="-1" class="btn btn-white deleteQuestions" type="button">Delete</button>
 												</div>
 											</div>
 											<%
@@ -185,6 +185,8 @@
 													}
 												}
 											%>
+										</div>
+										<div class="col-sm-4 col-sm-offset-2">
 											<button class="btn btn-default pull-left" id="add_options"
 												type="button">
 												<i class="fa fa-plus-circle"></i> Add Options

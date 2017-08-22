@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.viksitpro.cms.services.SkillChildrenServices;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
@@ -49,11 +50,11 @@ public class SeachQuestions extends HttpServlet {
 		DBUTILS dbutils = new DBUTILS();
 		JSONArray question_array = new JSONArray();
 		if (request.getParameterMap().containsKey("searchString")) {
-			String searchString = request.getParameter("searchString").toString().toLowerCase();
+			String searchString = request.getParameter("searchString").toString().toLowerCase().trim();
 			Set<Question> questions = new HashSet<Question>();
-			QuestionDAO dao = new QuestionDAO();
 			Question question;
-			List all_questions = dao.findAll();
+			String hql = "from Question order by id desc";
+			List all_questions = (new DBUTILS()).executeHQL(hql);
 			for (Object object : all_questions) {
 				question = (Question) object;
 				boolean is_contained = false;
@@ -67,53 +68,13 @@ public class SeachQuestions extends HttpServlet {
 					questions.add(question);
 				}
 			}
-			Set<SkillObjective> objectives = new HashSet<SkillObjective>();
-			for (SkillObjective objective : new SkillObjectiveDAO().findAll()) {
-				if (objective.getName().toLowerCase().contains(searchString)) {
-					objectives.add(objective);
-				}
-			}
-			Set<SkillObjective> learningObjectives = new HashSet<SkillObjective>();
-			for (SkillObjective objective : objectives) {
-				String sql = "";
-				switch (objective.getSkillLevelType()) {
-				case "MODULE":
-					sql = "select id from skill_objective where parent_skill in (select id from skill_objective where parent_skill = "
-							+ objective.getId() + ")";
-					List<HashMap<String, Object>> executeQuery = dbutils.executeQuery(sql);
-					for (HashMap<String, Object> hashMap : executeQuery) {
-						SkillObjective objective2 = (new SkillObjectiveDAO()
-								.findById(Integer.parseInt(hashMap.get("id").toString())));
-						if (objective2 != null) {
-							learningObjectives.add(objective2);
-						}
-					}
-					break;
-				case "CMSESSION":
-					sql = "select * from skill_objective where parent_skill = " + objective.getId()
-							+ " and type = 'LEARNING_OBJECTIVE' and skill_level_type = 'LESSON'";
-					List<HashMap<String, Object>> executeQuery2 = dbutils.executeQuery(sql);
-					for (HashMap<String, Object> hashMap : executeQuery2) {
-						SkillObjective objective2 = (new SkillObjectiveDAO())
-								.findById(Integer.parseInt(hashMap.get("id").toString()));
-						if (objective2 != null) {
-							learningObjectives.add(objective2);
-						}
-					}
-					break;
-				case "LESSON":
-					learningObjectives.add(objective);
-					break;
-				default:
-					break;
-				}
-			}
+			/*Set<SkillObjective> learningObjectives = (new SkillChildrenServices()).SearchLearningObjectivesFromAnySkillString(searchString);
 			for (SkillObjective skillObjective : learningObjectives) {
 				Set<Question> questions2 = skillObjective.getQuestions();
 				for (Question question2 : questions2) {
 					questions.add(question2);
 				}
-			}
+			}*/
 			for (Question q : questions) {
 				JSONObject question_object = new JSONObject();
 				try {
