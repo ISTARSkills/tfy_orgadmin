@@ -1,10 +1,8 @@
 package com.viksitpro.module.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.viksitpro.core.dao.entities.Module;
-import com.viksitpro.core.dao.entities.ModuleDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -39,27 +36,23 @@ public class SeachModules extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		JSONArray module_array = new JSONArray();
 		if (request.getParameterMap().containsKey("searchString")) {
-			String[] searchString = request.getParameter("searchString").toString().toLowerCase().split(" ");
-			Set<Module> modules = new HashSet<Module>();
-			ModuleDAO dao = new ModuleDAO();
+			String searchString = request.getParameter("searchString").toString().toLowerCase().trim();
+			List<Module> modules = new ArrayList<Module>();
+			String hql = "from Module order by id desc";
+			List<Object> all_modules = (new DBUTILS()).executeHQL(hql);
 			Module module;
-			List all_modules = dao.findAll();
 			for (Object object : all_modules) {
 				module = (Module) object;
 				boolean is_contained = false;
-				for (String search : searchString) {
-					if (module.getModuleName().toLowerCase().contains(search)) {
-						is_contained = true;
-					}
-					if (module.getModule_description().toLowerCase().contains(search)) {
-						is_contained = true;
-					}
-					if (module.getId().toString().contains(search)) {
-						is_contained = true;
-					}					
+				if (module.getModuleName().toLowerCase().contains(searchString)) {
+					is_contained = true;
+				}
+				if (module.getId().toString().contains(searchString)) {
+					is_contained = true;
 				}
 				if (is_contained) {
 					modules.add(module);
@@ -97,7 +90,8 @@ public class SeachModules extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

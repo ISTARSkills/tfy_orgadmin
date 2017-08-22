@@ -1,6 +1,7 @@
 package com.viksitpro.cmsession.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +20,7 @@ import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
+import com.viksitpro.core.utilities.DBUTILS;
 
 /**
  * Servlet implementation class SearchSessions
@@ -26,39 +28,36 @@ import com.viksitpro.core.dao.entities.LessonDAO;
 @WebServlet("/SearchSessions")
 public class SearchSessions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SearchSessions() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public SearchSessions() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		JSONArray session_array = new JSONArray();
 		if (request.getParameterMap().containsKey("searchString")) {
-			String[] searchString = request.getParameter("searchString").toString().toLowerCase().split(" ");
-			Set<Cmsession> cmsessions = new HashSet<Cmsession>();
-			CmsessionDAO dao = new CmsessionDAO();
+			String searchString = request.getParameter("searchString").toString().toLowerCase().trim();
+			List<Cmsession> cmsessions = new ArrayList<Cmsession>();
 			Cmsession cmsession;
-			List all_sessions = dao.findAll();
+			String hql = "from Cmsession order by id desc";
+			List all_sessions = (new DBUTILS()).executeHQL(hql);
 			for (Object object : all_sessions) {
 				cmsession = (Cmsession) object;
 				boolean is_contained = false;
-				for (String search : searchString) {
-					if (cmsession.getTitle().toLowerCase().contains(search)) {
-						is_contained = true;
-					}
-					if (cmsession.getDescription().toLowerCase().contains(search)) {
-						is_contained = true;
-					}
-					if (cmsession.getId().toString().contains(search)) {
-						is_contained = true;
-					}					
+				if (cmsession.getTitle().toLowerCase().contains(searchString)) {
+					is_contained = true;
+				}
+				if (cmsession.getId().toString().contains(searchString)) {
+					is_contained = true;
 				}
 				if (is_contained) {
 					cmsessions.add(cmsession);
@@ -93,9 +92,11 @@ public class SearchSessions extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
