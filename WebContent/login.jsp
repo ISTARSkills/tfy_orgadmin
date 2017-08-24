@@ -81,11 +81,11 @@ int rand = (new Random()).nextInt(4);
 			<form class="m-t" role="form" action="<%=baseURL%>login" method="post">
 				<div class="form-group">
 					<input type="email" name="email" 
-						class="form-control" placeholder="Username" required="">
+						value='ajith_sales@istarindia.com' class="form-control" placeholder="Username" required>
 				</div>
 				<div class="form-group">
 					<input type="password" name="password" 
-						class="form-control" placeholder="Password" required="">
+						value='test123' class="form-control" placeholder="Password" required>
 				</div>
 
 				<button type="submit" style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"

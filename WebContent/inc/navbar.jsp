@@ -97,21 +97,22 @@
 			       
 			     </ul>
 			     <ul class="navbar-nav">
-			     <li class="nav-item"><a id="" class="nav-link custom-xp-number" href="#"><%=cp.getStudentProfile().getExperiencePoints() %> <small class='custom-xp'>XP</small></a></li>
-			     <li class="nav-item"><a id="" class="nav-link custom-coins" href="#"><img src="/assets/images/coin-icon.png" width="24px" height="24px" class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins() %></small></a></li>
-			    
+			     <li class="nav-item custom-leftmargin-type1"><a id="" class="nav-link custom-xp-number" href="#"><%=cp.getStudentProfile().getExperiencePoints() %> <small class='custom-xp'>XP</small></a></li>
+			     <li class="nav-item custom-leftmargin-type1"><a id="" class="nav-link custom-coins" href="#"><img src="/assets/images/coin-icon.png" width="24px" height="24px" class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins() %></small></a></li>
+			    <li class="nav-item custom-leftmargin-type1 custom-rightmargin-type1"><a id="" class="nav-link custom-coins" href="#"> <i class="fa fa-bell" aria-hidden="true"></i></a></li>
 			     </ul>
 			     
 			     
-			     
-			 <ul class="navbar-nav">     
-			  <li class="nav-link" href="#"> <img src="<%=cp.getStudentProfile().getProfileImage() %>" width="24px" height="24px" class="rounded" alt=""></li>
-			      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Welcome
+			    
+			 <ul class="navbar-nav custom-nav-left-border">     
+			  <li class="nav-link" href="#"> <img src="<%=cp.getStudentProfile().getProfileImage() %>" width="24px" height="24px" class="img-circle" alt=""></li>
+			      <li class="nav-item dropdown custom-no-margins" >
+        <a class="nav-link dropdown-toggle custom-profil-name" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Welcome
          <%=cp.getStudentProfile().getFirstName() %>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Profile</a>
+           <a class="dropdown-item" href="/auth/logout">Logout</a>
         </div>
       </li>
                        
