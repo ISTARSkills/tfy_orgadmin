@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.istarindia.android.pojo.ComplexObject;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
+import com.sun.net.httpserver.Filter;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 public class StudentTrainerDashboardService {
@@ -67,7 +68,47 @@ public class StudentTrainerDashboardService {
 			}
 		}
 
-		for (TaskSummaryPOJO task : filteredList) {
+		if (filteredList != null && filteredList.size() != 0) {
+
+			List<List<TaskSummaryPOJO>> partitions = new ArrayList<>();
+
+			for (int j = 0; j < filteredList.size(); j += 3) {
+				partitions.add(filteredList.subList(j, Math.min(j + 3, filteredList.size())));
+			}
+
+			int j = 0;
+
+			String temp = "active";
+			
+			
+			for (List<TaskSummaryPOJO> list : partitions) {
+				
+				
+				out.append("<div class='carousel-item " + (j==0?temp:"") + "' >");
+				j++;
+				
+				out.append("<div class='row custom-no-margins'>");
+				for (TaskSummaryPOJO task : list) {
+					out.append("<div class='col-md-4 custom-no-padding custom-colmd-css'>");
+					out.append("<div class='card custom-cards_css'>");
+
+					out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>"
+							+ task.getHeader().toUpperCase() + "</h6>");
+					out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
+					out.append("<img class='card-img-top custom-primary-img' src='" + task.getImageURL()
+							+ "' alt='No Image Available'>");
+					out.append("<p class='card-text custom-card-text'>" + task.getDescription() + "</p>");
+					out.append(
+							"<a href='#' class='btn btn-danger custom-primary-btn '><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
+									+ task.getItemType() + "</span></a>");
+					out.append("</div></div>");
+				}
+				
+				out.append("</div></div>");
+			}
+		}
+
+		/*for (TaskSummaryPOJO task : filteredList) {
 
 			String temp = "active";
 			if (count == 0) {
@@ -85,20 +126,22 @@ public class StudentTrainerDashboardService {
 			out.append("<div class='col-md-4 custom-no-padding custom-colmd-css'>");
 			out.append("<div class='card custom-cards_css'>");
 
-			out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>" + task.getHeader() + "</h6>");
-			out.append("<h4 class='card-title custom-card-title'>" + task.getTitle().toUpperCase() + "</h4>");
-			out.append(
-					"<img class='card-img-top custom-primary-img' src='"+task.getImageURL()+"' alt='No Image Available'>");
+			out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>"
+					+ task.getHeader().toUpperCase() + "</h6>");
+			out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
+			out.append("<img class='card-img-top custom-primary-img' src='" + task.getImageURL()
+					+ "' alt='No Image Available'>");
 			out.append("<p class='card-text custom-card-text'>" + task.getDescription() + "</p>");
 			out.append(
-					"<a href='#' class='btn btn-danger custom-primary-btn '><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"+task.getItemType()+"</span></a>");
+					"<a href='#' class='btn btn-danger custom-primary-btn '><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
+							+ task.getItemType() + "</span></a>");
 			out.append("</div></div>");
 			if (count % 3 == 2) {
 				out.append("</div></div>");
 			}
 			count++;
 
-		}
+		}*/
 
 		return out;
 

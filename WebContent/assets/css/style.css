@@ -249,7 +249,22 @@ font-size: 3.5rem;
 	margin-left: 15px !important;
 }
 .custom-rightmargin-type1{
-	margin-right: 15px !important;
+	margin-right: 19px !important;
+}
+.count-info .label {
+    line-height: 12px;
+    padding: 2px 5px;
+    position: absolute;
+    right: 6px;
+    top: 12px;
+}
+.custom-notificatin-bell{
+
+ width: 21px;
+    text-align: center;
+	    position: absolute;
+    top: 2px;
+    font-size: 11px;
 }
 /* Navbra related css*/
 
