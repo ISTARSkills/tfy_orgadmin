@@ -43,19 +43,15 @@
 <link href="<%=cdnUrl%>assets/css/bootstrap.min.css" rel="stylesheet">
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- Sweet Alert -->
-<link href="<%=cdnUrl%>assets/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-<link href="<%=cdnUrl%>assets/css/animate.css" rel="stylesheet">
+ 
 <link href="<%=cdnUrl%>assets/css/style.css" rel="stylesheet">
-<link href="<%=cdnUrl%>assets/css/custom.css" rel="stylesheet">
 
 </head>
 <% 
 String bgs[] = {baseURL+"assets/images/demo.png", baseURL+"assets/images/demo1.png", baseURL+"assets/images/demo2.png","assets/images/demo3.png"};
 int rand = (new Random()).nextInt(4);
 %>
-<body class="gray-bg"
-	style="background-size: cover; background-repeat: no-repeat; background-image: url('<%=bgs[rand]%>')">
+<body class="gray-bg">
 	
 	<% String errormsg=""; 
 	Boolean flag = false;%>
@@ -68,7 +64,7 @@ int rand = (new Random()).nextInt(4);
 	}%>
 	
 	<% //System.out.println("---------------->"+errormsg); %>
-	<div class="text-center loginscreen animated fadeInDown">
+	<div class="text-center loginscreen animated fadeInDown middle-box">
 
 		<div class="login-screen-box">
 			<div>
@@ -92,12 +88,12 @@ int rand = (new Random()).nextInt(4);
 						class="form-control" placeholder="Password" required="">
 				</div>
 
-				<button type="submit" style="font-weight: 600; font-size: 16px"
+				<button type="submit" style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"
 					class="btn btn-danger custom-theme-btn-primary block full-width m-b login-button">Login</button>
 				
-                 <div class="row">       
-				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Sign up as Trainer</a></div>
-				<div class="col-md-6"><a class="btn btn-sm btn-danger btn-block" href="./student_signup.jsp">Sign up as Student</a></div>
+                 <div class="row"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;">       
+				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Sign up as Trainer</a></div>
+				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="./student_signup.jsp">Sign up as Student</a></div>
 				</div>
 				
 			</form>

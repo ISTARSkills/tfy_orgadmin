@@ -1,272 +1,119 @@
-<%@page import="java.util.Comparator"%>
-<%@page import="java.util.Collections"%>
-<%@page import="com.viksitpro.core.utilities.TaskItemCategory"%>
-<%@page import="java.util.Enumeration"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="tfy.webapp.ui.TaskCardFactory"%>
-<%@page import="com.istarindia.android.pojo.TaskSummaryPOJO"%>
-<%@page import="com.istarindia.android.pojo.ComplexObject"%>
-<%@page import="com.istarindia.android.pojo.RestClient"%>
-<%@page import="java.sql.Timestamp"%>
-<%@page import="org.ocpsoft.prettytime.PrettyTime"%>
-<%@page
-	import="in.talentify.core.services.NotificationAndTicketServices"%>
-<%@page import="java.util.HashSet"%>
-<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
-<%@page import="org.json.JSONArray"%>
-<%@page import="in.talentify.core.utils.UIUtils"%>
-<%@page
-	import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.List"%>
+<%@page import="com.viksitpro.core.dao.entities.*"%>
+<%@page import="com.istarindia.android.pojo.*"%>
+<%@page import="com.viksitpro.user.service.*"%>
+
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<%
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-boolean flag = false;
-	String url = request.getRequestURL().toString();
-	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
-			+ request.getContextPath() + "/";
+<body>
+	<%
+		boolean flag = false;
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
+				+ request.getContextPath() + "/";
+		
+		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
+		RestClient rc = new RestClient();
+		ComplexObject cp = rc.getComplexObject(user.getId());
+		if (cp == null) {
+			flag = true;
+			request.setAttribute("msg", "User Does Not Have Permission To Access");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
+		request.setAttribute("cp", cp);
+		StudentTrainerDashboardService studentsrainerdashboardservice = new StudentTrainerDashboardService();
+	%>
+	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
-	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-	RestClient rc = new RestClient();
-	ComplexObject cp = rc.getComplexObject(user.getId());
-	if(cp == null){
-		flag =true;
-		request.setAttribute("msg", "User Does Not Have Permission To Access");
-		request.getRequestDispatcher("/login.jsp").forward(request, response);
-	}
-	request.setAttribute("cp", cp);
-	
-	
-%>
-<body class="top-navigation student_pages">
-	<div id="wrapper">
-		<div id="page-wrapper" class="gray-bg">
-			<jsp:include page="/inc/navbar.jsp" />
-			<div class="wrapper wrapper-content animated fadeInRight"
-				style="padding: 10px;" id='equalheight'>
-<%if(!flag){ %>
-				<%=(new TaskCardFactory()).showSummaryEvents(cp).toString()%>
-				<%=(new TaskCardFactory()).showSummaryCard(cp).toString()%>
-				<%
-					//int k = 0;
+	<div class="jumbotron gray-bg">
+		<div class="container">
+			<div class="row justify-content-md-center custom-no-margins">
 
-					List<TaskSummaryPOJO> taskSummaryPOJOList = cp.getTasks();
-					try {
-						Collections.sort(taskSummaryPOJOList, new Comparator<TaskSummaryPOJO>() {
-							public int compare(TaskSummaryPOJO o1, TaskSummaryPOJO o2) {
-								if (o1.getDate() == null) {
-									return (o2.getId() == null) ? 0 : 1;
-								}
-								if (o2.getDate() == null) {
-									return -1;
-								}
-								return o2.getDate().compareTo(o1.getDate());
-							}
-						});
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
 
-					for (TaskSummaryPOJO task : taskSummaryPOJOList) {
-						//System.out.println("task.getStatus() "+task.getStatus());
-						if ((sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
-								&& !task.getStatus().equalsIgnoreCase("COMPLETED")) {
-							System.out.println("today date" + task.getDate());
-							System.out.println("today itemType " + task.getItemType());
-							if ((task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_TRAINER)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWEE)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWER))) {
-				%>
+<div class='col-md-6 custom-no-padding'>
+				<h1 >Today's Task</h1>
+			</div>	<div class='col-md-6 col-md-auto'>
+				<h1 class='custom-task-counter' data-toggle="modal" data-target="#gridSystemModal" >2 of 10 Tasks Completed</h1>
+</div>
 
-				<%=(new TaskCardFactory()).showcard(task).toString()%>
 
-				<%
-					}
-
-						}
-
-					}
-
-					for (TaskSummaryPOJO task : taskSummaryPOJOList) {
-
-						if (!(sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) > 0)
-								&& !task.getStatus().equalsIgnoreCase("COMPLETED")) {
-
-							//System.out.println("previous date " + task.getDate());
-							//System.out.println("previous itemType " + task.getItemType());
-
-							if (task.getItemType().equalsIgnoreCase(TaskItemCategory.LESSON_PRESENTATION)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.ASSESSMENT)
-									|| task.getItemType().equalsIgnoreCase(TaskItemCategory.CUSTOM_TASK)) {
-				%>
-
-				<%=(new TaskCardFactory()).showcard(task).toString()%>
-
-				<%
-					}
-
-						}
-
-					}
-}
-				%>
 			</div>
 		</div>
-	</div>
+		<!--/row-->
+<div class="container">
+		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+			<div class="carousel-inner" role="listbox">
+			
+			
+			<%= studentsrainerdashboardservice.DashBoardCard(cp) %>
+				
+				</div>
+				
+			</div>
+			</div>
+			</div>
+			 <a class="carousel-control-next custom-right-prev" href="#carouselExampleControls"
+				role="button" data-slide="next"> <img class="" src="/assets/images/992180-200-copy.png" alt="">
+			</a>
+			<a class="carousel-control-prev custom-left-prev" href="#carouselExampleControls"
+				role="button" data-slide="prev"> <img class="" src="/assets/images/992180-2001-copy.png" alt="">
+			</a>
+		</div></div>
+
+		<div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content custom-modal-content">
+      <div class="modal-header custom-modal-header">
+        <h5 class="modal-title custom-modal-title" id="gridModalLabel">5 Tasks Completed</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+         <div class='row'>
+         <div class='col-md-2 col-md-auto'>
+        <img class='card-img-top custom-task-icon'src='/assets/images/video-icon.png' alt=''>
+         </div>
+         <div class='col-md-6 col-md-auto'>
+          <p class='custom-task-titletext' >Assessing Risk</p>
+            <p class='custom-task-titletext' >at 11:51 AM</p>
+         </div>
+         
+          </div>
+          <hr>
+          <div class='row'>
+         <div class='col-md-2 col-md-auto'>
+         <img class='card-img-top custom-task-icon'src='/assets/images/challenges-icon-copy.png' alt=''>
+         </div>
+         <div class='col-md-6 col-md-auto'>
+          <p class='custom-task-titletext' >Won against Siddharth</p>
+            <p class='custom-task-titletext' >at 11:51 AM</p>
+         </div>
+         
+          </div>
+          <hr>
+          <div class='row'>
+         <div class='col-md-2 col-md-auto'>
+         <img class='card-img-top custom-task-icon'src='/assets/images/video-icon.png' alt=''>
+         </div>
+         <div class='col-md-6 col-md-auto'>
+          <p class='custom-task-titletext' >Assessing Risk</p>
+            <p class='custom-task-titletext' >at 11:51 AM</p>
+         </div>
+         
+          </div>
+          <hr>
+          
+        </div>
+      </div>
+     
+    </div>
+  </div>
+</div>
+		<!--/row-->
+
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-	<Script>
-		$(document)
-				.ready(
-						function() {
-							$(".card1").flip({
-								trigger : 'mannual'
-							});
-							//	$('.card1 .vertical-container').css('cssText','max-height:1200px !important;backface-visibility: hidden;');
-
-							$('.equalheight2 #ibox-content').equalHeights();
-							$('.card1 .vertical-container')
-									.parent()
-									.css('cssText',
-											'max-height:500px !important;backface-visibility: hidden;');
-							var productBoxHeight = $(
-									$($('.front')[0]).find('#ibox-content'))
-									.height();
-
-							console.log('productBoxHeight---'
-									+ productBoxHeight);
-							$('.back').each(function(e) {
-								$(this).find('#ibox-content').height(500);
-							});
-							$('.front').each(function(e) {
-								$(this).find('#ibox-content').height(500);
-							});
-
-							$('.reverse_view').unbind().on(
-									'click',
-									function() {
-										var card = $(this).closest(
-												'div[class="card1"]');
-										$(card).flip('toggle');
-									});
-
-							$(".rateYo").rateYo({
-								rating : 0.0,
-								starWidth : "17px"
-
-							});
-
-							$('.submit_feedback')
-									.unbind()
-									.on(
-											"click",
-											function() {
-												//var holder_id='#trainer_rating_7035_14';
-
-												var course_id = $(this).data(
-														'course_id');
-												var user_id = $(this).data(
-														'user_id');
-												var interviewer_id = $(this)
-														.data('interviewer_id');
-												var stage = $(this).data(
-														'stage');
-
-												var comments = $(
-														'#comments_' + user_id
-																+ '_'
-																+ course_id
-																+ '').val();
-												var isSlected = $(
-														'#selected_' + user_id
-																+ '_'
-																+ course_id
-																+ '').prop(
-														'checked');
-
-												var rate_list = $('#rate_list_'
-														+ course_id + '_'
-														+ user_id);
-
-												var ratingSkill = "";
-
-												$(rate_list)
-														.find('.rateYo')
-														.each(
-																function() {
-																	var rating = $(
-																			this)
-																			.rateYo(
-																					"option",
-																					"rating");
-																	var skill_id = $(
-																			this)
-																			.data(
-																					'skill_id');
-																	ratingSkill = ratingSkill
-																			+ skill_id
-																			+ ":"
-																			+ rating
-																			+ ",";
-																});
-
-												$(".rateYo").rateYo({
-													rating : 0.0,
-													starWidth : "10px"
-
-												});
-
-												if (ratingSkill.endsWith(",")) {
-													ratingSkill = ratingSkill
-															.substring(
-																	0,
-																	ratingSkill.length - 1);
-												}
-
-												$
-														.ajax({
-															type : "POST",
-															url : "/submit_interview",
-															data : {
-																course_id : course_id,
-																user_id : user_id,
-																interviewer_id : interviewer_id,
-																comments : comments,
-																is_selected : isSlected,
-																rating_skill : ratingSkill,
-																stage : stage
-															},
-															success : function(
-																	data) {
-																location
-																		.reload();
-															}
-														});
-
-											});
-
-							$('.i-checks').iCheck({
-								checkboxClass : 'icheckbox_square-green',
-								radioClass : 'iradio_square-green',
-							});
-
-							$('.interview_question').unbind().on(
-									'click',
-									function() {
-										var url = $(this).data('href');
-										var baseUrl = document.location.origin;
-										window.open(
-												baseUrl + '/student/' + url,
-												'_blank');
-									});
-
-						});
-	</Script>
+	<script>
+	$(document).ready(function() {      
+		   $('.carousel').carousel('pause');
+		});
+</script>
 </body>
 </html>
