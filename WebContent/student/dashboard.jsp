@@ -64,7 +64,7 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 				role="button" data-slide="prev"> <img class="" src="/assets/images/992180-2001-copy.png" alt="">
 			</a>
 		</div></div>
-
+</div>
 		<div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content custom-modal-content">

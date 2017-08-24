@@ -1,12 +1,36 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
+<%@page import="com.istarindia.android.pojo.ComplexObject"%>
+<%@page import="com.istarindia.android.pojo.RestClient"%>
+<%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+<jsp:include page="/inc/head.jsp"></jsp:include>
 <body>
+	<%
+		boolean flag = false;
+		String url = request.getRequestURL().toString();
+		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
+				+ request.getContextPath() + "/";
 
+		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
+		RestClient rc = new RestClient();
+		ComplexObject cp = rc.getComplexObject(user.getId());
+		if (cp == null) {
+			flag = true;
+			request.setAttribute("msg", "User Does Not Have Permission To Access");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
+		}
+		request.setAttribute("cp", cp);
+	%>
+	<jsp:include page="/inc/navbar.jsp"></jsp:include>
+
+	<div class="jumbotron gray-bg">
+		<div class="container">
+			<div class="row justify-content-md-center custom-no-margins"></div>
+		</div>
+	</div>
+
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
+	<script>
+		$(document).ready(function() {
+		});
+	</script>
 </body>
 </html>
