@@ -3,7 +3,8 @@
 <%@page import="com.viksitpro.user.service.*"%>
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<body>
+
+<body id="student_dashbard">
 	<%
 		boolean flag = false;
 		String url = request.getRequestURL().toString();

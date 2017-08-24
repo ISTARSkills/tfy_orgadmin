@@ -2,7 +2,7 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<body>
+<body id="student_role">
 	<%
 		boolean flag = false;
 		String url = request.getRequestURL().toString();

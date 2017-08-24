@@ -31,11 +31,6 @@
 	ComplexObject cp = (ComplexObject) request.getAttribute("cp");
 	request.setAttribute("cp", cp);
 %>
-
-
-
-
-
 <nav class="navbar navbar-expand-md fixed-top">
 	<a class="navbar-brand" href="#">Talentify</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -61,7 +56,7 @@
 
 			
 				
-				<li class="nav-item <%=activeClass%>"><a id="<%=link.getDisplayName().replace(" ", "")%>" class="nav-link" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
+				<li class="nav-item <%=activeClass%>"><a id="<%=link.getDisplayName().replace(" ", "").toLowerCase()%>" class="nav-link" href="<%=link.getUrl()%>"><%=link.getDisplayName()%></a></li>
 
 			<%
 
@@ -71,7 +66,7 @@
 
 			<li class="nav-item dropdown <%=activeClass%>"><a
 				class="nav-link dropdown-toggle" href="<%=link.getUrl()%>"
-				id="<%=link.getDisplayName().replace(" ", "")%>"
+				id="<%=link.getDisplayName().replace(" ", "").toLowerCase()%>"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=link.getDisplayName()%></a>
 
 				<div class="dropdown-menu"
@@ -85,7 +80,7 @@
 					    %>
 
 
-					<a class="dropdown-item" id="<%=link.getDisplayName().replace(" ", "")%>" href="<%=child.getUrl()%>"><%=child.getDisplayName()%></a>
+					<a class="dropdown-item" id="<%=link.getDisplayName().replace(" ", "").toLowerCase()%>" href="<%=child.getUrl()%>"><%=child.getDisplayName()%></a>
 					<%	
 							}
 						
@@ -117,7 +112,6 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Profile</a>
-          <a class="dropdown-item" href="#">Another action</a>
         </div>
       </li>
                        
