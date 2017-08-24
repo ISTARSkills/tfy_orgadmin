@@ -108,41 +108,6 @@ public class StudentTrainerDashboardService {
 			}
 		}
 
-		/*for (TaskSummaryPOJO task : filteredList) {
-
-			String temp = "active";
-			if (count == 0) {
-				temp = "active";
-			} else {
-				temp = "";
-			}
-
-			if (count % 3 == 0) {
-
-				out.append("<div class='carousel-item " + temp + "' >");
-				out.append("<div class='row custom-no-margins'>");
-			}
-
-			out.append("<div class='col-md-4 custom-no-padding custom-colmd-css'>");
-			out.append("<div class='card custom-cards_css'>");
-
-			out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>"
-					+ task.getHeader().toUpperCase() + "</h6>");
-			out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
-			out.append("<img class='card-img-top custom-primary-img' src='" + task.getImageURL()
-					+ "' alt='No Image Available'>");
-			out.append("<p class='card-text custom-card-text'>" + task.getDescription() + "</p>");
-			out.append(
-					"<a href='#' class='btn btn-danger custom-primary-btn '><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
-							+ task.getItemType() + "</span></a>");
-			out.append("</div></div>");
-			if (count % 3 == 2) {
-				out.append("</div></div>");
-			}
-			count++;
-
-		}*/
-
 		return out;
 
 	}

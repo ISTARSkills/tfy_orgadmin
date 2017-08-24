@@ -297,7 +297,61 @@ font-size: 14px !important;
 	overflow-y: scroll;
 	margin-bottom: 25px;
 }
+.custom-roles-cards{
+	  width: 367px;
+  height: 367px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+  text-align: -webkit-center;
+}
+.custom-roles-img{
+    width: 144px;
+    height: 144px;
+    background-color: #3b3c45;
+    margin-top: 15%;
+}
+.custom-roles-subtitle{
+	width: 165px;
+  height: 23px;
+  mix-blend-mode: multiply;
+ font-family: 'Lato', sans-serif;
+  font-size: 16.9px;
+  font-weight: 500;
+  line-height: 1.27;
+  text-align: center;
+  color: #98999b;
+      margin-top: 15px;
+}
+.custom-roles-titletext{
+width: 221px;
+  height: 35px;
+ font-family: 'Lato', sans-serif;
+  font-size: 18.6px;
+  font-weight: 500;
+  line-height: 1.38;
+  text-align: center;
+  color: #3f3f3f;
+   margin-top: 15px;
 
+}
+.custom-roles-progress{
+width: 229px;
+  height: 25px;
+ font-family: 'Lato', sans-serif;
+  font-size: 16.9px;
+  font-weight: 500;
+  line-height: 1.33;
+  text-align: center;
+  color: #98999b;
+}
+.custom-margin-rolescard{
+margin-bottom: 40px !important;
+}
+.custom-progressbar{
+       width: 100%;
+        bottom: 0;
+    position: absolute;
+}
 /* Navbra related css*/
 
 .navbar {

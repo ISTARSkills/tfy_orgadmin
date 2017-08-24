@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.user.service.StudentRolesService"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
@@ -18,13 +19,25 @@
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
 		request.setAttribute("cp", cp);
+		StudentRolesService studentrolesservice=new StudentRolesService();
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 	<div class="jumbotron gray-bg">
 		<div class="container">
-			<div class="row justify-content-md-center custom-no-margins"></div>
+			<div class="row">
+
+				<h1>My Roles</h1>
+
+
+			</div>
 		</div>
+
+		<div class="container">
+			<%=studentrolesservice.StudentRoles(cp) %>
+		</div>
+
+
 	</div>
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
