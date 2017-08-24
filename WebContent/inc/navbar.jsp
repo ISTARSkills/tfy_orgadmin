@@ -108,14 +108,14 @@
 				id="navbarDropdownNotificatinMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true"> <i
 					class="fa fa-bell fa-4" style="color: #9b9b9b !important;"  aria-hidden="true"></i><span
-					class="badge badge-info custom-notificatin-bell">8</span></a>
-				<div class="dropdown-menu"
+					class="badge badge-info custom-notificatin-bell"><%=cp.getNotifications().size() %></span></a>
+				<div class="dropdown-menu scrollbar"
 					aria-labelledby="navbarDropdownNotificatinMenuLink">
 					
 					<% if(roleDir.equalsIgnoreCase("student")){ 
 					for(NotificationPOJO np : cp.getNotifications()){
 					%>
-				       <a class="dropdown-item <%=np.getStatus().equalsIgnoreCase("READ")?"text-muted":"" %>" href="#"><%=np.getMessage() %></a><hr class='custom-no-margins'>
+				       <a class="dropdown-item custom-textSize <%=np.getStatus().equalsIgnoreCase("READ")?"text-muted":"" %>" href="#"><%=np.getMessage() %></a><hr class='custom-no-margins'>
                        <%} %>  
                     <%} %>
 				</div></li>
