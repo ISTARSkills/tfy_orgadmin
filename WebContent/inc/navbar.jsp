@@ -102,8 +102,8 @@
 			       
 			     </ul>
 			     <ul class="navbar-nav">
-			     <li class="nav-item"><a id="" class="nav-link custom-xp-number" href="#">2600 <small class='custom-xp'>XP</small></a></li>
-			     <li class="nav-item"><a id="" class="nav-link custom-coins" href="#"><img src="/assets/images/coin-icon.png" width="24px" height="24px" class="rounded" alt=""><small class='custom-xp'> 260</small></a></li>
+			     <li class="nav-item"><a id="" class="nav-link custom-xp-number" href="#"><%=cp.getStudentProfile().getExperiencePoints() %> <small class='custom-xp'>XP</small></a></li>
+			     <li class="nav-item"><a id="" class="nav-link custom-coins" href="#"><img src="/assets/images/coin-icon.png" width="24px" height="24px" class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins() %></small></a></li>
 			    
 			     </ul>
 			     

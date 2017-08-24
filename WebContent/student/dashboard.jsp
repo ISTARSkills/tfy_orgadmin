@@ -26,12 +26,21 @@
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row justify-content-md-center custom-no-margins">
+<%
+int countofcompletedTask = 0;
+for(DailyTaskPOJO dt :cp.getEventsToday()){
+	if(dt.getStatus().equalsIgnoreCase("COMPLETED")){
+		countofcompletedTask ++;
+	}
+}
 
+%>
 
 <div class='col-md-6 custom-no-padding'>
 				<h1 >Today's Task</h1>
 			</div>	<div class='col-md-6 col-md-auto'>
-				<h1 class='custom-task-counter' data-toggle="modal" data-target="#gridSystemModal" >2 of 10 Tasks Completed</h1>
+			
+				<h1 class='custom-task-counter' data-toggle="modal" data-target="#gridSystemModal" ><%=countofcompletedTask %> of <%=cp.getEventsToday().size() %> Tasks Completed</h1>
 </div>
 
 
@@ -47,9 +56,7 @@
 				
 				</div>
 				
-			</div>
-			</div>
-			</div>
+			
 			 <a class="carousel-control-next custom-right-prev" href="#carouselExampleControls"
 				role="button" data-slide="next"> <img class="" src="/assets/images/992180-200-copy.png" alt="">
 			</a>
@@ -65,15 +72,15 @@
         <h5 class="modal-title custom-modal-title" id="gridModalLabel">5 Tasks Completed</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body custom-no-padding">
         <div class="container-fluid bd-example-row">
-         <div class='row'>
-         <div class='col-md-2 col-md-auto'>
+         <div class='row '>
+         <div class='col-md-2 col-md-auto justify-content-md-center'>
         <img class='card-img-top custom-task-icon'src='/assets/images/video-icon.png' alt=''>
          </div>
          <div class='col-md-6 col-md-auto'>
-          <p class='custom-task-titletext' >Assessing Risk</p>
-            <p class='custom-task-titletext' >at 11:51 AM</p>
+          <p class='custom-task-titletext custom-no-margins' >Assessing Risk</p>
+            <p class='custom-task-subtitletext custom-no-margins' >at 11:51 AM</p>
          </div>
          
           </div>
@@ -83,8 +90,8 @@
          <img class='card-img-top custom-task-icon'src='/assets/images/challenges-icon-copy.png' alt=''>
          </div>
          <div class='col-md-6 col-md-auto'>
-          <p class='custom-task-titletext' >Won against Siddharth</p>
-            <p class='custom-task-titletext' >at 11:51 AM</p>
+          <p class='custom-task-titletext custom-no-margins'  >Won against Siddharth</p>
+            <p class='custom-task-subtitletext custom-no-margins' >at 11:51 AM</p>
          </div>
          
           </div>
@@ -94,12 +101,22 @@
          <img class='card-img-top custom-task-icon'src='/assets/images/video-icon.png' alt=''>
          </div>
          <div class='col-md-6 col-md-auto'>
-          <p class='custom-task-titletext' >Assessing Risk</p>
-            <p class='custom-task-titletext' >at 11:51 AM</p>
+          <p class='custom-task-titletext custom-no-margins' >Assessing Risk</p>
+            <p class='custom-task-subtitletext custom-no-margins' >at 11:51 AM</p>
          </div>
          
           </div>
-          <hr>
+           <hr>
+        <div class='row'>
+         <div class='col-md-2 col-md-auto'>
+         <img class='card-img-top custom-task-icon'src='/assets/images/challenges-icon-copy.png' alt=''>
+         </div>
+         <div class='col-md-6 col-md-auto'>
+          <p class='custom-task-titletext custom-no-margins'  >Won against Siddharth</p>
+            <p class='custom-task-subtitletext' >at 11:51 AM</p>
+         </div>
+         
+          </div>
           
         </div>
       </div>

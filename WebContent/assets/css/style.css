@@ -97,7 +97,7 @@ margin-left: 2.5rem;
 .custom-primary-img{
 	 width: 371.2px;
   height: 200.6px;
-  object-fit: contain;
+  object-fit: cover;
 	
 }
 .custom-secoundary-img{
@@ -176,7 +176,7 @@ font-weight: bold;
     float: right;
 }
 .custom-modal-content{
- width: 559px;
+ width: 561px;
   height: 542px;
   background-color: #ffffff;
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
@@ -200,6 +200,12 @@ font-weight: bold;
 .custom-task-icon{
 width: 33.3px;
     height: 33.3px;
+        margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 .custom-task-titletext{
 	width: 257px;
@@ -210,6 +216,22 @@ width: 33.3px;
   line-height: 2.2;
   text-align: left;
   color: #3f3f3f;
+}
+.custom-task-subtitletext{
+width: 136px;
+  height: 32px;
+  font-family: Avenir;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: left;
+  color: #98999b;
+
+}
+.close,.close:hover,.close:focus{
+font-size: 3.5rem;
+    margin-right: 10px;
+    color: white;
 }
 /* Navbra related css*/
 
