@@ -154,10 +154,12 @@ font-weight: bold;
     right: 174px;
 }
 .custom-right-prev{
-	right: 85px;
+	 width: 35px;
+	     height: 70vh;
 }
 .custom-left-prev{
-	left: 78px;
+	 width: 4px;
+	     height: 70vh;
 }
 .custom-no-margins{
 	margin: 0px!important;

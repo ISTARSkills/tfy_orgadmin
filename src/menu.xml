@@ -4,8 +4,8 @@
 	
 	<!--student specific starts here -->
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/student/dashboard.jsp" url="/student/dashboard.jsp" valid_role="student" />
-	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles.jsp" url="/student/roles/roles_course.jsp" valid_role="student" />
-	<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/profile.jsp" url="/student/skill_profile.jsp" valid_role="student" />
+	<parent_links display_name="Roles" is_visible_in_menu="true" jsp_file="/student/roles.jsp" url="/student/roles.jsp" valid_role="student" />
+	<parent_links display_name="Skill Profile" is_visible_in_menu="true" jsp_file="/student/skill_profile.jsp" url="/student/skill_profile.jsp" valid_role="student" />
 	<!-- student specific ends here -->
 
 </menu>
