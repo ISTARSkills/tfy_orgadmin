@@ -105,7 +105,12 @@ public class StudentTrainerDashboardService {
 					out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
 					out.append("<img class='card-img-top custom-primary-img' src='" + task.getImageURL()
 							+ "' alt='No Image Available'>");
-					out.append("<p class='card-text custom-card-text'>" + task.getDescription() + "</p>");
+					String descriptionText = task.getDescription();
+					if(task.getDescription() == null || task.getDescription().equalsIgnoreCase("") || task.getDescription().equalsIgnoreCase("null")) {
+						
+						descriptionText = "Description Not Available";
+					}
+					out.append("<p class='card-text custom-card-text'>" + descriptionText + "</p>");
 					out.append(
 							"<a href='#' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
 									+ task.getItemType() + "</span></a>");
@@ -113,7 +118,7 @@ public class StudentTrainerDashboardService {
 				}
 				
 				out.append("</div></div>");
-				
+					
 				
 			}
 			

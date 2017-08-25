@@ -83,7 +83,7 @@
 							if (cp.getTasks().size() != 0) {
 								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 								for (TaskSummaryPOJO dt : cp.getTasks()) {                                 
-									if ((sdf.parse(sdf.format(dt.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)) {									
+									if ((sdf.parse(sdf.format(dt.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {									
 										filteredList.add(dt);
 									       }
 									}
@@ -119,7 +119,7 @@
 							} else {
 						%>
 						<img class='card-img-top custom-task-notask' src='/assets/images/note_graphic.png' alt=''>
-						<h1 class='text-center text-muted custom-font-family-tag'>No Task For Today</h1>
+						<h1 class='text-center text-muted custom-font-family-tag'>No Task Completed Today</h1>
 
 						<%
 							}
