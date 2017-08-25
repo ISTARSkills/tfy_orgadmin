@@ -39,7 +39,7 @@
 				%>
 
 				<div class='col-md-6 custom-no-padding'>
-					<h1>Today's Task</h1>
+					<h1 class='custom-dashboard-header'>Today's Task</h1>
 				</div>
 				<div class='col-md-6 col-md-auto'>
 

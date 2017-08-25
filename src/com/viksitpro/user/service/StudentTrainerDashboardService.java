@@ -113,7 +113,7 @@ public class StudentTrainerDashboardService {
 					out.append("<p class='card-text custom-card-text'>" + descriptionText + "</p>");
 					out.append(
 							"<a href='#' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
-									+ task.getItemType() + "</span></a>");
+									+ task.getItemType().replaceAll("_", " ") + "</span></a>");
 					out.append("</div></div>");
 				}
 				

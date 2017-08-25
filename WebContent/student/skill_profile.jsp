@@ -114,7 +114,7 @@
 		<div class="container">
 			<div class="row">
 
-				<h1>Skills</h1>
+				<h1 class='custom-dashboard-header'>Skills</h1>
 
 
 			</div>
