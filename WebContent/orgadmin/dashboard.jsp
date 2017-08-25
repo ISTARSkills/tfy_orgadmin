@@ -75,7 +75,7 @@
 		<%if(events.size()>0){ %>
 		<div class="container">
 
-			<div id="carouselExampleControls" class="carousel slide"
+			<div id="carouselExampleControls" class="carousel slide org_dash_cards"
 				data-ride="carousel" data-interval="false"
 				>
 				<div class="carousel-inner">
@@ -94,7 +94,7 @@
 							{
 								%>
 								<div class="col-md-4">
-							<div class="card card-w370-h240 event_card"  id="event_<%=event.getEventId()%>">
+							<div class="card card-w370-h240 event_card"  id="<%=event.getEventId()%>">
 									<div class="card-body">
 										
 										<%
@@ -103,7 +103,7 @@
 										case "SCHEDULED":
 											%>
 											<div class="top-right-label-semi-circle-blue p-3">
-											<img src="/assets/images/completed_shape.png"
+											<img src="/assets/images/completed_shape3.png"
 												srcset="/assets/images/completed_shape2.png 2x, /assets/images/completed_shape3.png 3x"
 												class="float-right">
 											</div>	
@@ -113,7 +113,7 @@
 										case TrainerWorkflowStages.COMPLETED:
 											%>
 											<div class="top-right-label-semi-circle-red p-3">
-											<img src="/assets/images/icons_8_video_call2.png"
+											<img src="/assets/images/icons_8_video_call3.png"
 												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x"
 												class="float-right">
 											</div>	
@@ -123,7 +123,7 @@
 										case TrainerWorkflowStages.TEACHING:
 											%>
 											<div class="top-right-label-semi-circle-green p-3">
-											<img src="/assets/images/icons_8_video_call2.png"
+											<img src="/assets/images/icons_8_video_call3.png"
 												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x"
 												class="float-right">
 											</div>	
@@ -354,13 +354,19 @@
 							</div>
 					<!-- Modal end -->
 				</div>
-				<%if(events.size() > 2){%>
+				<%if(events.size() > 3){%>
 				<a class="carousel-control-next custom-right-prev-trainer"
 					href="#carouselExampleControls" role="button" data-slide="next">
-					<img class="" src="/assets/images/992180-200-copy.png" alt="">
+					<img src="/assets/images/report/icons-8-chevron-right-round@3x.png"
+					srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
+             /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
+					class="icons8-chevron_right_round" />
 				</a> <a class="carousel-control-prev custom-left-prev-trainer"
 					href="#carouselExampleControls" role="button" data-slide="prev">
-					<img class="" src="/assets/images/992180-2001-copy.png" alt="">
+					<img src="/assets/images/report/icons-8-chevron-right-round@3x.png"
+					srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
+             /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
+					class="icons8-chevron_right_round" />
 				</a>
 				<%} %>
 			</div>
@@ -577,7 +583,8 @@
 		}
 		
 		$('.event_card').on("click",function(){
-			$.get('../admin_partials/event_details_modal.jsp').done( function(data){
+			var id = $(this).attr("id");
+			$.get('../admin_partials/event_details_modal.jsp?event_id='+id).done( function(data){
 				$('#event_details_modal').html(data);
 				$('#event_details_modal').modal('toggle');
 				navbar_selector();
@@ -585,12 +592,16 @@
 					navbar_selector();
 				});
 				$('.popover-dismiss').popover();
+				$('.student-feedback-scroll').css('cssText','overflow:hidden');
+				
 				$('.show-more').on("click",function(){
 					if($('.show-more u').text() == 'Show more'){
 						$('.collapsable').css('display','block');
 						$('.show-more u').text('Show less');
+						$('.student-feedback-scroll').css('cssText','overflow:auto');
 					}else{
 						$('.collapsable').css('display','none');
+						$('.student-feedback-scroll').css('cssText','overflow:hidden');
 						$('.show-more u').text('Show more');
 					}
 				});
@@ -725,12 +736,37 @@
 			        }
 			    }
 			});
+		   
+		   $('.org_dash_cards').each(function() {
+				checkitem($(this));
+			});
+
+			$('.org_dash_cards').bind('slid.bs.carousel', function(e) {
+				checkitem($(this));
+			});
+		   
 		});
 	function navbar_selector(){
 		$('.nav.nav-tabs li').css('cssText','background-color: #eefef;box-shadow:inset 0 -2px 0 0  #f7f7f7;');
 		$('.nav.nav-tabs li>a').css('cssText','background-color:#f7f7f7 !important;color:rgba(153, 153, 153, 0.7)  !important;');
 		$('.nav.nav-tabs li>.active').parent().css('cssText','background-color: #ffffff;box-shadow: inset 0 -2px 0 0 #eb384f;');
 		$('.nav.nav-tabs li>.active').css('cssText','background-color: #ffffff !important;color:#eb384f !important;');
+	}
+	
+	function checkitem($this) // check function
+	{
+		if ($this.find('.carousel-inner .carousel-item:first').hasClass(
+				'active')) {
+			$this.find('.carousel-control-prev').hide();
+			$this.find('.carousel-control-next').show();
+		} else if ($this.find('.carousel-inner .carousel-item:last')
+				.hasClass('active')) {
+			$this.find('.carousel-control-prev').show();
+			$this.find('.carousel-control-next').hide();
+		} else {
+			$this.find('.carousel-control-next').show();
+			$this.find('.carousel-control-prev').show();
+		}
 	}
 </script>
 </body>
