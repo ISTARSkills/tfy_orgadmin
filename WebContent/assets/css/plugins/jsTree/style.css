@@ -42,7 +42,7 @@
 .jstree-icon:empty {
 	display: inline-block;
 	text-decoration: none;
-	margin: 0;
+	margin: 25px;
 	padding: 0;
 	vertical-align: top;
 	text-align: center;
@@ -464,14 +464,11 @@
 	border: 1px solid #f88400;
 	border-radius: 3px;
 	background-color: #EFEFEF;
-	background-color: #FFF; box-shadow : 0 4px 3px 0 rgba( 229, 229, 229,
-	.7); height : 50px; cursor : pointer; padding-left : 15px; padding-top
-	: 17px; margin-top : 12px; vertical-align : middle;
+	background-color: #FFF;
 	width: 900px;
 	box-shadow: 0 4px 3px 0 rgba(229, 229, 229, .7);
 	height: 50px;
-	padding-left: 15px;
-	padding-top: 17px;
+	padding-top: 6px;
 	margin-top: 12px;
 	vertical-align: middle;
 }
@@ -486,6 +483,7 @@
 	width: 24px;
 	height: 24px;
 	line-height: 24px;
+	
 }
 
 .jstree-default.jstree-rtl .jstree-node {
@@ -497,7 +495,7 @@
 }
 
 .jstree-default .jstree-node, .jstree-default .jstree-icon {
-	background-image: url("32px.png");
+	/* background-image: url("32px.png"); */
 }
 
 .jstree-default .jstree-node {
@@ -1278,4 +1276,20 @@
 		margin-left: 0;
 		margin-right: 0;
 	}
+}
+
+.jstree-open .jstree-icon.jstree-ocl {
+	background: url("minus.png") 0px 0px no-repeat !important;
+}
+
+.jstree-closed .jstree-icon.jstree-ocl {
+	background: url("plus.png") 0px 0px no-repeat !important;
+}
+
+.jstree-anchor > .jstree-icon.jstree-themeicon {
+	    margin-left: -15px;
+}
+
+#skillTree .dropdown-toggle::after {
+	display : none;
 }

@@ -27,6 +27,8 @@ try{
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
 
 if(request.getSession().getAttribute("user") != null) {

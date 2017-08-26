@@ -214,8 +214,191 @@
 		</div>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6"></div>
-				<div class="col-md-6"></div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-block">
+						<div class="card-body">
+							<div class="row m-0">
+								<div class="col-md-10 pl-0"><h3 class="card-header-box">Section wise performance of students</h3></div>
+								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
+							</div>
+							<select class="form-control select-dropdown-style" id="exampleSelect1">
+								<option>Desktop Publishing</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+								<div id="highchartcontainer"></div>
+									<table id="datatable" class="hidden-content">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Wizard</th>
+												<th>Master</th>
+												<th>Apprentice</th>
+												<th>Rookie</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Combined Batch A</th>
+												<td>3</td>
+												<td>4</td>
+												<td>7</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<th>Combined Batch B</th>
+												<td>2</td>
+												<td>0</td>
+												<td>5</td>
+												<td>1</td>
+											</tr>
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-block">
+						<div class="card-body">
+							<div class="row m-0">
+								<div class="col-md-10 pl-0"><h3 class="card-header-box">Program wise performance of students</h3></div>
+								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
+							</div>
+							<select class="form-control select-dropdown-style" id="exampleSelect1">
+								<option>BCom . Section 1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+								<div id="highchartcontainer2"></div>
+									<table id="datatable2" class="hidden-content">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Wizard</th>
+												<th>Master</th>
+												<th>Apprentice</th>
+												<th>Rookie</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Desktop Publishing</th>
+												<td>3</td>
+												<td>4</td>
+												<td>7</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<th>Marketing Strategy</th>
+												<td>2</td>
+												<td>0</td>
+												<td>5</td>
+												<td>1</td>
+											</tr>
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container pt-xl-5">
+		<div class="row">
+			<div class="col-md-6">
+					<div class="card">
+						<div class="card-block">
+						<div class="card-body">
+							<div class="row m-0">
+								<div class="col-md-10 pl-0"><h3 class="card-header-box">Competitive performance with other organizations</h3></div>
+								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
+							</div>
+							<br/>
+								<div id="highchartcontainer3"></div>
+									<table id="datatable3" class="hidden-content">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Rajagiri College of Social Science</th>
+												<th>Other Colleges</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Desktop Publishing</th>
+												<td>3</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<th>Digital Marketing</th>
+												<td>5</td>
+												<td>1</td>
+											</tr>
+											<tr>
+												<th>Marketing Strategy</th>
+												<td>2</td>
+												<td>1</td>
+											</tr>
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-block">
+						<div class="card-body">
+							<div class="row m-0">
+								<div class="col-md-10 pl-0"><h3 class="card-header-box">Role wise performance of students</h3></div>
+								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
+							</div>
+							<select class="form-control select-dropdown-style" id="exampleSelect1">
+								<option>Retail Banking - 2</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+								<div id="highchartcontainer4"></div>
+									<table id="datatable4" class="hidden-content">
+										<thead>
+											<tr>
+												<th></th>
+												<th>Wizard</th>
+												<th>Master</th>
+												<th>Apprentice</th>
+												<th>Rookie</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>Combined Batch A</th>
+												<td>3</td>
+												<td>4</td>
+												<td>7</td>
+												<td>3</td>
+											</tr>
+											<tr>
+												<th>Combined Batch B</th>
+												<td>2</td>
+												<td>0</td>
+												<td>5</td>
+												<td>1</td>
+											</tr>
+										</tbody>
+									</table>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -225,6 +408,98 @@
 	<script>
 	$(document).ready(function() {      
 		   $('.carousel').carousel('pause');
+		   Highcharts.chart('highchartcontainer', {
+			    data: {
+			        table: 'datatable'
+			    },
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: ''
+			    },
+			    yAxis: {
+			        alowDecimals: false,
+			        title: {
+			        	text: 'Percentage of Students' 
+			        }
+			    },
+			    tooltip: {
+			        formatter: function () {
+			            return '<b>' + this.series.name + '</b><br/>' +
+			                this.point.y + ' ' + this.point.name.toLowerCase();
+			        }
+			    }
+			});
+		   Highcharts.chart('highchartcontainer2', {
+			    data: {
+			        table: 'datatable2'
+			    },
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: ''
+			    },
+			    yAxis: {
+			        alowDecimals: false,
+			        title: {
+			        	text: 'Percentage of Students' 
+			        }
+			    },
+			    tooltip: {
+			        formatter: function () {
+			            return '<b>' + this.series.name + '</b><br/>' +
+			                this.point.y + ' ' + this.point.name.toLowerCase();
+			        }
+			    }
+			});
+		   Highcharts.chart('highchartcontainer3', {
+			    data: {
+			        table: 'datatable3'
+			    },
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: ''
+			    },
+			    yAxis: {
+			        alowDecimals: false,
+			        title: {
+			        	text: 'Average Adjusted Score' 
+			        }
+			    },
+			    tooltip: {
+			        formatter: function () {
+			            return '<b>' + this.series.name + '</b><br/>' +
+			                this.point.y + ' ' + this.point.name.toLowerCase();
+			        }
+			    }
+			});
+		   Highcharts.chart('highchartcontainer4', {
+			    data: {
+			        table: 'datatable4'
+			    },
+			    chart: {
+			        type: 'column'
+			    },
+			    title: {
+			        text: ''
+			    },
+			    yAxis: {
+			        alowDecimals: false,
+			        title: {
+			        	text: 'Percentage of Students' 
+			        }
+			    },
+			    tooltip: {
+			        formatter: function () {
+			            return '<b>' + this.series.name + '</b><br/>' +
+			                this.point.y + ' ' + this.point.name.toLowerCase();
+			        }
+			    }
+			});
 		});
 </script>
 </body>
