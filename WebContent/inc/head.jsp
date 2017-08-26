@@ -27,5 +27,7 @@ try {
 <link href="<%=basePath%>assets/css/bootstrap.css" rel="stylesheet">
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+ <link href="<%=basePath%>assets/css/plugins/jsTree/style.css" rel="stylesheet" type="text/css" />
+
  <link href="<%=basePath%>assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
