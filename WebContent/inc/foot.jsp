@@ -23,8 +23,8 @@ try{
 	
 %>
 <script src="<%=basePath %>assets/js/jquery.min.js"></script>
-<script src="<%=basePath %>assets/js/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-<script src="<%=basePath %>assets/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+<script src="<%=basePath %>assets/js/popper.min.js "></script>
+<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
 <script src="<%=basePath %>assets/js/app.js"></script>
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>

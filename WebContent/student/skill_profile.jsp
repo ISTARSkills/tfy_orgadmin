@@ -68,19 +68,19 @@
 			<div class="row ">
 				<div class="card custom-skill-badges-card justify-content-md-center">
 					<div class="card-block">
-						<div class="row justify-content-md-center">
+						<div class="row custom-no-margins">
 						
 						
-						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+						<div id="carouselExampleControls" style="    width: 100%;" class="carousel slide" data-ride="carousel" data-interval="false">
   <div class="carousel-inner" role="listbox">
   
     <div class="carousel-item active">
-    <div class="row ">
+    <div class="row custom-no-margins">
     <%
-								for (int i = 0; i <5; i++) {
+								for (int i = 0; i <6; i++) {
 							%>
 							
-							<div class="col">
+							<div class="col text-center">
      <img class="img-circle custom-skill-badge-img" src="http://cdn.talentify.in:9999//course_images/6.png" alt="No Image Available">
 	 <h3 class='custom-skill-badge-title text-muted' >Java Script wizard</h3>
 	 </div>
@@ -89,12 +89,12 @@
 							%>
     </div></div>
      <div class="carousel-item">
-     <div class="row ">
+     <div class="row custom-no-margins">
     <%
-								for (int i = 0; i <5; i++) {
+								for (int i = 0; i <6; i++) {
 							%>
 							
-							<div class="col">
+							<div class="col text-center">
      <img class="img-circle custom-skill-badge-img" src="http://cdn.talentify.in:9999//course_images/6.png" alt="No Image Available">
 	 <h3 class='custom-skill-badge-title text-muted' >Java Script wizard</h3>
 	</div> <%
@@ -102,12 +102,12 @@
 							%>
    </div> </div>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  <a style="width:3%" class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span style="background: gray no-repeat center center" class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  <a style="width:3%" class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span style="background: gray no-repeat center center" class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
 </div>
