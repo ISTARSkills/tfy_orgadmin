@@ -99,6 +99,7 @@
 								}
 							%>
 							<div class="col-md-4">
+							<a data-toggle="modal" data-target=".bd-example-modal-lg">
 								<div class="card card-w370-h240">
 									<div class="card-body">
 										<div class="top-right-label-semi-circle-green p-3">
@@ -189,7 +190,26 @@
 										</p>
 									</div>
 								</div>
+								</a>
 							</div>
+							<!-- Modal start -->
+							<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							  <div class="modal-dialog modal-lg">
+							    <div class="modal-content">
+							
+							      <div class="modal-header">
+							        <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4>
+							        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							          <span aria-hidden="true">&times;</span>
+							        </button>
+							      </div>
+							      <div class="modal-body">
+							        ...
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							<!-- Modal end -->
 
 
 
