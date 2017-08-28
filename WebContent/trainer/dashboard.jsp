@@ -75,7 +75,8 @@
 		<div class="container">
 
 			<div id="carouselExampleControls" class="carousel slide"
-				data-ride="carousel">
+				data-ride="carousel" data-interval="false"
+				>
 				<div class="carousel-inner">
 
 
