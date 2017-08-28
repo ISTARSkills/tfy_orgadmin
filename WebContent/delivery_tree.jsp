@@ -13,7 +13,7 @@
 <%@page import="com.viksitpro.core.dao.entities.Course"%>
 <%@page import="com.viksitpro.core.dao.entities.CourseDAO"%>
 <%@page import="com.viksitpro.core.skill.pojo.CourseLevelSkill"%>
-<%@page import="com.viksitpro.core.skill.services.SkillService"%>
+<%@page import="com.viksitpro.core.skill.services.CoreSkillService"%>
 <html>
 <head>
 <meta charset="UTF-8">

@@ -78,10 +78,15 @@ if(courseSkill!=null && courseSkill.getModuleLevelSkill()!=null && courseSkill.g
 																		
 																%>
 															</ul></li>
+															
+															
 														<%
 															}
 													
 												%>
+												<li data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'>
+															<input type="text" placeholder="Add New Module Level Skill" class="new_entity" data-parent_type="CONTEXT" data-parent_id ="<%=contextId%>">
+															</li>
 											</ul>
 																		
 											<%

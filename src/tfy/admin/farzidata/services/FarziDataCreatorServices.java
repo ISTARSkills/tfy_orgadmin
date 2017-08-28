@@ -363,7 +363,9 @@ public class FarziDataCreatorServices {
 	public static void main(String args [])
 	{		
 		System.out.println("start");
+		
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
+		/*
 		
 		
 		{
@@ -552,8 +554,17 @@ public class FarziDataCreatorServices {
 			System.out.println("events created");
 			serv.updateSessionEventsForOrg(orgID);
 		}
+		*/
 		
+		BatchGroup bg = new BatchGroupDAO().findById(192);
+		int aPlusPercentage = 20;
+	    int APercentage = 40;
+	    int BPlusPercentage = 25;
+	    int BPercenatge = 15;		    
+		//serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
+		System.out.println(" assess submitted for bg"+bg.getId());
 		
+		serv.markAutoScheduleAsCompletedForBG(bg);
 		
 		//deleteOrgData(279);
 		System.out.println("end");
@@ -562,32 +573,53 @@ public class FarziDataCreatorServices {
 
 	
 
+	private void markAutoScheduleAsCompletedForBG(BatchGroup bg) {
+		for(BatchStudents bs : bg.getBatchStudentses())
+		{
+			IstarUser user = bs.getIstarUser();
+			try {
+				int totalPlayliost = user.getStudentPlaylists().size();
+				int totalToMArk  =(int)(75*totalPlayliost)/100;
+				int i=0;
+				for(StudentPlaylist spl : user.getStudentPlaylists())
+				{
+					if(i<totalToMArk)
+					{
+						//if(spl.getStatus().equalsIgnoreCase("SCHEDULED")) {
+							updatePointsAndCoinsOnLessonComplete(user, spl.getLesson());
+							try {
+								DBUTILS util = new DBUTILS();
+								String updateStudentPlayList = "update student_playlist set status='COMPLETED' where lesson_id = "+spl.getLesson().getId()+" and student_id="+user.getId();
+								util.executeUpdate(updateStudentPlayList);
+								
+								String updateStudentPlayList1 = "update  task set is_active='f' , state ='COMPLETED' where id in(select task_id from student_playlist where student_id = "+user.getId()+" "
+										+ " and lesson_id = "+spl.getLesson().getId()+")";
+								////System.err.println("updateStudentPlayList1--->"+updateStudentPlayList1);
+								util.executeUpdate(updateStudentPlayList1);
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+							}
+					}
+					i++;
+					
+				//}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}	
+		}	
+		
+	}
+
 	private  void markAutoScheduleAsCompleted(int orgId) {
-	
+		
 		Organization org = new OrganizationDAO().findById(orgId);
 		for(UserOrgMapping map :org.getUserOrgMappings())
 		{
-			IstarUser user = map.getIstarUser();
-			for(StudentPlaylist spl : user.getStudentPlaylists())
-			{
-				if(spl.getStatus().equalsIgnoreCase("SCHEDULED")) {
-				//updatePointsAndCoinsOnLessonComplete(user, spl.getLesson());
-				try {
-					DBUTILS util = new DBUTILS();
-					String updateStudentPlayList = "update student_playlist set status='COMPLETED' where lesson_id = "+spl.getLesson().getId()+" and student_id="+user.getId();
-					util.executeUpdate(updateStudentPlayList);
-					
-					String updateStudentPlayList1 = "update  task set is_active='f' where id in(select task_id from student_playlist where student_id = "+user.getId()+" "
-							+ " and lesson_id = "+spl.getLesson().getId()+")";
-					////System.err.println("updateStudentPlayList1--->"+updateStudentPlayList1);
-					util.executeUpdate(updateStudentPlayList1);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				}
-				
-				}
-			}	
+			
 		}
 		
 		
