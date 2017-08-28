@@ -49,7 +49,7 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 		</div>
 		<!--/row-->
 <div class="container">
-		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
 			<div class="carousel-inner" role="listbox">
 			
 			
@@ -130,7 +130,7 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 	$(document).ready(function() {      
-		   $('.carousel').carousel('pause');
+		 $('.carousel').carousel('pause');
 		});
 </script>
 </body>

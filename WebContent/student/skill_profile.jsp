@@ -26,21 +26,26 @@
 
 		<div class="container">
 			<div class="row ">
-				<div class="card custom-skill-profile-card justify-content-md-center">
+				<div
+					class="card custom-skill-profile-card justify-content-md-center mt-lg-5">
 					<div class="card-block">
-					<div class="row justify-content-md-center">
-						<div class="col-md-4 col-md-auto text-center">
-							<h1 class='custom-skill-profile-batch-raking'>#3</h1>
-							<h3 class="text-muted custom-skill-profile-batch-raking-title">Batch Rank</h3>
-						</div>
-						<div class="col-md-3 col-md-auto text-center">
-							<img class='img-circle custom-skill-profile-img' src='http://cdn.talentify.in:9999//course_images/6.png' alt='No Image Available'>
-							<h1 class='custom-skill-profile-name'>Chaitanya Alluru</h1>
-						</div>
-						<div class="col-md-4 col-md-auto text-center">
-							<h1 class='custom-skill-profile-batch-raking'>5105</h1>
-							<h3 class="text-muted custom-skill-profile-batch-raking-title">XP Earned</h3>
-						</div>
+						<div class="row justify-content-md-center">
+							<div class="col-md-4 col-md-auto text-center">
+								<h1 class='custom-skill-profile-batch-raking'>#3</h1>
+								<h3 class="text-muted custom-skill-profile-batch-raking-title">Batch
+									Rank</h3>
+							</div>
+							<div class="col-md-3 col-md-auto text-center">
+								<img class='img-circle custom-skill-profile-img'
+									src='http://cdn.talentify.in:9999//course_images/6.png'
+									alt='No Image Available'>
+								<h1 class='custom-skill-profile-name'>Chaitanya Alluru</h1>
+							</div>
+							<div class="col-md-4 col-md-auto text-center">
+								<h1 class='custom-skill-profile-batch-raking'>5105</h1>
+								<h3 class="text-muted custom-skill-profile-batch-raking-title">XP
+									Earned</h3>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -58,7 +63,63 @@
 			</div>
 		</div>
 
-		<div class="container"></div>
+		<div class="container">
+
+			<div class="row ">
+				<div class="card custom-skill-badges-card justify-content-md-center">
+					<div class="card-block">
+						<div class="row justify-content-md-center">
+						
+						
+						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+  <div class="carousel-inner" role="listbox">
+  
+    <div class="carousel-item active">
+    <div class="row ">
+    <%
+								for (int i = 0; i <5; i++) {
+							%>
+							
+							<div class="col">
+     <img class="img-circle custom-skill-badge-img" src="http://cdn.talentify.in:9999//course_images/6.png" alt="No Image Available">
+	 <h3 class='custom-skill-badge-title text-muted' >Java Script wizard</h3>
+	 </div>
+	 <%
+								}
+							%>
+    </div></div>
+     <div class="carousel-item">
+     <div class="row ">
+    <%
+								for (int i = 0; i <5; i++) {
+							%>
+							
+							<div class="col">
+     <img class="img-circle custom-skill-badge-img" src="http://cdn.talentify.in:9999//course_images/6.png" alt="No Image Available">
+	 <h3 class='custom-skill-badge-title text-muted' >Java Script wizard</h3>
+	</div> <%
+								}
+							%>
+   </div> </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+									
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
 
 
 	</div>

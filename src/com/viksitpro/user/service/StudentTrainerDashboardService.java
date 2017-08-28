@@ -89,7 +89,7 @@ public class StudentTrainerDashboardService {
 				
 				out.append("<div class='row custom-no-margins'>");
 				for (TaskSummaryPOJO task : list) {
-					out.append("<div class='col-md-4 custom-no-padding custom-colmd-css'>");
+					out.append("<div class='col custom-no-padding custom-colmd-css'>");
 					out.append("<div class='card custom-cards_css'>");
 
 					out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>"
@@ -99,7 +99,7 @@ public class StudentTrainerDashboardService {
 							+ "' alt='No Image Available'>");
 					out.append("<p class='card-text custom-card-text'>" + task.getDescription() + "</p>");
 					out.append(
-							"<a href='#' class='btn btn-danger custom-primary-btn '><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
+							"<a href='#' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
 									+ task.getItemType() + "</span></a>");
 					out.append("</div></div>");
 				}
