@@ -1279,7 +1279,6 @@ button, input, select, textarea {
 		rgba(0, 0, 0, 0.04);
 }
 
-
 .card-header-box {
 	height: 19px;
 	font-family: Lato;
@@ -1305,4 +1304,6 @@ button, input, select, textarea {
 
 .hidden-content {
 	display: none;
+}
+
 }
