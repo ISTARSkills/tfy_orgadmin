@@ -216,8 +216,11 @@
 
 							</a> <a class="carousel-control-prev custom-left-prev-section"
 								href="#carouselExampleControls<%=i%>" role="button"
-								data-slide="prev"> <img class=""
-								src="/assets/images/992180-2001-copy.png" alt="" />
+								data-slide="prev"> <img
+								src="/assets/images/report/icons-8-chevron-right-round.png"
+								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
+             /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
+								class="icons8-chevron_right_round" />
 							</a>
 						</div>
 

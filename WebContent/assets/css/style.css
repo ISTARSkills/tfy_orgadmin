@@ -1613,6 +1613,12 @@ a.unselected_report {
 	justify-content: flex-start !important;
 }
 
+.custom-left-prev-section > img{
+	-ms-transform: rotate(180deg);
+	 -webkit-transform: rotate(180deg);
+	  transform: rotate(180deg);
+}
+
 .custom-right-prev-section {
 	justify-content: flex-end !important;
 }
