@@ -54,57 +54,57 @@
 		<%
 			for (int i = 0; i < 10; i++) {
 		%>
-		<div class="container my-5">
-			<div class="card  report_card p-0">
+		<div class="container reprort-card-container">
+			<div class="card  report_card_group p-0">
 				<div class="card-body p-0">
 					<div class='row report-roles-card mb-1'>
 						<div class='row m-0 p-0 w-100'>
 							<h1 class='report-heading my-0 w-100'>FY BCom . Section 1</h1>
 							<p class="stars">
-								<i class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star-o"></i><i
-									class="trainer-dash-star fa fa-star-o"></i>
+								<i class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star-o"></i><i
+									class="dash-star-6x fa fa-star-o"></i>
 							</p>
 						</div>
 						<div class='row m-0 p-0 w-100'>
 							<div class="col-6 p-0 w-100 m-0">
 								<div class='row p-0 mx-0 w-100 my-2'>
-									<div class='col-2 m-0 p-0'>
+									<div class='m-0 p-0' style='width:75px;'>
 										<img src="/assets/images/report/icons-8-saving-book.png"
 											srcset="/assets/images/report/icons-8-saving-book@2x.png 2x,/assets/images/report/icons-8-saving-book@3x.png 3x"
 											class="icons8-saving_book">
-										<h5 class='report-roles-sub-text'>
+										<p class='report-roles-sub-text'>
 											<span class='spannable'>5</span> Roles
-										</h5>
+										</p>
 									</div>
 
-									<div class='col-2 m-0 p-0'>
+									<div class='m-0 p-0' style='width:100px;'>
 										<img src="/assets/images/report/icons-8-student.png"
 											srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 											class="icons8-student" />
-										<h5 class='report-roles-sub-text'>
+										<p class='report-roles-sub-text'>
 											<span class='spannable'>200</span> Students
-										</h5>
+										</p>
 									</div>
 
-									<div class='col-3 m-0 p-0'>
+									<div class='m-0 p-0' style='width:130px;'>
 										<img src="/assets/images/report/icons-8-report-card.png"
 											srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 											class="icons8-report_card" />
-										<h5 class='report-roles-sub-text'>
+										<p class='report-roles-sub-text'>
 											<span class='spannable'>68%</span> Attendance
-										</h5>
+										</p>
 									</div>
 
-									<div class='col-3 m-0 p-0'>
+									<div class='m-0 p-0' style='width:135px;'>
 										<img src="/assets/images/report/icons-8-discount.png"
 											srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 											class="icons8-discount" />
-										<h5 class='report-roles-sub-text'>
+										<p class='report-roles-sub-text'>
 											<span class='spannable'>85%</span> Performance
-										</h5>
+										</p>
 									</div>
 
 								</div>
@@ -115,7 +115,7 @@
 					<div class='row report-roles-card mb-0'>
 
 						<div id="carouselExampleControls<%=i%>"
-							class="carousel slide w-100" data-ride="carousel"
+							class="carousel slide w-100 carousel-holder" data-ride="carousel"
 							data-interval="false">
 							<div class="carousel-inner">
 
@@ -124,18 +124,18 @@
 								%>
 
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
-									<div class='row custom-no-margins justify-content-md-center'>
+									<div class='row custom-no-margins'>
 
 										<%
-											for (int j = 0; j < 3; j++) {
+											for (int j = 0; j < 4; j++) {
 										%>
-										<div class="card col-3 p-0 mx-5">
+										<div class="card p-0 report-section-carousel-card">
 											<div class="card-header report-section-card-header">
 												<div class='row p-3 m-0 w-100'>
 													<div class='col-2 p-0 m-0'>
 
 														<img class='report-group-image'
-															src='http://cdn.talentify.in:9999/course_images/5.png'></img>
+															src='http://cdn.talentify.in:9999/course_images/5.png' alt='image'></img>
 
 													</div>
 													<div class='col-1 p-0 m-0'></div>
@@ -143,17 +143,17 @@
 														<h5 class='report-section-card-header-title'>Desktop
 															Publishing</h5>
 														<p class="stars">
-															<i class="trainer-dash-star fa fa-star"></i><i
-																class="trainer-dash-star fa fa-star"></i><i
-																class="trainer-dash-star fa fa-star"></i><i
-																class="trainer-dash-star fa fa-star-o"></i><i
-																class="trainer-dash-star fa fa-star-o"></i>
+															<i class="dash-star-6x fa fa-star"></i><i
+																class="dash-star-6x fa fa-star"></i><i
+																class="dash-star-6x fa fa-star"></i><i
+																class="dash-star-6x fa fa-star-o"></i><i
+																class="dash-star-6x fa fa-star-o"></i>
 														</p>
 													</div>
 												</div>
 											</div>
 											<div class="card-body">
-												<div class='row p-3'>
+												<div class='row pt-2 px-3 pb-3 '>
 
 													<div class='col-3'>
 														<img src="/assets/images/report/icons-8-student.png"
@@ -243,8 +243,29 @@
 
 	<script>
 		$(document).ready(function() {
-
+			$('.carousel-holder').each(function(){
+				checkitem($(this));
+			});
+			
+			$('.carousel-holder').bind('slid.bs.carousel', function (e) {
+				checkitem($(this));
+			});
 		});
+		
+		function checkitem($this)                        // check function
+		{
+		  if($this.find('.carousel-inner .carousel-item:first').hasClass('active')) {
+			  $this.find('.carousel-control-prev').hide();
+		      $this.find('.carousel-control-next').show();
+		  } else if($this.find('.carousel-inner .carousel-item:last').hasClass('active')) {
+			  $this.find('.carousel-control-prev').show();
+			  $this.find('.carousel-control-next').hide();
+		  } else {
+			  $this.find('.carousel-control-next').show();
+			  $this.find('.carousel-control-prev').show();
+		  } 
+		}
+		
 	</script>
 
 </body>

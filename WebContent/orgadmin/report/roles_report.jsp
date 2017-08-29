@@ -52,61 +52,61 @@
 		<%
 			for (int i = 0; i < 10; i++) {
 		%>
-		<div class="container my-5">
+		<div class="container reprort-card-container">
 
 
-			<div class="card  report_card p-0">
+			<div class="card  report_card_role p-0">
 				<div class="card-body p-0">
 					<div class='row report-roles-card'>
 						<div class="col-md-2">
 							<img class='report-role-image'
-								src='http://cdn.talentify.in:9999/course_images/5.png'></img>
+								src='http://cdn.talentify.in:9999/course_images/5.png' alt=''></img>
 						</div>
 						<div class="col-md-6">
 							<h1 class='report-heading my-0'>Desktop Publishing</h1>
 							<p class="stars">
-								<i class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star"></i><i
-									class="trainer-dash-star fa fa-star-o"></i><i
-									class="trainer-dash-star fa fa-star-o"></i>
+								<i class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star"></i><i
+									class="dash-star-6x fa fa-star-o"></i><i
+									class="dash-star-6x fa fa-star-o"></i>
 							</p>
-							<div class='row' style='margin-top: 30px'>
+							<div class='row' style='margin-top: 30px;margin-left:5px;'>
 
-								<div class='col-md-3'>
+								<div class='' style='width:107px;'>
 									<img src="/assets/images/report/icons-8-groups.png"
 										srcset="/assets/images/report/icons-8-groups@2x.png 2x,/assets/images/report/icons-8-groups@3x.png 3x"
 										class="icons8-groups" />
-									<h5 class='report-roles-sub-text'>
+									<p class='report-roles-sub-text' style='width: 73px;'>
 										<span class='spannable'>5</span> Groups
-									</h5>
+									</p>
 								</div>
 
-								<div class='col-md-3'>
+								<div class=''  style='width:135px;'>
 									<img src="/assets/images/report/icons-8-student.png"
 										srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 										class="icons8-student" />
-									<h5 class='report-roles-sub-text'>
+									<p class='report-roles-sub-text' style='width: 104px;'>
 										<span class='spannable'>200</span> Students
-									</h5>
+									</p>
 								</div>
 
-								<div class='col-md-3'>
+								<div class='' style='width:135px;'>
 									<img src="/assets/images/report/icons-8-report-card.png"
 										srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 										class="icons8-report_card" />
-									<h5 class='report-roles-sub-text'>
+									<p class='report-roles-sub-text' style=' width: 128px;'>
 										<span class='spannable'>68%</span> Attendance
-									</h5>
+									</p>
 								</div>
 
-								<div class='col-md-3'>
+								<div class='' style='width:135px;'>
 									<img src="/assets/images/report/icons-8-discount.png"
 										srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 										class="icons8-discount" />
-									<h5 class='report-roles-sub-text'>
+									<p class='report-roles-sub-text' style=' width: 139px;'>
 										<span class='spannable'>85%</span> Performance
-									</h5>
+									</p>
 								</div>
 
 							</div>
@@ -120,7 +120,7 @@
 					<div class='row report-roles-card'>
 
 						<div id="carouselExampleControls<%=i%>"
-							class="carousel slide w-100" data-ride="carousel"
+							class="carousel slide w-100 carousel-holder" data-ride="carousel"
 							data-interval="false">
 							<div class="carousel-inner">
 
@@ -128,25 +128,25 @@
 									for (int k = 0; k < 5; k++) {
 								%>
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
-									<div class='row custom-no-margins justify-content-md-center'>
+									<div class='row custom-no-margins'>
 
 										<%
-											for (int j = 0; j < 3; j++) {
+											for (int j = 0; j < 4; j++) {
 										%>
-										<div class="card col-md-3 p-0 mx-5">
+										<div class="card p-0 report-role-carousel-card">
 											<div class="card-header report-section-card-header">
 												<h5 class='report-section-card-header-title'>FY BCom.
-													Section 1</h5>
+													Section <%=k+1%><%=j+1%></h5>
 												<p class="stars">
-													<i class="trainer-dash-star fa fa-star"></i><i
-														class="trainer-dash-star fa fa-star"></i><i
-														class="trainer-dash-star fa fa-star"></i><i
-														class="trainer-dash-star fa fa-star-o"></i><i
-														class="trainer-dash-star fa fa-star-o"></i>
+													<i class="dash-star-6x fa fa-star"></i><i
+														class="dash-star-6x fa fa-star"></i><i
+														class="dash-star-6x fa fa-star"></i><i
+														class="dash-star-6x fa fa-star-o"></i><i
+														class="dash-star-6x fa fa-star-o"></i>
 												</p>
 											</div>
 											<div class="card-body">
-												<div class='row p-3'>
+												<div class='row pt-2 px-3 pb-3'>
 
 													<div class='col-md-3'>
 														<img src="/assets/images/report/icons-8-student.png"
@@ -199,7 +199,7 @@
 								%>
 							</div>
 							<a class="carousel-control-next custom-right-prev-section"
-								href="#carouselExampleControls<%=i%>" role="button"
+								href="#carouselExampleControls<%=i%>" role="button" id='carousel-control-next-<%=i%>'
 								data-slide="next"> <img
 								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
@@ -207,7 +207,7 @@
 								class="icons8-chevron_right_round" />
 
 							</a> <a class="carousel-control-prev custom-left-prev-section"
-								href="#carouselExampleControls<%=i%>" role="button"
+								href="#carouselExampleControls<%=i%>" role="button" id='carousel-control-prev-<%=i%>'
 								data-slide="prev"> <img
 								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
@@ -293,8 +293,32 @@
 								});
 
 							});
+					
+					$('.carousel-holder').each(function(){
+						checkitem($(this));
+					});
+					
+					$('.carousel-holder').bind('slid.bs.carousel', function (e) {
+						checkitem($(this));
+					});
+					
 
 				});
+		
+		function checkitem($this)                        // check function
+		{
+		  if($this.find('.carousel-inner .carousel-item:first').hasClass('active')) {
+			  $this.find('.carousel-control-prev').hide();
+		      $this.find('.carousel-control-next').show();
+		  } else if($this.find('.carousel-inner .carousel-item:last').hasClass('active')) {
+			  $this.find('.carousel-control-prev').show();
+			  $this.find('.carousel-control-next').hide();
+		  } else {
+			  $this.find('.carousel-control-next').show();
+			  $this.find('.carousel-control-prev').show();
+		  } 
+		}
+		
 	</script>
 
 </body>
