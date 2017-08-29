@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.istarindia.android.pojo.ComplexObject;
@@ -53,7 +54,7 @@ public class AdminRestClient {
 			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 			
 			
-			covertedObject = gsonRequest.fromJson(string, ArrayList.class);
+			covertedObject = gsonRequest.fromJson(string,  new TypeToken<ArrayList<EventsCard>>() { }.getType());
 			//System.err.println(covertedObject.getId());
 			conn.disconnect();
 		} catch (MalformedURLException e) {
@@ -110,5 +111,11 @@ public class AdminRestClient {
 		AdminRestClient a = new AdminRestClient();
 	    ArrayList<EventsCard> cards =	a.getEventsForToday(286);
 	    System.out.println(cards.size());
+	
+		System.out.println("event size "+cards.size()); 
+		for(EventsCard ee: cards)
+		{
+			System.out.println(ee.getStatus());
+		}
 	}	
 }

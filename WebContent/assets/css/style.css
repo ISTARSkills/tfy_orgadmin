@@ -610,18 +610,20 @@
 }
 
 .icons8-clock {
-	width: 11px;
-	height: 11px;
+	width: 12px;
+	height: 12px;
 	object-fit: contain;
 }
 
 .am-hrs {
-	width: 39px;
+	
 	height: 15px;
 	font-family: 'Lato', sans-serif;
 	font-size: 13px;
 	text-align: center;
 	color: #2196f2;
+	margin-left: 3px!important;
+	margin-right: 10px !important;
 }
 
 .icons8-empty_hourglass {
@@ -701,7 +703,7 @@
 .trainer-dash-star {
 	height: 9px;
 	width: 9px;
-	margin-right: 4px;
+	margin-right: 1px;
 }
 
 .trainer-dash-star.fa.fa-star {

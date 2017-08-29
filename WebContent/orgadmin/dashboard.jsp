@@ -1,3 +1,8 @@
+<%@page import="com.talentify.admin.rest.pojo.EventError"%>
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
+<%@page import="com.viksitpro.core.utilities.TrainerWorkflowStages"%>
+<%@page import="in.orgadmin.admin.services.AdminUIServices"%>
+<%@page import="java.util.List"%>
 <%@page import="com.talentify.admin.rest.pojo.EventsCard"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
@@ -28,6 +33,20 @@
 		
 		AdminRestClient adminClient  = new AdminRestClient();
 		ArrayList<EventsCard> events = adminClient.getEventsForToday(orgId);
+		System.out.println("event size "+events.size());
+		
+		
+		List<List<EventsCard>> partitions = new ArrayList<>();
+		
+
+		for (int j = 0; j < events.size(); j += 3) {
+			partitions.add(events.subList(j, Math.min(j + 3, events.size())));
+		}
+
+		
+		
+		
+		
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -90,51 +109,78 @@
 
 
 					<%
-						for (int i = 0; i < 15; i++) {
-							String temp = "";
-							if (i == 0) {
-								temp = "active";
-							} else {
-								temp = "";
-							}
+						for (int i = 0; i < partitions.size(); i++) {
+							List<EventsCard> actualEvents = partitions.get(i);
 					%>
 
-					<%
-						if (i % 3 == 0) {
-					%>
-					<div class="carousel-item <%=temp%>">
+					
+					<div class="carousel-item <%=i==0?"active":""%>">
 						<div class="row">
 							<%
-								}
-							%>
-							<div class="col-md-4">
-							<div class="card card-w370-h240 event_card"  id="event_<%=i%>">
+							for(EventsCard event : actualEvents)
+							{
+								%>
+								<div class="col-md-4">
+							<div class="card card-w370-h240 event_card"  id="event_<%=event.getEventId()%>">
 									<div class="card-body">
-										<div class="top-right-label-semi-circle-green p-3">
+										
+										<%
+										switch (event.getStatus())
+										{
+										case "SCHEDULED":
+											%>
+											<div class="top-right-label-semi-circle-blue p-3">
+											<img src="/assets/images/completed_shape.png"
+												srcset="/assets/images/completed_shape2.png 2x, /assets/images/completed_shape3.png 3x"
+												class="float-right">
+											</div>	
+											<%
+											break;
+										
+										case TrainerWorkflowStages.COMPLETED:
+											%>
+											<div class="top-right-label-semi-circle-red p-3">
 											<img src="/assets/images/icons_8_video_call2.png"
 												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x"
 												class="float-right">
-											<!-- for schedule use img 
-											/assets/images/completed_shape2.png
-											-->
-										</div>
+											</div>	
+											<%
+											break;
+									
+										case TrainerWorkflowStages.TEACHING:
+											%>
+											<div class="top-right-label-semi-circle-green p-3">
+											<img src="/assets/images/icons_8_video_call2.png"
+												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x"
+												class="float-right">
+											</div>	
+											<%
+											break;
+										default:
+											
+											break;
+											
+											
+										}
+										%>
+										
 										<div class="row custom-no-margins">
 											<img src="/assets/images/icons_8_clock2.png"
 												srcset="/assets/images/icons_8_clock2.png 2x, /assets/images/icons_8_clock3.png 3x"
 												class="icons8-clock">
-											<h1 class="am-hrs custom-no-margins">8 AM</h1>
+											<h1 class="am-hrs custom-no-margins"><%=event.getTime() %></h1>
 											<img src="/assets/images/icons_8_empty_hourglass2.png"
 												srcset="/assets/images/icons_8_empty_hourglass2.png 2x, /assets/images/icons_8_empty_hourglass3.png 3x"
 												class="icons8-empty_hourglass">
-											<h1 class="am-hrs custom-no-margins">8 Hrs</h1>
+											<h1 class="am-hrs custom-no-margins"><%=event.getDuration() %> Hrs</h1>
 										</div>
 										<div class="row mt-sm-3">
 											<div class="col-md-3">
 												<img alt="image" class="img-thumbnail-small"
-													src="http://cdn.talentify.in:9999/course_images/m_106.png">
+													src="<%=AppProperies.getProperty("media_url_path") %><%=event.getImageUrl()%>">
 											</div>
 											<div class="col-md-9 pl-0">
-												<div class="custom-trainer-card-title m-0">Retail Banking</div>
+												<div class="custom-trainer-card-title m-0"><%=event.getCourse()%></div>
 												<div class="custom-trainer-card-header popover-dismiss" 
 												data-toggle="popover" 
 												title="Sessions" 
@@ -142,12 +188,19 @@
 												data-placement="top"
 												data-content="And here's some amazing content. It's very engaging. Right?">Operation of Banks - 2</div>
 												<div class="row m-0">
-													<div class="custom-trainer-card-info">FY BCom .
-														Section 1</div>
+													<div class="custom-trainer-card-info"><%=event.getGroupName()%></div>
 													<div class="mr-md-3">
 														<span class="oval-small"></span>
 													</div>
-													<div class="custom-trainer-card-info">Miriam Thomas</div>
+													<div class="custom-trainer-card-info"><%=event.getTrainerName()%></div>
+													<%
+													if(event.getAssociateTrainerName()!=null)
+													{
+														%>
+														<div class="custom-trainer-card-info"><%=event.getAssociateTrainerName()%></div>
+														<% 
+													}	
+													%>
 												</div>
 											</div>
 										</div>
@@ -156,24 +209,56 @@
 											<div class="col-md-3 pr-3">
 												<div class="trainer-dash-attendance-head">
 													Attendance
-													<p class="trainer-dash-attendance-value">68%</p>
+													<p class="trainer-dash-attendance-value">
+													<%if(event.getAttendancePercentage()!=null)
+													{
+														%>
+														<%=event.getAttendancePercentage()%>%
+														<%
+													}
+													else
+													{
+													%>N/A<%	
+													}%>
+													</p>
 												</div>
 											</div>
 											<div class="col-md-3 px-3">
 												<div class="trainer-dash-attendance-head">
 													Performance
-													<p class="trainer-dash-attendance-value">68%</p>
+													<p class="trainer-dash-attendance-value">
+													
+													</p>
 												</div>
 											</div>
 											<div class="col-md-3 px-3">
-												<div class="trainer-dash-attendance-head">
-													Student
-													<p class="stars">
-														<i class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star-o"></i><i
-															class="trainer-dash-star fa fa-star-o"></i>
+												<div class="trainer-dash-attendance-head">Student<p class="stars">
+													
+													<%
+													int stuRating = 0; 
+													if(event.getStudentRating()!=null)
+													{
+														stuRating= (int)Math.ceil(event.getStudentRating());	
+													}
+													
+													for(int j=1; j<= 5; j++)
+													{
+														if(j<=stuRating)
+														{
+															%>
+															<i class="trainer-dash-star fa fa-star"></i>
+															<% 
+														}
+														else
+														{
+															%>
+															<i class="trainer-dash-star fa fa-star-o"></i>
+															<% 
+														}	
+													}
+													
+													%>
+														
 													</p>
 												</div>
 											</div>
@@ -181,55 +266,99 @@
 												<div class="trainer-dash-attendance-head">
 													Trainer
 													<p class="stars">
-														<i class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star"></i><i
-															class="trainer-dash-star fa fa-star-o"></i><i
-															class="trainer-dash-star fa fa-star-o"></i>
+														<%
+													int trainerRating = 0; 
+													if(event.getTrainerRating()!=null)
+													{
+														trainerRating= (int)Math.ceil(event.getTrainerRating());	
+													}
+													
+													for(int j=1; j<= 5; j++)
+													{
+														if(j<=trainerRating)
+														{
+															%>
+															<i class="trainer-dash-star fa fa-star"></i>
+															<% 
+														}
+														else
+														{
+															%>
+															<i class="trainer-dash-star fa fa-star-o"></i>
+															<% 
+														}	
+													}
+													
+													%>
 													</p>
 												</div>
 											</div>
 										</div>
 										<hr class="my-3">
-										<div class="pop_hover popover-dismiss" id="bc_<%=i%>" data-show_more="true">
-										<p class="trainer-dash-note">
-											<i class="fa fa-flag yellow-flag" aria-hidden="true"></i>
-											Classes started 10 min late
-										</p>
-										<p class="trainer-dash-note">
-											<i class="fa fa-flag red-flag" aria-hidden="true"></i>
-											Teaching was slow
-										</p>
-										
-										<div class="mc" id="mc_<%=i%>" style="display:none">
-											<p class="trainer-dash-note">
-											<i class="fa fa-flag yellow-flag" aria-hidden="true"></i>
-											Classes started 10 min late
-										</p>
-										<p class="trainer-dash-note">
-											<i class="fa fa-flag red-flag" aria-hidden="true"></i>
-											Teaching was slow
-										</p>
-										<p class="trainer-dash-note">
-											<i class="fa fa-flag yellow-flag" aria-hidden="true"></i>
-											Classes started 10 min late
-										</p>
-										<p class="trainer-dash-note">
-											<i class="fa fa-flag red-flag" aria-hidden="true"></i>
-											Teaching was slow
-										</p>
+										<%
+										boolean hasMoreThanTwoError = false;
+										if(event.getErrorFlags()!=null &&event.getErrorFlags().size()>2)
+										{
+											hasMoreThanTwoError= true;
+										}	
+										%>
+										<div class="pop_hover popover-dismiss" id="bc_<%=event.getEventId()%>" data-show_more="<%=hasMoreThanTwoError%>">
+										<%
+										int countter =0;
+										if(event.getErrorFlags()!=null)
+										{
+											for(EventError error : event.getErrorFlags())
+											{
+												String flagColor =error.getErrorColor().toLowerCase();
+												
+												if(countter <2)
+												{
+												%>
+													<p class="trainer-dash-note">
+													<i class="fa fa-flag <%=flagColor%>-flag" aria-hidden="true"></i>
+														<%=error.getErrorValue() %>
+													</p>
+													
+												<%	countter++;
+												}
+												
+											}
+											
+											
+											%>
+											<div class="mc" id="mc_<%=event.getEventId()%>" style="display:none">
+											<%
+											for(EventError error : event.getErrorFlags())
+											{
+												String flagColor =error.getErrorColor().toLowerCase();
+												%>
+													<p class="trainer-dash-note">
+													<i class="fa fa-flag <%=flagColor%>-flag" aria-hidden="true"></i>
+														<%=error.getErrorValue() %>
+													</p>
+												<%
+											}
+											%>
 										</div>
+											<% 
+											
+										}	
+										%>
+										
+										
 										</div>
 									</div>
 								</div>
 							</div>
-
-							<%
-								if (i % 3 == 2) {
+								<% 
+							}	
 							%>
+							
+
+						
 						</div>
 					</div>
-					<%}} %>
+					<%} %>
 					<!-- Modal start -->
 							<div class="modal fade bd-example-modal-lg" id="event_details_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 							
