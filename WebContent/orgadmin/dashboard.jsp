@@ -153,7 +153,7 @@
 											</div>
 											<div class="col-md-3 px-3">
 												<div class="trainer-dash-attendance-head">
-													Attendance
+													Performance
 													<p class="trainer-dash-attendance-value">68%</p>
 												</div>
 											</div>
