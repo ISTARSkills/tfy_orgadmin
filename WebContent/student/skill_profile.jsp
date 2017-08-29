@@ -2,7 +2,21 @@
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
+
+
+<style>
+
+.jstree-open .jstree-icon.jstree-ocl {
+    background: url(/assets/images/expanded.png) 0px 0px no-repeat !important;
+}
+
+
+</style>
+
 <jsp:include page="/inc/head.jsp"></jsp:include>
+
+
+
 
 <body id="student_skill_profile">
 	<%
@@ -75,23 +89,18 @@
 						<div class="row custom-no-margins">
 
 
-							<div id="carouselExampleControls" style="width: 100%;"
-								class="carousel slide" data-ride="carousel"
-								data-interval="false">
+							<div id="carouselExampleControls" class="carousel slide  w-100"
+								data-ride="carousel" data-interval="false">
 								<div class="carousel-inner" role="listbox">
 									<%=userskillprofile.StudentRoles(cp)%>
 
 								</div>
-								<a style="width: 3%" class="carousel-control-prev"
+								<a class="carousel-control-prev custom-arrows-width"
 									href="#carouselExampleControls" role="button" data-slide="prev">
-									<span style="background: gray no-repeat center center"
-									class="carousel-control-prev-icon" aria-hidden="true"></span> <span
-									class="sr-only">Previous</span>
-								</a> <a style="width: 3%" class="carousel-control-next"
-									href="#carouselExampleControls" role="button" data-slide="next">
-									<span style="background: gray no-repeat center center"
-									class="carousel-control-next-icon" aria-hidden="true"></span> <span
-									class="sr-only">Next</span>
+									<img class="" src="/assets/images/992180-2001-copy.png" alt="">
+								</a> <a class="carousel-control-next custom-arrows-width"
+									href="#carouselExampleControls" role="button" data-slide="next"><img
+									class="" src="/assets/images/992180-200-copy.png" alt="">
 								</a>
 							</div>
 
@@ -103,7 +112,7 @@
 
 
 		</div>
-		
+
 		<div class="container">
 			<div class="row">
 
@@ -112,55 +121,74 @@
 
 			</div>
 		</div>
-		
-		
+
+
 		<div class="container">
 
 			<div class="row ">
-			  <div class="col-4 pl-0">
-			  <nav class="nav flex-column">
-  <a class="nav-link skill_list skill_list_active active pt-0 pb-0 pl-0" href="#">
-  <div class="card custom-skill-list-active justify-content-md-center">
-  <div class="card-block">
-   <div class="row custom-no-margins">
-			  <div class="col-4">
-			  <img class='img-circle custom-skill-tree-img' src='http://cdn.talentify.in:9999//course_images/6.png' alt='No Image Available'>
-			  </div>
-			  <div class="col-8" style="margin: auto;">
-			  <h3  class='custom-skill-tree-title' >Java Script wizard</h3>
-			  </div>
-			  
-			  </div>
-  </div>
-</div>
-  
-  </a>
-  <a class="nav-link skill_list  disabled pt-0 pb-0 pl-0" href="#">
-   <div class="card justify-content-md-center custom-skill-list-disabled" >
-  <div class="card-block">
-     <div class="row custom-no-margins">
-			  <div class="col-4">
-			  <img class='img-circle custom-skill-tree-img' src='http://cdn.talentify.in:9999//course_images/6.png' alt='No Image Available'>
-			  </div>
-			  <div class="col-8" style="margin: auto;">
-			  <h3  class='custom-skill-tree-title' >Java Script wizard</h3>
-			  </div>
-			  
-			  </div>
-  </div>
-</div>
-  </a>
-</nav>
-			  
-			  </div>
-			
-			 <div class="col-8">
-			 <div class="card custom-skill-tree">
-			 <div class="card-block">
-			 
-			 </div>
-			 </div>
-			 </div>
+				<div class="col-4 pl-0">
+					<nav class="nav flex-column">
+
+						<%=userskillprofile.getSkillList(cp)%>
+						<!-- <a class="nav-link skill_list skill_list_active active pt-0 pb-0 pl-0" href="#">
+							<div class="card custom-skill-list-active justify-content-md-center">
+								<div class="card-block">
+									<div class="row custom-no-margins">
+										<div class="col-4">
+											<img class='img-circle custom-skill-tree-img'
+												src='http://cdn.talentify.in:9999//course_images/6.png'
+												alt='No Image Available'>
+										</div>
+										<div class="col-8 my-auto">
+											<h3 class='custom-skill-tree-title'>Java Script wizard</h3>
+										</div>
+
+									</div>
+								</div>
+							</div>
+
+						</a>
+						 <a class="nav-link skill_list  disabled pt-0 pb-0 pl-0" href="#">
+							<div class="card justify-content-md-center custom-skill-list-disabled">
+								<div class="card-block">
+									<div class="row custom-no-margins">
+										<div class="col-4">
+											<img class='img-circle custom-skill-tree-img'
+												src='http://cdn.talentify.in:9999//course_images/6.png'
+												alt='No Image Available'>
+										</div>
+										<div class="col-8 my-auto">
+											<h3 class='custom-skill-tree-title'>Java Script wizard</h3>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</a> -->
+					</nav>
+
+				</div>
+
+				<div class="col-8">
+					<div class="card custom-skill-tree">
+						<div class="card-block" id='skillTreeHolder'>
+							<div id="jstree">
+								<ul>
+									<li data-jstree='{"opened":true,"selected":true}'>Root
+										<ul>
+											<li data-jstree='{"disabled":true}'>Child</li>
+											<li data-jstree='{"icon":"//jstree.com/tree.png"}'>
+												Child</li>
+											<li data-jstree='{"icon":"glyphicon glyphicon-leaf"}'>
+												Child</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 
 
@@ -171,18 +199,68 @@
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
-		$(document).ready(function() {
-			
-			$('.skill_list').click(function(){
-				$('.skill_list').removeClass('skill_list_active');
-				$('.skill_list').children().removeClass('custom-skill-list-active').addClass('custom-skill-list-disabled');
-				$(this).addClass('skill_list_active');
-				$(this).children().removeClass('custom-skill-list-disabled');
-				$(this).children().addClass('custom-skill-list-active');
-				
-			});
-			
-		});
+		$(document)
+				.ready(
+						function() {
+
+							$('.skill_list')
+									.click(
+											function() {
+												$('.skill_list').removeClass(
+														'skill_list_active');
+												$('.skill_list')
+														.children()
+														.removeClass(
+																'custom-skill-list-active')
+														.addClass(
+																'custom-skill-list-disabled');
+												$(this).addClass(
+														'skill_list_active');
+												$(this)
+														.children()
+														.removeClass(
+																'custom-skill-list-disabled');
+												$(this)
+														.children()
+														.addClass(
+																'custom-skill-list-active');
+
+												$.ajax({
+													url : "",
+													data : {
+														skillId : $(this).data(
+																'skillId')
+													},
+													success : function(result) {
+
+														$("#skillTreeHolder")
+																.html(result);
+													}
+												});
+
+											});
+
+							$('#jstree')
+									// listen for event
+									.on(
+											'changed.jstree',
+											function(e, data) {
+												var i, j, r = [];
+												for (
+														i = 0,
+														j = data.selected.length; i < j; i++) {
+													r
+															.push(data.instance
+																	.get_node(data.selected[i]).text);
+												}
+												$('#event_result').html(
+														'Selected: '
+																+ r.join(', '));
+											})
+									// create the instance
+									.jstree();
+
+						});
 	</script>
 </body>
 </html>
