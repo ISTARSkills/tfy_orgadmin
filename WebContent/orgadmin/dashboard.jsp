@@ -587,6 +587,19 @@
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 	$(document).ready(function() {
+		
+		$('.event_card').on("click",function(){
+			$.get('../admin_partials/event_details_modal.jsp').done( function(data){
+				$('#event_details_modal').html(data);
+				$('#event_details_modal').modal('toggle');
+				navbar_selector();
+				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+					navbar_selector();
+				});
+			});
+			
+		});
+		
 		$('.pop_hover').each(function(){
 			if($(this).data("show_more")==true)
 			{
@@ -704,6 +717,12 @@
 			    }
 			});
 		});
+	function navbar_selector(){
+		$('.nav.nav-tabs li').css('cssText','background-color: #eefef;box-shadow:inset 0 -2px 0 0  #f7f7f7;');
+		$('.nav.nav-tabs li>a').css('cssText','background-color:#f7f7f7 !important;color:rgba(153, 153, 153, 0.7)  !important;');
+		$('.nav.nav-tabs li>.active').parent().css('cssText','background-color: #ffffff;box-shadow: inset 0 -2px 0 0 #eb384f;');
+		$('.nav.nav-tabs li>.active').css('cssText','background-color: #ffffff !important;color:#eb384f !important;');
+	}
 </script>
 </body>
 </html>

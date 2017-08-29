@@ -91,7 +91,7 @@
 .custom-primary-btn {
 	width: 339.8px;
 	height: 60.2px;
-	border-radius: 41.8px;
+	border-radius: 41.8px !important;
 	background-color: #eb384f;
 	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.31);
 	color: #eb384f !important;
@@ -493,6 +493,238 @@
 	background-color: #3b3c45;
 	 width: 60px;
   height: 60.4px;
+}
+.custom-module_card-header{
+	height: 130px;
+  border: solid 1px #f3f3f4;
+  background-color: #fff;
+}
+.custom-beginskill-course-heading{
+  height: 48px;
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 2;
+  text-align: left;
+  color: #4a4a4a;
+}
+.custom-beginskill-backarrow{
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  background-color: transparent;
+}
+.custom-beginskill-xp{
+ font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.63;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-progress{
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.28;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-rank{
+   font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.28;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-xp-title{
+width: 113px;
+  height: 20px;
+  opacity: 0.6;
+   font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+  text-align: left;
+  color: #4a4a4a;
+
+}
+.custom-beginskill-progess-title{
+
+	 width: 80.6px;
+  height: 19.6px;
+  opacity: 0.6;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: #4a4a4a;
+}
+.custom-beginskill-rank-title{
+	
+	  width: 80.6px;
+  height: 19.6px;
+  opacity: 0.6;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: #4a4a4a;
+	
+}
+
+.custom-beginskill-module-title{
+  height: 23px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.19;
+  text-align: left;
+  color: #3f3f3f;
+
+}
+.custom-beginskill-module-img{
+ width: 90px;
+  height: 90px;
+
+}
+.custom-beginskill-collapsed-img{
+width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+.custom-beginskill-badge{
+  height: 23px;
+   font-family: 'Lato', sans-serif;
+  font-size: 13.4px;
+  font-weight: 500;
+  line-height: 1.44;
+  text-align: left;
+  color: #777777;
+   background-color: #ececec;
+
+}
+
+.custom-beginskill-lesson-cards-forground{
+width: 406px;
+  height: 358.4px;
+  border-radius: 2.8px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
+
+}
+.custom-beginskill-lesson-cards-background-left{
+  width: 260px;
+  height: 307.2px;
+  opacity: 0.5;
+  border-radius: 2.4px;
+  background-color: #eef0f3;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
+
+}
+
+.custom-beginskill-lesson-cards-background-right{
+ width: 259px;
+  height: 307.2px;
+  opacity: 0.5;
+  border-radius: 2.4px;
+  background-color: #eef0f3;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 5px 0 rgba(0, 0, 0, 0.12);
+      float: right;
+
+}
+
+.custom-beginskill-button{
+ width: 308px;
+  height: 67.2px;
+    border-radius: 50px !important;
+  background-color: #eb384f;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.21), 0 0 3px 0 rgba(0, 0, 0, 0.12);
+
+
+}
+.custom-beginskill-button-text{
+width: 193.2px;
+  height: 33.6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.68;
+  letter-spacing: 0.7px;
+  text-align: center;
+  color: #ffffff;
+}
+.custom-task-title{
+  height: 66px;
+   font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #3f3f3f;
+
+}
+.custom-task-desc{	
+  height: 81px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  color: #3f3f3f;
+}
+.take-a-shortcut{
+  height: 27px;
+  font-family: 'Lato', sans-serif;
+  font-size: 19.6px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  text-align: center;
+  color: #eb384f;
+
+}
+.dont-stop-there-is{
+ width: 213px;
+  height: 50px;
+  opacity: 0.5;
+ font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+  color: #3f3f3f;
+
+}
+.custom-beginskill-row{
+height: 484px;
+
+}
+.custom-beginskill-leftbutton{
+position: absolute; 
+bottom: -29px; 
+text-align: center;
+ left: -94px; 
+ width: 100%;
+}
+.custom-beginskill-forgroundbutton{
+	position: absolute; 
+	bottom: -29px; 
+	text-align: center; 
+	width: 100%;
+}
+.custom-beginskill-rightbutton{
+	
+	position: absolute; 
+	bottom: -29px; 
+	text-align: center; 
+	right: -42px; 
+	width: 100%;
+}
+
+.custom-arrows-width{
+width: 3%
 }
 
 /* Navbra related css*/
@@ -1721,4 +1953,8 @@ a.unselected_report {
 	border: none !important;
 	background-color: #f7f7f7 !important;
 }
-/* Vinat css ends */
+
+.custom-event-modal-body {
+	width: 660px;
+}
+/* Vinay css ends */

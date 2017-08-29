@@ -1,7 +1,7 @@
 <%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
-<%
+<%-- <%
 int eventId = Integer.parseInt(request.getParameter("event_id"));
-%>
+%> --%>
 							  <div class="modal-dialog modal-lg">
 							    <div class="modal-content custom-event-container">
 							      <div class="modal-header custom-event-modal-header">
@@ -41,7 +41,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 							        <!-- <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4> -->
 							        
 							      </div>
-								<div class="modal-body p-0">
+								<div class="modal-body p-0 custom-event-modal-body">
 									<div class="container px-0">
 									<ul class="nav nav-tabs" style="flex-wrap: nowrap;">
 										<li class="nav-item nav-item-modal-box m-0"><a class="nav-link nav-modal-text active p-0" data-toggle="tab" href="#presentation" role="tab">Presentation</a>

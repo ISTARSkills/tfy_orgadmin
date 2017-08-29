@@ -71,8 +71,14 @@ public class StudentTrainerDashboardService {
 		if (filteredList != null && filteredList.size() != 0) {
 
 			List<List<TaskSummaryPOJO>> partitions = new ArrayList<>();
+			int totalcount = 12;
+			if( filteredList.size() <= 12) {
+				
+				totalcount = filteredList.size();
+				
+			}
 
-			for (int j = 0; j < filteredList.size(); j += 3) {
+			for (int j = 0; j < totalcount; j += 3) {
 				partitions.add(filteredList.subList(j, Math.min(j + 3, filteredList.size())));
 			}
 

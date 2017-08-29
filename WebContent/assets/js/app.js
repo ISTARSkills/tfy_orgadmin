@@ -16,6 +16,10 @@ case 'student_skill_profile':
 	init_student_skill_profile_variables();
 	init_student_skill_profile_function();
 	break;
+	case 'student_begin_skill':
+		init_student_begin_skill_variables();
+		init_student_begin_skill_function();
+		break;	
 default:
 	init_default_js();
 }
@@ -67,3 +71,19 @@ function init_student_skill_profile_function() {
 
 }
 /* student skill_profile functions*/
+
+
+/* init student begin skill */
+function init_student_begin_skill_variables(){
+	
+	$('#roles').parent().addClass('active');
+	
+}
+/* init student begin skill */
+
+/* studentbegin skill functions*/
+function init_student_begin_skill_function(){
+	
+	
+}
+/* student begin skill functions*/
