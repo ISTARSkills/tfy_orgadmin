@@ -1721,4 +1721,8 @@ a.unselected_report {
 	border: none !important;
 	background-color: #f7f7f7 !important;
 }
-/* Vinat css ends */
+
+.custom-event-modal-body {
+	width: 660px;
+}
+/* Vinay css ends */
