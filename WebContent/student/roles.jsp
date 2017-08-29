@@ -43,6 +43,15 @@
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
+			
+			$('.custom-roles-cards').click(function(){
+				
+				var course_id = $(this).attr("data-course_id");
+				
+				 window.location.href= '<%=baseURL%>student/partials/begin_skill.jsp?course_id='+course_id;
+				
+				
+			});
 		});
 	</script>
 </body>
