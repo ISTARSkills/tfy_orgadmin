@@ -365,7 +365,7 @@ public class FarziDataCreatorServices {
 		System.out.println("start");
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
 		
-		
+		/*
 		{
 			int orgID= 283;
 			serv.createAssesssmentTaskForAllBgs(orgID);
@@ -398,9 +398,9 @@ public class FarziDataCreatorServices {
 			serv.markAutoScheduleAsCompleted(orgID); 
 			
 			
-		}
+		}*/
 		System.out.println("two");
-		{
+		{/*
 			int orgID = 284;
 			serv.createAssesssmentTaskForAllBgs(orgID);
 			Organization org = new OrganizationDAO().findById(orgID);
@@ -433,12 +433,12 @@ public class FarziDataCreatorServices {
 			
 			serv.markAutoScheduleAsCompleted(orgID); 
 			
-		}
+		}*/
 		
 		System.out.println("three");
 		
 		{
-			String orgName = "TLFY Hospitality";			
+			String orgName = "TLFY Hospitality New";			
 			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
 			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
 			int courses[] = {114,107,115,18};
@@ -448,7 +448,7 @@ public class FarziDataCreatorServices {
 			int orgID =serv.createOrganization(orgName);
 			//int orgID = 280;
 			for (int k=0; k< batches.length;k++) {
-				int bgId = serv.createBGsInOrganization(orgID, 20, batches[k]);
+				int bgId = serv.createBGsInOrganization(orgID, 10, batches[k]);
 				for(int cid: courses)
 				{					
 					serv.addCourseInGroup(bgId,cid);
@@ -483,7 +483,7 @@ public class FarziDataCreatorServices {
 			System.out.println("all assessment submitted");
 			
 			
-			serv.markAutoScheduleAsCompleted(orgID); 
+			//serv.markAutoScheduleAsCompleted(orgID); 
 			
 			for(BatchGroup bg : org.getBatchGroups())
 			{
@@ -496,7 +496,7 @@ public class FarziDataCreatorServices {
 		
 		System.out.println("four");
 		
-		{
+		{/*
 			System.out.println("statetd second org");
 			String orgName = "TLFY Retail";			
 			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
@@ -550,10 +550,10 @@ public class FarziDataCreatorServices {
 				serv.createCLassRoomSessionEvents(bg.getId());
 			}
 			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
+			serv.updateSessionEventsForOrg(orgID);*/
 		}
 		
-		
+		}
 		
 		//deleteOrgData(279);
 		System.out.println("end");
@@ -1227,7 +1227,7 @@ public class FarziDataCreatorServices {
 					start.add(Calendar.DATE, -1);
 					start.add(Calendar.HOUR, i);
 					Calendar end = Calendar.getInstance();
-					end.add(Calendar.DATE,7);
+					end.add(Calendar.DATE,1);
 					
 					Date statrtDate = new Date(start.getTimeInMillis());
 					Date endDate = new Date(end.getTimeInMillis());

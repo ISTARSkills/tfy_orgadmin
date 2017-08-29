@@ -186,7 +186,21 @@
 												title="Sessions" 
 												data-trigger="hover" 
 												data-placement="top"
-												data-content="And here's some amazing content. It's very engaging. Right?">Operation of Banks - 2</div>
+												data-content="<%=event.getSessionName()%>">
+												<%if(event.getSessionName().length()>25)
+													{
+													%>
+													<%=event.getSessionName().substring(0, 25)%>
+													<%
+													}
+													else
+													{
+														%>
+														<%=event.getSessionName()%>
+														<%
+													}
+													%>
+												</div>
 												<div class="row m-0">
 													<div class="custom-trainer-card-info"><%=event.getGroupName()%></div>
 													<div class="mr-md-3">

@@ -1210,7 +1210,7 @@ public class EventSchedulerService {
 	{
 		
 		IstarUser trainer = new IstarUserDAO().findById(trainerID);
-		String tempHostIds[] = {"iVdopKgbTECciWQIe19wHw","J8jNaBXoQTO9UQn-_dv5og","PKXx0r9TQKquG8GYBejRpA","xWB8iMpgSZGpdVXwDIjrag"} ;
+		String tempHostIds[] = {"J8jNaBXoQTO9UQn-_dv5og","PKXx0r9TQKquG8GYBejRpA","xWB8iMpgSZGpdVXwDIjrag"} ;
 		Random r = new Random();
 		int Low = 0;
 		int High = 3;
