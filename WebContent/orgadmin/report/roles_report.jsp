@@ -34,8 +34,6 @@
 		}
 
 		request.setAttribute("cp", cp);
-		
-		
 	%>
 
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
@@ -121,10 +119,15 @@
 					<div class='line'></div>
 					<div class='row report-roles-card'>
 
-						<div id="carouselExampleControls" class="carousel slide w-100"
-							data-ride="carousel" data-interval="false">
+						<div id="carouselExampleControls<%=i%>"
+							class="carousel slide w-100" data-ride="carousel"
+							data-interval="false">
 							<div class="carousel-inner">
-								<div class="carousel-item active">
+
+								<%
+									for (int k = 0; k < 5; k++) {
+								%>
+								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
 									<div class='row custom-no-margins justify-content-md-center'>
 
 										<%
@@ -191,18 +194,22 @@
 										%>
 									</div>
 								</div>
+								<%
+									}
+								%>
 							</div>
 							<a class="carousel-control-next custom-right-prev-section"
-								href="#carouselExampleControls" role="button" data-slide="next">
-
-								<img src="/assets/images/report/icons-8-chevron-right-round.png"
+								href="#carouselExampleControls<%=i%>" role="button"
+								data-slide="next"> <img
+								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
 								class="icons8-chevron_right_round">
 
 							</a> <a class="carousel-control-prev custom-left-prev-section"
-								href="#carouselExampleControls" role="button" data-slide="prev">
-								<img class="" src="/assets/images/992180-2001-copy.png" alt="" />
+								href="#carouselExampleControls<%=i%>" role="button"
+								data-slide="prev"> <img class=""
+								src="/assets/images/992180-2001-copy.png" alt="" />
 							</a>
 						</div>
 
@@ -231,56 +238,58 @@
 				function() {
 
 					var chart;
-					$('.skill_graph').each(function(index){
-						
-					
-					new Highcharts.Chart({
-						legend : {
-							layout : 'vertical',
-							backgroundColor : '#ffffff',
-							align : 'right',
-							symbolHeight : 5,
-							symbolRadius : 0,
-							verticalAlign : 'middle',
-							floating : true,
-						},
-						chart : {
-							renderTo : 'container'+index,
-							type : 'pie'
-						},
-						title : {
-							text : ''
-						},
-						yAxis : {
-							title : {
-								text : ''
-							}
-						},
-						plotOptions : {
-							pie : {
-								shadow : false
-							}
-						},
-						tooltip : {
-							formatter : function() {
-								return '<b>' + this.point.name + '</b>: '
-										+ this.y + ' %';
-							}
-						},
-						series : [ {
-							name : 'Mastry Level',
-							data : [ [ "Wizrard", 3 ], [ "Master", 4 ],
-									[ "Apprentice", 7 ], [ "Rookie", 3 ] ],
-							size : '121.3px',
-							innerSize : '60%',
-							showInLegend : true,
-							dataLabels : {
-								enabled : false
-							}
-						} ]
-					});
-					
-					});
+					$('.skill_graph').each(
+							function(index) {
+
+								new Highcharts.Chart({
+									legend : {
+										layout : 'vertical',
+										backgroundColor : '#ffffff',
+										align : 'right',
+										symbolHeight : 5,
+										symbolRadius : 0,
+										verticalAlign : 'middle',
+										floating : true,
+									},
+									chart : {
+										renderTo : 'container' + index,
+										type : 'pie'
+									},
+									title : {
+										text : ''
+									},
+									yAxis : {
+										title : {
+											text : ''
+										}
+									},
+									plotOptions : {
+										pie : {
+											shadow : false
+										}
+									},
+									tooltip : {
+										formatter : function() {
+											return '<b>' + this.point.name
+													+ '</b>: ' + this.y + ' %';
+										}
+									},
+									series : [ {
+										name : 'Mastry Level',
+										data : [ [ "Wizrard", 3 ],
+												[ "Master", 4 ],
+												[ "Apprentice", 7 ],
+												[ "Rookie", 3 ] ],
+										size : '121.3px',
+										innerSize : '60%',
+										showInLegend : true,
+										dataLabels : {
+											enabled : false
+										}
+									} ]
+								});
+
+							});
 
 				});
 	</script>

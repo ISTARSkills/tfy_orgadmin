@@ -114,10 +114,16 @@
 					<div class='line'></div>
 					<div class='row report-roles-card mb-0'>
 
-						<div id="carouselExampleControls" class="carousel slide w-100"
-							data-ride="carousel" data-interval="false">
+						<div id="carouselExampleControls<%=i%>"
+							class="carousel slide w-100" data-ride="carousel"
+							data-interval="false">
 							<div class="carousel-inner">
-								<div class="carousel-item active">
+
+								<%
+									for (int k = 0; k < 5; k++) {
+								%>
+
+								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
 									<div class='row custom-no-margins justify-content-md-center'>
 
 										<%
@@ -195,18 +201,23 @@
 										%>
 									</div>
 								</div>
+
+								<%
+									}
+								%>
 							</div>
 							<a class="carousel-control-next custom-right-prev-section"
-								href="#carouselExampleControls" role="button" data-slide="next">
-
-								<img src="/assets/images/report/icons-8-chevron-right-round.png"
+								href="#carouselExampleControls<%=i%>" role="button"
+								data-slide="next"> <img
+								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
 								class="icons8-chevron_right_round">
 
 							</a> <a class="carousel-control-prev custom-left-prev-section"
-								href="#carouselExampleControls" role="button" data-slide="prev">
-								<img class="" src="/assets/images/992180-2001-copy.png" alt="" />
+								href="#carouselExampleControls<%=i%>" role="button"
+								data-slide="prev"> <img class=""
+								src="/assets/images/992180-2001-copy.png" alt="" />
 							</a>
 						</div>
 
