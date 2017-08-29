@@ -1,3 +1,4 @@
+<%@page import="java.util.Random"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="com.istarindia.android.pojo.*"%>
@@ -34,6 +35,7 @@
 		}
 
 		request.setAttribute("cp", cp);
+		Random rn = new Random();
 	%>
 
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
@@ -71,9 +73,9 @@
 									class="dash-star-6x fa fa-star-o"></i><i
 									class="dash-star-6x fa fa-star-o"></i>
 							</p>
-							<div class='row' style='margin-top: 30px;margin-left:5px;'>
+							<div class='row' style='margin-top: 30px; margin-left: 5px;'>
 
-								<div class='' style='width:107px;'>
+								<div class='' style='width: 107px;'>
 									<img src="/assets/images/report/icons-8-groups.png"
 										srcset="/assets/images/report/icons-8-groups@2x.png 2x,/assets/images/report/icons-8-groups@3x.png 3x"
 										class="icons8-groups" />
@@ -82,7 +84,7 @@
 									</p>
 								</div>
 
-								<div class=''  style='width:135px;'>
+								<div class='' style='width: 135px;'>
 									<img src="/assets/images/report/icons-8-student.png"
 										srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 										class="icons8-student" />
@@ -91,20 +93,20 @@
 									</p>
 								</div>
 
-								<div class='' style='width:135px;'>
+								<div class='' style='width: 135px;'>
 									<img src="/assets/images/report/icons-8-report-card.png"
 										srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 										class="icons8-report_card" />
-									<p class='report-roles-sub-text' style=' width: 128px;'>
+									<p class='report-roles-sub-text' style='width: 128px;'>
 										<span class='spannable'>68%</span> Attendance
 									</p>
 								</div>
 
-								<div class='' style='width:135px;'>
+								<div class='' style='width: 135px;'>
 									<img src="/assets/images/report/icons-8-discount.png"
 										srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 										class="icons8-discount" />
-									<p class='report-roles-sub-text' style=' width: 139px;'>
+									<p class='report-roles-sub-text' style='width: 139px;'>
 										<span class='spannable'>85%</span> Performance
 									</p>
 								</div>
@@ -119,13 +121,17 @@
 					<div class='line'></div>
 					<div class='row report-roles-card'>
 
+						<%
+							int size = rn.nextInt(4);
+								if (size != 0) {
+						%>
 						<div id="carouselExampleControls<%=i%>"
 							class="carousel slide w-100 carousel-holder" data-ride="carousel"
 							data-interval="false">
 							<div class="carousel-inner">
 
 								<%
-									for (int k = 0; k < 5; k++) {
+									for (int k = 0; k < size; k++) {
 								%>
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
 									<div class='row custom-no-margins'>
@@ -135,8 +141,9 @@
 										%>
 										<div class="card p-0 report-role-carousel-card">
 											<div class="card-header report-section-card-header">
-												<h5 class='report-section-card-header-title'>FY BCom.
-													Section <%=k+1%><%=j+1%></h5>
+												<h5 class='report-section-card-header-title'>
+													FY BCom. Section
+													<%=k + 1%><%=j + 1%></h5>
 												<p class="stars">
 													<i class="dash-star-6x fa fa-star"></i><i
 														class="dash-star-6x fa fa-star"></i><i
@@ -199,16 +206,16 @@
 								%>
 							</div>
 							<a class="carousel-control-next custom-right-prev-section"
-								href="#carouselExampleControls<%=i%>" role="button" id='carousel-control-next-<%=i%>'
-								data-slide="next"> <img
+								href="#carouselExampleControls<%=i%>" role="button"
+								id='carousel-control-next-<%=i%>' data-slide="next"> <img
 								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
 								class="icons8-chevron_right_round" />
 
 							</a> <a class="carousel-control-prev custom-left-prev-section"
-								href="#carouselExampleControls<%=i%>" role="button" id='carousel-control-prev-<%=i%>'
-								data-slide="prev"> <img
+								href="#carouselExampleControls<%=i%>" role="button"
+								id='carousel-control-prev-<%=i%>' data-slide="prev"> <img
 								src="/assets/images/report/icons-8-chevron-right-round.png"
 								srcset="/assets/images/report/icons-8-chevron-right-round@2x.png 2x,
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
@@ -216,6 +223,16 @@
 							</a>
 						</div>
 
+						<%
+							} else {
+						%>
+						<div class="jumbotron m-auto w-100 text-center bg-white">
+							<h1>No Sections Found!</h1>
+						</div>
+
+						<%
+							}
+						%>
 					</div>
 				</div>
 			</div>
@@ -233,10 +250,6 @@
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 	<script>
-		Highcharts.setOptions({
-			colors : [ '#fd6d81', '#7295fd', '#30beef', '#bae88a' ]
-		});
-
 		$(document).ready(
 				function() {
 
@@ -279,10 +292,25 @@
 									},
 									series : [ {
 										name : 'Mastry Level',
-										data : [ [ "Wizrard", 3 ],
-												[ "Master", 4 ],
-												[ "Apprentice", 7 ],
-												[ "Rookie", 3 ] ],
+										data : [ {
+											y : 40,
+											name : "Wizrard",
+											color : "#fd6d81"
+										}, {
+											y : 15,
+											name : "Master",
+											color : "#7295fd"
+										}, {
+											y : 25,
+											name : "Apprentice",
+											color : "#30beef"
+										}, {
+											y : 20,
+											name : "Rookie",
+											color : "#bae88a"
+										}
+
+										],
 										size : '121.3px',
 										innerSize : '60%',
 										showInLegend : true,
@@ -293,32 +321,32 @@
 								});
 
 							});
-					
-					$('.carousel-holder').each(function(){
+
+					$('.carousel-holder').each(function() {
 						checkitem($(this));
 					});
-					
-					$('.carousel-holder').bind('slid.bs.carousel', function (e) {
+
+					$('.carousel-holder').bind('slid.bs.carousel', function(e) {
 						checkitem($(this));
 					});
-					
 
 				});
-		
-		function checkitem($this)                        // check function
+
+		function checkitem($this) // check function
 		{
-		  if($this.find('.carousel-inner .carousel-item:first').hasClass('active')) {
-			  $this.find('.carousel-control-prev').hide();
-		      $this.find('.carousel-control-next').show();
-		  } else if($this.find('.carousel-inner .carousel-item:last').hasClass('active')) {
-			  $this.find('.carousel-control-prev').show();
-			  $this.find('.carousel-control-next').hide();
-		  } else {
-			  $this.find('.carousel-control-next').show();
-			  $this.find('.carousel-control-prev').show();
-		  } 
+			if ($this.find('.carousel-inner .carousel-item:first').hasClass(
+					'active')) {
+				$this.find('.carousel-control-prev').hide();
+				$this.find('.carousel-control-next').show();
+			} else if ($this.find('.carousel-inner .carousel-item:last')
+					.hasClass('active')) {
+				$this.find('.carousel-control-prev').show();
+				$this.find('.carousel-control-next').hide();
+			} else {
+				$this.find('.carousel-control-next').show();
+				$this.find('.carousel-control-prev').show();
+			}
 		}
-		
 	</script>
 
 </body>

@@ -1,3 +1,4 @@
+<%@page import="java.util.Random"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 
 <%@page import="com.istarindia.android.pojo.*"%>
@@ -71,7 +72,7 @@
 						<div class='row m-0 p-0 w-100'>
 							<div class="col-6 p-0 w-100 m-0">
 								<div class='row p-0 mx-0 w-100 my-2'>
-									<div class='m-0 p-0' style='width:75px;'>
+									<div class='m-0 p-0' style='width: 75px;'>
 										<img src="/assets/images/report/icons-8-saving-book.png"
 											srcset="/assets/images/report/icons-8-saving-book@2x.png 2x,/assets/images/report/icons-8-saving-book@3x.png 3x"
 											class="icons8-saving_book">
@@ -80,7 +81,7 @@
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width:100px;'>
+									<div class='m-0 p-0' style='width: 100px;'>
 										<img src="/assets/images/report/icons-8-student.png"
 											srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 											class="icons8-student" />
@@ -89,7 +90,7 @@
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width:130px;'>
+									<div class='m-0 p-0' style='width: 130px;'>
 										<img src="/assets/images/report/icons-8-report-card.png"
 											srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 											class="icons8-report_card" />
@@ -98,7 +99,7 @@
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width:135px;'>
+									<div class='m-0 p-0' style='width: 135px;'>
 										<img src="/assets/images/report/icons-8-discount.png"
 											srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 											class="icons8-discount" />
@@ -114,13 +115,21 @@
 					<div class='line'></div>
 					<div class='row report-roles-card mb-0'>
 
+
+						<%
+							Random rn = new Random();
+								int size = rn.nextInt(4);
+								if (size != 0) {
+						%>
+
+
 						<div id="carouselExampleControls<%=i%>"
 							class="carousel slide w-100 carousel-holder" data-ride="carousel"
 							data-interval="false">
 							<div class="carousel-inner">
 
 								<%
-									for (int k = 0; k < 5; k++) {
+									for (int k = 0; k < size; k++) {
 								%>
 
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
@@ -135,7 +144,8 @@
 													<div class='col-2 p-0 m-0'>
 
 														<img class='report-group-image'
-															src='http://cdn.talentify.in:9999/course_images/5.png' alt='image'></img>
+															src='http://cdn.talentify.in:9999/course_images/5.png'
+															alt='image'></img>
 
 													</div>
 													<div class='col-1 p-0 m-0'></div>
@@ -224,6 +234,17 @@
 							</a>
 						</div>
 
+						<%
+							} else {
+						%>
+						<div class="jumbotron m-auto w-100 text-center bg-white">
+							<h1>No Roles Found!</h1>
+						</div>
+
+						<%
+							}
+						%>
+
 					</div>
 				</div>
 			</div>
@@ -243,29 +264,30 @@
 
 	<script>
 		$(document).ready(function() {
-			$('.carousel-holder').each(function(){
+			$('.carousel-holder').each(function() {
 				checkitem($(this));
 			});
-			
-			$('.carousel-holder').bind('slid.bs.carousel', function (e) {
+
+			$('.carousel-holder').bind('slid.bs.carousel', function(e) {
 				checkitem($(this));
 			});
 		});
-		
-		function checkitem($this)                        // check function
+
+		function checkitem($this) // check function
 		{
-		  if($this.find('.carousel-inner .carousel-item:first').hasClass('active')) {
-			  $this.find('.carousel-control-prev').hide();
-		      $this.find('.carousel-control-next').show();
-		  } else if($this.find('.carousel-inner .carousel-item:last').hasClass('active')) {
-			  $this.find('.carousel-control-prev').show();
-			  $this.find('.carousel-control-next').hide();
-		  } else {
-			  $this.find('.carousel-control-next').show();
-			  $this.find('.carousel-control-prev').show();
-		  } 
+			if ($this.find('.carousel-inner .carousel-item:first').hasClass(
+					'active')) {
+				$this.find('.carousel-control-prev').hide();
+				$this.find('.carousel-control-next').show();
+			} else if ($this.find('.carousel-inner .carousel-item:last')
+					.hasClass('active')) {
+				$this.find('.carousel-control-prev').show();
+				$this.find('.carousel-control-next').hide();
+			} else {
+				$this.find('.carousel-control-next').show();
+				$this.find('.carousel-control-prev').show();
+			}
 		}
-		
 	</script>
 
 </body>
