@@ -1958,3 +1958,33 @@ a.unselected_report {
 	width: 660px;
 }
 /* Vinay css ends */
+
+.module_image {
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+}
+
+.btn-modal {
+  color: inherit;
+  background: white;
+  border: 1px solid #e7eaec;
+}
+.btn-modal:hover,
+.btn-modal:focus,
+.btn-modal:active,
+.btn-modal.active,
+.open .dropdown-toggle.btn-modal,
+.btn-modal:active:focus,
+.btn-modal:active:hover,
+.btn-modal.active:hover,
+.btn-modal.active:focus {
+  color: inherit;
+  border: 1px solid #d2d2d2;
+  background-color: #e6e6e6;
+}
+.btn-modal:active,
+.btn-modal.active,
+.open .dropdown-toggle.btn-modal {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+}
