@@ -54,7 +54,7 @@
 	width: 168px;
 	height: 18px;
 	mix-blend-mode: multiply;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 13.8px;
 	font-weight: 500;
 	line-height: 1.27;
@@ -67,7 +67,7 @@
 .custom-card-title {
 	width: 331.1px;
 	height: 35.1px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 20px;
 	font-weight: 500;
 	line-height: 1.76;
@@ -79,7 +79,7 @@
 .custom-card-text {
 	width: 331.1px;
 	height: 100px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 18px;
 	font-weight: 300;
 	text-align: left;
@@ -118,7 +118,7 @@
 .custom-primary-btn-text {
 	width: 192px;
 	height: 24px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 16.1px;
 	font-weight: 900;
 	line-height: 2.5;
@@ -190,7 +190,7 @@
 .custom-task-counter {
 	width: 252px;
 	height: 36px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 18px;
 	line-height: 1.99;
 	text-align: right;
@@ -215,7 +215,7 @@
 .custom-modal-title {
 	width: 214px;
 	height: 35px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 24px;
 	font-weight: 500;
 	line-height: 1.49;
@@ -237,7 +237,7 @@
 .custom-task-titletext {
 	width: 257px;
 	height: 44px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 20px;
 	font-weight: 300;
 	line-height: 2.2;
@@ -248,7 +248,7 @@
 .custom-task-subtitletext {
 	width: 136px;
 	height: 32px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 20px;
 	font-weight: 500;
 	line-height: 1.6;
@@ -264,7 +264,7 @@
 
 .custom-profil-name {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 16px !important;
 	text-align: left;
 	color: #333333;
@@ -347,7 +347,7 @@
 	width: 165px;
 	height: 23px;
 	mix-blend-mode: multiply;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 16.9px;
 	font-weight: 500;
 	line-height: 1.27;
@@ -359,7 +359,7 @@
 .custom-roles-titletext {
 	width: 221px;
 	height: 35px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 18.6px;
 	font-weight: 500;
 	line-height: 1.38;
@@ -371,7 +371,7 @@
 .custom-roles-progress {
 	width: 229px;
 	height: 25px;
-	font-family: 'Lato', sans-serif;
+	font-family: Avenir;
 	font-size: 16.9px;
 	font-weight: 500;
 	line-height: 1.33;
@@ -406,7 +406,7 @@
 }
 .custom-skill-profile-name{
  
- font-family: 'Lato', sans-serif;
+ font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   line-height: 1.47;
@@ -415,7 +415,7 @@
 }
 .custom-skill-profile-batch-raking{
 	 
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 36px;
   font-weight: 500;
   line-height: 1.51;
@@ -426,7 +426,7 @@
 
 .custom-skill-profile-batch-raking-title{
 	
- font-family: 'Lato', sans-serif;
+ font-family: Avenir;
   font-size: 20px;
   font-weight: 300;
   line-height: 1.56;
@@ -448,7 +448,7 @@
 .custom-skill-badge-title{
   width: 127.5px;
   height: 41.6px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.3;
@@ -476,6 +476,7 @@
 }
 
 .custom-skill-tree{
+	overflow:auto;
 	 width: 732px;
   height: 954px;
   background-color: #ffffff;
@@ -485,7 +486,7 @@
 .custom-skill-tree-title{
  width: 131px;
   height: 22.4px;
- font-family: 'Lato', sans-serif;
+ font-family: Avenir;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.4;
@@ -505,7 +506,7 @@
 }
 .custom-beginskill-course-heading{
   height: 48px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   line-height: 2;
@@ -519,7 +520,7 @@
   background-color: transparent;
 }
 .custom-beginskill-xp{
- font-family: 'Lato', sans-serif;
+ font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   line-height: 1.63;
@@ -528,7 +529,7 @@
   margin-bottom:0px;
 }
 .custom-beginskill-progress{
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   line-height: 1.28;
@@ -537,7 +538,7 @@
   margin-bottom:0px;
 }
 .custom-beginskill-rank{
-   font-family: 'Lato', sans-serif;
+   font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   line-height: 1.28;
@@ -549,7 +550,7 @@
 width: 113px;
   height: 20px;
   opacity: 0.6;
-   font-family: 'Lato', sans-serif;
+   font-family: Avenir;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.4;
@@ -562,7 +563,7 @@ width: 113px;
 	 width: 80.6px;
   height: 19.6px;
   opacity: 0.6;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
@@ -574,7 +575,7 @@ width: 113px;
 	  width: 80.6px;
   height: 19.6px;
   opacity: 0.6;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
@@ -585,7 +586,7 @@ width: 113px;
 
 .custom-beginskill-module-title{
   height: 23px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 20px;
   font-weight: 500;
   line-height: 1.19;
@@ -605,7 +606,7 @@ width: 35px;
 }
 .custom-beginskill-badge{
   height: 23px;
-   font-family: 'Lato', sans-serif;
+   font-family: Avenir;
   font-size: 13.4px;
   font-weight: 500;
   line-height: 1.44;
@@ -657,7 +658,7 @@ width: 406px;
 .custom-beginskill-button-text{
 width: 193.2px;
   height: 33.6px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 20px;
   font-weight: 900;
   line-height: 1.68;
@@ -668,7 +669,7 @@ width: 193.2px;
 .custom-task-title{
 	width: 356px;
   height: 66px;
-   font-family: 'Lato', sans-serif;
+   font-family: Avenir;
   font-size: 24px;
   font-weight: 500;
   color: #3f3f3f;
@@ -679,7 +680,7 @@ color: #23b6f9;
 }
 .custom-task-desc{	
   height: 81px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 20px;
   font-weight: 300;
   text-align: center;
@@ -687,7 +688,7 @@ color: #23b6f9;
 }
 .take-a-shortcut{
   height: 27px;
-  font-family: 'Lato', sans-serif;
+  font-family: Avenir;
   font-size: 19.6px;
   font-weight: 500;
   letter-spacing: 0.7px;
@@ -699,7 +700,7 @@ color: #23b6f9;
  width: 213px;
   height: 50px;
   opacity: 0.5;
- font-family: 'Lato', sans-serif;
+ font-family: Avenir;
   font-size: 18px;
   font-weight: 300;
   text-align: center;
@@ -917,7 +918,7 @@ width:30px
 
 }
 .custom-skillprofile-xp_points{
-	 width: 85px;
+	 width: 104px;
   height: 25.5px;
   font-family: Avenir;
   font-size: 16px;
@@ -928,7 +929,7 @@ width:30px
 	float: right;
 }
 .custom-skillprofile-subskills{
- width: 74.8px;
+ width: 88.8px;
   height: 25.5px;
   font-family: Avenir;
   font-size: 16px;
@@ -939,3 +940,28 @@ width:30px
 float: right;
 }
 
+.point-div{
+  width: 4.8px;
+  height: 4.9px;
+  opacity: 0.6;
+  background-color: #777777 !important;
+  }
+.custom-scroll-holder::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #ebeaea;
+}
+
+.custom-scroll-holder::-webkit-scrollbar
+{
+  	border-radius: 100px;
+  	width: 6px;
+	background-color: #ebeaea;
+}
+
+.custom-scroll-holder::-webkit-scrollbar-thumb
+{
+	border-radius: 100px;
+	height: 50px;
+	background-color: #999999;
+}

@@ -124,7 +124,7 @@
 
 				</div>
 				<div class="col-9">
-					<div class="card custom-skill-tree ml-5">
+					<div class="card custom-skill-tree ml-5 custom-scroll-holder">
 						<div class="card-block" id='skillTreeHolder'>
 							
 
@@ -133,8 +133,10 @@
 								<div class="row">
 									<div class="col-12">
 										<ul id="tree1">
+										
+										<%= userskillprofile.getSkillTree(cp)%>
 
-											<li>Risk Management 1 <small class='custom-skillprofile-subskills'>3 subskills</small> <small class='custom-skillprofile-xp_points'>250/500 XP</small>
+											<!-- <li>Risk Management 1 <small class='custom-skillprofile-subskills'>3 subskills</small> <small class='custom-skillprofile-xp_points'>250/500 XP</small>
 												<div class="progress ml-5">
 													<div class="progress-bar custom-skillprofile-skill-progress" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
 												</div>
@@ -151,7 +153,7 @@
 													</li>
 
 												</ul>
-											</li>
+											</li> -->
 										</ul>
 									</div>
 
