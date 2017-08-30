@@ -64,7 +64,7 @@ public class UserSkillProfile {
 				
 			}else {
 				
-				parentactiveclass = "disabled";	
+				parentactiveclass = "skill_list_disable disabled";	
 				childactiveclass ="custom-skill-list-disabled";
 				
 			}
@@ -76,7 +76,7 @@ public class UserSkillProfile {
 		out.append("<div class='card-block'>");
 		out.append("<div class='row custom-no-margins'>");
 		out.append("<div class='col-4'>");
-		out.append("<img class='img-circle custom-skill-tree-img' src='"+skillobj.getImageURL()+"' alt='No Image Available'>");
+		out.append("<img class='custom-skill-tree-img' src='"+skillobj.getImageURL()+"' alt='No Image Available'>");
 		out.append("</div>");
 		out.append("<div class='col-8 my-auto'>");
 		out.append("<h3 class='custom-skill-tree-title'>"+skillobj.getName()+"</h3>");
@@ -157,7 +157,7 @@ public class UserSkillProfile {
 						out.append("<div class='card custom-beginskill-lesson-cards-background-left'>");
 						out.append("<div class='card-block'>");
 						out.append("<h1 class='card-title custom-task-title mt-5'>Direct Tax Skill Work shop Direct Tax</h1>");
-						out.append("<h1 class=' ml-2 mr-2'>71%</h1>");
+						out.append("<h1 class=' ml-4 mr-4 custom-progress-color'>71%</h1>");
 						out.append("<h2>Accuracy</h2>");
 						out.append("<p class=' dont-stop-There-is'>Don't stop! There is still room to grow.</p>");
 						out.append("</div>");
@@ -169,15 +169,16 @@ public class UserSkillProfile {
 						out.append("</div>");
 						out.append("<div class='col-4 my-auto custom-no-padding text-center'>");
 						out.append("<div class='card mb-5 mt-5 custom-beginskill-lesson-cards-forground'>");
-						out.append("<div class='card-block '>");
 						out.append("<div class='progress'>");
 						out.append(
-								"<div class='progress-bar' role='progressbar'tyle='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'></div>");
+								"<div class='progress-bar' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'></div>");
 						out.append("</div>");
+						out.append("<div class='card-block text-center my-auto'>");
+						
 						out.append(
-								"<h1 class='card-title custom-task-title mt-5 text-center'>Direct Tax Skill Work shop Direct Tax</h1>");
+								"<h1 class='card-title custom-task-title mx-auto text-center'>Direct Tax Skill Work shop Direct Tax</h1>");
 						out.append(
-								"<p class='card-text custom-task-desc ml-2 mr-2'>A brief introduction to the various channels of banking operations</p>");
+								"<p class='card-text custom-task-desc ml-4 mr-4'>A brief introduction to the various channels of banking operations</p>");
 						out.append("<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>");
 						out.append("</div>");
 						out.append("<div class='custom-beginskill-forgroundbutton'>");
@@ -191,7 +192,7 @@ public class UserSkillProfile {
 						out.append("<div class='card-block text-right'>");
 						out.append(
 								"<h1 class='card-title custom-task-title mt-5'>Direct Tax Skill Work shop Direct Tax</h1>");
-						out.append("<h1 class=' ml-2 mr-2'>71%</h1>");
+						out.append("<h1 class=' ml-2 mr-2 custom-progress-color'>71%</h1>");
 						out.append("<h2>Accuracy</h2>");
 						out.append("<p class=' dont-stop-There-is'>Don't stop! There is still room to grow.</p>");
 						out.append("</div>");

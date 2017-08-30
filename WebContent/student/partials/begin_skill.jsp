@@ -45,6 +45,7 @@
 				userTotalPoints = student_course.getTotalPoints();
 				courseName = student_course.getName();
 				courseImg = student_course.getImageURL();
+				
 
 			}
 
@@ -70,7 +71,7 @@
 				<div class='col-6 custom-no-padding'>
 					<div class="row ml-0">
 						<div class='col-4 my-auto custom-no-padding text-center'>
-							<h1 class='custom-beginskill-xp'><%=userUserPoints%>
+							<h1 class='custom-beginskill-xp'><%= Math.round(userUserPoints)%>
 								XP
 							</h1>
 							<small class="text-muted custom-beginskill-xp-title">of <%=userTotalPoints%>
