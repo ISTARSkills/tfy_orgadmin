@@ -34,7 +34,7 @@ public class AdminRestClient {
 		ArrayList<EventsCard> covertedObject = new ArrayList<EventsCard>();
 		try {
 
-			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"dashboard/"+orgId);
+			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"dashboard/"+orgId+"/todays_event");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			//System.out.println(conn.getURL().toString());
 			conn.setRequestMethod("GET");		

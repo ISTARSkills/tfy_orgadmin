@@ -181,16 +181,15 @@
 											</div>
 											<div class="col-md-9 pl-0">
 												<div class="custom-trainer-card-title m-0"><%=event.getCourse()%></div>
-												<div class="custom-trainer-card-header popover-dismiss" 
-												data-toggle="popover" 
+												<div class="custom-trainer-card-header popover-dismiss" data-toggle="popover" 
 												title="Sessions" 
 												data-trigger="hover" 
 												data-placement="top"
-												data-content="<%=event.getSessionName()%>">
+												data-content="<%=event.getSessionName()%>">												
 												<%if(event.getSessionName().length()>25)
 													{
 													%>
-													<%=event.getSessionName().substring(0, 25)%>
+													<%=event.getSessionName().substring(0, 25)%> ...
 													<%
 													}
 													else
@@ -207,6 +206,9 @@
 														<span class="oval-small"></span>
 													</div>
 													<div class="custom-trainer-card-info"><%=event.getTrainerName()%></div>
+													<div class="mr-md-3">
+														<span class="oval-small"></span>
+													</div>
 													<%
 													if(event.getAssociateTrainerName()!=null)
 													{
