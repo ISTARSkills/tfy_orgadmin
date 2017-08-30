@@ -1,0 +1,1960 @@
+/* Base Css*/
+.gray-bg {
+	background-color: #f3f3f4;
+}
+
+.loginscreen.middle-box {
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+	margin-top: 50px;
+	width: 100%;
+	padding: 30px
+}
+
+.middle-box {
+	max-width: 500px;
+	z-index: 100;
+	margin: 0 auto;
+	padding-top: 40px;
+}
+
+.fadeInDown {
+	-webkit-animation-name: fadeInDown;
+	animation-name: fadeInDown;
+}
+
+.animated {
+	-webkit-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.jumbotron {
+	padding-top: 48px;
+	padding-bottom: 48px;
+}
+
+.custom-colmd-css {
+	width: 100%;
+	height: 100vh;
+}
+
+.custom-cards_css {
+	width: 373.2px;
+	height: 530.4px;
+	border-radius: 1.3px;
+	background-color: #ffffff;
+	box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0
+		rgba(0, 0, 0, 0.12);
+}
+
+.custom-card-subtitle {
+	width: 168px;
+	height: 18px;
+	mix-blend-mode: multiply;
+	font-family: 'Lato', sans-serif;
+	font-size: 13.8px;
+	font-weight: 500;
+	line-height: 1.27;
+	text-align: left;
+	color: #9b9b9b;
+	margin-left: 2.5rem;
+	margin-top: 1.5rem;
+}
+
+.custom-card-title {
+	width: 331.1px;
+	height: 35.1px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 1.76;
+	text-align: left;
+	color: #3f3f3f;
+	margin-left: 2.5rem;
+}
+
+.custom-card-text {
+	width: 331.1px;
+	height: 100px;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	font-weight: 300;
+	text-align: left;
+	color: #3f3f3f;
+	margin-left: 2.5rem;
+	margin-top: 1.5rem;
+}
+
+.custom-primary-btn {
+	width: 339.8px;
+	height: 60.2px;
+	border-radius: 41.8px !important;
+	background-color: #eb384f;
+	box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.31);
+	color: #eb384f !important;
+	position: absolute;
+	bottom: -5%;
+	text-align: center;
+	z-index: 999 !important;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.custom-primary-img {
+	width: 371.2px;
+	height: 200.6px;
+	object-fit: cover;
+}
+
+.custom-secoundary-img {
+	width: 24px;
+	height: 24px;
+	object-fit: contain;
+}
+
+.custom-primary-btn-text {
+	width: 192px;
+	height: 24px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16.1px;
+	font-weight: 900;
+	line-height: 2.5;
+	letter-spacing: 0.5px;
+	text-align: center;
+	color: #ffffff;
+	margin-left: 10px;
+}
+
+.custom-xp-number {
+	font-weight: bold;
+	text-align: left;
+	color: #9b9b9b !important;
+}
+
+.custom-xp {
+	font-weight: bold;
+}
+
+.custom-coins {
+	font-weight: bold;
+	text-align: left;
+	color: #9b9b9b !important;
+}
+
+.custom-no-padding {
+	padding: 0px !important;
+}
+
+.custom-leftnav-img {
+	width: 50px;
+	height: 50px;
+	object-fit: contain;
+	background-color: transparent;
+	z-index: 9999;
+	position: absolute;
+	top: 357px;
+	left: 167px;
+}
+
+.custom-righttnav-img {
+	width: 50px;
+	height: 50px;
+	object-fit: contain;
+	z-index: 9999;
+	position: absolute;
+	top: 357px;
+	right: 174px;
+}
+
+.custom-right-prev {
+	width: 18px;
+	height: 70vh;
+}
+
+.custom-left-prev {
+	width: 4px;
+	height: 70vh;
+}
+
+.custom-no-margins {
+	margin: 0px !important;
+}
+
+.container {
+	max-width: 1172px !important;
+}
+
+.custom-task-counter {
+	width: 252px;
+	height: 36px;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	line-height: 1.99;
+	text-align: right;
+	color: #eb384f;
+	float: right;
+}
+
+.custom-modal-content {
+	width: 561px;
+	height: 542px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+.custom-modal-header {
+	width: 559px;
+	height: 70px;
+	background-color: #23b6f9;
+}
+
+.custom-modal-title {
+	width: 214px;
+	height: 35px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.49;
+	text-align: left;
+	color: #ffffff;
+}
+
+.custom-task-icon {
+	width: 33.3px;
+	height: 33.3px;
+	margin: auto;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+
+.custom-task-titletext {
+	width: 257px;
+	height: 44px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 2.2;
+	text-align: left;
+	color: #3f3f3f;
+}
+
+.custom-task-subtitletext {
+	width: 136px;
+	height: 32px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 1.6;
+	text-align: left;
+	color: #98999b;
+}
+
+.close, .close:hover, .close:focus {
+	font-size: 3.5rem;
+	margin-right: 10px;
+	color: white;
+}
+
+.custom-profil-name {
+	height: 19px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px !important;
+	text-align: left;
+	color: #333333;
+}
+
+.custom-nav-left-border {
+	border-left: .5px solid gray;
+}
+
+.custom-leftmargin-type1 {
+	margin-left: 15px !important;
+}
+
+.custom-rightmargin-type1 {
+	margin-right: 19px !important;
+}
+
+.count-info .label {
+	line-height: 12px;
+	padding: 2px 5px;
+	position: absolute;
+	right: 6px;
+	top: 12px;
+}
+
+.custom-notificatin-bell {
+	width: 21px;
+	text-align: center;
+	position: absolute;
+	top: 2px;
+	font-size: 11px;
+}
+
+.custom-textSize {
+	white-space: normal;
+	font-size: 14px !important;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar {
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+	background-color: #000000;
+}
+
+.scrollbar {
+	right: 0 !important;
+	left: unset !important;
+	float: left;
+	height: 46vh;
+	width: 326px;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
+
+.custom-roles-cards {
+	width: 367px;
+	height: 367px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+	text-align: -webkit-center;
+}
+
+.custom-roles-img {
+	width: 144px;
+	height: 144px;
+	background-color: #3b3c45;
+	margin-top: 15%;
+}
+
+.custom-roles-subtitle {
+	width: 165px;
+	height: 23px;
+	mix-blend-mode: multiply;
+	font-family: 'Lato', sans-serif;
+	font-size: 16.9px;
+	font-weight: 500;
+	line-height: 1.27;
+	text-align: center;
+	color: #98999b;
+	margin-top: 15px;
+}
+
+.custom-roles-titletext {
+	width: 221px;
+	height: 35px;
+	font-family: 'Lato', sans-serif;
+	font-size: 18.6px;
+	font-weight: 500;
+	line-height: 1.38;
+	text-align: center;
+	color: #3f3f3f;
+	margin-top: 15px;
+}
+
+.custom-roles-progress {
+	width: 229px;
+	height: 25px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16.9px;
+	font-weight: 500;
+	line-height: 1.33;
+	text-align: center;
+	color: #98999b;
+}
+.custom-skill-profile-card{
+	 width: 1076px;
+  height: 225px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+	
+}
+
+.custom-margin-rolescard {
+	margin-bottom: 40px !important;
+}
+
+.custom-progressbar {
+	width: 100%;
+	bottom: 0;
+	position: absolute;
+}
+
+.custom-skill-profile-img {
+	
+	background-color: #3b3c45;
+	 width: 128px;
+  height: 128px;
+  border-radius: 64px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+}
+.custom-skill-profile-name{
+ 
+ font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.47;
+  text-align: center;
+  color: #3f3f3f;
+}
+.custom-skill-profile-batch-raking{
+	 
+  font-family: 'Lato', sans-serif;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.51;
+  text-align: center;
+  color: #4a4a4a;
+	margin-bottom: 10px;
+}
+
+.custom-skill-profile-batch-raking-title{
+	
+ font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.56;
+  color: #4a4a4a;
+	
+}
+.custom-skill-badges-card{
+ width: 1076px;
+  height: 192px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+}
+.custom-skill-badge-img{
+	background-color: #3b3c45;
+ width: 79.3px;
+  height: 79.1px;
+}
+
+.custom-skill-badge-title{
+  width: 127.5px;
+  height: 41.6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  color: #3f3f3f;
+}
+.custom-skill-list-active{
+	 width: 318px;
+  height: 106px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+}
+.skill_list_active{
+	border-left: 5px solid #eb384f;
+}
+
+.custom-skill-list-disabled{
+	 width: 318px;
+  height: 106px;
+  background-color: #f3f3f4;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.custom-skill-tree{
+	 width: 732px;
+  height: 954px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+}
+
+.custom-skill-tree-title{
+ width: 131px;
+  height: 22.4px;
+ font-family: 'Lato', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: #3f3f3f;
+}
+.custom-skill-tree-img{
+	background-color: #3b3c45;
+	 width: 60px;
+  height: 60.4px;
+}
+.custom-module_card-header{
+	height: 130px;
+  border: solid 1px #f3f3f4;
+  background-color: #fff;
+}
+.custom-beginskill-course-heading{
+  height: 48px;
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 2;
+  text-align: left;
+  color: #4a4a4a;
+}
+.custom-beginskill-backarrow{
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  background-color: transparent;
+}
+.custom-beginskill-xp{
+ font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.63;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-progress{
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.28;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-rank{
+   font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.28;
+  text-align: center;
+  color: #4a4a4a;
+  margin-bottom:0px;
+}
+.custom-beginskill-xp-title{
+width: 113px;
+  height: 20px;
+  opacity: 0.6;
+   font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+  text-align: left;
+  color: #4a4a4a;
+
+}
+.custom-beginskill-progess-title{
+
+	 width: 80.6px;
+  height: 19.6px;
+  opacity: 0.6;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: #4a4a4a;
+}
+.custom-beginskill-rank-title{
+	
+	  width: 80.6px;
+  height: 19.6px;
+  opacity: 0.6;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  color: #4a4a4a;
+	
+}
+
+.custom-beginskill-module-title{
+  height: 23px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.19;
+  text-align: left;
+  color: #3f3f3f;
+
+}
+.custom-beginskill-module-img{
+ width: 90px;
+  height: 90px;
+
+}
+.custom-beginskill-collapsed-img{
+width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+.custom-beginskill-badge{
+  height: 23px;
+   font-family: 'Lato', sans-serif;
+  font-size: 13.4px;
+  font-weight: 500;
+  line-height: 1.44;
+  text-align: left;
+  color: #777777;
+   background-color: #ececec;
+
+}
+
+.custom-beginskill-lesson-cards-forground{
+width: 406px;
+  height: 358.4px;
+  border-radius: 2.8px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
+
+}
+.custom-beginskill-lesson-cards-background-left{
+  width: 260px;
+  height: 307.2px;
+  opacity: 0.5;
+  border-radius: 2.4px;
+  background-color: #eef0f3;
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
+
+}
+
+.custom-beginskill-lesson-cards-background-right{
+ width: 259px;
+  height: 307.2px;
+  opacity: 0.5;
+  border-radius: 2.4px;
+  background-color: #eef0f3;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 5px 0 rgba(0, 0, 0, 0.12);
+      float: right;
+
+}
+
+.custom-beginskill-button{
+ width: 308px;
+  height: 67.2px;
+    border-radius: 50px !important;
+  background-color: #eb384f;
+  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.21), 0 0 3px 0 rgba(0, 0, 0, 0.12);
+
+
+}
+.custom-beginskill-button-text{
+width: 193.2px;
+  height: 33.6px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.68;
+  letter-spacing: 0.7px;
+  text-align: center;
+  color: #ffffff;
+}
+.custom-task-title{
+  height: 66px;
+   font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #3f3f3f;
+
+}
+.custom-task-desc{	
+  height: 81px;
+  font-family: 'Lato', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  text-align: center;
+  color: #3f3f3f;
+}
+.take-a-shortcut{
+  height: 27px;
+  font-family: 'Lato', sans-serif;
+  font-size: 19.6px;
+  font-weight: 500;
+  letter-spacing: 0.7px;
+  text-align: center;
+  color: #eb384f;
+
+}
+.dont-stop-there-is{
+ width: 213px;
+  height: 50px;
+  opacity: 0.5;
+ font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+  color: #3f3f3f;
+
+}
+.custom-beginskill-row{
+height: 484px;
+
+}
+.custom-beginskill-leftbutton{
+position: absolute; 
+bottom: -29px; 
+text-align: center;
+ left: -94px; 
+ width: 100%;
+}
+.custom-beginskill-forgroundbutton{
+	position: absolute; 
+	bottom: -29px; 
+	text-align: center; 
+	width: 100%;
+}
+.custom-beginskill-rightbutton{
+	
+	position: absolute; 
+	bottom: -29px; 
+	text-align: center; 
+	right: -42px; 
+	width: 100%;
+}
+
+.custom-arrows-width{
+width: 3%
+}
+
+/* Navbra related css*/
+.navbar {
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 5px 0
+		rgba(0, 0, 0, .12);
+	margin-bottom: 0px !important;
+	background: #fff;
+	padding: 0px;
+	height: 50px;
+}
+
+.top-navigation .navbar-brand {
+	background: #eb384f;
+	color: #fff;
+	padding: 15px 25px;
+}
+
+.navbar-brand {
+	float: left;
+	height: 50px;
+	padding: 15px 15px;
+	font-size: 18px;
+	line-height: 20px;
+	background-color: #eb384f !important;
+	color: white;
+}
+
+.nav-item {
+	margin-left: 30px;
+}
+
+.navbar-nav a {
+	color: #333333;
+	font-size: 16px;
+}
+
+.navbar-brand a:hover, a:focus {
+	color: #fff!importnat;
+}
+
+.navbar-nav .active>.nav-link {
+	color: #eb384f !important;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.label-info-green {
+	width: 100px;
+	height: 30px;
+	border-radius: 100px;
+	border: solid 1px #7ed321;
+}
+
+.label-info-blue {
+	width: 120px;
+	height: 30px;
+	border-radius: 100px;
+	border: solid 1px #35bdf0;
+}
+
+.label-info-red {
+	width: 110px;
+	height: 30px;
+	border-radius: 100px;
+	border: solid 1px #df756a;
+}
+
+.oval-big-green {
+	border-radius: 10px;
+	width: 12px;
+	height: 12px;
+	background-color: #7ed321;
+}
+
+.oval-big-blue {
+	border-radius: 10px;
+	width: 12px;
+	height: 12px;
+	background-color: #35bdf0;
+}
+
+.oval-big-red {
+	border-radius: 10px;
+	width: 12px;
+	height: 12px;
+	background-color: #df756a;
+}
+
+.ongoing {
+	height: 12px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.card-w370-h240 {
+	width: 370px;
+	height: 240px;
+	border-radius: 3.2px;
+	background-color: #ffffff;
+	box-shadow: 0 8px 19px 0 rgba(0, 0, 0, 0.05), 0 5px 6px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+.custom-left-prev-trainer {
+	width: 4px;
+	height: 36vh;
+}
+
+.custom-right-prev-trainer {
+	height: 36vh;
+	width: 0px;
+}
+
+.icons8-clock {
+	width: 12px;
+	height: 12px;
+	object-fit: contain;
+}
+
+.am-hrs {
+	
+	height: 15px;
+	font-family: 'Lato', sans-serif;
+	font-size: 13px;
+	text-align: center;
+	color: #2196f2;
+	margin-left: 3px!important;
+	margin-right: 10px !important;
+}
+
+.icons8-empty_hourglass {
+	width: 11px;
+	height: 11px;
+	object-fit: contain;
+}
+
+.img-thumbnail-small {
+	width: 56px;
+	height: 56px;
+	border-radius: 3.2px;
+	box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.11), 0 2px 3px 0
+		rgba(0, 0, 0, 0.1);
+}
+
+.custom-trainer-card-title {
+	height: 15px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	letter-spacing: 0.2px !important;
+	text-align: left;
+	color: #555555;
+	letter-spacing: normal !important;
+}
+
+.custom-trainer-card-header {
+	height: 19px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	letter-spacing: 0.2px !important;
+	margin-top: 3px;
+	text-align: left;
+	color: #333333;
+}
+
+.custom-trainer-card-info {
+	height: 15px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	font-weight: 300;
+	letter-spacing: 0.2px;
+	margin-top: 5px;
+	text-align: left;
+	color: #555555;
+}
+
+.oval-small {
+	width: 2.4px;
+	border-radius: 50px;
+	position: absolute;
+	height: 2.4px;
+	background-color: #2196f2;
+	bottom: 2px;
+	margin-left: 3px;
+}
+
+.trainer-dash-attendance-head {
+	height: 32px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	line-height: 1.33;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #999999;
+}
+
+.trainer-dash-attendance-value {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 1.14;
+	letter-spacing: normal;
+	color: #555555;
+}
+
+.trainer-dash-star {
+	height: 9px;
+	width: 9px;
+	margin-right: 1px;
+}
+
+.trainer-dash-star.fa.fa-star {
+	color: #f6a623;
+}
+
+.red-flag {
+	font-size: 12px;
+	color: #dd2c00;
+	margin-right: 5px;
+}
+
+.yellow-flag {
+	font-size: 12px;
+	color: #f8e81c;
+	margin-right: 5px;
+}
+
+.trainer-dash-note {
+	font-family: 'Lato', sans-serif;
+	font-size: 11px;
+	font-weight: 300;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #777777;
+}
+
+.top-right-label-semi-circle-green {
+	width: 40.8px;
+	height: 40px;
+	position: absolute;
+	background-color: #7ed321;
+	right: 0;
+	border-bottom-left-radius: 55px;
+	top: 0;
+}
+
+.top-right-label-semi-circle-blue {
+	width: 40.8px;
+	height: 40px;
+	position: absolute;
+	background-color: #7ed321;
+	right: 0;
+	border-bottom-left-radius: 55px;
+	top: 0;
+}
+
+.top-right-label-semi-circle-red {
+	width: 40.8px;
+	height: 40px;
+	position: absolute;
+	background-color: #df756a;
+	right: 0;
+	border-bottom-left-radius: 55px;
+	top: 0;
+}
+
+.custom-roles-cards-450 {
+	width: 265px;
+	height: 375px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+	text-align: -webkit-center;
+	margin: 20px;
+}
+
+.img-rounded {
+	border-radius: 6px;
+}
+
+.card-deck:hover, .card-deck h1:hover, .custom-margin-rolescard a {
+	text-decoration: none
+}
+
+/* form Level css */
+//
+Form groups // // Designed to help with the organization and spacing of vertical forms
+	. For // horizontal forms, use the predefined grid classes .
+
+.form-group {
+	margin-bottom: @form-group-margin-bottom;
+}
+
+//
+Checkboxes and radios // // Indent the labels to position radios
+	/checkboxes as hanging controls .
+
+.radio, .checkbox {
+	position: relative;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px; label { min-height : @ line-height-computed; //
+	Ensure the input doesn't jump when there is no text padding-left : 20px;
+	margin-bottom: 0;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+}
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"],
+	.checkbox-inline input[type="checkbox"] {
+	position: absolute;
+	margin-left: -20px;
+	margin-top: 4px \9;
+}
+
+.radio+.radio, .checkbox+.checkbox {
+	margin-top: -5px;
+	//
+	Move
+	up
+	sibling
+	radios
+	or
+	checkboxes
+	for
+	tighter
+	spacing
+}
+
+//
+Radios and checkboxes on same line
+.radio-inline, .checkbox-inline {
+	position: relative;
+	display: inline-block;
+	padding-left: 20px;
+	margin-bottom: 0;
+	vertical-align: middle;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+.radio-inline+.radio-inline, .checkbox-inline+.checkbox-inline {
+	margin-top: 0;
+	margin-left: 10px;
+	//
+	space
+	out
+	consecutive
+	inline
+	controls
+}
+
+//
+Apply same disabled cursor tweak as for inputs // Some special care is needed because 
+	<label>s don 't inherit their parent 's `cursor `. // // Note: Neither radios nor checkboxes can be readonly
+	.
+input[type="radio"], input[type="checkbox"] { &[disabled ], &.disabled,
+	fieldset[disabled] & { cursor: @cursor-disabled;
+	
+}
+
+}
+//
+These classes are used directly on <label>s
+.radio-inline, .checkbox-inline { &.disabled , fieldset[disabled] & {
+	cursor: @cursor-disabled;
+	
+}
+
+}
+//
+These classes are used on elements with <label>descendants
+.radio, .checkbox { &.disabled , fieldset[disabled] & { label { cursor:
+	@cursor-disabled;
+	
+}
+
+}
+}
+//
+Static form control text // // Apply class to a `p ` element to make any string of text align with labels in
+	// a horizontal form layout .
+
+.form-control-static { // Size it appropriately next to real form
+	controls padding-top: (@padding-base-vertical + 1);
+	padding-bottom: (@padding-base-vertical+ 1); // Remove default margin
+	from `p` margin-bottom : 0;
+	min-height: (@line-height-computed+ @font-size-base); &. input-lg ,
+	&.input-sm { padding-left : 0;
+	padding-right: 0;
+}
+
+}
+//
+Form control sizing // // Build on `.form-control ` with modifier classes to decrease or increase the
+	// height and font-size of form controls . // // The `.form-group-* form-control
+	` variations are sadly duplicated to avoid the // issue documented in https:
+	//github.com /twbs/bootstrap/issues/15074.
+
+.input-sm { .input-size (@input-height-small; @padding-small-vertical; @padding-small-horizontal;
+	@font-size-small; @line-height-small; @input-border-radius-small );
+	
+}
+
+.form-group-sm { .form-control { height: @input-height-small;
+	padding: @padding-small-vertical@padding-small-horizontal;
+	font-size: @font-size-small;
+	line-height: @line-height-small;
+	border-radius: @input-border-radius-small;
+}
+
+select.form-control {
+	height: @input-height-small;
+	line-height: @input-height-small;
+}
+
+textarea.form-control, select[multiple].form-control {
+	height: auto;
+}
+
+.form-control-static {
+	height: @input-height-small;
+	min-height: (@line-height-computed+ @font-size-small);
+	padding: (@padding-small-vertical+ 1)@padding-small-horizontal;
+	font-size: @font-size-small;
+	line-height: @line-height-small;
+}
+
+}
+.input-lg { .input-size (@input-height-large; @padding-large-vertical; @padding-large-horizontal;
+	@font-size-large; @line-height-large; @input-border-radius-large );
+	
+}
+
+.form-group-lg { .form-control { height: @input-height-large;
+	padding: @padding-large-vertical@padding-large-horizontal;
+	font-size: @font-size-large;
+	line-height: @line-height-large;
+	border-radius: @input-border-radius-large;
+}
+
+select.form-control {
+	height: @input-height-large;
+	line-height: @input-height-large;
+}
+
+textarea.form-control, select[multiple].form-control {
+	height: auto;
+}
+
+.form-control-static {
+	height: @input-height-large;
+	min-height: (@line-height-computed+ @font-size-large);
+	padding: (@padding-large-vertical+ 1)@padding-large-horizontal;
+	font-size: @font-size-large;
+	line-height: @line-height-large;
+}
+
+}
+//
+Form control feedback states // // Apply contextual and semantic states to individual form controls
+	.
+
+.has-feedback { // Enable absolute positioning position:relative; //
+	Ensure icons don't overlap text .form-control { padding-right: (@input-height-base
+	* 1.25);
+	
+}
+
+}
+//
+Feedback icon (requires .glyphicon classes )
+.form-control-feedback {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2; // Ensure icon is above input groups display : block;
+	width: @input-height-base;
+	height: @input-height-base;
+	line-height: @input-height-base;
+	text-align: center;
+	pointer-events: none;
+}
+
+.input-lg+.form-control-feedback, .input-group-lg+.form-control-feedback,
+	.form-group-lg .form-control+.form-control-feedback {
+	width: @input-height-large;
+	height: @input-height-large;
+	line-height: @input-height-large;
+}
+
+.input-sm+.form-control-feedback, .input-group-sm+.form-control-feedback,
+	.form-group-sm .form-control+.form-control-feedback {
+	width: @input-height-small;
+	height: @input-height-small;
+	line-height: @input-height-small;
+}
+
+//
+Feedback states
+.has-success { .form-control-validation (@state-success-text; @state-success-text;
+	@state-success-bg );
+	
+}
+
+.has-warning { .form-control-validation (@state-warning-text; @state-warning-text;
+	@state-warning-bg );
+	
+}
+
+.has-error { .form-control-validation (@state-danger-text; @state-danger-text;
+	@state-danger-bg );
+	
+}
+
+//
+Reposition feedback icon if input has visible label above
+.has-feedback label { & ~ .form-control-feedback { top: (@line-height-computed
+	+ 5); // Height of the `label` and its margin
+	
+}
+
+&
+.sr-only ~ .form-control-feedback {
+	top: 0;
+}
+
+}
+//
+Help text // // Apply to any element you wish to create light text for placement immediately
+	// below a form control . Use for general help, formatting, or instructional text
+	.
+
+.help-block {
+	display: block; // account for any element using help-block margin-top :
+	5px;
+	margin-bottom: 10px;
+	color: lighten(@ text-color, 25%);
+	//
+	lighten
+	the
+	text
+	some
+	for
+	contrast
+}
+
+//
+Inline forms // // Make forms appear inline (-block) by adding the `.form-inline
+	` class . Inline // forms begin stacked on extra small (mobile ) devices and then go inline when
+	// viewports reach <768px . // // Requires wrapping inputs and labels with 
+	`.form-group ` for proper display of // default HTML form controls and our custom form controls 
+	(e.g ., input groups ). // // Heads up ! This is mixin-ed into `.navbar-form
+	` in navbars.less .
+
+.form-inline { // Kick in the inline @media (min-width : @screen-sm-min)
+	{ // Inline-block all the things for "inline "
+    .form-group {
+	display: inline-block;
+	margin-bottom: 0;
+	vertical-align: middle;
+}
+
+//
+In navbar-form, allow folks to * not* use `.form-group `
+    .form-control {
+	display: inline-block;
+	width: auto;
+	//
+	Prevent
+	labels
+	from
+	stacking
+	above
+	inputs
+	in
+	`.form-group`
+	vertical-align
+	:
+	middle;
+}
+
+//
+Make static controls behave like regular ones
+    .form-control-static {
+	display: inline-block;
+}
+
+.input-group {
+	display: inline-table;
+	vertical-align: middle;
+	.
+	input-group-addon
+	,
+	.input-group-btn,
+	.form-control
+	{
+	width
+	:
+	auto;
+}
+
+}
+//
+Input groups need that 100% width though
+    .input-group>.form-control {
+	width: 100%;
+}
+
+.control-label {
+	margin-bottom: 0;
+	vertical-align: middle;
+}
+
+//
+Remove default margin on radios /checkboxes that were used for stacking,
+	and // then undo the floating of radios and checkboxes to match .
+    .radio, .checkbox {
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0;
+	vertical-align: middle;
+	label
+	{
+	padding-left
+	:
+	0;
+}
+
+}
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+	position: relative;
+	margin-left: 0;
+}
+
+//
+Re-override the feedback icon .
+    .has-feedback .form-control-feedback {
+	top: 0;
+}
+
+}
+}
+//
+Horizontal forms // // Horizontal forms are built on grid classes and allow you to create forms with
+	// labels on the left and inputs on the right .
+
+.form-horizontal { // Consistent vertical alignment of radios and
+	checkboxes // // Labels also get some reset styles, but that is scoped
+	to a media query below. .radio, .checkbox, .radio-inline,
+	.checkbox-inline { margin-top:0;
+	margin-bottom: 0;
+	padding-top: (@padding-base-vertical+ 1);
+	//
+	Default
+	padding
+	plus
+	a
+	border
+}
+
+//
+Account for padding we 're adding to ensure the alignment and of help text
+	// and other content below items
+  .radio, .checkbox {
+	min-height: (@line-height-computed+ (@padding-base-vertical+ 1));
+}
+
+//
+Make form groups behave like rows
+  .form-group { .make-row ();
+	
+}
+
+//
+Reset
+ 
+spacing
+ 
+and
+ 
+right
+ 
+align
+ 
+labels
+,
+but
+ 
+scope
+ 
+to
+ 
+media
+ 
+queries
+ 
+so
+ 
+that
+//
+ 
+labels
+ 
+on
+ 
+narrow
+ 
+viewports
+ 
+stack
+ 
+the
+ 
+same
+ 
+as
+ 
+a
+ 
+default
+ 
+form
+ 
+example
+.
+
+  
+@media ( min-width : @screen-sm-min) {
+	.control-label {
+		text-align: right;
+		margin-bottom: 0;
+		padding-top: (@padding-base-vertical+ 1);
+		//
+		Default
+		padding
+		plus
+		a
+		border
+	}
+}
+
+//
+Validation states // // Reposition the icon because it 's now within a grid column and columns have
+	// `position: relative ;` on them . Also accounts for the grid gutter padding
+	.
+  .has-feedback .form-control-feedback {
+	right: floor((@ grid-gutter-width/ 2));
+}
+
+//
+Form group sizes // // Quick utility class for applying `.input-lg ` and 
+	`.input-sm ` styles to the // inputs and labels within a `.form-group
+	`.
+  .form-group-lg {@media (min-width : @screen-sm-min) {.control-label {
+	padding-top: (@padding-large-vertical+ 1);
+	font-size: @font-size-large;
+}
+
+}
+}
+.form-group-sm {@media (min-width : @screen-sm-min) {.control-label {
+	padding-top: (@padding-small-vertical+ 1);
+	font-size: @font-size-small;
+}
+
+}
+}
+}
+.fileinput.input-group {
+	display: table;
+}
+
+.fileinput {
+	margin-bottom: 9px;
+	display: inline-block;
+}
+
+.input-group {
+	position: relative;
+	display: table;
+	border-collapse: separate;
+}
+
+.fileinput.input-group>* {
+	position: relative;
+	z-index: 2;
+}
+
+.fileinput .form-control {
+	padding-top: 7px;
+	padding-bottom: 5px;
+	display: inline-block;
+	margin-bottom: 0;
+	vertical-align: middle;
+	cursor: text;
+}
+
+.fileinput-exists {
+	display: none;
+}
+
+.btn-file>input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	font-size: 23px;
+	height: 100%;
+	width: 100%;
+	direction: ltr;
+	cursor: pointer;
+}
+
+input[type=file] {
+	display: block;
+}
+
+.float-e-margins .btn {
+	margin-bottom: 5px;
+}
+
+.btn-primary {
+	background-color: #1ab394;
+	border-color: #1ab394;
+	color: #FFFFFF;
+}
+
+.btn-w-m {
+	min-width: 120px;
+}
+
+.btn {
+	border-radius: 3px;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #eb384f !important;
+	border-color: #eb384f !important;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+button, input, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.btn-default {
+	color: inherit;
+	background: white;
+}
+
+.form-horizontal {
+	padding: 20px;
+	border-radius: 4px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+/* .card {
+	border-radius: 3.2px;
+	background-color: #ffffff;
+	box-shadow: 0 8px 19px 0 rgba(0, 0, 0, 0.05), 0 5px 6px 0
+		rgba(0, 0, 0, 0.04);
+} */
+
+.card-header-box {
+	height: 19px;
+	font-family: Lato;
+	font-size: 16px;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #555555;
+}
+
+.options-img-container {
+	width: 27px;
+	height: 27px;
+	object-fit: contain;
+}
+
+.select-dropdown-style {
+	width: 157.7px;
+	height: 30px;
+	border-radius: 3.7px;
+	background-color: rgba(153, 153, 153, 0.1);
+	border: solid 0.9px rgba(236, 236, 236, 0.7);
+}
+
+.hidden-content {
+	display: none;
+}
+
+/* aj css starts */
+
+.nav>.breadcrumb-item+.breadcrumb-item::before {
+	content: "|" !important;
+	padding-right: 1.5rem !important;
+	padding-left: 1.5rem !important;
+}
+
+a.selected_report {
+	border-bottom: 3px solid #eb384f;
+	width: 58px;
+	height: 29px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	text-align: left;
+	color: #333333 !important;
+}
+
+a.unselected_report:hover {
+	text-decoration: none !important;
+	border-bottom: 0px;
+}
+
+a.selected_report:hover {
+	text-decoration: none !important;
+	border-bottom: 3px solid #eb384f;
+}
+
+a.unselected_report {
+	width: 78px;
+	height: 29px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	text-align: left;
+	color: #999999 !important;
+}
+
+.List {
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	text-align: left;
+	color: #333333;
+}
+
+.report_card {
+	height: 470px;
+	border-radius: 4px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+.report-group-image {
+	width: 40px;
+	height: 40px;
+	border-radius: 4px;
+	background-color: #353b52;
+	box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.14), 0 4px 5px 0
+		rgba(0, 0, 0, 0.21);
+}
+
+.report-role-image {
+	width: 160px;
+	height: 160px;
+	border-radius: 4px;
+	background-color: #353b52;
+	box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.14), 0 4px 5px 0
+		rgba(0, 0, 0, 0.21);
+}
+
+.report-heading {
+	height: 29px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: left;
+	color: #333333;
+}
+
+.report-roles-card {
+	margin-top: 32px !important;
+	margin-bottom: 32px !important;
+	margin-left: 30px !important;
+	margin-right: 30px !important;
+}
+
+.line {
+	height: 3px;
+	border: solid 1px rgba(151, 151, 151, 0.14);
+}
+
+.icons8-saving_book {
+	width: 30px;
+	height: 24px;
+	object-fit: contain;
+}
+
+.icons8-groups {
+	width: 32px;
+	height: 26px;
+	object-fit: contain;
+}
+
+.icons8-student {
+	width: 23px;
+	height: 26px;
+	object-fit: contain;
+}
+
+.icons8-report_card {
+	width: 25px;
+	height: 22px;
+	object-fit: contain;
+}
+
+.icons8-discount {
+	width: 26px;
+	height: 26px;
+	object-fit: contain;
+}
+
+.report-roles-sub-text {
+	height: 22px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	font-weight: 300;
+	text-align: left;
+	margin-top: 10px;
+	color: #555555;
+}
+
+.report-roles-sub-text .spannable {
+	font-weight: bold;
+}
+
+.report-section-card-header {
+	height: 75px;
+	width: 100%;
+	border-radius: 4px;
+	background-color: #fcfcfc;
+	box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.08);
+	border-radius: 4px;
+}
+
+.report-section-card-header-title {
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	text-align: left;
+	color: #555555;
+}
+
+.report-section-icon {
+	width: 17.9px;
+	height: 20.8px;
+	object-fit: contain;
+}
+
+.report-section-subtext {
+	font-family: 'Lato', sans-serif;
+	font-size: 10px;
+	text-align: left;
+	color: #555555;
+}
+
+.report-section-completion {
+	height: 15px;
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	text-align: left;
+	color: #555555;
+}
+
+.report-roles-progress {
+	height: 5px !important;
+	border-radius: 100px;
+	background-image: linear-gradient(to right, #b5ec45, #7ed321);
+	box-shadow: 4px 0 8px 0 rgba(126, 211, 33, 0.57), 2px 0 2px 0
+		rgba(0, 0, 0, 0.19);
+	border: solid 1px rgba(86, 86, 86, 0.12);
+}
+
+.report-roles-course-completion {
+	height: 15px;
+	font-family: Lato;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: left;
+	color: #555555;
+}
+
+.icons8-chevron_right_round {
+	width: 30px;
+	height: 30px;
+	object-fit: contain;
+}
+
+.custom-left-prev-section {
+	justify-content: flex-start !important;
+}
+
+.custom-left-prev-section > img{
+	-ms-transform: rotate(180deg);
+	 -webkit-transform: rotate(180deg);
+	  transform: rotate(180deg);
+}
+
+.custom-right-prev-section {
+	justify-content: flex-end !important;
+}
+
+/* aj css ends */
+
+/* Vinay css starts */
+.custom-event-modal-header {
+	width: 660px;
+	height: 140px;
+	border-radius: 4px;
+	background-color: #ffffff;
+	box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+.custom-event-container {
+	width: 660px;
+}
+
+.img-thumbnail-medium {
+	width: 80px;
+	height: 80px;
+	border-radius: 5.1px;
+	background-color: #353b52;
+	box-shadow: 0 5px 26px 0 rgba(0, 0, 0, 0.11), 0 2px 5px 0
+		rgba(0, 0, 0, 0.1);
+}
+
+.custom-close-modal {
+	width: 13px;
+	height: 13px;
+	color: #999999;
+	background-color: #ffffff !important;
+	border: none !important;
+	font-size: 14px !important;
+}
+
+.custom-close-modal:hover, .custom-close-modal:focus {
+	color: #999999;
+	background-color: #ffffff !important;
+	font-size: 14px !important;
+}
+
+.custom-modal-header-trainer {
+	height: 27px;
+	font-family: Lato;
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #333333;
+	margin-top: 11px;
+	margin-bottom: 11px;
+}
+
+.modal-info-header {
+	height: 16px;
+	font-family: 'Lato', sans-serif;
+	font-size: 13px;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: rgba(153, 153, 153, 0.8);
+}
+
+.modal-info-content {
+	height: 16px;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #555555;
+}
+
+.custom-oval-icon {
+	width: 24px;
+	height: 24px;
+	background-color: #30beef;
+	border-radius: 30px;
+	margin-left: 12px;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.nav-item-modal-box {
+	width: 110px;
+	height: 43px;
+	background-color: #f7f7f7;
+}
+
+.nav-modal-text {
+	height: 17px;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	letter-spacing: 0.2px;
+	text-align: center;
+	color: rgba(153, 153, 153, 0.7) !important;
+	margin-top: 13px;
+	border: none !important;
+	background-color: #f7f7f7 !important;
+}
+
+.custom-event-modal-body {
+	width: 660px;
+}
+/* Vinay css ends */

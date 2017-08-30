@@ -30,4 +30,7 @@ try {
  <link href="<%=basePath%>assets/css/plugins/jsTree/style.css" rel="stylesheet" type="text/css" />
 
  <link href="<%=basePath%>assets/css/style.css" rel="stylesheet" type="text/css" />
+ <link href="<%=basePath%>assets/css/role1.css" rel="stylesheet" type="text/css" />
+<link href="<%=basePath%>assets/css/role2.css" rel="stylesheet" type="text/css" />
+<link href="<%=basePath%>assets/css/role3.css" rel="stylesheet" type="text/css" />
 </head>
