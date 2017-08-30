@@ -18,6 +18,14 @@ try {
 } catch (IOException e) {
 	e.printStackTrace();
 }
+String loggedInRole = (String) request.getSession().getAttribute("logged_in_role");
+String roleDir = loggedInRole.toLowerCase();
+if (loggedInRole.toLowerCase().equalsIgnoreCase("trainer")) {
+	roleDir = "student";
+}
+if (loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
+	roleDir = "orgadmin";
+}
 %><html>
 <head>
 <meta charset="utf-8">
@@ -29,8 +37,6 @@ try {
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
  <link href="<%=basePath%>assets/css/plugins/jsTree/style.css" rel="stylesheet" type="text/css" />
 
-  <link href="<%=basePath%>assets/css/style.css" rel="stylesheet" type="text/css" />
-  <link href="<%=basePath%>assets/css/role1.css" rel="stylesheet" type="text/css" />
-  <link href="<%=basePath%>assets/css/role2.css" rel="stylesheet" type="text/css" />
-  <link href="<%=basePath%>assets/css/role3.css" rel="stylesheet" type="text/css" />
+  <link href="<%=basePath%>assets/css/<%=roleDir %>.css" rel="stylesheet" type="text/css" />
+ 
 </head>
