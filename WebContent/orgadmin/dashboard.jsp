@@ -61,38 +61,14 @@
 					<h1>Today's Events</h1>
 				</div>
 				<div class='col-md-4 col-md-auto'>
-					<div class="row">
-						<div class="col-md-4">
-							<h1>
-								<button class="label-info-green">
-									<div class="row mx-0">
-										<div class="oval-big-green ml-sm-2"></div>
-										<div class="ongoing ml-sm-3">Ongoing</div>
-									</div>
-								</button>
-							</h1>
-						</div>
-						<div class="col-md-4 pl-sm-2">
-							<h1>
-								<button class="label-info-blue">
-									<div class="row mx-0">
-										<div class="oval-big-blue ml-sm-2"></div>
-										<div class="ongoing ml-sm-3">Scheduled</div>
-									</div>
-								</button>
-							</h1>
-						</div>
-						<div class="col-md-4">
-							<h1>
-								<button class="label-info-red">
-									<div class="row mx-0">
-										<div class="oval-big-red ml-sm-2"></div>
-										<div class="ongoing ml-sm-3">Completed</div>
-									</div>
-								</button>
-							</h1>
-						</div>
+					<div class="row mt-4">
 
+						<a class="btn btn-default green-border"><i
+							class="fa fa-circle green-dot" aria-hidden="true"></i>Ongoing</a> <a
+							class="btn btn-default blue-border"><i
+							class="fa fa-circle blue-dot" aria-hidden="true"></i>Scheduled</a> <a
+							class="btn btn-default red-border"><i
+							class="fa fa-circle red-dot" aria-hidden="true"></i>Completed</a>
 					</div>
 				</div>
 
