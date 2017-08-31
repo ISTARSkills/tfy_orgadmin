@@ -6,6 +6,7 @@ import java.util.List;
 import com.istarindia.android.pojo.ComplexObject;
 import com.istarindia.android.pojo.CoursePOJO;
 import com.istarindia.android.pojo.ModulePOJO;
+import com.istarindia.android.pojo.RestClient;
 import com.istarindia.android.pojo.SkillReportPOJO;
 
 public class UserSkillProfile {
@@ -224,39 +225,57 @@ public class UserSkillProfile {
 		return out;
 	}
 
-	public StringBuffer getSkillTree(ComplexObject cp) {
+	public StringBuffer getSkillTree(int skill_id,int user_id) {
 
 		StringBuffer out = new StringBuffer();
+		RestClient rc = new RestClient();
+		ComplexObject cp = rc.getComplexObject(user_id);
 
 		if (cp.getSkills() != null && cp.getSkills().size() != 0) {
+			
+			out.append("<div class='container mt-5'> "
+					+ "<div class='row'>"
+					+ "<div class='col-12'> <ul id='tree1'>");
 
 			for (SkillReportPOJO skillobj : cp.getSkills()) {
-
-				out.append("<li> " + skillobj.getName() + "<small class='custom-skillprofile-subskills'>"
-						+ skillobj.getSkills().size()
-						+ " subskills</small> <small class='custom-skillprofile-xp_points'>" + skillobj.getUserPoints()
-						+ " / " + skillobj.getTotalPoints() + " XP</small><i class='point-div'></i>");
 				
-				out.append("<div class='progress ml-5'><div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "+skillobj.getPercentage()+"%' aria-valuenow='"+skillobj.getPercentage()+"' aria-valuemin='0' aria-valuemax='100'></div></div>");
+				if(skillobj.getId() ==  skill_id) {
 
-				if (skillobj.getSkills() != null && skillobj.getSkills().size() != 0) {
+				for (SkillReportPOJO subSkillobj : skillobj.getSkills()) {
 
-					out.append("<ul>");
-					
-					for (SkillReportPOJO subSkillobj : skillobj.getSkills()) {
-						
-						out.append("<li>"+subSkillobj.getName()+""
-								+ "<div class='progress ml-5'>"
-								+ "<div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "+subSkillobj.getPercentage()+"%' aria-valuenow='"+subSkillobj.getPercentage()+"' aria-valuemin='0' aria-valuemax='100'></div>"
-								+ "</div></li>");
-						
+					out.append("<li> " + subSkillobj.getName() + "<small class='custom-skillprofile-subskills'>"
+							+ subSkillobj.getSkills().size()
+							+ " subskills</small> <small class='custom-skillprofile-xp_points'>"
+							+ subSkillobj.getUserPoints() + " / " + subSkillobj.getTotalPoints()
+							+ " XP</small><i class='point-div'></i>");
+
+					out.append(
+							"<div class='progress ml-5'><div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
+									+ subSkillobj.getPercentage() + "%' aria-valuenow='" + subSkillobj.getPercentage()
+									+ "' aria-valuemin='0' aria-valuemax='100'></div></div>");
+
+					if (subSkillobj.getSkills() != null && subSkillobj.getSkills().size() != 0) {
+
+						out.append("<ul>");
+						for (SkillReportPOJO subsubSkillobj : subSkillobj.getSkills()) {
+
+							out.append("<li style=' padding-left: 30px; padding-top: 13px;'>" + subsubSkillobj.getName() + "" + "<div class='progress ml-5'>"
+									+ "<div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
+									+ subsubSkillobj.getPercentage() + "%' aria-valuenow='"
+									+ subsubSkillobj.getPercentage() + "' aria-valuemin='0' aria-valuemax='100'></div>"
+									+ "</div></li>");
+						}
 
 					}
-                       out.append("</ul>");
+					out.append("</ul>");
 				}
 				out.append("</li>");
-
 			}
+			}
+			
+			out.append("</ul>	</div> 	</div> 	</div>");
+			
+			
 		}
 		return out;
 	}

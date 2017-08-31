@@ -95,16 +95,16 @@
 		</ul>
 		<ul class="navbar-nav">
 			<li class="nav-item custom-leftmargin-type1"><a id=""
-				class="nav-link custom-xp-number" href="#"><%=cp.getStudentProfile().getExperiencePoints()%>
+				class="nav-link custom-xp-number"><%=cp.getStudentProfile().getExperiencePoints()%>
 					<small class='custom-xp'>XP</small></a></li>
 			<li class="nav-item custom-leftmargin-type1"><a id=""
-				class="nav-link custom-coins" href="#"><img
+				class="nav-link custom-coins"><img
 					src="/assets/images/coin-icon.png" width="24px" height="24px"
 					class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins()%></small></a></li>
 
 			<li
 				class="nav-item dropdown custom-leftmargin-type1 custom-rightmargin-type1"><a
-				class="nav-link dropdown-toggle " href="#"
+				class="nav-link dropdown-toggle "
 				id="navbarDropdownNotificatinMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true"> <i
 					class="fa fa-bell fa-4" style="color: #9b9b9b !important;"  aria-hidden="true"></i><span
