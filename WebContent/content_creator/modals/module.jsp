@@ -17,7 +17,7 @@
 							<label>Module Title</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<input style="width: 100%" class="form-control">
+							<input style="width: 100%" class="form-control" id='moduleModalTitle'>
 						</div>
 					</div>
 					<hr>
@@ -26,7 +26,7 @@
 							<label>Description</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<textarea style="width: 100%" class="form-control"></textarea>
+							<textarea style="width: 100%" class="form-control" id='moduleModalDescription'></textarea>
 						</div>
 					</div>
 					<hr>
@@ -35,14 +35,14 @@
 							<label>Image</label>
 						</div>
 						<div class='col-md-5 col-md-auto'>
-							<label for="moduleImageURL"><img class='module_image'
+							<label for="moduleImageURL"><img class='moduleImage'
 								src='http://localhost:8080//course_images/8.png' alt=''> </label><input
 								style="display: none"
 								value='http://localhost:8080//course_images/8.png'
 								id='moduleImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>
-							<button class="btn btn-sm btn-modal" style="margin-top: 22px">Save
+							<button class="btn btn-sm btn-modal" style="margin-top: 22px" id='saveModule'>Save
 								Changes</button>
 						</div>
 					</div>

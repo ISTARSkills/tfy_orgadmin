@@ -30,19 +30,18 @@
 		<div class="container">
 			<div class="row custom-margin-rolescard" id="courseCards">
 
-				<a href='./edit_course.jsp'>
+				<a href='./editCourse.jsp'>
 					<div class="card-deck">
 						<div class="custom-roles-cards-450">
 							<img class="img-rounded custom-roles-img"
-								src="http://cdn.talentify.in:9999//course_images/6.png"
-								alt="No Image Available">
-							<!-- <div class="card-block">
-								<h4 class=" custom-roles-subtitle">Taxation</h4>
-								<h1 class="card-title custom-roles-titletext">Direct Tax
-									Skill Workshop</h1>
-								<h4 class="custom-roles-progress">10 Modules . 10 Session .
-									10 Lessons</h4>
-							</div> -->
+								src="http://cdn.talentify.in:9999/course_images/plusIcon.png"
+								alt="No Image Available" style="background-color: white;">
+							<div class="card-block">
+								<!-- <h4 class=" custom-roles-subtitle">Create Course</h4> -->
+								<h1 class="card-title custom-roles-titletext">Create Course</h1>
+								<!-- <h4 class="custom-roles-progress">10 Modules . 10 Session .
+									10 Lessons</h4> -->
+							</div>
 						</div>
 					</div>
 				</a>
@@ -63,7 +62,7 @@
 
 		function addCourseCard(course) {
 			var addition = '';
-			addition += '<a href="./edit_course.jsp?course='+course.id+'">';
+			addition += '<a href="./editCourse.jsp?course=' + course.id + '">';
 			addition += '<div class="card-deck">';
 			addition += '<div class="custom-roles-cards-450">';
 			addition += '<img class="img-rounded custom-roles-img" src="'+course.imageURL+'" alt="No Image Available">';
