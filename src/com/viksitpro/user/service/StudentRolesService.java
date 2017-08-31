@@ -30,7 +30,7 @@ public class StudentRolesService {
 				for (CoursePOJO role :list) {
 					
 					out.append("<div class='card custom-roles-cards' data-course_id='"+role.getId()+"'>");
-					out.append("<img class='img-circle custom-roles-img' src='"+role.getImageURL()+"' alt='No Image Available'>");
+					out.append("<img class='custom-roles-img' src='"+role.getImageURL()+"' alt='No Image Available'>");
 					out.append("<div class='card-block'>");	
 					out.append("<h4 class=' custom-roles-subtitle'>"+role.getCategory()+"</h4>");
 					out.append("<h1 class='card-title custom-roles-titletext'>"+role.getName()+"</h1>");

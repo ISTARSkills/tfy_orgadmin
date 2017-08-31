@@ -2,7 +2,7 @@
 <%-- <%
 int eventId = Integer.parseInt(request.getParameter("event_id"));
 %> --%>
-							  <div class="modal-dialog modal-lg">
+							  <div class="modal-dialog modal-lg" style="width: 660px;">
 							    <div class="modal-content custom-event-container">
 							      <div class="modal-header custom-event-modal-header">
 							      <div class="container">
@@ -29,7 +29,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 													</div>
 												</div>
 												<div class="row"><h1 class="custom-modal-header-trainer">Operations of Bank -2</h1> <div class="custom-oval-icon"><img src="/assets/images/icons_8_video_call2.png"
-												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x" class=""></div></div>
+												srcset="/assets/images/icons_8_video_call2.png 2x, /assets/images/icons_8_video_call3.png 3x" class="video-icon"></div></div>
 												<div class="row m-0">
 												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Roles </h4><h4 class="modal-info-content mb-0">Retail Banking</h4></div></div>
 												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Group </h4><h4 class="modal-info-content mb-0">FY.BCom</h4></div></div>
@@ -141,6 +141,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																		</div>
 																	<%} %>
 																	</div>
+																	<div class="fadeout-area"></div>
 																</div>
 															</div>
 														</div>
@@ -166,6 +167,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																	</div>
 																</div>
 															</div>
+															<div class="fadeout-area"></div>
 														</div>
 													</div>
 												</div>
@@ -189,13 +191,22 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																<hr class="my-0">
 																<div class="p-3">
 																<h4 class="feedback-comment-title pt-2">Comments</h4>
-																<div class="feedback-comment-box mt-3">Average attendance.. Lab session tomorrow.. Hopefully expect better attendence</div>
+																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Average attendance.. Lab session tomorrow.. Hopefully expect better attendence">Average attendance.. Lab session tomorrow.. Hopefully expect better attendence</div>
 																</div>
 															</div>
 														</div>
 													</div>
 													<div class="col-md-6">
-														<div class="card feedback-card-size">
+													<div class="student-feedback-scroll custom-scroll-holder">
+													<%for(int i=0;i<10;i++){ 
+														String style = "";
+														String collapseThis ="";
+														if(i != 0){
+															style = "style='display:none !important;'";
+															collapseThis = "collapsable";
+														}
+														%>
+														<div class="card feedback-card-size <%=collapseThis %> mb-2"  <%=style %>>
 															<div class="card-block">
 																<div class="row m-0 p-3">
 																	<div class="col-md-6 feedback-card-header p-0">Student</div>
@@ -210,9 +221,15 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																	</div>
 																</div>
 																<hr class="my-0">
-																
+																<div class="p-3">
+																<h4 class="feedback-comment-title pt-2">Comments</h4>
+																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Student <%=i %>">Student <%=i %></div>
+																</div>
 															</div>
 														</div>
+															<%} %>
+															</div>
+														<div class="float-right" style="position: relative"><a class="attendance-card-count show-more" style="cursor: pointer;"><u>Show more</u></a></div>
 													</div>
 												</div>
 											</div>

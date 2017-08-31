@@ -42,11 +42,6 @@
 		for (int j = 0; j < events.size(); j += 3) {
 			partitions.add(events.subList(j, Math.min(j + 3, events.size())));
 		}
-
-		
-		
-		
-		
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -76,6 +71,8 @@
 			</div>
 		</div>
 		<!--/row-->
+		
+		<%if(events.size()>0){ %>
 		<div class="container">
 
 			<div id="carouselExampleControls" class="carousel slide"
@@ -367,6 +364,13 @@
 			</div>
 
 		</div>
+		<%}else { %>
+		<div class="container">
+			<div class="card no-event-card">
+				<div class="card-block m-auto"><h1>No Event Scheduled for Today</h1></div>
+			</div>
+		</div>
+		<%} %>
 		<div class="container">
 		<h1 class="mt-lg-5">Performance Metrics</h1>
 		</div>
@@ -573,6 +577,16 @@
 				navbar_selector();
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					navbar_selector();
+				});
+				$('.popover-dismiss').popover();
+				$('.show-more').on("click",function(){
+					if($('.show-more u').text() == 'Show more'){
+						$('.collapsable').css('display','block');
+						$('.show-more u').text('Show less');
+					}else{
+						$('.collapsable').css('display','none');
+						$('.show-more u').text('Show more');
+					}
 				});
 			});
 			

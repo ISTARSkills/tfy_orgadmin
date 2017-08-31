@@ -2188,7 +2188,7 @@ a.unselected_report {
 	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
-	color: #2196f2;
+	color: #2196f2 !important;
 }
 
 .attendance-user-img-small {
@@ -2280,5 +2280,48 @@ a.unselected_report {
 	border-radius: 100px;
 	height: 50px;
 	background-color: #999999;
+}
+
+.student-feedback-scroll {
+	max-height: 350px;
+	width: 300px;
+	overflow-y: scroll;
+}
+
+.video-icon {
+	width: 12.3px;
+	height: 6.9px;
+	margin-top: 3px;
+}
+
+.fadeout-area {
+    position: relative; 
+    bottom: 74px;
+    height: 74px;
+    background: -webkit-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    ); 
+    background-image: -moz-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -o-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -ms-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+}
+
+.no-event-card {
+	height: 240px;
+	font-family: Lato;
 }
 /* Vinay css ends */

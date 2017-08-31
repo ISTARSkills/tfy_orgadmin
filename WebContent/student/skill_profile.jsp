@@ -125,24 +125,13 @@
 				</div>
 				<div class="col-9">
 					<div class="card custom-skill-tree ml-5 custom-scroll-holder">
-						<div class="card-block" id='skillTreeHolder'>
+						<div class="card-block my-auto mx-auto" id='skillTreeHolder'>
+						
+						
+                             <div class="loader"></div>
+                            
 
-
-
-							<div class="container mt-5">
-								<div class="row">
-									<div class="col-12">
-										<ul id="tree1">
-
-											<%=userskillprofile.getSkillTree(cp)%>
-
-
-										</ul>
-									</div>
-
-
-								</div>
-							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -156,156 +145,145 @@
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
-		$(document)
-				.ready(
-						function() {
+	$(document).ready(function() {
+		
+		
+		function getSkillsfunction(skill_id){
+			
+			$("#skillTreeHolder").empty();
+			 $("#skillTreeHolder").addClass(' my-auto').addClass(' mx-auto');
+			 $("#skillTreeHolder").append('<div class="loader"></div>');
+			
+			  $.ajax({
+	            	url:'<%=baseURL%>get_user_service',
+	            	data :{'skill_id':skill_id,'user_id':<%=user.getId()%>},
+	            	success: function(result){
+	            		
+	                $("#skillTreeHolder").removeClass(' my-auto').removeClass(' mx-auto');
+	                $("#skillTreeHolder").html(result);
+	              
+	                $('#tree1').treed();
+	            }
+	           });
+			
+		}
+		
+		
+		getSkillsfunction($('.skill_list_active').attr('data-skillId'));
 
-							$('.skill_list')
-									.click(
-											function() {
-												$('.skill_list').removeClass(
-														'skill_list_active');
-												$('.skill_list').addClass(
-														'skill_list_disable');
-												$('.skill_list')
-														.children()
-														.removeClass(
-																'custom-skill-list-active')
-														.addClass(
-																'custom-skill-list-disabled');
-												$(this).removeClass(
-														'skill_list_disable');
-												$(this).addClass(
-														'skill_list_active');
-												$(this)
-														.children()
-														.removeClass(
-																'custom-skill-list-disabled');
-												$(this)
-														.children()
-														.addClass(
-																'custom-skill-list-active');
+            $('.skill_list').click(function() {
+                        $('.skill_list').removeClass('skill_list_active');
+                        $('.skill_list').addClass('skill_list_disable');
+                        $('.skill_list').children().removeClass('custom-skill-list-active').addClass('custom-skill-list-disabled');
+                        $(this).removeClass('skill_list_disable');
+                        $(this).addClass('skill_list_active');
+                        $(this).children().removeClass('custom-skill-list-disabled');
+                        $(this).children().addClass('custom-skill-list-active');
 
-											});
+              var skill_id = $(this).attr('data-skillid');
+              
+              
+              getSkillsfunction(skill_id);
+            
+            
+             });
+            
 
-							$.fn
-									.extend({
-										treed : function(o) {
+            $.fn.extend({treed: function(o) {
 
-											var openedClass = 'glyphicon-minus-sign';
-											var closedClass = 'glyphicon-plus-sign';
+                        var openedClass = 'glyphicon-minus-sign';
+                        var closedClass = 'glyphicon-plus-sign';
 
-											if (typeof o != 'undefined') {
-												if (typeof o.openedClass != 'undefined') {
-													openedClass = o.openedClass;
-												}
-												if (typeof o.closedClass != 'undefined') {
-													closedClass = o.closedClass;
-												}
-											}
-											;
+                        if (typeof o != 'undefined') {
+                            if (typeof o.openedClass != 'undefined') {
+                                openedClass = o.openedClass;
+                            }
+                            if (typeof o.closedClass != 'undefined') {
+                                closedClass = o.closedClass;
+                            }
+                        };
 
-											//initialize each of the top levels
-											var tree = $(this);
-											tree.addClass("tree");
-											tree
-													.find('li')
-													.has("ul")
-													.each(
-															function() {
-																var branch = $(this); //li with children ul
-																branch
-																		.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
-																branch
-																		.addClass('branch');
-																branch
-																		.on(
-																				'click',
-																				function(
-																						e) {
-																					if (this == e.target) {
-																						var icon = $(
-																								this)
-																								.children(
-																										'i:first');
-																						icon
-																								.toggleClass(openedClass
-																										+ " "
-																										+ closedClass);
-																						$(
-																								this)
-																								.children()
-																								.children()
-																								.toggle();
-																					}
-																				})
-																branch
-																		.children()
-																		.children()
-																		.toggle();
-															});
-											//fire event from the dynamically added icon
-											tree
-													.find('.branch .indicator')
-													.each(
-															function() {
-																$(this)
-																		.on(
-																				'click',
-																				function() {
-																					$(
-																							this)
-																							.closest(
-																									'li')
-																							.click();
-																				});
-															});
-											//fire event to open branch if the li contains an anchor instead of text
-											tree
-													.find('.branch>a')
-													.each(
-															function() {
-																$(this)
-																		.on(
-																				'click',
-																				function(
-																						e) {
-																					$(
-																							this)
-																							.closest(
-																									'li')
-																							.click();
-																					e
-																							.preventDefault();
-																				});
-															});
-											//fire event to open branch if the li contains a button instead of text
-											tree
-													.find('.branch>button')
-													.each(
-															function() {
-																$(this)
-																		.on(
-																				'click',
-																				function(
-																						e) {
-																					$(
-																							this)
-																							.closest(
-																									'li')
-																							.click();
-																					e
-																							.preventDefault();
-																				});
-															});
-										}
-									});
+                        //initialize each of the top levels
+                        var tree = $(this);
+                        tree.addClass("tree");
+                        tree.find('li').has("ul").each( function() {
+                                    var branch = $(this); //li with children ul
+                                    branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+                                    branch.addClass('branch');
+                                    branch.on('click',function( e) {
+                                                if (this == e.target) {
+                                                    var icon = $( this) .children('i:first');
+                                                    icon.toggleClass(openedClass +" " +closedClass);
+                                                    $(this).children().children().toggle();
+                                                }
+                                            })
+                                    branch
+                                        .children()
+                                        .children()
+                                        .toggle();
+                                });
+                        //fire event from the dynamically added icon
+                        tree
+                            .find('.branch .indicator')
+                            .each(
+                                function() {
+                                    $(this)
+                                        .on(
+                                            'click',
+                                            function() {
+                                                $(
+                                                        this)
+                                                    .closest(
+                                                        'li')
+                                                    .click();
+                                            });
+                                });
+                        //fire event to open branch if the li contains an anchor instead of text
+                        tree
+                            .find('.branch>a')
+                            .each(
+                                function() {
+                                    $(this)
+                                        .on(
+                                            'click',
+                                            function(
+                                                e) {
+                                                $(
+                                                        this)
+                                                    .closest(
+                                                        'li')
+                                                    .click();
+                                                e
+                                                    .preventDefault();
+                                            });
+                                });
+                        //fire event to open branch if the li contains a button instead of text
+                        tree
+                            .find('.branch>button')
+                            .each(
+                                function() {
+                                    $(this)
+                                        .on(
+                                            'click',
+                                            function(
+                                                e) {
+                                                $(
+                                                        this)
+                                                    .closest(
+                                                        'li')
+                                                    .click();
+                                                e
+                                                    .preventDefault();
+                                            });
+                                });
+                    }
+                });
 
-							//Initialization of treeviews
+            //Initialization of treeviews
 
-							$('#tree1').treed();
+           
 
-						});
+        });
 	</script>
 </body>
 </html>
