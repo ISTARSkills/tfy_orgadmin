@@ -13,6 +13,7 @@ public class ConcreteItemPOJO implements Comparable<ConcreteItemPOJO>{
 	private String status;
 	private Integer orderId = 0;
 	private Integer taskId;
+	
 	private Integer progress;
 	
 	public ConcreteItemPOJO(){

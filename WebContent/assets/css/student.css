@@ -626,8 +626,9 @@ width: 406px;
 
 }
 .custom-beginskill-lesson-cards-background-left{
-  width: 260px;
+  width: 360px;
   height: 307.2px;
+  right:100px;
   opacity: 0.5;
   border-radius: 2.4px;
   background-color: #eef0f3;
@@ -636,9 +637,10 @@ width: 406px;
 }
 
 .custom-beginskill-lesson-cards-background-right{
- width: 259px;
+ width: 360px;
   height: 307.2px;
   opacity: 0.5;
+  left:100px;
   border-radius: 2.4px;
   background-color: #eef0f3;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 5px 0 rgba(0, 0, 0, 0.12);
@@ -716,7 +718,6 @@ height: 484px;
 position: absolute; 
 bottom: -29px; 
 text-align: center;
- left: -94px; 
  width: 100%;
 }
 .custom-beginskill-forgroundbutton{
@@ -725,12 +726,10 @@ text-align: center;
 	text-align: center; 
 	width: 100%;
 }
-.custom-beginskill-rightbutton{
-	
+.custom-beginskill-rightbutton{	
 	position: absolute; 
 	bottom: -29px; 
 	text-align: center; 
-	right: -42px; 
 	width: 100%;
 }
 
@@ -998,4 +997,45 @@ float: right;
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+.custom-notask-imgtag{
+	width:100px;
+	height: 100px;
+}
+
+.custom-notification-imgtag{
+	
+width:60px; 
+height:60px;	
+	
+}
+.custom-profile-imgtag{
+	width:24px;
+	height:24px;
+}
+
+.custom-bell-color{
+color: #9b9b9b !important;
+}
+
+.custom-coin-icontag{
+
+	width:24px; 
+	height:24px;
+}
+
+.custom-skillprofile-uploadicon{
+width: 40.8px; 
+height: 40.8px; 
+background-color: #eb384f; 
+bottom: 70px; 
+right: 12px; 
+position: absolute;
+}
+.custom-skillprofile-icontag{
+	
+	width: 23px; 
+	height: 23px; 
+	object-fit: contain;
+	
 }

@@ -98,8 +98,8 @@
 				class="nav-link custom-xp-number"><%=cp.getStudentProfile().getExperiencePoints()%>
 					<small class='custom-xp'>XP</small></a></li>
 			<li class="nav-item custom-leftmargin-type1"><a id=""
-				class="nav-link custom-coins"><img
-					src="/assets/images/coin-icon.png" width="24px" height="24px"
+				class="nav-link custom-coins"><img class='custom-coin-icontag'
+					src="/assets/images/coin-icon.png" 
 					class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins()%></small></a></li>
 
 			<li
@@ -107,7 +107,7 @@
 				class="nav-link dropdown-toggle pt-0 pb-0"
 				id="navbarDropdownNotificatinMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true"> <i
-					class="fa fa-bell fa-4 mt-3" style="color: #9b9b9b !important;"  aria-hidden="true"></i><span
+					class="fa fa-bell fa-4 mt-3 custom-bell-color"  aria-hidden="true"></i><span
 					class="badge badge-info custom-notificatin-bell"><%=cp.getNotifications().size() %></span></a>
 				<div class="dropdown-menu scrollbar text-center pt-0 pb-0"
 					aria-labelledby="navbarDropdownNotificatinMenuLink">
@@ -128,7 +128,7 @@
 					%>
 				       <a class="dropdown-item custom-textSize <%=np.getStatus().equalsIgnoreCase("READ")?"text-muted":"" %>" href="#">
 				       <div class='row p-0'>
-				       <div class='col-2 p-0'> <img src="<%=np.getImageURL()%>"  style="width:60px; height:60px;" class="" alt=""></div>
+				       <div class='col-2 p-0'> <img class='custom-notification-imgtag' src="<%=np.getImageURL()%>"  alt=""></div>
 				       <div class='col-10 text-left'><%=np.getMessage() %></div>
 				       </div></a>
 				       <hr class='custom-no-margins'>
@@ -144,9 +144,8 @@
 
 		<ul class="navbar-nav custom-nav-left-border">
 			<li class="nav-link" href="#"><img
-				src="<%=cp.getStudentProfile().getProfileImage()%>" width="24px"
-				height="24px" class="img-circle" alt=""></li>
-			<li class="nav-item dropdown custom-no-margins"><a
+				src="<%=cp.getStudentProfile().getProfileImage()%>"  class="img-circle custom-profile-imgtag" alt=""></li>
+			<li class="nav-item dropdown m-0"><a
 				class="nav-link dropdown-toggle custom-profil-name" href="#"
 				id="navbarDropdownMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true">Welcome <%=cp.getStudentProfile().getFirstName()%>
@@ -157,7 +156,7 @@
 				</div></li>
 
 		</ul>
-		<a class="nav-link" href="#"> <span class="navbar-text"> </span></a>
+		<a class="nav-link"> <span class="navbar-text"> </span></a>
 
 
 

@@ -143,12 +143,31 @@ public class MAIN {
 		//xmlTesting();
 		//appPropertiesTesting();
 		
-		
+		generate();
 		System.out.println("end");
 	}
 	
 	
-
+public static void generate() {
+	int m=2;
+	for(int i=0;i<m;i++) {
+		for(int j=0;j<3;j++) {
+			int pos=0;
+			if(i==0&& j==0) {
+				pos=m-1;
+			}else if(j==2 && i==(m-1)) {
+				pos=0;
+			}else if(j==0) {
+				pos=i-1;
+			}else if(j==1 || j==2) {
+				pos=(i+j)-1;
+			}
+			System.out.print(pos+" \t");
+			
+		}
+		System.out.println("\n");
+	}
+}
 
 
 

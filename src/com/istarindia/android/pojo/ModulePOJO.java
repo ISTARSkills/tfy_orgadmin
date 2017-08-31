@@ -1,10 +1,7 @@
 package com.istarindia.android.pojo;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,7 +9,6 @@ import java.util.Set;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "module")
 public class ModulePOJO implements Comparable<ModulePOJO>{
@@ -23,8 +19,9 @@ public class ModulePOJO implements Comparable<ModulePOJO>{
 	private String status;
 	private String imageURL;
 	private Integer orderId;
-	private List<ConcreteItemPOJO> lessons = new ArrayList<ConcreteItemPOJO>();
 	private Set<String> skillObjectives = new HashSet<String>();
+	private List<SessionPOJO> sessions = new ArrayList<SessionPOJO>();
+
 	
 	public ModulePOJO(){
 		
@@ -70,13 +67,16 @@ public class ModulePOJO implements Comparable<ModulePOJO>{
 		this.orderId = orderId;
 	}
 	
-	@XmlAttribute(name = "lessons", required = false)
-	public List<ConcreteItemPOJO> getLessons() {
-		return lessons;
+	
+	
+	
+	@XmlElement(name = "sessions", required = false)
+	public List<SessionPOJO> getSessions() {
+		return sessions;
 	}
 
-	public void setLessons(List<ConcreteItemPOJO> lessons) {
-		this.lessons = lessons;
+	public void setSessions(List<SessionPOJO> sessions) {
+		this.sessions = sessions;
 	}
 
 	@XmlElement(name = "skillObjectives", required = false)
@@ -95,7 +95,7 @@ public class ModulePOJO implements Comparable<ModulePOJO>{
 		this.status = status;
 	}
 
-	public ModulePOJO sortLessonsAndAssignStatus(){		
+	/*public ModulePOJO sortLessonsAndAssignStatus(){		
 		ModulePOJO modulePOJO = this;		
 		Collections.sort(modulePOJO.getLessons());
 		
@@ -108,31 +108,10 @@ public class ModulePOJO implements Comparable<ModulePOJO>{
 		}
 		modulePOJO.setStatus(moduleStatus);	
 	return modulePOJO;
-	}
+	}*/
 	
 	@Override
 	public int compareTo(ModulePOJO o) {
 		return this.orderId -o.orderId;
-	}
-	
-	
-	@XmlTransient
-	public boolean isFuture(ComplexObject cp) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		String todaysDate = dateFormat.format(date);
-		
-		boolean isFuture = false;
-		for (ConcreteItemPOJO concreteItemPOJO : lessons) {
-			for (TaskSummaryPOJO task : cp.getTasks()) {
-				if(task.getItemId()==concreteItemPOJO.getLesson().getId()){
-					if(task.getDate().getTime() - date.getTime() > 0){
-						isFuture = true;
-						return true;
-					}
-				}
-			}
-		}
-		return true;
 	}
 }

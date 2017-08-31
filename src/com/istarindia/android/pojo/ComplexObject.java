@@ -1,6 +1,5 @@
 package com.istarindia.android.pojo;
 
-import java.beans.Transient;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,17 +131,18 @@ public class ComplexObject {
 	}
 
 	@XmlTransient
-	public List<TaskSummaryPOJO> getTaskForToday() {
-		List<TaskSummaryPOJO> items = new ArrayList<>();
+	public List<DailyTaskPOJO> getEventsToday() {
+		List<DailyTaskPOJO> items = new ArrayList<>();
+
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String todaysDate = dateFormat.format(date);
-
-		for (TaskSummaryPOJO assessmentReportPOJO : tasks) {
-			if (assessmentReportPOJO.getDate().toString().startsWith(todaysDate)) {
-				items.add(assessmentReportPOJO);
+		for (DailyTaskPOJO event : events) {
+			// System.err.println(event.getEndDate());
+			if (event.getStartDate().toString().startsWith(todaysDate)) {
+				items.add(event);
 			}
-			// //System.err.println(assessmentReportPOJO.getDate());
+
 		}
 		return items;
 	}
@@ -186,7 +186,7 @@ public class ComplexObject {
 		for (NotificationPOJO notification : notifications) {
 
 			if (notification.getStatus().equalsIgnoreCase("UNREAD")) {
-				//System.err.println("Notification TYPE----> "+notification.getItemType());
+				// System.err.println("Notification TYPE----> "+notification.getItemType());
 				if (notification.getItemType().equalsIgnoreCase("ASSESSMENT")
 						|| notification.getItemType().equalsIgnoreCase("CLASSROOM_SESSION")
 						|| notification.getItemType().equalsIgnoreCase("LESSON")
@@ -205,21 +205,4 @@ public class ComplexObject {
 		return count;
 	}
 
-	@XmlTransient
-
-	public List<DailyTaskPOJO> getEventsToday() {
-		List<DailyTaskPOJO> items = new ArrayList<>();
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		String todaysDate = dateFormat.format(date);
-		for (DailyTaskPOJO event : events) {
-			// System.err.println(event.getEndDate());
-			if (event.getStartDate().toString().startsWith(todaysDate)) {
-				items.add(event);
-			}
-
-		}
-		return items;
-	}
 }

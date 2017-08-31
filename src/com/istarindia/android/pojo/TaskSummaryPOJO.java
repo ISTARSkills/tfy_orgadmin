@@ -43,11 +43,7 @@ public class TaskSummaryPOJO {
 	private String event_address;
 	/*related to classroom task ends here*/
 	
-	
 	HashMap<String, String> taskContent ;
-	
-	
-	
 	public TaskSummaryPOJO(){
 		
 	}
@@ -241,8 +237,8 @@ public class TaskSummaryPOJO {
 	}
 
 	@XmlAttribute(name = "date", required = false)
-	public Timestamp getDate() {
-		return date;
+	public Long getDate() {
+		return date.getTime();
 	}
 
 
@@ -288,6 +284,7 @@ public class TaskSummaryPOJO {
 		this.retryable = retryable;
 	}
 
+
 	@XmlElement(name="task_content", required=false)
 	public HashMap<String, String> getTaskContent() {
 		return taskContent;
@@ -297,8 +294,8 @@ public class TaskSummaryPOJO {
 	public void setTaskContent(HashMap<String, String> taskContent) {
 		this.taskContent = taskContent;
 	}
-	
-	
+
+
 	@XmlAttribute(name="completedDate", required=false)
 	public Timestamp getCompletedDate() {
 		return completedDate;
@@ -307,6 +304,11 @@ public class TaskSummaryPOJO {
 
 	public void setCompletedDate(Timestamp completedDate) {
 		this.completedDate = completedDate;
-	}	
+	}
+
+	
+	
+	
+	
 	
 }

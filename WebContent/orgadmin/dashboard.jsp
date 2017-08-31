@@ -1,9 +1,9 @@
+<%@page import="com.talentify.admin.rest.pojo.EventsCard"%>
 <%@page import="com.talentify.admin.rest.pojo.EventError"%>
 <%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.viksitpro.core.utilities.TrainerWorkflowStages"%>
 <%@page import="in.orgadmin.admin.services.AdminUIServices"%>
 <%@page import="java.util.List"%>
-<%@page import="com.talentify.admin.rest.pojo.EventsCard"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>

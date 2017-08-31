@@ -1,13 +1,10 @@
 package com.istarindia.android.pojo;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "lesson")
-public class LessonPOJO implements Comparable<LessonPOJO> {
+public class LessonPOJO implements Comparable<LessonPOJO>{
 
 	private Integer id;
 	private Integer playlistId;
@@ -19,96 +16,90 @@ public class LessonPOJO implements Comparable<LessonPOJO> {
 	private Integer duration;
 	private String status;
 	private String lessonUrl;
+	private Integer currentSlideId;
 	private String imageUrl;
+	
+	
+	
 
-	public LessonPOJO() {
-
+	public LessonPOJO(){
+		
 	}
-
+	
 	@XmlAttribute(name = "id", required = false)
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+		
 	@XmlAttribute(name = "playlistId", required = false)
 	public Integer getPlaylistId() {
 		return playlistId;
 	}
-
 	public void setPlaylistId(Integer playlistId) {
 		this.playlistId = playlistId;
 	}
-
+	
 	@XmlAttribute(name = "type", required = false)
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
 	@XmlAttribute(name = "title", required = false)
 	public String getTitle() {
 		return title;
 	}
-
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
 	@XmlAttribute(name = "description", required = false)
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	@XmlAttribute(name = "subject", required = false)
 	public String getSubject() {
 		return subject;
 	}
-
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
+	
 	@XmlAttribute(name = "orderId", required = false)
 	public Integer getOrderId() {
 		return orderId;
 	}
-
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-
+	
 	@XmlAttribute(name = "duration", required = false)
 	public Integer getDuration() {
 		return duration;
 	}
-
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-
+	
 	@XmlAttribute(name = "status", required = false)
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 	@Override
 	public int compareTo(LessonPOJO o) {
-		return this.orderId - o.orderId;
+		return this.orderId -o.orderId;
 	}
 
 	@XmlAttribute(name = "lessonUrl", required = false)
@@ -119,7 +110,16 @@ public class LessonPOJO implements Comparable<LessonPOJO> {
 	public void setLessonUrl(String lessonUrl) {
 		this.lessonUrl = lessonUrl;
 	}
+	
+	@XmlAttribute(name = "currentSlideId", required = false)
+	public Integer getCurrentSlideId() {
+		return currentSlideId;
+	}
 
+	public void setCurrentSlideId(Integer currentSlideId) {
+		this.currentSlideId = currentSlideId;
+	}
+	
 	@XmlAttribute(name = "imageUrl", required = false)
 	public String getImageUrl() {
 		return imageUrl;
@@ -128,29 +128,5 @@ public class LessonPOJO implements Comparable<LessonPOJO> {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-
-	@XmlTransient
-	public boolean isFuture(ComplexObject cp) {
-		for (CoursePOJO course : cp.getCourses()) {
-			for (ModulePOJO module : course.getModules()) {
-				for (ConcreteItemPOJO lesson : module.getLessons()) {
-					if (lesson.getLesson().getId() == id) {
-						for (TaskSummaryPOJO task : cp.getTasks()) {
-							////System.err.println("task.getId()-->"+task.getId() + "   -           "+ lesson.getTaskId());
-							if(lesson.getTaskId().intValue() == task.getId().intValue()){
-								//System.err.println("I found my Task ->>"+lesson.getTaskId() );
-								if((task.getDate().getTime()) - (new Date()).getTime() > 0){
-									return true;
-								}
-							}
-						}
-					}
-				}
-			}
-
-		}
-
-		return false;
-
-	}
+	
 }

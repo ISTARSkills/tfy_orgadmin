@@ -37,8 +37,8 @@ public class StudentTrainerDashboardService {
 		for (TaskSummaryPOJO task : taskSummaryPOJOList) {
 			// System.out.println("task.getStatus() "+task.getStatus());
 			if (!task.getStatus().equalsIgnoreCase("COMPLETED")) {
-				System.out.println("today date" + task.getDate());
-				System.out.println("today itemType " + task.getItemType());
+				//System.out.println("today date" + task.getDate());
+				//System.out.println("today itemType " + task.getItemType());
 				if ((sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
 						&& (task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT)
 								|| task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT)
@@ -129,11 +129,21 @@ public class StudentTrainerDashboardService {
 			out.append("<div class='row custom-no-margins'>");
 			out.append("<div class='col-12 custom-no-padding custom-colmd-css'>");
 			out.append("<div class='card custom-cards_css mx-auto'>");
-			out.append("<h1 class=' text-muted text-center'>No Task</h4>");
-			out.append("<img class='card-img-top custom-task-notask' src='/assets/images/zzz_graphic.png' alt=''>");
+			out.append("<div class='row mx-auto'>");
+			out.append("<h1 class=' text-muted text-center mx-auto'>You don’t have any tasks lined up for today.</h4>");
+			out.append("</div>");
+			out.append("<div class='row mx-auto my-auto'>");
+			out.append("<img class='card-img-top custom-notask-imgtag mx-auto' src='/assets/images/zzz_graphic.png' alt=''>");
+			out.append("</div>");
+			out.append("<div class='row mx-auto'>");
+			out.append("<h1 class=' text-muted text-center mx-auto'>Get out and have some fun.</h4>");
+			out.append("</div>");
+
 			out.append("</div></div>");
 			out.append("</div></div>");
 			out.append("</div>");
+			
+		
 		}
 		
 		

@@ -4,13 +4,6 @@
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 
 
-<style>
-.jstree-open .jstree-icon.jstree-ocl {
-	background: url(/assets/images/expanded.png) 0px 0px no-repeat
-		!important;
-}
-</style>
-
 <jsp:include page="/inc/head.jsp"></jsp:include>
 
 
@@ -50,8 +43,8 @@
 							</div>
 							<div class="col-3 col-md-auto text-center m-5">
 								<img class='img-circle custom-skill-profile-img' src='<%=cp.getStudentProfile().getProfileImage()%>' alt='No Image Available'>
-								<div class="img-circle" style="width: 40.8px; height: 40.8px; background-color: #eb384f; bottom: 70px; right: 12px; position: absolute;">
-									<img class='img-circle mt-3' style="width: 23px; height: 23px; object-fit: contain;" src='/assets/images/group-5.png' alt='No Image Available'>
+								<div class="img-circle custom-skillprofile-uploadicon" >
+									<img class='img-circle mt-3 custom-skillprofile-icontag' src='/assets/images/group-5.png' alt='No Image Available'>
 								</div>
 								<h1 class='custom-skill-profile-name'><%=cp.getStudentProfile().getFirstName()%></h1>
 							</div>
