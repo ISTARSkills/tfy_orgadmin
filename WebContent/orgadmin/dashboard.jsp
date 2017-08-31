@@ -574,6 +574,15 @@
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					navbar_selector();
 				});
+				$('.show-more').on("click",function(){
+					if($('.show-more u').text() == 'Show more'){
+						$('.collapsable').css('display','block');
+						$('.show-more u').text('Show less');
+					}else{
+						$('.collapsable').css('display','none');
+						$('.show-more u').text('Show more');
+					}
+				});
 			});
 			
 		});
