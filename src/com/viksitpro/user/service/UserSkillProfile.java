@@ -48,56 +48,53 @@ public class UserSkillProfile {
 		return out;
 
 	}
-	
+
 	public StringBuffer getSkillList(ComplexObject cp) {
-	
+
 		StringBuffer out = new StringBuffer();
-		int count = 0 ;
-		String parentactiveclass ="";
-		String childactiveclass ="";
-		for(SkillReportPOJO skillobj :cp.getSkills()) {
-			
-			if(count == 0) {
-				
-				parentactiveclass = "skill_list_active active";	
-				childactiveclass ="custom-skill-list-active";
-				
-			}else {
-				
-				parentactiveclass = "skill_list_disable disabled";	
-				childactiveclass ="custom-skill-list-disabled";
-				
+		int count = 0;
+		String parentactiveclass = "";
+		String childactiveclass = "";
+		for (SkillReportPOJO skillobj : cp.getSkills()) {
+
+			if (count == 0) {
+
+				parentactiveclass = "skill_list_active active";
+				childactiveclass = "custom-skill-list-active";
+
+			} else {
+
+				parentactiveclass = "skill_list_disable disabled";
+				childactiveclass = "custom-skill-list-disabled";
+
 			}
-			
-			
-		
-		out.append("<div class='nav-link skill_list "+parentactiveclass+" pt-0 pb-0 pl-0' data-skillId='"+skillobj.getId()+"'>");
-		out.append("<div class='card "+childactiveclass+" justify-content-md-center'>");
-		out.append("<div class='card-block'>");
-		out.append("<div class='row custom-no-margins'>");
-		out.append("<div class='col-4'>");
-		out.append("<img class='custom-skill-tree-img' src='"+skillobj.getImageURL()+"' alt='No Image Available'>");
-		out.append("</div>");
-		out.append("<div class='col-8 my-auto'>");
-		out.append("<h3 class='custom-skill-tree-title'>"+skillobj.getName()+"</h3>");
-		out.append("</div>");
-		out.append("</div>");
-		out.append("</div>");
-		out.append("</div>");
-		out.append("</div>");
-		
-		count++;
-	}
+
+			out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-skillId='"
+					+ skillobj.getId() + "'>");
+			out.append("<div class='card " + childactiveclass + " justify-content-md-center'>");
+			out.append("<div class='card-block'>");
+			out.append("<div class='row custom-no-margins'>");
+			out.append("<div class='col-4'>");
+			out.append("<img class='custom-skill-tree-img' src='" + skillobj.getImageURL()
+					+ "' alt='No Image Available'>");
+			out.append("</div>");
+			out.append("<div class='col-8 my-auto'>");
+			out.append("<h3 class='custom-skill-tree-title'>" + skillobj.getName() + "</h3>");
+			out.append("</div>");
+			out.append("</div>");
+			out.append("</div>");
+			out.append("</div>");
+			out.append("</div>");
+
+			count++;
+		}
 		return out;
-		
-		
+
 	}
 
 	public StringBuffer StudentModuleList(ComplexObject cp, int course_id) {
 
 		StringBuffer out = new StringBuffer();
-
-		
 
 		int count = 0;
 		for (CoursePOJO student_course : cp.getCourses()) {
@@ -145,18 +142,16 @@ public class UserSkillProfile {
 							+ "' class='carousel slide'data-interval='false' data-ride='carousel'>");
 					out.append("<div class='carousel-inner' role='listbox'>");
 
-					
+					for (int i = 0; i < 3; i++) {
 
-					for (int i =0; i<3;i++) {
-						
-						
-						out.append("<div class='carousel-item "+(i == 0 ? "active" : "")+"'>");
+						out.append("<div class='carousel-item " + (i == 0 ? "active" : "") + "'>");
 						out.append("<div class='card-block'>");
 						out.append("<div class='row custom-beginskill-row'>");
 						out.append("<div class='col-4 my-auto custom-no-padding'>");
 						out.append("<div class='card custom-beginskill-lesson-cards-background-left'>");
 						out.append("<div class='card-block'>");
-						out.append("<h1 class='card-title custom-task-title mt-5'>Direct Tax Skill Work shop Direct Tax</h1>");
+						out.append(
+								"<h1 class='card-title custom-task-title mt-5'>Direct Tax Skill Work shop Direct Tax</h1>");
 						out.append("<h1 class=' ml-4 mr-4 custom-progress-color'>71%</h1>");
 						out.append("<h2>Accuracy</h2>");
 						out.append("<p class=' dont-stop-There-is'>Don't stop! There is still room to grow.</p>");
@@ -174,7 +169,7 @@ public class UserSkillProfile {
 								"<div class='progress-bar' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'></div>");
 						out.append("</div>");
 						out.append("<div class='card-block text-center my-auto'>");
-						
+
 						out.append(
 								"<h1 class='card-title custom-task-title mx-auto text-center'>Direct Tax Skill Work shop Direct Tax</h1>");
 						out.append(
@@ -226,6 +221,43 @@ public class UserSkillProfile {
 			}
 		}
 
+		return out;
+	}
+
+	public StringBuffer getSkillTree(ComplexObject cp) {
+
+		StringBuffer out = new StringBuffer();
+
+		if (cp.getSkills() != null && cp.getSkills().size() != 0) {
+
+			for (SkillReportPOJO skillobj : cp.getSkills()) {
+
+				out.append("<li> " + skillobj.getName() + "<small class='custom-skillprofile-subskills'>"
+						+ skillobj.getSkills().size()
+						+ " subskills</small> <small class='custom-skillprofile-xp_points'>" + skillobj.getUserPoints()
+						+ " / " + skillobj.getTotalPoints() + " XP</small><i class='point-div'></i>");
+				
+				out.append("<div class='progress ml-5'><div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "+skillobj.getPercentage()+"%' aria-valuenow='"+skillobj.getPercentage()+"' aria-valuemin='0' aria-valuemax='100'></div></div>");
+
+				if (skillobj.getSkills() != null && skillobj.getSkills().size() != 0) {
+
+					out.append("<ul>");
+					
+					for (SkillReportPOJO subSkillobj : skillobj.getSkills()) {
+						
+						out.append("<li>"+subSkillobj.getName()+""
+								+ "<div class='progress ml-5'>"
+								+ "<div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "+subSkillobj.getPercentage()+"%' aria-valuenow='"+subSkillobj.getPercentage()+"' aria-valuemin='0' aria-valuemax='100'></div>"
+								+ "</div></li>");
+						
+
+					}
+                       out.append("</ul>");
+				}
+				out.append("</li>");
+
+			}
+		}
 		return out;
 	}
 
