@@ -1959,7 +1959,11 @@ a.unselected_report {
 	width: 660px;
 }
 /* Vinay css ends */
-
+.sessionImage {
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+}
 .moduleImage {
     width: 90px;
     height: 90px;

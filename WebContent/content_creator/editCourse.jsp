@@ -114,8 +114,8 @@
 
 		function initModuleEllipsisListener() {
 			initModuleEllipsisEditModule();
-			/* initModuleEllipsisAddSession();
-			initModuleEllipsisAddModuleBelow();
+			initModuleEllipsisAddSession();
+			/* initModuleEllipsisAddModuleBelow();
 			initModuleEllipsisMoveUp();
 			initModuleEllipsisMoveDown();
 			initModuleEllipsisDelete(); */
@@ -145,64 +145,55 @@
 								if (window.isNewCourse) {
 									alert('Please save the course first by clicking on the update detail button!')
 								} else {
-									moduleModalSaveChangesController(
-											createUpdateModule, 'create');
+									$
+											.get('./modals/module.jsp')
+											.done(
+													function(data) {
+														$('#modals').html(data);
+														$('#moduleModal')
+																.modal('toggle');
+														$('#saveModule')
+																.click(
+																		function() {
+																			var orderID = window.courseTree.length + 1;
+																			var isModuleFormOK = false;
+																			isModuleFormOK = validateModuleModal();
+																			if (isModuleFormOK) {
+																				var dataPost = {
+																					moduleName : $(
+																							'#moduleModalTitle')
+																							.val()
+																							.trim(),
+																					moduleDescription : $(
+																							'#moduleModalDescription')
+																							.val()
+																							.trim(),
+																					moduleImageURL : $(
+																							'.moduleImage')
+																							.attr(
+																									'src'),
+																					parentCourse : window.courseID,
+																					moduleOrderID : orderID
+																				};
+																				var url = 'http://localhost:8080/tfy_content_rest/module/create';
+																				$
+																						.ajax(
+																								{
+																									type : "POST",
+																									url : url,
+																									data : JSON
+																											.stringify(dataPost),
+																								})
+																						.done(
+																								function(
+																										data) {
+																									loadCourseTree();
+																								});
+																			}
+																		});
+													});
 								}
 							});
-		}
-
-		function moduleModalSaveChangesController(moduleModalCallBack,
-				moduleMode) {
-			$.get('./modals/module.jsp').done(function(data) {
-				$('#modals').html(data);
-				$('#moduleModal').modal('toggle');
-				$('#saveModule').click(function() {
-					var isModuleFormOK = false;
-					isModuleFormOK = validateModuleModal();
-					if (isModuleFormOK) {
-						moduleModalCallBack(moduleMode);
-						console.log('Form is OK');
-					}
-				});
-			});
-		}
-
-		function createUpdateModule(mode) {
-			var orderID = getAddModuleButtonOrderID();
-			if (mode == 'create') {
-				var dataPost = {
-					moduleName : $('#moduleModalTitle').val().trim(),
-					moduleDescription : $('#moduleModalDescription').val()
-							.trim(),
-					moduleImageURL : $('.moduleImage').attr('src'),
-					parentCourse : window.courseID,
-					moduleOrderID : orderID
-				};
-				var url = 'http://localhost:8080/tfy_content_rest/module/create';
-			} else {
-				var dataPost = {
-					moduleName : $('#moduleModalTitle').val().trim(),
-					moduleDescription : $('#moduleModalDescription').val()
-							.trim(),
-					moduleImageURL : $('.moduleImage').attr('src'),
-				};
-				var url = 'http://localhost:8080/tfy_content_rest/module/update';
-			}
-			$.ajax({
-				type : "POST",
-				url : url,
-				data : JSON.stringify(dataPost),
-			}).done(function(data) {
-				console.log(data);
-			});
-		}
-
-		function updateModule() {
-
-		}
-
-		function getAddModuleButtonOrderID() {
-			return window.courseTree.length + 1;
 		}
 		function loadCourseTree() {
 			var courseID = $('#courseID').val();
@@ -268,36 +259,6 @@
 				window.courseID = $('#courseID').val();
 			}
 		}
-		function initModuleEllipsisAddSession() {
-			$('#skillTree')
-					.on(
-							"click",
-							".addChildren",
-							function() {
-								$.get('./modals/module.jsp').done(
-										function(data) {
-											$('#modals').html(data);
-											$('#moduleModal').modal('toggle');
-										});
-								var parentitemID = this.parentElement.parentElement.parentElement.parentElement.id;
-								/* $(
-										'#skillTree')
-										.jstree(
-												true)
-										.create_node(
-												parentitemID,
-												{
-													"id" : "ajson5",
-													"text" : "newly added"
-												},
-												"last",
-												function() {
-													alert("done");
-												}); */
-
-							});
-		}
-
 		function validateModuleModal() {
 			var isModalOK = true;
 			if ($('#moduleModalTitle').val().trim() == '') {
@@ -456,13 +417,145 @@
 																				'#moduleModal')
 																				.modal(
 																						'toggle');
+																		$(
+																				'#saveModule')
+																				.click(
+																						function() {
+																							var isModuleFormOK = false;
+																							isModuleFormOK = validateModuleModal();
+																							if (isModuleFormOK) {
+																								var dataPost = {
+																									moduleName : $(
+																											'#moduleModalTitle')
+																											.val()
+																											.trim(),
+																									moduleDescription : $(
+																											'#moduleModalDescription')
+																											.val()
+																											.trim(),
+																									moduleImageURL : $(
+																											'.moduleImage')
+																											.attr(
+																													'src'),
+																								};
+																								var url = 'http://localhost:8080/tfy_content_rest/module/update/'
+																										+ chosenModuleID;
+																								$
+																										.ajax(
+																												{
+																													type : "POST",
+																													url : url,
+																													data : JSON
+																															.stringify(dataPost),
+																												})
+																										.done(
+																												function(
+																														data) {
+																													//update the node
+																													$(
+																															'#moduleModal')
+																															.modal(
+																																	'toggle');
+																													console
+																															.log('Module updated!');
+																													loadCourseTree();
+
+																												});
+
+																							}
+																						});
 																	});
-													moduleModalSaveChangesController(
-															createUpdateModule,
-															'update');
+
 												});
 							});
 
+		}
+
+		function initModuleEllipsisAddSession() {
+			$(document)
+					.on(
+							'click',
+							'.addSession',
+							function() {
+								var chosenModuleID = $(this).data('moduleid');
+								var nodeID = 'M' + chosenModuleID;
+								var orderID = $('#skillTree').jstree(true)
+										.get_node(nodeID).children.length + 1;
+								$
+										.get('./modals/cmsession.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													$('#sessionModal').modal(
+															'toggle');
+													$('#saveSession')
+															.click(
+																	function() {
+																		var isSessionFormOK = false;
+																		isSessionFormOK = validateSessionModal();
+																		if (isSessionFormOK) {
+																			var dataPost = {
+																				sessionName : $(
+																						'#sessionModalTitle')
+																						.val()
+																						.trim(),
+																				sessionDescription : $(
+																						'#sessionModalDescription')
+																						.val()
+																						.trim(),
+																				sessionImageURL : $(
+																						'.sessionImage')
+																						.attr(
+																								'src'),
+																				parentModule : chosenModuleID,
+																				sessionOrderID : orderID
+																			};
+																			var url = 'http://localhost:8080/tfy_content_rest/session/create';
+																			$
+																					.ajax(
+																							{
+																								type : "POST",
+																								url : url,
+																								data : JSON
+																										.stringify(dataPost),
+																							})
+																					.done(
+																							function(
+																									data) {
+																								//update the node
+																								$(
+																										'#sessionModal')
+																										.modal(
+																												'toggle');
+																								console
+																										.log('Session updated!');
+																								loadCourseTree();
+
+																							});
+																		}
+
+																	});
+												});
+							});
+		}
+
+		function validateSessionModal() {
+			var isModalOK = true;
+			if ($('#sessionModalTitle').val().trim() == '') {
+				$('#sessionModalTitle').addClass('faultyFormElement');
+				$('#sessionModalTitle').focus();
+				isModalOK = false;
+			} else {
+				$('#sessionModalTitle').removeClass('faultyFormElement');
+			}
+			if ($('#sessionModalDescription').val().trim() == '') {
+				$('#sessionModalDescription').addClass('faultyFormElement');
+				$('#sessionModalDescription').focus();
+				isModalOK = false;
+			} else {
+				$('#sessionModalDescription').removeClass('faultyFormElement');
+			}
+			return isModalOK;
 		}
 	</script>
 </body>
