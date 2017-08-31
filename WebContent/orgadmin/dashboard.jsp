@@ -574,6 +574,7 @@
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					navbar_selector();
 				});
+				$('.popover-dismiss').popover();
 				$('.show-more').on("click",function(){
 					if($('.show-more u').text() == 'Show more'){
 						$('.collapsable').css('display','block');

@@ -141,6 +141,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																		</div>
 																	<%} %>
 																	</div>
+																	<div class="fadeout-area"></div>
 																</div>
 															</div>
 														</div>
@@ -166,6 +167,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																	</div>
 																</div>
 															</div>
+															<div class="fadeout-area"></div>
 														</div>
 													</div>
 												</div>
@@ -189,7 +191,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																<hr class="my-0">
 																<div class="p-3">
 																<h4 class="feedback-comment-title pt-2">Comments</h4>
-																<div class="feedback-comment-box mt-3">Average attendance.. Lab session tomorrow.. Hopefully expect better attendence</div>
+																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Average attendance.. Lab session tomorrow.. Hopefully expect better attendence">Average attendance.. Lab session tomorrow.. Hopefully expect better attendence</div>
 																</div>
 															</div>
 														</div>
@@ -221,7 +223,7 @@ int eventId = Integer.parseInt(request.getParameter("event_id"));
 																<hr class="my-0">
 																<div class="p-3">
 																<h4 class="feedback-comment-title pt-2">Comments</h4>
-																<div class="feedback-comment-box mt-3">Student <%=i %></div>
+																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Student <%=i %>">Student <%=i %></div>
 																</div>
 															</div>
 														</div>
