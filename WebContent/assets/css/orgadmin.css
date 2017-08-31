@@ -2318,5 +2318,10 @@ a.unselected_report {
         rgba(255, 255, 255, 0) 0%,
         rgba(255, 255, 255, 1) 100%
     );
-} 
+}
+
+.no-event-card {
+	height: 240px;
+	font-family: Lato;
+}
 /* Vinay css ends */
