@@ -109,7 +109,7 @@ public class UserSkillProfile {
 							"<div class='card-header custom-module_card-header' role='tab' id='heading" + count + "'>");
 					out.append("<div class='row justify-content-md-center mt-3'>");
 					out.append("<div class='col-2 my-auto custom-no-padding text-center'>");
-					out.append("<img class='img-circle custom-beginskill-module-img' src='" + module.getImageURL()
+					out.append("<img class=' custom-beginskill-module-img' src='" + module.getImageURL()
 							+ "' alt='No Image Available'>");
 					out.append("</div>");
 					out.append("<div class='col-8 my-auto custom-no-padding text-center'>");

@@ -103,20 +103,36 @@
 					class="rounded" alt=""><small class='custom-xp'> <%=cp.getStudentProfile().getCoins()%></small></a></li>
 
 			<li
-				class="nav-item dropdown custom-leftmargin-type1 custom-rightmargin-type1"><a
-				class="nav-link dropdown-toggle "
+				class="nav-item dropdown custom-leftmargin-type1 custom-rightmargin-type1 pt-0 pb-0"><a
+				class="nav-link dropdown-toggle pt-0 pb-0"
 				id="navbarDropdownNotificatinMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true"> <i
-					class="fa fa-bell fa-4" style="color: #9b9b9b !important;"  aria-hidden="true"></i><span
+					class="fa fa-bell fa-4 mt-3" style="color: #9b9b9b !important;"  aria-hidden="true"></i><span
 					class="badge badge-info custom-notificatin-bell"><%=cp.getNotifications().size() %></span></a>
-				<div class="dropdown-menu scrollbar"
+				<div class="dropdown-menu scrollbar text-center pt-0 pb-0"
 					aria-labelledby="navbarDropdownNotificatinMenuLink">
 					
 					<% if(roleDir.equalsIgnoreCase("student")){ 
+						
+						if(cp.getNotifications().size() == 0){
+							
+							%>
+							<img class='card-img-top mt-5' style="width:100px; height:100px;" src='/assets/images/note_graphic.png' alt=''>
+						    <h1 class='text-center text-muted'>No Notifications</h1>
+							
+							
+							<%
+							
+						}else{
 					for(NotificationPOJO np : cp.getNotifications()){
 					%>
-				       <a class="dropdown-item custom-textSize <%=np.getStatus().equalsIgnoreCase("READ")?"text-muted":"" %>" href="#"><%=np.getMessage() %></a><hr class='custom-no-margins'>
-                       <%} %>  
+				       <a class="dropdown-item custom-textSize <%=np.getStatus().equalsIgnoreCase("READ")?"text-muted":"" %>" href="#">
+				       <div class='row p-0'>
+				       <div class='col-2 p-0'> <img src="<%=np.getImageURL()%>"  style="width:60px; height:60px;" class="" alt=""></div>
+				       <div class='col-10 text-left'><%=np.getMessage() %></div>
+				       </div></a>
+				       <hr class='custom-no-margins'>
+                       <%} }%>  
                     <%} %>
 				</div></li>
 

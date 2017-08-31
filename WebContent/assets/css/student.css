@@ -181,6 +181,7 @@
 
 .custom-no-margins {
 	margin: 0px !important;
+	    border-top: 1.5px solid #eeeeee !important;
 }
 
 .container {
@@ -321,7 +322,7 @@
 	right: 0 !important;
 	left: unset !important;
 	float: left;
-	height: 46vh;
+	max-height: 46vh;
 	width: 326px;
 	overflow-y: scroll;
 	margin-bottom: 25px;
@@ -966,4 +967,35 @@ float: right;
 	border-radius: 100px;
 	height: 50px;
 	background-color: #999999;
+}
+
+.custom-task-notask{
+	width: 200px;
+    height: 200px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #eb384f;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

@@ -55,17 +55,11 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 		<!--/row-->
 		<div class="container">
 			<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
-				<!-- <div class="carousel-inner" role="listbox"> -->
 
 
 					<%= studentsrainerdashboardservice.DashBoardCard(cp) %>
 
-				<!-- </div> -->
-
-
-				 <!-- <a class="carousel-control-next custom-right-prev" href="#carouselExampleControls" role="button" data-slide="next"> <img class="" src="/assets/images/992180-200-copy.png" alt="">
-				 </a> <a class="carousel-control-prev custom-left-prev" href="#carouselExampleControls" role="button" data-slide="prev"> <img class="" src="/assets/images/992180-2001-copy.png" alt="">
-				</a> -->
+				
 			</div>
 		</div>
 	</div>
@@ -108,53 +102,19 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 					<hr>
 					<% 
 						}
+					}else{
+						
+						%>
+						<img class='card-img-top custom-task-notask' src='/assets/images/note_graphic.png' alt=''>
+						<h1 class='text-center text-muted'>No Task For Today</h1>
+						
+						<%
+						
 					}
 					
 					%>
 					
-						<!-- <div class='row '>
-							<div class='col-md-2 col-md-auto justify-content-md-center'>
-								<img class='card-img-top custom-task-icon' src='/assets/images/video-icon.png' alt=''>
-							</div>
-							<div class='col-md-6 col-md-auto'>
-								<p class='custom-task-titletext custom-no-margins'>Assessing Risk</p>
-								<p class='custom-task-subtitletext custom-no-margins'>at 11:51 AM</p>
-							</div>
-
-						</div>
-						<hr>
-						<div class='row'>
-							<div class='col-md-2 col-md-auto'>
-								<img class='card-img-top custom-task-icon' src='' alt=''>
-							</div>
-							<div class='col-md-6 col-md-auto'>
-								<p class='custom-task-titletext custom-no-margins'>Won against Siddharth</p>
-								<p class='custom-task-subtitletext custom-no-margins'>at 11:51 AM</p>
-							</div>
-
-						</div>
-						<hr>
-						<div class='row'>
-							<div class='col-md-2 col-md-auto'>
-								<img class='card-img-top custom-task-icon' src='/assets/images/video-icon.png' alt=''>
-							</div>
-							<div class='col-md-6 col-md-auto'>
-								<p class='custom-task-titletext custom-no-margins'>Assessing Risk</p>
-								<p class='custom-task-subtitletext custom-no-margins'>at 11:51 AM</p>
-							</div>
-
-						</div>
-						<hr>
-						<div class='row'>
-							<div class='col-md-2 col-md-auto'>
-								<img class='card-img-top custom-task-icon' src='/assets/images/challenges-icon-copy.png' alt=''>
-							</div>
-							<div class='col-md-6 col-md-auto'>
-								<p class='custom-task-titletext custom-no-margins'>Won against Siddharth</p>
-								<p class='custom-task-subtitletext'>at 11:51 AM</p>
-							</div>
-
-						</div> -->
+						
 
 					
 				</div>

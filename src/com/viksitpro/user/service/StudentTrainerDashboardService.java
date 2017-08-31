@@ -129,7 +129,8 @@ public class StudentTrainerDashboardService {
 			out.append("<div class='row custom-no-margins'>");
 			out.append("<div class='col-12 custom-no-padding custom-colmd-css'>");
 			out.append("<div class='card custom-cards_css mx-auto'>");
-			out.append("<h1 class='my-auto text-center'>No Task</h4>");
+			out.append("<h1 class=' text-muted text-center'>No Task</h4>");
+			out.append("<img class='card-img-top custom-task-notask' src='/assets/images/zzz_graphic.png' alt=''>");
 			out.append("</div></div>");
 			out.append("</div></div>");
 			out.append("</div>");

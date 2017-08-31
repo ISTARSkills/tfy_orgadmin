@@ -125,24 +125,13 @@
 				</div>
 				<div class="col-9">
 					<div class="card custom-skill-tree ml-5 custom-scroll-holder">
-						<div class="card-block" id='skillTreeHolder'>
+						<div class="card-block my-auto mx-auto" id='skillTreeHolder'>
+						
+						
+                             <div class="loader"></div>
+                            
 
-
-
-							 <%-- <div class="container mt-5">
-								<div class="row">
-									<div class="col-12">
-										<ul id="tree1">
-
-											<%=userskillprofile.getSkillTree(cp)%>
-
-
-										</ul>
-									</div>
-
-
-								</div>
-							</div>  --%>
+							
 						</div>
 					</div>
 				</div>
@@ -161,11 +150,16 @@
 		
 		function getSkillsfunction(skill_id){
 			
+			$("#skillTreeHolder").empty();
+			 $("#skillTreeHolder").addClass(' my-auto').addClass(' mx-auto');
+			 $("#skillTreeHolder").append('<div class="loader"></div>');
+			
 			  $.ajax({
 	            	url:'<%=baseURL%>get_user_service',
 	            	data :{'skill_id':skill_id,'user_id':<%=user.getId()%>},
 	            	success: function(result){
 	            		
+	                $("#skillTreeHolder").removeClass(' my-auto').removeClass(' mx-auto');
 	                $("#skillTreeHolder").html(result);
 	              
 	                $('#tree1').treed();
@@ -190,18 +184,7 @@
               
               
               getSkillsfunction(skill_id);
-            	 
-           <%--  $.ajax({
-            	url:'<%=baseURL%>get_user_service',
-            	data :{'skill_id':skill_id,'user_id':<%=user.getId()%>},
-            	success: function(result){
-            		
-                $("#skillTreeHolder").html(result);
-                $('#tree1').treed();
-            }
             
-            
-            }); --%>
             
              });
             
