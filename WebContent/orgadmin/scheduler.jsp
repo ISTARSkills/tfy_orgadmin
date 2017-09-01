@@ -70,6 +70,128 @@
 
 
 			</div>
+			<div class="row m-0">
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Monday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Tuesday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Wednesday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Thursday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Friday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Saturday</div>
+			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
+			</div>
+			<div class="row m-0 p-0 ">
+			<div class="col-md-7 m-0 text-center">
+			
+			<%for(int i=0; i <10 ; i++){ 
+				String top_border = "top-border-green";
+				if(i%2 == 0){
+					top_border ="top-border-blue";
+				}else if(i % 3 ==0){
+					top_border ="top-border-red";
+				}
+			
+			%>
+			
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0 <%=top_border%>">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %>
+			
+			
+			</div>
+			<div class="col-md-7 m-0  text-center">
+			
+			<%for(int i=0; i <10 ; i++){ %>
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %>
+			
+			</div>
+			<div class="col-md-7 m-0 text-center">
+			<%for(int i=0; i <10 ; i++){ %>
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %>
+			</div>
+			<div class="col-md-7 m-0  text-center">
+			<%for(int i=0; i <10 ; i++){ %>
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %>
+			</div>
+			<div class="col-md-7 m-0 text-center">
+			<%for(int i=0; i <10 ; i++){ %>
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %></div>
+			<div class="col-md-7 m-0  text-center">
+			<%for(int i=0; i <10 ; i++){ %>
+			
+			
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %></div>
+			<div class="col-md-7 m-0  text-center">
+			<%for(int i=0; i <10 ; i++){ %>
+			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+ 		   <div class="row calendar-event-header m-0 p-2" >
+ 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
+			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
+ 		   </div>
+ 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
+       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
+       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
+      
+  			</div>
+			<%} %></div>
+			</div>
 		</div>
 	</div>
 	<!--/row-->
