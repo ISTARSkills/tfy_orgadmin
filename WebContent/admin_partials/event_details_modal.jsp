@@ -443,7 +443,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 													</div>
 												</div>
 											</div>
-											<div class="tab-pane p-4" id="assessment" role="tabpanel">
+											<div class="tab-pane p-4" id="assessment" role="tabpanel" style="height: 385px;">
 												<div class="card">
 													<div class="card-block px-4 pt-4">
 														<h1 class="assessment-card-title mt-0">Learning Objective Covered In Event</h1>
