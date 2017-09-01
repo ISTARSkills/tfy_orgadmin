@@ -859,8 +859,8 @@ width: 3%
 }
 
 .icons8-empty_hourglass {
-	width: 11px;
-	height: 11px;
+	width: 12px;
+	height: 12px;
 	object-fit: contain;
 }
 
@@ -983,7 +983,7 @@ width: 3%
 	width: 40.8px;
 	height: 40px;
 	position: absolute;
-	background-color: #7ed321;
+	background-color:#35bdf0;;
 	right: 0;
 	border-bottom-left-radius: 55px;
 	top: 0;
@@ -1738,7 +1738,7 @@ a.unselected_report {
 }
 
 .report-heading {
-	width: 208px;
+	/* width: 208px; */
 	height: 29px;
 	font-family: avenir-light;
 	font-size: 24px;
@@ -1896,6 +1896,8 @@ a.unselected_report {
 	justify-content: flex-start !important;
 }
 
+
+
 .custom-left-prev-section > img{
 	-ms-transform: rotate(180deg);
 	 -webkit-transform: rotate(180deg);
@@ -2008,10 +2010,30 @@ a.unselected_report {
 	color: #555555;
 }
 
-.custom-oval-icon {
+.custom-oval-icon-blue {
 	width: 24px;
 	height: 24px;
 	background-color: #30beef;
+	border-radius: 30px;
+	margin-left: 12px;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.custom-oval-icon-red {
+	width: 24px;
+	height: 24px;
+	background-color: #df756a;
+	border-radius: 30px;
+	margin-left: 12px;
+	margin-top: 10px;
+	text-align: center;
+}
+
+.custom-oval-icon-green {
+	width: 24px;
+	height: 24px;
+	background-color: #7ed321;
 	border-radius: 30px;
 	margin-left: 12px;
 	margin-top: 10px;
@@ -2294,6 +2316,12 @@ a.unselected_report {
 	margin-top: 3px;
 }
 
+.completed-icon {
+	width: 10.4px;
+	height: 13.6px;
+	object-fit: contain;
+}
+
 .fadeout-area {
     position: relative; 
     bottom: 74px;
@@ -2363,6 +2391,13 @@ a.unselected_report {
 	height: 23px;
 	object-fit: contain;
 }
+
+.org_dash_cards>.custom-left-prev-trainer>img {
+	-ms-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
 /* Vinay css ends */
 .calendar-sessiontype-dropdown {
   width: 130px;
