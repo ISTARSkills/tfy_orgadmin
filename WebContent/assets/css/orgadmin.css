@@ -2500,7 +2500,7 @@ a.unselected_report {
 	color: rgba(74, 74, 74, 0.5);
 }
 
-.col-md-7 {
+.custom-col-md-7 {
 	-ms-flex: 0 0 14.2857142857%;
 	flex: 0 0 14.2857142857%;
 	max-width: 14.2857142857%;

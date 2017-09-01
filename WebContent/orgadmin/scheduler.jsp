@@ -71,16 +71,16 @@
 
 			</div>
 			<div class="row m-0">
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Monday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Tuesday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Wednesday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Thursday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Friday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Saturday</div>
-			<div class="col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Monday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Tuesday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Wednesday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Thursday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Friday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Saturday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
 			</div>
 			<div class="row m-0 p-0 ">
-			<div class="col-md-7 m-0 text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			
 			<%for(int i=0; i <10 ; i++){ 
 				String top_border = "top-border-green";
@@ -92,7 +92,7 @@
 			
 			%>
 			
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0 <%=top_border%>">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0 <%=top_border%>">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -106,10 +106,10 @@
 			
 			
 			</div>
-			<div class="col-md-7 m-0  text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			
 			<%for(int i=0; i <10 ; i++){ %>
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -122,9 +122,9 @@
 			<%} %>
 			
 			</div>
-			<div class="col-md-7 m-0 text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			<%for(int i=0; i <10 ; i++){ %>
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -136,9 +136,9 @@
   			</div>
 			<%} %>
 			</div>
-			<div class="col-md-7 m-0  text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			<%for(int i=0; i <10 ; i++){ %>
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -150,9 +150,9 @@
   			</div>
 			<%} %>
 			</div>
-			<div class="col-md-7 m-0 text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			<%for(int i=0; i <10 ; i++){ %>
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -163,11 +163,11 @@
       
   			</div>
 			<%} %></div>
-			<div class="col-md-7 m-0  text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			<%for(int i=0; i <10 ; i++){ %>
 			
 			
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
@@ -178,9 +178,9 @@
       
   			</div>
 			<%} %></div>
-			<div class="col-md-7 m-0  text-center">
+			<div class="custom-col-md-7 mx-auto text-center p-0">
 			<%for(int i=0; i <10 ; i++){ %>
-			<div id="homepageNotification" class="panel panel-default panel-floating panel-floating-fixed animated px-0">
+			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
  		   <div class="row calendar-event-header m-0 p-2" >
  		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
 			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
