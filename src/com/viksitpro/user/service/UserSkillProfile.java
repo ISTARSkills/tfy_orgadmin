@@ -57,38 +57,56 @@ public class UserSkillProfile {
 		int count = 0;
 		String parentactiveclass = "";
 		String childactiveclass = "";
-		for (SkillReportPOJO skillobj : cp.getSkills()) {
 
-			if (count == 0) {
+		if (cp.getSkills().size() != 0) {
+			for (SkillReportPOJO skillobj : cp.getSkills()) {
 
-				parentactiveclass = "skill_list_active active";
-				childactiveclass = "custom-skill-list-active";
+				if (count == 0) {
 
-			} else {
+					parentactiveclass = "skill_list_active active";
+					childactiveclass = "custom-skill-list-active";
 
-				parentactiveclass = "skill_list_disable disabled";
-				childactiveclass = "custom-skill-list-disabled";
+				} else {
 
+					parentactiveclass = "skill_list_disable disabled";
+					childactiveclass = "custom-skill-list-disabled";
+
+				}
+
+				out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-skillId='"
+						+ skillobj.getId() + "'>");
+				out.append("<div class='card " + childactiveclass + " justify-content-md-center'>");
+				out.append("<div class='card-block'>");
+				out.append("<div class='row custom-no-margins'>");
+				out.append("<div class='col-4'>");
+				out.append("<img class='custom-skill-tree-img' src='" + skillobj.getImageURL()
+						+ "' alt='No Image Available'>");
+				out.append("</div>");
+				out.append("<div class='col-8 my-auto'>");
+				out.append("<h3 class='custom-skill-tree-title'>" + skillobj.getName() + "</h3>");
+				out.append("</div>");
+				out.append("</div>");
+				out.append("</div>");
+				out.append("</div>");
+				out.append("</div>");
+
+				count++;
 			}
-
-			out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-skillId='"
-					+ skillobj.getId() + "'>");
-			out.append("<div class='card " + childactiveclass + " justify-content-md-center'>");
+		}else {
+			
+			
+			out.append("<div class='nav-link skill_list skill_list_active disabled  pt-0 pb-0 pl-0' data-skillId='0'>");
+			out.append("<div class='card custom-skill-list-active justify-content-md-center'>");
 			out.append("<div class='card-block'>");
-			out.append("<div class='row custom-no-margins'>");
-			out.append("<div class='col-4'>");
-			out.append("<img class='custom-skill-tree-img' src='" + skillobj.getImageURL()
-					+ "' alt='No Image Available'>");
-			out.append("</div>");
-			out.append("<div class='col-8 my-auto'>");
-			out.append("<h3 class='custom-skill-tree-title'>" + skillobj.getName() + "</h3>");
+			out.append("<div class='row m-0'>");
+			
+			out.append("<h3 class='custom-skill-tree-title mx-auto'>No Skills Available</h3>");
 			out.append("</div>");
 			out.append("</div>");
 			out.append("</div>");
 			out.append("</div>");
-			out.append("</div>");
-
-			count++;
+			
+			
 		}
 		return out;
 
@@ -144,13 +162,7 @@ public class UserSkillProfile {
 							+ "' class='carousel slide'data-interval='false' data-ride='carousel'>");
 					out.append("<div class='carousel-inner' role='listbox'>");
 
-					/*
-					 * List<List<SessionPOJO>> partitions = new ArrayList<>();
-					 * 
-					 * for (int j = 0; j < module.getSessions().size(); j += 3) {
-					 * partitions.add(module.getSessions().subList(j, Math.min(j + 3,
-					 * module.getSessions().size()))); }
-					 */
+					
 
 					int m = (module.getSessions() != null && module.getSessions().size() != 0)
 							? module.getSessions().size()
@@ -163,7 +175,7 @@ public class UserSkillProfile {
 
 						out.append("<div class='col-4 my-auto custom-no-padding'>");
 						out.append("</div>");
-						
+
 						out.append("<div class='col-4 my-auto custom-no-padding'>");
 
 						out.append(getSessionCards(0, false, true, false, module.getSessions()));
@@ -204,10 +216,10 @@ public class UserSkillProfile {
 									pos = (i + j) - 1;
 									out.append(getSessionCards(pos, false, false, true, module.getSessions()));
 								}
-								//System.out.print(pos + " \t");
+								// System.out.print(pos + " \t");
 								out.append("</div>");
 							}
-							//System.out.println("\n");
+							// System.out.println("\n");
 
 							out.append("</div>");
 							out.append("</div>");
@@ -252,9 +264,9 @@ public class UserSkillProfile {
 				out.append("<div class='card-block my-auto text-center'>");
 				out.append("<h1 class='card-title custom-task-title mt-5'>" + sessionPOJOs.get(cardpos).getName()
 						+ "</h1>");
-				out.append("<h1 class='  custom-progress-color'>"+sessionPOJOs.get(cardpos).getProgress()+"%</h1>");
+				out.append("<h1 class='  custom-progress-color'>" + sessionPOJOs.get(cardpos).getProgress() + "%</h1>");
 				out.append("<h2>Accuracy</h2>");
-				out.append("<p class=' dont-stop-There-is'>"+sessionPOJOs.get(cardpos).getDescription()+"</p>");
+				out.append("<p class=' dont-stop-There-is'>" + sessionPOJOs.get(cardpos).getDescription() + "</p>");
 				out.append("</div>");
 				out.append("<div class='custom-beginskill-leftbutton'>");
 				out.append(
@@ -267,14 +279,16 @@ public class UserSkillProfile {
 
 				out.append("<div class='card mb-5 mt-5 custom-beginskill-lesson-cards-forground'>");
 				out.append("<div class='progress'>");
-				out.append(
-						"<div class='progress-bar' role='progressbar' style='width:"+sessionPOJOs.get(cardpos).getProgress()+"%' aria-valuenow='"+sessionPOJOs.get(cardpos).getProgress()+"' aria-valuemin='0' aria-valuemax='100'></div>");
+				out.append("<div class='progress-bar' role='progressbar' style='width:"
+						+ sessionPOJOs.get(cardpos).getProgress() + "%' aria-valuenow='"
+						+ sessionPOJOs.get(cardpos).getProgress() + "' aria-valuemin='0' aria-valuemax='100'></div>");
 				out.append("</div>");
 				out.append("<div class='card-block text-center my-auto'>");
 
 				out.append("<h1 class='card-title custom-task-title mx-auto text-center'>"
 						+ sessionPOJOs.get(cardpos).getName() + "</h1>");
-				out.append("<p class='card-text custom-task-desc ml-4 mr-4'>"+sessionPOJOs.get(cardpos).getDescription()+"</p>");
+				out.append("<p class='card-text custom-task-desc ml-4 mr-4'>"
+						+ sessionPOJOs.get(cardpos).getDescription() + "</p>");
 				out.append("<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>");
 				out.append("</div>");
 				out.append("<div class='custom-beginskill-forgroundbutton'>");
@@ -291,9 +305,9 @@ public class UserSkillProfile {
 				out.append("<div class='card-block my-auto text-center'>");
 				out.append("<h1 class='card-title custom-task-title mt-5'>" + sessionPOJOs.get(cardpos).getName()
 						+ "</h1>");
-				out.append("<h1 class=' custom-progress-color'>"+sessionPOJOs.get(cardpos).getProgress()+"%</h1>");
+				out.append("<h1 class=' custom-progress-color'>" + sessionPOJOs.get(cardpos).getProgress() + "%</h1>");
 				out.append("<h2>Accuracy</h2>");
-				out.append("<p class=' dont-stop-There-is'>"+sessionPOJOs.get(cardpos).getDescription()+"</p>");
+				out.append("<p class=' dont-stop-There-is'>" + sessionPOJOs.get(cardpos).getDescription() + "</p>");
 				out.append("</div>");
 				out.append("<div class='custom-beginskill-rightbutton'>");
 				out.append(
@@ -346,7 +360,7 @@ public class UserSkillProfile {
 										+ subsubSkillobj.getPercentage() + "%' aria-valuenow='"
 										+ subsubSkillobj.getPercentage()
 										+ "' aria-valuemin='0' aria-valuemax='100'></div>" + "</div></li>");
-							
+
 							}
 
 						}
@@ -355,12 +369,19 @@ public class UserSkillProfile {
 					}
 					out.append("</li>");
 				}
-				
+
 			}
 
 			out.append("</ul>	</div> 	</div> 	</div>");
 
+		}else {
+			
+			out.append("<h3 class=' m-5 text-center'>No Skills Available</h3>");
 		}
+		
+		
+		
+		
 		return out;
 	}
 

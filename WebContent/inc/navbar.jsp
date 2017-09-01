@@ -145,10 +145,19 @@
 		<ul class="navbar-nav custom-nav-left-border">
 			<li class="nav-link" href="#"><img
 				src="<%=cp.getStudentProfile().getProfileImage()%>"  class="img-circle custom-profile-imgtag" alt=""></li>
-			<li class="nav-item dropdown m-0"><a
+			<li class="nav-item dropdown m-0">
+			
+			<%
+			String firstName = cp.getStudentProfile().getFirstName();
+			if(cp.getStudentProfile().getFirstName() == null || cp.getStudentProfile().getFirstName().equalsIgnoreCase("") || cp.getStudentProfile().getFirstName().equalsIgnoreCase("null")){
+				
+			 firstName = cp.getStudentProfile().getEmail().substring(0, 1);
+			}
+			%>
+			<a
 				class="nav-link dropdown-toggle custom-profil-name" href="#"
 				id="navbarDropdownMenuLink" data-toggle="dropdown"
-				aria-haspopup="true" aria-expanded="true">Welcome <%=cp.getStudentProfile().getFirstName()%>
+				aria-haspopup="true" aria-expanded="true">Welcome <%=firstName.toUpperCase()%>
 			</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 					<a class="dropdown-item" href="#">Profile</a> <a
