@@ -38,5 +38,6 @@ if (loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
  <link href="<%=basePath%>assets/css/plugins/jsTree/style.css" rel="stylesheet" type="text/css" />
 
   <link href="<%=basePath%>assets/css/<%=roleDir%>.css" rel="stylesheet" type="text/css" />
+   <link href="<%=basePath%>assets/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
  
 </head>

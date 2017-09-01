@@ -44,8 +44,6 @@
 			<form class="form-horizontal">
 				<div class="row">
 					<div class="col-md-8">
-
-						<p>Sign in today for more expirience.</p>
 						<div class="form-group">
 							<label class="col-lg-2 control-label">Course Name</label>
 
@@ -58,7 +56,7 @@
 							<label class="col-lg-2 control-label">Description</label>
 
 							<div class="col-lg-10">
-								<textarea rows="3" cols="80" id='courseDesc'></textarea>
+								<textarea rows="3" style="width: 100%" id='courseDesc'></textarea>
 							</div>
 						</div>
 
@@ -108,19 +106,20 @@
 		});
 		function inititalizeEllipsisListeners() {
 			initModuleEllipsisListener();
-			/* initSessionEllipsisListener();
-			initLessonEllipsisListener(); */
+			initSessionEllipsisListener();
+			/* initLessonEllipsisListener(); */
 		}
 
 		function initModuleEllipsisListener() {
 			initModuleEllipsisEditModule();
 			initModuleEllipsisAddSession();
-			/* initModuleEllipsisAddModuleBelow();
+			initModuleEllipsisAddModuleBelow();
 			initModuleEllipsisMoveUp();
 			initModuleEllipsisMoveDown();
-			initModuleEllipsisDelete(); */
+			initModuleEllipsisDelete();
 		}
 		function initSessionEllipsisListener() {
+			initSessionEllipsisEditSession();
 			initSessionEllipsisAddLesson();
 			initSessionEllipsisAddSessionBelow();
 			initSessionEllipsisMoveUp();
@@ -187,6 +186,10 @@
 																						.done(
 																								function(
 																										data) {
+																									$(
+																											"#skillTree")
+																											.jstree(
+																													'destroy');
 																									loadCourseTree();
 																								});
 																			}
@@ -458,8 +461,11 @@
 																																	'toggle');
 																													console
 																															.log('Module updated!');
+																													$(
+																															"#skillTree")
+																															.jstree(
+																																	'destroy');
 																													loadCourseTree();
-
 																												});
 
 																							}
@@ -529,8 +535,11 @@
 																												'toggle');
 																								console
 																										.log('Session updated!');
+																								$(
+																										"#skillTree")
+																										.jstree(
+																												'destroy');
 																								loadCourseTree();
-
 																							});
 																		}
 
@@ -556,6 +565,314 @@
 				$('#sessionModalDescription').removeClass('faultyFormElement');
 			}
 			return isModalOK;
+		}
+
+		function initModuleEllipsisAddModuleBelow() {
+			$(document)
+					.on(
+							'click',
+							'.addModuleAfter',
+							function() {
+								var orderID = parseInt($(this).data(
+										'moduleOrderID')) + 1;
+								$
+										.get('./modals/module.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													$('#moduleModal').modal(
+															'toggle');
+													$('#saveModule')
+															.click(
+																	function() {
+																		var orderID = window.courseTree.length + 1;
+																		var isModuleFormOK = false;
+																		isModuleFormOK = validateModuleModal();
+																		if (isModuleFormOK) {
+																			var dataPost = {
+																				moduleName : $(
+																						'#moduleModalTitle')
+																						.val()
+																						.trim(),
+																				moduleDescription : $(
+																						'#moduleModalDescription')
+																						.val()
+																						.trim(),
+																				moduleImageURL : $(
+																						'.moduleImage')
+																						.attr(
+																								'src'),
+																				parentCourse : window.courseID,
+																				moduleOrderID : orderID
+																			};
+																			var url = 'http://localhost:8080/tfy_content_rest/module/create';
+																			$
+																					.ajax(
+																							{
+																								type : "POST",
+																								url : url,
+																								data : JSON
+																										.stringify(dataPost),
+																							})
+																					.done(
+																							function(
+																									data) {
+																								$(
+																										"#skillTree")
+																										.jstree(
+																												'destroy');
+																								loadCourseTree();
+																							});
+																		}
+																	});
+												});
+							});
+		}
+
+		function initModuleEllipsisMoveUp() {
+			$(document)
+					.on(
+							'click',
+							'.moveModuleUp',
+							function() {
+								var chosenModuleID = $(this).data('moduleid');
+								var currentOrderID = parseInt($(this).data(
+										'moduleOrderID'));
+								var newOrderID = parseInt($(this).data(
+										'moduleOrderID')) - 1;
+								var dataPost = {
+									parentCourse : window.courseID,
+									currentModuleOrderID : currentOrderID,
+									newModuleOrderID : newOrderID
+								};
+								var url = 'http://localhost:8080/tfy_content_rest/module/reorder'
+										+ chosenModuleID;
+								$.ajax({
+									type : "POST",
+									url : url,
+									data : JSON.stringify(dataPost),
+								}).done(function(data) {
+									$("#skillTree").jstree('destroy');
+									loadCourseTree();
+								});
+							});
+		}
+
+		function initModuleEllipsisMoveDown() {
+			$(document)
+					.on(
+							'click',
+							'.moveModuleDown',
+							function() {
+								var chosenModuleID = $(this).data('moduleid');
+								var currentOrderID = parseInt($(this).data(
+										'moduleOrderID'));
+								var newOrderID = parseInt($(this).data(
+										'moduleOrderID')) + 1;
+								var dataPost = {
+									parentCourse : window.courseID,
+									currentModuleOrderID : currentOrderID,
+									newModuleOrderID : newOrderID
+								};
+								var url = 'http://localhost:8080/tfy_content_rest/module/reorder'
+										+ chosenModuleID;
+								$.ajax({
+									type : "POST",
+									url : url,
+									data : JSON.stringify(dataPost),
+								}).done(function(data) {
+									$("#skillTree").jstree('destroy');
+									loadCourseTree();
+								});
+							});
+		}
+
+		function initModuleEllipsisDelete() {
+			$(document).on(
+					'click',
+					'.deleteModule',
+					function() {
+						var chosenModuleID = $(this).data('moduleid');
+						var nodeID = 'M' + chosenModuleID;
+						var node = $('#skillTree').jstree(true)
+								.get_node(nodeID);
+						if (node.children.length != 0) {
+							alert('Module is not empty, cant be deleted!');
+						} else {
+							$.get(
+									'../tfy_content_rest/module/delete/'
+											+ chosenModuleID).done(
+									function(response) {
+										$("#skillTree").jstree('destroy');
+										loadCourseTree();
+									});
+						}
+					});
+		}
+
+		function initSessionEllipsisEditSession() {
+			$(document)
+					.on(
+							'click',
+							'.editSession',
+							function() {
+								var chosenSessionID = $(this).data(
+										'cmsessionid');
+								$
+										.get('./modals/cmsession.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													$
+															.get(
+																	'../tfy_content_rest/session/read/'
+																			+ chosenSessionID)
+															.done(
+																	function(
+																			sessionObject) {
+																		$(
+																				'#sessionModalTitle')
+																				.val(
+																						sessionObject.session.title);
+																		$(
+																				'#sessionModalDescription')
+																				.val(
+																						sessionObject.session.description);
+																		$(
+																				'.sessionImage')
+																				.attr(
+																						'src',
+																						sessionObject.session.imageURL);
+																		$(
+																				'#sessionModal')
+																				.modal(
+																						'toggle');
+																		$(
+																				'#saveSession')
+																				.click(
+																						function() {
+																							var isSessionFormOK = false;
+																							isSessionFormOK = validateSessionModal();
+																							if (isSessionFormOK) {
+																								var dataPost = {
+																									sessionName : $(
+																											'#sessionModalTitle')
+																											.val()
+																											.trim(),
+																									sessionDescription : $(
+																											'#sessionModalDescription')
+																											.val()
+																											.trim(),
+																									sessionImageURL : $(
+																											'.sessionImage')
+																											.attr(
+																													'src')
+																								};
+																								var url = 'http://localhost:8080/tfy_content_rest/session/update/'
+																										+ chosenModuleID;
+																								$
+																										.ajax(
+																												{
+																													type : "POST",
+																													url : url,
+																													data : JSON
+																															.stringify(dataPost),
+																												})
+																										.done(
+																												function(
+																														data) {
+																													//update the node
+																													$(
+																															'#sessionModal')
+																															.modal(
+																																	'toggle');
+																													console
+																															.log('Session updated!');
+																													$(
+																															"#skillTree")
+																															.jstree(
+																																	'destroy');
+																													loadCourseTree();
+																												});
+
+																							}
+																						});
+																	});
+
+												});
+							});
+		}
+
+		function initSessionEllipsisAddLesson() {
+			$(document)
+					.on(
+							'click',
+							'.addLesson',
+							function() {
+								var chosenSessionID = $(this).data(
+										'cmsessionid');
+								var nodeID = 'S' + chosenSessionID;
+								var orderID = $('#skillTree').jstree(true)
+										.get_node(nodeID).children.length + 1;
+								$
+										.get('./modals/lesson.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													$('#lessonModal').modal(
+															'toggle');
+													$('#saveLesson')
+															.click(
+																	function() {
+																		var isLessonFormOK = false;
+																		isLessonFormOK = validateLessonModal();
+																		if (isLessonFormOK) {
+																			var dataPost = {
+																				lessonName : $(
+																						'#lessonModalTitle')
+																						.val()
+																						.trim(),
+																				lessonDescription : $(
+																						'#lessonModalDescription')
+																						.val()
+																						.trim(),
+																				lessonImageURL : $(
+																						'.lessonImage')
+																						.attr(
+																								'src'),
+																				parentSession : chosenSessionID,
+																				lessonOrderID : orderID
+																			};
+																			var url = 'http://localhost:8080/tfy_content_rest/lesson/create';
+																			$
+																					.ajax(
+																							{
+																								type : "POST",
+																								url : url,
+																								data : JSON
+																										.stringify(dataPost),
+																							})
+																					.done(
+																							function(
+																									data) {
+																								//update the node
+																								$(
+																										'#lessonModal')
+																										.modal(
+																												'toggle');
+																								console
+																										.log('Lesson updated!');
+																								$(
+																										"#skillTree")
+																										.jstree(
+																												'destroy');
+																								loadCourseTree();
+																							});
+																		}
+
+																	});
+												});
+							});
 		}
 	</script>
 </body>
