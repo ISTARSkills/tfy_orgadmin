@@ -42,12 +42,11 @@
 								<h3 class="text-muted custom-skill-profile-batch-raking-title">Batch Rank</h3>
 							</div>
 							<div class="col-3 col-md-auto text-center m-5">
-								<img class='img-circle custom-skill-profile-img' src='<%=cp.getStudentProfile().getProfileImage()%>' alt='No Image Available'>
+							<div class='row mx-auto text-center'>
+								<img class='img-circle custom-skill-profile-img mx-auto' src='<%=cp.getStudentProfile().getProfileImage()%>' alt='No Image Available'>
 								<div id='skill_profile_uploadicon' class="img-circle custom-skillprofile-uploadicon" >
 								<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
-									<!-- <img  class='img-circle mt-3 custom-skillprofile-icontag' src='/assets/images/group-5.png' alt='No Image Available'>
 									
-					            	<input id="upload_file" type="file" name="files"  accept="image/*" /> -->
 
 
 										<button id="btnfile" class='p-0 m-0 border-0' style='background: transparent;'>
@@ -62,7 +61,18 @@
 
 									</form>
 								</div>
-								<h1 class='custom-skill-profile-name'><%=cp.getStudentProfile().getFirstName()%></h1>
+								</div>
+								<%
+			String firstName = cp.getStudentProfile().getFirstName();
+			if(cp.getStudentProfile().getFirstName() == null || cp.getStudentProfile().getFirstName().equalsIgnoreCase("") || cp.getStudentProfile().getFirstName().equalsIgnoreCase("null")){
+				
+			 firstName = cp.getStudentProfile().getEmail();
+			}
+			%>
+								
+								<div class='row'>
+								<h1 class='custom-skill-profile-name mx-auto'><%=firstName%></h1>
+								</div>
 							</div>
 							<div class="col-4 col-md-auto text-center m-5">
 								<h1 class='custom-skill-profile-batch-raking'><%=cp.getStudentProfile().getExperiencePoints()%></h1>

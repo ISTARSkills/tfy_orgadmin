@@ -194,7 +194,30 @@
 													</div>
 													<div class='col-1 p-0 m-0'></div>
 													<div class='col-9 p-0 m-0'>
-														<h5 class='report-section-card-header-title'><%=adminRoleThumb.getName() != null ? adminRoleThumb.getName() : "Not Available"%></h5>
+														<%-- <h5 class='report-section-card-header-title'><%=adminRoleThumb.getName() != null ? adminRoleThumb.getName() : "Not Available"%></h5> --%>
+														
+														<div
+													class='report-section-card-header-title popover-dismiss'
+													data-toggle="popover" title="Role" data-trigger="hover"
+													data-placement="top"
+													data-content="<%=adminRoleThumb.getName() != null ? adminRoleThumb.getName() : "Not Available"%>">
+													<%
+														if (adminRoleThumb.getName() != null && adminRoleThumb.getName().length() > 15) {
+													%>
+													<%=adminRoleThumb.getName().substring(0, 15)%>...
+													<%
+														} else if (adminRoleThumb.getName() != null) {
+													%>
+													<%=adminRoleThumb.getName()%>
+													<%
+														} else {
+													%>
+													Not Available
+													<%
+														}
+													%>
+												</div>
+														
 														<p class="stars">
 
 
@@ -357,6 +380,29 @@
 			$('.carousel-holder').bind('slid.bs.carousel', function(e) {
 				checkitem($(this));
 			});
+			
+			
+			$('.pop_hover').each(function(){
+				if($(this).data("show_more")==true)
+				{
+					var id  =$(this).attr("id").replace("bc_","");
+					var htmlV = $('#mc_'+id).html();
+					//alert(htmlV);
+					$(this).popover({
+						   html: true,
+						   trigger: 'hover',
+						   placement: 'top',
+						   toggle: 'popover',
+						   title: 'Exceptions in Event',
+						   content:htmlV+''
+					       		    
+					});		
+				}
+				
+				});
+			$('.popover-dismiss').popover();
+			
+			
 		});
 
 		function checkitem($this) // check function

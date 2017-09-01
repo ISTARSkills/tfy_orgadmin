@@ -1032,8 +1032,8 @@ color: #9b9b9b !important;
 width: 40.8px; 
 height: 40.8px; 
 background-color: #eb384f; 
-bottom: 70px; 
-right: 12px; 
+    bottom: 70px;
+    right: 81px; 
 position: absolute;
 }
 .custom-skillprofile-icontag{

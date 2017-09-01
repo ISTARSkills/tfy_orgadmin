@@ -44,7 +44,22 @@ public class StudentRolesService {
 				out.append("</div></div>");
 			}
 			
-		}	
+		}	else {
+			
+			out.append("<div class='row custom-margin-rolescard'>");
+			out.append("<div class='card-deck mx-auto'>");
+			
+			out.append("<div class='card custom-roles-cards' data-course_id='0'>");
+			out.append("<div class='card-block my-auto'>");	
+			out.append("<h1 class='card-title custom-roles-titletext'>No Course Has Been Assigned</h1>");
+			out.append("</div>");
+			out.append("<div class='progress custom-progressbar'><div class='progress-bar ' role='progressbar' style='width: 0%' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div> </div>");
+			out.append("</div>");
+			
+			
+			out.append("</div></div>");
+			
+		}
 		
 		return out;
 	}

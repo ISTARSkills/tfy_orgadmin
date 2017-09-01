@@ -71,7 +71,9 @@
 					<div class='row report-roles-card'>
 						<div class="col-md-2">
 							<img class='report-role-image'
-								src='<%=adminRole.getImageUrl() != null ? AppProperies.getProperty("media_url_path")+adminRole.getImageUrl() : ""%>'
+								src='<%=adminRole.getImageUrl() != null
+						? AppProperies.getProperty("media_url_path") + adminRole.getImageUrl()
+						: ""%>'
 								alt=''></img>
 						</div>
 						<div class="col-md-6">
@@ -132,8 +134,7 @@
 									<p class='report-roles-sub-text' style='width: 128px;'>
 										<span class='spannable'><%=adminRole.getAttendancePercentage() != null
 						? (int) ((float) adminRole.getAttendancePercentage())
-						: 0%>%</span>
-										Attendance
+						: 0%>%</span> Attendance
 									</p>
 								</div>
 
@@ -191,7 +192,28 @@
 										%>
 										<div class="card p-0 report-role-carousel-card">
 											<div class="card-header report-section-card-header">
-												<h5 class='report-section-card-header-title'><%=adminGroupThumb.getName() != null ? adminGroupThumb.getName() : "Not Available"%></h5>
+												<div
+													class='report-section-card-header-title popover-dismiss'
+													data-toggle="popover" title="Section" data-trigger="hover"
+													data-placement="top"
+													data-content="<%=adminGroupThumb.getName() != null ? adminGroupThumb.getName() : "Not Available"%>">
+													<%
+														if (adminGroupThumb.getName() != null && adminGroupThumb.getName().length() > 15) {
+													%>
+													<%=adminGroupThumb.getName().substring(0, 15)%>
+													...
+													<%
+														} else if (adminGroupThumb.getName() != null) {
+													%>
+													<%=adminGroupThumb.getName()%>
+													<%
+														} else {
+													%>
+													Not Available
+													<%
+														}
+													%>
+												</div>
 												<p class="stars">
 
 
@@ -434,6 +456,27 @@
 					$('.carousel-holder').bind('slid.bs.carousel', function(e) {
 						checkitem($(this));
 					});
+					
+					$('.pop_hover').each(function(){
+						if($(this).data("show_more")==true)
+						{
+							var id  =$(this).attr("id").replace("bc_","");
+							var htmlV = $('#mc_'+id).html();
+							//alert(htmlV);
+							$(this).popover({
+								   html: true,
+								   trigger: 'hover',
+								   placement: 'top',
+								   toggle: 'popover',
+								   title: 'Exceptions in Event',
+								   content:htmlV+''
+							       		    
+							});		
+						}
+						
+						});
+						
+					$('.popover-dismiss').popover();
 
 				});
 

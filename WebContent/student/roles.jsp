@@ -48,9 +48,11 @@
 				
 				var course_id = $(this).attr("data-course_id");
 				
+				if(course_id !='0'){
+				
 				 window.location.href= '<%=baseURL%>student/partials/begin_skill.jsp?course_id='+course_id;
 				
-				
+				}
 			});
 		});
 	</script>
