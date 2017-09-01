@@ -29,8 +29,8 @@ try{
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/data.js"></script>
-<script src="<%=basePath %>assets/js/bootstrap-datepicker.min.js"></script>
-
+<script type="text/javascript" src="<%=basePath%>assets/js/moment.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>assets/js/daterangepicker.js"></script>
 <% String userID = "NOT_LOGGED_IN_USER";
 
 if(request.getSession().getAttribute("user") != null) {

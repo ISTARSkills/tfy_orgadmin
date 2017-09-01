@@ -35,9 +35,8 @@
 			<div class="col-md-2 pr-0">
 			<div class="row m-0">
 			
-			<div style='width:1px;height:1px;'>
-			</div>
-			<img src="/assets/images/calendar2x.png" alt="image" class="calendar-icon mr-4">
+			
+			<img src="/assets/images/calendar2x.png" alt="image"  id='daterange' class="calendar_open calendar-icon mr-4">
 			<i class="fa fa-long-arrow-left custom-arrow-style" aria-hidden="true"></i> <h2 class="calendar-date-size mx-auto mb-0">28 July - 4 Aug</h2>
 			<i class="fa fa-long-arrow-right custom-arrow-style" aria-hidden="true"></i>	
 			</div>		
@@ -78,7 +77,13 @@
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script>
 	$(document).ready(function() {
+	
+		    $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
+		        console.log(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+		    });;
+	
 		
+
 		$('.breadcrumb-item').click(function (){
 			 $('.breadcrumb-item').each(function(index){
 				  $(this).children().removeClass('bottom');

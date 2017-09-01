@@ -95,7 +95,7 @@ function init_student_begin_skill_function(){
 
 
 function setupScheduler(){
-    $('input[name="daterange"]').daterangepicker();
+  //  $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 
 	$('select#session-select').on('change', function()
 			{
