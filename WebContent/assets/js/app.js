@@ -96,7 +96,28 @@ function init_student_begin_skill_function(){
 
 function setupScheduler(){
   //  $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
+	var today = new Date();
+	var dayOfWeekStartingSundayZeroIndexBased = today.getDay(); // 0 : Sunday ,1 : Monday,2,3,4,5,6 : Saturday
+	var mondayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+	var sundayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	
+	$('.calendar-date-size').html(formatDate(mondayOfWeek)+' - '+formatDate(sundayOfWeek));
+	
+	$('.fa-long-arrow-left.custom-arrow-style').click(function (){
+		//alert('left wla');
+		 mondayOfWeek = new Date(mondayOfWeek.getFullYear(), mondayOfWeek.getMonth(), mondayOfWeek.getDate() - mondayOfWeek.getDay()-6);
+		 sundayOfWeek = new Date(sundayOfWeek.getFullYear(), sundayOfWeek.getMonth(), sundayOfWeek.getDate() - sundayOfWeek.getDay()-7);
+			$('.calendar-date-size').html(formatDate(mondayOfWeek)+' - '+formatDate(sundayOfWeek));
 
+	});
+	$('.fa-long-arrow-right.custom-arrow-style').click(function (){
+		//alert('right wla');
+		 mondayOfWeek = new Date(mondayOfWeek.getFullYear(), mondayOfWeek.getMonth(), mondayOfWeek.getDate() - mondayOfWeek.getDay()+8);
+		 sundayOfWeek = new Date(sundayOfWeek.getFullYear(), sundayOfWeek.getMonth(), sundayOfWeek.getDate() - sundayOfWeek.getDay()+7);
+			$('.calendar-date-size').html(formatDate(mondayOfWeek)+' - '+formatDate(sundayOfWeek));
+
+	});
+	
 	$('select#session-select').on('change', function()
 			{
 			    alert( this.value );
@@ -115,7 +136,9 @@ function setupScheduler(){
 		alert( 'clicked red' );
 	});
 	
-	
+	 $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
+	        console.log(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+	    });
 	
 	$(".calendar-icon").click(function() {
 		//$('#datetimepicker1').daterangepicker('show');
@@ -123,3 +146,18 @@ function setupScheduler(){
 	});
 	
 }
+
+
+function formatDate(date) {
+	  var monthNames = [
+	    "Jan", "Feb", "Mar",
+	    "Apr", "May", "Jun", "Jul",
+	    "Aug", "Sept", "Oct",
+	    "Nov", "Dec"
+	  ];
+
+	  var day = date.getDate();
+	  var monthIndex = date.getMonth();
+
+	  return day + ' ' + monthNames[monthIndex] ;
+	}

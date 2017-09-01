@@ -78,9 +78,7 @@
 	<script>
 	$(document).ready(function() {
 	
-		    $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
-		        console.log(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
-		    });;
+		   
 	
 		
 
