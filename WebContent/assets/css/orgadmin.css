@@ -850,7 +850,7 @@ width: 3%
 .am-hrs {
 	
 	height: 15px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 13px;
 	text-align: center;
 	color: #2196f2;
@@ -874,7 +874,7 @@ width: 3%
 
 .custom-trainer-card-title {
 	height: 15px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px !important;
 	text-align: left;
@@ -884,7 +884,7 @@ width: 3%
 
 .custom-trainer-card-header {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: 0.2px !important;
@@ -895,7 +895,7 @@ width: 3%
 
 .custom-trainer-card-info {
 	height: 15px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 12px;
 	font-weight: 300;
 	letter-spacing: 0.2px;
@@ -916,7 +916,7 @@ width: 3%
 
 .trainer-dash-attendance-head {
 	height: 32px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 12px;
 	line-height: 1.33;
 	letter-spacing: 0.2px;
@@ -961,7 +961,7 @@ width: 3%
 }
 
 .trainer-dash-note {
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 11px;
 	font-weight: 300;
 	letter-spacing: 0.2px;
@@ -1982,7 +1982,7 @@ a.unselected_report {
 
 .custom-modal-header-trainer {
 	height: 27px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 22px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -1994,7 +1994,7 @@ a.unselected_report {
 
 .modal-info-header {
 	height: 16px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2003,7 +2003,7 @@ a.unselected_report {
 
 .modal-info-content {
 	height: 16px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2048,7 +2048,7 @@ a.unselected_report {
 
 .nav-modal-text {
 	height: 17px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	letter-spacing: 0.2px;
 	text-align: center;
@@ -2079,7 +2079,7 @@ a.unselected_report {
 
 .feedback-card-header {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2089,7 +2089,7 @@ a.unselected_report {
 
 .feedback-comment-title {
 	height: 12px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 12px;
 	line-height: 0.67;
 	text-align: left;
@@ -2098,7 +2098,7 @@ a.unselected_report {
 
 .feedback-comment-box {
 	height: 54px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	line-height: 1.29;
 	text-align: left;
@@ -2107,7 +2107,7 @@ a.unselected_report {
 
 .assessment-card-title {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2118,7 +2118,7 @@ a.unselected_report {
 .assessment-card-content {
 	width: 580px;
 	height: 139px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 13px;
 	line-height: 1.54;
 	letter-spacing: 0.2px;
@@ -2142,7 +2142,7 @@ a.unselected_report {
 
 .trainerinfo-trainername {
 	height: 24px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 20px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2152,7 +2152,7 @@ a.unselected_report {
 
 .trainerinfo-type-name {
 	height: 16px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2161,7 +2161,7 @@ a.unselected_report {
 
 .trainerinfo-type-value {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	text-align: left;
 	color: #555555;
@@ -2180,7 +2180,7 @@ a.unselected_report {
 
 .trainerinfo-label-text {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	font-weight: bold;
 	color: #ffffff;
@@ -2196,7 +2196,7 @@ a.unselected_report {
 
 .attendance-card-label {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2206,7 +2206,7 @@ a.unselected_report {
 
 .attendance-card-count {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
@@ -2221,7 +2221,7 @@ a.unselected_report {
 
 .attendance-user-name {
 	height: 16px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2243,7 +2243,7 @@ a.unselected_report {
 
 .session-log-timestamp {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2254,7 +2254,7 @@ a.unselected_report {
 
 .session-log-slidetime {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	color: #999999;
@@ -2262,7 +2262,7 @@ a.unselected_report {
 
 .event-session-log-desc {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2271,7 +2271,7 @@ a.unselected_report {
 
 .event-session-log-title {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2568,7 +2568,7 @@ color: #df756a;
 
 .custom-modal-header-trainer {
 	height: 27px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 22px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2580,7 +2580,7 @@ color: #df756a;
 
 .modal-info-header {
 	height: 16px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2589,7 +2589,7 @@ color: #df756a;
 
 .modal-info-content {
 	height: 16px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2614,7 +2614,7 @@ color: #df756a;
 
 .nav-modal-text {
 	height: 17px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	letter-spacing: 0.2px;
 	text-align: center;
@@ -2645,7 +2645,7 @@ color: #df756a;
 
 .feedback-card-header {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2655,7 +2655,7 @@ color: #df756a;
 
 .feedback-comment-title {
 	height: 12px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 12px;
 	line-height: 0.67;
 	text-align: left;
@@ -2664,7 +2664,7 @@ color: #df756a;
 
 .feedback-comment-box {
 	height: 54px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 14px;
 	line-height: 1.29;
 	text-align: left;
@@ -2673,7 +2673,7 @@ color: #df756a;
 
 .assessment-card-title {
 	height: 19px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 16px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2684,7 +2684,7 @@ color: #df756a;
 .assessment-card-content {
 	width: 580px;
 	height: 139px;
-	font-family: 'Lato', sans-serif;
+	font-family: avenir-light;
 	font-size: 13px;
 	line-height: 1.54;
 	letter-spacing: 0.2px;
@@ -2708,7 +2708,7 @@ color: #df756a;
 
 .trainerinfo-trainername {
 	height: 24px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 20px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2718,7 +2718,7 @@ color: #df756a;
 
 .trainerinfo-type-name {
 	height: 16px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2727,7 +2727,7 @@ color: #df756a;
 
 .trainerinfo-type-value {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	text-align: left;
 	color: #555555;
@@ -2746,7 +2746,7 @@ color: #df756a;
 
 .trainerinfo-label-text {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	font-weight: bold;
 	color: #ffffff;
@@ -2762,7 +2762,7 @@ color: #df756a;
 
 .attendance-card-label {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -2772,7 +2772,7 @@ color: #df756a;
 
 .attendance-card-count {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
@@ -2787,7 +2787,7 @@ color: #df756a;
 
 .attendance-user-name {
 	height: 16px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 13px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2809,7 +2809,7 @@ color: #df756a;
 
 .session-log-timestamp {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2820,7 +2820,7 @@ color: #df756a;
 
 .session-log-slidetime {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	color: #999999;
@@ -2828,7 +2828,7 @@ color: #df756a;
 
 .event-session-log-desc {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -2837,7 +2837,7 @@ color: #df756a;
 
 .event-session-log-title {
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;

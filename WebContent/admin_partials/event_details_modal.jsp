@@ -94,7 +94,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 										}
 										%></div>
 												<div class="row m-0">
-												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Roles </h4><h4 class="modal-info-content mb-0"><%=events.getCourseName() %></h4></div></div>
+												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Role </h4><h4 class="modal-info-content mb-0"><%=events.getCourseName() %></h4></div></div>
 												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Group </h4><h4 class="modal-info-content mb-0"><%=events.getGroupName() %></h4></div></div>
 												<div class="col-md-4"><div class="row"><h4 class="modal-info-header mr-1 mb-0">Trainer </h4><h4 class="modal-info-content mb-0"><%=events.getTrainer().getTrainerName() %></h4></div></div>
 												</div>
@@ -374,7 +374,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 																<hr class="my-0">
 																<div class="p-3">
 																<h4 class="feedback-comment-title pt-2">Comments</h4>
-																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<%=events.getTrainerFeedback()!=null && events.getTrainerFeedback().getComment()!=null && events.getTrainerFeedback().getComment().length()>0?events.getTrainerFeedback().getComment():"N/A"%>"><%=events.getTrainerFeedback()!=null && events.getTrainerFeedback().getComment()!=null?events.getTrainerFeedback().getComment():"N/A"%></div>
+																<div class="feedback-comment-box mt-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="<%=events.getTrainerFeedback()!=null && events.getTrainerFeedback().getComment()!=null && events.getTrainerFeedback().getComment().length()>0?events.getTrainerFeedback().getComment():"N/A"%>"><%=events.getTrainerFeedback()!=null && events.getTrainerFeedback().getComment()!=null && events.getTrainerFeedback().getComment().length()>0 ?events.getTrainerFeedback().getComment():"N/A"%></div>
 																</div>
 															</div>
 														</div>
@@ -448,7 +448,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 													<div class="card-block px-4 pt-4">
 														<h1 class="assessment-card-title mt-0">Learning Objective Covered In Event</h1>
 														<p class="assessment-card-content">
-														Understand how to build website pages and layouts using Weebly, understanding the use of a landing page, understanding the use of a website, understanding website and webpage design. Understand the importance of a domain name for a website, understand the practical applications of website creation using Weebly, understand the usage of an infomercial page, understand the usage of a squeezer page, understand the usage of a teaser landing page, understand the usage of a viral landing page, understand to how to create a website strategy.
+														<%=events.getLearningObjCovered()!=null && events.getLearningObjCovered().size()>0? StringUtils.join(events.getLearningObjCovered(), ","):"N/A" %>
 														</p>
 													</div>
 												</div>
