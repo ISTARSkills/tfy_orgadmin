@@ -354,6 +354,7 @@
 							</div>
 					<!-- Modal end -->
 				</div>
+				<%if(events.size() > 2){%>
 				<a class="carousel-control-next custom-right-prev-trainer"
 					href="#carouselExampleControls" role="button" data-slide="next">
 					<img class="" src="/assets/images/992180-200-copy.png" alt="">
@@ -361,6 +362,7 @@
 					href="#carouselExampleControls" role="button" data-slide="prev">
 					<img class="" src="/assets/images/992180-2001-copy.png" alt="">
 				</a>
+				<%} %>
 			</div>
 
 		</div>
