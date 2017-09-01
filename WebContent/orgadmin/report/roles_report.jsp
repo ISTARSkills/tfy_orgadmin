@@ -81,8 +81,7 @@
 
 								<%
 									if (adminRole.getAvgRating() != null && adminRole.getAvgRating() > 0) {
-											int rating = (int) ((float) adminRole.getAvgRating());
-
+											int rating = (int) Math.ceil(adminRole.getAvgRating());
 											for (int j = 0; j < rating; j++) {
 								%><i class='dash-star-6x fa fa-star'></i>
 								<%
@@ -198,7 +197,8 @@
 
 													<%
 														if (adminGroupThumb.getAvgRating() != null && adminGroupThumb.getAvgRating() > 0) {
-																			int rating = (int) (adminGroupThumb.getAvgRating() % 20);
+																			float init_rating = adminGroupThumb.getAvgRating() % 20;
+																			int rating = (int) Math.ceil(init_rating);
 
 																			for (int j = 0; j < rating; j++) {
 													%><i class='dash-star-6x fa fa-star'></i>
