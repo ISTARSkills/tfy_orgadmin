@@ -1,3 +1,9 @@
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
+<%@page import="com.talentify.admin.rest.pojo.AdminRoleThumb"%>
+<%@page import="java.util.List"%>
+<%@page import="com.talentify.admin.rest.pojo.AdminGroup"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
 <%@page import="java.util.Random"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 
@@ -36,6 +42,12 @@
 		}
 
 		request.setAttribute("cp", cp);
+
+		int orgId = (int) request.getSession().getAttribute("orgId");
+		System.out.println(orgId);
+
+		AdminRestClient adminClient = new AdminRestClient();
+		ArrayList<AdminGroup> groups = adminClient.getGroupsReport(orgId);
 	%>
 
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
@@ -53,20 +65,39 @@
 		</div>
 
 		<%
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < groups.size(); i++) {
+				AdminGroup adminGroup = groups.get(i);
 		%>
 		<div class="container reprort-card-container">
 			<div class="card  report_card_group p-0">
 				<div class="card-body p-0">
 					<div class='row report-roles-card mb-1'>
 						<div class='row m-0 p-0 w-100'>
-							<h1 class='report-heading my-0 w-100'>FY BCom . Section 1</h1>
+							<h1 class='report-heading my-0 w-100'><%=adminGroup.getGroupName() != null ? adminGroup.getGroupName() : "Not Available"%></h1>
 							<p class="stars">
-								<i class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star-o"></i><i
-									class="dash-star-6x fa fa-star-o"></i>
+
+								<%
+									if (adminGroup.getAverageRating() != null && adminGroup.getAverageRating() > 0) {
+											int rating = (int) ((float) adminGroup.getAverageRating());
+											for (int j = 0; j < rating; j++) {
+								%><i class='dash-star-6x fa fa-star'></i>
+								<%
+									}
+											if (rating < 5) {
+												for (int j = rating; j < 5; j++) {
+								%><i class='dash-star-6x fa fa-star-o'></i>
+								<%
+									}
+											}
+										} else {
+								%><i class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i>
+								<%
+									}
+								%>
 							</p>
 						</div>
 						<div class='row m-0 p-0 w-100'>
@@ -77,7 +108,8 @@
 											srcset="/assets/images/report/icons-8-saving-book@2x.png 2x,/assets/images/report/icons-8-saving-book@3x.png 3x"
 											class="icons8-saving_book">
 										<p class='report-roles-sub-text'>
-											<span class='spannable'>5</span> Roles
+											<span class='spannable'><%=adminGroup.getRoles() != null ? adminGroup.getRoles().size() : 0%></span>
+											Roles
 										</p>
 									</div>
 
@@ -86,7 +118,8 @@
 											srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 											class="icons8-student" />
 										<p class='report-roles-sub-text'>
-											<span class='spannable'>200</span> Students
+											<span class='spannable'><%=adminGroup.getTotalStudents() != null ? adminGroup.getTotalStudents() : 0%></span>
+											Students
 										</p>
 									</div>
 
@@ -95,7 +128,10 @@
 											srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 											class="icons8-report_card" />
 										<p class='report-roles-sub-text'>
-											<span class='spannable'>68%</span> Attendance
+											<span class='spannable'><%=adminGroup.getAttendancePercentage() != null
+						? (int) ((float) adminGroup.getAttendancePercentage())
+						: 0%>%</span>
+											Attendance
 										</p>
 									</div>
 
@@ -104,7 +140,8 @@
 											srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 											class="icons8-discount" />
 										<p class='report-roles-sub-text'>
-											<span class='spannable'>85%</span> Performance
+											<span class='spannable'><%=adminGroup.getPerformance() != null ? (int) ((float) adminGroup.getPerformance()) : 0%>%</span>
+											Performance
 										</p>
 									</div>
 
@@ -117,9 +154,14 @@
 
 
 						<%
-							Random rn = new Random();
-								int size = rn.nextInt(4);
-								if (size != 0) {
+							int rolesSize = adminGroup.getRoles() != null ? adminGroup.getRoles().size() : 0;
+								if (rolesSize != 0) {
+
+									List<List<AdminRoleThumb>> partitions = new ArrayList<>();
+
+									for (int j = 0; j < adminGroup.getRoles().size(); j += 4) {
+										partitions.add(adminGroup.getRoles().subList(j, Math.min(j + 4, adminGroup.getRoles().size())));
+									}
 						%>
 
 
@@ -129,14 +171,16 @@
 							<div class="carousel-inner">
 
 								<%
-									for (int k = 0; k < size; k++) {
+									int k = 0;
+											for (List<AdminRoleThumb> list : partitions) {
 								%>
 
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
 									<div class='row custom-no-margins'>
 
 										<%
-											for (int j = 0; j < 4; j++) {
+											k++;
+														for (AdminRoleThumb adminRoleThumb : list) {
 										%>
 										<div class="card p-0 report-section-carousel-card">
 											<div class="card-header report-section-card-header">
@@ -144,20 +188,39 @@
 													<div class='col-2 p-0 m-0'>
 
 														<img class='report-group-image'
-															src='http://cdn.talentify.in:9999/course_images/5.png'
+															src='<%=adminRoleThumb.getImageUrl() != null ? AppProperies.getProperty("media_url_path")+adminRoleThumb.getImageUrl() : ""%>'
 															alt='image'></img>
 
 													</div>
 													<div class='col-1 p-0 m-0'></div>
 													<div class='col-9 p-0 m-0'>
-														<h5 class='report-section-card-header-title'>Desktop
-															Publishing</h5>
+														<h5 class='report-section-card-header-title'><%=adminRoleThumb.getName() != null ? adminRoleThumb.getName() : "Not Available"%></h5>
 														<p class="stars">
-															<i class="dash-star-6x fa fa-star"></i><i
-																class="dash-star-6x fa fa-star"></i><i
-																class="dash-star-6x fa fa-star"></i><i
-																class="dash-star-6x fa fa-star-o"></i><i
-																class="dash-star-6x fa fa-star-o"></i>
+
+
+															<%
+																if (adminRoleThumb.getAvgRating() != null && adminRoleThumb.getAvgRating() > 0) {
+																					int rating = (int) (adminRoleThumb.getAvgRating() % 20);
+
+																					for (int j = 0; j < rating; j++) {
+															%><i class='dash-star-6x fa fa-star'></i>
+															<%
+																}
+																					if (rating < 5) {
+																						for (int j = rating; j < 5; j++) {
+															%><i class='dash-star-6x fa fa-star-o'></i>
+															<%
+																}
+																					}
+																				} else {
+															%><i class='dash-star-6x fa fa-star-o'></i><i
+																class='dash-star-6x fa fa-star-o'></i><i
+																class='dash-star-6x fa fa-star-o'></i><i
+																class='dash-star-6x fa fa-star-o'></i><i
+																class='dash-star-6x fa fa-star-o'></i>
+															<%
+																}
+															%>
 														</p>
 													</div>
 												</div>
@@ -169,21 +232,27 @@
 														<img src="/assets/images/report/icons-8-student.png"
 															srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>25</h5>
+														<h5 class='report-section-subtext'><%=adminRoleThumb.getTotalStudents() != null ? adminRoleThumb.getTotalStudents() : 0%></h5>
 													</div>
 
 													<div class='col-3'>
 														<img src="/assets/images/report/icons-8-report-card.png"
 															srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>68%</h5>
+														<h5 class='report-section-subtext'><%=adminRoleThumb.getAttendancePercentage() != null
+									? (int) ((float) adminRoleThumb.getAttendancePercentage())
+									: 0%>%
+														</h5>
 													</div>
 
 													<div class='col-3'>
 														<img src="/assets/images/report/icons-8-discount.png"
 															srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>85%</h5>
+														<h5 class='report-section-subtext'><%=adminRoleThumb.getPerformance() != null
+									? (int) ((float) adminRoleThumb.getPerformance())
+									: 0%>%
+														</h5>
 													</div>
 
 
@@ -195,12 +264,21 @@
 													<div class='col-10 my-auto p-0'>
 														<div class='progress'>
 															<div class='progress-bar report-roles-progress'
-																role='progressbar' style='width: 60%' aria-valuenow='60'
+																role='progressbar'
+																style='width: <%=adminRoleThumb.getCompletionPercentage() != null
+									? adminRoleThumb.getCompletionPercentage()
+									: 0%>%'
+																aria-valuenow='<%=adminRoleThumb.getCompletionPercentage() != null
+									? adminRoleThumb.getCompletionPercentage()
+									: 0%>'
 																aria-valuemin='0' aria-valuemax='100'></div>
 														</div>
 													</div>
 													<div
-														class='col-2 report-roles-course-completion text-center p-0 mx-auto'>80%</div>
+														class='col-2 report-roles-course-completion text-center p-0 mx-auto'><%=adminRoleThumb.getCompletionPercentage() != null
+									? adminRoleThumb.getCompletionPercentage()
+									: 0%>%
+													</div>
 												</div>
 
 											</div>
@@ -216,6 +294,10 @@
 									}
 								%>
 							</div>
+
+							<%
+								if (rolesSize > 4) {
+							%>
 							<a class="carousel-control-next custom-right-prev-section"
 								href="#carouselExampleControls<%=i%>" role="button"
 								data-slide="next"> <img
@@ -232,6 +314,9 @@
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
 								class="icons8-chevron_right_round" />
 							</a>
+							<%
+								}
+							%>
 						</div>
 
 						<%
@@ -291,5 +376,4 @@
 	</script>
 
 </body>
-
 </html>
