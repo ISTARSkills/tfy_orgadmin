@@ -354,6 +354,7 @@
 							</div>
 					<!-- Modal end -->
 				</div>
+				<%if(events.size() > 2){%>
 				<a class="carousel-control-next custom-right-prev-trainer"
 					href="#carouselExampleControls" role="button" data-slide="next">
 					<img class="" src="/assets/images/992180-200-copy.png" alt="">
@@ -361,6 +362,7 @@
 					href="#carouselExampleControls" role="button" data-slide="prev">
 					<img class="" src="/assets/images/992180-2001-copy.png" alt="">
 				</a>
+				<%} %>
 			</div>
 
 		</div>
@@ -570,6 +572,10 @@
 	<script>
 	$(document).ready(function() {
 		
+		$.fn.scrollBottom = function() { 
+		 	return $(document).height() - this.scrollTop() - this.height(); 
+		}
+		
 		$('.event_card').on("click",function(){
 			$.get('../admin_partials/event_details_modal.jsp').done( function(data){
 				$('#event_details_modal').html(data);
@@ -588,6 +594,17 @@
 						$('.show-more u').text('Show more');
 					}
 				});
+				$('.attendance-scroll').scroll(function(){
+					var divHeight=$(this).children().length * $($(this).children()[0]).height();
+					var total=(divHeight+ $(this).scrollBottom())-divHeight;
+					var dd="";
+					if($(this).scrollBottom() == total && $(this).scrollTop() > 0){
+						dd="display: none !important;";
+					}else{
+						dd="display: block !important;";
+					}
+					$(this).parent().find('.fadeout-area').css('cssText',dd);
+			    });
 			});
 			
 		});

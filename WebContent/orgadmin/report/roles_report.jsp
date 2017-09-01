@@ -1,8 +1,11 @@
-<%@page import="java.util.Random"%>
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
+<%@page import="com.talentify.admin.rest.pojo.AdminGroupThumb"%>
+<%@page import="java.util.List"%>
+<%@page import="com.talentify.admin.rest.pojo.AdminRole"%>
+<%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
 <%@page import="com.istarindia.android.pojo.*"%>
-<%@page import="com.viksitpro.user.service.*"%>
 
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
@@ -35,7 +38,12 @@
 		}
 
 		request.setAttribute("cp", cp);
-		Random rn = new Random();
+
+		int orgId = (int) request.getSession().getAttribute("orgId");
+		System.out.println(orgId);
+
+		AdminRestClient adminClient = new AdminRestClient();
+		ArrayList<AdminRole> roles = adminClient.getRolesReport(orgId);
 	%>
 
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
@@ -52,7 +60,8 @@
 			</ol>
 		</div>
 		<%
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < roles.size(); i++) {
+				AdminRole adminRole = roles.get(i);
 		%>
 		<div class="container reprort-card-container">
 
@@ -62,16 +71,37 @@
 					<div class='row report-roles-card'>
 						<div class="col-md-2">
 							<img class='report-role-image'
-								src='http://cdn.talentify.in:9999/course_images/5.png' alt=''></img>
+								src='<%=adminRole.getImageUrl() != null ? AppProperies.getProperty("media_url_path")+adminRole.getImageUrl() : ""%>'
+								alt=''></img>
 						</div>
 						<div class="col-md-6">
-							<h1 class='report-heading my-0'>Desktop Publishing</h1>
+							<h1 class='report-heading my-0'><%=adminRole.getName()%></h1>
 							<p class="stars">
-								<i class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star"></i><i
-									class="dash-star-6x fa fa-star-o"></i><i
-									class="dash-star-6x fa fa-star-o"></i>
+
+
+								<%
+									if (adminRole.getAvgRating() != null && adminRole.getAvgRating() > 0) {
+											int rating = (int) ((float) adminRole.getAvgRating());
+
+											for (int j = 0; j < rating; j++) {
+								%><i class='dash-star-6x fa fa-star'></i>
+								<%
+									}
+											if (rating < 5) {
+												for (int j = rating; j < 5; j++) {
+								%><i class='dash-star-6x fa fa-star-o'></i>
+								<%
+									}
+											}
+										} else {
+								%><i class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i><i
+									class='dash-star-6x fa fa-star-o'></i>
+								<%
+									}
+								%>
 							</p>
 							<div class='row' style='margin-top: 30px; margin-left: 5px;'>
 
@@ -80,7 +110,9 @@
 										srcset="/assets/images/report/icons-8-groups@2x.png 2x,/assets/images/report/icons-8-groups@3x.png 3x"
 										class="icons8-groups" />
 									<p class='report-roles-sub-text' style='width: 73px;'>
-										<span class='spannable'>5</span> Groups
+										<span class='spannable'><%=adminRole.getGroups() != null && adminRole.getGroups().size() != 0
+						? adminRole.getGroups().size()
+						: 0%></span> Groups
 									</p>
 								</div>
 
@@ -89,7 +121,8 @@
 										srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 										class="icons8-student" />
 									<p class='report-roles-sub-text' style='width: 104px;'>
-										<span class='spannable'>200</span> Students
+										<span class='spannable'><%=adminRole.getTotalStudents() != null ? adminRole.getTotalStudents() : 0%></span>
+										Students
 									</p>
 								</div>
 
@@ -98,7 +131,10 @@
 										srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 										class="icons8-report_card" />
 									<p class='report-roles-sub-text' style='width: 128px;'>
-										<span class='spannable'>68%</span> Attendance
+										<span class='spannable'><%=adminRole.getAttendancePercentage() != null
+						? (int) ((float) adminRole.getAttendancePercentage())
+						: 0%>%</span>
+										Attendance
 									</p>
 								</div>
 
@@ -107,7 +143,8 @@
 										srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 										class="icons8-discount" />
 									<p class='report-roles-sub-text' style='width: 139px;'>
-										<span class='spannable'>85%</span> Performance
+										<span class='spannable'><%=adminRole.getPerformance() != null ? (int) ((float) adminRole.getPerformance()) : 0%>%</span>
+										Performance
 									</p>
 								</div>
 
@@ -115,6 +152,10 @@
 						</div>
 						<div class="col-md-4 mx-0 my-0 p-0">
 							<div id="container<%=i%>" class='skill_graph'
+								data-master='<%=adminRole.getMaster() != null ? adminRole.getMaster() : 0%>'
+								data-wizard='<%=adminRole.getWizard() != null ? adminRole.getWizard() : 0%>'
+								data-rookie='<%=adminRole.getRookie() != null ? adminRole.getRookie() : 0%>'
+								data-apprentice='<%=adminRole.getApprentice() != null ? adminRole.getApprentice() : 0%>'
 								style='width: 100%; height: 151.3px;'></div>
 						</div>
 					</div>
@@ -122,8 +163,16 @@
 					<div class='row report-roles-card'>
 
 						<%
-							int size = rn.nextInt(4);
-								if (size != 0) {
+							int groupsSize = adminRole.getGroups() != null && adminRole.getGroups().size() != 0
+										? adminRole.getGroups().size()
+										: 0;
+								if (groupsSize != 0) {
+
+									List<List<AdminGroupThumb>> partitions = new ArrayList<>();
+
+									for (int j = 0; j < adminRole.getGroups().size(); j += 4) {
+										partitions.add(adminRole.getGroups().subList(j, Math.min(j + 4, adminRole.getGroups().size())));
+									}
 						%>
 						<div id="carouselExampleControls<%=i%>"
 							class="carousel slide w-100 carousel-holder" data-ride="carousel"
@@ -131,25 +180,45 @@
 							<div class="carousel-inner">
 
 								<%
-									for (int k = 0; k < size; k++) {
+									int k = 0;
+											for (List<AdminGroupThumb> list : partitions) {
 								%>
 								<div class="carousel-item <%=k == 0 ? "active" : ""%>">
 									<div class='row custom-no-margins'>
 
 										<%
-											for (int j = 0; j < 4; j++) {
+											k++;
+														for (AdminGroupThumb adminGroupThumb : list) {
 										%>
 										<div class="card p-0 report-role-carousel-card">
 											<div class="card-header report-section-card-header">
-												<h5 class='report-section-card-header-title'>
-													FY BCom. Section
-													<%=k + 1%><%=j + 1%></h5>
+												<h5 class='report-section-card-header-title'><%=adminGroupThumb.getName() != null ? adminGroupThumb.getName() : "Not Available"%></h5>
 												<p class="stars">
-													<i class="dash-star-6x fa fa-star"></i><i
-														class="dash-star-6x fa fa-star"></i><i
-														class="dash-star-6x fa fa-star"></i><i
-														class="dash-star-6x fa fa-star-o"></i><i
-														class="dash-star-6x fa fa-star-o"></i>
+
+
+													<%
+														if (adminGroupThumb.getAvgRating() != null && adminGroupThumb.getAvgRating() > 0) {
+																			int rating = (int) (adminGroupThumb.getAvgRating() % 20);
+
+																			for (int j = 0; j < rating; j++) {
+													%><i class='dash-star-6x fa fa-star'></i>
+													<%
+														}
+																			if (rating < 5) {
+																				for (int j = rating; j < 5; j++) {
+													%><i class='dash-star-6x fa fa-star-o'></i>
+													<%
+														}
+																			}
+																		} else {
+													%><i class='dash-star-6x fa fa-star-o'></i><i
+														class='dash-star-6x fa fa-star-o'></i><i
+														class='dash-star-6x fa fa-star-o'></i><i
+														class='dash-star-6x fa fa-star-o'></i><i
+														class='dash-star-6x fa fa-star-o'></i>
+													<%
+														}
+													%>
 												</p>
 											</div>
 											<div class="card-body">
@@ -159,21 +228,29 @@
 														<img src="/assets/images/report/icons-8-student.png"
 															srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>25</h5>
+														<h5 class='report-section-subtext'><%=adminGroupThumb.getTotalStudents() != null
+									? adminGroupThumb.getTotalStudents()
+									: 0%></h5>
 													</div>
 
 													<div class='col-md-3'>
 														<img src="/assets/images/report/icons-8-report-card.png"
 															srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>68%</h5>
+														<h5 class='report-section-subtext'><%=adminGroupThumb.getAttendancePercentage() != null
+									? (int) ((float) adminGroupThumb.getAttendancePercentage())
+									: 0%>%
+														</h5>
 													</div>
 
 													<div class='col-md-3'>
 														<img src="/assets/images/report/icons-8-discount.png"
 															srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 															class="report-section-icon" />
-														<h5 class='report-section-subtext'>85%</h5>
+														<h5 class='report-section-subtext'><%=adminGroupThumb.getPerformance() != null
+									? (int) ((float) adminGroupThumb.getPerformance())
+									: 0%>%
+														</h5>
 													</div>
 
 
@@ -185,12 +262,21 @@
 													<div class='col-md-10 my-auto p-0'>
 														<div class='progress'>
 															<div class='progress-bar report-roles-progress'
-																role='progressbar' style='width: 60%' aria-valuenow='60'
+																role='progressbar'
+																style='width: <%=adminGroupThumb.getCompletionPercentage() != null
+									? adminGroupThumb.getCompletionPercentage()
+									: 0%>%'
+																aria-valuenow='<%=adminGroupThumb.getCompletionPercentage() != null
+									? adminGroupThumb.getCompletionPercentage()
+									: 0%>'
 																aria-valuemin='0' aria-valuemax='100'></div>
 														</div>
 													</div>
 													<div
-														class='col-md-2 report-roles-course-completion text-center p-0 mx-auto'>80%</div>
+														class='col-md-2 report-roles-course-completion text-center p-0 mx-auto'><%=adminGroupThumb.getCompletionPercentage() != null
+									? adminGroupThumb.getCompletionPercentage()
+									: 0%>%
+													</div>
 												</div>
 
 											</div>
@@ -205,6 +291,11 @@
 									}
 								%>
 							</div>
+
+							<%
+								if (groupsSize > 4) {
+							%>
+
 							<a class="carousel-control-next custom-right-prev-section"
 								href="#carouselExampleControls<%=i%>" role="button"
 								id='carousel-control-next-<%=i%>' data-slide="next"> <img
@@ -221,6 +312,12 @@
              /assets/images/report/icons-8-chevron-right-round@3x.png 3x"
 								class="icons8-chevron_right_round" />
 							</a>
+
+							<%
+								}
+							%>
+
+
 						</div>
 
 						<%
@@ -292,23 +389,31 @@
 									},
 									series : [ {
 										name : 'Mastry Level',
-										data : [ {
-											y : 40,
-											name : "Wizrard",
-											color : "#fd6d81"
-										}, {
-											y : 15,
-											name : "Master",
-											color : "#7295fd"
-										}, {
-											y : 25,
-											name : "Apprentice",
-											color : "#30beef"
-										}, {
-											y : 20,
-											name : "Rookie",
-											color : "#bae88a"
-										}
+										data : [
+												{
+													y : parseInt($(this).data(
+															'wizard')),
+													name : "Wizrard",
+													color : "#fd6d81"
+												},
+												{
+													y : parseInt($(this).data(
+															'master')),
+													name : "Master",
+													color : "#7295fd"
+												},
+												{
+													y : parseInt($(this).data(
+															'apprentice')),
+													name : "Apprentice",
+													color : "#30beef"
+												},
+												{
+													y : parseInt($(this).data(
+															'rookie')),
+													name : "Rookie",
+													color : "#bae88a"
+												}
 
 										],
 										size : '121.3px',

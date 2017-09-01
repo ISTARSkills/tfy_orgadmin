@@ -19,6 +19,11 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.istarindia.android.pojo.ComplexObject;
+import com.talentify.admin.rest.pojo.AdminGroup;
+import com.talentify.admin.rest.pojo.AdminGroupsReport;
+import com.talentify.admin.rest.pojo.AdminRole;
+import com.talentify.admin.rest.pojo.AdminRolesReport;
+import com.talentify.admin.rest.pojo.EventDetail;
 import com.talentify.admin.rest.pojo.EventsCard;
 import com.viksitpro.core.utilities.AppProperies;
 
@@ -65,6 +70,124 @@ public class AdminRestClient {
 		return covertedObject;
 
 	}
+	
+	
+	public EventDetail getEventsDetails(int eventId) {
+		String string = ""; // The String You Need To Be Converted 
+		EventDetail covertedObject = new EventDetail();
+		try {
+
+			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"dashboard/"+eventId+"/event_details");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			//System.out.println(conn.getURL().toString());
+			conn.setRequestMethod("GET");		
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			//System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				////System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			
+			
+			covertedObject = gsonRequest.fromJson(string, EventDetail.class);
+			//System.err.println(covertedObject.getId());
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return covertedObject;
+
+	}
+	
+	
+	public ArrayList<AdminRole> getRolesReport(int orgId) {
+		String string = ""; // The String You Need To Be Converted 
+		ArrayList<AdminRole> covertedObject = new ArrayList<AdminRole>();
+		try {
+
+			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/roles_report");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			//System.out.println(conn.getURL().toString());
+			conn.setRequestMethod("GET");		
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			//System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				////System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			
+			
+			AdminRolesReport AdminRolesReport= gsonRequest.fromJson(string, AdminRolesReport.class);
+			covertedObject =AdminRolesReport.getRoles();
+			//System.err.println(covertedObject.getId());
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return covertedObject;
+
+	}
+	
+	public ArrayList<AdminGroup> getGroupsReport(int orgId) {
+		String string = ""; // The String You Need To Be Converted 
+		ArrayList<AdminGroup> covertedObject = new ArrayList<AdminGroup>();
+		try {
+
+			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/groups_report");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			//System.out.println(conn.getURL().toString());
+			conn.setRequestMethod("GET");		
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			//System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				////System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			
+			
+			AdminGroupsReport AdminRolesReport= gsonRequest.fromJson(string, AdminGroupsReport.class);
+			covertedObject =AdminRolesReport.getGroups();
+			//System.err.println(covertedObject.getId());
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return covertedObject;
+
+	}
+	
+	
+	
 	
 	public String getTockent() {
 

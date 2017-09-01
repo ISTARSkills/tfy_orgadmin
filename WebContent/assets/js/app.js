@@ -19,7 +19,11 @@ case 'student_skill_profile':
 	case 'student_begin_skill':
 		init_student_begin_skill_variables();
 		init_student_begin_skill_function();
-		break;	
+		break;
+	case 'org_scheduler':
+		setupScheduler();
+		break
+		
 default:
 	init_default_js();
 }
@@ -87,3 +91,35 @@ function init_student_begin_skill_function(){
 	
 }
 /* student begin skill functions*/
+
+
+
+function setupScheduler(){
+    $('input[name="daterange"]').daterangepicker();
+
+	$('select#session-select').on('change', function()
+			{
+			    alert( this.value );
+			});
+	$('select#role-select').on('change', function()
+			{
+			    alert( this.value );
+			});
+	$("a.green-border").click(function() {
+		alert( 'clicked green' );
+	});
+	$("a.blue-border").click(function() {
+		alert( 'clicked blue' );
+	});
+	$("a.red-border").click(function() {
+		alert( 'clicked red' );
+	});
+	
+	
+	
+	$(".calendar-icon").click(function() {
+		//$('#datetimepicker1').daterangepicker('show');
+		//$('.show-calendar').show();
+	});
+	
+}
