@@ -130,13 +130,13 @@ public class StudentTrainerDashboardService {
 			out.append("<div class='col-12 custom-no-padding custom-colmd-css'>");
 			out.append("<div class='card custom-cards_css mx-auto'>");
 			out.append("<div class='row mx-auto'>");
-			out.append("<h1 class=' text-muted text-center mx-auto'>You don’t have any tasks lined up for today.</h4>");
+			out.append("<h1 class=' text-muted text-center mx-auto custom-font-family-tag '>You don’t have any tasks lined up for today.</h4>");
 			out.append("</div>");
 			out.append("<div class='row mx-auto my-auto'>");
 			out.append("<img class='card-img-top custom-notask-imgtag mx-auto' src='/assets/images/zzz_graphic.png' alt=''>");
 			out.append("</div>");
 			out.append("<div class='row mx-auto'>");
-			out.append("<h1 class=' text-muted text-center mx-auto'>Get out and have some fun.</h4>");
+			out.append("<h1 class=' text-muted text-center mx-auto custom-font-family-tag'>Get out and have some fun.</h4>");
 			out.append("</div>");
 
 			out.append("</div></div>");
@@ -145,9 +145,6 @@ public class StudentTrainerDashboardService {
 			
 		
 		}
-		
-		
-		
 		
 		
 		return out;

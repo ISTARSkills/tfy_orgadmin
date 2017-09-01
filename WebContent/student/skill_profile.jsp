@@ -43,8 +43,24 @@
 							</div>
 							<div class="col-3 col-md-auto text-center m-5">
 								<img class='img-circle custom-skill-profile-img' src='<%=cp.getStudentProfile().getProfileImage()%>' alt='No Image Available'>
-								<div class="img-circle custom-skillprofile-uploadicon" >
-									<img class='img-circle mt-3 custom-skillprofile-icontag' src='/assets/images/group-5.png' alt='No Image Available'>
+								<div id='skill_profile_uploadicon' class="img-circle custom-skillprofile-uploadicon" >
+								<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+									<!-- <img  class='img-circle mt-3 custom-skillprofile-icontag' src='/assets/images/group-5.png' alt='No Image Available'>
+									
+					            	<input id="upload_file" type="file" name="files"  accept="image/*" /> -->
+
+
+										<button id="btnfile" class='p-0 m-0 border-0' style='background: transparent;'>
+											<img class='img-circle mt-3 custom-skillprofile-icontag' src='/assets/images/group-5.png' alt='No Image Available'>
+										</button>
+										<div class="wrapper" style='display:none !important;'>
+											 <input id="uploadfile" type="file" name="files"  accept="image/x-png,image/jpg,image/jpeg"/>
+											 <input name='user_id' type="hidden" value="<%=user.getId() %>" />
+										</div>
+
+
+
+									</form>
 								</div>
 								<h1 class='custom-skill-profile-name'><%=cp.getStudentProfile().getFirstName()%></h1>
 							</div>
@@ -141,6 +157,7 @@
 	$(document).ready(function() {
 		
 		
+		
 		function getSkillsfunction(skill_id){
 			
 			$("#skillTreeHolder").empty();
@@ -210,71 +227,80 @@
                                                     $(this).children().children().toggle();
                                                 }
                                             })
-                                    branch
-                                        .children()
-                                        .children()
-                                        .toggle();
+                                    branch.children().children().toggle();
                                 });
                         //fire event from the dynamically added icon
-                        tree
-                            .find('.branch .indicator')
-                            .each(
+                        tree.find('.branch .indicator').each(
                                 function() {
-                                    $(this)
-                                        .on(
-                                            'click',
-                                            function() {
-                                                $(
-                                                        this)
-                                                    .closest(
-                                                        'li')
-                                                    .click();
+                                    $(this).on('click',function() {
+                                                $(this).closest('li').click();
                                             });
                                 });
                         //fire event to open branch if the li contains an anchor instead of text
-                        tree
-                            .find('.branch>a')
-                            .each(
+                        tree.find('.branch>a').each(
                                 function() {
-                                    $(this)
-                                        .on(
-                                            'click',
-                                            function(
-                                                e) {
-                                                $(
-                                                        this)
-                                                    .closest(
-                                                        'li')
-                                                    .click();
-                                                e
-                                                    .preventDefault();
+                                    $(this).on('click',function(e) {
+                                                $(this).closest('li').click();
+                                                e.preventDefault();
                                             });
                                 });
                         //fire event to open branch if the li contains a button instead of text
-                        tree
-                            .find('.branch>button')
-                            .each(
-                                function() {
-                                    $(this)
-                                        .on(
-                                            'click',
-                                            function(
-                                                e) {
-                                                $(
-                                                        this)
-                                                    .closest(
-                                                        'li')
-                                                    .click();
-                                                e
-                                                    .preventDefault();
+                        tree.find('.branch>button').each(function() {
+                                    $(this).on('click',function(e) {
+                                                $(this).closest('li').click();
+                                                e.preventDefault();
                                             });
                                 });
                     }
                 });
 
-            //Initialization of treeviews
+            //
+            
+            
+            
+             
+             $("#btnfile").click(function () {
+            	 
+            	    $("#uploadfile").click();
+            	 return false;
+            	});
+            
+            $('#uploadfile').change(function() {
+            	
+            	var form = $('#fileUploadForm')[0];
+				
+				// Create an FormData object
+				var data = new FormData(form);
+				
+				var upload_file = $('#uploadfile').val();
+		        var file_ext = $('#uploadfile').val().split('.')[1];
+		        var servlet = "/UserMediaUploadController";
+            	
+        if (upload_file != '') {    	
+			    $.ajax({
+						type : "POST",
+						enctype : 'multipart/form-data',
+						url : servlet,
+						data : data,
+						processData : false,
+						contentType : false,
+						cache : false,
+						timeout : 600000,
+						success : function(data) {
+							
+							var ddd = '<%=baseURL%>'+data;
+							$('.custom-skill-profile-img').attr("src",ddd);
+							
+							
+							
+						},
+						error : function(e) {
+							alert('Please Retry Again');
+						}
+					}); 
+		} 
 
-           
+            });  
 
         });
 	</script>

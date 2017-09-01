@@ -50,6 +50,10 @@
 		rgba(0, 0, 0, 0.12);
 }
 
+
+.custom-font-family-tag{
+	font-family: avenir-light;
+}
 .custom-card-subtitle {
 	width: 168px;
 	height: 18px;
@@ -1037,5 +1041,8 @@ position: absolute;
 	width: 23px; 
 	height: 23px; 
 	object-fit: contain;
-	
+}
+
+#btnfile:focus{
+	outline:none;
 }

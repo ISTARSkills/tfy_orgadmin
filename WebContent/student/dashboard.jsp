@@ -119,7 +119,7 @@
 							} else {
 						%>
 						<img class='card-img-top custom-task-notask' src='/assets/images/note_graphic.png' alt=''>
-						<h1 class='text-center text-muted'>No Task For Today</h1>
+						<h1 class='text-center text-muted custom-font-family-tag'>No Task For Today</h1>
 
 						<%
 							}
