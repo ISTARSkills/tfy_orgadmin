@@ -1,7 +1,7 @@
-<%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
-<%-- <%
+<%
 int eventId = Integer.parseInt(request.getParameter("event_id"));
-%> --%>
+System.out.println("event_id------->"+eventId);
+%>
 							  <div class="modal-dialog modal-lg" style="width: 660px;">
 							    <div class="modal-content custom-event-container">
 							      <div class="modal-header custom-event-modal-header">

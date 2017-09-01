@@ -2324,10 +2324,46 @@ a.unselected_report {
 	height: 240px;
 	font-family: Lato;
 }
+
+.custom-notask-imgtag {
+	width: 100px;
+	height: 100px;
+}
+
+.custom-notification-imgtag {
+	width: 60px;
+	height: 60px;
+}
+
+.custom-profile-imgtag {
+	width: 24px;
+	height: 24px;
+}
+
+.custom-bell-color {
+	color: #9b9b9b !important;
+}
+
+.custom-coin-icontag {
+	width: 24px;
+	height: 24px;
+}
+
+.custom-skillprofile-uploadicon {
+	width: 40.8px;
+	height: 40.8px;
+	background-color: #eb384f;
+	bottom: 70px;
+	right: 12px;
+	position: absolute;
+}
+
+.custom-skillprofile-icontag {
+	width: 23px;
+	height: 23px;
+	object-fit: contain;
+}
 /* Vinay css ends */
-
-
-
 .calendar-sessiontype-dropdown {
   width: 130px;
   height: 30px;
