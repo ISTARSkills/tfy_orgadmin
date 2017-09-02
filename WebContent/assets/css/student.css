@@ -1,6 +1,6 @@
 /* Base Css*/
 .gray-bg {
-	background-color: #f3f3f4;
+	background-color: #f3f3f4 !important;
 }
 
 .loginscreen.middle-box {
@@ -1054,4 +1054,213 @@ position: absolute;
   font-size: 24px;
   text-align: left;
   color: #333333;
+}
+
+.calendar-sessiontype-dropdown {
+	width: 130px;
+	height: 30px;
+	border-radius: 4px;
+	background-color: rgba(153, 153, 153, 0.1);
+	border: solid 1px rgba(236, 236, 236, 0.7);
+	font-family: Lato;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.calendar-role-dropdown {
+	width: 180px;
+	height: 30px;
+	border-radius: 4px;
+	background-color: rgba(153, 153, 153, 0.1);
+	border: solid 1px rgba(236, 236, 236, 0.7);
+	font-family: Lato;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.green-border {
+	width: 100px;
+	height: 30px;
+	border: solid 1px #7ed321;
+	border-radius: 20px !important;
+	margin: 2px;
+	font-family: Lato;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.blue-border {
+	width: 100px;
+	height: 30px;
+	border: solid 1px #35bdf0;
+	border-radius: 20px !important;
+	margin: 2px;
+	font-family: Lato;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.red-border {
+	width: 115px;
+	height: 30px;
+	border: solid 1px #df756a;
+	border-radius: 20px !important;
+	margin: 2px;
+	font-family: Lato;
+	font-size: 12px;
+	text-align: left;
+	color: #4a4a4a;
+}
+
+.green-dot {
+	margin-right: 4px;
+	color: #7ed321;
+}
+
+.blue-dot {
+	margin-right: 4px;
+	color: #35bdf0;
+}
+
+.red-dot {
+	margin-right: 4px;
+	color: #df756a;
+}
+
+.calendar-date-size {
+	height: 17px;
+	font-family: Lato;
+	font-size: 14px;
+	text-align: center;
+	color: #555555;
+}
+
+.custom-arrow-style {
+	width: 17px;
+	height: 12px;
+	color: #eb384f;
+}
+
+.calendar-icon {
+	width: 15px;
+	height: 16px;
+}
+
+.calendar-session-type-label {
+	height: 17px;
+	font-family: Lato;
+	font-size: 14px;
+	text-align: left;
+	color: rgba(74, 74, 74, 0.5);
+}
+
+.custom-col-md-7 {
+	-ms-flex: 0 0 14.2857142857%;
+	flex: 0 0 14.2857142857%;
+	max-width: 14.2857142857%;
+	background-color: #fff;
+	font-family: Lato;
+	font-size: 14px;
+	letter-spacing: 0.2px;
+	color: #999999;
+	 border: solid 1px #f3f3f4;
+}
+
+.panel-floating-fixed {
+	display: block;
+	box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+	width: 147px;
+	height: 110px;
+	margin-bottom: 10px;
+	border-top: 5px solid #35bdf0;
+	overflow: hidden;
+	border-radius: 3px;
+	font-size: 14px;
+	z-index: 4;
+	-webkit-animation-name: bounceInUp;
+	animation-name: bounceInUp;
+	-webkit-animation-delay: 1s;
+	animation-delay: 1s;
+	-webkit-animation-duration: 1.2s;
+	animation-duration: 1.2s;
+}
+
+.top-border-green {
+	border-top: 5px solid #7ed321 !important;
+}
+
+.top-border-blue {
+	border-top: 5px solid #35bdf0 !important;
+}
+
+.top-border-red {
+	border-top: 5px solid #df756a !important;
+}
+
+.calendar-time-size {
+	font-family: Lato;
+	font-size: 12px;
+	font-weight: 900;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #2196f2;
+}
+
+.calendar-event-header {
+	width: 148px;
+	height: 32px;
+	background-color: #fcfcfc;
+	box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+.aligncenter {
+	align-self: center;
+}
+
+.cal-event-name {
+	width: 121px;
+	height: 15px;
+	font-family: Lato;
+	font-size: 12px;f
+	font-weight: bold;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #333333;
+}
+
+.cal-event-batch {
+	width: 109px;
+	height: 15px;
+	font-family: Lato;
+	font-size: 12px;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #555555;
+}
+
+.cal-event-trainer {
+	width: 103px;
+	height: 15px;
+	font-family: Lato;
+	font-size: 12px;
+	font-weight: 300;
+	letter-spacing: 0.2px;
+	text-align: left;
+	color: #333333;
+}
+
+.custom-dashboard-calender{
+	overflow: auto;
+	 width: 1165px;
+  height: 542px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+
+}
+.lightgray-bg{
+  background-color: #eeeeee !important;
 }
