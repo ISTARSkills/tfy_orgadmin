@@ -125,7 +125,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												<div class="card trainerinfo-card">
 												  <div class="card-block">
 												    <div class="row">
-												    <div class="col-md-3"><img alt="image" src="<%=events.getTrainer() %>" class="trainer-info-img"></div>
+												    <div class="col-md-3"><img alt="image" src="<%=events.getTrainer().getImageUrl() !=null ? (events.getTrainer().getImageUrl().startsWith("http") ? events.getTrainer().getImageUrl() : AppProperies.getProperty("media_url_path") + events.getTrainer().getImageUrl()): ""  %>" class="trainer-info-img"></div>
 												    <div class="col-md-9">
 												    	<h1 class="trainerinfo-trainername mb-0"><%=events.getTrainer().getTrainerName() %></h1>
 												    	<div class="row m-0 mt-3">
@@ -138,14 +138,6 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												    	</div>
 												    	<div class="row m-0 mt-3">
 												    	<h4 class="trainerinfo-type-name mb-0 mt-1">Average feedback</h4>
-															<!-- <p class="stars float-right m-0">
-																<i class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star-o mx-2"></i><i
-																	class="trainer-dash-star fa fa-star-o mx-2"></i>
-															</p> -->
-															
 															<p class="stars float-right m-0">
 																<%
 																	if (events.getTrainer().getAverageFeedback() != null && events.getTrainer().getAverageFeedback() > 0) {
@@ -184,7 +176,7 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												<div class="card trainerinfo-card mt-5">
 												  <div class="card-block">
 												    <div class="row">
-												    <div class="col-md-3"><img alt="image" src="https://scontent.fblr2-1.fna.fbcdn.net/v/t31.0-8/1978390_691722690897867_9093125142540358371_o.jpg?oh=c72b63dc71cf2cb557e9eec7e57322fd&oe=5A5DDFC1" class="trainer-info-img"></div>
+												    <div class="col-md-3"><img alt="image" src="<%=events.getAssociateTrainer().getImageUrl() !=null ? (events.getAssociateTrainer().getImageUrl().startsWith("http") ? events.getAssociateTrainer().getImageUrl() : AppProperies.getProperty("media_url_path") + events.getAssociateTrainer().getImageUrl()): ""%>" class="trainer-info-img"></div>
 												    <div class="col-md-9">
 												    	<h1 class="trainerinfo-trainername mb-0"><%=events.getAssociateTrainer().getTrainerName()%></h1>
 												    	<div class="row m-0 mt-3">
@@ -193,14 +185,6 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												    	</div>
 												    	<div class="row m-0 mt-3">
 												    	<h4 class="trainerinfo-type-name mb-0 mt-1">Average feedback</h4>
-															<!-- <p class="stars float-right m-0">
-																<i class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star mx-2"></i><i
-																	class="trainer-dash-star fa fa-star-o mx-2"></i><i
-																	class="trainer-dash-star fa fa-star-o mx-2"></i>
-															</p> -->
-															
 															<p class="stars float-right m-0">
 																<%
 																	if (events.getAssociateTrainer().getAverageFeedback() != null && events.getAssociateTrainer().getAverageFeedback() > 0) {
@@ -454,43 +438,45 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												</div>
 											</div>
 											<div class="tab-pane px-5 py-4 event-session-holder custom-scroll-holder" id="sessionlog" role="tabpanel">
-												
-												<%for(int i=0;i<100;i++){ %>
+												<%if(events.getLogs() != null){ %>
+												<%for(int i=0;i<events.getLogs().size();i++){ 
+												%>
 												<div class="card session-log-card mb-4">
 												  <div class="card-block">
 												    <div class="row m-0 p-3">
 												    	<div class="col-md-6 p-0">
 												    		<div class="row m-0">
 												    		<img src="/assets/images/icons_8_clock2.png" srcset="/assets/images/icons_8_clock2.png 2x, /assets/images/icons_8_clock3.png 3x" class="icons8-clock" style='align-self: center;'>
-												    		<p class="session-log-timestamp m-0">14 : 09 : 00</p>
+												    		<p class="session-log-timestamp m-0"><%=events.getLogs().get(i).getTime() != null ? events.getLogs().get(i).getTime() : "N/A" %></p>
 												    		</div>
 												    	</div>
 														<div class="col-md-6 p-0">
 															<div class="row m-0 float-right">
 																<div class="session-log-slidetime">Total Time Spent on
 																	Slide :</div>
-																<p class="session-log-timestamp my-auto">5 Sec</p>
+																<p class="session-log-timestamp my-auto"><%=events.getLogs().get(i).getTotalTime() != null && !events.getLogs().get(i).getTotalTime().equalsIgnoreCase("0") ? events.getLogs().get(i).getTotalTime() : "0 sec"  %></p>
 															</div>
+															<%System.out.println(events.getLogs().get(i).getTotalTime()); %>
 														</div>
 													</div>
 												    <hr class="m-0">
 												    <div class="p-3">
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Slide Title</h4>
-														<h4 class="event-session-log-desc m-0">Website strategy   (Id :17473)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSlideTitle() != null && events.getLogs().get(i).getSlideTitle().length() > 0? events.getLogs().get(i).getSlideTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getSlideId() != null ? events.getLogs().get(i).getSlideId():"N/A" %>)</h4>
 													</div>
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Lesson Title</h4>
-														<h4 class="event-session-log-desc m-0">Website strategy   (Id :17473)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getLessonTitle() != null && events.getLogs().get(i).getLessonTitle().length() > 0? events.getLogs().get(i).getLessonTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getLessonId() != null ? events.getLogs().get(i).getLessonId():"N/A" %>)</h4>
 													</div>
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Session Title</h4>
-														<h4 class="event-session-log-desc m-0">Website strategy   (Id :17473)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSesssionTitle() != null && events.getLogs().get(i).getSesssionTitle().length() > 0? events.getLogs().get(i).getSesssionTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getSessionId() != null ? events.getLogs().get(i).getSessionId():"N/A" %>)</h4>
 													</div>
 													</div>
 												</div>
 												</div>
-												<%} %>
+												<%} }%>
 												
 											</div>
 									</div>
