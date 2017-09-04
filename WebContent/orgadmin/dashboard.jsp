@@ -767,8 +767,7 @@
 										}
 									}
 								},
-								colors : [ '#fd6d81', '#7295fd', '#30beef',
-										'#bae88a' ]
+								colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ]
 							});
 		}
 	</script>
