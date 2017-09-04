@@ -1,8 +1,10 @@
+<%@page import="in.orgadmin.utils.report.ReportUtils"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="com.talentify.admin.services.AdminUIServices"%>
 <%@page import="com.talentify.admin.rest.pojo.EventsCard"%>
 <%@page import="com.talentify.admin.rest.pojo.EventError"%>
 <%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.viksitpro.core.utilities.TrainerWorkflowStages"%>
-<%@page import="in.orgadmin.admin.services.AdminUIServices"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.talentify.admin.rest.client.AdminRestClient"%>
@@ -42,6 +44,9 @@
 		for (int j = 0; j < events.size(); j += 3) {
 			partitions.add(events.subList(j, Math.min(j + 3, events.size())));
 		}
+		
+		AdminUIServices uiservices=new AdminUIServices();
+		ReportUtils reportUtils=new ReportUtils();		
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -392,41 +397,33 @@
 								<div class="col-md-10 pl-0"><h3 class="card-header-box">Section wise performance of students</h3></div>
 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
 							</div>
-							<select class="form-control select-dropdown-style" id="exampleSelect1">
-								<option>Desktop Publishing</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-								<div id="highchartcontainer"></div>
-									<table id="datatable" class="hidden-content">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Wizard</th>
-												<th>Master</th>
-												<th>Apprentice</th>
-												<th>Rookie</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>Combined Batch A</th>
-												<td>3</td>
-												<td>4</td>
-												<td>7</td>
-												<td>3</td>
-											</tr>
-											<tr>
-												<th>Combined Batch B</th>
-												<td>2</td>
-												<td>0</td>
-												<td>5</td>
-												<td>1</td>
-											</tr>
-										</tbody>
-									</table>
+							
+								<select class="form-control select-dropdown-style graph_filter_selector" data-report_id="3041" name="batch_group_id" data-college_id="<%=orgId%>"
+									id="graph_section">
+									<%
+										ArrayList<BatchGroup> batchGroups = uiservices.getBatchGroupInCollege(orgId);
+										for(BatchGroup batchGroup : batchGroups)
+										{ if (batchGroup.getType().equalsIgnoreCase("SECTION")){
+										%>
+										<option value="<%=batchGroup.getId()%>"><%=batchGroup.getName().trim()%></option>
+										<%}
+										} %>
+								</select>
+
+								<div id="highchartcontainer1">
+								
+								
+								<%
+								
+								if(batchGroups.size()>0){
+									HashMap <String, String> conditions4 = new HashMap();
+									conditions4.put("college_id", orgId+"");
+									conditions4.put("batch_group_id", batchGroups.get(0).getId()+"");
+									%><%=reportUtils.getHTML(3041, conditions4) %><% 
+								}
+								
+								%>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -439,41 +436,31 @@
 								<div class="col-md-10 pl-0"><h3 class="card-header-box">Program wise performance of students</h3></div>
 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
 							</div>
-							<select class="form-control select-dropdown-style" id="exampleSelect1">
-								<option>BCom . Section 1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-								<div id="highchartcontainer2"></div>
-									<table id="datatable2" class="hidden-content">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Wizard</th>
-												<th>Master</th>
-												<th>Apprentice</th>
-												<th>Rookie</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>Desktop Publishing</th>
-												<td>3</td>
-												<td>4</td>
-												<td>7</td>
-												<td>3</td>
-											</tr>
-											<tr>
-												<th>Marketing Strategy</th>
-												<td>2</td>
-												<td>0</td>
-												<td>5</td>
-												<td>1</td>
-											</tr>
-										</tbody>
-									</table>
+							<select class="form-control select-dropdown-style graph_filter_selector"  data-report_id="3040" name="course_id" id='graph_program' data-college_id="<%=orgId%>">										
+										<%										
+										ArrayList<Course> courses = uiservices.getCoursesInCollege(orgId);
+										for(Course course : courses)
+										{
+										%>
+										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+										<%
+										} %>
+									</select>
+								<div id="highchartcontainer2">
+								
+								<%
+							
+							if(courses.size()>0){
+								HashMap <String, String> conditions2 = new HashMap();
+								conditions2.put("college_id", orgId+"");
+								conditions2.put("course_id", courses.get(0).getId()+"");
+								%>
+								<%=reportUtils.getHTML(3040, conditions2) %>
+								<% 
+							}
+											
+							%>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -491,33 +478,13 @@
 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
 							</div>
 							<br/>
-								<div id="highchartcontainer3"></div>
-									<table id="datatable3" class="hidden-content">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Rajagiri College of Social Science</th>
-												<th>Other Colleges</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>Desktop Publishing</th>
-												<td>3</td>
-												<td>3</td>
-											</tr>
-											<tr>
-												<th>Digital Marketing</th>
-												<td>5</td>
-												<td>1</td>
-											</tr>
-											<tr>
-												<th>Marketing Strategy</th>
-												<td>2</td>
-												<td>1</td>
-											</tr>
-										</tbody>
-									</table>
+								<div id="highchartcontainer3">
+								
+								
+								<% HashMap<String , String> conditions1 = new HashMap();
+								 conditions1.put("college_id", orgId+""); %>
+								<%=uiservices.getCompetitionGraph(conditions1)%>
+							</div>
 							</div>
 						</div>
 					</div>
@@ -530,41 +497,33 @@
 								<div class="col-md-10 pl-0"><h3 class="card-header-box">Role wise performance of students</h3></div>
 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
 							</div>
-							<select class="form-control select-dropdown-style" id="exampleSelect1">
-								<option>Retail Banking - 2</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-								<div id="highchartcontainer4"></div>
-									<table id="datatable4" class="hidden-content">
-										<thead>
-											<tr>
-												<th></th>
-												<th>Wizard</th>
-												<th>Master</th>
-												<th>Apprentice</th>
-												<th>Rookie</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>Combined Batch A</th>
-												<td>3</td>
-												<td>4</td>
-												<td>7</td>
-												<td>3</td>
-											</tr>
-											<tr>
-												<th>Combined Batch B</th>
-												<td>2</td>
-												<td>0</td>
-												<td>5</td>
-												<td>1</td>
-											</tr>
-										</tbody>
-									</table>
+							<select class="form-control select-dropdown-style graph_filter_selector" id="graph_role"   data-report_id="3086" name="course_id"  data-college_id="<%=orgId%>">										
+										<%										
+										ArrayList<Course> roles = uiservices.getCoursesInCollege(orgId);
+										for(Course role : roles)
+										{
+										%>
+										<option value="<%=role.getId()%>"><%=role.getCourseName().trim()%></option>
+										<%
+										} %>
+									</select>
+							
+								<div id="highchartcontainer4">
+								
+								<%
+							
+							if(roles.size()>0){
+								HashMap <String, String> conditions2 = new HashMap();
+								conditions2.put("college_id", orgId+"");
+								conditions2.put("course_id", roles.get(0).getId()+"");
+								%>
+								<%=reportUtils.getHTML(3086, conditions2) %>
+								<% 
+							}
+											
+							%>
+								
+								</div>
 							</div>
 						</div>
 					</div>
@@ -644,99 +603,7 @@
 		$('.popover-dismiss').popover();
 		
 		   $('.carousel').carousel('pause');
-		   Highcharts.chart('highchartcontainer', {
-			    data: {
-			        table: 'datatable'
-			    },
-			    chart: {
-			        type: 'column'
-			    },
-			    title: {
-			        text: ''
-			    },
-			    yAxis: {
-			        alowDecimals: false,
-			        title: {
-			        	text: 'Percentage of Students' 
-			        }
-			    },
-			    tooltip: {
-			        formatter: function () {
-			            return '<b>' + this.series.name + '</b><br/>' +
-			                this.point.y + ' ' + this.point.name.toLowerCase();
-			        }
-			    }
-			});
-		   Highcharts.chart('highchartcontainer2', {
-			    data: {
-			        table: 'datatable2'
-			    },
-			    chart: {
-			        type: 'column'
-			    },
-			    title: {
-			        text: ''
-			    },
-			    yAxis: {
-			        alowDecimals: false,
-			        title: {
-			        	text: 'Percentage of Students' 
-			        }
-			    },
-			    tooltip: {
-			        formatter: function () {
-			            return '<b>' + this.series.name + '</b><br/>' +
-			                this.point.y + ' ' + this.point.name.toLowerCase();
-			        }
-			    }
-			});
-		   Highcharts.chart('highchartcontainer3', {
-			    data: {
-			        table: 'datatable3'
-			    },
-			    chart: {
-			        type: 'column'
-			    },
-			    title: {
-			        text: ''
-			    },
-			    yAxis: {
-			        alowDecimals: false,
-			        title: {
-			        	text: 'Average Adjusted Score' 
-			        }
-			    },
-			    tooltip: {
-			        formatter: function () {
-			            return '<b>' + this.series.name + '</b><br/>' +
-			                this.point.y + ' ' + this.point.name.toLowerCase();
-			        }
-			    }
-			});
-		   Highcharts.chart('highchartcontainer4', {
-			    data: {
-			        table: 'datatable4'
-			    },
-			    chart: {
-			        type: 'column'
-			    },
-			    title: {
-			        text: ''
-			    },
-			    yAxis: {
-			        alowDecimals: false,
-			        title: {
-			        	text: 'Percentage of Students' 
-			        }
-			    },
-			    tooltip: {
-			        formatter: function () {
-			            return '<b>' + this.series.name + '</b><br/>' +
-			                this.point.y + ' ' + this.point.name.toLowerCase();
-			        }
-			    }
-			});
-		   
+		   		   
 		   $('.org_dash_cards').each(function() {
 				checkitem($(this));
 			});
@@ -744,6 +611,10 @@
 			$('.org_dash_cards').bind('slid.bs.carousel', function(e) {
 				checkitem($(this));
 			});
+			
+			initDashbordGraphs();
+			
+			createGraphs();
 		   
 		});
 	function navbar_selector(){
@@ -768,6 +639,138 @@
 			$this.find('.carousel-control-prev').show();
 		}
 	}
-</script>
+	
+	function initDashbordGraphs() {
+
+	    $('.graph_filter_selector').each(function() {
+	        var report_id = $(this).data("report_id");
+	        var data_table_id = 'chart_datatable_' + report_id;
+	        $(this).unbind().on('change', function() {
+
+	            var params = {};
+	            $.each($(this)[0].dataset, function(index, value) {
+	                console.log( index + ": " + value );
+	                params[index] = value;
+	            });
+
+	            var filter_name = $(this).attr("name");
+	            var filter_value = $(this).val();
+	            params[filter_name] = filter_value;
+
+	            $.ajax({
+	                type: "POST",
+	                url: '../chart_filter',
+	                data: jQuery.param(params),
+	                success: function(data) {
+	                    $('#' + data_table_id).replaceWith(data);
+	                    createGraphs();
+	                }
+	            });
+	        });
+	    });
+	}
+
+		function createGraphs() {
+			try {
+				$('.datatable_report')
+						.each(
+								function(i, obj) {
+									var tableID = $(this).attr('id');
+									var containerID = '#'
+											+ $(this).data('graph_containter');
+									var graph_type = $(this).data('graph_type');
+									var graph_title = $(this).data(
+											'report_title');
+									var y_axis_title = $(this).data(
+											'y_axis_title');
+									if (graph_type.indexOf('table') <= -1) {
+										console
+												.log("App.js::handleGraphs() -> graph found --> "
+														+ tableID);
+
+										if (graph_type === 'column') {
+											create_column_graph(tableID);
+										}
+									}
+
+								});
+
+				// Hide Table
+				$('.data_holder.datatable_report').hide();
+
+			} catch (err) {
+				// console.log(err);
+			}
+		}
+
+		function create_column_graph(tableID) {
+
+			var containerID = '#' + $('#' + tableID).data('graph_containter');
+			var graph_type = $('#' + tableID).data('graph_type');
+			var graph_title = $('#' + tableID).data('report_title');
+			var y_axis_title = $('#' + tableID).data('y_axis_title');
+
+			$(containerID)
+					.highcharts(
+							{
+								data : {
+									table : tableID
+								},
+								chart : {
+									zoomType : 'x',
+									type : graph_type,
+									options3d : {
+										enabled : true,
+										alpha : 45
+									}
+								},
+								credits : {
+									enabled : false
+								},
+								title : {
+									text : ""
+								},
+								legend : {
+									useHTML : true,
+									labelFormatter : function() {
+										var pos = this.index + 1;
+										return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
+												+ this.name + '</span>';
+									},
+									
+									
+									symbolHeight : 0.1,
+									symbolWidth : 0,
+									symbolRadius : 0
+								},
+
+								yAxis : {
+									allowDecimals : false,
+									title : {
+										text : y_axis_title
+									}
+								},
+								tooltip : {
+									crosshairs : [ true, true ],
+									formatter : function() {
+										return this.series.name + ': <b>'
+												+ this.y + '</b>';
+									}
+								},
+								plotOptions : {
+									pie : {
+										allowPointSelect : true,
+										cursor : 'pointer',
+										dataLabels : {
+											enabled : true,
+											format : '<b>{point.name}</b>: {point.percentage:.1f} %',
+										}
+									}
+								},
+								colors : [ '#fd6d81', '#7295fd', '#30beef',
+										'#bae88a' ]
+							});
+		}
+	</script>
 </body>
 </html>

@@ -106,32 +106,28 @@
 							</p>
 							<div class='row' style='margin-top: 30px; margin-left: 5px;'>
 
-								<div class='' style='width: 107px;'>
+								<div class='float-left'>
 									<img src="/assets/images/report/icons-8-groups.png"
 										srcset="/assets/images/report/icons-8-groups@2x.png 2x,/assets/images/report/icons-8-groups@3x.png 3x"
 										class="icons8-groups" />
-									<p class='report-roles-sub-text' style='width: 73px;'>
-										<span class='spannable'><%=adminRole.getGroups() != null && adminRole.getGroups().size() != 0
-						? adminRole.getGroups().size()
-						: 0%></span> Groups
-									</p>
+									<p class='report-roles-sub-text' style='width: 90px;'><span class='spannable'><%=adminRole.getGroups() != null && adminRole.getGroups().size() != 0? adminRole.getGroups().size(): 0%></span> Groups</p>
 								</div>
 
-								<div class='' style='width: 135px;'>
+								<div class='float-left'>
 									<img src="/assets/images/report/icons-8-student.png"
 										srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 										class="icons8-student" />
-									<p class='report-roles-sub-text' style='width: 104px;'>
+									<p class='report-roles-sub-text' style='width: 110px;'>
 										<span class='spannable'><%=adminRole.getTotalStudents() != null ? adminRole.getTotalStudents() : 0%></span>
 										Students
 									</p>
 								</div>
 
-								<div class='' style='width: 135px;'>
+								<div class='float-left'>
 									<img src="/assets/images/report/icons-8-report-card.png"
 										srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 										class="icons8-report_card" />
-									<p class='report-roles-sub-text' style='width: 128px;'>
+									<p class='report-roles-sub-text' style='width: 140px;'>
 										<span class='spannable'><%=adminRole.getAttendancePercentage() != null
 						? (int) ((float) adminRole.getAttendancePercentage())
 						: 0%>%</span> Attendance
@@ -142,7 +138,7 @@
 									<img src="/assets/images/report/icons-8-discount.png"
 										srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 										class="icons8-discount" />
-									<p class='report-roles-sub-text' style='width: 139px;'>
+									<p class='report-roles-sub-text' style='width: 150px;'>
 										<span class='spannable'><%=adminRole.getPerformance() != null ? (int) ((float) adminRole.getPerformance()) : 0%>%</span>
 										Performance
 									</p>

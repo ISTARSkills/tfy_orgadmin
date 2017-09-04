@@ -123,7 +123,7 @@
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width: 130px;'>
+									<div class='m-0 p-0' style='width: 140px;'>
 										<img src="/assets/images/report/icons-8-report-card.png"
 											srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x"
 											class="icons8-report_card" />
@@ -135,7 +135,7 @@
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width: 135px;'>
+									<div class='m-0 p-0' style='width: 150px;'>
 										<img src="/assets/images/report/icons-8-discount.png"
 											srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x"
 											class="icons8-discount" />

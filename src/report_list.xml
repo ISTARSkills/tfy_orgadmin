@@ -3521,4 +3521,54 @@ WHERE
 		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3086" type_of_report="column">	
+	    <column columnHandler="NONE" display_name="Section Name" isVisible="true" name="name" />		
+		<column columnHandler="NONE" display_name="rookie" isVisible="true" name="rookie" />
+		<column columnHandler="NONE" display_name="apprentice" isVisible="true" name="apprentice" />
+		<column columnHandler="NONE" display_name="master" isVisible="true" name="master" />
+		<column columnHandler="NONE" display_name="wizard" isVisible="true" name="wizard" />
+	<sql>
+select batch_group.name, ACTUALFINAL.master , ACTUALFINAL.rookie , ACTUALFINAL.apprentice ,ACTUALFINAL.wizard   from  (select batch_group_id, cast ((case when (rookie_count + apprentice_count+ master_count+ wizard_count &gt; 0) then (rookie_count *100/(rookie_count + apprentice_count+ master_count+ wizard_count))  else 0 end ) as integer) as rookie,
+cast ((case when (rookie_count + apprentice_count+ master_count+ wizard_count &gt; 0) then (apprentice_count *100/(rookie_count + apprentice_count+ master_count+ wizard_count))  else 0 end ) as integer) as apprentice,
+cast ((case when (rookie_count + apprentice_count+ master_count+ wizard_count &gt; 0) then (master_count *100/(rookie_count + apprentice_count+ master_count+ wizard_count))  else 0 end ) as integer) as master,
+cast ((case when (rookie_count + apprentice_count+ master_count+ wizard_count &gt; 0) then (wizard_count *100/(rookie_count + apprentice_count+ master_count+ wizard_count))  else 0 end ) as integer) as wizard
+from 
+(
+select batch_group_id, cast (count(*)filter(where percentage &gt;=(select cast (property_value as integer ) from constant_properties where property_name ='rookie_min')  and percentage&lt;= (select cast (property_value as integer ) from constant_properties where property_name ='rookie_max')) as integer) rookie_count,
+cast (count(*)filter(where percentage &gt;(select cast (property_value as integer ) from constant_properties where property_name ='apprentice_min')  and percentage&lt;= (select cast (property_value as integer ) from constant_properties where property_name ='apprentice_max')) as integer) apprentice_count,
+cast (count(*)filter(where percentage &gt;(select cast (property_value as integer ) from constant_properties where property_name ='master_min')  and percentage&lt;= (select cast (property_value as integer ) from constant_properties where property_name ='master_max')) as integer) as master_count,
+cast (count(*)filter(where percentage &gt;(select cast (property_value as integer ) from constant_properties where property_name ='wizard_min')  and percentage&lt;= (select cast (property_value as integer ) from constant_properties where property_name ='wizard_max'))as integer) as wizard_count
+from 
+(
+select batch_group_id, istar_user, (case when max_points = 0 then 0 else  (points_scored*100)/max_points end ) as percentage 
+from (select batch_group_id, istar_user, sum(points) as points_scored , sum(max_points) as max_points from (WITH summary AS (
+    SELECT 
+	  custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_lesson_points') ), ':per_assessment_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_assessment_points') ), ':per_question_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_question_points') ) AS TEXT ) ) AS points,
+    custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_lesson_points') ), ':per_assessment_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_assessment_points') ), ':per_question_points', (select cast (property_value as varchar ) from constant_properties where property_name ='per_question_points') ) AS TEXT ) ) AS max_points,
+		p.istar_user, p.skill_objective, p.item_id, p.item_type,P.batch_group_id,
+    ROW_NUMBER() OVER(PARTITION BY p.istar_user, p.skill_objective, p.item_id, p.item_type ,P.batch_group_id
+                                 ORDER BY p.created_at DESC) AS rk
+      FROM user_gamification p
+			where p.course_id = :course_id and p.org_id = :college_id
+)
+SELECT s.*
+  FROM summary s
+ WHERE s.rk = 1
+)TT
+group by batch_group_id, istar_user
+)TF
+)TCOUNT
+group by batch_group_id
+)TFINAL
+) ACTUALFINAL join batch_group on (ACTUALFINAL.batch_group_id= batch_group.id)
+
+</sql>
+	<filter_sql>
+		
+	</filter_sql>	
+		<title>Section Wise Performance of Students</title>
+		<y_axis_title>Percentage of Students</y_axis_title>
+</reports>
+
+
 </istar_reports>

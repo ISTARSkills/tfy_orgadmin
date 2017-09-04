@@ -1908,6 +1908,78 @@ a.unselected_report {
 	justify-content: flex-end !important;
 }
 
+.graph-border-1 {
+	border: solid 1px #fd6d81;
+	border-radius: 20px !important;
+	font-family: avenir-light;
+	font-size: 12px;
+	paading: 2px 0px 2px 0;
+	color: #4a4a4a;
+}
+
+.graph-border-2 {
+	border: solid 1px #7295fd;
+	border-radius: 20px !important;
+	font-family: avenir-light;
+	font-size: 12px;
+	paading: 2px 0px 2px 0;
+	color: #4a4a4a;
+}
+
+.graph-border-3 {
+	border: solid 1px #30beef;
+	border-radius: 20px !important;
+	font-family: avenir-light;
+	font-size: 12px;
+	paading: 2px 0px 2px 0;
+	color: #4a4a4a;
+}
+
+.graph-border-4 {
+	border: solid 1px #bae88a;
+	border-radius: 20px !important;
+	font-family: avenir-light;
+	font-size: 12px;
+	color: #4a4a4a;
+	paading: 2px 0px 2px 0;
+}
+
+.graph-dot-1 {
+	margin-right: 2px;
+	color: #fd6d81;
+}
+
+.graph-dot-2 {
+	margin-right: 2px;
+	color: #7295fd;
+}
+
+.graph-dot-3 {
+	margin-right: 2px;
+	color: #30beef;
+}
+
+.graph-dot-4 {
+	margin-right: 2px;
+	color: #bae88a;
+}
+
+.graph_filter_selector::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #ebeaea;
+}
+
+.graph_filter_selector::-webkit-scrollbar {
+	border-radius: 100px;
+	width: 6px;
+	background-color: #ebeaea;
+}
+
+.graph_filter_selector::-webkit-scrollbar-thumb {
+	border-radius: 100px;
+	background-color: #eb384f;
+}
+
 /* aj css ends */
 /* Vinay css starts */
 .green-border {
