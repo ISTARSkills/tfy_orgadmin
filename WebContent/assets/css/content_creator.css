@@ -378,12 +378,13 @@
 	text-align: center;
 	color: #98999b;
 }
-.custom-skill-profile-card{
-	 width: 1076px;
-  height: 225px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
-	
+
+.custom-skill-profile-card {
+	width: 1076px;
+	height: 225px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
 }
 
 .custom-margin-rolescard {
@@ -397,335 +398,350 @@
 }
 
 .custom-skill-profile-img {
-	
 	background-color: #3b3c45;
-	 width: 128px;
-  height: 128px;
-  border-radius: 64px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+	width: 128px;
+	height: 128px;
+	border-radius: 64px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.24);
 }
-.custom-skill-profile-name{
- 
- font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.47;
-  text-align: center;
-  color: #3f3f3f;
+
+.custom-skill-profile-name {
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.47;
+	text-align: center;
+	color: #3f3f3f;
 }
-.custom-skill-profile-batch-raking{
-	 
-  font-family: 'Lato', sans-serif;
-  font-size: 36px;
-  font-weight: 500;
-  line-height: 1.51;
-  text-align: center;
-  color: #4a4a4a;
+
+.custom-skill-profile-batch-raking {
+	font-family: 'Lato', sans-serif;
+	font-size: 36px;
+	font-weight: 500;
+	line-height: 1.51;
+	text-align: center;
+	color: #4a4a4a;
 	margin-bottom: 10px;
 }
 
-.custom-skill-profile-batch-raking-title{
-	
- font-family: 'Lato', sans-serif;
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1.56;
-  color: #4a4a4a;
-	
-}
-.custom-skill-badges-card{
- width: 1076px;
-  height: 192px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
-}
-.custom-skill-badge-img{
-	background-color: #3b3c45;
- width: 79.3px;
-  height: 79.1px;
+.custom-skill-profile-batch-raking-title {
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 1.56;
+	color: #4a4a4a;
 }
 
-.custom-skill-badge-title{
-  width: 127.5px;
-  height: 41.6px;
-  font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.3;
-  text-align: center;
-  color: #3f3f3f;
+.custom-skill-badges-card {
+	width: 1076px;
+	height: 192px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
 }
-.custom-skill-list-active{
-	 width: 318px;
-  height: 106px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+
+.custom-skill-badge-img {
+	background-color: #3b3c45;
+	width: 79.3px;
+	height: 79.1px;
 }
-.skill_list_active{
+
+.custom-skill-badge-title {
+	width: 127.5px;
+	height: 41.6px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.3;
+	text-align: center;
+	color: #3f3f3f;
+}
+
+.custom-skill-list-active {
+	width: 318px;
+	height: 106px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+.skill_list_active {
 	border-left: 5px solid #eb384f;
 }
 
-.custom-skill-list-disabled{
-	 width: 318px;
-  height: 106px;
-  background-color: #f3f3f4;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+.custom-skill-list-disabled {
+	width: 318px;
+	height: 106px;
+	background-color: #f3f3f4;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
 }
 
-.custom-skill-tree{
-	 width: 732px;
-  height: 954px;
-  background-color: #ffffff;
-  box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
+.custom-skill-tree {
+	width: 732px;
+	height: 954px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
 }
 
-.custom-skill-tree-title{
- width: 131px;
-  height: 22.4px;
- font-family: 'Lato', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: center;
-  color: #3f3f3f;
+.custom-skill-tree-title {
+	width: 131px;
+	height: 22.4px;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	font-weight: 500;
+	line-height: 1.4;
+	text-align: center;
+	color: #3f3f3f;
 }
-.custom-skill-tree-img{
+
+.custom-skill-tree-img {
 	background-color: #3b3c45;
-	 width: 60px;
-  height: 60.4px;
+	width: 60px;
+	height: 60.4px;
 }
-.custom-module_card-header{
+
+.custom-module_card-header {
 	height: 130px;
-  border: solid 1px #f3f3f4;
-  background-color: #fff;
-}
-.custom-beginskill-course-heading{
-  height: 48px;
-  font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 2;
-  text-align: left;
-  color: #4a4a4a;
-}
-.custom-beginskill-backarrow{
-  width: 35px;
-  height: 35px;
-  object-fit: contain;
-  background-color: transparent;
-}
-.custom-beginskill-xp{
- font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.63;
-  text-align: center;
-  color: #4a4a4a;
-  margin-bottom:0px;
-}
-.custom-beginskill-progress{
-  font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.28;
-  text-align: center;
-  color: #4a4a4a;
-  margin-bottom:0px;
-}
-.custom-beginskill-rank{
-   font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  line-height: 1.28;
-  text-align: center;
-  color: #4a4a4a;
-  margin-bottom:0px;
-}
-.custom-beginskill-xp-title{
-width: 113px;
-  height: 20px;
-  opacity: 0.6;
-   font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 1.4;
-  text-align: left;
-  color: #4a4a4a;
-
-}
-.custom-beginskill-progess-title{
-
-	 width: 80.6px;
-  height: 19.6px;
-  opacity: 0.6;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: center;
-  color: #4a4a4a;
-}
-.custom-beginskill-rank-title{
-	
-	  width: 80.6px;
-  height: 19.6px;
-  opacity: 0.6;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.4;
-  text-align: center;
-  color: #4a4a4a;
-	
+	border: solid 1px #f3f3f4;
+	background-color: #fff;
 }
 
-.custom-beginskill-module-title{
-  height: 23px;
-  font-family: 'Lato', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.19;
-  text-align: left;
-  color: #3f3f3f;
-
-}
-.custom-beginskill-module-img{
- width: 90px;
-  height: 90px;
-
-}
-.custom-beginskill-collapsed-img{
-width: 35px;
-  height: 35px;
-  object-fit: contain;
-}
-.custom-beginskill-badge{
-  height: 23px;
-   font-family: 'Lato', sans-serif;
-  font-size: 13.4px;
-  font-weight: 500;
-  line-height: 1.44;
-  text-align: left;
-  color: #777777;
-   background-color: #ececec;
-
+.custom-beginskill-course-heading {
+	height: 48px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 2;
+	text-align: left;
+	color: #4a4a4a;
 }
 
-.custom-beginskill-lesson-cards-forground{
-width: 406px;
-  height: 358.4px;
-  border-radius: 2.8px;
-  background-color: #ffffff;
-  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
-
-}
-.custom-beginskill-lesson-cards-background-left{
-  width: 260px;
-  height: 307.2px;
-  opacity: 0.5;
-  border-radius: 2.4px;
-  background-color: #eef0f3;
-  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0 rgba(0, 0, 0, 0.12);
-
+.custom-beginskill-backarrow {
+	width: 35px;
+	height: 35px;
+	object-fit: contain;
+	background-color: transparent;
 }
 
-.custom-beginskill-lesson-cards-background-right{
- width: 259px;
-  height: 307.2px;
-  opacity: 0.5;
-  border-radius: 2.4px;
-  background-color: #eef0f3;
-  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 5px 0 rgba(0, 0, 0, 0.12);
-      float: right;
-
+.custom-beginskill-xp {
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.63;
+	text-align: center;
+	color: #4a4a4a;
+	margin-bottom: 0px;
 }
 
-.custom-beginskill-button{
- width: 308px;
-  height: 67.2px;
-    border-radius: 50px !important;
-   font-size: 20px;
-  background-color: #eb384f;
-  box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.21), 0 0 3px 0 rgba(0, 0, 0, 0.12);
+.custom-beginskill-progress {
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.28;
+	text-align: center;
+	color: #4a4a4a;
+	margin-bottom: 0px;
+}
 
+.custom-beginskill-rank {
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.28;
+	text-align: center;
+	color: #4a4a4a;
+	margin-bottom: 0px;
+}
 
+.custom-beginskill-xp-title {
+	width: 113px;
+	height: 20px;
+	opacity: 0.6;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 1.4;
+	text-align: left;
+	color: #4a4a4a;
 }
-.custom-beginskill-button-text{
-width: 193.2px;
-  height: 33.6px;
-  font-family: 'Lato', sans-serif;
-  font-size: 20px;
-  font-weight: 900;
-  line-height: 1.68;
-  letter-spacing: 0.7px;
-  text-align: center;
-  color: #ffffff;
-}
-.custom-task-title{
-  height: 66px;
-   font-family: 'Lato', sans-serif;
-  font-size: 24px;
-  font-weight: 500;
-  color: #3f3f3f;
 
+.custom-beginskill-progess-title {
+	width: 80.6px;
+	height: 19.6px;
+	opacity: 0.6;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.4;
+	text-align: center;
+	color: #4a4a4a;
 }
-.custom-task-desc{	
-  height: 81px;
-  font-family: 'Lato', sans-serif;
-  font-size: 20px;
-  font-weight: 300;
-  text-align: center;
-  color: #3f3f3f;
-}
-.take-a-shortcut{
-  height: 27px;
-  font-family: 'Lato', sans-serif;
-  font-size: 19.6px;
-  font-weight: 500;
-  letter-spacing: 0.7px;
-  text-align: center;
-  color: #eb384f;
 
+.custom-beginskill-rank-title {
+	width: 80.6px;
+	height: 19.6px;
+	opacity: 0.6;
+	font-family: 'Lato', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.4;
+	text-align: center;
+	color: #4a4a4a;
 }
-.dont-stop-there-is{
- width: 213px;
-  height: 50px;
-  opacity: 0.5;
- font-family: 'Lato', sans-serif;
-  font-size: 18px;
-  font-weight: 300;
-  text-align: center;
-  color: #3f3f3f;
 
+.custom-beginskill-module-title {
+	height: 23px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 1.19;
+	text-align: left;
+	color: #3f3f3f;
 }
-.custom-beginskill-row{
-height: 484px;
 
+.custom-beginskill-module-img {
+	width: 90px;
+	height: 90px;
 }
-.custom-beginskill-leftbutton{
-position: absolute; 
-bottom: -29px; 
-text-align: center;
- left: -94px; 
- width: 100%;
+
+.custom-beginskill-collapsed-img {
+	width: 35px;
+	height: 35px;
+	object-fit: contain;
 }
-.custom-beginskill-forgroundbutton{
-	position: absolute; 
-	bottom: -29px; 
-	text-align: center; 
-	width: 100%;
+
+.custom-beginskill-badge {
+	height: 23px;
+	font-family: 'Lato', sans-serif;
+	font-size: 13.4px;
+	font-weight: 500;
+	line-height: 1.44;
+	text-align: left;
+	color: #777777;
+	background-color: #ececec;
 }
-.custom-beginskill-rightbutton{
-	
-	position: absolute; 
-	bottom: -29px; 
-	text-align: center; 
-	right: -42px; 
+
+.custom-beginskill-lesson-cards-forground {
+	width: 406px;
+	height: 358.4px;
+	border-radius: 2.8px;
+	background-color: #ffffff;
+	box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0
+		rgba(0, 0, 0, 0.12);
+}
+
+.custom-beginskill-lesson-cards-background-left {
+	width: 260px;
+	height: 307.2px;
+	opacity: 0.5;
+	border-radius: 2.4px;
+	background-color: #eef0f3;
+	box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.24), 0 0 6px 0
+		rgba(0, 0, 0, 0.12);
+}
+
+.custom-beginskill-lesson-cards-background-right {
+	width: 259px;
+	height: 307.2px;
+	opacity: 0.5;
+	border-radius: 2.4px;
+	background-color: #eef0f3;
+	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.24), 0 0 5px 0
+		rgba(0, 0, 0, 0.12);
+	float: right;
+}
+
+.custom-beginskill-button {
+	width: 308px;
+	height: 67.2px;
+	border-radius: 50px !important;
+	font-size: 20px;
+	background-color: #eb384f;
+	box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.21), 0 0 3px 0
+		rgba(0, 0, 0, 0.12);
+}
+
+.custom-beginskill-button-text {
+	width: 193.2px;
+	height: 33.6px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 900;
+	line-height: 1.68;
+	letter-spacing: 0.7px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.custom-task-title {
+	height: 66px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	color: #3f3f3f;
+}
+
+.custom-task-desc {
+	height: 81px;
+	font-family: 'Lato', sans-serif;
+	font-size: 20px;
+	font-weight: 300;
+	text-align: center;
+	color: #3f3f3f;
+}
+
+.take-a-shortcut {
+	height: 27px;
+	font-family: 'Lato', sans-serif;
+	font-size: 19.6px;
+	font-weight: 500;
+	letter-spacing: 0.7px;
+	text-align: center;
+	color: #eb384f;
+}
+
+.dont-stop-there-is {
+	width: 213px;
+	height: 50px;
+	opacity: 0.5;
+	font-family: 'Lato', sans-serif;
+	font-size: 18px;
+	font-weight: 300;
+	text-align: center;
+	color: #3f3f3f;
+}
+
+.custom-beginskill-row {
+	height: 484px;
+}
+
+.custom-beginskill-leftbutton {
+	position: absolute;
+	bottom: -29px;
+	text-align: center;
+	left: -94px;
 	width: 100%;
 }
 
-.custom-arrows-width{
-width: 3%
+.custom-beginskill-forgroundbutton {
+	position: absolute;
+	bottom: -29px;
+	text-align: center;
+	width: 100%;
+}
+
+.custom-beginskill-rightbutton {
+	position: absolute;
+	bottom: -29px;
+	text-align: center;
+	right: -42px;
+	width: 100%;
+}
+
+.custom-arrows-width {
+	width: 3%
 }
 
 /* Navbra related css*/
@@ -849,13 +865,12 @@ width: 3%
 }
 
 .am-hrs {
-	
 	height: 15px;
 	font-family: 'Lato', sans-serif;
 	font-size: 13px;
 	text-align: center;
 	color: #2196f2;
-	margin-left: 3px!important;
+	margin-left: 3px !important;
 	margin-right: 10px !important;
 }
 
@@ -1015,17 +1030,14 @@ width: 3%
 /* form Level css */
 //
 Form groups // // Designed to help with the organization and spacing of vertical forms
-	. For // horizontal forms, use the predefined grid classes .
-
-.form-group {
+	 . For // horizontal forms, use the predefined grid classes .
+	.form-group {
 	margin-bottom: @form-group-margin-bottom;
 }
 
 //
 Checkboxes and radios // // Indent the labels to position radios
-	/checkboxes as hanging controls .
-
-.radio, .checkbox {
+	/checkboxes as hanging controls . .radio, .checkbox {
 	position: relative;
 	display: block;
 	margin-top: 10px;
@@ -1083,10 +1095,9 @@ Radios and checkboxes on same line
 
 //
 Apply same disabled cursor tweak as for inputs // Some special care is needed because 
-	<label>s don 't inherit their parent 's `cursor `. // // Note: Neither radios nor checkboxes can be readonly
-	.
-input[type="radio"], input[type="checkbox"] { &[disabled ], &.disabled,
-	fieldset[disabled] & { cursor: @cursor-disabled;
+	 <label>s don 't inherit their parent 's `cursor `. // // Note: Neither radios nor checkboxes can be readonly
+	 . input[type="radio"], input[type="checkbox"] { &[disabled ],
+	&.disabled, fieldset[disabled] & { cursor: @cursor-disabled;
 	
 }
 
@@ -1110,10 +1121,9 @@ These classes are used on elements with <label>descendants
 }
 //
 Static form control text // // Apply class to a `p ` element to make any string of text align with labels in
-	// a horizontal form layout .
-
-.form-control-static { // Size it appropriately next to real form
-	controls padding-top: (@padding-base-vertical + 1);
+	// a horizontal form layout . .form-control-static { // Size it
+	appropriately next to real form controls padding-top: (@padding-base-vertical
+	+ 1);
 	padding-bottom: (@padding-base-vertical+ 1); // Remove default margin
 	from `p` margin-bottom : 0;
 	min-height: (@line-height-computed+ @font-size-base); &. input-lg ,
@@ -1125,7 +1135,7 @@ Static form control text // // Apply class to a `p ` element to make any string 
 //
 Form control sizing // // Build on `.form-control ` with modifier classes to decrease or increase the
 	// height and font-size of form controls . // // The `.form-group-* form-control
-	` variations are sadly duplicated to avoid the // issue documented in https:
+	 ` variations are sadly duplicated to avoid the // issue documented in https:
 	//github.com /twbs/bootstrap/issues/15074.
 
 .input-sm { .input-size (@input-height-small; @padding-small-vertical; @padding-small-horizontal;
@@ -1190,9 +1200,7 @@ textarea.form-control, select[multiple].form-control {
 }
 //
 Form control feedback states // // Apply contextual and semantic states to individual form controls
-	.
-
-.has-feedback { // Enable absolute positioning position:relative; //
+	 . .has-feedback { // Enable absolute positioning position:relative; //
 	Ensure icons don't overlap text .form-control { padding-right: (@input-height-base
 	* 1.25);
 	
@@ -1200,8 +1208,7 @@ Form control feedback states // // Apply contextual and semantic states to indiv
 
 }
 //
-Feedback icon (requires .glyphicon classes )
-.form-control-feedback {
+Feedback icon (requires .glyphicon classes ) .form-control-feedback {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -1260,9 +1267,7 @@ Reposition feedback icon if input has visible label above
 //
 Help text // // Apply to any element you wish to create light text for placement immediately
 	// below a form control . Use for general help, formatting, or instructional text
-	.
-
-.help-block {
+	 . .help-block {
 	display: block; // account for any element using help-block margin-top :
 	5px;
 	margin-bottom: 10px;
@@ -1277,24 +1282,22 @@ Help text // // Apply to any element you wish to create light text for placement
 }
 
 //
-Inline forms // // Make forms appear inline (-block) by adding the `.form-inline
-	` class . Inline // forms begin stacked on extra small (mobile ) devices and then go inline when
-	// viewports reach <768px . // // Requires wrapping inputs and labels with 
-	`.form-group ` for proper display of // default HTML form controls and our custom form controls 
-	(e.g ., input groups ). // // Heads up ! This is mixin-ed into `.navbar-form
-	` in navbars.less .
-
-.form-inline { // Kick in the inline @media (min-width : @screen-sm-min)
-	{ // Inline-block all the things for "inline "
-    .form-group {
+Inline forms // // Make forms appear inline (-block ) by adding the `.form-inline
+	 ` class . Inline // forms begin stacked on extra small (mobile )
+	devices and then go inline when // viewports reach <768px . // //
+	Requires wrapping inputs and labels with 
+	 `.form-group ` for proper display of // default HTML form controls and our custom form controls 
+	 (e.g ., input groups ). // // Heads up ! This is mixin-ed into `.navbar-form
+	 ` in navbars.less . .form-inline { // Kick in the inline @media (min-width
+	: @screen-sm-min) { // Inline-block all the things for "inline "
+	.form-group {
 	display: inline-block;
 	margin-bottom: 0;
 	vertical-align: middle;
 }
 
 //
-In navbar-form, allow folks to * not* use `.form-group `
-    .form-control {
+In navbar-form, allow folks to * not* use `.form-group ` .form-control {
 	display: inline-block;
 	width: auto;
 	//
@@ -1346,7 +1349,7 @@ Input groups need that 100% width though
 //
 Remove default margin on radios /checkboxes that were used for stacking,
 	and // then undo the floating of radios and checkboxes to match .
-    .radio, .checkbox {
+	.radio, .checkbox {
 	display: inline-block;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -1365,8 +1368,7 @@ Remove default margin on radios /checkboxes that were used for stacking,
 }
 
 //
-Re-override the feedback icon .
-    .has-feedback .form-control-feedback {
+Re-override the feedback icon . .has-feedback .form-control-feedback {
 	top: 0;
 }
 
@@ -1374,12 +1376,10 @@ Re-override the feedback icon .
 }
 //
 Horizontal forms // // Horizontal forms are built on grid classes and allow you to create forms with
-	// labels on the left and inputs on the right .
-
-.form-horizontal { // Consistent vertical alignment of radios and
-	checkboxes // // Labels also get some reset styles, but that is scoped
-	to a media query below. .radio, .checkbox, .radio-inline,
-	.checkbox-inline { margin-top:0;
+	// labels on the left and inputs on the right . .form-horizontal { //
+	Consistent vertical alignment of radios and checkboxes // // Labels
+	also get some reset styles, but that is scoped to a media query below.
+	.radio, .checkbox, .radio-inline, .checkbox-inline { margin-top:0;
 	margin-bottom: 0;
 	padding-top: (@padding-base-vertical+ 1);
 	//
@@ -1405,58 +1405,152 @@ Make form groups behave like rows
 
 //
 Reset
+
+
  
+
+
 spacing
+
+
  
+
+
 and
+
+
  
+
+
 right
+
+
  
+
+
 align
+
+
  
+
+
 labels
 ,
 but
+
+
  
+
+
 scope
+
+
  
+
+
 to
+
+
  
+
+
 media
+
+
  
+
+
 queries
+
+
  
+
+
 so
+
+
  
+
+
 that
 //
- 
-labels
- 
-on
- 
-narrow
- 
-viewports
- 
-stack
- 
-the
- 
-same
- 
-as
- 
-a
- 
-default
- 
-form
- 
-example
-.
 
-  
+
+ 
+
+
+labels
+
+
+ 
+
+
+on
+
+
+ 
+
+
+narrow
+
+
+ 
+
+
+viewports
+
+
+ 
+
+
+stack
+
+
+ 
+
+
+the
+
+
+ 
+
+
+same
+
+
+ 
+
+
+as
+
+
+ 
+
+
+a
+
+
+ 
+
+
+default
+
+
+ 
+
+
+form
+
+
+ 
+
+
+example
+
+
+
+
+.
 @media ( min-width : @screen-sm-min) {
 	.control-label {
 		text-align: right;
@@ -1474,16 +1568,15 @@ example
 //
 Validation states // // Reposition the icon because it 's now within a grid column and columns have
 	// `position: relative ;` on them . Also accounts for the grid gutter padding
-	.
-  .has-feedback .form-control-feedback {
+	 . .has-feedback .form-control-feedback {
 	right: floor((@ grid-gutter-width/ 2));
 }
 
 //
 Form group sizes // // Quick utility class for applying `.input-lg ` and 
-	`.input-sm ` styles to the // inputs and labels within a `.form-group
-	`.
-  .form-group-lg {@media (min-width : @screen-sm-min) {.control-label {
+	 `.input-sm ` styles to the // inputs and labels within a `.form-group
+	 `. .form-group-lg {@media (min-width : @screen-sm-min) {.control-label
+	{
 	padding-top: (@padding-large-vertical+ 1);
 	font-size: @font-size-large;
 }
@@ -1620,7 +1713,6 @@ button, input, select, textarea {
 	box-shadow: 0 8px 19px 0 rgba(0, 0, 0, 0.05), 0 5px 6px 0
 		rgba(0, 0, 0, 0.04);
 } */
-
 .card-header-box {
 	height: 19px;
 	font-family: Lato;
@@ -1649,7 +1741,6 @@ button, input, select, textarea {
 }
 
 /* aj css starts */
-
 .nav>.breadcrumb-item+.breadcrumb-item::before {
 	content: "|" !important;
 	padding-right: 1.5rem !important;
@@ -1848,10 +1939,10 @@ a.unselected_report {
 	justify-content: flex-start !important;
 }
 
-.custom-left-prev-section > img{
+.custom-left-prev-section>img {
 	-ms-transform: rotate(180deg);
-	 -webkit-transform: rotate(180deg);
-	  transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .custom-right-prev-section {
@@ -1960,46 +2051,71 @@ a.unselected_report {
 }
 /* Vinay css ends */
 .sessionImage {
-    width: 90px;
-    height: 90px;
-    cursor: pointer;
+	width: 90px;
+	height: 90px;
+	cursor: pointer;
 }
+
 .moduleImage {
-    width: 90px;
-    height: 90px;
-    cursor: pointer;
+	width: 90px;
+	height: 90px;
+	cursor: pointer;
 }
+
 .courseImage {
-    width: 90px;
-    height: 90px;
-    cursor: pointer;
-    margin-top: 73%;
-    margin-left: 107%;
+	width: 90px;
+	height: 90px;
+	cursor: pointer;
+	margin-top: 73%;
+	margin-left: 107%;
 }
 
 .btn-modal {
-  color: inherit;
-  background: white;
-  border: 1px solid #e7eaec;
+	color: inherit;
+	background: white;
+	border: 1px solid #e7eaec;
 }
-.btn-modal:hover,
-.btn-modal:focus,
-.btn-modal:active,
-.btn-modal.active,
-.open .dropdown-toggle.btn-modal,
-.btn-modal:active:focus,
-.btn-modal:active:hover,
-.btn-modal.active:hover,
-.btn-modal.active:focus {
-  color: inherit;
-  border: 1px solid #d2d2d2;
-  background-color: #e6e6e6;
+
+.btn-modal:hover, .btn-modal:focus, .btn-modal:active, .btn-modal.active,
+	.open .dropdown-toggle.btn-modal, .btn-modal:active:focus, .btn-modal:active:hover,
+	.btn-modal.active:hover, .btn-modal.active:focus {
+	color: inherit;
+	border: 1px solid #d2d2d2;
+	background-color: #e6e6e6;
 }
-.btn-modal:active,
-.btn-modal.active,
-.open .dropdown-toggle.btn-modal {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
+
+.btn-modal:active, .btn-modal.active, .open .dropdown-toggle.btn-modal {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15) inset;
 }
+
 .faultyFormElement {
 	border: 1px solid rgba(239, 24, 24, 0.15) !important;
+}
+/* TABLES */
+.table-bordered {
+	border: 1px solid #EBEBEB;
+}
+
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+	background-color: #F5F5F6;
+	border-bottom-width: 1px;
+}
+
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th,
+	.table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td,
+	.table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
+	border: 1px solid #e7e7e7;
+}
+
+.table>thead>tr>th {
+	border-bottom: 1px solid #DDDDDD;
+	vertical-align: bottom;
+}
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td,
+	.table>tbody>tr>td, .table>tfoot>tr>td {
+	border-top: 1px solid #e7eaec;
+	line-height: 1.42857;
+	padding: 8px;
+	vertical-align: top;
 }

@@ -18,7 +18,8 @@
 	}
 	request.setAttribute("cp", cp);
 %>
-<link href="<%=baseURL%>assets/css/dataTables/datatables.min.css"
+<link
+	href="<%=baseURL%>assets/css/plugins/dataTables/datatables.min.css"
 	rel="stylesheet">
 <body id="student_role">
 
@@ -30,7 +31,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<table id='questionList'>
+			<table id='questionList' class="table">
 				<thead>
 					<tr>
 						<th data-visisble='true'>#</th>
@@ -40,6 +41,8 @@
 						<th data-visisble='true'>action</th>
 					</tr>
 				</thead>
+				<tbody>
+				</tbody>
 				<tfoot>
 					<tr>
 						<th data-visisble='true'>#</th>
@@ -60,7 +63,34 @@
 			$('#questionList').DataTable({
 				"processing" : true,
 				"serverSide" : true,
-				"ajax" : "../tfy_content_rest/question/getAll"
+				"ajax" : "../tfy_content_rest/question/getAll",
+				select : 'single',
+				responsive : true,
+				columnDefs : [ {
+					"width" : "7%",
+					"targets" : 0
+				}, {
+					"width" : "60%",
+					"targets" : 1
+				}, {
+					"width" : "15%",
+					"targets" : 2
+				}, {
+					"width" : "10%",
+					"targets" : 3
+				}, {
+					"width" : "8%",
+					"targets" : 4
+				} ],
+				fixedColumns : true,
+			});
+			$(document).on('click', '.question-edit-popup', function() {
+				// alert('This is assessment edit
+				// page. Please go to question lits
+				// page to edit question details.');
+				var question_id = $(this).data('question_id');
+				var url = './question.jsp?question=' + question_id;
+				window.open(url, "_blank");
 			});
 		});
 	</script>
