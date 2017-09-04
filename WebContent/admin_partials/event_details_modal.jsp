@@ -463,15 +463,15 @@ EventDetail events = adminClient.getEventsDetails(eventId);
 												    <div class="p-3">
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Slide Title</h4>
-														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSlideTitle() != null && events.getLogs().get(i).getSlideTitle().length() > 0? events.getLogs().get(i).getSlideTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getSlideId() != null ? events.getLogs().get(i).getSlideId():"N/A" %>)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSlideTitle() != null && events.getLogs().get(i).getSlideTitle().length() > 0? (events.getLogs().get(i).getSlideTitle().length()>70 ? events.getLogs().get(i).getSlideTitle().substring(0, 70)+"...":events.getLogs().get(i).getSlideTitle()):"N/A" %>   (Id :<%=events.getLogs().get(i).getSlideId() != null ? events.getLogs().get(i).getSlideId():"N/A" %>)</h4>
 													</div>
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Lesson Title</h4>
-														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getLessonTitle() != null && events.getLogs().get(i).getLessonTitle().length() > 0? events.getLogs().get(i).getLessonTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getLessonId() != null ? events.getLogs().get(i).getLessonId():"N/A" %>)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getLessonTitle() != null && events.getLogs().get(i).getLessonTitle().length() > 0? (events.getLogs().get(i).getLessonTitle().length()>70 ? events.getLogs().get(i).getLessonTitle().substring(0, 70)+"...":events.getLogs().get(i).getLessonTitle() ):"N/A" %>   (Id :<%=events.getLogs().get(i).getLessonId() != null ? events.getLogs().get(i).getLessonId():"N/A" %>)</h4>
 													</div>
 													<div class="row m-0 mb-1">
 														<h4 class="event-session-log-title m-0">Session Title</h4>
-														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSesssionTitle() != null && events.getLogs().get(i).getSesssionTitle().length() > 0? events.getLogs().get(i).getSesssionTitle():"N/A" %>   (Id :<%=events.getLogs().get(i).getSessionId() != null ? events.getLogs().get(i).getSessionId():"N/A" %>)</h4>
+														<h4 class="event-session-log-desc m-0"><%=events.getLogs().get(i).getSesssionTitle() != null && events.getLogs().get(i).getSesssionTitle().length() > 0? (events.getLogs().get(i).getSesssionTitle().length()>70?events.getLogs().get(i).getSesssionTitle().substring(0, 70)+"..." : events.getLogs().get(i).getSesssionTitle()):"N/A" %>   (Id :<%=events.getLogs().get(i).getSessionId() != null ? events.getLogs().get(i).getSessionId():"N/A" %>)</h4>
 													</div>
 													</div>
 												</div>
