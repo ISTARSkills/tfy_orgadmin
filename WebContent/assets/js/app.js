@@ -23,6 +23,10 @@ case 'student_skill_profile':
 	case 'org_scheduler':
 		setupScheduler();
 		break
+	case 'org_scheduler_month':
+		setupSchedulerMonthly()
+		break
+		
 		
 default:
 	init_default_js();
@@ -147,6 +151,99 @@ function setupScheduler(){
 	
 }
 
+function setupSchedulerMonthly(){
+	var month = new Array();
+	month[0] = "January";
+	month[1] = "February";
+	month[2] = "March";
+	month[3] = "April";
+	month[4] = "May";
+	month[5] = "June";
+	month[6] = "July";
+	month[7] = "August";
+	month[8] = "September";
+	month[9] = "October";
+	month[10] = "November";
+	month[11] = "December";
+	
+	var firstDay = new Date(parseInt($('.calendar-date-size').attr('data-currentyear')), parseInt($('.calendar-date-size').attr('data-monthnos')), 1);
+	var lastDay = new Date(parseInt($('.calendar-date-size').attr('data-currentyear')), parseInt($('.calendar-date-size').attr('data-monthnos')) + 1, 0);
+	$.get("/GetSchedulerData", {
+	    startdate: formatDateYear(firstDay),
+	    enddate: formatDateYear(lastDay)
+	}, function(data) {
+		$('#main-content').html(data);
+	    //alert("Load was performed."+data);
+	});
+	$('.fa-long-arrow-left.custom-arrow-style').click(function (){
+		//alert('left wla');
+		var monthnos = parseInt($('.calendar-date-size').attr('data-monthnos'));
+		var remove_month =monthnos -1;
+		var new_year = parseInt($('.calendar-date-size').attr('data-currentyear'));
+		if(remove_month < 0){
+			remove_month = 11;
+			new_year = new_year-1;
+			$('.calendar-date-size').attr('data-currentyear',new_year);
+		}
+		var new_month = month[remove_month];
+		$('.calendar-date-size').attr('data-monthnos',remove_month);
+		$('.calendar-date-size').html(new_month+' '+$('.calendar-date-size').attr('data-currentyear'));
+		var firstDay = new Date(new_year, remove_month, 1);
+		var lastDay = new Date(new_year, remove_month + 1, 0);
+
+		console.log(formatDateYear(firstDay) +' - '+ formatDateYear(lastDay) );
+		$.get("/GetSchedulerData", {
+		    startdate: formatDateYear(firstDay),
+		    enddate: formatDateYear(lastDay)
+		}, function(data) {
+			$('#main-content').html(data);
+		    //alert("Load was performed."+data);
+		});
+	});
+	$('.fa-long-arrow-right.custom-arrow-style').click(function (){
+		var monthnos = parseInt($('.calendar-date-size').attr('data-monthnos'));
+		var add_month =monthnos +1;
+		var new_year = parseInt($('.calendar-date-size').attr('data-currentyear'));
+		if(add_month >=12){
+			add_month = 12 - add_month;
+			new_year = new_year+1;
+			$('.calendar-date-size').attr('data-currentyear',new_year);
+		}
+		var new_month = month[add_month];
+		$('.calendar-date-size').attr('data-monthnos',add_month);
+		$('.calendar-date-size').html(new_month+' '+$('.calendar-date-size').attr('data-currentyear'));
+		
+		var firstDay = new Date(new_year, add_month, 1);
+		var lastDay = new Date(new_year, add_month + 1, 0);
+
+		console.log(formatDateYear(firstDay) +' - '+ formatDateYear(lastDay) );
+
+		$.get("/GetSchedulerData", {
+		    startdate: formatDateYear(firstDay),
+		    enddate: formatDateYear(lastDay)
+		}, function(data) {
+			$('#main-content').html(data);
+		    //alert("Load was performed."+data);
+		});
+	});
+	$('select#session-select').on('change', function()
+			{
+			    alert( this.value );
+			});
+	$('select#role-select').on('change', function()
+			{
+			    alert( this.value );
+			});
+	$("a.green-border").click(function() {
+		alert( 'clicked green' );
+	});
+	$("a.blue-border").click(function() {
+		alert( 'clicked blue' );
+	});
+	$("a.red-border").click(function() {
+		alert( 'clicked red' );
+	});
+}
 
 function formatDate(date) {
 	  var monthNames = [
@@ -160,4 +257,21 @@ function formatDate(date) {
 	  var monthIndex = date.getMonth();
 
 	  return day + ' ' + monthNames[monthIndex] ;
+	}
+
+function formatDateYear(date) {
+	var monthNames = [
+	    "Jan", "Feb", "Mar",
+	    "Apr", "May", "Jun", "Jul",
+	    "Aug", "Sep", "Oct",
+	    "Nov", "Dec"
+	  ];
+
+	  var day = date.getDate();
+	  var monthIndex = date.getMonth();
+	  var year = date.getFullYear();
+	  if(parseInt(day)<10){
+		  day='0' +day;
+	  }
+	  return day + '-' + monthNames[monthIndex] + '-' + year;
 	}

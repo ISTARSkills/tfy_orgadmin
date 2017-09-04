@@ -26,7 +26,7 @@
 		<div class="container">
 			<ol class="nav breadcrumb  mt-lg-5 gray-bg" >
 				<li class="breadcrumb-item List"><a href="#" class=" selected_report bottom">List</a></li>
-				<li class="breadcrumb-item List"><a href="#" class="unselected_report">Month</a></li>
+				<li class="breadcrumb-item List"><a href="scheduler_month.jsp" class="unselected_report">Month</a></li>
 			</ol>
 			
 		</div>
@@ -80,7 +80,7 @@
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
 			</div>
 			<div class="row m-0 p-0 ">
-			<div class="custom-col-md-7 mx-auto text-center p-0">
+			<div class="custom-col-md-7 mx-auto text-center p-0 ">
 			
 			<%for(int i=0; i <10 ; i++){ 
 				String top_border = "top-border-green";
