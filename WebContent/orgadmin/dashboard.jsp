@@ -468,66 +468,38 @@
 			</div>
 		</div>
 		<div class="container pt-xl-5">
-		<div class="row">
-			<div class="col-md-6">
-					<div class="card">
-						<div class="card-block">
+				<div class="card w-100">
+					<div class="card-block">
 						<div class="card-body">
 							<div class="row m-0">
-								<div class="col-md-10 pl-0"><h3 class="card-header-box">Competitive performance with other organizations</h3></div>
-								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
-							</div>
-							<br/>
-								<div id="highchartcontainer3">
-								
-								
-								<% HashMap<String , String> conditions1 = new HashMap();
-								 conditions1.put("college_id", orgId+""); %>
-								<%=uiservices.getCompetitionGraph(conditions1)%>
-							</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="card">
-						<div class="card-block">
-						<div class="card-body">
-							<div class="row m-0">
-								<div class="col-md-10 pl-0"><h3 class="card-header-box">Role wise performance of students</h3></div>
-								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
-							</div>
-							<select class="form-control select-dropdown-style graph_filter_selector" id="graph_role"   data-report_id="3086" name="course_id"  data-college_id="<%=orgId%>">										
-										<%										
-										ArrayList<Course> roles = uiservices.getCoursesInCollege(orgId);
-										for(Course role : roles)
-										{
-										%>
-										<option value="<%=role.getId()%>"><%=role.getCourseName().trim()%></option>
-										<%
-										} %>
-									</select>
-							
-								<div id="highchartcontainer4">
-								
-								<%
-							
-							if(roles.size()>0){
-								HashMap <String, String> conditions2 = new HashMap();
-								conditions2.put("college_id", orgId+"");
-								conditions2.put("course_id", roles.get(0).getId()+"");
-								%>
-								<%=reportUtils.getHTML(3086, conditions2) %>
-								<% 
-							}
-											
-							%>
-								
+								<div class="col-md-10 pl-0">
+									<h3 class="card-header-box">Master level per skill</h3>
+								</div>
+								<div class="col-md-2">
+									<img src="/assets/images/ic_more2.png"
+										srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x"
+										class="float-right options-img-container">
 								</div>
 							</div>
+							<div class='row m-0 p-0'>
+
+							<div class="col-12 p-1" style='min-height: 400px; background-color: #fff;'>
+								<select class="form-control select-dropdown-style"
+									id="graph_role" name="role_id" data-college_id="<%=orgId%>">
+									<%
+										ArrayList<Course> roles = uiservices.getCoursesInCollege(orgId);
+										for (Course role : roles) {
+									%>
+									<option value="<%=role.getId()%>"><%=role.getCourseName().trim()%></option>
+									<%
+										}
+									%>
+								</select>
+								<div id="skill-graph" class='w-100 m-0 p-0'></div>
+							</div>
+							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -668,13 +640,22 @@
 	            });
 	        });
 	    });
+	    
+	    
+	    //skill graph
+	    $('#graph_role').unbind().on('change',function(){
+			initSkillGraph($(this).val());
+	    });
+	    initSkillGraph($('#graph_role').val());
+	    
 	}
+	
+	
+	
 
 		function createGraphs() {
 			try {
-				$('.datatable_report')
-						.each(
-								function(i, obj) {
+				$('.datatable_report').each(function(i, obj) {
 									var tableID = $(this).attr('id');
 									var containerID = '#'
 											+ $(this).data('graph_containter');
@@ -701,6 +682,151 @@
 			} catch (err) {
 				// console.log(err);
 			}
+		}
+		
+		function initSkillGraph(course_id){
+
+			var moduleLevelData = [];  
+			var sessionLevelData ={} ;  
+			
+			var queryString ='';
+			var college_id = <%=orgId%>;
+			queryString ='course_id='+course_id+'&college_id='+college_id;
+			
+			
+			 $.ajax({
+		          url: "<%=baseURL%>/get_admin_skill_graph",
+		          cache: false,
+		          type:  "POST",
+		          data:  "type=MODULE_LEVEL&"+queryString,
+		          success: function(data){
+		        	  var data = JSON.parse(data);
+		        	  moduleLevelData = data;
+		        	
+		        	  $.ajax({
+		    	          url: "<%=baseURL%>/get_admin_skill_graph",
+										cache : false,
+										type : "POST",
+										data : "type=SESSION_LEVEL&" + queryString,
+										success : function(data2) {
+											var data = JSON.parse(data2);
+											sessionLevelData = data2;
+											loadSkillChart(moduleLevelData,
+													sessionLevelData);
+											
+										}
+									});
+
+								}
+							});
+		}
+		
+		
+		function loadSkillChart(moduleLevelData, sessionLevelData) {
+		    $('#skill-graph').highcharts({
+		        chart: {
+		            type: 'column',
+		            events: {
+		                drilldown: function(e) {
+		                    if (!e.seriesOptions) {
+		                        var chart = this,
+		                            drilldowns = JSON.parse(sessionLevelData),
+		                            series = drilldowns[e.point.name];
+		                        var graphcolors = [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ];
+		                        try {
+			                       
+			                        for(var j=0;j<4;j++){
+			                        	drilldowns[e.point.name][j]['color']=graphcolors[j];
+			                        }
+			                       }catch(err){
+		                        }
+		                        
+		                        for (var i = 0; i < series.length; i++) {
+		                            chart.addSingleSeriesAsDrilldown(e.point, series[i]);
+		                        }
+
+		                        chart.applyDrilldown();
+		                    }
+
+		                }
+		            }
+		        },
+		        credits: {
+		            enabled: false
+		        },
+		        title: {
+		            text: ''
+		        },
+		        xAxis: {
+		            type: 'category'
+		        },
+
+		        legend : {
+					useHTML : true,
+					labelFormatter : function() {
+						var pos = this.index + 1;
+						return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
+								+ this.name + '</span>';
+					},
+					
+					
+					symbolHeight : 0.1,
+					symbolWidth : 0,
+					symbolRadius : 0
+				},
+
+		        plotOptions: {
+		            series: {
+		                stacking: 'percent	',
+		                borderWidth: 0,
+		                dataLabels: {
+		                    enabled: false
+		                }
+		            },
+		            dataLabels: {
+		                enabled: false,
+		                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) ||
+		                    'white'
+		            }
+		        },
+
+		        series: moduleLevelData,
+
+		        drilldown: {
+		            series: [],
+		            legend : {
+						useHTML : true,
+						labelFormatter : function() {
+							var pos = this.index + 1;
+							return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
+									+ this.name + '</span>';
+						},
+						
+						
+						symbolHeight : 0.1,
+						symbolWidth : 0,
+						symbolRadius : 0
+					}
+		            
+		        },
+
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Percentage'
+		            },
+		            stackLabels: {
+		                enabled: false
+		                /* style: {
+		                    fontWeight: 'bold',
+		                    color: (Highcharts.theme && Highcharts.theme.textColor) ||
+		                        'gray'
+		                } */
+		            }
+		        },
+		        colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a','#fc6d80', '#7295fd', '#30beef','#bae88a' ]
+		    });
+
 		}
 
 		function create_column_graph(tableID) {
