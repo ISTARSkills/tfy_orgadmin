@@ -3,6 +3,12 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
+<
+<style>
+.champa {
+	background-color: antiquewhite !important;
+}
+</style>
 <body id="student_role">
 	<%
 		boolean flag = false;
@@ -40,27 +46,31 @@
 				<h1>Direct Skill Theory</h1>
 			</div>
 		</div>
-		<div class="container">
-			<form class="form-horizontal">
-				<div class="row">
-					<div class="col-md-8">
-						<div class="form-group">
-							<label class="col-lg-2 control-label">Course Name</label>
-
-							<div class="col-lg-10">
-								<input type="text" placeholder="course_name"
-									class="form-control" id='courseName'>
+		<div class="form-container">
+			<div class="row">
+				<div class="col-md-8">
+					<form>
+						<div class="form-group row">
+							<label for="courseName" class="col-sm-2 col-form-label">Course
+								Name</label>
+							<div class="col-sm-10">
+								<input type="text" id='courseName' class="form-control">
 							</div>
 						</div>
-						<div class="form-group">
-							<label class="col-lg-2 control-label">Description</label>
-
-							<div class="col-lg-10">
-								<textarea rows="3" style="width: 100%" id='courseDesc'></textarea>
+						<div class="form-group row">
+							<label for="courseDesc" class="col-sm-2 col-form-label">Description</label>
+							<div class="col-sm-10">
+								<textarea class="form-control" rows="3" style="width: 100%"
+									id='courseDesc'></textarea>
 							</div>
 						</div>
-
-						<div class="form-group">
+						<div class="form-group row">
+							<label for="courseCategory" class="col-sm-2 col-form-label">Category</label>
+							<div class="col-sm-10">
+								<input type="text" id='courseCategory' class="form-control">
+							</div>
+						</div>
+						<div class="form-group row">
 							<div class="col-lg-offset-2 col-lg-10">
 								<button class="btn btn-sm btn-primary " type="button"
 									id='updateCourseDetails'>Update Detail</button>
@@ -68,17 +78,18 @@
 									type='button'>Add Module</button>
 							</div>
 						</div>
-					</div>
-					<div class="col-md-3">
-						<label for="courseImageURL"><img class='courseImage'
-							id='courseImage'
-							src='http://localhost:8080/course_images/plusIcon.png' alt=''>
-						</label><input style="display: none"
-							value='http://localhost:8080/course_images/plusIcon.png'
-							id='courseImageURL' type='file' accept="image/png">
-					</div>
+					</form>
+
 				</div>
-			</form>
+				<div class="col-md-3">
+					<label for="courseImageURL"><img class='courseImage'
+						id='courseImage'
+						src='http://localhost:8080/course_images/plusIcon.png' alt=''>
+					</label><input style="display: none"
+						value='http://localhost:8080/course_images/plusIcon.png'
+						id='courseImageURL' type='file' accept="image/png">
+				</div>
+			</div>
 
 		</div>
 		<div class="container" style="margin-top: 20px;">
@@ -198,7 +209,16 @@
 								}
 							});
 		}
-		function loadCourseTree() {
+		function dummyCallBack(callBackParams) {
+			console.log(callBackParams);
+		}
+		function loadCourseTree(callBack, callBackParams) {
+			if (callBack === undefined) {
+				callBack = dummyCallBack;
+			}
+			if (callBackParams === undefined) {
+				callBackParams = 'Dummy callback!';
+			}
 			var courseID = $('#courseID').val();
 			var url = '../tfy_content_rest/course/getTree/' + courseID;
 			var jsonData;
@@ -209,7 +229,11 @@
 					})
 					.done(
 							function() {
-								$('#skillTree').jstree({
+								$('#skillTree').bind('loaded.jstree',
+										function(e, data) {
+											// invoked after jstree has loaded
+											callBack(callBackParams);
+										}).jstree({
 									'core' : {
 										'check_callback' : true,
 										'data' : window.jsonData.courseTree
@@ -349,6 +373,8 @@
 											courseObject.course.description);
 									$('#courseImage').attr('src',
 											courseObject.course.imageURL);
+									$('#courseCategory').attr('src',
+											courseObject.course.category);
 								});
 			}
 		}
@@ -465,7 +491,10 @@
 																															"#skillTree")
 																															.jstree(
 																																	'destroy');
-																													loadCourseTree();
+																													loadCourseTree(
+																															animateCourseTreeNode,
+																															'M'
+																																	+ chosenModuleID);
 																												});
 
 																							}
@@ -476,7 +505,12 @@
 							});
 
 		}
-
+		function animateCourseTreeNode(entityID) {
+			$('#skillTree').jstree(true).get_node(entityID, true).children(
+					'.jstree-anchor').focus();
+			$('#skillTree').jstree(true).get_node(entityID, true).children(
+					'.jstree-anchor').addClass('champa');
+		}
 		function initModuleEllipsisAddSession() {
 			$(document)
 					.on(
@@ -770,7 +804,7 @@
 																													'src')
 																								};
 																								var url = 'http://localhost:8080/tfy_content_rest/session/update/'
-																										+ chosenModuleID;
+																										+ chosenSessionID;
 																								$
 																										.ajax(
 																												{
@@ -793,7 +827,10 @@
 																															"#skillTree")
 																															.jstree(
 																																	'destroy');
-																													loadCourseTree();
+																													loadCourseTree(
+																															animateCourseTreeNode,
+																															'S'
+																																	+ chosenSessionID);
 																												});
 
 																							}
