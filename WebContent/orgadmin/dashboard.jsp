@@ -28,7 +28,7 @@
 			request.setAttribute("msg", "User Does Not Have Permission To Access");
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}
-		request.setAttribute("cp", cp);
+		request.setAttribute("cp", cp); 
 		
 		int orgId = (int)request.getSession().getAttribute("orgId");
 		System.out.println(orgId);
@@ -57,18 +57,19 @@
 
 %>
 
-				<div class='col-md-8 custom-no-padding'>
+				<div class='col-md-6 custom-no-padding'>
 					<h1>Today's Events</h1>
 				</div>
-				<div class='col-md-4 col-md-auto'>
-					<div class="row mt-4">
-
-						<a class="btn btn-default green-border"><i
-							class="fa fa-circle green-dot" aria-hidden="true"></i>Ongoing</a> <a
-							class="btn btn-default blue-border"><i
-							class="fa fa-circle blue-dot" aria-hidden="true"></i>Scheduled</a> <a
-							class="btn btn-default red-border"><i
-							class="fa fa-circle red-dot" aria-hidden="true"></i>Completed</a>
+				<div class='col-md-6 col-md-auto'>
+					<div class="row mt-4 float-right">
+						<a class="filterbutton btn btn-default green-border-dashboard" data-type='ongoing'><i
+							class="fa fa-circle green-dot"  aria-hidden="true"></i>Ongoing</a> <a
+							class="filterbutton btn btn-default blue-border-dashboard" data-type='scheduled'><i
+							class="fa fa-circle blue-dot"  aria-hidden="true"></i>Scheduled</a> <a
+							class="filterbutton btn btn-default red-border-dashboard" data-type='completed'><i
+							class="fa fa-circle red-dot"  aria-hidden="true"></i>Completed</a><a
+							class="filterbutton btn btn-default default-border-dashboard" data-type='clearall'><i
+							class="fa fa-circle default-dot" aria-hidden="true"></i>All</a>
 					</div>
 				</div>
 
@@ -92,17 +93,19 @@
 					%>
 
 					
-					<div class="carousel-item <%=i==0?"active":""%>">
-						<div class="row">
+					<div class="carousel-item all-dashboard-cards <%=i==0?"active":""%>" >
+						 <!-- <div class="row"> -->
 							<%
+							int k=0;
 							for(EventsCard event : actualEvents)
 							{
 								%>
-								<div class="col-md-4">
+								<div class="col-md-4 <%=event.getStatus()%>" style="<%=k==0?"margin-left: -10px;":""%>">
 							<div class="card card-w370-h240 event_card"  id="<%=event.getEventId()%>">
 									<div class="card-body">
 										
 										<%
+										k++;
 										switch (event.getStatus())
 										{
 										case "SCHEDULED":
@@ -350,7 +353,7 @@
 							
 
 						
-						</div>
+						 <!-- </div> --> 
 					</div>
 					<%} %>
 					<!-- Modal start -->
@@ -419,7 +422,9 @@
 									HashMap <String, String> conditions4 = new HashMap();
 									conditions4.put("college_id", orgId+"");
 									conditions4.put("batch_group_id", batchGroups.get(0).getId()+"");
-									%><%=reportUtils.getHTML(3041, conditions4) %><% 
+									%><%=reportUtils.getHTML(3041, conditions4) %>
+									
+									<% 
 								}
 								
 								%>
@@ -506,7 +511,80 @@
 	<!--/row-->
 		
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-	<script>
+	<script type="text/javascript">
+	
+	var skillChart;
+	var ongoing={};
+	var completed={};
+	var allDashboardCards={};
+	var scheduled={};
+	
+	function initDashboardCards(){
+		allDashboardCards=$('.all-dashboard-cards')
+		ongoing=allDashboardCards.find('.TEACHING');
+		completed=allDashboardCards.find('.COMPLETED');
+		scheduled=allDashboardCards.find('.SCHEDULED');
+		
+		$('.filterbutton').unbind().on('click',function(){
+			var type=$(this).data('type');
+			var data="";
+			if(type=='ongoing'){
+				if(ongoing!=undefined && ongoing.length!=0){
+					generateCards(ongoing,'TEACHING');
+				}else if(allDashboardCards!=undefined && allDashboardCards.length!=0){
+					data='<div class="carousel-item all-dashboard-cards active"><div class="card no-event-card w-100"> <div class="card-block m-auto"><h1>No Events in Ongoing State.</h1></div></div>';
+					$('#carouselExampleControls').find('.carousel-inner').html(data);
+				}
+			}else if(type=='scheduled'){
+				if(scheduled!=undefined && scheduled.length!=0){
+					generateCards(scheduled,'SCHEDULED');	
+				}else if(allDashboardCards!=undefined && allDashboardCards.length!=0){
+					data='<div class="carousel-item all-dashboard-cards active"><div class="card no-event-card w-100"> <div class="card-block m-auto"><h1>No Events in Scheduled State.</h1></div></div>';
+					$('#carouselExampleControls').find('.carousel-inner').html(data);
+				}				
+			}else if(type=='completed'){
+				if(completed!=undefined && completed.length!=0){
+					generateCards(completed,'COMPLETED');
+				}else if(allDashboardCards!=undefined && allDashboardCards.length!=0){
+					data='<div class="carousel-item all-dashboard-cards active"><div class="card no-event-card w-100"> <div class="card-block m-auto"><h1>No Event in Completed State.</h1></div></div>';
+					$('#carouselExampleControls').find('.carousel-inner').html(data);
+				}
+			}else if(type=='clearall'){
+				if(allDashboardCards!=undefined && allDashboardCards.length!=0){
+					$('#carouselExampleControls').find('.carousel-inner').html(allDashboardCards);
+				}
+			}
+			
+			$('.org_dash_cards').each(function() {
+				checkitem($(this));
+				
+				if($(this).find('.carousel-inner .carousel-item').length==1){
+					$(this).find('.carousel-control-next').hide();
+					$(this).find('.carousel-control-prev').hide();
+				}
+		 	});
+		});
+	}
+	
+	function generateCards(listData,type){
+		var partitions = [];
+		for (var j = 0; j < listData.length; j += 3) {
+			partitions.push(listData.slice(j, Math.min(j + 3, listData.length)));
+		}
+		var data="";
+		for(var i=0;i<partitions.length;i++){
+			data+='<div class="carousel-item all-dashboard-cards '+(i==0?"active":"")+'" >';
+
+			for(j=0;j<partitions[i].length;j++){
+				data+='<div class="col-md-4 '+type+'" style="'+(j==0?"margin-left:-10px;":"")+'">';
+				data+=$(partitions[i][j]).html();
+				data+='</div>';
+			}
+			data+='</div>';
+		}
+		$('#carouselExampleControls').find('.carousel-inner').html(data);
+	}
+	
 	$(document).ready(function() {
 		
 		$.fn.scrollBottom = function() { 
@@ -573,21 +651,17 @@
 		
 		
 		$('.popover-dismiss').popover();
-		
 		   $('.carousel').carousel('pause');
-		   		   
 		   $('.org_dash_cards').each(function() {
 				checkitem($(this));
 			});
-
 			$('.org_dash_cards').bind('slid.bs.carousel', function(e) {
 				checkitem($(this));
 			});
 			
+			initDashboardCards();
 			initDashbordGraphs();
-			
 			createGraphs();
-		   
 		});
 	function navbar_selector(){
 		$('.nav.nav-tabs li').css('cssText','background-color: #eefef;box-shadow:inset 0 -2px 0 0  #f7f7f7;');
@@ -598,8 +672,7 @@
 	
 	function checkitem($this) // check function
 	{
-		if ($this.find('.carousel-inner .carousel-item:first').hasClass(
-				'active')) {
+		if ($this.find('.carousel-inner .carousel-item:first').hasClass('active')) {
 			$this.find('.carousel-control-prev').hide();
 			$this.find('.carousel-control-next').show();
 		} else if ($this.find('.carousel-inner .carousel-item:last')
@@ -635,7 +708,8 @@
 	                data: jQuery.param(params),
 	                success: function(data) {
 	                    $('#' + data_table_id).replaceWith(data);
-	                    createGraphs();
+	                    create_column_graph(data_table_id);
+	                    $('.data_holder.datatable_report').hide();
 	                }
 	            });
 	        });
@@ -643,38 +717,44 @@
 	    
 	    
 	    //skill graph
+	    
+	    var option={};
+	    skillChart=new Highcharts.Chart('skill-graph',option);
+	    
 	    $('#graph_role').unbind().on('change',function(){
+	    	
+	    	if(skillChart){
+	    		skillChart.showLoading();
+	    	}
 			initSkillGraph($(this).val());
 	    });
+	    
+	    if(skillChart){
+    		skillChart.showLoading();
+    	}
+	    
 	    initSkillGraph($('#graph_role').val());
 	    
 	}
-	
-	
-	
 
 		function createGraphs() {
 			try {
 				$('.datatable_report').each(function(i, obj) {
-									var tableID = $(this).attr('id');
-									var containerID = '#'
-											+ $(this).data('graph_containter');
-									var graph_type = $(this).data('graph_type');
-									var graph_title = $(this).data(
-											'report_title');
-									var y_axis_title = $(this).data(
-											'y_axis_title');
-									if (graph_type.indexOf('table') <= -1) {
-										console
-												.log("App.js::handleGraphs() -> graph found --> "
-														+ tableID);
-
-										if (graph_type === 'column') {
-											create_column_graph(tableID);
-										}
-									}
-
-								});
+					var tableID = $(this).attr('id');
+					var containerID = '#'
+							+ $(this).data('graph_containter');
+					var graph_type = $(this).data('graph_type');
+					var graph_title = $(this).data(
+							'report_title');
+					var y_axis_title = $(this).data(
+							'y_axis_title');
+					if (graph_type.indexOf('table') <= -1) {
+						console.log("App.js::handleGraphs() -> graph found --> "+ tableID);
+						if (graph_type === 'column') {
+							create_column_graph(tableID);
+						}
+					}
+				});
 
 				// Hide Table
 				$('.data_holder.datatable_report').hide();
@@ -687,13 +767,10 @@
 		function initSkillGraph(course_id){
 
 			var moduleLevelData = [];  
-			var sessionLevelData ={} ;  
-			
+			var sessionLevelData ={} ; 
 			var queryString ='';
 			var college_id = <%=orgId%>;
 			queryString ='course_id='+course_id+'&college_id='+college_id;
-			
-			
 			 $.ajax({
 		          url: "<%=baseURL%>/get_admin_skill_graph",
 		          cache: false,
@@ -702,28 +779,26 @@
 		          success: function(data){
 		        	  var data = JSON.parse(data);
 		        	  moduleLevelData = data;
-		        	
 		        	  $.ajax({
 		    	          url: "<%=baseURL%>/get_admin_skill_graph",
-										cache : false,
-										type : "POST",
-										data : "type=SESSION_LEVEL&" + queryString,
-										success : function(data2) {
-											var data = JSON.parse(data2);
-											sessionLevelData = data2;
-											loadSkillChart(moduleLevelData,
-													sessionLevelData);
-											
-										}
-									});
-
-								}
-							});
+							cache : false,
+							type : "POST",
+							data : "type=SESSION_LEVEL&" + queryString,
+							success : function(data2) {
+								var data = JSON.parse(data2);
+								sessionLevelData = data2;
+								loadSkillChart(moduleLevelData,
+										sessionLevelData);
+								
+							}
+						});
+				}
+			});
 		}
 		
-		
 		function loadSkillChart(moduleLevelData, sessionLevelData) {
-		    $('#skill-graph').highcharts({
+			
+			skillChart=new Highcharts.Chart('skill-graph',{
 		        chart: {
 		            type: 'column',
 		            events: {
@@ -769,7 +844,6 @@
 								+ this.name + '</span>';
 					},
 					
-					
 					symbolHeight : 0.1,
 					symbolWidth : 0,
 					symbolRadius : 0
@@ -802,12 +876,10 @@
 									+ this.name + '</span>';
 						},
 						
-						
 						symbolHeight : 0.1,
 						symbolWidth : 0,
 						symbolRadius : 0
 					}
-		            
 		        },
 
 		        yAxis: {
@@ -817,15 +889,12 @@
 		            },
 		            stackLabels: {
 		                enabled: false
-		                /* style: {
-		                    fontWeight: 'bold',
-		                    color: (Highcharts.theme && Highcharts.theme.textColor) ||
-		                        'gray'
-		                } */
 		            }
 		        },
 		        colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a','#fc6d80', '#7295fd', '#30beef','#bae88a' ]
 		    });
+			
+			skillChart.hideLoading();
 
 		}
 
@@ -836,65 +905,63 @@
 			var graph_title = $('#' + tableID).data('report_title');
 			var y_axis_title = $('#' + tableID).data('y_axis_title');
 
-			$(containerID)
-					.highcharts(
-							{
-								data : {
-									table : tableID
-								},
-								chart : {
-									zoomType : 'x',
-									type : graph_type,
-									options3d : {
-										enabled : true,
-										alpha : 45
-									}
-								},
-								credits : {
-									enabled : false
-								},
-								title : {
-									text : ""
-								},
-								legend : {
-									useHTML : true,
-									labelFormatter : function() {
-										var pos = this.index + 1;
-										return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
-												+ this.name + '</span>';
-									},
-									
-									
-									symbolHeight : 0.1,
-									symbolWidth : 0,
-									symbolRadius : 0
-								},
+			$(containerID).highcharts({
+				data : {
+					table : tableID
+				},
+				chart : {
+					zoomType : 'x',
+					type : graph_type,
+					options3d : {
+						enabled : true,
+						alpha : 45
+					}
+				},
+				credits : {
+					enabled : false
+				},
+				title : {
+					text : ""
+				},
+				legend : {
+					useHTML : true,
+					labelFormatter : function() {
+						var pos = this.index + 1;
+						return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
+								+ this.name + '</span>';
+					},
+					
+					
+					symbolHeight : 0.1,
+					symbolWidth : 0,
+					symbolRadius : 0
+				},
 
-								yAxis : {
-									allowDecimals : false,
-									title : {
-										text : y_axis_title
-									}
-								},
-								tooltip : {
-									crosshairs : [ true, true ],
-									formatter : function() {
-										return this.series.name + ': <b>'
-												+ this.y + '</b>';
-									}
-								},
-								plotOptions : {
-									pie : {
-										allowPointSelect : true,
-										cursor : 'pointer',
-										dataLabels : {
-											enabled : true,
-											format : '<b>{point.name}</b>: {point.percentage:.1f} %',
-										}
-									}
-								},
-								colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ]
-							});
+				yAxis : {
+					allowDecimals : false,
+					title : {
+						text : y_axis_title
+					}
+				},
+				tooltip : {
+					crosshairs : [ true, true ],
+					formatter : function() {
+						return this.series.name + ': <b>'
+								+ this.y + '</b>';
+					}
+				},
+				plotOptions : {
+					pie : {
+						allowPointSelect : true,
+						cursor : 'pointer',
+						dataLabels : {
+							enabled : true,
+							format : '<b>{point.name}</b>: {point.percentage:.1f} %',
+						}
+					}
+				},
+				colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ]
+			});
 		}
 	</script>
 </body>
