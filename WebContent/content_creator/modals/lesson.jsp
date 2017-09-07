@@ -14,7 +14,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='row' style="margin-top: 10px;">
 						<div class='col-md-3 col-md-auto justify-content-md-center'>
-							<label>Session Title</label>
+							<label>Lesson Title</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
 							<input style="width: 100%" class="form-control"

@@ -1428,6 +1428,12 @@ a.unselected_report {
 	width: 660px;
 }
 /* Vinay css ends */
+.lessonImage {
+	width: 166.5px;
+	height: 90px;
+	cursor: pointer;
+}
+
 .sessionImage {
 	width: 90px;
 	height: 90px;
