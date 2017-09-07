@@ -2778,12 +2778,15 @@ a.unselected_report {
 
 .show-more-popup {
 	width: 150px;
-	height: 284px;
+	/* height: 284px; */
+	z-index: 9999;
+	padding: 7px 10px 7px 10px;
 	border-radius: 4px;
 	background-color: #ffffff;
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.13), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 	border: solid 1px rgba(151, 151, 151, 0.14);
+	padding: 7px 10px 7px 10px;
 }
 
 .popup-date {
