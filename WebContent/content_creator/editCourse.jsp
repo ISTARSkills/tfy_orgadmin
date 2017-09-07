@@ -30,8 +30,7 @@
 	<%
 		if (request.getParameterMap().containsKey("course")) {
 	%>
-	<input style='display: hidden' id='courseID'
-		value='<%=request.getParameter("course")%>'>
+	<input style='display: hidden' id='courseID' value='<%=request.getParameter("course")%>'>
 	<input style='display: hidden' id='isNewCourse' value='false'>
 	<%
 		} else {
@@ -43,7 +42,7 @@
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row">
-				<h1>Direct Skill Theory</h1>
+				<h1 id='courseName_id'>Edit Course</h1>
 			</div>
 		</div>
 		<div class="form-container">
@@ -51,8 +50,7 @@
 				<div class="col-md-8">
 					<form>
 						<div class="form-group row">
-							<label for="courseName" class="col-sm-2 col-form-label">Course
-								Name</label>
+							<label for="courseName" class="col-sm-2 col-form-label">Course Name</label>
 							<div class="col-sm-10">
 								<input type="text" id='courseName' class="form-control">
 							</div>
@@ -60,8 +58,7 @@
 						<div class="form-group row">
 							<label for="courseDesc" class="col-sm-2 col-form-label">Description</label>
 							<div class="col-sm-10">
-								<textarea class="form-control" rows="3" style="width: 100%"
-									id='courseDesc'></textarea>
+								<textarea class="form-control" rows="3" style="width: 100%" id='courseDesc'></textarea>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -72,22 +69,15 @@
 						</div>
 						<div class="form-group row">
 							<div class="col-lg-offset-2 col-lg-10">
-								<button class="btn btn-sm btn-primary " type="button"
-									id='updateCourseDetails'>Update Detail</button>
-								<button class="btn btn-sm btn-primary" id='addLastModule'
-									type='button'>Add Module</button>
+								<button class="btn btn-sm btn-primary " type="button" id='updateCourseDetails'>Update Detail</button>
+								<button class="btn btn-sm btn-primary" id='addLastModule' type='button'>Add Module</button>
 							</div>
 						</div>
 					</form>
 
 				</div>
 				<div class="col-md-3">
-					<label for="courseImageURL"><img class='courseImage'
-						id='courseImage'
-						src='http://localhost:8080/course_images/plusIcon.png' alt=''>
-					</label><input style="display: none"
-						value='http://localhost:8080/course_images/plusIcon.png'
-						id='courseImageURL' type='file' accept="image/png">
+					<label for="courseImageURL"><img class='courseImage' id='courseImage' src='http://localhost:8080/course_images/plusIcon.png' alt=''> </label><input style="display: none" value='http://localhost:8080/course_images/plusIcon.png' id='courseImageURL' type='file' accept="image/png">
 				</div>
 			</div>
 
@@ -146,6 +136,7 @@
 			initLessonEllipsisDelete();
 			initLessonEllipsisChangeSession();
 			initLessonEllipsisDuplicate();
+			initLessonEllipsisEditLesson();
 		}
 
 		function initializeAddModuleButton() {
@@ -1357,6 +1348,23 @@
 									loadCourseTree();
 								});
 					});
+		}
+
+		function initLessonEllipsisEditLesson() {
+			$(document).on('click', '.editLesson_content', function() {
+				var chosenLessonID = $(this).data('lessonid');
+				var typ = $(this).data('lesson_type');
+				if(typ=='PRESENTATION'){
+					window.open('./edit_lesson_ppt.jsp?lesson_id='+chosenLessonID, '_blank');
+
+				} else if(typ=='ASSESSMENT') {
+					window.open('./edit_lesson_asses.jsp?lesson_id='+chosenLessonID, '_blank');
+
+				} else if(typ=='INTERACTIVE') {
+					window.open('./edit_lesson_inter.jsp?lesson_id='+chosenLessonID, '_blank');
+
+				}
+			});
 		}
 	</script>
 </body>
