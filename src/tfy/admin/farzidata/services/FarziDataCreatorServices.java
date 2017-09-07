@@ -364,7 +364,46 @@ public class FarziDataCreatorServices {
 	{		
 		System.out.println("start");
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
-		
+		{
+			int orgID = 283;
+			Organization org = new OrganizationDAO().findById(orgID);
+			for(BatchGroup bg : org.getBatchGroups())
+			{
+				serv.createCLassRoomSessionEvents(bg.getId());
+			}
+			System.out.println("events created");
+			serv.updateSessionEventsForOrg(orgID);
+		}
+		{
+			int orgID = 284;
+			Organization org = new OrganizationDAO().findById(orgID);
+			for(BatchGroup bg : org.getBatchGroups())
+			{
+				serv.createCLassRoomSessionEvents(bg.getId());
+			}
+			System.out.println("events created");
+			serv.updateSessionEventsForOrg(orgID);
+		}
+		{
+			int orgID = 285;
+			Organization org = new OrganizationDAO().findById(orgID);
+			for(BatchGroup bg : org.getBatchGroups())
+			{
+				serv.createCLassRoomSessionEvents(bg.getId());
+			}
+			System.out.println("events created");
+			serv.updateSessionEventsForOrg(orgID);
+		}
+		{
+			int orgID = 286;
+			Organization org = new OrganizationDAO().findById(orgID);
+			for(BatchGroup bg : org.getBatchGroups())
+			{
+				serv.createCLassRoomSessionEvents(bg.getId());
+			}
+			System.out.println("events created");
+			serv.updateSessionEventsForOrg(orgID);
+		}
 		/*
 		{
 			int orgID= 283;
@@ -437,8 +476,8 @@ public class FarziDataCreatorServices {
 		
 		System.out.println("three");
 		
-		{
-			String orgName = "TLFY Hospitality New";			
+		{/*
+			String orgName = "TLFY Hospitality New22";			
 			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
 			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
 			int courses[] = {114,107,115,18};
@@ -491,7 +530,7 @@ public class FarziDataCreatorServices {
 			}
 			System.out.println("events created");
 			serv.updateSessionEventsForOrg(orgID);
-			
+			*/
 		}
 		
 		System.out.println("four");
@@ -1227,7 +1266,7 @@ public class FarziDataCreatorServices {
 					start.add(Calendar.DATE, -1);
 					start.add(Calendar.HOUR, i);
 					Calendar end = Calendar.getInstance();
-					end.add(Calendar.DATE,1);
+					end.add(Calendar.DATE,7);
 					
 					Date statrtDate = new Date(start.getTimeInMillis());
 					Date endDate = new Date(end.getTimeInMillis());
