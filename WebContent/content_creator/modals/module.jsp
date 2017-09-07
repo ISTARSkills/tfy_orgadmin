@@ -1,3 +1,8 @@
+<%@page import="com.viksitpro.cms.utilities.URLServices"%>
+<%
+	URLServices services = new URLServices();
+	String cdnPath = services.getAnyProp("cdn_path");
+%>
 <div id="moduleModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
@@ -17,7 +22,8 @@
 							<label>Module Title</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<input style="width: 100%" class="form-control" id='moduleModalTitle'>
+							<input style="width: 100%" class="form-control"
+								id='moduleModalTitle'>
 						</div>
 					</div>
 					<hr>
@@ -26,7 +32,8 @@
 							<label>Description</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<textarea style="width: 100%" class="form-control" id='moduleModalDescription'></textarea>
+							<textarea style="width: 100%" class="form-control"
+								id='moduleModalDescription'></textarea>
 						</div>
 					</div>
 					<hr>
@@ -36,14 +43,14 @@
 						</div>
 						<div class='col-md-5 col-md-auto'>
 							<label for="moduleImageURL"><img class='moduleImage'
-								src='http://localhost:8080//course_images/8.png' alt=''> </label><input
+								src='<%=cdnPath %>course_images/8.png' alt=''> </label><input
 								style="display: none"
-								value='http://localhost:8080//course_images/8.png'
+								value='<%=cdnPath %>course_images/8.png'
 								id='moduleImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>
-							<button class="btn btn-sm btn-modal" style="margin-top: 22px" id='saveModule'>Save
-								Changes</button>
+							<button class="btn btn-sm btn-modal" style="margin-top: 22px"
+								id='saveModule'>Save Changes</button>
 						</div>
 					</div>
 				</div>

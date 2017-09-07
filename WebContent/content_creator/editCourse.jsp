@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.cms.utilities.URLServices"%>
 <%@page import="com.viksitpro.user.service.StudentRolesService"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.RestClient"%>
@@ -24,6 +25,8 @@
 		}
 		request.setAttribute("cp", cp);
 		StudentRolesService studentrolesservice = new StudentRolesService();
+		URLServices services = new URLServices();
+		String cdnPath = services.getAnyProp("cdn_path");
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 	<%
@@ -39,6 +42,7 @@
 	<%
 		}
 	%>
+	<input style="display: hidden" id='cdnPath' value="<%=cdnPath%>">
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row">
@@ -82,11 +86,10 @@
 				</div>
 				<div class="col-md-3">
 					<label for="courseImageURL"><img class='courseImage'
-						id='courseImage'
-						src='http://localhost:8080/course_images/plusIcon.png' alt=''>
-					</label><input style="display: none"
-						value='http://localhost:8080/course_images/plusIcon.png'
-						id='courseImageURL' type='file' accept="image/png">
+						id='courseImage' src='<%=cdnPath%>course_images/plusIcon.png'
+						alt=''> </label><input style="display: none"
+						value='<%=cdnPath%>course_images/plusIcon.png' id='courseImageURL'
+						type='file' accept="image/png">
 				</div>
 			</div>
 
@@ -184,7 +187,13 @@
 																					moduleImageURL : $(
 																							'.moduleImage')
 																							.attr(
-																									'src'),
+																									'src')
+																							.split(
+																									'/')
+																							.splice(
+																									3)
+																							.join(
+																									'/'),
 																					parentCourse : window.courseID,
 																					moduleOrderID : orderID
 																				};
@@ -294,6 +303,7 @@
 			if (!isNewCourse) {
 				window.courseID = $('#courseID').val();
 			}
+			window.cdnPath = $('#cdnPath').val();
 		}
 		function validateModuleModal() {
 			var isModalOK = true;
@@ -327,7 +337,8 @@
 					courseName : $('#courseName').val().trim(),
 					courseDescription : $('#courseDesc').val().trim(),
 					courseCategory : $('#courseCategory').val().trim(),
-					courseImageURL : $('#courseImage').attr('src')
+					courseImageURL : $('#courseImage').attr('src').split('/')
+							.splice(3).join('/')
 				};
 
 				if (window.isNewCourse) {
@@ -376,7 +387,10 @@
 
 		function fillCourseEditFormFields() {
 			if (!window.isNewCourse) {
-				$.get('../tfy_content_rest/course/read/' + window.courseID)
+				$
+						.get(
+								'../tfy_content_rest/course/read/'
+										+ window.courseID)
 						.done(
 								function(courseObject) {
 									$('#coursePageHeading').html(
@@ -385,8 +399,11 @@
 											courseObject.course.title);
 									$('#courseDesc').val(
 											courseObject.course.description);
-									$('#courseImage').attr('src',
-											courseObject.course.imageURL);
+									$('#courseImage')
+											.attr(
+													'src',
+													window.cdnPath
+															+ courseObject.course.imageURL);
 									$('#courseCategory').val(
 											courseObject.course.category);
 								});
@@ -544,7 +561,8 @@
 																				'.moduleImage')
 																				.attr(
 																						'src',
-																						moduleObject.module.imageURL);
+																						window.cdnPath
+																								+ moduleObject.module.imageURL);
 																		$(
 																				'#moduleModal')
 																				.modal(
@@ -568,7 +586,13 @@
 																									moduleImageURL : $(
 																											'.moduleImage')
 																											.attr(
-																													'src'),
+																													'src')
+																											.split(
+																													'/')
+																											.splice(
+																													3)
+																											.join(
+																													'/'),
 																								};
 																								var url = '../tfy_content_rest/module/update/'
 																										+ chosenModuleID;
@@ -663,7 +687,13 @@
 																				sessionImageURL : $(
 																						'.sessionImage')
 																						.attr(
-																								'src'),
+																								'src')
+																						.split(
+																								'/')
+																						.splice(
+																								3)
+																						.join(
+																								'/'),
 																				parentModule : chosenModuleID,
 																				sessionOrderID : orderID
 																			};
@@ -778,7 +808,13 @@
 																				moduleImageURL : $(
 																						'.moduleImage')
 																						.attr(
-																								'src'),
+																								'src')
+																						.split(
+																								'/')
+																						.splice(
+																								3)
+																						.join(
+																								'/'),
 																				parentCourse : window.courseID,
 																				moduleOrderID : orderID
 																			};
@@ -930,7 +966,8 @@
 																				'.sessionImage')
 																				.attr(
 																						'src',
-																						sessionObject.session.imageURL);
+																						window.cdnPath
+																								+ sessionObject.session.imageURL);
 																		$(
 																				'#sessionModal')
 																				.modal(
@@ -956,6 +993,12 @@
 																											'.sessionImage')
 																											.attr(
 																													'src')
+																											.split(
+																													'/')
+																											.splice(
+																													3)
+																											.join(
+																													'/')
 																								};
 																								var url = '../tfy_content_rest/session/update/'
 																										+ chosenSessionID;
@@ -1036,7 +1079,13 @@
 																				lessonImageURL : $(
 																						'.lessonImage')
 																						.attr(
-																								'src'),
+																								'src')
+																						.split(
+																								'/')
+																						.splice(
+																								3)
+																						.join(
+																								'/'),
 																				parentSession : chosenSessionID,
 																				lessonOrderID : orderID
 																			};
@@ -1120,7 +1169,13 @@
 																				sessionImageURL : $(
 																						'.sessionImage')
 																						.attr(
-																								'src'),
+																								'src')
+																						.split(
+																								'/')
+																						.splice(
+																								3)
+																						.join(
+																								'/'),
 																				parentModule : parentModuleID,
 																				sessionOrderID : orderID
 																			};
@@ -1288,7 +1343,8 @@
 																				'.lessonImage')
 																				.attr(
 																						'src',
-																						lessonObject.lesson.imageURL);
+																						window.cdnPath
+																								+ lessonObject.lesson.imageURL);
 																		initLessonModalImageUploader();
 																		$(
 																				'#lessonModal')
@@ -1314,6 +1370,12 @@
 																											'.lessonImage')
 																											.attr(
 																													'src')
+																											.split(
+																													'/')
+																											.splice(
+																													3)
+																											.join(
+																													'/')
 																								};
 																								var url = '../tfy_content_rest/lesson/update/'
 																										+ chosenLessonID;
@@ -1396,7 +1458,13 @@
 																				lessonImageURL : $(
 																						'.lessonImage')
 																						.attr(
-																								'src'),
+																								'src')
+																						.split(
+																								'/')
+																						.splice(
+																								3)
+																						.join(
+																								'/'),
 																				parentSession : parentSessionID,
 																				lessonOrderID : orderID
 																			};
