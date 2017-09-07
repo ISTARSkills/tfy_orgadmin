@@ -3,7 +3,6 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<
 <style>
 .champa {
 	background-color: antiquewhite !important;
