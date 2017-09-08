@@ -1950,7 +1950,8 @@
 
 						} else if (typ == 'ASSESSMENT') {
 							window.open('./edit_lesson_asses.jsp?lesson_id='
-									+ chosenLessonID+'&course_id='+window.courseID,
+									+ chosenLessonID + '&course_id='
+									+ window.courseID, '_blank');
 
 						} else if (typ == 'INTERACTIVE') {
 							window.open('./edit_lesson_inter.jsp?lesson_id='
