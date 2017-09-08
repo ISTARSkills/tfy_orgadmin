@@ -80,7 +80,7 @@ font-family: 'Lato', sans-serif;
  *********************************************/
 .reveal p {
   margin: 20px 0;
-  line-height: 1.0;
+  line-height: 1.3;
   text-align: left ! important;
    }
 
@@ -184,6 +184,11 @@ font-family: 'Lato', sans-serif;
 .reveal table th {
   font-weight: bold; }
 
+
+.reveal table th p,
+.reveal table td p {
+margin: 0px !important;
+	}
 .reveal table th,
 .reveal table td {
   text-align: left;
@@ -528,4 +533,4 @@ blockquote em{
     
 .slide-background.NO_CONTENT{
 	background-size: 100% 100%;
-}	
+}

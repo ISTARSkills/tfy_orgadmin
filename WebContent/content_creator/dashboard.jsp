@@ -53,7 +53,6 @@ for(DailyTaskPOJO dt :cp.getEventsToday()){
 			<div class="carousel-inner" role="listbox">
 			
 			
-			<%= studentsrainerdashboardservice.DashBoardCard(cp) %>
 				
 				</div>
 				

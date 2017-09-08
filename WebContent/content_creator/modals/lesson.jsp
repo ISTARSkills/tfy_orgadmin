@@ -1,3 +1,8 @@
+<%@page import="com.viksitpro.cms.utilities.URLServices"%>
+<%
+	URLServices services = new URLServices();
+	String cdnPath = services.getAnyProp("cdn_path");
+%>
 <div id="lessonModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
@@ -14,7 +19,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='row' style="margin-top: 10px;">
 						<div class='col-md-3 col-md-auto justify-content-md-center'>
-							<label>Session Title</label>
+							<label>Lesson Title</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
 							<input style="width: 100%" class="form-control"
@@ -38,9 +43,8 @@
 						</div>
 						<div class='col-md-5 col-md-auto'>
 							<label for="lessonImageURL"><img class='lessonImage'
-								src='http://localhost:8080//course_images/8.png' alt=''> </label><input
-								style="display: none"
-								value='http://localhost:8080//course_images/8.png'
+								src='<%=cdnPath%>course_images/8.png' alt=''> </label><input
+								style="display: none" value='<%=cdnPath%>course_images/8.png'
 								id='lessonImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>
