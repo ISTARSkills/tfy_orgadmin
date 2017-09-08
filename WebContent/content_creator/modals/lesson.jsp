@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.cms.utilities.LessonTypeNames"%>
 <%@page import="com.viksitpro.cms.utilities.URLServices"%>
 <%
 	URLServices services = new URLServices();
@@ -6,7 +7,7 @@
 <div id="lessonModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
-			style="max-height: 352px">
+			style="max-height: 482px">
 			<div class="modal-header custom-modal-header">
 				<h5 class="modal-title custom-modal-title" id="lessonModalLabel">Create/Modify
 					Lesson</h5>
@@ -34,6 +35,34 @@
 						<div class='col-md-9 col-md-auto'>
 							<textarea style="width: 100%" class="form-control"
 								id='lessonModalDescription'></textarea>
+						</div>
+					</div>
+					<hr>
+					<div class='row'>
+						<div class='col-md-3 col-md-auto'>
+							<label>Lesson Type</label>
+						</div>
+						<div class='col-md-9 col-md-auto'>
+							<select style="width: 100%" class="form-control"
+								id='lessonModalType'>
+								<%
+									LessonTypeNames[] somethingList = LessonTypeNames.values();
+									for (LessonTypeNames lessonTypeNames : somethingList) {
+								%>
+								<option><%=lessonTypeNames.toString()%></option>
+								<%
+									}
+								%>
+							</select>
+						</div>
+					</div>
+					<hr>
+					<div class='row'>
+						<div class='col-md-3 col-md-auto'>
+							<label>Lesson Duration</label>
+						</div>
+						<div class='col-md-9 col-md-auto'>
+							<input type="number" id="lessonModalDuration" min="5" max="60" step="5">
 						</div>
 					</div>
 					<hr>

@@ -1077,13 +1077,8 @@ button, input, select, textarea {
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 	max-width: 1141px !important;
-<<<<<<< HEAD
-	margin-left: 84px;
-	max-height: 267px;
-=======
 	margin: auto;
 	max-height: 218px;
->>>>>>> branch '23AugOrgAdmin' of https://github.com/ISTARSkills/tfy_orgadmin.git
 }
 
 .form-control {
@@ -1510,49 +1505,50 @@ a.unselected_report {
 }
 
 .assessment_skill_selector {
-    height: 224px !important;
-    overflow-x: scroll;
+	height: 224px !important;
+	overflow-x: scroll;
 }
 
-#assesssment_edit_page .container,#assessment_edit{
-    max-width: 95% !important;
-    margin-left: auto;
-    margin-right: auto;
+#assesssment_edit_page .container, #assessment_edit {
+	max-width: 95% !important;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 option {
-    font-weight: normal;
+	font-weight: normal;
 	font-family: 'Lato', sans-serif;
 }
 
 .panel-inverse>.panel-heading {
-    background: #eb384f !important;
-    padding: 7px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+	background: #eb384f !important;
+	padding: 7px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
 }
 
-.panel-inverse
-{
-	    background-color: white;
-    border: 1px solid #d1d1da;
+.panel-inverse {
+	background-color: white;
+	border: 1px solid #d1d1da;
 }
 
 .panel-title {
-    font-size: 12px;
+	font-size: 12px;
 }
+
 .panel-title, .panel-title .pull-right {
-    line-height: 20px;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 14px;
-    color: inherit;
-    color: white;
+	line-height: 20px;
 }
 
-tr{
-    font-size: 12px;
+.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 14px;
+	color: inherit;
+	color: white;
+}
+
+tr {
+	font-size: 12px;
 }

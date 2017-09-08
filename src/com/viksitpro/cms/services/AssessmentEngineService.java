@@ -148,7 +148,7 @@ public class AssessmentEngineService {
 		lesson.setLessonXml(assessment.getId().toString());
 		lesson.setIsPublished(false);
 		lesson.setDuration(assessment.getAssessmentdurationminutes());
-		lesson.setType(LessonTypeNames.ASSESSMENT);
+		lesson.setType(LessonTypeNames.ASSESSMENT.toString());
 		lesson.setDescription(assessment.getDescription());
 		(new LessonServices()).saveLessonDetails(lesson, lessonDAO);
 		return lesson;

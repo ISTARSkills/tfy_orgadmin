@@ -94,7 +94,7 @@ public class AssessmentUpdateController extends HttpServlet {
 				 lesson.setDuration(assessment.getAssessmentdurationminutes());
 				 lesson.setDescription(assessment.getDescription());
 				 lesson.setLessonXml(assessment.getId().toString());
-				 lesson.setType(LessonTypeNames.ASSESSMENT);
+				 lesson.setType(LessonTypeNames.ASSESSMENT.toString());
 				 lesson.setIsPublished(false);
 				 lesson.setIsDeleted(false);
 				 (new LessonServices()).saveLessonDetails(lesson, lessonDAO);
