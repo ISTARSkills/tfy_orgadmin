@@ -1077,8 +1077,13 @@ button, input, select, textarea {
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 	max-width: 1141px !important;
+<<<<<<< HEAD
 	margin-left: 84px;
 	max-height: 267px;
+=======
+	margin: auto;
+	max-height: 218px;
+>>>>>>> branch '23AugOrgAdmin' of https://github.com/ISTARSkills/tfy_orgadmin.git
 }
 
 .form-control {

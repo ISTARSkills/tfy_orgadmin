@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.cms.utilities.URLServices"%>
 <%@page import="com.viksitpro.user.service.StudentRolesService"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.istarindia.android.pojo.RestClient"%>
@@ -19,6 +20,8 @@
 		}
 		request.setAttribute("cp", cp);
 		StudentRolesService studentrolesservice = new StudentRolesService();
+		URLServices services = new URLServices();
+		String cdnPath = services.getAnyProp("cdn_path");
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 	<div class="jumbotron gray-bg">
@@ -34,7 +37,7 @@
 					<div class="card-deck">
 						<div class="custom-roles-cards-450">
 							<img class="img-rounded custom-roles-img"
-								src="http://cdn.talentify.in:9999/course_images/plusIcon.png"
+								src="<%=cdnPath %>course_images/plusIcon.png"
 								alt="No Image Available" style="background-color: white;">
 							<div class="card-block">
 								<!-- <h4 class=" custom-roles-subtitle">Create Course</h4> -->

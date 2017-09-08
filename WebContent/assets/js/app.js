@@ -174,6 +174,19 @@ function setupSchedulerMonthly(){
 	}, function(data) {
 		$('#main-content').html(data);
 	    //alert("Load was performed."+data);
+		$('.div-button-more').unbind().on("click",function(){
+			var date = $($(this).parent()).parent().data('date');
+			if(date === $($(this).parent()).parent().children('.show-more-popup').data("showpopup")){
+				$($(this).parent()).css('display','none');
+				$($(this).parent()).parent().children('.show-more-popup').css('display','block');
+				$($(this).parent()).parent().css('cssText','z-index: 9999;padding:5px');
+			}
+		});
+		$('.poper-button').unbind().on("click",function(){
+			$($(this).parent()).parent().css('display','none');
+			$($($(this).parent()).parent()).parent().css('cssText','');
+			$($($(this).parent()).parent()).parent().children('.popup-replace').css('display','block');
+		});
 	});
 	$('.fa-long-arrow-left.custom-arrow-style').click(function (){
 		//alert('left wla');

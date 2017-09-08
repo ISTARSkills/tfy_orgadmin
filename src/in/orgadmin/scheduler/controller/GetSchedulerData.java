@@ -110,7 +110,7 @@ public class GetSchedulerData extends HttpServlet {
 					
 				//normat date data fill as usual
 				sb.append("<div class='custom-col-md-7 m-0 md-height-180 bg-white text-center' data-date='"+sdf.format(d)+"'>");
-			    sb.append("<div class='date-display-scheduler'>"+ddf.format(d)+"</div>");
+			    sb.append("<div class='popup-replace'><div class='date-display-scheduler'>"+ddf.format(d)+"</div>");
 				sb.append("<div class='red-div'>"
 						+ "<h1 class='m-0'>This is event</h1>"
 						+"<p1 class ='float-left'>8 AM - 10 AM</p1>"
@@ -123,9 +123,9 @@ public class GetSchedulerData extends HttpServlet {
 						+ "<h1 class='m-0'>This is event</h1>"
 						+"<p1 class ='float-left'>8 AM - 10 AM</p1>"
 						+ "</div>");
-				sb.append("<div class='div-button-more'><h1 class='div-button-text'>+3 More</h1></div>");
+				sb.append("<div class='div-button-more'><h1 class='div-button-text'>+3 More</h1></div></div>");
+				sb.append("<div class='show-more-popup' style='z-index: 9999; padding: 7px 10px 7px 10px; display:none;' data-showpopup='"+sdf.format(d)+"'>         <div class='row m-0'>             <div class='row m-0'>                 <h1 class='popup-date-head m-0'>24 </h1>                 <h2 class='popup-date-tail m-0' style=' margin-left: 3px !important;'> Aug  2017</h2></div><button type='button' class='poper-button close' style='position: relative;left: 30px;font-size: 17px;color: #eb384f;'><span aria-hidden='true'>×</span></button></div><div class='blue-div mx-0'><h1 class='m-0'>This is event</h1><p1 class='float-left'>8 AM - 10 AM</p1>         </div>     </div>");
 				sb.append("</div>");
-				
 				
 				if (i % 7 == 6) {
 					//end of the row
@@ -142,6 +142,7 @@ public class GetSchedulerData extends HttpServlet {
 						cal1.setTime(d);
 					    cal1.add(Calendar.DATE, k);
 					    sb.append(sdf.format(cal1.getTime()));
+					    //sb.append("<div class='show-more-popup'><div class='row m-0'><div class='row m-0'><h1 class='popup-date-head m-0'>24</h1> <h2 class='popup-date-tail m-0'>Aug  2017</h2></div></div>");
 						sb.append("</div>");
 						}
 						sb.append("</div >");
