@@ -1587,7 +1587,7 @@
 
 						} else if (typ == 'ASSESSMENT') {
 							window.open('./edit_lesson_asses.jsp?lesson_id='
-									+ chosenLessonID, '_blank');
+									+ chosenLessonID+'&course_id='+window.courseID, '_blank');
 
 						} else if (typ == 'INTERACTIVE') {
 							window.open('./edit_lesson_inter.jsp?lesson_id='

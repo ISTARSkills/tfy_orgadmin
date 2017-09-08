@@ -1078,7 +1078,7 @@ button, input, select, textarea {
 		rgba(0, 0, 0, 0.04);
 	max-width: 1141px !important;
 	margin-left: 84px;
-	max-height: 218px;
+	max-height: 267px;
 }
 
 .form-control {
@@ -1502,4 +1502,52 @@ a.unselected_report {
 	line-height: 1.42857;
 	padding: 8px;
 	vertical-align: top;
+}
+
+.assessment_skill_selector {
+    height: 224px !important;
+    overflow-x: scroll;
+}
+
+#assesssment_edit_page .container,#assessment_edit{
+    max-width: 95% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+option {
+    font-weight: normal;
+	font-family: 'Lato', sans-serif;
+}
+
+.panel-inverse>.panel-heading {
+    background: #eb384f !important;
+    padding: 7px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-inverse
+{
+	    background-color: white;
+    border: 1px solid #d1d1da;
+}
+
+.panel-title {
+    font-size: 12px;
+}
+.panel-title, .panel-title .pull-right {
+    line-height: 20px;
+}
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: inherit;
+    color: white;
+}
+
+tr{
+    font-size: 12px;
 }
