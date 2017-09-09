@@ -149,8 +149,10 @@
 			initLessonEllipsisMoveDown();
 			initLessonEllipsisDelete();
 			initLessonEllipsisChangeSession();
-			initLessonEllipsisDuplicate();
 			initLessonEllipsisEditLesson();
+			initLessonEllipsisDuplicateFrom();
+			initLessonEllipsisLinkFrom();
+			initLessonEllipsisAddLearningObjectives();
 		}
 
 		function initializeAddModuleButton() {
@@ -1916,7 +1918,7 @@
 							});
 		}
 
-		function initLessonEllipsisDuplicate() {
+		function initLessonEllipsisDuplicateFrom() {
 			$(document).on(
 					'click',
 					'.duplicateLesson',
@@ -1935,6 +1937,21 @@
 									loadCourseTree();
 								});
 					});
+		}
+
+		function initLessonEllipsisAddLearningObjectives() {
+			$(document).on('click', '.addLOs', function() {
+				$.get('./modals/addLearningObjectives.jsp').done(function(data) {
+					$('#modals').html(data);
+					$('#loModal').modal('toggle');
+				});
+			});
+		}
+
+		function initLessonEllipsisLinkFrom() {
+			$(document).on('click', '.linkLesson', function() {
+				alert("WIP");
+			});
 		}
 
 		function initLessonEllipsisEditLesson() {
