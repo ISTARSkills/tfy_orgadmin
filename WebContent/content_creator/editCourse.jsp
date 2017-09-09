@@ -147,12 +147,13 @@
 			initLessonEllipsisAddLessonBelow();
 			initLessonEllipsisMoveUp();
 			initLessonEllipsisMoveDown();
-			initLessonEllipsisDelete();
 			initLessonEllipsisChangeSession();
 			initLessonEllipsisEditLesson();
 			initLessonEllipsisDuplicateFrom();
 			initLessonEllipsisLinkFrom();
 			initLessonEllipsisAddLearningObjectives();
+			initLessonEllipsisPublish();
+			initLessonEllipsisDelete();
 		}
 
 		function initializeAddModuleButton() {
@@ -1749,13 +1750,30 @@
 					'.deleteLesson',
 					function() {
 						var chosenLessonID = $(this).data('lessonid');
-						$.get(
-								'../tfy_content_rest/lesson/delete/'
-										+ chosenLessonID).done(
-								function(response) {
-									$("#skillTree").jstree('destroy');
-									loadCourseTree();
-									//open the session NOde TO|DO
+						var chosenLessonNode = $('#skillTree').jstree(true)
+								.get_node('L' + chosenLessonID);
+						var parentSessionID = $('#skillTree').jstree(true)
+								.get_parent(chosenLessonNode).substring(1);
+						$.get('./modals/deleteLesson.jsp').done(function(data) {
+							$('#modals').html(data);
+							$('#deleteLessonModal').modal('toggle');
+						});
+						$(document).on(
+								'click',
+								'.confirmDelete',
+								function() {
+									$.get(
+											'../tfy_content_rest/lesson/delete/'
+													+ chosenLessonID).done(
+											function(response) {
+												$("#skillTree").jstree(
+														'destroy');
+												$('#deleteLessonModal').modal(
+														'toggle');
+												loadCourseTree(
+														animateChildNode,
+														'S' + parentSessionID);
+											});
 								});
 					});
 		}
@@ -1940,17 +1958,30 @@
 		}
 
 		function initLessonEllipsisAddLearningObjectives() {
-			$(document).on('click', '.addLOs', function() {
-				$.get('./modals/addLearningObjectives.jsp').done(function(data) {
-					$('#modals').html(data);
-					$('#loModal').modal('toggle');
-				});
-			});
+			$(document).on(
+					'click',
+					'.addLOs',
+					function() {
+						$.get('./modals/addLearningObjectives.jsp').done(
+								function(data) {
+									$('#modals').html(data);
+									$('#loModal').modal('toggle');
+								});
+					});
 		}
 
 		function initLessonEllipsisLinkFrom() {
 			$(document).on('click', '.linkLesson', function() {
 				alert("WIP");
+			});
+		}
+
+		function initLessonEllipsisPublish() {
+			$(document).on('click', '.publishLesson', function() {
+				$.get('./modals/publishLesson.jsp').done(function(data) {
+					$('#modals').html(data);
+					$('#loModal').modal('toggle');
+				});
 			});
 		}
 
