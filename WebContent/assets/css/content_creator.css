@@ -1078,7 +1078,7 @@ button, input, select, textarea {
 		rgba(0, 0, 0, 0.04);
 	max-width: 1141px !important;
 	margin: auto;
-	max-height: 218px;
+	max-height: 267px;
 }
 
 .form-control {
@@ -1550,5 +1550,84 @@ option {
 }
 
 tr {
-	font-size: 12px;
+	font-size: 14px;
+}
+
+.btn-icon, .btn.btn-icon {
+       display: inline-block;
+    width: 23px;
+    height: 23px;
+    padding: 0;
+    border: none;
+    line-height: 23px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.btn.active, .btn:active {
+    -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.1);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.1);
+}
+
+.fa-times{
+	color:white;		
+}
+
+
+
+.level_1 {
+    color: #333333;
+    background: #fff;
+    border-color: #ddd;
+}
+
+.level_3{
+    color: #333333;
+   background: #cdf6d4;
+    border-color: #cdf6d4;
+}
+
+.level_5{
+    color: #333333;
+    background: #fed5d2;
+    border-color: #fed5d2;
+}
+
+
+.level_4 {
+    color: #333333;
+    background: #ffe8c8;
+    border-color: #ffe8c8;
+}
+
+
+.level_2 {
+    color: #333333;
+    background: #dcf4ff;
+    border-color: #dcf4ff;
+}
+
+.custom-edit-question-modal-content {
+	width: 561px;
+	height: 542px;
+	background-color: #ffffff;
+	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
+		rgba(0, 0, 0, 0.04);
+}
+
+.custom-edit-question-modal-header {
+	width: 559px;
+	height: 70px;
+	background-color: #23b6f9;
+}
+
+.custom-edit-question-modal-title {
+	/* width: 214px; */
+	height: 35px;
+	font-family: 'Lato', sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1.49;
+	text-align: left;
+	color: #ffffff;
 }

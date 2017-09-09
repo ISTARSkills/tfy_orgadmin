@@ -76,7 +76,7 @@ try {
 			request.setAttribute("msg", errorResponse);
 			request.getRequestDispatcher("/login.jsp").forward(request, response);			
 		}		
-		response.sendRedirect(url1);		
+		//response.sendRedirect(url1);		
 	} else {
 		String errorResponse="";
 		if(request.getAttribute("msg")!=null){			
