@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.Collections"%>
 <%@page import="com.viksitpro.core.dao.entities.SkillObjective"%>
@@ -13,13 +14,14 @@
 <%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <jsp:include page="/inc/head.jsp"></jsp:include>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
 <style>
 .champa {
 	background-color: antiquewhite !important;
 }
 </style>
 <body id="assesssment_edit_page">
-	<%
+	<%String basePath =  AppProperies.getProperty("cdn_path");
 		boolean flag = false;
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
@@ -219,12 +221,16 @@
 		
 	</div>
 <div id="editQuestionModal" class="modal fade" role="dialog">
- 
-</div>	
-	
+</div>
+		
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
+	<script src="<%=basePath %>assets/js/plugins/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="<%=basePath%>assets/js/edit_question.js"></script>
 	<script>
 		$(document).ready(function() {
+			
+			
+			
 			window.lessonID = $('#lessonId').val();
 			window.courseID = $('#courseId').val();
 			fillAssessmentEditFormFields();
@@ -235,7 +241,7 @@
 			$.get('../tfy_content_rest/question/readAll/' + window.assessmentID+'/course/'+window.courseID)
 			.done(
 					function(questionsObject) {	
-						console.log(questionsObject);
+						//console.log(questionsObject);
 						if(questionsObject.success=true && questionsObject.questionData.questions!=null && questionsObject.questionData.questions.length>0)
 						{
 							var tableBody='';
@@ -252,7 +258,7 @@
 							     <td>"+questionText+"</td> \
 							     <td>"+type+"</td> \
 							     <td>"+skills+"</td> \
-							     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-times'></i></a></td></tr>";							  
+							     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-trash' aria-hidden='true' style='color:white;'></i></span></i></a></td></tr>";							  
 							     tableBody+=tableRow;							    
 							}
 							
@@ -275,12 +281,18 @@
 		{
 			$('.question').unbind().on('click',function(e){
 				//alert('question clicked');
-				var questionId = $(this).attr('id');
-				$.get('modals/edit_question.jsp')
+				var questionId = $(this).attr('id').replace('question_','');
+				$.get('modals/edit_question.jsp?question_id='+questionId)
 				.done(function(html) {
 					$('#editQuestionModal').empty();
 					$('#editQuestionModal').append(html);
 					$('#editQuestionModal').modal();
+					enableCorrectQuestionSelector();
+					enablePassageViewer();
+					enableExplanationViewer();
+					enableQuestionViewer();
+					enableEdit();
+					enableMarkingOptionAsCorrect();
 				});	
 				
 			    e.stopPropagation();
