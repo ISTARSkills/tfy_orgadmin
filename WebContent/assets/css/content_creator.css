@@ -1473,7 +1473,7 @@ a.unselected_report {
 }
 
 .faultyFormElement {
-	border: 1px solid rgba(239, 24, 24, 0.15) !important;
+	border: 1px solid rgba(235, 57, 79, 1) !important;
 }
 /* TABLES */
 .table-bordered {
