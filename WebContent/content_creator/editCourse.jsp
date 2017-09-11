@@ -1951,18 +1951,147 @@
 		}
 
 		function initLessonEllipsisAddLearningObjectives() {
+			$(document)
+					.on(
+							'click',
+							'.addLOs',
+							function() {
+								var chosenLessonID = $(this).data('lessonid');
+								$
+										.get(
+												'./modals/addLearningObjectives.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													$
+															.get(
+																	window.content_rest_url
+																			+ 'learningObjective/getLesonLO/'
+																			+ chosenLessonID
+																			+ '/'
+																			+ window.courseID)
+															.done(
+																	function(
+																			response) {
+																		var loaddition = '';
+																		$
+																				.each(
+																						response.learningObjectives,
+																						function(
+																								a,
+																								b) {
+																							loaddition += "<li class='selectedLO list-group-item' id='"
+																									+ b.id
+																									+ "'>"
+																									+ b.text
+																									+ "</li>";
+																						});
+																		$(
+																				'#selectedLOs')
+																				.append(
+																						loaddition);
+																		$(
+																				'#loModal')
+																				.modal(
+																						'toggle');
+																		initLearningObjectiveSearch(chosenLessonID);
+																		initRemoveSelectedLO(chosenLessonID);
+																	});
+												});
+							});
+		}
+
+		function initLearningObjectiveSearch(chosenLessonID) {
+			$('#searchLO')
+					.on(
+							"keyup",
+							function() {
+								var searchString = $('#searchLO').val().trim();
+								if (searchString != ''
+										&& searchString.length > 3) {
+									$
+											.get(
+
+													window.content_rest_url
+															+ 'learningObjective/search?s='
+															+ searchString)
+											.done(
+													function(response) {
+														var searchResults = '';
+														$
+																.each(
+																		response.learningObjectives,
+																		function(
+																				index,
+																				value) {
+																			searchResults += "<li class='searchLOResults list-group-item' id='"+value.id+"'>";
+																			searchResults += value.text;
+																			searchResults += "</li>";
+																		});
+														$('#searchLOResult')
+																.html(
+																		searchResults);
+														initAddSearchedLO(chosenLessonID);
+													});
+								}
+							});
+		}
+
+		function initAddSearchedLO(chosenLessonID) {
+			$('.searchLOResults')
+					.on(
+							'click',
+							function() {
+								var loid = $(this).attr('id');
+								var lotext = $(this).text();
+								var listitem = this;
+								$
+										.get(
+
+												window.content_rest_url
+														+ 'lesson/addLO/'
+														+ chosenLessonID + '/'
+														+ loid + '/'
+														+ window.courseID)
+										.done(
+												function(response) {
+													if (response.success) {
+														var selectedLOaddition = '';
+														selectedLOaddition += "<li class='selectedLO list-group-item list-group-item-success' id='"
+															+ loid
+															+ "'>"
+																+ lotext
+																+ "</li>";
+														$('#selectedLOs')
+																.prepend(
+																		selectedLOaddition);
+														$(listitem).remove();
+													} else {
+														alert('Learning Objective is already associated with the lesson.')
+													}
+												});
+							});
+		}
+
+		function initRemoveSelectedLO(chosenLessonID) {
 			$(document).on(
 					'click',
-					'.addLOs',
+					'.selectedLO',
 					function() {
-						$.get('./modals/addLearningObjectives.jsp').done(
-								function(data) {
-									$('#modals').html(data);
-									$('#loModal').modal('toggle');
+						var loid = $(this).attr('id');
+						var listitem = this;
+						$.get(
+
+								window.content_rest_url + 'lesson/remLO/'
+										+ chosenLessonID + '/' + loid + '/'
+										+ window.courseID).done(
+								function(response) {
+									if (response.success) {
+										$(listitem).remove();
+									}
 								});
 					});
 		}
-
 		function initSessionEllipsisLinkFrom() {
 			$(document)
 					.on(
@@ -2135,7 +2264,7 @@
 
 							});
 		}
-		
+
 		function initLessonEllipsisEditLesson() {
 			$(document).on(
 					'click',

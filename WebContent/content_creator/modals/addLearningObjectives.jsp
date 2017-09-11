@@ -20,24 +20,16 @@
 								id='searchLO' class="form-control"
 								style="margin-top: 10px; margin-bottom: 10px">
 							<hr>
-							<div class="list-group" id='searchLOResult' style="width: 100%">
-								<button type="button"
-									class="list-group-item list-group-item-action">Dapibus
-									ac facilisis in</button>
-								<button type="button"
-									class="list-group-item list-group-item-action">Morbi
-									leo risus</button>
-							</div>
+							<ul class="list-group" id='searchLOResult'
+								style="max-height: 400px; overflow: auto;"></ul>
 						</div>
 						<div class='col-md-6 col-md-auto'>
+							<h4 style="margin-top: 10px">Selected Learning Objectives</h4>
+							<ul class="list-group" id='selectedLOs'
+								style="max-height: 420px; overflow: auto;">
+								<!-- <li class="list-group-item active" style="margin-top: 10px">Selected
+									Learning Objectives</li> -->
 
-							<ul class="list-group">
-								<li class="list-group-item active" style="margin-top: 10px">Selected Learning
-									Objectives</li>
-								<li class="list-group-item">Dapibus ac facilisis in</li>
-								<li class="list-group-item">Morbi leo risus</li>
-								<li class="list-group-item">Porta ac consectetur ac</li>
-								<li class="list-group-item">Vestibulum at eros</li>
 							</ul>
 						</div>
 					</div>
