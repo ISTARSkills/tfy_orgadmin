@@ -27,6 +27,7 @@
 		StudentRolesService studentrolesservice = new StudentRolesService();
 		URLServices services = new URLServices();
 		String cdnPath = services.getAnyProp("cdn_path");
+		String content_rest_url = services.getAnyProp("content_rest_url");
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 	<%
@@ -43,6 +44,8 @@
 		}
 	%>
 	<input style="display: hidden" id='cdnPath' value="<%=cdnPath%>">
+	<input style="display: hidden" id='content_rest_url'
+		value="<%=content_rest_url%>">
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row">
@@ -140,6 +143,8 @@
 			initSessionEllipsisMoveUp();
 			initSessionEllipsisMoveDown();
 			initSessionEllipsisChangeModule();
+			initSessionEllipsisDuplicateFrom();
+			initSessionEllipsisLinkFrom();
 			initSessionEllipsisDelete();
 		}
 		function initLessonEllipsisListener() {
@@ -147,13 +152,10 @@
 			initLessonEllipsisAddLessonBelow();
 			initLessonEllipsisMoveUp();
 			initLessonEllipsisMoveDown();
+			initLessonEllipsisDelete();
 			initLessonEllipsisChangeSession();
 			initLessonEllipsisEditLesson();
-			initLessonEllipsisDuplicateFrom();
-			initLessonEllipsisLinkFrom();
 			initLessonEllipsisAddLearningObjectives();
-			initLessonEllipsisPublish();
-			initLessonEllipsisDelete();
 		}
 
 		function initializeAddModuleButton() {
@@ -200,7 +202,8 @@
 																					parentCourse : window.courseID,
 																					moduleOrderID : orderID
 																				};
-																				var url = '../tfy_content_rest/module/create';
+																				var url = window.content_rest_url
+																						+ 'module/create';
 																				$
 																						.ajax(
 																								{
@@ -246,7 +249,7 @@
 				callBackParams = 'Dummy callback!';
 			}
 			var courseID = $('#courseID').val();
-			var url = '../tfy_content_rest/course/getTree/' + courseID;
+			var url = window.content_rest_url + 'course/getTree/' + courseID;
 			var jsonData;
 			$
 					.get(url, function(data) {
@@ -312,6 +315,7 @@
 				window.courseID = $('#courseID').val();
 			}
 			window.cdnPath = $('#cdnPath').val();
+			window.content_rest_url = $('#content_rest_url').val();
 		}
 		function validateModuleModal() {
 			var isModalOK = true;
@@ -350,9 +354,9 @@
 				};
 
 				if (window.isNewCourse) {
-					var url = '../tfy_content_rest/course/create';
+					var url = window.content_rest_url + 'course/create';
 				} else {
-					var url = '../tfy_content_rest/course/update/'
+					var url = window.content_rest_url + 'course/update/'
 							+ window.courseID;
 				}
 				$.ajax({
@@ -395,26 +399,22 @@
 
 		function fillCourseEditFormFields() {
 			if (!window.isNewCourse) {
-				$
-						.get(
-								'../tfy_content_rest/course/read/'
-										+ window.courseID)
-						.done(
-								function(courseObject) {
-									$('#coursePageHeading').html(
-											courseObject.course.title);
-									$('#courseName').val(
-											courseObject.course.title);
-									$('#courseDesc').val(
-											courseObject.course.description);
-									$('#courseImage')
-											.attr(
-													'src',
-													window.cdnPath
-															+ courseObject.course.imageURL);
-									$('#courseCategory').val(
-											courseObject.course.category);
-								});
+				$.get(
+						window.content_rest_url + 'course/read/'
+								+ window.courseID).done(
+						function(courseObject) {
+							$('#coursePageHeading').html(
+									courseObject.course.title);
+							$('#courseName').val(courseObject.course.title);
+							$('#courseDesc').val(
+									courseObject.course.description);
+							$('#courseImage').attr(
+									'src',
+									window.cdnPath
+											+ courseObject.course.imageURL);
+							$('#courseCategory').val(
+									courseObject.course.category);
+						});
 			}
 		}
 
@@ -427,22 +427,20 @@
 									var imageFile = document
 											.getElementById('courseImageURL').files[0];
 									data.append('image', imageFile);
-									$
-											.ajax(
-													{
-														url : '../tfy_content_rest/file/imageupload',
-														data : data,
-														cache : false,
-														contentType : false,
-														processData : false,
-														type : 'POST',
-													})
-											.done(
-													function(response) {
-														$('#courseImage')
-																.attr('src',
-																		response);
-													});
+									$.ajax(
+											{
+												url : window.content_rest_url
+														+ 'file/imageupload',
+												data : data,
+												cache : false,
+												contentType : false,
+												processData : false,
+												type : 'POST',
+											}).done(
+											function(response) {
+												$('#courseImage').attr('src',
+														response);
+											});
 								} else {
 									console.log('No image found!');
 								}
@@ -457,22 +455,20 @@
 									var imageFile = document
 											.getElementById('moduleImageURL').files[0];
 									data.append('image', imageFile);
-									$
-											.ajax(
-													{
-														url : '../tfy_content_rest/file/imageupload',
-														data : data,
-														cache : false,
-														contentType : false,
-														processData : false,
-														type : 'POST',
-													})
-											.done(
-													function(response) {
-														$('.moduleImage')
-																.attr('src',
-																		response);
-													});
+									$.ajax(
+											{
+												url : window.content_rest_url
+														+ 'file/imageupload',
+												data : data,
+												cache : false,
+												contentType : false,
+												processData : false,
+												type : 'POST',
+											}).done(
+											function(response) {
+												$('.moduleImage').attr('src',
+														response);
+											});
 								} else {
 									console.log('No image found!');
 								}
@@ -487,22 +483,20 @@
 									var imageFile = document
 											.getElementById('sessionImageURL').files[0];
 									data.append('image', imageFile);
-									$
-											.ajax(
-													{
-														url : '../tfy_content_rest/file/imageupload',
-														data : data,
-														cache : false,
-														contentType : false,
-														processData : false,
-														type : 'POST',
-													})
-											.done(
-													function(response) {
-														$('.sessionImage')
-																.attr('src',
-																		response);
-													});
+									$.ajax(
+											{
+												url : window.content_rest_url
+														+ 'file/imageupload',
+												data : data,
+												cache : false,
+												contentType : false,
+												processData : false,
+												type : 'POST',
+											}).done(
+											function(response) {
+												$('.sessionImage').attr('src',
+														response);
+											});
 								} else {
 									console.log('No image found!');
 								}
@@ -517,22 +511,20 @@
 									var imageFile = document
 											.getElementById('lessonImageURL').files[0];
 									data.append('image', imageFile);
-									$
-											.ajax(
-													{
-														url : '../tfy_content_rest/file/imageupload',
-														data : data,
-														cache : false,
-														contentType : false,
-														processData : false,
-														type : 'POST',
-													})
-											.done(
-													function(response) {
-														$('.lessonImage')
-																.attr('src',
-																		response);
-													});
+									$.ajax(
+											{
+												url : window.content_rest_url
+														+ 'file/imageupload',
+												data : data,
+												cache : false,
+												contentType : false,
+												processData : false,
+												type : 'POST',
+											}).done(
+											function(response) {
+												$('.lessonImage').attr('src',
+														response);
+											});
 								} else {
 									console.log('No image found!');
 								}
@@ -552,7 +544,8 @@
 													$('#modals').html(data);
 													$
 															.get(
-																	'../tfy_content_rest/module/read/'
+																	window.content_rest_url
+																			+ 'module/read/'
 																			+ chosenModuleID)
 															.done(
 																	function(
@@ -602,7 +595,8 @@
 																											.join(
 																													'/'),
 																								};
-																								var url = '../tfy_content_rest/module/update/'
+																								var url = window.content_rest_url
+																										+ 'module/update/'
 																										+ chosenModuleID;
 																								$
 																										.ajax(
@@ -705,7 +699,8 @@
 																				parentModule : chosenModuleID,
 																				sessionOrderID : orderID
 																			};
-																			var url = '../tfy_content_rest/session/create';
+																			var url = window.content_rest_url
+																					+ 'session/create';
 																			$
 																					.ajax(
 																							{
@@ -841,7 +836,8 @@
 																				parentCourse : window.courseID,
 																				moduleOrderID : orderID
 																			};
-																			var url = '../tfy_content_rest/module/create';
+																			var url = window.content_rest_url
+																					+ 'module/create';
 																			$
 																					.ajax(
 																							{
@@ -888,7 +884,8 @@
 									currentModuleOrderID : currentOrderID,
 									newModuleOrderID : newOrderID
 								};
-								var url = '../tfy_content_rest/module/reorder';
+								var url = window.content_rest_url
+										+ 'module/reorder';
 								$.ajax({
 									type : "POST",
 									url : url,
@@ -919,7 +916,8 @@
 									currentModuleOrderID : currentOrderID,
 									newModuleOrderID : newOrderID
 								};
-								var url = '../tfy_content_rest/module/reorder';
+								var url = window.content_rest_url
+										+ 'module/reorder';
 								$.ajax({
 									type : "POST",
 									url : url,
@@ -947,7 +945,7 @@
 							alert('Module is not empty, cant be deleted!');
 						} else {
 							$.get(
-									'../tfy_content_rest/module/delete/'
+									window.content_rest_url + 'module/delete/'
 											+ chosenModuleID).done(
 									function(response) {
 										$("#skillTree").jstree('destroy');
@@ -972,7 +970,8 @@
 													$('#modals').html(data);
 													$
 															.get(
-																	'../tfy_content_rest/session/read/'
+																	window.content_rest_url
+																			+ 'session/read/'
 																			+ chosenSessionID)
 															.done(
 																	function(
@@ -1023,7 +1022,8 @@
 																											.join(
 																													'/')
 																								};
-																								var url = '../tfy_content_rest/session/update/'
+																								var url = window.content_rest_url
+																										+ 'session/update/'
 																										+ chosenSessionID;
 																								$
 																										.ajax(
@@ -1119,7 +1119,8 @@
 																				parentSession : chosenSessionID,
 																				lessonOrderID : orderID
 																			};
-																			var url = '../tfy_content_rest/lesson/create';
+																			var url = window.content_rest_url
+																					+ 'lesson/create';
 																			$
 																					.ajax(
 																							{
@@ -1209,7 +1210,8 @@
 																				parentModule : parentModuleID,
 																				sessionOrderID : orderID
 																			};
-																			var url = '../tfy_content_rest/session/create';
+																			var url = window.content_rest_url
+																					+ 'session/create';
 																			$
 																					.ajax(
 																							{
@@ -1265,7 +1267,7 @@
 							currentSessionOrderID : currentOrderID,
 							newSessionOrderID : newOrderID
 						};
-						var url = '../tfy_content_rest/session/reorder/';
+						var url = window.content_rest_url + 'session/reorder/';
 						$.ajax({
 							type : "POST",
 							url : url,
@@ -1298,7 +1300,7 @@
 							currentSessionOrderID : currentOrderID,
 							newSessionOrderID : newOrderID
 						};
-						var url = '../tfy_content_rest/session/reorder/';
+						var url = window.content_rest_url + 'session/reorder/';
 						$.ajax({
 							type : "POST",
 							url : url,
@@ -1371,7 +1373,8 @@
 																						.attr(
 																								"id")
 																			};
-																			var url = '../tfy_content_rest/session/changeParentModule/';
+																			var url = window.content_rest_url
+																					+ 'session/changeParentModule/';
 																			$
 																					.ajax(
 																							{
@@ -1427,7 +1430,7 @@
 							alert('Session is not empty, can"t be deleted!');
 						} else {
 							$.get(
-									'../tfy_content_rest/session/delete/'
+									window.content_rest_url + 'session/delete/'
 											+ chosenSessionID).done(
 									function(response) {
 										$("#skillTree").jstree('destroy');
@@ -1451,7 +1454,8 @@
 													$('#modals').html(data);
 													$
 															.get(
-																	'../tfy_content_rest/lesson/read/'
+																	window.content_rest_url
+																			+ 'lesson/read/'
 																			+ chosenLessonID)
 															.done(
 																	function(
@@ -1518,7 +1522,8 @@
 																											'#lessonModalDuration')
 																											.val()
 																								};
-																								var url = '../tfy_content_rest/lesson/update/'
+																								var url = window.content_rest_url
+																										+ 'lesson/update/'
 																										+ chosenLessonID;
 																								$
 																										.ajax(
@@ -1616,7 +1621,8 @@
 																				parentSession : parentSessionID,
 																				lessonOrderID : orderID
 																			};
-																			var url = '../tfy_content_rest/lesson/create';
+																			var url = window.content_rest_url
+																					+ 'lesson/create';
 																			$
 																					.ajax(
 																							{
@@ -1674,7 +1680,8 @@
 									currentLessonOrderID : currentOrderID,
 									newLessonOrderID : newOrderID
 								};
-								var url = '../tfy_content_rest/lesson/reorder/';
+								var url = window.content_rest_url
+										+ 'lesson/reorder/';
 								$
 										.ajax({
 											type : "POST",
@@ -1720,7 +1727,8 @@
 									currentLessonOrderID : currentOrderID,
 									newLessonOrderID : newOrderID
 								};
-								var url = '../tfy_content_rest/lesson/reorder/';
+								var url = window.content_rest_url
+										+ 'lesson/reorder/';
 								$
 										.ajax({
 											type : "POST",
@@ -1750,30 +1758,13 @@
 					'.deleteLesson',
 					function() {
 						var chosenLessonID = $(this).data('lessonid');
-						var chosenLessonNode = $('#skillTree').jstree(true)
-								.get_node('L' + chosenLessonID);
-						var parentSessionID = $('#skillTree').jstree(true)
-								.get_parent(chosenLessonNode).substring(1);
-						$.get('./modals/deleteLesson.jsp').done(function(data) {
-							$('#modals').html(data);
-							$('#deleteLessonModal').modal('toggle');
-						});
-						$(document).on(
-								'click',
-								'.confirmDelete',
-								function() {
-									$.get(
-											'../tfy_content_rest/lesson/delete/'
-													+ chosenLessonID).done(
-											function(response) {
-												$("#skillTree").jstree(
-														'destroy');
-												$('#deleteLessonModal').modal(
-														'toggle');
-												loadCourseTree(
-														animateChildNode,
-														'S' + parentSessionID);
-											});
+						$.get(
+								window.content_rest_url + 'lesson/delete/'
+										+ chosenLessonID).done(
+								function(response) {
+									$("#skillTree").jstree('destroy');
+									loadCourseTree();
+									//open the session NOde TO|DO
 								});
 					});
 		}
@@ -1883,7 +1874,8 @@
 																																		.attr(
 																																				"id")
 																															};
-																															var url = '../tfy_content_rest/lesson/changeParentSession/';
+																															var url = window.content_rest_url
+																																	+ 'lesson/changeParentSession/';
 																															$
 																																	.ajax(
 																																			{
@@ -1936,7 +1928,7 @@
 							});
 		}
 
-		function initLessonEllipsisDuplicateFrom() {
+		function initSessionEllipsisDuplicateFrom() {
 			$(document).on(
 					'click',
 					'.duplicateLesson',
@@ -1947,7 +1939,8 @@
 						var parentSessionID = $('#skillTree').jstree(true)
 								.get_parent(chosenLessonNode).substring(1);
 						$.get(
-								'../tfy_content_rest/lesson/duplicate/'
+
+								window.content_rest_url + 'lesson/duplicate/'
 										+ chosenLessonID + '/'
 										+ parentSessionID).done(
 								function(response) {
@@ -1970,21 +1963,179 @@
 					});
 		}
 
-		function initLessonEllipsisLinkFrom() {
-			$(document).on('click', '.linkLesson', function() {
-				alert("WIP");
-			});
+		function initSessionEllipsisLinkFrom() {
+			$(document)
+					.on(
+							'click',
+							'.linkLesson',
+							function() {
+								$
+										.get('./modals/linkLessonFrom.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													var url = window.content_rest_url
+															+ 'course/getAll';
+													var addition = '';
+													$
+															.get(
+																	url,
+																	function(
+																			data) {
+																		$(
+																				data.courses)
+																				.each(
+																						function(
+																								key,
+																								course) {
+																							addition += '<option id="'+course.id+'">';
+																							addition += course.title;
+																							addition += '</option>';
+																						});
+																		$(
+																				'#chooseCourseLinkModal')
+																				.find(
+																						'option')
+																				.not(
+																						':first')
+																				.remove();
+																		$(
+																				'#chooseCourseLinkModal')
+																				.append(
+																						addition);
+																		linkModalCourseChangeListener();
+																		$(
+																				'#linkLessonFromModal')
+																				.modal(
+																						'toggle');
+																	});
+												});
+							});
 		}
+		function linkModalCourseChangeListener() {
+			$(document).on(
+					'change',
+					'#chooseCourseLinkModal',
+					function() {
+						var courseID = $('#chooseCourseLinkModal').children(
+								":selected").attr("id");
+						var url = window.content_rest_url + 'course/getTree/'
+								+ courseID;
+						var jsonData;
+						$.get(url, function(data) {
+							window.courseTreeModal = data.courseTree;
+						}).done(
+								function() {
+									var moduleAddition = '';
+									$.each(window.courseTreeModal, function(a,
+											b) {
+										moduleAddition += '<option id="'
+												+ b.id.substring(1) + '">';
+										moduleAddition += b.moduleTitle;
+										moduleAddition += '</option>';
+									});
+									$('#chooseModuleLinkModal').find('option')
+											.not(':first').remove();
+									$('#chooseModuleLinkModal').append(
+											moduleAddition);
 
-		function initLessonEllipsisPublish() {
-			$(document).on('click', '.publishLesson', function() {
-				$.get('./modals/publishLesson.jsp').done(function(data) {
-					$('#modals').html(data);
-					$('#loModal').modal('toggle');
-				});
-			});
+									linkModalModuleChangeListener();
+								});
+
+					});
 		}
+		function linkModalModuleChangeListener() {
+			$(document).on(
+					'change',
+					'#chooseModuleLinkModal',
+					function() {
+						var sessionAddition = '';
+						$.each(window.courseTree,
+								function(a, b) {
+									if (b.id.substring(1) == $(
+											'#chooseModuleLinkModal').children(
+											":selected").attr("id")) {
+										var sessionAddition = '';
+										$.each(b.children, function(c, d) {
+											sessionAddition += '<option id="'
+													+ d.id.substring(1) + '">';
+											sessionAddition += d.sessionTitle;
+											sessionAddition += '</option>';
+										});
+										$('#chooseSessionLinkModal').find(
+												'option').not(':first')
+												.remove();
+										$('#chooseSessionLinkModal').append(
+												sessionAddition);
+										linkModalSessionChangeListener();
+									}
 
+								});
+
+					});
+		}
+		function linkModalSessionChangeListener() {
+			$(document)
+					.on(
+							'change',
+							'#chooseSessionLinkModal',
+							function() {
+								$
+										.each(
+												window.courseTree,
+												function(a, b) {
+													var lessonAddition = '';
+													if (b.id.substring(1) == $(
+															'#chooseModuleLinkModal')
+															.children(
+																	":selected")
+															.attr("id")) {
+														$
+																.each(
+																		b.children,
+																		function(
+																				c,
+																				d) {
+																			if (d.id
+																					.substring(1) == $(
+																					'#chooseSessionLinkModal')
+																					.children(
+																							":selected")
+																					.attr(
+																							"id")) {
+
+																				$
+																						.each(
+																								d.children,
+																								function(
+																										e,
+																										f) {
+																									lessonAddition += '<option id="'
+																											+ f.id
+																													.substring(1)
+																											+ '">';
+																									lessonAddition += f.lessonTitle;
+																									lessonAddition += '</option>';
+																								});
+																			}
+																		});
+														$(
+																'#chooseLessonLinkModal')
+																.find('option')
+																.not(':first')
+																.remove();
+														$(
+																'#chooseLessonLinkModal')
+																.append(
+																		lessonAddition);
+														linkModalLessonChangeListener();
+													}
+
+												});
+
+							});
+		}
+		
 		function initLessonEllipsisEditLesson() {
 			$(document).on(
 					'click',
