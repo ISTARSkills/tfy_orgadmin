@@ -43,7 +43,7 @@
 							<label>Lesson Type</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<select style="width: 100%" class="form-control"
+							<select style="width: 100%; height: 30px" class="form-control"
 								id='lessonModalType'>
 								<%
 									LessonTypeNames[] somethingList = LessonTypeNames.values();
@@ -62,7 +62,8 @@
 							<label>Lesson Duration</label>
 						</div>
 						<div class='col-md-9 col-md-auto'>
-							<input type="number" id="lessonModalDuration" min="5" max="60" step="5">
+							<input type="number" id="lessonModalDuration" min="5" max="60"
+								step="5">
 						</div>
 					</div>
 					<hr>
@@ -73,7 +74,8 @@
 						<div class='col-md-5 col-md-auto'>
 							<label for="lessonImageURL"><img class='lessonImage'
 								src='<%=cdnPath%>course_images/plusIcon.png' alt=''> </label><input
-								style="display: none" value='<%=cdnPath%>course_images/plusIcon.png'
+								style="display: none"
+								value='<%=cdnPath%>course_images/plusIcon.png'
 								id='lessonImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>
