@@ -156,6 +156,7 @@
 			initLessonEllipsisChangeSession();
 			initLessonEllipsisEditLesson();
 			initLessonEllipsisAddLearningObjectives();
+			initLessonEllipsisPublish();
 		}
 
 		function initializeAddModuleButton() {
@@ -1928,28 +1929,6 @@
 							});
 		}
 
-		function initSessionEllipsisDuplicateFrom() {
-			$(document).on(
-					'click',
-					'.duplicateLesson',
-					function() {
-						var chosenLessonID = $(this).data('lessonid');
-						var chosenLessonNode = $('#skillTree').jstree(true)
-								.get_node('L' + chosenLessonID);
-						var parentSessionID = $('#skillTree').jstree(true)
-								.get_parent(chosenLessonNode).substring(1);
-						$.get(
-
-								window.content_rest_url + 'lesson/duplicate/'
-										+ chosenLessonID + '/'
-										+ parentSessionID).done(
-								function(response) {
-									$("#skillTree").jstree('destroy');
-									loadCourseTree();
-								});
-					});
-		}
-
 		function initLessonEllipsisAddLearningObjectives() {
 			$(document)
 					.on(
@@ -2005,34 +1984,67 @@
 			$('#searchLO')
 					.on(
 							"keyup",
-							function() {
-								var searchString = $('#searchLO').val().trim();
-								if (searchString != ''
-										&& searchString.length > 3) {
-									$
-											.get(
+							function(e) {
+								if (e.which == 13) {
+									var searchString = $('#searchLO').val()
+											.trim();
+									if (searchString != ''
+											&& searchString.length > 3) {
+										$
+												.get(
+														window.content_rest_url
+																+ 'learningObjective/create/'
+																+ searchString)
+												.done(
+														function(response) {
+															if (response.success) {
+																var searchResults = '';
+																searchResults += "<li class='searchLOResults list-group-item' id='"+response.id+"'>";
+																searchResults += response.text;
+																searchResults += "</li>";
+																$(
+																		'#searchLOResult')
+																		.html(
+																				searchResults);
+																initAddSearchedLO(chosenLessonID);
+															} else {
+																alert('Learning Objective couldnt be created.');
+															}
+														});
+										$('#searchLO').val('');
+									} else {
+										alert("Type atleast 10 characters for the learning objective");
+									}
+								} else {
+									var searchString = $('#searchLO').val()
+											.trim();
+									if (searchString != ''
+											&& searchString.length > 3) {
+										$
+												.get(
 
-													window.content_rest_url
-															+ 'learningObjective/search?s='
-															+ searchString)
-											.done(
-													function(response) {
-														var searchResults = '';
-														$
-																.each(
-																		response.learningObjectives,
-																		function(
-																				index,
-																				value) {
-																			searchResults += "<li class='searchLOResults list-group-item' id='"+value.id+"'>";
-																			searchResults += value.text;
-																			searchResults += "</li>";
-																		});
-														$('#searchLOResult')
-																.html(
-																		searchResults);
-														initAddSearchedLO(chosenLessonID);
-													});
+														window.content_rest_url
+																+ 'learningObjective/search?s='
+																+ searchString)
+												.done(
+														function(response) {
+															var searchResults = '';
+															$
+																	.each(
+																			response.learningObjectives,
+																			function(
+																					index,
+																					value) {
+																				searchResults += "<li class='searchLOResults list-group-item' id='"+value.id+"'>";
+																				searchResults += value.text;
+																				searchResults += "</li>";
+																			});
+															$('#searchLOResult')
+																	.html(
+																			searchResults);
+															initAddSearchedLO(chosenLessonID);
+														});
+									}
 								}
 							});
 		}
@@ -2092,12 +2104,251 @@
 								});
 					});
 		}
+
+		function initSessionEllipsisDuplicateFrom() {
+			$(document)
+					.on(
+							'click',
+							'.duplicateLesson',
+							function() {
+								var chosenSessionID = $(this).data(
+										'cmsessionid');
+								$
+										.get('./modals/duplicateLessonFrom.jsp')
+										.done(
+												function(data) {
+													$('#modals').html(data);
+													var url = window.content_rest_url
+															+ 'course/getAll';
+													var addition = '';
+													$
+															.get(
+																	url,
+																	function(
+																			data) {
+																		$(
+																				data.courses)
+																				.each(
+																						function(
+																								key,
+																								course) {
+																							if (course.id != window.courseID) {
+																								addition += '<option id="'+course.id+'">';
+																								addition += course.title;
+																								addition += '</option>';
+																							}
+																						});
+																		$(
+																				'#chooseCourseDuplicateModal')
+																				.find(
+																						'option')
+																				.not(
+																						':first')
+																				.remove();
+																		$(
+																				'#chooseCourseDuplicateModal')
+																				.append(
+																						addition);
+																		duplicateModalCourseChangeListener(chosenSessionID);
+																		$(
+																				'#duplicatLessonFromModal')
+																				.modal(
+																						'toggle');
+																	});
+												});
+							});
+		}
+		function duplicateModalCourseChangeListener(chosenSessionID) {
+			$(document)
+					.on(
+							'change',
+							'#chooseCourseDuplicateModal',
+							function() {
+								var courseID = $('#chooseCourseDuplicateModal')
+										.children(":selected").attr("id");
+								var url = window.content_rest_url
+										+ 'course/getTree/' + courseID;
+								var jsonData;
+								$
+										.get(
+												url,
+												function(data) {
+													window.courseTreeDuplicateModal = data.courseTree;
+												})
+										.done(
+												function() {
+													var moduleAddition = '';
+													$
+															.each(
+																	window.courseTreeDuplicateModal,
+																	function(a,
+																			b) {
+																		moduleAddition += '<option id="'
+																				+ b.id
+																						.substring(1)
+																				+ '">';
+																		moduleAddition += b.moduleTitle;
+																		moduleAddition += '</option>';
+																	});
+													$(
+															'#chooseModuleDuplicateModal')
+															.find('option')
+															.not(':first')
+															.remove();
+													$(
+															'#chooseModuleDuplicateModal')
+															.append(
+																	moduleAddition);
+
+													duplicateModalModuleChangeListener(chosenSessionID);
+												});
+
+							});
+		}
+		function duplicateModalModuleChangeListener(chosenSessionID) {
+			$(document)
+					.on(
+							'change',
+							'#chooseModuleDuplicateModal',
+							function() {
+								var sessionAddition = '';
+								$
+										.each(
+												window.courseTreeDuplicateModal,
+												function(a, b) {
+													if (b.id.substring(1) == $(
+															'#chooseModuleDuplicateModal')
+															.children(
+																	":selected")
+															.attr("id")) {
+														var sessionAddition = '';
+														$
+																.each(
+																		b.children,
+																		function(
+																				c,
+																				d) {
+																			sessionAddition += '<option id="'
+																					+ d.id
+																							.substring(1)
+																					+ '">';
+																			sessionAddition += d.sessionTitle;
+																			sessionAddition += '</option>';
+																		});
+														$(
+																'#chooseSessionDuplicateModal')
+																.find('option')
+																.not(':first')
+																.remove();
+														$(
+																'#chooseSessionDuplicateModal')
+																.append(
+																		sessionAddition);
+														duplicateModalSessionChangeListener(chosenSessionID);
+													}
+
+												});
+
+							});
+		}
+		function duplicateModalSessionChangeListener(chosenSessionID) {
+			$(document)
+					.on(
+							'change',
+							'#chooseSessionDuplicateModal',
+							function() {
+								$
+										.each(
+												window.courseTreeDuplicateModal,
+												function(a, b) {
+													var lessonAddition = '';
+													if (b.id.substring(1) == $(
+															'#chooseModuleDuplicateModal')
+															.children(
+																	":selected")
+															.attr("id")) {
+														$
+																.each(
+																		b.children,
+																		function(
+																				c,
+																				d) {
+																			if (d.id
+																					.substring(1) == $(
+																					'#chooseSessionDuplicateModal')
+																					.children(
+																							":selected")
+																					.attr(
+																							"id")) {
+
+																				$
+																						.each(
+																								d.children,
+																								function(
+																										e,
+																										f) {
+																									lessonAddition += '<option id="'
+																											+ f.id
+																													.substring(1)
+																											+ '">';
+																									lessonAddition += f.lessonTitle;
+																									lessonAddition += '</option>';
+																								});
+																			}
+																		});
+														$(
+																'#chooseLessonDuplicateModal')
+																.find('option')
+																.not(':first')
+																.remove();
+														$(
+																'#chooseLessonDuplicateModal')
+																.append(
+																		lessonAddition);
+														duplicateModalSaveButtonListener(chosenSessionID);
+													}
+
+												});
+
+							});
+		}
+
+		function duplicateModalSaveButtonListener(chosenSessionID) {
+			$('#duplicateLessonButton').on(
+					'click',
+					function() {
+						var lessonToBeDuplicated = $(
+								'#chooseLessonDuplicateModal').children(
+								":selected").attr("id");
+						var url = window.content_rest_url + 'session/'
+								+ chosenSessionID + '/duplicateLesson/'
+								+ lessonToBeDuplicated;
+						$.get(url).done(
+								function(response) {
+									if (response.success) {
+										$("#skillTree").jstree('destroy');
+										$('#duplicatLessonFromModal').modal(
+												'toggle');
+										loadCourseTree(animateChildNode, 'L'
+												+ response.lessonID);
+									} else {
+										$('#duplicatLessonFromModal').modal(
+												'toggle');
+										alert('Failed!');
+									}
+								});
+
+					});
+		}
+
 		function initSessionEllipsisLinkFrom() {
 			$(document)
 					.on(
 							'click',
 							'.linkLesson',
 							function() {
+								var chosenSessionID = $(this).data(
+										'cmsessionid');
 								$
 										.get('./modals/linkLessonFrom.jsp')
 										.done(
@@ -2117,9 +2368,11 @@
 																						function(
 																								key,
 																								course) {
-																							addition += '<option id="'+course.id+'">';
-																							addition += course.title;
-																							addition += '</option>';
+																							if (course.id != window.courseID) {
+																								addition += '<option id="'+course.id+'">';
+																								addition += course.title;
+																								addition += '</option>';
+																							}
 																						});
 																		$(
 																				'#chooseCourseLinkModal')
@@ -2132,7 +2385,7 @@
 																				'#chooseCourseLinkModal')
 																				.append(
 																						addition);
-																		linkModalCourseChangeListener();
+																		linkModalCourseChangeListener(chosenSessionID);
 																		$(
 																				'#linkLessonFromModal')
 																				.modal(
@@ -2141,69 +2394,98 @@
 												});
 							});
 		}
-		function linkModalCourseChangeListener() {
-			$(document).on(
-					'change',
-					'#chooseCourseLinkModal',
-					function() {
-						var courseID = $('#chooseCourseLinkModal').children(
-								":selected").attr("id");
-						var url = window.content_rest_url + 'course/getTree/'
-								+ courseID;
-						var jsonData;
-						$.get(url, function(data) {
-							window.courseTreeModal = data.courseTree;
-						}).done(
-								function() {
-									var moduleAddition = '';
-									$.each(window.courseTreeModal, function(a,
-											b) {
-										moduleAddition += '<option id="'
-												+ b.id.substring(1) + '">';
-										moduleAddition += b.moduleTitle;
-										moduleAddition += '</option>';
-									});
-									$('#chooseModuleLinkModal').find('option')
-											.not(':first').remove();
-									$('#chooseModuleLinkModal').append(
-											moduleAddition);
+		function linkModalCourseChangeListener(chosenSessionID) {
+			$(document)
+					.on(
+							'change',
+							'#chooseCourseLinkModal',
+							function() {
+								var courseID = $('#chooseCourseLinkModal')
+										.children(":selected").attr("id");
+								var url = window.content_rest_url
+										+ 'course/getTree/' + courseID;
+								var jsonData;
+								$
+										.get(
+												url,
+												function(data) {
+													window.courseTreeModal = data.courseTree;
+												})
+										.done(
+												function() {
+													var moduleAddition = '';
+													$
+															.each(
+																	window.courseTreeModal,
+																	function(a,
+																			b) {
+																		moduleAddition += '<option id="'
+																				+ b.id
+																						.substring(1)
+																				+ '">';
+																		moduleAddition += b.moduleTitle;
+																		moduleAddition += '</option>';
+																	});
+													$('#chooseModuleLinkModal')
+															.find('option')
+															.not(':first')
+															.remove();
+													$('#chooseModuleLinkModal')
+															.append(
+																	moduleAddition);
 
-									linkModalModuleChangeListener();
-								});
+													linkModalModuleChangeListener(chosenSessionID);
+												});
 
-					});
+							});
 		}
-		function linkModalModuleChangeListener() {
-			$(document).on(
-					'change',
-					'#chooseModuleLinkModal',
-					function() {
-						var sessionAddition = '';
-						$.each(window.courseTree,
-								function(a, b) {
-									if (b.id.substring(1) == $(
-											'#chooseModuleLinkModal').children(
-											":selected").attr("id")) {
-										var sessionAddition = '';
-										$.each(b.children, function(c, d) {
-											sessionAddition += '<option id="'
-													+ d.id.substring(1) + '">';
-											sessionAddition += d.sessionTitle;
-											sessionAddition += '</option>';
-										});
-										$('#chooseSessionLinkModal').find(
-												'option').not(':first')
-												.remove();
-										$('#chooseSessionLinkModal').append(
-												sessionAddition);
-										linkModalSessionChangeListener();
-									}
+		function linkModalModuleChangeListener(chosenSessionID) {
+			$(document)
+					.on(
+							'change',
+							'#chooseModuleLinkModal',
+							function() {
+								var sessionAddition = '';
+								$
+										.each(
+												window.courseTreeModal,
+												function(a, b) {
+													if (b.id.substring(1) == $(
+															'#chooseModuleLinkModal')
+															.children(
+																	":selected")
+															.attr("id")) {
+														var sessionAddition = '';
+														$
+																.each(
+																		b.children,
+																		function(
+																				c,
+																				d) {
+																			sessionAddition += '<option id="'
+																					+ d.id
+																							.substring(1)
+																					+ '">';
+																			sessionAddition += d.sessionTitle;
+																			sessionAddition += '</option>';
+																		});
+														$(
+																'#chooseSessionLinkModal')
+																.find('option')
+																.not(':first')
+																.remove();
+														$(
+																'#chooseSessionLinkModal')
+																.append(
+																		sessionAddition);
+														linkModalSessionChangeListener(chosenSessionID);
+													}
 
-								});
+												});
 
-					});
+							});
 		}
-		function linkModalSessionChangeListener() {
+		function linkModalSessionChangeListener(chosenSessionID) {
 			$(document)
 					.on(
 							'change',
@@ -2211,7 +2493,7 @@
 							function() {
 								$
 										.each(
-												window.courseTree,
+												window.courseTreeModal,
 												function(a, b) {
 													var lessonAddition = '';
 													if (b.id.substring(1) == $(
@@ -2257,11 +2539,131 @@
 																'#chooseLessonLinkModal')
 																.append(
 																		lessonAddition);
-														linkModalLessonChangeListener();
+														linkModalSaveButtonListener(chosenSessionID);
 													}
 
 												});
 
+							});
+		}
+
+		function linkModalSaveButtonListener(chosenSessionID) {
+			$('#linkLessonButton').on(
+					'click',
+					function() {
+						var lessonToBeLinked = $('#chooseLessonLinkModal')
+								.children(":selected").attr("id");
+						var url = window.content_rest_url + 'session/'
+								+ chosenSessionID + '/linkLesson/'
+								+ lessonToBeLinked;
+						$.get(url).done(
+								function(response) {
+									if (response.success) {
+										$("#skillTree").jstree('destroy');
+										$('#linkLessonFromModal').modal(
+												'toggle');
+										loadCourseTree(animateChildNode, 'L'
+												+ lessonToBeLinked);
+									} else {
+										$('#linkLessonFromModal').modal(
+												'toggle');
+										alert('Failed!');
+									}
+								});
+
+					});
+		}
+
+		function initLessonEllipsisPublish() {
+			$(document)
+					.on(
+							'click',
+							'.publishLesson',
+							function() {
+								var chosenLessonID = $(this).data('lessonid');
+								var url = window.content_rest_url
+										+ 'lesson/publish/' + chosenLessonID
+										+ '/course/' + window.courseID;
+								$
+										.get(url)
+										.done(
+												function(response) {
+													if (response.success) {
+														alert('Lesson has been published!');
+													} else {
+														$
+																.get(
+																		'./modals/publishLesson.jsp')
+																.done(
+																		function(
+																				data) {
+																			$(
+																					'#modals')
+																					.html(
+																							data);
+																			if (response.image) {
+																				$(
+																						'#isImage')
+																						.addClass(
+																								'list-group-item-success');
+																			} else {
+																				$(
+																						'#isImage')
+																						.addClass(
+																								'list-group-item-danger');
+																			}
+																			if (response.los) {
+																				$(
+																						'#isLos')
+																						.addClass(
+																								'list-group-item-success');
+																			} else {
+																				$(
+																						'#isLos')
+																						.addClass(
+																								'list-group-item-danger');
+																			}
+																			if (response.assets) {
+																				$(
+																						'#isAssets')
+																						.addClass(
+																								'list-group-item-success');
+																			} else {
+																				$(
+																						'#isAssets')
+																						.addClass(
+																								'list-group-item-danger');
+																			}
+																			if (response.description) {
+																				$(
+																						'#isDesc')
+																						.addClass(
+																								'list-group-item-success');
+																			} else {
+																				$(
+																						'#isDesc')
+																						.addClass(
+																								'list-group-item-danger');
+																			}
+																			if (response.title) {
+																				$(
+																						'#isTitle')
+																						.addClass(
+																								'list-group-item-success');
+																			} else {
+																				$(
+																						'#isTitle')
+																						.addClass(
+																								'list-group-item-danger');
+																			}
+																			$(
+																					'#publishLesson')
+																					.modal(
+																							'toggle');
+																		});
+
+													}
+												});
 							});
 		}
 

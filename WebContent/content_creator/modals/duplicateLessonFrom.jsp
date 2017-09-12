@@ -1,10 +1,10 @@
-<div id="linkLessonFromModal" class="modal fade" tabindex="-1"
+<div id="duplicatLessonFromModal" class="modal fade" tabindex="-1"
 	role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
 			style="max-height: 482px">
 			<div class="modal-header custom-modal-header">
-				<h5 class="modal-title custom-modal-title" id="linkLessonFromModal">Link
+				<h5 class="modal-title custom-modal-title" id="duplicateLessonFromModalHeading">Link
 					Lesson from</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
@@ -15,7 +15,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='col-md-auto'>
 						<select style="width: 100%; margin-top: 10px; height: auto;"
-							class="form-control" id='chooseCourseLinkModal'>
+							class="form-control" id='chooseCourseDuplicateModal'>
 							<option id='-9'>Choose Course</option>
 						</select>
 					</div>
@@ -24,7 +24,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='col-md-auto'>
 						<select style="width: 100%; height: auto;" class="form-control"
-							id='chooseModuleLinkModal'>
+							id='chooseModuleDuplicateModal'>
 							<option id='-9'>Choose Module</option>
 						</select>
 					</div>
@@ -33,7 +33,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='col-md-auto'>
 						<select style="width: 100%; height: auto;" class="form-control"
-							id='chooseSessionLinkModal'>
+							id='chooseSessionDuplicateModal'>
 							<option id='-9'>Choose Session</option>
 						</select>
 					</div>
@@ -42,7 +42,7 @@
 				<div class="container-fluid bd-example-row">
 					<div class='col-md-auto'>
 						<select style="width: 100%" class="form-control"
-							id='chooseLessonLinkModal'>
+							id='chooseLessonDuplicateModal'>
 							<option id='-9'>Choose Lesson</option>
 						</select>
 					</div>
@@ -51,7 +51,7 @@
 				<div class='row'>
 					<div class='col-md-auto' style="margin: auto;">
 						<button class="btn btn-sm btn-modal" style="margin-top: 22px"
-							id='linkLessonButton'>Save Changes</button>
+							id='duplicateLessonButton'>Save Changes</button>
 					</div>
 				</div>
 			</div>
