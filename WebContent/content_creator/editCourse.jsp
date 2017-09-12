@@ -565,6 +565,7 @@
 																						'src',
 																						window.cdnPath
 																								+ moduleObject.module.imageURL);
+																		initModuleModalImageUploader();
 																		$(
 																				'#moduleModal')
 																				.modal(
