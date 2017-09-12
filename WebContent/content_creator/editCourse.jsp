@@ -881,24 +881,29 @@
 										'moduleorderid'));
 								var newOrderID = parseInt($(this).data(
 										'moduleorderid')) - 1;
-								var dataPost = {
-									parentCourse : window.courseID,
-									currentModuleOrderID : currentOrderID,
-									newModuleOrderID : newOrderID
-								};
-								var url = window.content_rest_url
-										+ 'module/reorder';
-								$.ajax({
-									type : "POST",
-									url : url,
-									data : JSON.stringify(dataPost),
-								}).done(
-										function(data) {
-											$("#skillTree").jstree('destroy');
-											loadCourseTree(
-													animateCourseTreeNode, 'M'
-															+ chosenModuleID);
-										});
+								if (newOrderID > 0) {
+									var dataPost = {
+										parentCourse : window.courseID,
+										currentModuleOrderID : currentOrderID,
+										newModuleOrderID : newOrderID
+									};
+									var url = window.content_rest_url
+											+ 'module/reorder';
+									$.ajax({
+										type : "POST",
+										url : url,
+										data : JSON.stringify(dataPost),
+									}).done(
+											function(data) {
+												$("#skillTree").jstree(
+														'destroy');
+												loadCourseTree(
+														animateCourseTreeNode,
+														'M' + chosenModuleID);
+											});
+								} else {
+									alert('The module is already on top!')
+								}
 							});
 		}
 
@@ -913,24 +918,29 @@
 										'moduleorderid'));
 								var newOrderID = parseInt($(this).data(
 										'moduleorderid')) + 1;
-								var dataPost = {
-									parentCourse : window.courseID,
-									currentModuleOrderID : currentOrderID,
-									newModuleOrderID : newOrderID
-								};
-								var url = window.content_rest_url
-										+ 'module/reorder';
-								$.ajax({
-									type : "POST",
-									url : url,
-									data : JSON.stringify(dataPost),
-								}).done(
-										function(data) {
-											$("#skillTree").jstree('destroy');
-											loadCourseTree(
-													animateCourseTreeNode, 'M'
-															+ chosenModuleID);
-										});
+								if (currentOrderID < courseTree.length) {
+									var dataPost = {
+										parentCourse : window.courseID,
+										currentModuleOrderID : currentOrderID,
+										newModuleOrderID : newOrderID
+									};
+									var url = window.content_rest_url
+											+ 'module/reorder';
+									$.ajax({
+										type : "POST",
+										url : url,
+										data : JSON.stringify(dataPost),
+									}).done(
+											function(data) {
+												$("#skillTree").jstree(
+														'destroy');
+												loadCourseTree(
+														animateCourseTreeNode,
+														'M' + chosenModuleID);
+											});
+								} else {
+									alert('The module is already on bottom!')
+								}
 							});
 		}
 
@@ -1264,56 +1274,72 @@
 								'cmsessionorderid'));
 						var newOrderID = parseInt($(this).data(
 								'cmsessionorderid')) - 1;
-						var dataPost = {
-							parentModule : parentModuleID,
-							currentSessionOrderID : currentOrderID,
-							newSessionOrderID : newOrderID
-						};
-						var url = window.content_rest_url + 'session/reorder/';
-						$.ajax({
-							type : "POST",
-							url : url,
-							data : JSON.stringify(dataPost),
-						}).done(
-								function(data) {
-									$("#skillTree").jstree('destroy');
-									loadCourseTree(animateChildNode, 'S'
-											+ chosenSessionID);
-								});
+						if (newOrderID > 0) {
+							var dataPost = {
+								parentModule : parentModuleID,
+								currentSessionOrderID : currentOrderID,
+								newSessionOrderID : newOrderID
+							};
+							var url = window.content_rest_url
+									+ 'session/reorder/';
+							$.ajax({
+								type : "POST",
+								url : url,
+								data : JSON.stringify(dataPost),
+							}).done(
+									function(data) {
+										$("#skillTree").jstree('destroy');
+										loadCourseTree(animateChildNode, 'S'
+												+ chosenSessionID);
+									});
+						} else {
+							alert('The session is already on top!')
+						}
 					});
 		}
 
 		function initSessionEllipsisMoveDown() {
-			$(document).on(
-					'click',
-					'.moveSessionDown',
-					function() {
-						var chosenSessionID = $(this).data('cmsessionid');
-						var chosenSessionNode = $('#skillTree').jstree(true)
-								.get_node('S' + chosenSessionID);
-						var parentModuleID = $('#skillTree').jstree(true)
-								.get_parent(chosenSessionNode).substring(1);
-						var currentOrderID = parseInt($(this).data(
-								'cmsessionorderid'));
-						var newOrderID = parseInt($(this).data(
-								'cmsessionorderid')) + 1;
-						var dataPost = {
-							parentModule : parentModuleID,
-							currentSessionOrderID : currentOrderID,
-							newSessionOrderID : newOrderID
-						};
-						var url = window.content_rest_url + 'session/reorder/';
-						$.ajax({
-							type : "POST",
-							url : url,
-							data : JSON.stringify(dataPost),
-						}).done(
-								function(data) {
-									$("#skillTree").jstree('destroy');
-									loadCourseTree(animateChildNode, 'S'
-											+ chosenSessionID);
-								});
-					});
+			$(document)
+					.on(
+							'click',
+							'.moveSessionDown',
+							function() {
+								var chosenSessionID = $(this).data(
+										'cmsessionid');
+								var chosenSessionNode = $('#skillTree').jstree(
+										true).get_node('S' + chosenSessionID);
+								var parentModuleID = $('#skillTree').jstree(
+										true).get_parent(chosenSessionNode)
+										.substring(1);
+								var currentOrderID = parseInt($(this).data(
+										'cmsessionorderid'));
+								var newOrderID = parseInt($(this).data(
+										'cmsessionorderid')) + 1;
+								if (currentOrderID < $('#skillTree').jstree(
+										true).get_node('M' + parentModuleID).children.length) {
+									var dataPost = {
+										parentModule : parentModuleID,
+										currentSessionOrderID : currentOrderID,
+										newSessionOrderID : newOrderID
+									};
+									var url = window.content_rest_url
+											+ 'session/reorder/';
+									$.ajax({
+										type : "POST",
+										url : url,
+										data : JSON.stringify(dataPost),
+									}).done(
+											function(data) {
+												$("#skillTree").jstree(
+														'destroy');
+												loadCourseTree(
+														animateChildNode,
+														'S' + chosenSessionID);
+											});
+								} else {
+									alert('The session is already on bottom!')
+								}
+							});
 		}
 
 		function initSessionEllipsisChangeModule() {
@@ -1677,34 +1703,41 @@
 										'lessonorderid'));
 								var newOrderID = parseInt($(this).data(
 										'lessonorderid')) - 1;
-								var dataPost = {
-									parentSession : parentSessionID,
-									currentLessonOrderID : currentOrderID,
-									newLessonOrderID : newOrderID
-								};
-								var url = window.content_rest_url
-										+ 'lesson/reorder/';
-								$
-										.ajax({
-											type : "POST",
-											url : url,
-											data : JSON.stringify(dataPost),
-										})
-										.done(
-												function(data) {
-													if (data.success) {
-														console
-																.log('Lesson reordered!');
-														$("#skillTree").jstree(
-																'destroy');
-														loadCourseTree(
-																animateChildNode,
-																'L'
-																		+ chosenLessonID);
-													} else {
-														alert('Something went wrong. Couldnt reorder the lesson.');
-													}
-												});
+								if (newOrderID > 0) {
+									var dataPost = {
+										parentSession : parentSessionID,
+										currentLessonOrderID : currentOrderID,
+										newLessonOrderID : newOrderID
+									};
+									var url = window.content_rest_url
+											+ 'lesson/reorder/';
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : url,
+														data : JSON
+																.stringify(dataPost),
+													})
+											.done(
+													function(data) {
+														if (data.success) {
+															console
+																	.log('Lesson reordered!');
+															$("#skillTree")
+																	.jstree(
+																			'destroy');
+															loadCourseTree(
+																	animateChildNode,
+																	'L'
+																			+ chosenLessonID);
+														} else {
+															alert('Something went wrong. Couldnt reorder the lesson.');
+														}
+													});
+								} else {
+									alert('The lesson is already on top!')
+								}
 							});
 		}
 
@@ -1724,34 +1757,42 @@
 										'lessonorderid'));
 								var newOrderID = parseInt($(this).data(
 										'lessonorderid')) + 1;
-								var dataPost = {
-									parentSession : parentSessionID,
-									currentLessonOrderID : currentOrderID,
-									newLessonOrderID : newOrderID
-								};
-								var url = window.content_rest_url
-										+ 'lesson/reorder/';
-								$
-										.ajax({
-											type : "POST",
-											url : url,
-											data : JSON.stringify(dataPost),
-										})
-										.done(
-												function(data) {
-													if (data.success) {
-														console
-																.log('Lesson reordered!');
-														$("#skillTree").jstree(
-																'destroy');
-														loadCourseTree(
-																animateChildNode,
-																'L'
-																		+ chosenLessonID);
-													} else {
-														alert('Something went wrong. Couldnt reorder the lesson.');
-													}
-												});
+								if (currentOrderID < $('#skillTree').jstree(
+										true).get_node('S' + parentSessionID).children.length) {
+									var dataPost = {
+										parentSession : parentSessionID,
+										currentLessonOrderID : currentOrderID,
+										newLessonOrderID : newOrderID
+									};
+									var url = window.content_rest_url
+											+ 'lesson/reorder/';
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : url,
+														data : JSON
+																.stringify(dataPost),
+													})
+											.done(
+													function(data) {
+														if (data.success) {
+															console
+																	.log('Lesson reordered!');
+															$("#skillTree")
+																	.jstree(
+																			'destroy');
+															loadCourseTree(
+																	animateChildNode,
+																	'L'
+																			+ chosenLessonID);
+														} else {
+															alert('Something went wrong. Couldnt reorder the lesson.');
+														}
+													});
+								} else {
+									alert('The lesson is already on bottom!')
+								}
 							});
 		}
 		function initLessonEllipsisDelete() {
