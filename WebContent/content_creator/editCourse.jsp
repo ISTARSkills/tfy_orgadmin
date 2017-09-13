@@ -6,7 +6,7 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
 .champa {
-	background-color: antiquewhite !important;
+	background-color: rgba(235, 56, 56, 0.36) !important;
 }
 </style>
 <body id="student_role">
@@ -52,7 +52,7 @@
 				<h1 id='coursePageHeading'></h1>
 			</div>
 		</div>
-		<div class="form-container">
+		<div class="form-container" style="margin-bottom: 20px">
 			<div class="row">
 				<div class="col-md-8">
 					<form>
@@ -97,7 +97,7 @@
 			</div>
 
 		</div>
-		<div class="container" style="margin-top: 20px;">
+		<div class="container-tree" style="margin: auto;">
 			<div class="card">
 
 				<div class="row">
@@ -157,6 +157,7 @@
 			initLessonEllipsisEditLesson();
 			initLessonEllipsisAddLearningObjectives();
 			initLessonEllipsisPublish();
+			initLessonEllipsisUnPublish();
 		}
 
 		function initializeAddModuleButton() {
@@ -1978,6 +1979,7 @@
 							'.addLOs',
 							function() {
 								var chosenLessonID = $(this).data('lessonid');
+								window.lessonLOset = new Set();
 								$
 										.get(
 												'./modals/addLearningObjectives.jsp')
@@ -2001,10 +2003,12 @@
 																						function(
 																								a,
 																								b) {
+																							window.lessonLOset.add(parseInt(b.id));
 																							loaddition += "<li class='selectedLO list-group-item' id='"
 																									+ b.id
 																									+ "'>"
 																									+ b.text
+																									+ "<a href='#'><i class='fa fa-trash-o pull-right'></i></a>"
 																									+ "</li>";
 																						});
 																		$(
@@ -2030,32 +2034,40 @@
 								if (e.which == 13) {
 									var searchString = $('#searchLO').val()
 											.trim();
-									if (searchString != ''
-											&& searchString.length > 3) {
-										$
-												.get(
-														window.content_rest_url
-																+ 'learningObjective/create/'
-																+ searchString)
-												.done(
-														function(response) {
-															if (response.success) {
-																var searchResults = '';
-																searchResults += "<li class='searchLOResults list-group-item' id='"+response.id+"'>";
-																searchResults += response.text;
-																searchResults += "</li>";
-																$(
-																		'#searchLOResult')
-																		.html(
-																				searchResults);
-																initAddSearchedLO(chosenLessonID);
-															} else {
-																alert('Learning Objective couldnt be created.');
-															}
-														});
-										$('#searchLO').val('');
+									if (searchString.length < 40) {
+										alert('Your learning objective text is too small. Please be descriptive.');
 									} else {
-										alert("Type atleast 10 characters for the learning objective");
+										var r = confirm("Are you sure you want to create an lo?");
+										if (r == true) {
+											if (searchString != ''
+													&& searchString.length > 3) {
+												$
+														.get(
+																window.content_rest_url
+																		+ 'learningObjective/create/'
+																		+ searchString)
+														.done(
+																function(
+																		response) {
+																	if (response.success) {
+																		var searchResults = '';
+																		searchResults += "<li class='searchLOResults list-group-item' id='"+response.id+"'>";
+																		searchResults += response.text;
+																		searchResults += "<a href='#'><i class='fa fa-plus-square-o pull-right'></i></a></li>";
+																		$(
+																				'#searchLOResult')
+																				.html(
+																						searchResults);
+																		initAddSearchedLO(chosenLessonID);
+																	} else {
+																		alert('Learning Objective couldnt be created.');
+																	}
+																});
+												$('#searchLO').val('');
+											} else {
+												alert("Type atleast 10 characters for the learning objective");
+											}
+										}
 									}
 								} else {
 									var searchString = $('#searchLO').val()
@@ -2079,7 +2091,7 @@
 																					value) {
 																				searchResults += "<li class='searchLOResults list-group-item' id='"+value.id+"'>";
 																				searchResults += value.text;
-																				searchResults += "</li>";
+																				searchResults += "<a href='#'><i class='fa fa-plus-square-o pull-right'></i></a></li>";
 																			});
 															$('#searchLOResult')
 																	.html(
@@ -2099,31 +2111,42 @@
 								var loid = $(this).attr('id');
 								var lotext = $(this).text();
 								var listitem = this;
-								$
-										.get(
+								var r = confirm("Are you sure you want to add this lo?");
+								if (r == true) {
+									if(window.lessonLOset.has(parseInt(loid))){
+										alert('This learning objective is already present in the selected list.');
+										$(listitem)
+										.remove();
+									}
+									else{
+										$
+											.get(
 
-												window.content_rest_url
-														+ 'lesson/addLO/'
-														+ chosenLessonID + '/'
-														+ loid + '/'
-														+ window.courseID)
-										.done(
-												function(response) {
-													if (response.success) {
-														var selectedLOaddition = '';
-														selectedLOaddition += "<li class='selectedLO list-group-item list-group-item-success' id='"
+													window.content_rest_url
+															+ 'lesson/addLO/'
+															+ chosenLessonID
+															+ '/' + loid + '/'
+															+ window.courseID)
+											.done(
+													function(response) {
+														if (response.success) {
+															var selectedLOaddition = '';
+															selectedLOaddition += "<li class='selectedLO list-group-item list-group-item-success' id='"
 															+ loid
 															+ "'>"
-																+ lotext
-																+ "</li>";
-														$('#selectedLOs')
-																.prepend(
-																		selectedLOaddition);
-														$(listitem).remove();
-													} else {
-														alert('Learning Objective is already associated with the lesson.')
-													}
-												});
+																	+ lotext
+																	+ "<a href='#'><i class='fa fa-trash-o pull-right'></i></a></li>";
+															window.lessonLOset.add(parseInt(loid));
+																	$('#selectedLOs')
+																	.prepend(
+																			selectedLOaddition);
+															$(listitem)
+																	.remove();
+														} else {
+															alert('Learning Objective is already associated with the lesson.')
+														}
+													});
+								}}
 							});
 		}
 
@@ -2132,18 +2155,22 @@
 					'click',
 					'.selectedLO',
 					function() {
+
 						var loid = $(this).attr('id');
 						var listitem = this;
-						$.get(
-
-								window.content_rest_url + 'lesson/remLO/'
-										+ chosenLessonID + '/' + loid + '/'
-										+ window.courseID).done(
-								function(response) {
-									if (response.success) {
-										$(listitem).remove();
-									}
-								});
+						var r = confirm("Are you sure?");
+						if (r == true) {
+							$.get(
+									window.content_rest_url + 'lesson/remLO/'
+											+ chosenLessonID + '/' + loid + '/'
+											+ window.courseID).done(
+									function(response) {
+										if (response.success) {
+											window.lessonLOset.delete(parseInt(loid));											
+											$(listitem).remove();
+										}
+									});
+						}
 					});
 		}
 
@@ -2632,6 +2659,14 @@
 												function(response) {
 													if (response.success) {
 														alert('Lesson has been published!');
+														$(
+														"#skillTree")
+														.jstree(
+																'destroy');
+												loadCourseTree(
+														animateChildNode,
+														'L'
+																+ chosenLessonID);
 													} else {
 														$
 																.get(
@@ -2709,6 +2744,33 @@
 							});
 		}
 
+		function initLessonEllipsisUnPublish(){
+			$(document)
+			.on(
+					'click',
+					'.unPublishLesson',
+					function() {
+						var chosenLessonID = $(this).data('lessonid');
+						var url = window.content_rest_url
+								+ 'lesson/unpublish/' + chosenLessonID;
+						$
+								.get(url)
+								.done(
+										function(response) {
+											if (response.success) {
+												alert('Lesson has been unpublished!');
+												$(
+												"#skillTree")
+												.jstree(
+														'destroy');
+										loadCourseTree(
+												animateChildNode,
+												'L'
+														+ chosenLessonID);
+											}
+										});
+					});
+		}
 		function initLessonEllipsisEditLesson() {
 			$(document).on(
 					'click',

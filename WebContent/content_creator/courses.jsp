@@ -72,9 +72,10 @@
 			addition += '<div class="custom-roles-cards-450">';
 			addition += '<img class="img-rounded custom-roles-img" src="'+course.imageURL+'" alt="No Image Available">';
 			addition += '<div class="card-block">';
-			addition += '<h4 class=" custom-roles-subtitle">' + course.category
-					+ '</h4>';
-			addition += '<h1 class="card-title custom-roles-titletext">'
+			addition += '<h4 class=" custom-roles-subtitle" style="margin-bottom: 33px;">'
+					+ course.category + '</h4>';
+			addition += '<h1 class="card-title custom-roles-titletext" style="margin-bottom: 25px;">'
+
 					+ course.title + '</h1>';
 			addition += '<h4 class="custom-roles-progress">'
 					+ course.moduleCount + ' Modules . ' + course.sessionCount
