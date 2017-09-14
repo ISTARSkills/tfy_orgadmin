@@ -233,10 +233,10 @@
 									<thead>
 										<tr>
 											<th>Id</th>
-											<th>Question</th>
-											<th>Type</th>
-											<th>Session Skills</th>
-											<th></th>
+											<th style="max-width: 30%">Question</th>
+											<th style="max-width: 30%">Type</th>
+											<th style="max-width: 30%">Session Skills</th>
+											<th style="max-width: 30%"></th>
 										</tr>
 									</thead>
 									<tbody id="assessment_que_table_body">
@@ -423,13 +423,13 @@
 																		"td:eq(4)")
 																.html();
 														var tableRow = "<tr class='"+difficultyLevel+" question' id='question_"+questionId+"'> \
-					     <td>"
+					     <td style='max-width:10px'>"
 																+ questionId
 																+ "</td> \
-					     <td>"
+					     <td style='max-width:200px'>"
 																+ questionText
 																+ "</td> \
-					     <td>"
+					     <td style='max-width:300px'>"
 																+ type
 																+ "</td> \
 					     <td>"
@@ -621,16 +621,16 @@
 											skillIds='';
 										}
 										var tableRow = "<tr class='"+difficultyLevel+" question' id='question_"+questionId+"'> \
-							     <td>"
+							     <td style='max-width:40px'>"
 												+ questionId
 												+ "</td> \
-							     <td>"
+							     <td  style='max-width:200px;word-wrap: break-word;'>"
 												+ questionText
 												+ "</td> \
-							     <td>"
+							     <td  style='max-width:20px;    word-wrap: break-word;'>"
 												+ type
 												+ "</td> \
-							     <td>"
+							     <td  style='max-width:200px;    word-wrap: break-word;'>"
 												+ skills
 												+ "</td> \
 							     <td style='display:none'>"
