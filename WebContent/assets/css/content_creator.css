@@ -184,7 +184,10 @@
 }
 
 .container {
-	max-width: 1172px !important;
+	max-width: 1141px !important;
+}
+.container-tree {
+	max-width: 1144px !important;
 }
 
 .custom-task-counter {

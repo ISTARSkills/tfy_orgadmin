@@ -92,7 +92,8 @@ font-family: 'Lato', sans-serif;
   max-height: 95%; }
   
 .reveal video{
-	height: 95vh;
+	height: 85vh;
+	background: lightgray;
 }
 .reveal strong,
 .reveal b {

@@ -1,5 +1,6 @@
 package com.viksitpro.upload.controllers;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,6 +10,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -99,4 +102,5 @@ public class MediaUploadServices {
 		System.out.println("inside>>>>>>>>> " + out.toString());
 		return out;
 	}
+
 }
