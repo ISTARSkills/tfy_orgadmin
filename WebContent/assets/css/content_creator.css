@@ -1019,7 +1019,7 @@
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 	text-align: -webkit-center;
-	margin: 20px;
+	margin: 0 20px 20px 20px;
 }
 
 .img-rounded {
