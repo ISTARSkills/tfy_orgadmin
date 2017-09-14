@@ -283,11 +283,10 @@ function submitQuestionData()
 		{
 			var loArray = $('#question_lo_selector').val();
 			$.each(loArray, function( index, value ) {
-				if(jQuery.inArray({'id':value}, learning_objectives) !== -1)
+				if(jQuery.inArray({'id':value}, learning_objectives) == -1)
 				{
 					learning_objectives.push({'id':value});
-				}
-				
+				}				
 				});
 		}
 		
@@ -404,8 +403,7 @@ function enableEdit(){
     	   var content = editor.getData();
     	   $('#edit_passage_text').empty();
     	   $('#edit_passage_text').append(content);
-       });
-       //$('#passageText').editable('toggle');
+       });       
    });  
 	
 	
