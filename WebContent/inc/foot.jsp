@@ -12,11 +12,7 @@ String basePath =  AppProperies.getProperty("cdn_path");
 %>
 <script src="<%=basePath %>assets/js/jquery.min.js"></script>
 <script src="<%=basePath %>assets/js/popper.min.js"></script>
-<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
-
-<script src="<%=basePath %>assets/js/wysihtml5-0.3.0.min.js"></script>  
-<script src="<%=basePath %>assets/js/bootstrap-wysihtml5-0.0.3.min.js"></script>
-<script src="<%=basePath %>assets/js/wysihtml5-0.0.3.js"></script>    
+<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>   
     
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
 
