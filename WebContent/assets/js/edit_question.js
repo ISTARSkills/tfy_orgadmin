@@ -366,12 +366,14 @@ function submitQuestionData()
 				    }
 				});
 			}
+			
+			
 		}else
 		{
 			$('#que_error_list').empty();
 			$('#que_error_list').append(dataInErrorList);
 			var $alertMsg = $("#que_error").find('.alert');
-
+			
 			$alertMsg.on("close.bs.alert", function () {
 				$('#que_error').hide();
 			      return false;

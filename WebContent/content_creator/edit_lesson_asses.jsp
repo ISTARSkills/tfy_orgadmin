@@ -611,7 +611,15 @@
 										var type = data[i].type;
 										var difficultyLevel = data[i].difficulty_level;
 										var skills = data[i].skills;
+										if(skills==null)
+										{
+											skills='';
+										}
 										var skillIds = data[i].skillIds;
+										if(skillIds==null)
+										{
+											skillIds='';
+										}
 										var tableRow = "<tr class='"+difficultyLevel+" question' id='question_"+questionId+"'> \
 							     <td>"
 												+ questionId
@@ -834,13 +842,34 @@
 					    	
 					    }
 					});	
+					
+					
+					$('#error_list').empty();
+					var $alertMsg = $("#assess_error").find('.alert');
+					if($alertMsg.hasClass('alert-danger'))
+					{
+						$alertMsg.removeClass('alert-danger');
+						$alertMsg.addClass('alert-success');
+						$alertMsg.find('.alert-heading').text('Assessment Updated Successfully !');
+					}	
+					$alertMsg.on("close.bs.alert", function () {
+						$('#assess_error').hide();
+					      return false;
+					});
+					$('#assess_error').show();
 				}
 				else
 				{
 					$('#error_list').empty();
 					$('#error_list').append(dataInErrorList);
 					var $alertMsg = $("#assess_error").find('.alert');
-
+					if($alertMsg.hasClass('alert-success'))
+					{
+						$alertMsg.removeClass('alert-success');
+						$alertMsg.addClass('alert-danger');
+						$alertMsg.find('.alert-heading').text('Assessment Update Failed !');
+						
+					}
 					$alertMsg.on("close.bs.alert", function () {
 						$('#assess_error').hide();
 					      return false;
