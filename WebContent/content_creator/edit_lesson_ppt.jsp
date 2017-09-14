@@ -16,6 +16,7 @@
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 	request.setAttribute("cp", cp);
+	int lessonID = 0;
 	Lesson lesson = new LessonDAO().findById(Integer.parseInt(request.getParameter("lesson_id")));
 	String slide_id = "0";
 	String template_type = "0";
@@ -25,7 +26,6 @@
 	   template_type = request.getParameter("template_type");
 	} */ 
 	
-	int lessonID = 2271;
 	
 	if (lesson != null) {
 		lessonID = lesson.getId();
