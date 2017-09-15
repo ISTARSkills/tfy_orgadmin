@@ -21,20 +21,25 @@
 					<div class='row' style="margin-top: 10px;">
 						<div class='col-md-3 col-md-auto justify-content-md-center'>
 							<label>Lesson Title</label>
+							
 						</div>
-						<div class='col-md-9 col-md-auto'>
+						<div class='col-md-9 col-md-auto input-group'>
 							<input style="width: 100%" class="form-control"
-								id='lessonModalTitle'>
+								id='lessonModalTitle' maxlength="255">
+								<span class="input-group-addon"
+								id="lessonModalTitleSize">0/255</span>
 						</div>
 					</div>
 					<hr>
 					<div class='row'>
-						<div class='col-md-3 col-md-auto'>
+						<div class='col-md-3 col-md-auto input-group'>
 							<label>Description</label>
 						</div>
-						<div class='col-md-9 col-md-auto'>
+						<div class='col-md-9 col-md-auto' >
 							<textarea style="width: 100%" class="form-control"
-								id='lessonModalDescription'></textarea>
+								id='lessonModalDescription'></textarea><span class="pull-right badge badge-secondary"
+									id="lessonModalDescriptionSize"
+									style="background-color: smoke; margin-right: 5px; margin-top: 3px;"></span>
 						</div>
 					</div>
 					<hr>
@@ -61,9 +66,11 @@
 						<div class='col-md-3 col-md-auto'>
 							<label>Lesson Duration</label>
 						</div>
-						<div class='col-md-9 col-md-auto'>
+						<div class='col-md-9 col-md-auto input-group'>
 							<input type="number" id="lessonModalDuration" min="5" max="60"
-								step="5">
+								step="5"><span class="pull-right badge badge-secondary"
+									id="lessonModalDescriptionSize"
+									style="background-color: smoke; margin-right: 5px; margin-top: 3px;">Minutes</span><span>(MAX.90 minutes) </span>
 						</div>
 					</div>
 					<hr>

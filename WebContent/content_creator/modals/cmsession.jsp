@@ -6,7 +6,7 @@
 <div id="sessionModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
-			style="max-height: 352px">
+			style="max-height: 364px">
 			<div class="modal-header custom-modal-header">
 				<h5 class="modal-title custom-modal-title" id="sessionModalLabel">Create/Modify
 					Session</h5>
@@ -21,9 +21,11 @@
 						<div class='col-md-3 col-md-auto justify-content-md-center'>
 							<label>Session Title</label>
 						</div>
-						<div class='col-md-9 col-md-auto'>
+						<div class='col-md-9 col-md-auto input-group'>
 							<input style="width: 100%" class="form-control"
-								id='sessionModalTitle'>
+								id='sessionModalTitle' maxlength="255">
+								 <span class="input-group-addon"
+								id="sessionModalTitleSize">0/255</span>
 						</div>
 					</div>
 					<hr>
@@ -34,6 +36,9 @@
 						<div class='col-md-9 col-md-auto'>
 							<textarea style="width: 100%" class="form-control"
 								id='sessionModalDescription'></textarea>
+								<span class="pull-right badge badge-secondary"
+									id="sessionModalDescriptionSize"
+									style="background-color: smoke; margin-right: 5px; margin-top: 3px;"></span>
 						</div>
 					</div>
 					<hr>

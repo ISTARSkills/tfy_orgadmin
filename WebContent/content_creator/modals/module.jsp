@@ -6,7 +6,7 @@
 <div id="moduleModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content custom-modal-content"
-			style="max-height: 352px">
+			style="max-height: 364px">
 			<div class="modal-header custom-modal-header">
 				<h5 class="modal-title custom-modal-title" id="moduleModalLabel">Create/Modify
 					Module</h5>
@@ -18,12 +18,16 @@
 			<div class="modal-body custom-no-padding">
 				<div class="container-fluid bd-example-row">
 					<div class='row' style="margin-top: 10px;">
-						<div class='col-md-3 col-md-auto justify-content-md-center'>
+						<div class='col-md-3 col-md-auto justify-content-md-center '>
 							<label>Module Title</label>
+						
 						</div>
-						<div class='col-md-9 col-md-auto'>
+						<div class='col-md-9 col-md-auto input-group'>
 							<input style="width: 100%" class="form-control"
-								id='moduleModalTitle'>
+								id='moduleModalTitle' maxlength="255"> <span class="input-group-addon"
+								id="moduleModalTitleSize">0/255</span>
+								
+
 						</div>
 					</div>
 					<hr>
@@ -33,7 +37,9 @@
 						</div>
 						<div class='col-md-9 col-md-auto'>
 							<textarea style="width: 100%" class="form-control"
-								id='moduleModalDescription'></textarea>
+								id='moduleModalDescription'></textarea><span class="pull-right badge badge-secondary"
+									id="moduleModalDescriptionSize"
+									style="background-color: smoke; margin-right: 5px; margin-top: 3px;"></span>
 						</div>
 					</div>
 					<hr>
@@ -43,9 +49,9 @@
 						</div>
 						<div class='col-md-5 col-md-auto'>
 							<label for="moduleImageURL"><img class='moduleImage'
-								src='<%=cdnPath %>course_images/plusIcon.png' alt=''> </label><input
+								src='<%=cdnPath%>course_images/plusIcon.png' alt=''> </label><input
 								style="display: none"
-								value='<%=cdnPath %>course_images/plusIcon.png'
+								value='<%=cdnPath%>course_images/plusIcon.png'
 								id='moduleImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>

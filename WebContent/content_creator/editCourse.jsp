@@ -59,8 +59,9 @@
 						<div class="form-group row">
 							<label for="courseName" class="col-sm-2 col-form-label">Course
 								Name</label>
-							<div class="col-sm-10">
-								<input type="text" id='courseName' class="form-control">
+							<div class="col-sm-10 input-group">
+								<input type="text" id='courseName' class="form-control" maxlength="255">
+								<span class="input-group-addon" id="courseNameSize" >0/255</span>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -68,6 +69,9 @@
 							<div class="col-sm-10">
 								<textarea class="form-control" rows="3" style="width: 100%"
 									id='courseDesc'></textarea>
+								<span class="pull-right badge badge-secondary"
+									id="courseDescSize"
+									style="background-color: smoke; margin-right: 5px; margin-top: 3px;"></span>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -113,6 +117,7 @@
 			initializeCourseTreeVariables();
 			if (!window.isNewCourse) {
 				fillCourseEditFormFields();
+
 				loadCourseTree();
 			} else {
 				$('#coursePageHeading').html('New Course');
@@ -175,9 +180,13 @@
 														$('#moduleModal')
 																.modal('toggle');
 														initModuleModalImageUploader();
+														validateModuleModal();
 														$('#saveModule')
 																.click(
-																		function() {
+																		function(
+																				event) {
+																			event
+																					.stopImmediatePropagation();
 																			var orderID = window.courseTree.length + 1;
 																			var isModuleFormOK = false;
 																			isModuleFormOK = validateModuleModal();
@@ -321,7 +330,8 @@
 		}
 		function validateModuleModal() {
 			var isModalOK = true;
-			if ($('#moduleModalTitle').val().trim() == '') {
+			if ($('#moduleModalTitle').val().trim() == ''
+					|| $('#moduleModalTitle').val().trim().length > 254) {
 				$('#moduleModalTitle').addClass('faultyFormElement');
 				$('#moduleModalTitle').focus();
 				isModalOK = false;
@@ -335,47 +345,92 @@
 			} else {
 				$('#moduleModalDescription').removeClass('faultyFormElement');
 			}
+			$('#moduleModalTitle').keydown(
+					function(e) {
+						if ($('#moduleModalTitle').val().trim() == '') {
+							$('#moduleModalTitle')
+									.addClass('faultyFormElement');
+							$('#moduleModalTitle').focus();
+							isModalOK = false;
+						} else {
+							$('#moduleModalTitle').removeClass(
+									'faultyFormElement');
+						}
+						$('#moduleModalTitleSize').html(
+								$('#moduleModalTitle').val().trim().length
+										+ '/255');
+					
+					});
+			$('#moduleModalDescription').keyup(
+					function() {
+						if ($('#moduleModalDescription').val().trim() == '') {
+							$('#moduleModalDescription').addClass(
+									'faultyFormElement');
+							$('#moduleModalDescription').focus();
+							isModalOK = false;
+						} else {
+							$('#moduleModalDescription').removeClass(
+									'faultyFormElement');
+						}
+						$('#moduleModalDescriptionSize')
+								.html(
+										$('#moduleModalDescription').val()
+												.trim().length
+
+								);
+					});
 			return isModalOK;
 		}
 
 		function initializeUpdateCourseDetailsButton() {
-			$('#updateCourseDetails').click(function() {
-				createUpdateCourse();
-			});
-		}
+			$('#updateCourseDetails')
+					.click(
+							function(event) {
+								event.stopImmediatePropagation();
+								var isCourseFormValid = validateCourseEditFields();
+								if (isCourseFormValid) {
+									var dataPost = {
+										courseName : $('#courseName').val()
+												.trim(),
+										courseDescription : $('#courseDesc')
+												.val().trim(),
+										courseCategory : $('#courseCategory')
+												.val().trim(),
+										courseImageURL : $('#courseImage')
+												.attr('src').split('/').splice(
+														3).join('/')
+									};
 
-		function createUpdateCourse() {
-			var isCourseFormValid = validateCourseEditFields();
-			if (isCourseFormValid) {
-				var dataPost = {
-					courseName : $('#courseName').val().trim(),
-					courseDescription : $('#courseDesc').val().trim(),
-					courseCategory : $('#courseCategory').val().trim(),
-					courseImageURL : $('#courseImage').attr('src').split('/')
-							.splice(3).join('/')
-				};
-
-				if (window.isNewCourse) {
-					var url = window.content_rest_url + 'course/create';
-				} else {
-					var url = window.content_rest_url + 'course/update/'
-							+ window.courseID;
-				}
-				$.ajax({
-					type : "POST",
-					url : url,
-					data : JSON.stringify(dataPost),
-				}).done(
-						function(data) {
-							window.location.replace('./editCourse.jsp?course='
-									+ data.courseID)
-						});
-			}
+									if (window.isNewCourse) {
+										var url = window.content_rest_url
+												+ 'course/create';
+									} else {
+										var url = window.content_rest_url
+												+ 'course/update/'
+												+ window.courseID;
+									}
+									$
+											.ajax(
+													{
+														type : "POST",
+														url : url,
+														data : JSON
+																.stringify(dataPost),
+													})
+											.done(
+													function(data) {
+														window.location
+																.replace('./editCourse.jsp?course='
+																		+ data.courseID)
+													});
+								}
+							});
 		}
 
 		function validateCourseEditFields() {
 			var isCourseFormOK = true;
-			if ($('#courseName').val().trim() == '') {
+			if ($('#courseName').val().trim() == ''
+					|| $('#courseName').val().trim().length > 255) {
 				$('#courseName').addClass('faultyFormElement');
 				$('#courseName').focus();
 				isCourseFormOK = false;
@@ -396,6 +451,16 @@
 			} else {
 				$('#courseCategory').removeClass('faultyFormElement');
 			}
+			$('#courseName').keyup(
+					function() {
+						$('#courseNameSize').html(
+								$('#courseName').val().trim().length + '/255');
+					});
+			$('#courseDesc').keyup(function() {
+				$('#courseDescSize').html($('#courseDesc').val().trim().length
+
+				);
+			});
 			return isCourseFormOK;
 		}
 
@@ -408,14 +473,19 @@
 							$('#coursePageHeading').html(
 									courseObject.course.title);
 							$('#courseName').val(courseObject.course.title);
+							$('#courseNameSize').html(
+									courseObject.course.title.length + '/255');
 							$('#courseDesc').val(
 									courseObject.course.description);
+							$('#courseDescSize').html(
+									courseObject.course.description.length);
 							$('#courseImage').attr(
 									'src',
 									window.cdnPath
 											+ courseObject.course.imageURL);
 							$('#courseCategory').val(
 									courseObject.course.category);
+							validateCourseEditFields();
 						});
 			}
 		}
@@ -428,21 +498,29 @@
 									var data = new FormData();
 									var imageFile = document
 											.getElementById('courseImageURL').files[0];
-									data.append('image', imageFile);
-									$.ajax(
-											{
-												url : window.content_rest_url
-														+ 'file/imageupload',
-												data : data,
-												cache : false,
-												contentType : false,
-												processData : false,
-												type : 'POST',
-											}).done(
-											function(response) {
-												$('#courseImage').attr('src',
-														response);
-											});
+									if (imageFile.size > 200000) {
+										alert('Image is too huge. Allowed size is < 200kb');
+									} else {
+										data.append('image', imageFile);
+										$
+												.ajax(
+														{
+															url : window.content_rest_url
+																	+ 'file/imageupload',
+															data : data,
+															cache : false,
+															contentType : false,
+															processData : false,
+															type : 'POST',
+														})
+												.done(
+														function(response) {
+															$('#courseImage')
+																	.attr(
+																			'src',
+																			response);
+														});
+									}
 								} else {
 									console.log('No image found!');
 								}
@@ -453,24 +531,33 @@
 					.change(
 							function() {
 								if (document.getElementById('moduleImageURL').files.length > 0) {
+
 									var data = new FormData();
 									var imageFile = document
 											.getElementById('moduleImageURL').files[0];
-									data.append('image', imageFile);
-									$.ajax(
-											{
-												url : window.content_rest_url
-														+ 'file/imageupload',
-												data : data,
-												cache : false,
-												contentType : false,
-												processData : false,
-												type : 'POST',
-											}).done(
-											function(response) {
-												$('.moduleImage').attr('src',
-														response);
-											});
+									if (imageFile.size > 200000) {
+										alert('Image is too huge. Allowed size is < 200kb');
+									} else {
+										data.append('image', imageFile);
+										$
+												.ajax(
+														{
+															url : window.content_rest_url
+																	+ 'file/imageupload',
+															data : data,
+															cache : false,
+															contentType : false,
+															processData : false,
+															type : 'POST',
+														})
+												.done(
+														function(response) {
+															$('.moduleImage')
+																	.attr(
+																			'src',
+																			response);
+														});
+									}
 								} else {
 									console.log('No image found!');
 								}
@@ -484,21 +571,29 @@
 									var data = new FormData();
 									var imageFile = document
 											.getElementById('sessionImageURL').files[0];
-									data.append('image', imageFile);
-									$.ajax(
-											{
-												url : window.content_rest_url
-														+ 'file/imageupload',
-												data : data,
-												cache : false,
-												contentType : false,
-												processData : false,
-												type : 'POST',
-											}).done(
-											function(response) {
-												$('.sessionImage').attr('src',
-														response);
-											});
+									if (imageFile.size > 200000) {
+										alert('Image is too huge. Allowed size is < 200kb');
+									} else {
+										data.append('image', imageFile);
+										$
+												.ajax(
+														{
+															url : window.content_rest_url
+																	+ 'file/imageupload',
+															data : data,
+															cache : false,
+															contentType : false,
+															processData : false,
+															type : 'POST',
+														})
+												.done(
+														function(response) {
+															$('.sessionImage')
+																	.attr(
+																			'src',
+																			response);
+														});
+									}
 								} else {
 									console.log('No image found!');
 								}
@@ -567,6 +662,7 @@
 																						window.cdnPath
 																								+ moduleObject.module.imageURL);
 																		initModuleModalImageUploader();
+																		validateModuleModal();
 																		$(
 																				'#moduleModal')
 																				.modal(
@@ -574,7 +670,10 @@
 																		$(
 																				'#saveModule')
 																				.click(
-																						function() {
+																						function(
+																								event) {
+																							event
+																									.stopImmediatePropagation();
 																							var isModuleFormOK = false;
 																							isModuleFormOK = validateModuleModal();
 																							if (isModuleFormOK) {
@@ -671,12 +770,16 @@
 										.done(
 												function(data) {
 													$('#modals').html(data);
+													validateSessionModal();
 													$('#sessionModal').modal(
 															'toggle');
 													initSessionModalImageUploader();
 													$('#saveSession')
 															.click(
-																	function() {
+																	function(
+																			event) {
+																		event
+																				.stopImmediatePropagation();
 																		var isSessionFormOK = false;
 																		isSessionFormOK = validateSessionModal();
 																		if (isSessionFormOK) {
@@ -744,7 +847,8 @@
 
 		function validateSessionModal() {
 			var isModalOK = true;
-			if ($('#sessionModalTitle').val().trim() == '') {
+			if ($('#sessionModalTitle').val().trim() == ''
+					|| $('#sessionModalTitle').val().trim().length > 254) {
 				$('#sessionModalTitle').addClass('faultyFormElement');
 				$('#sessionModalTitle').focus();
 				isModalOK = false;
@@ -758,11 +862,45 @@
 			} else {
 				$('#sessionModalDescription').removeClass('faultyFormElement');
 			}
+			$('#sessionModalTitle').keyup(
+					function() {
+						if ($('#sessionModalTitle').val().trim() == '') {
+							$('#sessionModalTitle').addClass(
+									'faultyFormElement');
+							$('#sessionModalTitle').focus();
+							isModalOK = false;
+						} else {
+							$('#sessionModalTitle').removeClass(
+									'faultyFormElement');
+						}
+						$('#sessionModalTitleSize').html(
+								$('#sessionModalTitle').val().trim().length
+										+ '/255');
+					});
+			$('#sessionModalDescription').keyup(
+					function() {
+						if ($('#sessionModalDescription').val().trim() == '') {
+							$('#sessionModalDescription').addClass(
+									'faultyFormElement');
+							$('#sessionModalDescription').focus();
+							isModalOK = false;
+						} else {
+							$('#sessionModalDescription').removeClass(
+									'faultyFormElement');
+						}
+						$('#sessionModalDescriptionSize')
+								.html(
+										$('#sessionModalDescription').val()
+												.trim().length
+
+								);
+					});
 			return isModalOK;
 		}
 		function validateLessonModal() {
 			var isModalOK = true;
-			if ($('#lessonModalTitle').val().trim() == '') {
+			if ($('#lessonModalTitle').val().trim() == ''
+					|| $('#lessonModalTitle').val().trim().length > 254) {
 				$('#lessonModalTitle').addClass('faultyFormElement');
 				$('#lessonModalTitle').focus();
 				isModalOK = false;
@@ -784,13 +922,47 @@
 				$('#lessonModalType').removeClass('faultyFormElement');
 			}
 			if ($('#lessonModalDuration').val() == ''
-					|| $('#lessonModalDuration').val() == null) {
+					|| $('#lessonModalDuration').val() == null
+					|| $('#lessonModalDuration').val() > 90) {
 				$('#lessonModalDuration').addClass('faultyFormElement');
 				$('#lessonModalDuration').focus();
 				isModalOK = false;
 			} else {
 				$('#lessonModalDuration').removeClass('faultyFormElement');
 			}
+			$('#lessonModalTitle').keyup(
+					function() {
+						if ($('#lessonModalTitle').val().trim() == '') {
+							$('#lessonModalTitle')
+									.addClass('faultyFormElement');
+							$('#lessonModalTitle').focus();
+							isModalOK = false;
+						} else {
+							$('#lessonModalTitle').removeClass(
+									'faultyFormElement');
+						}
+						$('#lessonModalTitleSize').html(
+								$('#lessonModalTitle').val().trim().length
+										+ '/255');
+					});
+			$('#lessonModalDescription').keyup(
+					function() {
+						if ($('#lessonModalDescription').val().trim() == '') {
+							$('#lessonModalDescription').addClass(
+									'faultyFormElement');
+							$('#lessonModalDescription').focus();
+							isModalOK = false;
+						} else {
+							$('#lessonModalDescription').removeClass(
+									'faultyFormElement');
+						}
+						$('#lessonModalDescriptionSize')
+								.html(
+										$('#lessonModalDescription').val()
+												.trim().length
+
+								);
+					});
 			return isModalOK;
 		}
 
@@ -807,12 +979,16 @@
 										.done(
 												function(data) {
 													$('#modals').html(data);
+													validateModuleModal();
 													$('#moduleModal').modal(
 															'toggle');
 													initModuleModalImageUploader();
 													$('#saveModule')
 															.click(
-																	function() {
+																	function(
+																			event) {
+																		event
+																				.stopImmediatePropagation();
 																		var orderID = window.courseTree.length + 1;
 																		var isModuleFormOK = false;
 																		isModuleFormOK = validateModuleModal();
@@ -1003,6 +1179,7 @@
 																						'src',
 																						window.cdnPath
 																								+ sessionObject.session.imageURL);
+																		validateSessionModal();
 																		$(
 																				'#sessionModal')
 																				.modal(
@@ -1011,7 +1188,10 @@
 																		$(
 																				'#saveSession')
 																				.click(
-																						function() {
+																						function(
+																								event) {
+																							event
+																									.stopImmediatePropagation();
 																							var isSessionFormOK = false;
 																							isSessionFormOK = validateSessionModal();
 																							if (isSessionFormOK) {
@@ -1095,11 +1275,15 @@
 												function(data) {
 													$('#modals').html(data);
 													initLessonModalImageUploader();
+													validateLessonModal();
 													$('#lessonModal').modal(
 															'toggle');
 													$('#saveLesson')
 															.click(
-																	function() {
+																	function(
+																			event) {
+																		event
+																				.stopImmediatePropagation();
 																		var isLessonFormOK = false;
 																		isLessonFormOK = validateLessonModal();
 																		if (isLessonFormOK) {
@@ -1165,6 +1349,8 @@
 																									alert('Something went wrong. Couldnt create the lesson.');
 																								}
 																							});
+																		} else {
+																			alert('Correct the faulty elements.');
 																		}
 
 																	});
@@ -1193,11 +1379,15 @@
 												function(data) {
 													$('#modals').html(data);
 													initSessionModalImageUploader();
+													validateSessionModal();
 													$('#sessionModal').modal(
 															'toggle');
 													$('#saveSession')
 															.click(
-																	function() {
+																	function(
+																			event) {
+																		event
+																				.stopImmediatePropagation();
 																		var isSessionFormOK = false;
 																		isSessionFormOK = validateSessionModal();
 																		if (isSessionFormOK) {
@@ -1385,7 +1575,10 @@
 													$(
 															'#changeModuleModalSubmit')
 															.click(
-																	function() {
+																	function(
+																			event) {
+																		event
+																				.stopImmediatePropagation();
 																		if ($(
 																				'#chooseModule')
 																				.children(
@@ -1517,6 +1710,7 @@
 																				.val(
 																						parseInt(lessonObject.lesson.duration));
 																		initLessonModalImageUploader();
+																		validateLessonModal();
 																		$(
 																				'#lessonModal')
 																				.modal(
@@ -1585,6 +1779,8 @@
 																													}
 																												});
 
+																							} else {
+																								alert('Something went wrong. Couldnt create the lesson.');
 																							}
 																						});
 																	});
@@ -1613,6 +1809,7 @@
 												function(data) {
 													$('#modals').html(data);
 													initLessonModalImageUploader();
+													validateLessonModal();
 													$('#lessonModal').modal(
 															'toggle');
 													$('#saveLesson')
@@ -2003,7 +2200,8 @@
 																						function(
 																								a,
 																								b) {
-																							window.lessonLOset.add(parseInt(b.id));
+																							window.lessonLOset
+																									.add(parseInt(b.id));
 																							loaddition += "<li class='selectedLO list-group-item' id='"
 																									+ b.id
 																									+ "'>"
@@ -2113,40 +2311,43 @@
 								var listitem = this;
 								var r = confirm("Are you sure you want to add this lo?");
 								if (r == true) {
-									if(window.lessonLOset.has(parseInt(loid))){
+									if (window.lessonLOset.has(parseInt(loid))) {
 										alert('This learning objective is already present in the selected list.');
-										$(listitem)
-										.remove();
-									}
-									else{
+										$(listitem).remove();
+									} else {
 										$
-											.get(
+												.get(
 
-													window.content_rest_url
-															+ 'lesson/addLO/'
-															+ chosenLessonID
-															+ '/' + loid + '/'
-															+ window.courseID)
-											.done(
-													function(response) {
-														if (response.success) {
-															var selectedLOaddition = '';
-															selectedLOaddition += "<li class='selectedLO list-group-item list-group-item-success' id='"
+														window.content_rest_url
+																+ 'lesson/addLO/'
+																+ chosenLessonID
+																+ '/'
+																+ loid
+																+ '/'
+																+ window.courseID)
+												.done(
+														function(response) {
+															if (response.success) {
+																var selectedLOaddition = '';
+																selectedLOaddition += "<li class='selectedLO list-group-item list-group-item-success' id='"
 															+ loid
 															+ "'>"
-																	+ lotext
-																	+ "<a href='#'><i class='fa fa-trash-o pull-right'></i></a></li>";
-															window.lessonLOset.add(parseInt(loid));
-																	$('#selectedLOs')
-																	.prepend(
-																			selectedLOaddition);
-															$(listitem)
-																	.remove();
-														} else {
-															alert('Learning Objective is already associated with the lesson.')
-														}
-													});
-								}}
+																		+ lotext
+																		+ "<a href='#'><i class='fa fa-trash-o pull-right'></i></a></li>";
+																window.lessonLOset
+																		.add(parseInt(loid));
+																$(
+																		'#selectedLOs')
+																		.prepend(
+																				selectedLOaddition);
+																$(listitem)
+																		.remove();
+															} else {
+																alert('Learning Objective is already associated with the lesson.')
+															}
+														});
+									}
+								}
 							});
 		}
 
@@ -2166,7 +2367,7 @@
 											+ window.courseID).done(
 									function(response) {
 										if (response.success) {
-											window.lessonLOset.delete(parseInt(loid));											
+											//window.lessonLOset.delete(parseInt(loid));											
 											$(listitem).remove();
 										}
 									});
@@ -2385,7 +2586,8 @@
 		function duplicateModalSaveButtonListener(chosenSessionID) {
 			$('#duplicateLessonButton').on(
 					'click',
-					function() {
+					function(event) {
+						event.stopImmediatePropagation();
 						var lessonToBeDuplicated = $(
 								'#chooseLessonDuplicateModal').children(
 								":selected").attr("id");
@@ -2619,7 +2821,8 @@
 		function linkModalSaveButtonListener(chosenSessionID) {
 			$('#linkLessonButton').on(
 					'click',
-					function() {
+					function(event) {
+						event.stopImmediatePropagation();
 						var lessonToBeLinked = $('#chooseLessonLinkModal')
 								.children(":selected").attr("id");
 						var url = window.content_rest_url + 'session/'
@@ -2659,14 +2862,12 @@
 												function(response) {
 													if (response.success) {
 														alert('Lesson has been published!');
-														$(
-														"#skillTree")
-														.jstree(
+														$("#skillTree").jstree(
 																'destroy');
-												loadCourseTree(
-														animateChildNode,
-														'L'
-																+ chosenLessonID);
+														loadCourseTree(
+																animateChildNode,
+																'L'
+																		+ chosenLessonID);
 													} else {
 														$
 																.get(
@@ -2744,31 +2945,23 @@
 							});
 		}
 
-		function initLessonEllipsisUnPublish(){
-			$(document)
-			.on(
+		function initLessonEllipsisUnPublish() {
+			$(document).on(
 					'click',
 					'.unPublishLesson',
 					function() {
 						var chosenLessonID = $(this).data('lessonid');
-						var url = window.content_rest_url
-								+ 'lesson/unpublish/' + chosenLessonID;
-						$
-								.get(url)
-								.done(
-										function(response) {
-											if (response.success) {
-												alert('Lesson has been unpublished!');
-												$(
-												"#skillTree")
-												.jstree(
-														'destroy');
-										loadCourseTree(
-												animateChildNode,
-												'L'
-														+ chosenLessonID);
-											}
-										});
+						var url = window.content_rest_url + 'lesson/unpublish/'
+								+ chosenLessonID;
+						$.get(url).done(
+								function(response) {
+									if (response.success) {
+										alert('Lesson has been unpublished!');
+										$("#skillTree").jstree('destroy');
+										loadCourseTree(animateChildNode, 'L'
+												+ chosenLessonID);
+									}
+								});
 					});
 		}
 		function initLessonEllipsisEditLesson() {
