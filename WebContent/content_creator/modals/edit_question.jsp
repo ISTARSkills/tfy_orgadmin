@@ -237,7 +237,7 @@
 									<div class="tab-content">
 										<button type="button" class="btn-grey btn-sm submit_question"
 											id='submit_question'>Save Changes</button>
-										<div role="tabpanel" class="tab-pane active" id="home">
+										<div role="tabpanel" class="tab-pane active custom-scroll-holder" id="home">
 											<div id="question_details_form">
 												<div class='row my-3'>
 													<div class='col-md-2 col-md-auto'>

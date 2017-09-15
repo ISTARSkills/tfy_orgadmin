@@ -115,7 +115,7 @@
 					</div>
 					<div class="form-group row">
 
-						<select class="form-control col-sm-12 assessment_skill_selector"
+						<select class="form-control col-sm-12 assessment_skill_selector custom-scroll-holder"
 							id="session_skill" multiple>
 							<%
 								if (course.getModules() != null) {
@@ -185,11 +185,11 @@
 										<div class="input-group col-md-12">
 											<input type="text" class="form-control input-lg"
 												placeholder="Search... " id="search_assessment_question" />
-											<span class="input-group-btn">
+											<!-- <span class="input-group-btn">
 												<button class="btn btn-info btn-lg" type="button">
 													<i class="glyphicon glyphicon-search"></i>
 												</button>
-											</span>
+											</span> -->
 										</div>
 
 									</div>
@@ -254,11 +254,11 @@
 										<div class="input-group col-md-12">
 											<input type="text" class="form-control input-lg"
 												placeholder="Search... " id="search_available_question" />
-											<span class="input-group-btn">
+											<!-- <span class="input-group-btn">
 												<button class="btn btn-info btn-lg" type="button">
 													<i class="glyphicon glyphicon-search"></i>
 												</button>
-											</span>
+											</span> -->
 										</div>
 									</div>
 								</div>
