@@ -84,7 +84,7 @@
 							%>
 							<li class="MODULE">[MODULE-<%=i%>] - <%=modules[i]%><div style="float: right">
 									<div class='dropdown'>
-										<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style="padding: 2px 12px; !important">
+										<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style="padding: 0px; !important">
 											<i class="fa fa-ellipsis-h fa-2x"></i>
 										</button>
 										<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>

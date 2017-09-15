@@ -87,9 +87,9 @@
 						</div>
 						<div class="form-group row">
 							<div class="col-lg-offset-2 col-lg-10">
-								<button class="btn btn-sm btn-primary " type="button"
+								<button class="btn-grey btn-sm " type="button"
 									id='updateCourseDetails'>Update Detail</button>
-								<button class="btn btn-sm btn-primary" id='addLastModule'
+								<button class="btn-grey btn-sm" id='addLastModule'
 									type='button'>Add Module</button>
 							</div>
 						</div>
@@ -98,9 +98,9 @@
 				</div>
 				<div class="col-md-3">
 					<label for="courseImageURL"><img class='courseImage'
-						id='courseImage' src='<%=cdnPath%>course_images/plusIcon.png'
+						id='courseImage' src='<%=cdnPath%>course_images/c_0.png'
 						alt=''> </label><input style="display: none"
-						value='<%=cdnPath%>course_images/plusIcon.png' id='courseImageURL'
+						value='<%=cdnPath%>course_images/c_0.png' id='courseImageURL'
 						type='file' accept="image/png">
 				</div>
 			</div>

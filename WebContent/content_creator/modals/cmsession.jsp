@@ -48,9 +48,9 @@
 						</div>
 						<div class='col-md-5 col-md-auto'>
 							<label for="sessionImageURL"><img class='sessionImage'
-								src='<%=cdnPath %>course_images/plusIcon.png' alt=''> </label><input
+								src='<%=cdnPath %>course_images/l_0.png' alt=''> </label><input
 								style="display: none"
-								value='<%=cdnPath %>course_images/plusIcon.png'
+								value='<%=cdnPath %>course_images/l_0.png'
 								id='sessionImageURL' type='file'>
 						</div>
 						<div class='col-md-4 col-md-auto'>

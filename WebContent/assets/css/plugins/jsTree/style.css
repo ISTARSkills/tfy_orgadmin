@@ -40,12 +40,13 @@
 }
 
 .jstree-icon:empty {
-	display: inline-block;
-	text-decoration: none;
-	margin: 25px;
-	padding: 0;
-	vertical-align: top;
-	text-align: center;
+	    display: inline-block;
+    text-decoration: none;
+    margin: 9px;
+    padding: 0;
+    vertical-align: top;
+    text-align: center;
+    margin-left: 25px;
 }
 
 .jstree-ocl {
@@ -467,8 +468,8 @@
 	background-color: #FFF;
 	width: 900px;
 	box-shadow: 0 4px 3px 0 rgba(229, 229, 229, .7);
-	height: 50px;
-	padding-top: 6px;
+    height: 34px;
+    padding-top: 0px;
 	margin-top: 12px;
 	vertical-align: middle;
 }
@@ -1279,11 +1280,11 @@
 }
 
 .jstree-open .jstree-icon.jstree-ocl {
-	background: url("minus.png") 0px 0px no-repeat !important;
+	background: url("minus.png") 3px 8px no-repeat !important;
 }
 
 .jstree-closed .jstree-icon.jstree-ocl {
-	background: url("plus.png") 0px 0px no-repeat !important;
+    background: url(plus.png) 3px 8px no-repeat !important;
 }
 
 .jstree-anchor > .jstree-icon.jstree-themeicon {

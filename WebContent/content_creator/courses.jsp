@@ -38,7 +38,7 @@
 					<div class="card-deck">
 						<div class="custom-roles-cards-450">
 							<img class="img-rounded custom-roles-img"
-								src="<%=cdnPath%>course_images/plusIcon.png"
+								src="<%=cdnPath%>course_images/c_0.png"
 								alt="No Image Available" style="background-color: white;">
 							<div class="card-block">
 								<!-- <h4 class=" custom-roles-subtitle">Create Course</h4> -->
