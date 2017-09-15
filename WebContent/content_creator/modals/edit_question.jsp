@@ -320,11 +320,9 @@
 																<button type="button"
 																	class="btn option_marking_scheme <%=scheme%>">Correct</button>
 														</div>
-														<div class='col-md-1 col-md-auto'>
-															<a class="btn btn-danger btn-icon btn-sm remove_option"
-																style="margin-left: 11px; margin-top: 25px;"> <i
-																class="fa fa-trash" aria-hidden="true"
-																style="color: white;"></i></a>
+														<div class='col-md-1 col-md-auto m-auto'>
+															<a class="btn btn-icon btn-sm remove_option"> <i
+																class="fa fa-trash custom-btn-icon" aria-hidden="true"></i></a>
 														</div>
 
 													</div>

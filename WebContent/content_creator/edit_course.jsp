@@ -85,7 +85,7 @@
 							<li class="MODULE">[MODULE-<%=i%>] - <%=modules[i]%><div style="float: right">
 									<div class='dropdown'>
 										<button class='btn btn-default dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' style="padding: 0px; !important">
-											<i class="fa fa-ellipsis-h fa-2x"></i>
+											<i class="fa fa-ellipsis-h" style="font-size: 20px;"></i>
 										</button>
 										<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>
 											<a class='dropdown-item' href='#'>Action</a> <a class='dropdown-item' href='#'>Another action</a> <a class='dropdown-item' href='#'>Something else here</a>

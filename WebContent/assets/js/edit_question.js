@@ -187,8 +187,8 @@ function addMoreOption(){
 							<button type="button" class="btn option_marking_scheme incorrect_option">Correct</button> \
 						</div> \
 					</div> \
-					<div class="col-md-1 col-md-auto"> \
-						<a class="btn btn-icon btn-sm remove_option" style="margin-left: 11px;     margin-top: 25px;"> \
+					<div class="col-md-1 col-md-auto m-auto"> \
+						<a class="btn btn-icon btn-sm remove_option"> \
 							<i class="fa fa-trash custom-btn-icon" aria-hidden="true"></i> \
 						</a> \
 					</div>  \
