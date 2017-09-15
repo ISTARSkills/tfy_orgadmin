@@ -1650,17 +1650,17 @@ tr {
 
 .custom-edit-question-modal-header {
 	/*width: 559px;*/
-	height: 70px;
+	height: 36px;
 	background-color: #23b6f9;
 }
 
 .custom-edit-question-modal-title {
 	/* width: 214px; */
-	height: 35px;
+	height: 22px;
 	font-family: 'Lato', sans-serif;
-	font-size: 24px;
+	font-size: 21px;
 	font-weight: 500;
-	line-height: 1.49;
+	line-height: 1;
 	text-align: left;
 	color: #ffffff;
 }
@@ -1905,4 +1905,10 @@ li > a.active {     border-bottom: 3px solid #4285F4 !important;}
 	border-radius: 100px;
 	height: 50px;
 	background-color: #999999;
+}
+
+.popover .popover-body {
+	color: black !important;
+	font-size: 12px;
+	font-weight: bold;
 }

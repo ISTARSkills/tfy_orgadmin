@@ -197,22 +197,22 @@
 								<div class="col-md-3">
 									<div class="row"
 										style="margin-top: 17px; margin-left: -43px; margin-right: 0px;">
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Rookie">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Rookie">
 											<a class='btn btn-icon btn-sm level_1' id="rookie"
 												style="border: 1px solid #000307;"> <b>R</b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Apprentice">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Apprentice">
 											<a class='btn btn-icon btn-sm level_2' id="apprentice"
 												style="border: 1px solid #000307;"> <b>A </b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Master">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Master">
 											<a class='btn btn-icon btn-sm level_3' id="master"
 												style="border: 1px solid #000307;"> <b>M</b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Wizard">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Wizard">
 											<a class='btn btn-icon btn-sm level_4' id="wizard"
 												style="border: 1px solid #000307;"> <b>W</b>
 											</a>
@@ -265,22 +265,22 @@
 								<div class="col-md-3">
 									<div class="row"
 										style="margin-top: 17px; margin-left: -43px; margin-right: 0px;">
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Rookie">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Rookie">
 											<a class='btn btn-icon btn-sm level_1' id="rookie"
 												style="border: 1px solid #000307;"> <b>R</b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Apprentice">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Apprentice">
 											<a class='btn btn-icon btn-sm level_2' id="apprentice"
 												style="border: 1px solid #000307;"> <b>A </b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Master">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Master">
 											<a class='btn btn-icon btn-sm level_3' id="master"
 												style="border: 1px solid #000307;"> <b>M</b>
 											</a>
 										</div>
-										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Wizard">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Wizard">
 											<a class='btn btn-icon btn-sm level_4' id="wizard"
 												style="border: 1px solid #000307;"> <b>W</b>
 											</a>

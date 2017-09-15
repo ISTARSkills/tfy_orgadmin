@@ -1294,3 +1294,10 @@
 #skillTree .dropdown-toggle::after {
 	display : none;
 }
+
+.lessssson {
+	width: 853px !important;
+}
+.cm_sesssion {
+	width: 875px !important;
+}

@@ -462,7 +462,7 @@
 								$('#courseName').val().trim().length + '/255');
 					});
 			$('#courseDesc').keyup(function() {
-				$('#courseDescSize').html($('#courseDesc').val().trim().length
+				$('#courseDescSize').html($('#courseDesc').val().trim().length+ '/255'
 
 				);
 			});
@@ -483,7 +483,7 @@
 							$('#courseDesc').val(
 									courseObject.course.description);
 							$('#courseDescSize').html(
-									courseObject.course.description.length);
+									courseObject.course.description.length+ '/255');
 							$('#courseImage').attr(
 									'src',
 									window.cdnPath
