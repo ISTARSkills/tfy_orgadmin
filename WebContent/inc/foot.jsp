@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.InputStream"%>
@@ -6,25 +7,13 @@
 	pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
-String basePath = "http://cdn.talentify.in/";
-
-try{
-	Properties properties = new Properties();
-	String propertyFileName = "app.properties";
-	InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-		if (inputStream != null) {
-			properties.load(inputStream);
-			basePath =  properties.getProperty("cdn_path");
-			//System.out.println("basePath"+basePath);
-		}
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
+String basePath =  AppProperies.getProperty("cdn_path");
 	
 %>
 <script src="<%=basePath %>assets/js/jquery.min.js"></script>
-<script src="<%=basePath %>assets/js/popper.min.js "></script>
-<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
+<script src="<%=basePath %>assets/js/popper.min.js"></script>
+<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>   
+    
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
 
 <script src="<%=basePath %>assets/js/plugins/highchart/highcharts.js"></script>

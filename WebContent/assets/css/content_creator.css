@@ -1019,7 +1019,7 @@
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 	text-align: -webkit-center;
-	margin: 20px;
+	margin: 0 20px 20px 20px;
 }
 
 .img-rounded {
@@ -1508,7 +1508,7 @@ a.unselected_report {
 }
 
 .assessment_skill_selector {
-	height: 224px !important;
+	height: 209px !important;
 	overflow-x: scroll;
 }
 
@@ -1572,54 +1572,57 @@ tr {
     box-shadow: inset 0 3px 5px rgba(0,0,0,.1);
 }
 
-.fa-times{
-	color:white;		
-}
+
 
 
 
 .level_1 {
     color: #333333;
     background: #fff;
-    border-color: #ddd;
+   
+        border: 2px solid #dddedf;
 }
 
 .level_3{
     color: #333333;
    background: #cdf6d4;
-    border-color: #cdf6d4;
+   
+        border: 2px solid #dddedf;
 }
 
 .level_5{
     color: #333333;
     background: #fed5d2;
-    border-color: #fed5d2;
+    
+        border: 2px solid #dddedf;
 }
 
 
 .level_4 {
     color: #333333;
     background: #ffe8c8;
-    border-color: #ffe8c8;
+    
+        border: 2px solid #dddedf;
 }
 
 
 .level_2 {
     color: #333333;
     background: #dcf4ff;
-    border-color: #dcf4ff;
+   
+        border: 2px solid #dddedf;
 }
 
 .custom-edit-question-modal-content {
-	width: 561px;
-	height: 542px;
-	background-color: #ffffff;
+	/*width: 561px;*/
+	height: 716px;
+	background-color: #e9ecef;
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0
 		rgba(0, 0, 0, 0.04);
 }
 
 .custom-edit-question-modal-header {
-	width: 559px;
+	/*width: 559px;*/
 	height: 70px;
 	background-color: #23b6f9;
 }
@@ -1633,4 +1636,216 @@ tr {
 	line-height: 1.49;
 	text-align: left;
 	color: #ffffff;
+}
+
+.edit-question-modal-dialog{
+    max-width: 89% !important;
+}
+
+.question_form{
+	
+    max-height: 571px;
+    padding-left: 38px;
+}
+
+
+.que_mobile_prev
+{
+	position: absolute;
+    margin-top: -562px;
+    height: 445px;
+    width: 284px;
+    margin-left: 37px;
+    margin-bottom: 13px;
+    padding: 10px;
+    background-color: #ffffff;
+    font-family: Lato;
+    
+    
+}
+
+.que_prev_next_row{
+	position: absolute;
+    bottom: -3px;
+    color: rgb(120,120,120);
+    padding-top: 8px;
+    box-shadow: 1px 0px 20px #959393, 0px 0px 0px #a8a6a6;
+    width: 282px;
+    margin-left: -8px;
+    margin-right: 3px;
+    height: 33px;
+    font-size: 13px;
+}
+
+.que_simulator_heading{
+padding-right:0px!important;     padding-left: 18px!important;
+}
+
+.answered_question{
+	font-size: 12px;
+    display: inline;    
+    position: absolute;
+    color: rgb(53, 54, 55);;
+    margin-left: 4px;
+}
+
+.preview_heading{
+	color:rgb(127, 128, 130); 
+	font-size: 10px;    
+	margin-top: 14px;
+}
+#question_container{
+    max-height: 365px;
+    overflow-x: hidden;
+    overflow-y: auto;
+        margin-right: -10px;
+}
+
+#edit_question_text{
+	margin-top:7px;
+	min-height: 50px;
+}
+
+.edit_question_option{
+	width: 247px;
+    border: 1px solid #d1d2d3;
+    margin-left: 0px;
+    margin-bottom: 8px;
+    color: #333333;
+}
+.edit_option_text{
+	    padding: 7px;
+}
+
+.passage_view{
+	    font-size: 16px;
+}
+.explanation_view{
+	    font-size: 16px;
+}
+.que_passage_explanation_holder{
+	position: absolute;
+    margin-top: -419px;
+    margin-left: 333px;
+    padding: 10px;
+}
+
+.question_preview{
+	
+}
+
+.passage_preview{
+	
+}
+
+.explanation_preview{
+	
+}
+
+#edit_explanation_text{
+	margin-top:7px;
+	min-height: 326px;
+}
+
+#edit_passage_text{
+	margin-top:7px;
+}
+
+#question_passage_container{
+    max-height: 365px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-right: -10px;
+}
+
+#question_explanation_container{
+    max-height: 365px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-right: -10px;
+}
+
+#questionText,#passageText,#explanationText{
+	background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #d0d0d0;
+}
+
+.option_text
+{
+	background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #d0d0d0;
+}
+
+.question_form .submit_question{
+	position: absolute;
+    margin-top: -43px;
+    margin-left: 806px;
+}
+
+.incorrect_option{
+	color: #878788;
+}
+
+.correct_option{
+	color: white;
+	background-color: rgb(126, 211, 33);
+}
+
+.question_form li{
+	    padding: 13px;
+}
+
+.question_form a{
+	    text-decoration: none !important;
+}
+.question_form .nav-tabs { border-bottom: 2px solid #DDD; }
+.question_form .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { border-width: 0; }
+.question_form .nav-tabs > li > a { border: none; color: #666; }
+.question_form .nav-tabs > li.active > a, .nav-tabs > li > a:hover { border: none; color: #4285F4 !important; background: transparent; }
+.question_form .nav-tabs > li > a::after { content: ""; background: #4285F4; height: 2px; position: absolute; width: 100%; left: 0px; bottom: -1px; transition: all 250ms ease 0s; transform: scale(0); }
+.question_form .nav-tabs > li.active > a::after, .nav-tabs > li:hover > a::after { transform: scale(1); }
+.question_form .tab-nav > li > a::after { background: #21527d none repeat scroll 0% 0%; color: #fff; }
+li > a.active {     border-bottom: 3px solid #4285F4 !important;}
+.question_form .tab-pane { padding: 15px 0;max-height: 582px;overflow-y: scroll; overflow-x:hidden }
+.question_form .tab-content{padding-left: 20px;}
+
+.question_form .card {background: #FFF none repeat scroll 0% 0%; box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3); margin-bottom: 30px;    margin-right: -15px; }
+
+.custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+    margin :10px;
+}
+
+.custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+.custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+.custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+.custom-search-input .glyphicon-search{
+    font-size: 23px;
 }
