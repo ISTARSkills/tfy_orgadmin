@@ -430,7 +430,7 @@
 					     <td>"
 																+ skills
 																+ "</td> \
-					     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-trash custom-btn-icon' aria-hidden='true'></i></a></td></tr>";
+					     <td><a class='btn btn-icon btn-sm remove_question'><i class='fa fa-trash custom-btn-icon' aria-hidden='true'></i></a></td></tr>";
 														$(
 																'#assessment_que_table_body')
 																.prepend(
