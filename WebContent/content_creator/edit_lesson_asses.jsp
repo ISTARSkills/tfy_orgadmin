@@ -40,10 +40,7 @@
 		Course course = new CourseDAO().findById(Integer.parseInt(request.getParameter("course_id")));
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
-	<div id="assess_error" style="   width: 523px;    margin-left: 33%; display:none;
-    position: absolute;
-    margin-top: 70px;
-    z-index: 12;">
+	<div id="assess_error" style="width: 523px;  margin-left: 33%; display:none; position: absolute; margin-top: 70px; z-index: 12;">
 <div class="alert alert-danger alert-dismissible fade show" role="alert" >
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -94,7 +91,7 @@
 							<label for="assessmentRetryAble" class="col-sm-2 col-form-label">Retryable</label>
 							<div class="col-sm-10 checkbox">
 								<div class="checkbox">
-									<label><input type="checkbox" checked
+									<label><input type="checkbox" 
 										id="assessmentRetryAble"></label>
 								</div>
 							</div>
@@ -804,10 +801,10 @@
 		function initUpdateAssessmentDetails()
 		{
 			$('#updateAssessmentDetails').unbind().on('click',function(){
-				var assessmentName = $('#assessmentName').val();
+				var assessmentName = $('#assessmentName').val().trim();
 				var assessmentDesc = $('#assessmentDesc').val();
 				var assessmentDurationInMinutes = $('#assessmentDurationInMinutes').val();
-				var assessmentRetryAble = $('#assessmentRetryAble').val();
+				var assessmentRetryAble = $('#assessmentRetryAble').prop('checked');
 				
 				var errorExist = false;
 				var dataInErrorList='';
@@ -839,7 +836,7 @@
 					    processData: false,
 					    contentType: "application/json; charset=UTF-8",
 					    success: function(data) {
-					    	
+					    	$('#assessmentPageHeading').html(assessmentName);
 					    }
 					});	
 					
@@ -857,6 +854,9 @@
 					      return false;
 					});
 					$('#assess_error').show();
+					$("#assess_error").fadeTo(2000, 500).slideUp(500, function(){
+			               $("#assess_error").slideUp(500);
+			                }); 
 				}
 				else
 				{
@@ -875,6 +875,9 @@
 					      return false;
 					});
 					$('#assess_error').show();
+					$("#assess_error").fadeTo(2000, 500).slideUp(500, function(){
+			               $("#assess_error").slideUp(500);
+			                }); 
 				}	
 				
 			});			
@@ -892,8 +895,11 @@
 								assessmentObject.assessment.description);
 						$('#assessmentCategory').val(
 								assessmentObject.assessment.category);
-						$('#assessmentRetryAble').val(
-								assessmentObject.assessment.retry_able);
+						if(assessmentObject.assessment.retry_able){
+							$('#assessmentRetryAble').prop('checked',true);
+						}else{
+							$('#assessmentRetryAble').prop('checked',false);
+						}
 						$('#assessmentDurationInMinutes').val(
 								assessmentObject.assessment.duration);
 						$('#assessmentID').val(assessmentObject.assessment.id);

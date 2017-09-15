@@ -273,7 +273,7 @@
 													<div class='col-md-2 col-md-auto'>
 														<label>Duration (in secs)</label> <input type="number"
 															style="width: 100%" class="form-control  "
-															id="questionDuration"
+															id="questionDuration" min="0" max="600"
 															value="<%if (duration_in_sec != null) {%><%=duration_in_sec%><%}%>">
 													</div>
 													<div class="col-md-2 col-md-auto">
