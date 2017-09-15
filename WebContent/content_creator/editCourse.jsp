@@ -8,6 +8,10 @@
 .champa {
 	background-color: rgba(235, 56, 56, 0.36) !important;
 }
+
+.jstree-leaf .jstree-icon {
+	visibility: hidden !important;
+}
 </style>
 <body id="student_role">
 	<%
@@ -60,8 +64,9 @@
 							<label for="courseName" class="col-sm-2 col-form-label">Course
 								Name</label>
 							<div class="col-sm-10 input-group">
-								<input type="text" id='courseName' class="form-control" maxlength="255">
-								<span class="input-group-addon" id="courseNameSize" >0/255</span>
+								<input type="text" id='courseName' class="form-control"
+									maxlength="255"> <span class="input-group-addon"
+									id="courseNameSize">0/255</span>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -359,7 +364,7 @@
 						$('#moduleModalTitleSize').html(
 								$('#moduleModalTitle').val().trim().length
 										+ '/255');
-					
+
 					});
 			$('#moduleModalDescription').keyup(
 					function() {
