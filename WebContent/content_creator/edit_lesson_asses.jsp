@@ -63,7 +63,7 @@
 		</div>
 		<div class="form-container" id="assessment_edit">
 			<div class="row">
-				<div class="col-md-8">
+				<div class="col-md-7">
 					<form>
 						<div class="form-group row">
 							<label for="assessmentName" class="col-sm-2 col-form-label">
@@ -97,23 +97,21 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<div class="col-sm-2">
-								<button class="btn btn-sm btn-primary " type="button"
+							<div class="col-lg-offset-2 col-lg-10">
+								<button class="btn-grey btn-sm" type="button"
 									id='updateAssessmentDetails'>Update Detail</button>
-							</div>
-							<div class="col-sm-2">
-								<button class="btn btn-sm btn-primary " type="button"
+								<button class="btn-grey btn-sm" type="button"
 									id='add_new_question'>New Question</button>
 							</div>
 						</div>
 					</form>
 
 				</div>
-				<div class="col-md-4">
-					<div class="form-group row">
+				<div class="col-md-5">
+					<div class="form-group row text-center">
 						<label for="session" class="col-sm-12 col-form-label"
-							style="padding: 0px;"> Available questions can be
-							filtered by sessions to add into assessment. </label>
+							style="padding: 0px;"> <b>Available questions can be
+							filtered by sessions to add into assessment.</b> </label>
 					</div>
 					<div class="form-group row">
 
