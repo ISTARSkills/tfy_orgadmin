@@ -197,22 +197,22 @@
 								<div class="col-md-3">
 									<div class="row"
 										style="margin-top: 17px; margin-left: -43px; margin-right: 0px;">
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Rookie">
 											<a class='btn btn-icon btn-sm level_1' id="rookie"
 												style="border: 1px solid #000307;"> <b>R</b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Apprentice">
 											<a class='btn btn-icon btn-sm level_2' id="apprentice"
 												style="border: 1px solid #000307;"> <b>A </b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Master">
 											<a class='btn btn-icon btn-sm level_3' id="master"
 												style="border: 1px solid #000307;"> <b>M</b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Wizard">
 											<a class='btn btn-icon btn-sm level_4' id="wizard"
 												style="border: 1px solid #000307;"> <b>W</b>
 											</a>
@@ -265,22 +265,22 @@
 								<div class="col-md-3">
 									<div class="row"
 										style="margin-top: 17px; margin-left: -43px; margin-right: 0px;">
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Rookie">
 											<a class='btn btn-icon btn-sm level_1' id="rookie"
 												style="border: 1px solid #000307;"> <b>R</b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Apprentice">
 											<a class='btn btn-icon btn-sm level_2' id="apprentice"
 												style="border: 1px solid #000307;"> <b>A </b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Master">
 											<a class='btn btn-icon btn-sm level_3' id="master"
 												style="border: 1px solid #000307;"> <b>M</b>
 											</a>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-3 popover-dismiss" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Wizard">
 											<a class='btn btn-icon btn-sm level_4' id="wizard"
 												style="border: 1px solid #000307;"> <b>W</b>
 											</a>
@@ -326,7 +326,7 @@
 			window.lessonID = $('#lessonId').val();
 			window.courseID = $('#courseId').val();
 			fillAssessmentEditFormFields();
-
+			$('.popover-dismiss').popover();
 		});
 
 		function fillAvailableQuestionsTable() {
@@ -350,7 +350,7 @@
 										var sesionNames = data[i].sesionNames;
 										var sessionIds = data[i].sessionIds;
 										var tableRow = "<tr class='"+difficultyLevel+" available_question' id='available_question_"+questionId+"'><td> \
-							    <a class='btn btn-danger btn-icon btn-sm add_question_to_assessment'><i class='fa fa-arrow-circle-left' aria-hidden='true' style='color:white;'></i></a></td> \
+							    <a class='btn btn-icon btn-sm add_question_to_assessment'><i class='fa fa-arrow-circle-left custom-btn-icon' aria-hidden='true'></i></a></td> \
 							    <td>"
 												+ questionId
 												+ "</td> \
@@ -430,7 +430,7 @@
 					     <td>"
 																+ skills
 																+ "</td> \
-					     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-trash' aria-hidden='true' style='color:white;'></i></a></td></tr>";
+					     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-trash custom-btn-icon' aria-hidden='true'></i></a></td></tr>";
 														$(
 																'#assessment_que_table_body')
 																.prepend(
@@ -631,7 +631,7 @@
 							     <td style='display:none'>"
 												+ skillIds
 												+ "</td> \
-							     <td><a class='btn btn-danger btn-icon btn-sm remove_question'><i class='fa fa-trash' aria-hidden='true' style='color:white;'></i></a></td></tr>";
+							     <td><a class='btn btn-icon btn-sm remove_question'><i class='fa fa-trash custom-btn-icon' aria-hidden='true'></i></a></td></tr>";
 										tableBody += tableRow;
 									}
 
@@ -737,7 +737,7 @@
 																		"td:eq(4)")
 																.html();
 														var tableRow = "<tr class='"+difficultyLevel+" available_question' id='available_question_"+questionId+"'><td> \
-						    <a class='btn btn-danger btn-icon btn-sm add_question_to_assessment'><i class='fa fa-arrow-circle-left' aria-hidden='true' style='color:white;'></i></a></td> \
+						    <a class='btn btn-icon btn-sm add_question_to_assessment'><i class='fa fa-arrow-circle-left custom-btn-icon' aria-hidden='true'></i></a></td> \
 						    <td>"
 																+ questionId
 																+ "</td> \

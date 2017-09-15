@@ -99,7 +99,7 @@
 			</button>
 		</div>
 		<div class="modal-body custom-no-padding">
-			<div class="container-fluid bd-example-row">
+			<div class="container-fluid bd-example-row pl-0">
 				<div class='row' style="margin-top: 10px;">
 					<div class='col-md-3 justify-content-md-center'>
 						<img src='/assets/images/viewport.png' style="width: 360px;">
@@ -221,7 +221,7 @@
 
 					</div>
 					<div class='col-md-9 question_form'>
-						<div class="row">
+						<div class="row m-0">
 							<div class="col-md-12">
 								<div class="card">
 									<ul class="nav nav-tabs" role="tablist">
@@ -232,12 +232,11 @@
 											aria-controls="profile" role="tab" data-toggle="tab"
 											style='padding: 15px;'>Learning Objective</a></li>
 									</ul>
-									<div class='col-md-2 col-md-auto'>
-										<button type="button" class="btn btn-primary submit_question"
-											id='submit_question'>Save Changes</button>
-									</div>
+									
 									<!-- Tab panes -->
 									<div class="tab-content">
+										<button type="button" class="btn-grey btn-sm submit_question"
+											id='submit_question'>Save Changes</button>
 										<div role="tabpanel" class="tab-pane active" id="home">
 											<div id="question_details_form">
 												<div class='row my-3'>
@@ -277,7 +276,7 @@
 															value="<%if (duration_in_sec != null) {%><%=duration_in_sec%><%}%>">
 													</div>
 													<div class="col-md-2 col-md-auto">
-														<button type="button" class="btn btn-primary"
+														<button type="button" class="btn-grey btn-sm"
 															id="add_option" style="margin-top: 19px;">Add
 															Option</button>
 													</div>
@@ -317,11 +316,9 @@
 															<div class="option_text"
 																id="option_ckeditor_<%=optionCount%>"></div>
 														</div>
-														<div class='col-md-1 col-md-auto'>
-															<div style="margin-top: 25px;">
+														<div class='col-md-1 col-md-auto m-auto'>
 																<button type="button"
 																	class="btn option_marking_scheme <%=scheme%>">Correct</button>
-															</div>
 														</div>
 														<div class='col-md-1 col-md-auto'>
 															<a class="btn btn-danger btn-icon btn-sm remove_option"
