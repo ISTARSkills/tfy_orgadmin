@@ -89,8 +89,8 @@
 							<div class="col-lg-offset-2 col-lg-10">
 								<button class="btn-grey btn-sm " type="button"
 									id='updateCourseDetails'>Update Detail</button>
-								<button class="btn-grey btn-sm" id='addLastModule'
-									type='button'>Add Module</button>
+								<button class="btn-grey btn-sm" id='addLastModule' type='button'>Add
+									Module</button>
 							</div>
 						</div>
 					</form>
@@ -98,8 +98,8 @@
 				</div>
 				<div class="col-md-3">
 					<label for="courseImageURL"><img class='courseImage'
-						id='courseImage' src='<%=cdnPath%>course_images/c_0.png'
-						alt=''> </label><input style="display: none"
+						id='courseImage' src='<%=cdnPath%>course_images/c_0.png' alt=''>
+					</label><input style="display: none"
 						value='<%=cdnPath%>course_images/c_0.png' id='courseImageURL'
 						type='file' accept="image/png">
 				</div>
@@ -461,11 +461,13 @@
 						$('#courseNameSize').html(
 								$('#courseName').val().trim().length + '/255');
 					});
-			$('#courseDesc').keyup(function() {
-				$('#courseDescSize').html($('#courseDesc').val().trim().length+ '/255'
+			$('#courseDesc').keyup(
+					function() {
+						$('#courseDescSize').html(
+								$('#courseDesc').val().trim().length + '/255'
 
-				);
-			});
+						);
+					});
 			return isCourseFormOK;
 		}
 
@@ -483,7 +485,8 @@
 							$('#courseDesc').val(
 									courseObject.course.description);
 							$('#courseDescSize').html(
-									courseObject.course.description.length+ '/255');
+									courseObject.course.description.length
+											+ '/255');
 							$('#courseImage').attr(
 									'src',
 									window.cdnPath
@@ -2224,7 +2227,7 @@
 																						'toggle');
 																		initLearningObjectiveSearch(chosenLessonID);
 																		initRemoveSelectedLO(chosenLessonID);
-																		
+
 																	});
 												});
 							});
@@ -2320,8 +2323,7 @@
 									if (window.lessonLOset.has(parseInt(loid))) {
 										alert('This learning objective is already present in the selected list.');
 										$(listitem).remove();
-										
-										
+
 									} else {
 										$
 												.get(
@@ -2360,28 +2362,65 @@
 		}
 
 		function initRemoveSelectedLO(chosenLessonID) {
-			$(document).on(
-					'click',
-					'.selectedLO',
-					function() {
+			$(document)
+					.on(
+							'click',
+							'.selectedLO',
+							function() {
 
-						var loid = $(this).attr('id');
-						var listitem = this;
-						var r = confirm("Are you sure?");
-						if (r == true) {
-							$.get(
-									window.content_rest_url + 'lesson/remLO/'
-											+ chosenLessonID + '/' + loid + '/'
-											+ window.courseID).done(
-									function(response) {
-										if (response.success) {
-											window.lessonLOset.delete(parseInt(loid));											
-											$(listitem).remove();
-											
-										}
-									});
-						}
-					});
+								var loid = $(this).attr('id');
+								var listitem = this;
+								var r = confirm("Are you sure?");
+								if (r == true) {
+									$
+											.get(
+													window.content_rest_url
+															+ 'lesson/remLO/'
+															+ chosenLessonID
+															+ '/' + loid + '/'
+															+ window.courseID)
+											.done(
+													function(response) {
+														if (response.success) {
+															window.lessonLOset.delete(parseInt(loid));											
+															$(listitem)
+																	.remove();
+															var searchString = $(
+																	'#searchLO')
+																	.val()
+																	.trim();
+															if (searchString != ''
+																	&& searchString.length > 3) {
+																$
+																		.get(
+
+																				window.content_rest_url
+																						+ 'learningObjective/search?s='
+																						+ searchString)
+																		.done(
+																				function(
+																						response) {
+																					var searchResults = '';
+																					$
+																							.each(
+																									response.learningObjectives,
+																									function(
+																											index,
+																											value) {
+																										searchResults += "<li class='searchLOResults list-group-item' id='"+value.id+"'>";
+																										searchResults += value.text;
+																										searchResults += "<a href='#'><i class='fa fa-plus-square-o pull-right'></i></a></li>";
+																									});
+																					$(
+																							'#searchLOResult')
+																							.html(
+																									searchResults);
+																				});
+															}
+														}
+													});
+								}
+							});
 		}
 
 		function initSessionEllipsisDuplicateFrom() {
@@ -2436,7 +2475,7 @@
 																	});
 												});
 							});
-			
+
 		}
 		function duplicateModalCourseChangeListener(chosenSessionID) {
 			$(document)
