@@ -84,7 +84,7 @@
 								class="col-sm-2 col-form-label">Duration (mins)</label>
 							<div class="col-sm-10">
 								<input type="number" id='assessmentDurationInMinutes'
-									class="form-control">
+									class="form-control"  min="0">
 							</div>
 						</div>
 						<div class="form-group row">
@@ -349,18 +349,18 @@
 										var difficultyLevel = data[i].difficulty_level;
 										var sesionNames = data[i].sesionNames;
 										var sessionIds = data[i].sessionIds;
-										var tableRow = "<tr class='"+difficultyLevel+" available_question' id='available_question_"+questionId+"'><td> \
+										var tableRow = "<tr class='"+difficultyLevel+" available_question' id='available_question_"+questionId+"'><td > \
 							    <a class='btn btn-icon btn-sm add_question_to_assessment'><i class='fa fa-arrow-circle-left custom-btn-icon' aria-hidden='true'></i></a></td> \
-							    <td>"
+							    <td style='max-width:40px'>"
 												+ questionId
 												+ "</td> \
-							    <td>"
+							    <td style='max-width:200px;word-wrap: break-word;'>"
 												+ questionText
 												+ "</td> \
-							    <td>"
+							    <td style='max-width:20px;    word-wrap: break-word;'>"
 												+ type
 												+ "</td> \
-							    <td>"
+							    <td style='max-width:200px;    word-wrap: break-word;'>"
 												+ sesionNames
 												+ "</td> \
 							    <td style='display:none'>"
@@ -469,7 +469,7 @@
 															return;
 														var sessionIdInRow = $(
 																this).find(
-																"td:last")
+																"td:lt(4)")
 																.text()
 																.toLowerCase();
 														var sessionIdMatched = false;
@@ -514,6 +514,8 @@
 														if (index === 0)
 															return;
 														var rowText = $(this)
+																.find(
+																"td:lt(4)")
 																.text()
 																.toLowerCase();
 														$(this)
@@ -525,13 +527,13 @@
 								}
 
 							});
-
+			
 			$('#session_skill')
 					.unbind()
 					.on(
 							'change',
-							function() {
-
+							function() {														
+								
 								var myOptions = [];
 								$('#session_skill option:selected').each(
 										function() {
@@ -658,7 +660,13 @@
 								function(index) {
 									if (index === 0)
 										return;
-									var rowText = $(this).text().toLowerCase();
+									//var rowText = $(this).text().toLowerCase();
+									var rowText = $(this)
+									.find("td:lt(4)")
+									.text()
+									.toLowerCase();
+							//var showRow = false;
+									
 									$(this).toggle(
 											rowText.indexOf(searchValue
 													.toLowerCase()) !== -1);
@@ -806,17 +814,21 @@
 				
 				var errorExist = false;
 				var dataInErrorList='';
+				var durationIsNegative= false;
+				if($('#assessmentDurationInMinutes').val()!=null && $('#assessmentDurationInMinutes').val()<=0)
+				{
+					durationIsNegative =true;
+				}	
 				if(assessmentName==='')
 				{
 					errorExist = true;
 					dataInErrorList+='<p>Assesssment Name cannot be empty.</p>';
 				}
-				if(assessmentDurationInMinutes==0)
+				if(durationIsNegative)
 				{
 					errorExist = true;
-					dataInErrorList+='<p>Duration of assessment cannot be 0.</p>';
+					dataInErrorList+='<p>Duration of assessment cannot be negative or zero.</p>';
 				}
-				
 				if(!errorExist)
 				{
 					var assessObject ={

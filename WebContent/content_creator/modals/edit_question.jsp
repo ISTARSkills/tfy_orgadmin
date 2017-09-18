@@ -81,7 +81,7 @@
 			aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
-		<h3 class="alert-heading">Question creation failed!</h3>
+		<h3 class="alert-heading">Operation failed!</h3>
 		<hr>
 		<div id="que_error_list"></div>
 	</div>

@@ -165,6 +165,19 @@ function enableQuestionViewer()
 
 function addMoreOption(){
 	//add_option
+	
+	var optionCount1 = 1;
+    if($( "#option_container_form .option_in_form").length!=null && $( "#option_container_form .option_in_form").length!=0)
+	{
+		var lastOptionCounter1 = $("#option_container_form .option_in_form").first().attr('id').replace("option_form_","");
+		optionCount1 = parseInt(lastOptionCounter1)+1;
+		
+	}
+    if(optionCount1>=5)
+	{
+		$('#add_option').hide();
+	}
+    
 	$('#add_option').unbind().on('click',function(){
 		//option_in_form
 		//option_container_form
@@ -203,7 +216,7 @@ function addMoreOption(){
 				</div>';
 			$('#option_prev_container').prepend(optionPreviewHTML);
 		
-			if(optionCount==5)
+			if(optionCount>=5)
 			{
 				$('#add_option').hide();
 			}
@@ -250,9 +263,11 @@ function submitQuestionData()
 		{
 			explanationText = $('#edit_explanation_text').html();
 		}
-		
+		var durationIsNegative =false;
 		var optionArray=[];
 		var correctOptionCount=0;
+		var optionEmpty = false;
+		var singleChoiceError =  false;
 		$('.edit_option_text').each(function(){
 			var optionId= null;
 			if($(this).parents('.edit_question_option').data('option_id')!=null)
@@ -272,12 +287,31 @@ function submitQuestionData()
 				markingScheme= 0;
 			}
 			
-			if(optionText!=null && optionText.length>0){
+			if($(this).text()!=null && $(this).text().trim().length>0 && $(this).text().trim()!==''){
 				var optionObject ={'id':optionId, 'option_text':$.trim(optionText), 'markingScheme':markingScheme};
 				optionArray.push(optionObject);
-			}			
+			}else{
+				optionEmpty = true;
+			}
+			
+			
 		});
-		
+	
+	
+		var questionType = $('#questionType').val();
+		if(questionType==1)
+		{
+			if(correctOptionCount > 1)
+			{
+				singleChoiceError= true;
+			}
+		}
+		if($('#questionDuration').val()!=null && $('#questionDuration').val()<=0)
+		{
+			durationIsNegative =true;
+		}	
+			
+		var sessionSkills = [];
 		var learning_objectives =[];
 		if($('#question_lo_selector').val()!=null)
 		{
@@ -287,12 +321,22 @@ function submitQuestionData()
 				{
 					learning_objectives.push({'id':value});
 				}				
-				});
+			});
 		}
+		
+		var skillOptGroup = $('#question_lo_selector :selected').parent();
+		$(skillOptGroup).each(function(index){
+			var optionSkill = $(this).attr('label');
+			if(optionSkill!=null && jQuery.inArray(optionSkill, sessionSkills) == -1)
+			{
+				sessionSkills.push(optionSkill);
+			}
+		});
 		
 		var errorExist = false;
 		var dataInErrorList='';
-		if(questionText!=null && $.trim(questionText)==='')
+		
+		if($('#edit_question_text').text()!=null && $('#edit_question_text').text().trim().length==0 && $('#edit_question_text').text().trim()==='')
 		{
 			errorExist = true;
 			dataInErrorList+='<p>Question Text cannot be empty.</p>';
@@ -311,7 +355,20 @@ function submitQuestionData()
 			errorExist = true;
 			dataInErrorList+='<p>Question should me mapped to atleast one learning objective. If you cannot find the learning objective required to map with the question. Take a step back and map that learning objective to any lesson of this course.</p>';
 		}
-		
+		if(optionEmpty){
+			errorExist = true;
+			dataInErrorList+='<p>Option Text cannot be empty.</p>';
+		}
+		if(singleChoiceError)
+		{
+			errorExist = true;
+			dataInErrorList+='<p>For question with type "Single Correct Option", multiple options cannot be marked as correct.</p>';
+		}
+		if(durationIsNegative)
+		{
+			errorExist = true;
+			dataInErrorList+='<p>Duration of question cannot be negative or zero.</p>';
+		}
 		if(!errorExist)
 		{
 			var questionObject ={
@@ -337,6 +394,23 @@ function submitQuestionData()
 				    success: function(data) {
 				    	$('#editQuestionModal').modal('toggle');
 				    	$('#question_'+questionId).find('td:eq(1)').html($.trim(questionText));
+				    	$('#question_'+questionId).removeClass('level_1 level_2 level_3 level_4');
+				    	$('#question_'+questionId).addClass('level_'+difficultyLevel);
+				    	
+				    	if(questionType==="1")
+				    	{
+				    		$('#question_'+questionId).find('td:eq(2)').html("S");
+				    	}
+				    	else if(questionType==="2")
+				    	{
+				    		$('#question_'+questionId).find('td:eq(2)').html("M");				    		
+				    	}
+				    	var updatedSkills ='';
+				    	if(sessionSkills.length>0)
+			    		{
+				    		updatedSkills = sessionSkills.join(',<br>');
+			    		}
+				    	$('#question_'+questionId).find('td:eq(3)').html(updatedSkills);
 				    }
 				});
 			}
@@ -391,7 +465,7 @@ function enableEdit(){
 	//$('#passageText').editable();
 	 var editor= null;
 	$('#edit_passage_text, #passageText').click(function(e) {
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
         for(name in CKEDITOR.instances)
         {
@@ -399,7 +473,8 @@ function enableEdit(){
         }
         
         editor = CKEDITOR.replace('passageText',{        	
-       	height: '400px',       	       
+       	height: '400px',   
+       	removePlugins  :'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,BidiLtr,BidiRtl,Flash,Smiley,About,SpecialChar,Iframe,PageBreak'
    		});
        editor.on('change',function(){
     	   var content = editor.getData();
@@ -411,7 +486,7 @@ function enableEdit(){
 	
 	
 	$('#edit_explanation_text, #explanationText').click(function(e) {
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
         for(name in CKEDITOR.instances)
         {
@@ -428,7 +503,7 @@ function enableEdit(){
    });  
 	
 	$('#edit_question_text, #questionText').click(function(e) {
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
         for(name in CKEDITOR.instances)
         {
@@ -446,7 +521,7 @@ function enableEdit(){
 	
 	
 	$('.edit_question_option, .option_text').click(function(e) {
-        e.stopPropagation();
+        e.stopImmediatePropagation();
         e.preventDefault();
         var optionId =null;
         if($(this).hasClass('edit_question_option'))
