@@ -2224,6 +2224,7 @@
 																						'toggle');
 																		initLearningObjectiveSearch(chosenLessonID);
 																		initRemoveSelectedLO(chosenLessonID);
+																		
 																	});
 												});
 							});
@@ -2319,6 +2320,8 @@
 									if (window.lessonLOset.has(parseInt(loid))) {
 										alert('This learning objective is already present in the selected list.');
 										$(listitem).remove();
+										
+										
 									} else {
 										$
 												.get(
@@ -2372,8 +2375,9 @@
 											+ window.courseID).done(
 									function(response) {
 										if (response.success) {
-											//window.lessonLOset.delete(parseInt(loid));											
+											window.lessonLOset.delete(parseInt(loid));											
 											$(listitem).remove();
+											
 										}
 									});
 						}
@@ -2432,6 +2436,7 @@
 																	});
 												});
 							});
+			
 		}
 		function duplicateModalCourseChangeListener(chosenSessionID) {
 			$(document)
