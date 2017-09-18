@@ -170,7 +170,7 @@ function addMoreOption(){
     if($( "#option_container_form .option_in_form").length!=null && $( "#option_container_form .option_in_form").length!=0)
 	{
 		var lastOptionCounter1 = $("#option_container_form .option_in_form").first().attr('id').replace("option_form_","");
-		optionCount1 = parseInt(lastOptionCounter1)+1;
+		optionCount1 = parseInt(lastOptionCounter1);
 		
 	}
     if(optionCount1>=5)
