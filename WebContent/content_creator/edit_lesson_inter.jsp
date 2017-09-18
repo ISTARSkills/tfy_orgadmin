@@ -1,4 +1,5 @@
 <%@page import="com.viksitpro.core.elt.interactive.CMSSlide"%>
+<%@page import="com.viksitpro.core.elt.*"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSLesson"%>
 <%@page
 	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>

@@ -1,7 +1,7 @@
 <%@page import="com.viksitpro.core.elt.interactive.EntityOption"%>
+<%@page import="com.viksitpro.core.elt.*"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSSlide"%>
-<%@page
-	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
+<%@page	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSLesson"%>
 <%@page import="com.viksitpro.user.service.StudentRolesService"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>

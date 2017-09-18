@@ -1,7 +1,8 @@
+<%@page import="com.viksitpro.core.elt.interactive.EntityOption"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Collections"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="com.viksitpro.core.elt.interactive.EntityOption"%>
+<%@page import="com.viksitpro.core.elt.*"%>
 <%@page
 	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSSlide"%>
