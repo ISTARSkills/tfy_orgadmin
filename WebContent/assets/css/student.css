@@ -743,6 +743,18 @@ width: 3%
 .custom-skillprofile-arrow-img{
 width:30px
 }
+
+.custom-begin-skill{
+	    width: 193.2px;
+    height: 33.6px;
+    font-family: avenir-light;
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 2.68;
+    letter-spacing: 0.7px;
+    text-align: center;
+    color: #ffffff;
+}
 /* Navbra related css*/
 .navbar {
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 5px 0

@@ -292,8 +292,10 @@ public class UserSkillProfile {
 				out.append("<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>");
 				out.append("</div>");
 				out.append("<div class='custom-beginskill-forgroundbutton'>");
-				out.append(
-						"<button type='button' data-cmsId='1' class='btn btn-danger custom-beginskill-button'>Begin Skill</button>");
+				out.append("<a href='/student/presentation.jsp?lesson_id="+sessionPOJOs.get(cardpos).getLessons().get(0).getId()+"' data-cmsId='1' class='btn btn-danger custom-beginskill-button'><span class='custom-begin-skill'>Begin Skill</span></a>");
+
+				
+				
 				out.append("</div>");
 				out.append("</div>");
 

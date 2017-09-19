@@ -293,6 +293,7 @@
 		<script>
 			$(document).ready(function() {
 				$('.carousel').carousel('pause');
+				$('.popover-dismiss').popover();
 			});
 		</script>
 </body>
