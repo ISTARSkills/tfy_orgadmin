@@ -103,11 +103,18 @@ public class StudentTrainerDashboardService {
 					String tsakImg = task.getImageURL();
 					String url = "";
 					String courseName = "";
-					
-					if(task.getHeader().length() >17) {
+					String taskName = "";
+					String taskIcon = "/assets/images/presentation-icon.png";
+					if(task.getHeader().trim().length() >17) {
 						courseName = task.getHeader().toUpperCase().substring(0,18)+"..."; 
 						}else {
 							courseName = task.getHeader().toUpperCase();
+							
+						}
+					if(task.getTitle().trim().length() >25) {
+						taskName = task.getTitle().substring(0,25)+"..."; 
+						}else {
+							taskName = task.getTitle();							
 						}
 					
 					if(task.getItemType().equalsIgnoreCase("ASSESSMENT")) {
@@ -115,19 +122,22 @@ public class StudentTrainerDashboardService {
 						String cdnPath = services.getAnyProp("cdn_path");
 						tsakImg = cdnPath+"course_images/assessment.png";	
 						url = "#";
+						taskIcon = "/assets/images/ic_assignment_white_48dp.png";//
 					}
 					else if(task.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")) {
-						url = "/student/presentation.jsp?task_id="+task.getId()+"&lesson_id="+task.getItemId();					
+						url = "/student/presentation.jsp?task_id="+task.getId()+"&lesson_id="+task.getItemId();	
+						taskIcon = "/assets/images/presentation-icon.png";
 					}
 					else if(task.getItemType().equalsIgnoreCase("CUSTOM_TASK")) {
-						url = "#";					
+						url = "#";	
+						taskIcon = "/assets/images/presentation-icon.png";
 					}
 					out.append("<div class='col custom-no-padding custom-colmd-css'>");
 					out.append("<div class='card custom-cards_css'>");
 
 					out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+task.getHeader().toUpperCase()+"'>"
 							+ courseName + "</h6>");
-					out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
+					out.append("<h4 class='card-title custom-card-title popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+task.getTitle()+"'>" + task.getTitle() + "</h4>");
 					out.append("<img class='card-img-top custom-primary-img' src='" + tsakImg + "' alt='No Image Available'>");
 					String descriptionText = task.getDescription();
 					if(task.getDescription() == null || task.getDescription().equalsIgnoreCase("") || task.getDescription().equalsIgnoreCase("null")) {
@@ -135,9 +145,8 @@ public class StudentTrainerDashboardService {
 						descriptionText = "Description Not Available";
 					}
 					out.append("<p class='card-text custom-card-text'>" + descriptionText + "</p>");
-					out.append(
-							"<a href='"+url+"' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
-									+ task.getItemType().replaceAll("_", " ") + "</span></a>");
+					out.append("<a href='"+url+"' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='"+taskIcon+"' alt=''><span class='custom-primary-btn-text'>"
+									+ task.getItemType().replaceAll("_", " ").replaceAll("LESSON", "WATCH").replaceAll("ASSESSMENT", "START ASSESSMENT") + "</span></a>");
 					out.append("</div></div>");
 				}
 				
