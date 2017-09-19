@@ -204,8 +204,7 @@ $(document).ready(function() {
 		editable : function() {
 			$(this).each(
 					function() {
-						var $el = $(this), $edittextbox = $(
-								'<input type="text"></input>').css('min-width',
+						var $el = $(this), $edittextbox = $('<input type="text"></input>').css('min-width',
 								$el.width()), submitChanges = function() {
 							if ($edittextbox.val() !== '') {
 								$el.html($edittextbox.val());
