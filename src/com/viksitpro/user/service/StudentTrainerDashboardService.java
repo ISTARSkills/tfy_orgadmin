@@ -7,6 +7,7 @@ import java.util.*;
 import com.istarindia.android.pojo.ComplexObject;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.sun.net.httpserver.Filter;
+import com.viksitpro.cms.utilities.URLServices;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 public class StudentTrainerDashboardService {
@@ -88,6 +89,7 @@ public class StudentTrainerDashboardService {
 
 			String temp = "active";
 			
+			
 			out.append("<div class='carousel-inner' role='listbox'>");
 			for (List<TaskSummaryPOJO> list : partitions) {
 				
@@ -97,14 +99,36 @@ public class StudentTrainerDashboardService {
 				
 				out.append("<div class='row custom-no-margins'>");
 				for (TaskSummaryPOJO task : list) {
+					
+					String tsakImg = task.getImageURL();
+					String url = "";
+					String courseName = "";
+					
+					if(task.getHeader().length() >17) {
+						courseName = task.getHeader().toUpperCase().substring(0,18)+"..."; 
+						}else {
+							courseName = task.getHeader().toUpperCase();
+						}
+					
+					if(task.getItemType().equalsIgnoreCase("ASSESSMENT")) {
+						URLServices services = new URLServices();
+						String cdnPath = services.getAnyProp("cdn_path");
+						tsakImg = cdnPath+"course_images/assessment.png";	
+						url = "#";
+					}
+					else if(task.getItemType().equalsIgnoreCase("LESSON_PRESENTATION")) {
+						url = "/student/presentation.jsp?task_id="+task.getId()+"&lesson_id="+task.getItemId();					
+					}
+					else if(task.getItemType().equalsIgnoreCase("CUSTOM_TASK")) {
+						url = "#";					
+					}
 					out.append("<div class='col custom-no-padding custom-colmd-css'>");
 					out.append("<div class='card custom-cards_css'>");
 
-					out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted'>"
-							+ task.getHeader().toUpperCase() + "</h6>");
+					out.append("<h6 class='card-subtitle custom-card-subtitle mb-2 text-muted popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+task.getHeader().toUpperCase()+"'>"
+							+ courseName + "</h6>");
 					out.append("<h4 class='card-title custom-card-title'>" + task.getTitle() + "</h4>");
-					out.append("<img class='card-img-top custom-primary-img' src='" + task.getImageURL()
-							+ "' alt='No Image Available'>");
+					out.append("<img class='card-img-top custom-primary-img' src='" + tsakImg + "' alt='No Image Available'>");
 					String descriptionText = task.getDescription();
 					if(task.getDescription() == null || task.getDescription().equalsIgnoreCase("") || task.getDescription().equalsIgnoreCase("null")) {
 						
@@ -112,7 +136,7 @@ public class StudentTrainerDashboardService {
 					}
 					out.append("<p class='card-text custom-card-text'>" + descriptionText + "</p>");
 					out.append(
-							"<a href='#' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
+							"<a href='"+url+"' class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img class='card-img-top custom-secoundary-img'src='/assets/images/presentation-icon.png' alt=''><span class='custom-primary-btn-text'>"
 									+ task.getItemType().replaceAll("_", " ") + "</span></a>");
 					out.append("</div></div>");
 				}
