@@ -16,7 +16,6 @@
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 	request.setAttribute("cp", cp);
-	int lessonID = 0;
 	Lesson lesson = new LessonDAO().findById(Integer.parseInt(request.getParameter("lesson_id")));
 	String slide_id = "0";
 	String template_type = "0";
@@ -26,6 +25,7 @@
 	   template_type = request.getParameter("template_type");
 	} */ 
 	
+	int lessonID = 2271;
 	
 	if (lesson != null) {
 		lessonID = lesson.getId();
@@ -44,6 +44,11 @@
     font-size: 11px;
 }
 </style>
+<style>
+  #slides { list-style-type: none; margin: 0; padding: 0; }
+  #slides li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+  #slides li span { position: absolute; margin-left: -1.3em; }
+  </style>
 <meta charset="utf-8">
 
 <title>reveal.js The HTML Presentation Framework</title>
@@ -86,7 +91,7 @@
 </div>
 
 
-	<div id='slide_holder' class="reveal" data-lessonid="<%=lessonID%>" data-slide_id="<%=slide_id%>" data-template_type="<%=template_type%>">
+	<div id='slide_holder' class="reveal" data-lessonid="<%=lessonID%>">
 
 	</div>
 	 <script src="<%=baseURL %>assets/js/jquery.min.js"></script>
@@ -110,11 +115,38 @@
 		  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
 		}
 	
+	
+	function tableEditFunction(tableValue){
+		
+		 var data = $('.present table').html();
+		 var start = data.substring(0,data.indexOf("<form>"));
+		 var end = data.substring(data.indexOf("</form>")+7,data.length);
+		 data = start+tableValue+end;
+    	 $(".custom_table_edit").remove();
+    	$($(".present")[0]).append("<table class='custom_table_edit' style='display: none;' >"+data+"</table>");
+    	$('.custom_table_edit tbody th').each(function() {
+    		  if($( this ).text() == 'click here to edit....'){ $( this ).remove();   }
+    		});
+    		$('.custom_table_edit tbody td').each(function() {
+    		  if($( this ).text() == 'click here to edit....'){ $( this ).remove();   }
+    		});
+    		$('.custom_table_edit thead th').each(function() {
+    		  if($( this ).text() == 'click here to edit....' || $( this ).text() == ''){ $( this ).remove();   }
+    		});
+    		$('.custom_table_edit tbody tr:empty').remove();
+    		    		
+    		data = $('.present .custom_table_edit').html();
+    		return data;
+		
+	}
+	
 		$(document).ready(function() {
 			window.lessonID = $('.reveal').data('lessonid');
 			//window.templateType = $('.reveal').data('template_type');
 			//window.slide_id = $('.reveal').data('slide_id');
 			intializeReveal();
+			$( "#slides" ).sortable();
+		    $( "#slides" ).disableSelection();
 			});
 		function intializeReveal() {
 			
@@ -197,15 +229,64 @@
 				
 			 });
 			
-			 $('.edit').editable('<%=baseURL%>tfy_content_rest/edit_ppt', {
+			
+			/* $.fn.extend({editable : function() {
+				$(this).each(function() {
+				var $el = $(this), $edittextbox = $('<input type="text"></input>').css('min-width',$el.width()), submitChanges = function() {
+				if ($edittextbox.val() !== '') {
+				$el.html($edittextbox.val());
+				$el.show();
+				$el.trigger('editsubmit', [ $el.html() ]);
+				$(document).unbind('click', submitChanges);
+				$edittextbox.detach();
+				}
+				}, tempVal;
+				$edittextbox.click(function(event) {
+				event.stopPropagation();
+				});
+
+				$el.dblclick(function(e) {
+				e.stopPropagation();
+				tempVal = $el.html();
+				$edittextbox.val(tempVal).insertBefore(this).bind(
+				'keypress',
+				function(e) {
+				var code = (e.keyCode ? e.keyCode
+				: e.which);
+				if (code == 13) {
+				submitChanges();
+				}
+				}).select();
+				$el.hide();
+				$(document).click(submitChanges);
+				});
+				});
+				return this;
+				}
+				}); */
+			
+			/* $('.edit').unbind().editable().on('editsubmit', function(event, val) {
+				$(this).next().attr('value',val);
+				}); */
+			
+		 	 $('.edit').editable('<%=baseURL%>tfy_content_rest/edit_ppt', {
 		    	indicator : 'Saving...', 
 		        tooltip:'Click to edit...',
 		        event:'dblclick',
 		       
 
 		        submitdata : function(value, settings) {
+		        	var table = '';
 		        	var isnewdata = $('.present >.slide_controls').attr('data-isnew_slide');
 	            	 $('.present >.slide_controls').attr('data-isnew_slide','false');
+	            	 
+	            	 if($('#slide_'+$('.present').attr('id')).attr('data-template') === 'only_title_paragraph_cells_fragemented' && $(this).attr("data-element_type") === 'TABLE'){
+	            		 
+	            	
+	            		var tableValue = $(this).find('input').val()
+	            			 table =  tableEditFunction(tableValue);
+	            			 			     
+	            	 }  	            	 
 		            return {
 		            	slide_id: $('.present').attr('id'),
 		            	element_type: $(this).attr("data-element_type"),
@@ -215,6 +296,7 @@
 		            	child_fragment_index:$(this).attr("data-child-fragment-index"),
 		            	color_code:rgb2hex($('.slide-background.present').css('background-color')),
 		            	isnew_slide:isnewdata,
+		            	table:table,
 		            	};
 		        },callback:function(value, settings) {
 		        	 console.log(value);
@@ -222,9 +304,7 @@
 		             
 		        }
 		       
-		    });
-			 
-			
+		    }); 
 		}
 		
 		

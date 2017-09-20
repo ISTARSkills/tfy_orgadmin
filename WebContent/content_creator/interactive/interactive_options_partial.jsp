@@ -257,17 +257,17 @@
 			for (EntityOption entityOption : cmsSlide.getEntityOptions().getEntityOptions()) {
 
 				if (i == 0)
-					opt1Nav = entityOption.getNext_slide();
+					opt1Nav = entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				if (i == 1)
-					opt2Nav = entityOption.getNext_slide();
+					opt2Nav =entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				if (i == 2)
-					opt3Nav = entityOption.getNext_slide();
+					opt3Nav = entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				if (i == 3)
-					opt4Nav = entityOption.getNext_slide();
+					opt4Nav = entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				if (i == 4)
-					opt5Nav = entityOption.getNext_slide();
+					opt5Nav =entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				if (i == 5)
-					opt6Nav = entityOption.getNext_slide();
+					opt6Nav = entityOption.getNext_slide()!=null? entityOption.getNext_slide():-1;
 				i++;
 			}
 		}

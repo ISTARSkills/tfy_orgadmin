@@ -1,5 +1,6 @@
+<%@page import="com.viksitpro.core.elt.interactive.EntityOption"%>
+<%@page import="com.viksitpro.core.elt.interactive.EntityOptions"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSSlide"%>
-<%@page import="com.viksitpro.core.elt.*"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSLesson"%>
 <%@page
 	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
@@ -24,7 +25,7 @@
 	request.setAttribute("cp", cp);
 
 	InteractiveLessonServices services = new InteractiveLessonServices();
-	int lessonId=-1;
+	int lessonId = -1;
 	CMSLesson cmsLesson = null;
 	if (request.getParameter("lesson_id") != null) {
 		lessonId = Integer.parseInt(request.getParameter("lesson_id"));
@@ -44,6 +45,7 @@
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: baseline;
+	cursor: pointer;
 	border-radius: .25rem;
 }
 
@@ -186,7 +188,13 @@
 						stroke : "white",
 						font : "bold 13px avenir-light",
 						textAlign : "center"
-					})));
+					})),{
+				        contextMenu:                            // define a context menu for each node
+				            $(go.Adornment, "Spot",               // that has several buttons around
+				              $(go.Placeholder, { padding: 5 }),  // a Placeholder object
+				              $("ContextMenuButton", $(go.TextBlock,"Delete"),{alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom, click: deleteSlides })
+				            )
+				        });
 
 			myDiagram.nodeTemplate = detailtemplate;
 			
@@ -201,7 +209,7 @@
 
 				}
 				if (data) {
-					var lessonString='<%=lessonId!=-1?"lesson_id="+lessonId+"&":""%>';
+					var lessonString='<%=lessonId != -1 ? "lesson_id=" + lessonId + "&" : ""%>';
 					window.location='./lesson_interactive.jsp?'+lessonString+'slide_id=' + data;
 				}
 
@@ -219,17 +227,17 @@
 			}, new go.Binding("text", "text")));
 
 			var dataList = [];
-
+			var linkList =[];
 			
 			
 			<%if (cmsLesson != null) {
-				for (int i = 0; null != cmsLesson.getSlides() && i <cmsLesson.getSlides().size(); i++) {
+				for (int i = 0; null != cmsLesson.getSlides() && i < cmsLesson.getSlides().size(); i++) {
 					CMSSlide cmsslide = cmsLesson.getSlides().get(i);%>
 				
 			var obj = {};
 			obj.key = <%=cmsslide.getOrder_id()%>;
-			
 			obj.slideId = <%=cmsslide.getId()%>;
+			
 			
 			<%String type = "";
 					String color = "";
@@ -247,15 +255,30 @@
 							color = "#5cb85c";
 							break;
 					}%>
-				obj.data = "slide is about <%=type%>...";
+			obj.data = "slide is about <%=type%>...";
 			obj.ribbon = "<%=type%>";
 			obj.ribbonColor="<%=color%>";
 
 			dataList.push(obj);
+	<%if (cmsslide.getEntityOptions() != null && cmsslide.getEntityOptions().getEntityOptions() != null
+							&& cmsslide.getEntityOptions().getEntityOptions().size() != 0) {
+
+						for (EntityOption entityOption : cmsslide.getEntityOptions().getEntityOptions()) {
+							if (entityOption != null && entityOption.getNext_slide() != null
+									&& entityOption.getNext_slide() != 0) {%>
+						
+						var linkObj = {};
+						linkObj.from =<%=cmsslide.getOrder_id()%>;
+						linkObj.text ="Opts <%=entityOption.getId()%>";
+							linkObj.to=<%=entityOption.getNext_slide()%>; 
+							linkList.push(linkObj);
+			<%}
+						}
+					}%>
+		
 	<%}
 			}%>
-
-			var linkList = [ {
+		/* var linkList = [ {
 				from : 1,
 				to : 2,
 				text : "Opts 1"
@@ -291,8 +314,32 @@
 				from : 8,
 				to : 9,
 				text : "opts 1"
-			} ];
+			} ]; */
 			myDiagram.model = new go.GraphLinksModel(dataList, linkList);
+		}
+		
+
+			
+		function deleteSlides(e, obj) {
+			var node = obj.part.adornedPart;
+
+			if (confirm("Are you sure you want to Delete this Slide?")) {
+				var slideId = node.data.slideId;
+				$.ajax({
+					type : "POST",
+					url : "/tfy_content_rest/interactive_slide",
+					data : {
+						type : "delete",
+						lesson_id :<%=lessonId%>,
+						slide_id : slideId
+					},
+					success : function(data) {
+						location.reload();
+					}
+				});
+			} else {
+				return false;
+			}
 		}
 	</script>
 </body>

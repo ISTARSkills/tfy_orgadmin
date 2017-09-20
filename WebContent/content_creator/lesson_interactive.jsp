@@ -1,7 +1,7 @@
 <%@page import="com.viksitpro.core.elt.interactive.EntityOption"%>
-<%@page import="com.viksitpro.core.elt.*"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSSlide"%>
-<%@page	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
+<%@page
+	import="com.viksitpro.core.elt.interactive.InteractiveLessonServices"%>
 <%@page import="com.viksitpro.core.elt.interactive.CMSLesson"%>
 <%@page import="com.viksitpro.user.service.StudentRolesService"%>
 <%@page import="com.istarindia.android.pojo.ComplexObject"%>
@@ -58,7 +58,7 @@
 
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
-	<div class="jumbotron gray-bg">
+	<div class="jumbotron gray-bg h-100">
 		<div class="container mx-0 mt-5 mb-2">
 			<div class="row">
 				<a class="back-button" id='back-button' href='./edit_lesson_inter.jsp?lesson_id=<%=lessonId%>'>
