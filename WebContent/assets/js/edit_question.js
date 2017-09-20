@@ -473,8 +473,7 @@ function enableEdit(){
         }
         
         editor = CKEDITOR.replace('passageText',{        	
-       	height: '400px',   
-       	removePlugins  :'Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,BidiLtr,BidiRtl,Flash,Smiley,About,SpecialChar,Iframe,PageBreak'
+       	height: '400px'
    		});
        editor.on('change',function(){
     	   var content = editor.getData();
