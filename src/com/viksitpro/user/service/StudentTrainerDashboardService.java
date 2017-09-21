@@ -8,6 +8,7 @@ import com.istarindia.android.pojo.ComplexObject;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.sun.net.httpserver.Filter;
 import com.viksitpro.cms.utilities.URLServices;
+import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 public class StudentTrainerDashboardService {
@@ -188,5 +189,16 @@ public class StudentTrainerDashboardService {
 		return out;
 
 	}
+	
+	public List<HashMap<String, Object>> EventDetailsForCalendar(int event_id) {
+		
+		DBUTILS util = new DBUTILS();
+		String sql = "SELECT 	course.course_name, 	batch_group. NAME as section_name FROM 	batch_schedule_event, 	course, 	batch_group WHERE 	batch_group_code IN "
+				+ "( 		SELECT 			batch_group_code 		FROM 			batch_schedule_event 		WHERE 			ID = "+event_id+" 	) "
+				+ "AND batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' AND course. ID = batch_schedule_event.course_id AND batch_group. ID = batch_schedule_event.batch_group_id";
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		return data;		
+	}
+	
 
 }

@@ -833,12 +833,12 @@ width: 3%
 
 .custom-left-prev-trainer {
 	width: 4px;
-	height: 36vh;
+	height: 29vh;
 }
 
 .custom-right-prev-trainer {
-	height: 36vh;
-	width: 4px;
+	height: 29vh;
+    width: 4px;
 }
 
 .icons8-clock {
@@ -905,13 +905,13 @@ width: 3%
 }
 
 .oval-small {
-	width: 2.4px;
-	border-radius: 50px;
-	position: absolute;
-	height: 2.4px;
-	background-color: #2196f2;
-	bottom: 2px;
-	margin-left: 3px;
+	width: 5.4px;
+    border-radius: 82px;
+    position: absolute;
+    height: 5.4px;
+    background-color: #2196f2;
+    bottom: 4px;
+    margin-left: 3px;
 }
 
 .trainer-dash-attendance-head {

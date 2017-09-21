@@ -373,6 +373,7 @@
 							function(index) {
 
 								new Highcharts.Chart({
+									credits:false,
 									legend : {
 										layout : 'vertical',
 										backgroundColor : '#ffffff',

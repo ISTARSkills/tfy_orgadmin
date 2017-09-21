@@ -38,7 +38,7 @@
 
 .custom-colmd-css {
 	width: 100%;
-	height: 100vh;
+    height: 600px;
 }
 
 .custom-cards_css {
@@ -1069,15 +1069,16 @@ position: absolute;
 }
 
 .calendar-sessiontype-dropdown {
+	
 	width: 130px;
 	height: 30px;
 	border-radius: 4px;
-	background-color: rgba(153, 153, 153, 0.1);
-	border: solid 1px rgba(236, 236, 236, 0.7);
-	font-family: Lato;
-	font-size: 12px;
+	border: solid 0px rgba(236, 236, 236, 0.7);
+	font-family: avenir-light;
+	font-size: 21px;
 	text-align: left;
 	color: #4a4a4a;
+	font-weight: bolder;
 }
 
 .calendar-role-dropdown {
@@ -1086,19 +1087,33 @@ position: absolute;
 	border-radius: 4px;
 	background-color: rgba(153, 153, 153, 0.1);
 	border: solid 1px rgba(236, 236, 236, 0.7);
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	text-align: left;
 	color: #4a4a4a;
 }
 
+.custom-optioncss{
+	    position: relative;
+    float: left;
+    width: 96%;
+    border-bottom: 1px solid #E0E0E0;
+    background-color: #F5F5F5;
+    list-style-type: none;
+    padding: 10px 2%;
+    margin: 0px;
+    transition: all 275ms ease-in-out;
+    display: block;
+    cursor: pointer;
+	
+}
 .green-border {
 	width: 100px;
 	height: 30px;
 	border: solid 1px #7ed321;
 	border-radius: 20px !important;
 	margin: 2px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	text-align: left;
 	color: #4a4a4a;
@@ -1110,7 +1125,7 @@ position: absolute;
 	border: solid 1px #35bdf0;
 	border-radius: 20px !important;
 	margin: 2px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	text-align: left;
 	color: #4a4a4a;
@@ -1122,7 +1137,7 @@ position: absolute;
 	border: solid 1px #df756a;
 	border-radius: 20px !important;
 	margin: 2px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	text-align: left;
 	color: #4a4a4a;
@@ -1145,7 +1160,7 @@ position: absolute;
 
 .calendar-date-size {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	text-align: center;
 	color: #555555;
@@ -1164,7 +1179,7 @@ position: absolute;
 
 .calendar-session-type-label {
 	height: 17px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	text-align: left;
 	color: rgba(74, 74, 74, 0.5);
@@ -1175,7 +1190,7 @@ position: absolute;
 	flex: 0 0 14.2857142857%;
 	max-width: 14.2857142857%;
 	background-color: #fff;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 14px;
 	letter-spacing: 0.2px;
 	color: #999999;
@@ -1214,7 +1229,7 @@ position: absolute;
 }
 
 .calendar-time-size {
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	font-weight: 900;
 	letter-spacing: 0.2px;
@@ -1223,7 +1238,7 @@ position: absolute;
 }
 
 .calendar-event-header {
-	width: 148px;
+	width: 160px;
 	height: 32px;
 	background-color: #fcfcfc;
 	box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.05);
@@ -1236,7 +1251,7 @@ position: absolute;
 .cal-event-name {
 	width: 121px;
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;f
 	font-weight: bold;
 	letter-spacing: 0.2px;
@@ -1247,7 +1262,7 @@ position: absolute;
 .cal-event-batch {
 	width: 109px;
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	letter-spacing: 0.2px;
 	text-align: left;
@@ -1257,7 +1272,7 @@ position: absolute;
 .cal-event-trainer {
 	width: 103px;
 	height: 15px;
-	font-family: Lato;
+	font-family: avenir-light;
 	font-size: 12px;
 	font-weight: 300;
 	letter-spacing: 0.2px;
@@ -1266,9 +1281,9 @@ position: absolute;
 }
 
 .custom-dashboard-calender{
-	overflow: auto;
-	 width: 1165px;
-  height: 542px;
+	overflow-x: auto;
+	    min-height: 356.4px;
+	 width: 1141px;
   background-color: #ffffff;
   box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
 

@@ -186,7 +186,7 @@
 													<div class="mr-md-3">
 														<span class="oval-small"></span>
 													</div>
-													<div class="custom-trainer-card-info"><%=event.getTrainerName()%></div>
+													<div class="custom-trainer-card-info ml-2"><%=event.getTrainerName()%></div>
 													<div class="mr-md-3">
 														<span class="oval-small"></span>
 													</div>
@@ -194,7 +194,7 @@
 													if(event.getAssociateTrainerName()!=null)
 													{
 														%>
-														<div class="custom-trainer-card-info"><%=event.getAssociateTrainerName()%></div>
+														<div class="custom-trainer-card-info ml-2"><%=event.getAssociateTrainerName()%></div>
 														<% 
 													}	
 													%>
@@ -220,6 +220,7 @@
 													</p>
 												</div>
 											</div>
+											<%if(false){ %> 
 											<div class="col-md-3 px-3">
 												<div class="trainer-dash-attendance-head">
 													Performance
@@ -228,6 +229,7 @@
 													</p>
 												</div>
 											</div>
+											<%} %>
 											<div class="col-md-3 px-3">
 												<div class="trainer-dash-attendance-head">Student<p class="stars">
 													
@@ -356,11 +358,7 @@
 						 <!-- </div> --> 
 					</div>
 					<%} %>
-					<!-- Modal start -->
-							<div class="modal fade bd-example-modal-lg" id="event_details_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-							
-							</div>
-					<!-- Modal end -->
+					
 				</div>
 				<%if(events.size() > 3){%>
 				<a class="carousel-control-next custom-right-prev-trainer"
@@ -387,6 +385,11 @@
 			</div>
 		</div>
 		<%} %>
+		<!-- Modal start -->
+							<div class="modal fade bd-example-modal-lg" id="event_details_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+							
+							</div>
+					<!-- Modal end -->
 		<div class="container">
 		<h1 class="mt-lg-5">Performance Metrics</h1>
 		</div>
@@ -563,6 +566,7 @@
 					$(this).find('.carousel-control-prev').hide();
 				}
 		 	});
+			event_cardFunction();
 		});
 	}
 	
@@ -591,6 +595,43 @@
 		 	return $(document).height() - this.scrollTop() - this.height(); 
 		}
 		
+		$('.pop_hover').each(function(){
+			if($(this).data("show_more")==true)
+			{
+				var id  =$(this).attr("id").replace("bc_","");
+				var htmlV = $('#mc_'+id).html();
+				//alert(htmlV);
+				$(this).popover({
+					   html: true,
+					   trigger: 'hover',
+					   placement: 'top',
+					   toggle: 'popover',
+					   title: 'Exceptions in Event',
+					   content:htmlV+''
+				       		    
+				});		
+			}
+			
+			});
+			
+		event_cardFunction();
+		
+		$('.popover-dismiss').popover();
+		   $('.carousel').carousel('pause');
+		   $('.org_dash_cards').each(function() {
+				checkitem($(this));
+			});
+			$('.org_dash_cards').bind('slid.bs.carousel', function(e) {
+				checkitem($(this));
+			});
+			
+			initDashboardCards();
+			initDashbordGraphs();
+			createGraphs();
+		});
+	
+	
+	function event_cardFunction(){
 		$('.event_card').on("click",function(){
 			var id = $(this).attr("id");
 			$.get('../admin_partials/event_details_modal.jsp?event_id='+id).done( function(data){
@@ -599,6 +640,7 @@
 				navbar_selector();
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 					navbar_selector();
+					
 				});
 				$('.popover-dismiss').popover();
 				$('.student-feedback-scroll').css('cssText','overflow:hidden');
@@ -628,41 +670,10 @@
 			});
 			
 		});
-		
-		$('.pop_hover').each(function(){
-			if($(this).data("show_more")==true)
-			{
-				var id  =$(this).attr("id").replace("bc_","");
-				var htmlV = $('#mc_'+id).html();
-				//alert(htmlV);
-				$(this).popover({
-					   html: true,
-					   trigger: 'hover',
-					   placement: 'top',
-					   toggle: 'popover',
-					   title: 'Exceptions in Event',
-					   content:htmlV+''
-				       		    
-				});		
-			}
-			
-			});
-			
-		
-		
-		$('.popover-dismiss').popover();
-		   $('.carousel').carousel('pause');
-		   $('.org_dash_cards').each(function() {
-				checkitem($(this));
-			});
-			$('.org_dash_cards').bind('slid.bs.carousel', function(e) {
-				checkitem($(this));
-			});
-			
-			initDashboardCards();
-			initDashbordGraphs();
-			createGraphs();
-		});
+	}
+	
+	
+	
 	function navbar_selector(){
 		$('.nav.nav-tabs li').css('cssText','background-color: #eefef;box-shadow:inset 0 -2px 0 0  #f7f7f7;');
 		$('.nav.nav-tabs li>a').css('cssText','background-color:#f7f7f7 !important;color:rgba(153, 153, 153, 0.7)  !important;');

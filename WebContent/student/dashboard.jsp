@@ -1,3 +1,4 @@
+<%@page import="java.sql.Timestamp"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
 <%@page import="com.viksitpro.core.dao.entities.*"%>
@@ -9,6 +10,7 @@
 <body id="student_dashbard">
 	<%
 		boolean flag = false;
+		
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 				+ request.getContextPath() + "/";
@@ -63,161 +65,37 @@
 
 			</div>
 		</div>
-		
-		<div class="container custom-dashboard-calender custom-scroll-holder">
-		
-		
-		<div class="row  pt-sm-3 pb-sm-3" style="background: white; display: flex;align-items: center;">
-			
-			<div class="col-md-3 m-0">
-						<div class="row m-0">
-			
-			<select class="calendar-sessiontype-dropdown" id="event-select">
-								<option>January</option>
-								<option>February</option>
-								<option>March</option>
-								<option>April</option>
-								<option>March</option>
-								<option>April</option>
-								<option>June</option>
-								<option>July</option>
-								<option>August</option>
-								<option>September</option>
-								<option>October</option>
-								<option>November</option>
-								<option>December</option>
-							</select></div>
+
+		<div class="container custom-dashboard-calender custom-scroll-holder" style="padding: 0px">
+
+
+			<div class="row  pt-sm-3" style="background: white; display: flex; align-items: center;">
+
+				<div class="col-md-3 m-0">
+					<div class="row m-2">
+
+						<div class="dropdown show calendar-sessiontype-dropdown">
+							<a class="btn btn-secondary dropdown-toggle" style="font-family: avenir-light; font-size: 16px; text-align: left; color: #4a4a4a; font-weight: bolder; border-color: #fff; background-color: #fff;" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">July</a>
+
+							<div class="dropdown-menu" style="width: 130px; font-size: 15px; text-align: left;" aria-labelledby="dropdownMenuLink">
+								<a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='0'>January</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='1'>February </a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='2'>March</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='3'>April</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='4'>March</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='5'>June</a> <a
+									style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='6'>July</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='7'>August</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='8'>September</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='9'>October</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='10'>November</a> <a class="dropdown-item custom-month_drop" data-monthVal='11'>December</a>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
 			</div>
-			</div>
-		
-			<div class="row " >
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Monday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Tuesday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Wednesday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Thursday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Friday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Saturday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center lightgray-bg">Sunday</div>
-			</div>
-			<div class="row " style="background-color: #fff;">
-			<div class="custom-col-md-7 mx-auto text-center p-0 ">
+			<div id="userCalendarDataHolder">
 			
-			<%for(int i=0; i <5 ; i++){ 
-				String top_border = "top-border-green";
-				if(i%2 == 0){
-					top_border ="top-border-blue";
-				}else if(i % 3 ==0){
-					top_border ="top-border-red";
-				}
-			
-			%>
-			
-			<div id="homepageNotification" class=" mt-1 mx-auto text-center  panel panel-default panel-floating panel-floating-fixed animated px-0 <%=top_border%>">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %>
-			
-			
-			</div>
-			<div class="custom-col-md-7  mx-auto text-center p-0 ">
-			
-			<%for(int i=0; i <5; i++){ %>
-			<div id="homepageNotification" class="mt-1 mx-auto text-center  panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2 mx-auto text-center" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %>
-			
-			</div>
-			<div class="custom-col-md-7 mx-auto text-center p-0">
-			<%for(int i=0; i <5 ; i++){ %>
-			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %>
-			</div>
-			<div class="custom-col-md-7 mx-auto text-center p-0">
-			<%for(int i=0; i <5 ; i++){ %>
-			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %>
-			</div>
-			<div class="custom-col-md-7 mx-auto text-center p-0">
-			<%for(int i=0; i <5 ; i++){ %>
-			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %></div>
-			<div class="custom-col-md-7 mx-auto text-center p-0">
-			<%for(int i=0; i <5 ; i++){ %>
-			
-			
-			<div id="homepageNotification" class="mt-1 mx-auto text-center  panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %></div>
-			<div class="custom-col-md-7 mx-auto text-center p-0">
-			<%for(int i=0; i <5 ; i++){ %>
-			<div id="homepageNotification" class="mt-1 mx-auto text-center panel panel-default panel-floating panel-floating-fixed animated px-0">
- 		   <div class="row calendar-event-header m-0 p-2" >
- 		   <i class="fa fa-clock-o aligncenter" aria-hidden="true"></i> <h2 class=" calendar-time-size mx-auto mb-0 aligncenter">28 July - 4 Aug</h2>
-			<i class="fa fa-video-camera aligncenter" aria-hidden="true"></i>	
- 		   </div>
- 		   <h2 class="w-100 cal-event-name p-2">opertation bank 2</h2>
-       		   <h2 class="w-100 cal-event-batch p-2">FY Bcom . Section 1</h2>
-       		   <h2 class="w-100 cal-event-trainer p-2">By Sandeep Sharma</h2>
-      
-  			</div>
-			<%} %></div>
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 	<div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content custom-modal-content">
@@ -233,24 +111,25 @@
 					<div class="container">
 
 						<%
-						List<TaskSummaryPOJO> filteredList = new ArrayList<>();
+							List<TaskSummaryPOJO> filteredList = new ArrayList<>();
 							if (cp.getTasks().size() != 0) {
 								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-								for (TaskSummaryPOJO dt : cp.getTasks()) {                                 
-									if ((sdf.parse(sdf.format(dt.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {									
+								for (TaskSummaryPOJO dt : cp.getTasks()) {
+									if ((sdf.parse(sdf.format(dt.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
+											&& dt.getStatus().equalsIgnoreCase("COMPLETED")) {
 										filteredList.add(dt);
-									       }
 									}
+								}
 							}
-								if(filteredList != null && filteredList.size() !=0 ){
-									
-									for (TaskSummaryPOJO dt : filteredList) {
-										
-										String taskIcon = "/assets/images/video-icon.png";
-										if (dt.getItemType().equalsIgnoreCase("ASSESSMENT")) {
+							if (filteredList != null && filteredList.size() != 0) {
 
-											taskIcon = "/assets/images/challenges-icon-copy.png";
-										}
+								for (TaskSummaryPOJO dt : filteredList) {
+
+									String taskIcon = "/assets/images/video-icon.png";
+									if (dt.getItemType().equalsIgnoreCase("ASSESSMENT")) {
+
+										taskIcon = "/assets/images/challenges-icon-copy.png";
+									}
 						%>
 						<div class='row '>
 							<div class='col-2'>
@@ -269,7 +148,7 @@
 						</div>
 						<hr>
 						<%
-									}
+							}
 							} else {
 						%>
 						<img class='card-img-top custom-task-notask' src='/assets/images/note_graphic.png' alt=''>
@@ -285,16 +164,79 @@
 					</div>
 
 				</div>
-			</div></div>
+			</div>
 		</div>
-		<!--/row-->
+	</div>
+	<!--/row-->
 
-		<jsp:include page="/inc/foot.jsp"></jsp:include>
-		<script>
-			$(document).ready(function() {
-				$('.carousel').carousel('pause');
-				$('.popover-dismiss').popover();
+	<jsp:include page="/inc/foot.jsp"></jsp:include>
+	<script>
+	 var  d = new Date();
+	 var day = d.getDate();
+	
+	 var m_names = ['January', 'February', 'March', 
+         'April', 'May', 'June', 'July', 
+         'August', 'September', 'October', 'November', 'December'];
+	 var n = m_names[d.getMonth()]; 
+		$(document).ready(function() {
+			$('.carousel').carousel('pause');
+			$('.popover-dismiss').popover();
+         
+		    $('#dropdownMenuLink').text(n);
+		    calendarFunction(d.getMonth())
+			$('.custom-month_drop').click(function(){				
+				$('#dropdownMenuLink').text($(this).text());		
+				  calendarFunction($(this).attr('data-monthVal'));
 			});
-		</script>
+			
+			
+		});
+		
+		
+		function calendarFunction(month){
+			var monthIndex = parseInt(month);
+			 $('#userCalendarDataHolder').empty();
+			$("#userCalendarDataHolder").append('<div class="loader mx-auto my-auto"></div>');
+			 $.ajax({
+				    url:"../get_user_service", 
+				    data : {monthIndex:monthIndex,user_id:<%=user.getId()%>},
+				    success:function(data) {
+				     //custom-calendar-item-colums
+				      $('#userCalendarDataHolder').empty();
+				     if($(data).find('.custom-calendar-item-colums').length != 0){
+				    	
+					     $('#userCalendarDataHolder').html(data);
+					     $('.find_currentDate_parent').each(function(i){  
+					    	 if($(this).attr('data-currentDate').substr(0,2) == day && month == d.getMonth()){
+					    		 $(this).css('background','rgba(33, 150, 242, 0.7)');
+					    		 $(this).css('color','#fff');
+					    		 $(this).append('  Today');
+					    		
+					             }  
+					    	 });
+					   
+					     $('.find_currentDate_child').each(function(j){  
+					    	 if($(this).attr('data-currentDate').substr(0,2) == day && month == d.getMonth()){
+					    		 $(this).css('background','rgba(33, 150, 242, 0.04)');
+					    		 } 
+				    		 $('.custom-dashboard-calender').animate({scrollLeft: $(this).position().center}, 500);   
+
+					    
+					     
+					     
+					    
+					     
+					     });
+
+					    
+				     }else{
+				    	 $("#userCalendarDataHolder").append('<h1 class="text-center m-5">No Event Found</h1>');
+				     }
+				     
+				    }
+				  });
+			
+		}
+	</script>
 </body>
 </html>
