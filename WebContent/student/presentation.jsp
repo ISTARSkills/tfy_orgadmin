@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.user.service.UserNextTaskService"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
 <%@page import="com.viksitpro.core.utilities.DBUTILS"%>
@@ -14,13 +15,30 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 		+ path + "/";
-	int lesson_id =6020;
+	int lesson_id =-1;
 	int playlist_id = -1;
 	int slide_id = 0;
 	DBUTILS util = new DBUTILS();
 	int task_id =0;
+	int course_id =0;
+	int module_id =0;
+	int cmsession_id =0;
+	boolean redirect_page =true;
 	if(request.getParameter("task_id")!=null){
 		task_id = Integer.parseInt(request.getParameter("task_id"));
+		redirect_page = false;
+	}
+	if(request.getParameter("course_id")!=null){
+		course_id = Integer.parseInt(request.getParameter("course_id"));
+		redirect_page = true;
+	}
+	if(request.getParameter("module_id")!=null){
+		module_id = Integer.parseInt(request.getParameter("module_id"));
+		redirect_page = true;
+	}
+	if(request.getParameter("cmsession_id")!=null){
+		cmsession_id = Integer.parseInt(request.getParameter("cmsession_id"));
+		redirect_page = true;
 	}
 	LessonServices lessonServices = new LessonServices();
 	if(request.getParameter("lesson_id")!=null){
@@ -28,8 +46,17 @@
 	}
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 	RestClient rc = new RestClient();
-
+	UserNextTaskService userNextTask = new UserNextTaskService();
+	
 	ComplexObject cp = rc.getComplexObject(user.getId());
+	
+	String partialUrl = "";
+	if(redirect_page){
+		partialUrl = userNextTask.getnextLesson(user.getId(), lesson_id,cmsession_id,module_id,course_id).toString();
+	}else{
+		partialUrl = userNextTask.getnextTask(user.getId(), task_id).toString();
+	}
+	
 	String lessonTitle = "Talentify";
 	for(CoursePOJO coursePOJO:cp.getCourses()){
 		for(ModulePOJO modulePOJO:coursePOJO.getModules()){
@@ -157,7 +184,7 @@ if(data.size()!=0){
 				async : true
 			} ]
 		});
-	
+		Reveal.slide(0);
 	
 		Reveal.addEventListener( 'ready', function( event ) {
 		//	console.log('ready slide chnagd');
@@ -262,6 +289,18 @@ if(data.size()!=0){
 			        type: "GET",
 			        url: '<%=basePath%>t2c/lessons/user/<%=user.getId()%>/<%=lesson_id%>/<%=task_id%>/update_lesson_status22',
 			        success: function(result) {
+			        	<%if(!partialUrl.isEmpty()){%>
+			        		window.location.href = "<%=basePath%><%=partialUrl%>";
+			        	<%}else{%>
+			        	
+			        	<%if(redirect_page){ %>
+			        	window.location.href = "<%=basePath%>student/partials/begin_skill.jsp?course_id=<%=course_id%>";
+			        		
+			        		<%}else{%>
+			        		window.location.href = "<%=basePath%>student/dashboard.jsp";
+			        		
+			        		
+			        		<%}}%>
 			           
 			        }
 			    });

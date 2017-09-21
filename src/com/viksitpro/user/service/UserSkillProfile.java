@@ -178,7 +178,7 @@ public class UserSkillProfile {
 
 						out.append("<div class='col-4 my-auto custom-no-padding'>");
 
-						out.append(getSessionCards(0, false, true, false, module.getSessions()));
+						out.append(getSessionCards(0, false, true, false, module.getSessions(),module.getId(),course_id));
 
 						out.append("</div>");
 						out.append("<div class='col-4 my-auto custom-no-padding'>");
@@ -201,20 +201,20 @@ public class UserSkillProfile {
 								if (i == 0 && j == 0) {
 									pos = m - 1;
 
-									out.append(getSessionCards(pos, true, false, false, module.getSessions()));
+									out.append(getSessionCards(pos, true, false, false, module.getSessions(),module.getId(),course_id));
 
 								} else if (j == 2 && i == (m - 1)) {
 									pos = 0;
-									out.append(getSessionCards(pos, false, false, true, module.getSessions()));
+									out.append(getSessionCards(pos, false, false, true, module.getSessions(),module.getId(),course_id));
 								} else if (j == 0) {
 									pos = i - 1;
-									out.append(getSessionCards(pos, true, false, false, module.getSessions()));
+									out.append(getSessionCards(pos, true, false, false, module.getSessions(),module.getId(),course_id));
 								} else if (j == 1) {
 									pos = (i + j) - 1;
-									out.append(getSessionCards(pos, false, true, false, module.getSessions()));
+									out.append(getSessionCards(pos, false, true, false, module.getSessions(),module.getId(),course_id));
 								} else if (j == 2) {
 									pos = (i + j) - 1;
-									out.append(getSessionCards(pos, false, false, true, module.getSessions()));
+									out.append(getSessionCards(pos, false, false, true, module.getSessions(),module.getId(),course_id));
 								}
 								// System.out.print(pos + " \t");
 								out.append("</div>");
@@ -254,7 +254,7 @@ public class UserSkillProfile {
 	}
 
 	public StringBuffer getSessionCards(int cardpos, boolean isLeft, boolean isCenter, boolean isRight,
-			List<SessionPOJO> sessionPOJOs) {
+			List<SessionPOJO> sessionPOJOs,int module_id,int course_id) {
 		StringBuffer out = new StringBuffer();
 		if (sessionPOJOs != null && cardpos < sessionPOJOs.size()) {
 
@@ -292,7 +292,7 @@ public class UserSkillProfile {
 				out.append("<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>");
 				out.append("</div>");
 				out.append("<div class='custom-beginskill-forgroundbutton'>");
-				out.append("<a href='/student/presentation.jsp?lesson_id="+sessionPOJOs.get(cardpos).getLessons().get(0).getId()+"' data-cmsId='1' class='btn btn-danger custom-beginskill-button'><span class='custom-begin-skill'>Begin Skill</span></a>");
+				out.append("<a href='/student/presentation.jsp?lesson_id="+sessionPOJOs.get(cardpos).getLessons().get(0).getId()+"&cmsession_id="+sessionPOJOs.get(cardpos).getId()+"&module_id="+module_id+"&course_id="+course_id+"' data-cmsId='1' class='btn btn-danger custom-beginskill-button'><span class='custom-begin-skill'>Begin Skill</span></a>");
 
 				
 				
