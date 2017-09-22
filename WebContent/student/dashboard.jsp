@@ -107,14 +107,16 @@
 				<div class="modal-header custom-modal-header">
 				
 				<%
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
 				List<TaskSummaryPOJO> filteredList = new ArrayList<>();
 				if (cp.getTasks().size() != 0) {
 					
 					for (TaskSummaryPOJO dt : cp.getTasks()) {
 						if(dt.getCompletedDate() !=null){
-						if ((sdf.parse(sdf.format(dt.getCompletedDate())).compareTo(sdf.parse(sdf.format(dt.getCompletedDate()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {
+							
+						if ((sdf.parse(sdf.format(dt.getCompletedDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {
+							System.out.println(">>>>>"+ dt.getCompletedDate());
 							filteredList.add(dt);
 						}
 					}
@@ -139,26 +141,26 @@
 							
 							if (filteredList != null && filteredList.size() != 0) {
 
-								for (TaskSummaryPOJO dt : filteredList) {
+								for (TaskSummaryPOJO dt1 : filteredList) {
 
 									String taskIcon = "/assets/images/video-icon.png";
-									if (dt.getItemType().equalsIgnoreCase("ASSESSMENT")) {
+									if (dt1.getItemType().equalsIgnoreCase("ASSESSMENT")) {
 
 										taskIcon = "/assets/images/challenges-icon-copy.png";
 									}
 						%>
-						<div class='row '>
+						<div class='row'>
 							<div class='col-2'>
 								<img class='card-img-top custom-task-icon' src='<%=taskIcon%>' alt=''>
 							</div>
 							<div class='col-10'>
-								<div class='row'>
-									<p class='custom-task-titletext m-0'><%=dt.getTitle()%></p>
+								<div class='row' data-idd='<%=dt1.getCompletedDate()%>'>
+									<p class='custom-task-titletext m-0'><%=dt1.getTitle()%></p>
 								</div>
 								<div class='row'>
 									<p class='custom-task-subtitletext m-0'>
 										at
-										<%=time.format(dt.getCompletedDate())%></p>
+										<%=time.format(dt1.getCompletedDate())%></p>
 								</div>
 							</div>
 						</div>
