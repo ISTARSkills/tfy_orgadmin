@@ -213,12 +213,12 @@
 
 .custom-modal-header {
 	width: 559px;
-	height: 70px;
+	height: 374px;
 	background-color: #23b6f9;
 }
 
 .custom-modal-title {
-	width: 214px;
+	width: 252px;
 	height: 35px;
 	font-family: avenir-light;
 	font-size: 24px;
@@ -240,7 +240,7 @@
 }
 
 .custom-task-titletext {
-	width: 257px;
+	width: 330px;
 	height: 44px;
 	font-family: avenir-light;
 	font-size: 20px;

@@ -1,3 +1,4 @@
+<%@page import="java.text.DateFormat"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.*"%>
@@ -14,7 +15,7 @@
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 				+ request.getContextPath() + "/";
-
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
 		RestClient rc = new RestClient();
 		ComplexObject cp = rc.getComplexObject(user.getId());
@@ -32,12 +33,18 @@
 		<div class="container">
 			<div class="row justify-content-md-center custom-no-margins">
 				<%
-					int countofcompletedTask = 0;
+				int countofcompletedTask = 0;
+				int countoftotalTask = 0;
+				if(cp.getEventsToday().size() != 0){
+					countoftotalTask = cp.getEventsToday().size();
 					for (DailyTaskPOJO dt : cp.getEventsToday()) {
 						if (dt.getStatus().equalsIgnoreCase("COMPLETED")) {
 							countofcompletedTask++;
 						}
 					}
+					
+				}
+										  																								
 				%>
 
 				<div class='col-md-6 custom-no-padding'>
@@ -47,7 +54,7 @@
 
 					<h1 class='custom-task-counter' data-toggle="modal" data-target="#gridSystemModal"><%=countofcompletedTask%>
 						of
-						<%=cp.getEventsToday().size()%>
+						<%=countoftotalTask%>
 						Tasks Completed
 					</h1>
 				</div>
@@ -87,9 +94,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="userCalendarDataHolder">
-			
-			</div>
+			<div id="userCalendarDataHolder"></div>
 		</div>
 	</div>
 
@@ -100,27 +105,38 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content custom-modal-content">
 				<div class="modal-header custom-modal-header">
-					<h5 class="modal-title custom-modal-title" id="gridModalLabel"><%=countofcompletedTask%>
+				
+				<%
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
+				List<TaskSummaryPOJO> filteredList = new ArrayList<>();
+				if (cp.getTasks().size() != 0) {
+					
+					for (TaskSummaryPOJO dt : cp.getTasks()) {
+						if(dt.getCompletedDate() !=null){
+						if ((sdf.parse(sdf.format(dt.getCompletedDate())).compareTo(sdf.parse(sdf.format(dt.getCompletedDate()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {
+							filteredList.add(dt);
+						}
+					}
+					}
+				}
+				
+				
+				
+				%>
+				
+					<h5 class="modal-title custom-modal-title" id="gridModalLabel"><%=filteredList.size()%>
 						Tasks Completed
 					</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<div class="modal-body custom-no-padding custom-scrollbar">
+				<div class="modal-body custom-scrollbar custom-scroll-holder" style="overflow: auto;">
 					<div class="container">
 
 						<%
-							List<TaskSummaryPOJO> filteredList = new ArrayList<>();
-							if (cp.getTasks().size() != 0) {
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-								for (TaskSummaryPOJO dt : cp.getTasks()) {
-									if ((sdf.parse(sdf.format(dt.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
-											&& dt.getStatus().equalsIgnoreCase("COMPLETED")) {
-										filteredList.add(dt);
-									}
-								}
-							}
+							
 							if (filteredList != null && filteredList.size() != 0) {
 
 								for (TaskSummaryPOJO dt : filteredList) {
@@ -142,7 +158,7 @@
 								<div class='row'>
 									<p class='custom-task-subtitletext m-0'>
 										at
-										<%=dt.getTime()%></p>
+										<%=time.format(dt.getCompletedDate())%></p>
 								</div>
 							</div>
 						</div>
