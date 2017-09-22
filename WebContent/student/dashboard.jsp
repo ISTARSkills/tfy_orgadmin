@@ -116,7 +116,7 @@
 						if(dt.getCompletedDate() !=null){
 							
 						if ((sdf.parse(sdf.format(dt.getCompletedDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {
-							System.out.println(">>>>>"+ dt.getCompletedDate());
+							
 							filteredList.add(dt);
 						}
 					}

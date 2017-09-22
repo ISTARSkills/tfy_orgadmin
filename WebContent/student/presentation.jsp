@@ -117,7 +117,7 @@ if(data.size()!=0){
 <body>
 
 	<div class="reveal">
-
+<a id='go_back' href='' class="btn btn-default" style="z-index: 9999;  position: absolute; top: 7px; right: 8px;">Go Back</a>
 		<div class="slides">
 			
 			<%=lessonServices.lessonHTMLfromLessonXML(lesson_id) %>
@@ -226,6 +226,23 @@ if(data.size()!=0){
 			var indices = Reveal.getIndices( document.getElementById( '<%=slide_id%>' ) );
 			Reveal.slide( indices.h, indices.v );
 			
+			
+    	
+    	<%if(redirect_page){ %>
+    	
+    	
+    	
+    	$('#go_back').attr('href','<%=basePath%>student/partials/begin_skill.jsp?course_id=<%=course_id%>');
+    		
+    		<%}else{%>
+    		
+    		
+    		
+    		$('#go_back').attr('href','<%=basePath%>student/dashboard.jsp');
+    		
+    		<%}%>
+			
+			
 		} );
 		
 	
@@ -291,14 +308,22 @@ if(data.size()!=0){
 			        success: function(result) {
 			        	<%if(!partialUrl.isEmpty()){%>
 			        		window.location.href = "<%=basePath%><%=partialUrl%>";
+			        		
+			        		$('#go_back').attr('href','<%=basePath%><%=partialUrl%>');
+			        		
 			        	<%}else{%>
 			        	
 			        	<%if(redirect_page){ %>
+			        	
 			        	window.location.href = "<%=basePath%>student/partials/begin_skill.jsp?course_id=<%=course_id%>";
+			        	
+			        	$('#go_back').attr('href','<%=basePath%>student/partials/begin_skill.jsp?course_id=<%=course_id%>');
 			        		
 			        		<%}else{%>
+			        		
 			        		window.location.href = "<%=basePath%>student/dashboard.jsp";
 			        		
+			        		$('#go_back').attr('href','<%=basePath%>student/dashboard.jsp');
 			        		
 			        		<%}}%>
 			           
