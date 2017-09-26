@@ -54,7 +54,8 @@
 		request.setAttribute("cp", cp);
 
 		int orgId = (int) request.getSession().getAttribute("orgId");
-		 String	admin_rest_url = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_student_record/"+course_id);
+		 String	adminRestUrlForStudentRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_student_record/"+course_id);
+		 String	adminRestUrlForAttendanceRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_attendance_record/"+course_id);
 		//System.out.println(orgId);
 		SumanthDummyServices dummyService = new SumanthDummyServices();
 		
@@ -179,33 +180,7 @@
 							<div class="col-md-3 text-center m-auto">LEVEL</div>
 						</div>
 						<div class="main-table custom-scroll-holder ">
-							<%							
-						//String 	wizard ="Wizard";
-						//String master ="Master";
-						//String apprentice ="Apprentice";
-						//String rookie ="Rookie";
-						
-								// for(int i=0; i <4; i++){ 
-								%>
-
-							<%-- <div class="row m-0 custom-mastery-levelbody-css">
-								<div class="col-md-3 text-center m-auto">
-									<div class="row m-0">
-										<div class="col-md-4 text-center m-auto">
-											<img  class='custom-mastery-levelimg-css' src="http://business.talentify.in:9999/users/449/8a74ac00-c354-47bf-a68b-3ce3c7578d0e.jpg">
-										</div>
-										<div class="col-md-8 text-center m-auto">
-											<h3>Sumanth Bhat</h3>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-3 text-center m-auto">
-									#<%=i+10 %></div>
-								<div class="col-md-3 text-center m-auto">4500</div>
-								<div class="col-md-3 text-center m-auto <%=i==0?wizard:i==1?master:i==2?apprentice:i==3?rookie:wizard %>"><%=i==0?wizard:i==1?master:i==2?apprentice:i==3?rookie:wizard %></div>
-							</div> --%>
-
-							<%//} %>
+							
 						</div>
 					</div>
 				</div>
@@ -293,62 +268,36 @@
 		 function drawChart() {
 
 	    	  $.ajax({
-				    url: '/SumanthDummyServlet',
+				    url: '<%=adminRestUrlForAttendanceRecord%>',
 				    type: 'GET',
 				    async: true,
 				    dataType: "json",
-				    success: function (data) {
-				    	 var dataTable = new google.visualization.DataTable();	
-				    	 var col =[];
-				      for(var i=0; i< data.length ; i++){
-				    	  if(i == 0 ){
-				    		  col.push(data[0]);
-				    		  for(var k=0;k< data[i].length;k++){
-				    			  if(k == 1){
-				    				  dataTable.addColumn({'type': 'string', 'role': 'tooltip'});
-				    		 
-				    			  }else if(k == 0){
-				    				  dataTable.addColumn('string', data[i][k]);
-				    			  } else{
-				    				  dataTable.addColumn('number', data[i][k]);
-				    			  }
-				    		}
-				    		  
-				    	  }else{
-				    		  for(var k=0;k< data[i].length;k++){
-				    			  if( k!=0 && k!=1 ){    			  
-				    			  data[i][k] = parseFloat(data[i][k])
-				    			 }
-				    		  }
-				    	  }
-				      }
-				      
-				      
-			        					    		       
-				        
-				        var row = []
-				        
-				        for(var i=1; i<data.length;i++){
-				        	row.push(data[i]);
-				        }
-				         
-				        dataTable.addRows(row);
+				    success: function (data) {				    					    	
+				    	  google.charts.load('current', {'packages':['corechart']});
+				          google.charts.setOnLoadCallback(drawStuff);
 
-				        var options = {
-				                legend: 'bottom',
-				                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
-					       	    fontName: 'avenir-light',					          
-				                focusTarget: 'category',
-				                tooltip: { isHtml: true }
+				          function drawStuff() {
+				            var tabledData = google.visualization.arrayToDataTable( data.data );				      
+				            var classicOptions = {
+				            		 legend: 'bottom',
+						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
+							       	    fontName: 'avenir-light',	
+							       	 vAxis: {title: 'Attendance'},
+							         hAxis: {title: 'Sessions'},
+							         seriesType: 'bars',
+				            		
+				            };
+				           
+				            function drawClassicChart() {
+				             
+				            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
+							        chart.draw(tabledData, classicOptions);
+				            }
 
-
-				              };
-				        var chart = new google.visualization.ColumnChart(document.getElementById('columnchart_material'));
-				        chart.draw(dataTable, options);
-				      
-				  
-				    
-				    }
+				            drawClassicChart();
+				        };
+				    	
+				    	}
 				  });
 	    	  
 	    	  
@@ -369,7 +318,7 @@
 					
 					var htmlAdd = "";
 					
-					  $.getJSON("<%=admin_rest_url%>", function(result){
+					  $.getJSON("<%=adminRestUrlForStudentRecord%>", function(result){
 						 
 				            $.each(result.studentRecord, function(i, field){
 				            	var image ='';
@@ -389,10 +338,10 @@
 				            			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";
 				            			
 				            		}else if(key == 'col-4'){
-				            			level ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";
+				            			level ="<div class='col-md-3 text-center m-auto "+val+"'>"+val+"</div>";
 				            		}
 				            		
-				                    console.log("key : "+key+" ; value : "+val);
+				                   
 				            	 });
 				               
 				            	
