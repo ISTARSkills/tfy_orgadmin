@@ -477,7 +477,7 @@
 					//individual_group_report.jsp
 					$('.report-roles-card-click').click(function(){
 						var course_id = $(this).attr('data-courseid');
-						alert('clicked'+course_id);
+						//alert('clicked'+course_id);
 						window.location.href = "<%=baseURL%>/orgadmin/report/group_report/individual_group_report.jsp?course_id="+course_id;
 					});
 
