@@ -63,12 +63,12 @@
 			for (int i = 0; i < roles.size(); i++) {
 				AdminRole adminRole = roles.get(i);
 		%>
-		<div class="container reprort-card-container">
+		<div class="container reprort-card-container ">
 
 
 			<div class="card  report_card_role p-0">
 				<div class="card-body p-0">
-					<div class='row report-roles-card'>
+					<div class='row report-roles-card report-roles-card-click' data-courseID='<%=adminRole.getId()%>'>
 						<div class="col-md-2">
 							<img class='report-role-image'
 								src='<%=adminRole.getImageUrl() != null
@@ -365,8 +365,7 @@
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
 	<script>
-		$(document).ready(
-				function() {
+		$(document).ready(function() {
 
 					var chart;
 					$('.skill_graph').each(
@@ -474,6 +473,13 @@
 						});
 						
 					$('.popover-dismiss').popover();
+					
+					//individual_group_report.jsp
+					$('.report-roles-card-click').click(function(){
+						var course_id = $(this).attr('data-courseid');
+						alert('clicked'+course_id);
+						window.location.href = "<%=baseURL%>/orgadmin/report/group_report/individual_group_report.jsp?course_id="+course_id;
+					});
 
 				});
 

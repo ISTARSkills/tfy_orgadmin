@@ -71,9 +71,9 @@
 		<div class="container reprort-card-container">
 			<div class="card  report_card_group p-0">
 				<div class="card-body p-0">
-					<div class='row report-roles-card mb-1'>
+					<div class='row report-roles-card  mb-1'>
 						<div class='row m-0 p-0 w-100'>
-							<h1 class='report-heading my-0 w-100'><%=adminGroup.getGroupName() != null ? adminGroup.getGroupName() : "Not Available"%></h1>
+							<h1 class='report-heading my-0 w-100' data-bGroupID='194'><%=adminGroup.getGroupName() != null ? adminGroup.getGroupName() : "Not Available"%></h1>
 							<p class="stars">
 
 								<%
@@ -182,7 +182,7 @@
 											k++;
 														for (AdminRoleThumb adminRoleThumb : list) {
 										%>
-										<div class="card p-0 report-section-carousel-card">
+										<div class="card p-0 report-section-carousel-card" data-batchID='<%=adminRoleThumb.getId()%>'>
 											<div class="card-header report-section-card-header">
 												<div class='row p-3 m-0 w-100'>
 													<div class='col-2 p-0 m-0'>
