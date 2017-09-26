@@ -168,7 +168,7 @@
 		
 		
 		
-		function getSkillsfunction(skill_id){
+		function getSkillsfunction(course_id){
 			
 			$("#skillTreeHolder").empty();
 			 $("#skillTreeHolder").addClass(' my-auto').addClass(' mx-auto');
@@ -176,7 +176,7 @@
 			
 			  $.ajax({
 	            	url:'<%=baseURL%>get_user_service',
-	            	data :{'skill_id':skill_id,'user_id':<%=user.getId()%>},
+	            	data :{'course_id':course_id,'user_id':<%=user.getId()%>},
 	            	success: function(result){
 	            		
 	                $("#skillTreeHolder").removeClass(' my-auto').removeClass(' mx-auto');
@@ -189,7 +189,7 @@
 		}
 		
 		
-		getSkillsfunction($('.skill_list_active').attr('data-skillId'));
+		getSkillsfunction($('.skill_list_active').attr('data-courseId'));
 
             $('.skill_list').click(function() {
                         $('.skill_list').removeClass('skill_list_active');
@@ -200,10 +200,10 @@
                         $(this).children().removeClass('custom-skill-list-disabled');
                         $(this).children().addClass('custom-skill-list-active');
 
-              var skill_id = $(this).attr('data-skillid');
+              var course_id = $(this).attr('data-courseId');
               
               
-              getSkillsfunction(skill_id);
+              getSkillsfunction(course_id);
             
             
              });

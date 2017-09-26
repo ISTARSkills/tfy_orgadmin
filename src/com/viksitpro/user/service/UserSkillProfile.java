@@ -58,9 +58,12 @@ public class UserSkillProfile {
 		String parentactiveclass = "";
 		String childactiveclass = "";
 
-		if (cp.getSkills().size() != 0) {
-			for (SkillReportPOJO skillobj : cp.getSkills()) {
-
+		if (cp.getCourses() != null && cp.getCourses().size() != 0) {
+			
+			for(int i=0;i<cp.getCourses().size();i++){
+												
+				
+				
 				if (count == 0) {
 
 					parentactiveclass = "skill_list_active active";
@@ -73,17 +76,17 @@ public class UserSkillProfile {
 
 				}
 
-				out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-skillId='"
-						+ skillobj.getId() + "'>");
+				out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-courseId='"
+						+ cp.getCourses().get(i).getId() + "'>");
 				out.append("<div class='card " + childactiveclass + " justify-content-md-center'>");
 				out.append("<div class='card-block'>");
 				out.append("<div class='row custom-no-margins'>");
 				out.append("<div class='col-4'>");
-				out.append("<img class='custom-skill-tree-img' src='" + skillobj.getImageURL()
+				out.append("<img class='custom-skill-tree-img' src='" +  cp.getCourses().get(i).getImageURL()
 						+ "' alt='No Image Available'>");
 				out.append("</div>");
 				out.append("<div class='col-8 my-auto'>");
-				out.append("<h3 class='custom-skill-tree-title'>" + skillobj.getName() + "</h3>");
+				out.append("<h3 class='custom-skill-tree-title'>" + cp.getCourses().get(i).getName() + "</h3>");
 				out.append("</div>");
 				out.append("</div>");
 				out.append("</div>");
@@ -91,7 +94,8 @@ public class UserSkillProfile {
 				out.append("</div>");
 
 				count++;
-			}
+			
+		}
 		}else {
 			
 			
@@ -117,10 +121,11 @@ public class UserSkillProfile {
 		StringBuffer out = new StringBuffer();
 
 		int count = 0;
-		for (CoursePOJO student_course : cp.getCourses()) {
-			if (student_course.getId() == course_id) {
+		for(int k=0;k<cp.getCourses().size();k++){
+		//for (SkillReportPOJO student_course : cp.getCourses()) {
+			if (cp.getCourses().get(k).getId() == course_id) {
 
-				for (ModulePOJO module : student_course.getModules()) {
+				for (ModulePOJO module : cp.getCourses().get(k).getModules()) {
 
 					out.append("<div id='accordion" + count + "' role='tablist' aria-multiselectable='true'>");
 					out.append("<div class='card custom-card-height-expand'>");
@@ -140,7 +145,7 @@ public class UserSkillProfile {
 					for (String skillObj : module.getSkillObjectives()) {
 
 						out.append(
-								"<span class='badge badge-pill badge-default custom-beginskill-badge text-center mr-2'>"
+								"<span class='badge badge-pill badge-default custom-beginskill-badge text-center mr-2 mb-2'>"
 										+ skillObj + "</span>");
 					}
 					out.append("</div>");
@@ -323,13 +328,73 @@ public class UserSkillProfile {
 
 	}
 
-	public StringBuffer getSkillTree(int skill_id, int user_id) {
+	public StringBuffer getSkillTree(int course_id, int user_id) {
 
 		StringBuffer out = new StringBuffer();
 		RestClient rc = new RestClient();
 		ComplexObject cp = rc.getComplexObject(user_id);
+		
+		if(cp.getCourses() != null && cp.getCourses().size()!=0) {
+			
+			for(int i=0;i<cp.getCourses().size();i++) {
+				
+				if(cp.getCourses().get(i).getId() == course_id) {
+					
+					if(cp.getCourses().get(i).getSkillObjectives() != null && cp.getCourses().get(i).getSkillObjectives().size()!=0) {
+						
+						out.append("<div class='container mt-5'> " + "<div class='row'>" + "<div class='col-12'> <ul id='tree1'>");
+						for(int j=0;j<cp.getCourses().get(i).getSkillObjectives().size();j++) {
+							
+							
+							out.append("<li> " + cp.getCourses().get(i).getSkillObjectives().get(j).getName() + "<small class='custom-skillprofile-subskills'>"
+									+ cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().size()
+									+ " subskills</small> <small class='custom-skillprofile-xp_points'>"
+									+ cp.getCourses().get(i).getSkillObjectives().get(j).getUserPoints() + " / " + cp.getCourses().get(i).getSkillObjectives().get(j).getTotalPoints()
+									+ " XP</small><i class='point-div'></i>");
 
-		if (cp.getSkills() != null && cp.getSkills().size() != 0) {
+							out.append(
+									"<div class='progress ml-5'><div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
+											+ cp.getCourses().get(i).getSkillObjectives().get(j).getPercentage() + "%' aria-valuenow='"
+											+ cp.getCourses().get(i).getSkillObjectives().get(j).getPercentage()
+											+ "' aria-valuemin='0' aria-valuemax='100'></div></div>");
+							if(cp.getCourses().get(i).getSkillObjectives().get(j).getSkills() != null && cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().size()!=0) {
+								out.append("<ul>");
+								for(int k=0;k<cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().size();k++) {
+									
+									out.append("<li style=' padding-left: 30px; padding-top: 13px;'>"
+											+ cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().get(k).getName() + "" + "<div class='progress ml-5'>"
+											+ "<div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
+											+ cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().get(k).getPercentage() + "%' aria-valuenow='"
+											+ cp.getCourses().get(i).getSkillObjectives().get(j).getSkills().get(k).getPercentage()
+											+ "' aria-valuemin='0' aria-valuemax='100'></div>" + "</div></li>");
+									
+									
+								}
+								
+								out.append("</ul>");
+								out.append("<hr>");
+								
+							}
+							
+							out.append("</li>");
+						}
+						
+						out.append("</ul>	</div> 	</div> 	</div>");
+					}else {
+						
+						out.append("<h3 class=' m-5 text-center'>No Skills Available</h3>");
+					}
+					
+					
+				}
+				
+			}
+			
+		}
+		
+
+
+		/*if (cp.getSkills() != null && cp.getSkills().size() != 0) {
 
 			out.append("<div class='container mt-5'> " + "<div class='row'>" + "<div class='col-12'> <ul id='tree1'>");
 
@@ -379,7 +444,7 @@ public class UserSkillProfile {
 		}else {
 			
 			out.append("<h3 class=' m-5 text-center'>No Skills Available</h3>");
-		}
+		}*/
 		
 		
 		

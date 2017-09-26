@@ -28,12 +28,12 @@ public class UserServiceUtility extends HttpServlet {
 		
 		StringBuffer out  = new StringBuffer();
 		
-		if(request.getParameter("skill_id") != null){
+		if(request.getParameter("course_id") != null){
 			
-			System.err.println(">>>> "+request.getParameter("skill_id"));
+			System.err.println(">>>> "+request.getParameter("course_id"));
 			UserSkillProfile userSkillProfile = new UserSkillProfile();
 			
-			int skill_id = 	Integer.parseInt(request.getParameter("skill_id"));
+			int skill_id = 	Integer.parseInt(request.getParameter("course_id"));
 			int user_id = Integer.parseInt(request.getParameter("user_id"));
 					
 			out.append(userSkillProfile.getSkillTree(skill_id,user_id));
