@@ -392,63 +392,7 @@ public class UserSkillProfile {
 			
 		}
 		
-
-
-		/*if (cp.getSkills() != null && cp.getSkills().size() != 0) {
-
-			out.append("<div class='container mt-5'> " + "<div class='row'>" + "<div class='col-12'> <ul id='tree1'>");
-
-			for (SkillReportPOJO skillobj : cp.getSkills()) {
-
-				if (skillobj.getId() == skill_id) {
-
-					for (SkillReportPOJO subSkillobj : skillobj.getSkills()) {
-
-						out.append("<li> " + subSkillobj.getName() + "<small class='custom-skillprofile-subskills'>"
-								+ subSkillobj.getSkills().size()
-								+ " subskills</small> <small class='custom-skillprofile-xp_points'>"
-								+ subSkillobj.getUserPoints() + " / " + subSkillobj.getTotalPoints()
-								+ " XP</small><i class='point-div'></i>");
-
-						out.append(
-								"<div class='progress ml-5'><div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
-										+ subSkillobj.getPercentage() + "%' aria-valuenow='"
-										+ subSkillobj.getPercentage()
-										+ "' aria-valuemin='0' aria-valuemax='100'></div></div>");
-
-						if (subSkillobj.getSkills() != null && subSkillobj.getSkills().size() != 0) {
-
-							out.append("<ul>");
-							for (SkillReportPOJO subsubSkillobj : subSkillobj.getSkills()) {
-
-								out.append("<li style=' padding-left: 30px; padding-top: 13px;'>"
-										+ subsubSkillobj.getName() + "" + "<div class='progress ml-5'>"
-										+ "<div class='progress-bar custom-skillprofile-skill-progress' role='progressbar' style='width: "
-										+ subsubSkillobj.getPercentage() + "%' aria-valuenow='"
-										+ subsubSkillobj.getPercentage()
-										+ "' aria-valuemin='0' aria-valuemax='100'></div>" + "</div></li>");
-
-							}
-
-						}
-						out.append("</ul>");
-						out.append("<hr>");
-					}
-					out.append("</li>");
-				}
-
-			}
-
-			out.append("</ul>	</div> 	</div> 	</div>");
-
-		}else {
-			
-			out.append("<h3 class=' m-5 text-center'>No Skills Available</h3>");
-		}*/
-		
-		
-		
-		
+				
 		return out;
 	}
 
