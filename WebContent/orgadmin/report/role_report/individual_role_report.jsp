@@ -21,7 +21,7 @@
 
 	<%
 		boolean flag = false;
-	    int batch_group_id =0;
+	    int course_id =0;
  
 		String url = request.getRequestURL().toString();
 
@@ -30,9 +30,13 @@
 				+ request.getContextPath() + "/";
 
 		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-		if(request.getParameter("batch_group_id")!=null){
-			batch_group_id = Integer.parseInt(request.getParameter("batch_group_id"));
+		if(request.getParameter("course_id")!=null){
+			course_id = Integer.parseInt(request.getParameter("course_id"));
 		}
+
+		
+		
+		 
 		
 		RestClient rc = new RestClient();
 		ComplexObject cp = rc.getComplexObject(user.getId());
@@ -50,17 +54,17 @@
 		request.setAttribute("cp", cp);
 
 		int orgId = (int) request.getSession().getAttribute("orgId");
-		String	adminRestUrlForStudentRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
-		// String	adminRestUrlForAttendanceRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
+		 String	adminRestUrlForStudentRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_student_record/"+course_id);
+		 String	adminRestUrlForAttendanceRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_attendance_record/"+course_id);
 		//System.out.println(orgId);
 		SumanthDummyServices dummyService = new SumanthDummyServices();
 		
-		BatchGroup batchgroup = new BatchGroup();
-		BatchGroupDAO batchgroupDAO = new BatchGroupDAO();
-		batchgroup = batchgroupDAO.findById(batch_group_id);
-		String bgName = "N/A";
-		if(batchgroup != null && batchgroup.getName() != null && !batchgroup.getName().equalsIgnoreCase("")  && !batchgroup.getName().equalsIgnoreCase("null")){
-			bgName = batchgroup.getName();
+		Course course = new Course();
+		CourseDAO courseDAO = new CourseDAO();
+		course = courseDAO.findById(course_id);
+		String courseName = "N/A";
+		if(course != null && course.getCourseName() != null && !course.getCourseName().equalsIgnoreCase("")  && !course.getCourseName().equalsIgnoreCase("null")){
+			 courseName = course.getCourseName();
 		}
 		
 	%>
@@ -72,10 +76,10 @@
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row ml-0">
-				<a class='col-1 my-auto custom-no-padding' href="<%=baseURL%>orgadmin/report/groups_report.jsp"> <img class="custom-beginskill-backarrow" src="/assets/images/1165040-200.png" alt="">
+				<a class='col-1 my-auto custom-no-padding' href="<%=baseURL%>orgadmin/report/roles_report.jsp"> <img class="custom-beginskill-backarrow" src="/assets/images/1165040-200.png" alt="">
 				</a>
 				<div class='col-11 custom-no-padding'>
-					<h1 class='custom-beginskill-course-heading'><%=bgName%></h1>
+					<h1 class='custom-beginskill-course-heading'><%=courseName %></h1>
 				</div>
 			</div>
 		</div>
@@ -263,7 +267,7 @@
 		
 		 function drawChart() {
 
-	    	 <%--  $.ajax({
+	    	  $.ajax({
 				    url: '<%=adminRestUrlForAttendanceRecord%>',
 				    type: 'GET',
 				    async: true,
@@ -278,7 +282,7 @@
 				            		 legend: 'bottom',
 						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
 							       	    fontName: 'avenir-light',	
-							       	 vAxis: {title: 'Attendance'},
+							       	 vAxis: {title: 'Attendance Persentage'},
 							         hAxis: {title: 'Sessions'},
 							         seriesType: 'bars',
 				            		
@@ -294,7 +298,7 @@
 				        };
 				    	
 				    	}
-				  }); --%>
+				  });
 	    	  
 	    	  
 	        

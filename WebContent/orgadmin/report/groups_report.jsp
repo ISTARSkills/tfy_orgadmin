@@ -71,7 +71,7 @@
 		<div class="container reprort-card-container">
 			<div class="card  report_card_group p-0">
 				<div class="card-body p-0">
-					<div class='row report-roles-card  mb-1'>
+					<div data-batchGroupId='<%=adminGroup.getId()%>' class='row report-roles-card report-group-card-click mb-1'>
 						<div class='row m-0 p-0 w-100'>
 							<h1 class='report-heading my-0 w-100' data-bGroupID='194'><%=adminGroup.getGroupName() != null ? adminGroup.getGroupName() : "Not Available"%></h1>
 							<p class="stars">
@@ -401,6 +401,12 @@
 				
 				});
 			$('.popover-dismiss').popover();
+			
+			$('.report-group-card-click').click(function(){
+				var batch_group_id = $(this).attr('data-batchGroupId');
+				//alert('clicked'+course_id);
+				window.location.href = "<%=baseURL%>/orgadmin/report/group_report/individual_group_report.jsp?batch_group_id="+batch_group_id;
+			});
 			
 			
 		});
