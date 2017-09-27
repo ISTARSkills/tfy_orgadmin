@@ -35,7 +35,7 @@ font-size:10px !important;
 }
 
 </style>
-<body id='orgadmin_individual_groups_report'>
+<body id='orgadmin_individual_role_report'>
 
 	<%
 		boolean flag = false;

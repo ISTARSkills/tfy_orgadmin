@@ -28,6 +28,15 @@ case 'orgadmin_groups_report':
 	init_orgadmin_groups_report_variables();
 	init_orgadmin_groups_report_function();
 	break;
+case 'orgadmin_individual_groups_report':
+	init_orgadmin_individual_groups_report_variables();
+	init_orgadmin_individual_groups_report_function();
+	break;
+case 'orgadmin_individual_role_report':
+	init_orgadmin_individual_role_report_variables();
+	init_orgadmin_individual_role_report_function();
+	break;
+	
 	
 	case 'student_begin_skill':
 		init_student_begin_skill_variables();
@@ -45,7 +54,7 @@ default:
 	init_default_js();
 }
 
-
+  
 function init_default_js() {
 
 }
@@ -131,6 +140,18 @@ function init_orgadmin_groups_report_function(){
 	
 }
 
+function init_orgadmin_individual_role_report_variables(){
+	$('#reports').parent().addClass('active');
+}
+function init_orgadmin_individual_role_report_function(){
+	
+}
+function init_orgadmin_individual_groups_report_variables(){
+	$('#reports').parent().addClass('active');
+}
+function init_orgadmin_individual_groups_report_function(){
+	
+}
 
 function setupScheduler(){
 	$('#scheduler').parent().addClass('active');
