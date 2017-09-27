@@ -16,6 +16,19 @@ case 'student_skill_profile':
 	init_student_skill_profile_variables();
 	init_student_skill_profile_function();
 	break;
+case 'orgadmin_dashbard':
+	init_orgadmin_dashbard_variables();
+	init_orgadmin_dashbard_function();
+	break;
+case 'orgadmin_roles_report':
+	init_orgadmin_roles_report_variables();
+	init_orgadmin_roles_report_function();
+	break;
+case 'orgadmin_groups_report':
+	init_orgadmin_groups_report_variables();
+	init_orgadmin_groups_report_function();
+	break;
+	
 	case 'student_begin_skill':
 		init_student_begin_skill_variables();
 		init_student_begin_skill_function();
@@ -32,7 +45,7 @@ default:
 	init_default_js();
 }
 
-  
+
 function init_default_js() {
 
 }
@@ -96,9 +109,31 @@ function init_student_begin_skill_function(){
 }
 /* student begin skill functions*/
 
+function init_orgadmin_dashbard_variables(){
+	$('#dashboard').parent().addClass('active');
+	
+}
+function init_orgadmin_dashbard_function(){
+	
+}
+
+
+function init_orgadmin_roles_report_variables(){
+	$('#reports').parent().addClass('active');
+}
+function init_orgadmin_roles_report_function(){
+	
+}
+function init_orgadmin_groups_report_variables(){
+	$('#reports').parent().addClass('active');
+}
+function init_orgadmin_groups_report_function(){
+	
+}
 
 
 function setupScheduler(){
+	$('#scheduler').parent().addClass('active');
   //  $(".form_datetime").datetimepicker({format: 'yyyy-mm-dd hh:ii'});
 	var today = new Date();
 	var dayOfWeekStartingSundayZeroIndexBased = today.getDay(); // 0 : Sunday ,1 : Monday,2,3,4,5,6 : Saturday

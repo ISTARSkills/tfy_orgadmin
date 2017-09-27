@@ -46,7 +46,8 @@
 		}
 		
 		AdminUIServices uiservices=new AdminUIServices();
-		ReportUtils reportUtils=new ReportUtils();		
+		ReportUtils reportUtils=new ReportUtils();	
+		String	admin_rest_url = (AppProperies.getProperty("admin_rest_url"));
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -614,24 +615,25 @@
 			//programWisePerformanceOfStudents();
 			
 			$( "#graph_section" ).change(function() {
-				 alert( $(this).val() );
+				// alert( $(this).val() );
 				 scectionWisePerformanceOfStudents($(this).val(),$(this).attr('data-college_id'));
 				});
 			$( "#graph_program" ).change(function() {
-				  alert( $(this).val() );
+				  //alert( $(this).val() );
 				  programWisePerformanceOfStudents($(this).val(),$(this).attr('data-college_id'));
 				});
 			$( "#graph_role" ).change(function() {
-				  alert( $(this).val() );
+				 //alert( $(this).val() );
 				  masterLevelPerSkill($(this).val(),$(this).attr('data-college_id'));
 				});
 		
 		});
 	
 	 function masterLevelPerSkill(role_id,college_id) {
+		
 
 		   	  $.ajax({
-					    url: 'http://localhost:8080/a/admin/dashboard/'+college_id+'/skill_performance/'+role_id+'',
+					    url: '<%=admin_rest_url%>dashboard/'+college_id+'/skill_performance/'+role_id+'',
 					    type: 'GET',
 					    async: true,
 					    dataType: "json",
@@ -704,25 +706,17 @@
 	
 	 function programWisePerformanceOfStudents(course_id,college_id) {
 
-   	//  $.ajax({
-			//    url: '',
-			 //   type: 'GET',
-			 //   async: true,
-			 //   dataType: "json",
-			  //  success: function (data) {				    					    	
+   	  $.ajax({
+			    url: '<%=admin_rest_url%>dashboard/'+college_id+'/course_performance/'+course_id+'',
+			   type: 'GET',
+			    async: true,
+			   dataType: "json",
+			    success: function (data) {				    					    	
 			    	google.charts.load('current', {'packages':['corechart']});
 			          google.charts.setOnLoadCallback(drawStuff);
-
+			          $('#columnchartcontainer2').empty();
 			          function drawStuff() {
-			            var tabledData = google.visualization.arrayToDataTable( 
-			            		[
-			            	          ['Year', 'Wizard', 'Master', 'Apprentice', 'Rookie'],
-			            	          ['EAST', 1000, 400, 200, 100],
-			            	          ['WEST', 1170, 460, 250, 340],
-			            	          ['NORTH', 660, 1120, 300, 200],
-			            	          ['SOUTH', 1030, 540, 350, 250]
-			            	        ]
-			            );				      
+			            var tabledData = google.visualization.arrayToDataTable(data.data);				      
 			            var classicOptions = {
 			            		tooltip: {isHtml: true},
 			            		 legend: 'none',
@@ -750,8 +744,8 @@
 			            drawClassicChart();
 			        };
 			    	
-			    	//}
-			//  });
+			    	}
+			 }); 
    	  
    	  
        
@@ -759,24 +753,18 @@
 	 
 	 function scectionWisePerformanceOfStudents(section_id,college_id) {
 
-		   	//  $.ajax({
-					//    url: '',
-					 //   type: 'GET',
-					 //   async: true,
-					 //   dataType: "json",
-					  //  success: function (data) {				    					    	
+		      $.ajax({
+					    url: '<%=admin_rest_url%>dashboard/'+college_id+'/group_performance/'+section_id+'',
+					   type: 'GET',
+					    async: true,
+					   dataType: "json",
+					   success: function (data) {				    					    	
 					    	google.charts.load('current', {'packages':['corechart']});
 					          google.charts.setOnLoadCallback(drawStuff);
-
+					          $('#columnchartcontainer1').empty();
 					          function drawStuff() {
 					            var tabledData = google.visualization.arrayToDataTable( 
-					            		[
-					            	          ['Sesction', 'Wizard', 'Master', 'Apprentice', 'Rookie'],
-					            	          ['EAST', 1000, 400, 200, 100],
-					            	          ['WEST', 1170, 460, 250, 340],
-					            	          ['NORTH', 660, 1120, 300, 200],
-					            	          ['SOUTH', 1030, 540, 350, 250]
-					            	        ]
+					            		data.data
 					            );				      
 					            var classicOptions = {
 					            		tooltip: {isHtml: true},
@@ -788,7 +776,7 @@
 					            };
 					           
 					            function drawClassicChart() {
-					             
+					            	
 					            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer1'));
 								        chart.draw(tabledData, classicOptions);
 								       
@@ -805,8 +793,8 @@
 					            drawClassicChart();
 					        };
 					    	
-					    	//}
-					//  });
+					    	}
+					  }); 
 		   	  
 		   	  
 		       

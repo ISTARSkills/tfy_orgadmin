@@ -2932,7 +2932,7 @@ a.unselected_report {
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
 }
 .custom-legends-masterylevel-css{
-	background-color: #fd6c81; width: 14px; height: 15px;
+	 width: 14px; height: 15px;
 }
 .custom-master_level_perskill-css{
 min-width: 310px; height: 400px; margin: 0 auto; overflow: auto;
@@ -2961,4 +2961,19 @@ border: 1px solid #e9ecef; height: 8vh; font-family: avenir-light; font-weight: 
 
 .Rookie {
 	color: #bae88a;
+}
+.b-Wizard {
+	background-color: #fd6d81;
+}
+
+.b-Master {
+	background-color: #7295fd;
+}
+
+.b-Apprentice {
+	background-color: #30beef;
+}
+
+.b-Rookie {
+	background-color: #bae88a;
 }
