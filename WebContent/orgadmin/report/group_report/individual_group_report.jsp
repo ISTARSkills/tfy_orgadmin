@@ -1,4 +1,5 @@
 <%@page import="com.viksitpro.cms.utilities.URLServices"%>
+<%@page import="com.talentify.admin.services.AdminUIServices"%>
 <%@page import="com.viksitprodummy.SumanthDummyServices"%>
 <%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.talentify.admin.rest.pojo.AdminRoleThumb"%>
@@ -69,6 +70,7 @@ font-size:10px !important;
 
 		int orgId = (int) request.getSession().getAttribute("orgId");
 		String	adminRestUrlForStudentRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
+		 String	adminRestUrlForMasteryLevelRecord = (AppProperies.getProperty("admin_rest_url"));
 		// String	adminRestUrlForAttendanceRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
 		//System.out.println(orgId);
 		SumanthDummyServices dummyService = new SumanthDummyServices();
@@ -133,41 +135,48 @@ font-size:10px !important;
 					<div class="col-md-12 pl-0">
 						<h3 class="card-header-box text-center">MASTERY LEVEL PER SKILL</h3>
 						<div class="row m-0">
-							<div class="col-4"></div>
+							<div class="col-3"></div>
 							<div class="col-7">
 								<div class="row m-0">
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4 custom-legends-masterylevel-css"> </span>Wizard
+										<span class="badge badge-default mr-4 b-Wizard custom-legends-masterylevel-css"> </span>Wizard
 									</h4>
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4" > </span>Master
+										<span class="badge badge-default mr-4 b-Master custom-legends-masterylevel-css" > </span>Master
 									</h4>
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4" > </span>Apprentice
+										<span class="badge badge-default mr-4 b-Apprentice custom-legends-masterylevel-css" > </span>Apprentice
 									</h4>
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4"> </span>Rookie
+										<span class="badge badge-default mr-4 b-Rookie custom-legends-masterylevel-css"> </span>Rookie
 									</h4>
 								</div>
 							</div>
+						
+						<div class="col-2">
+						<select class="form-control select-dropdown-style graph_filter_selector"  name="course_id" id='filter_master_level_perskill' data-college_id="<%=orgId%>">										
+										<%	
+										AdminUIServices uiservices=new AdminUIServices();
+										ArrayList<Course> courses = uiservices.getCoursesInCollege(orgId);
+										for(Course course : courses)
+										{
+										%>
+										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+										<%
+										} %>
+									</select>
 						</div>
-						<div class="col-1"></div>
 					</div>
-
 
 					<!-- <div class="col-1">
 						<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
 					</div>
  -->
 				</div>
+				</div>
 				<div class="row m-0">
 					<div class="col-12">
 						<div class='custom-master_level_perskill-css custom-scroll-holder' id="master_level_perskill">
-
-
-							<%=dummyService.getAttendanceDetailPerRole() %>
-
-
 
 						</div>
 					</div>
@@ -207,7 +216,6 @@ font-size:10px !important;
 
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script>
 		$.fn
 				.extend({
@@ -279,6 +287,123 @@ font-size:10px !important;
 					}
 				});
 		
+		
+ function roleMasteryLevel(){
+			 
+			var course_id =  $('#filter_master_level_perskill').val();
+			var college_id = $('#filter_master_level_perskill').attr('data-college_id');
+			 
+			 var htmlAdd = "";
+				//{organization_id}/group_mastery_level/{group_id}/course/{course_id}
+			  $.getJSON("<%=adminRestUrlForMasteryLevelRecord%>report/"+college_id+"/group_mastery_level/"+<%=batch_group_id%>+"/course/"+course_id+"", function(result){
+				 
+				  
+				  htmlAdd += "<ul id='tree1'>";
+				  $.each(result.data, function(i, field){
+					  
+					  htmlAdd += "<li>";
+					  htmlAdd += "<div style='display: initial;'>";
+					  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
+					  htmlAdd += "<div class='progress' style='display: inline-flex; width: 70%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
+					  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px;    line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
+					  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
+					  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";
+					  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.apprentice+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #30beef;' aria-valuenow='"+field.apprentice+"' aria-valuemin='0' aria-valuemax='100'>"+field.apprentice+"%</div>";
+					  htmlAdd += "</div>";
+					  htmlAdd += "</div>";
+					  
+					  htmlAdd += "<ul>";
+					  
+					  
+					  
+					  $.each(field.session_skills, function(j, field){
+						  
+						  htmlAdd += "<li>";
+						  htmlAdd += "<div style='display: initial;'>";
+						  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
+						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 70%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
+						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
+						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
+						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";
+						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.apprentice+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #30beef;' aria-valuenow='"+field.apprentice+"' aria-valuemin='0' aria-valuemax='100'>"+field.apprentice+"%</div>";
+						 
+						  htmlAdd += "</div>";
+						  htmlAdd += "</div>";
+						  htmlAdd += "</li>";
+						 
+						  
+					  });
+					  htmlAdd += "</ul>";
+					  htmlAdd += "</li>";
+					
+					 
+					 
+					    
+		        });
+				  htmlAdd += "<ul>";
+				  $("#master_level_perskill").empty();
+	            	$("#master_level_perskill").append(htmlAdd); 
+	            	$('#tree1').treed();
+					$('.progress').show();
+					$('.progress-bar').show();
+					$('.row.ll').show();
+					$('.col-md-2.ll').show();
+			  }); 
+		 }
+ function studentEnrolled(){
+	 
+	 var htmlAdd = "";
+		
+	  $.getJSON("<%=adminRestUrlForStudentRecord%>", function(result){
+		 
+           $.each(result.studentRecord, function(i, field){
+           	var image ='';
+           	var name ='';
+           	var rank='';
+           	var xp='';
+           	var level='';
+                 $.each(field, function(key,val){
+           		
+           		if(key == 'col-0'){
+           			image ="<img  class='custom-mastery-levelimg-css' src='"+val+"'>";
+           		}else if(key == 'col-1'){
+           			name ="<h3>"+val+"</h3>";
+           		}else if(key == 'col-2'){
+           			rank ="<div class='col-md-3 text-center m-auto'>#"+val+"</div>";	
+           		}else if(key == 'col-3'){
+           			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";
+           			
+           		}else if(key == 'col-4'){
+           			level ="<div class='col-md-3 text-center m-auto "+val+"'>"+val+"</div>";
+           		}
+           		
+                  
+           	 });
+              
+           	
+           	htmlAdd +="<div class='row m-0 custom-mastery-levelbody-css'>"
+           	htmlAdd +="<div class='col-md-3 text-center m-auto'>";
+           	htmlAdd +="<div class='row m-0'>";
+           	htmlAdd +="<div class='col-md-4 text-center m-auto'>";
+           	htmlAdd +=image;
+           	htmlAdd +="</div>";
+           	htmlAdd +="<div class='col-md-8 text-center m-auto'>";
+           	htmlAdd += name;
+           	htmlAdd +="</div>";
+           	htmlAdd +="</div>";
+           	htmlAdd +="</div>";
+           	htmlAdd +=rank;
+           	htmlAdd +=xp;
+           	htmlAdd +=level;
+           	htmlAdd +="</div>";
+           	
+           	$(".main-table").empty();
+           	$(".main-table").append(htmlAdd);
+           });
+       });
+	 
+	 
+ }
 		 function drawChart() {
 
 	    	 <%--  $.ajax({
@@ -323,7 +448,8 @@ font-size:10px !important;
 			
 			  google.charts.load('current', {'packages':['corechart']});
 		      google.charts.setOnLoadCallback(drawChart);
-
+		      studentEnrolled();
+		      roleMasteryLevel();
 					$('#tree1').treed();
 					$('.progress').show();
 					$('.progress-bar').show();
@@ -331,55 +457,11 @@ font-size:10px !important;
 					$('.col-md-2.ll').show();
 					
 					
-					var htmlAdd = "";
-					
-					  $.getJSON("<%=adminRestUrlForStudentRecord%>", function(result){
-						 
-				            $.each(result.studentRecord, function(i, field){
-				            	var image ='';
-				            	var name ='';
-				            	var rank='';
-				            	var xp='';
-				            	var level='';
-                                  $.each(field, function(key,val){
-				            		
-				            		if(key == 'col-0'){
-				            			image ="<img  class='custom-mastery-levelimg-css' src='"+val+"'>";
-				            		}else if(key == 'col-1'){
-				            			name ="<h3>"+val+"</h3>";
-				            		}else if(key == 'col-2'){
-				            			rank ="<div class='col-md-3 text-center m-auto'>#"+val+"</div>";	
-				            		}else if(key == 'col-3'){
-				            			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";
-				            			
-				            		}else if(key == 'col-4'){
-				            			level ="<div class='col-md-3 text-center m-auto "+val+"'>"+val+"</div>";
-				            		}
-				            		
-				                   
-				            	 });
-				               
-				            	
-				            	htmlAdd +="<div class='row m-0 custom-mastery-levelbody-css'>"
-				            	htmlAdd +="<div class='col-md-3 text-center m-auto'>";
-				            	htmlAdd +="<div class='row m-0'>";
-				            	htmlAdd +="<div class='col-md-4 text-center m-auto'>";
-				            	htmlAdd +=image;
-				            	htmlAdd +="</div>";
-				            	htmlAdd +="<div class='col-md-8 text-center m-auto'>";
-				            	htmlAdd += name;
-				            	htmlAdd +="</div>";
-				            	htmlAdd +="</div>";
-				            	htmlAdd +="</div>";
-				            	htmlAdd +=rank;
-				            	htmlAdd +=xp;
-				            	htmlAdd +=level;
-				            	htmlAdd +="</div>";
-				            	
-				            	$(".main-table").empty();
-				            	$(".main-table").append(htmlAdd);
-				            });
-				        });
+					$( "#filter_master_level_perskill" ).change(function() {
+						 //alert( $(this).val() );
+						 // masterLevelPerSkill($(this).val(),$(this).attr('data-college_id'));
+						 roleMasteryLevel();
+						});	
 
 				});
 	</script>
