@@ -400,9 +400,9 @@
 						<div class="card-block">
 						<div class="card-body">
 							<div class="row m-0">
-								<div class="col-md-10 pl-0"><h3 class="card-header-box">Section wise performance of students</h3></div>
-								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
-							</div>
+								<div class="col-md-12 pl-0"><h3 class="card-header-box">Section wise performance of students</h3></div>
+<!-- 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
+ -->							</div>
 							
 								<select class="form-control select-dropdown-style graph_filter_selector" data-report_id="3041" name="batch_group_id" data-college_id="<%=orgId%>"
 									id="graph_section">
@@ -416,21 +416,10 @@
 										} %>
 								</select>
 
-								<div id="highchartcontainer1">
+								<div id="columnchartcontainer1">
 								
 								
-								<%
 								
-								if(batchGroups.size()>0){
-									HashMap <String, String> conditions4 = new HashMap();
-									conditions4.put("college_id", orgId+"");
-									conditions4.put("batch_group_id", batchGroups.get(0).getId()+"");
-									%><%=reportUtils.getHTML(3041, conditions4) %>
-									
-									<% 
-								}
-								
-								%>
 								</div>
 							</div>
 						</div>
@@ -454,20 +443,9 @@
 										<%
 										} %>
 									</select>
-								<div id="highchartcontainer2">
+								<div id="columnchartcontainer2">
 								
-								<%
-							
-							if(courses.size()>0){
-								HashMap <String, String> conditions2 = new HashMap();
-								conditions2.put("college_id", orgId+"");
-								conditions2.put("course_id", courses.get(0).getId()+"");
-								%>
-								<%=reportUtils.getHTML(3040, conditions2) %>
-								<% 
-							}
-											
-							%>
+								
 								</div>
 							</div>
 						</div>
@@ -626,10 +604,125 @@
 			});
 			
 			initDashboardCards();
-			initDashbordGraphs();
-			createGraphs();
+			//initDashbordGraphs();
+			//createGraphs();
+			
+			scectionWisePerformanceOfStudents();
+			programWisePerformanceOfStudents();
+			roleWisePerformanceOfStudents();
+			programWisePerformanceOfStudents();
 		});
 	
+	
+	 function programWisePerformanceOfStudents() {
+
+   	//  $.ajax({
+			//    url: '',
+			 //   type: 'GET',
+			 //   async: true,
+			 //   dataType: "json",
+			  //  success: function (data) {				    					    	
+			    	google.charts.load('current', {'packages':['corechart']});
+			          google.charts.setOnLoadCallback(drawStuff);
+
+			          function drawStuff() {
+			            var tabledData = google.visualization.arrayToDataTable( 
+			            		[
+			            	          ['Year', 'Wizard', 'Master', 'Apprentice', 'Rookie'],
+			            	          ['EAST', 1000, 400, 200, 100],
+			            	          ['WEST', 1170, 460, 250, 340],
+			            	          ['NORTH', 660, 1120, 300, 200],
+			            	          ['SOUTH', 1030, 540, 350, 250]
+			            	        ]
+			            );				      
+			            var classicOptions = {
+			            		tooltip: {isHtml: true},
+			            		 legend: 'none',
+					                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
+						       	    fontName: 'avenir-light',	
+						       	 vAxis: {title: ' Percentage Of Student'},						       
+						         seriesType: 'bars',		            		
+			            };
+			           
+			            function drawClassicChart() {
+			             
+			            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer2'));
+						        chart.draw(tabledData, classicOptions);
+						       
+						       var legendHtml =  "<div class='row'>";
+						    	   legendHtml += "<div class='col-12 text-center'>";
+						    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
+						    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
+						    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
+						    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+						    						   legendHtml += "</div></div>";
+						        $('#columnchartcontainer2').append(legendHtml);
+			            }
+
+			            drawClassicChart();
+			        };
+			    	
+			    	//}
+			//  });
+   	  
+   	  
+       
+       }
+	 
+	 function scectionWisePerformanceOfStudents() {
+
+		   	//  $.ajax({
+					//    url: '',
+					 //   type: 'GET',
+					 //   async: true,
+					 //   dataType: "json",
+					  //  success: function (data) {				    					    	
+					    	google.charts.load('current', {'packages':['corechart']});
+					          google.charts.setOnLoadCallback(drawStuff);
+
+					          function drawStuff() {
+					            var tabledData = google.visualization.arrayToDataTable( 
+					            		[
+					            	          ['Sesction', 'Wizard', 'Master', 'Apprentice', 'Rookie'],
+					            	          ['EAST', 1000, 400, 200, 100],
+					            	          ['WEST', 1170, 460, 250, 340],
+					            	          ['NORTH', 660, 1120, 300, 200],
+					            	          ['SOUTH', 1030, 540, 350, 250]
+					            	        ]
+					            );				      
+					            var classicOptions = {
+					            		tooltip: {isHtml: true},
+					            		 legend: 'none',
+							                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
+								       	    fontName: 'avenir-light',	
+								       	 vAxis: {title: ' Percentage Of Student'},						       
+								         seriesType: 'bars',		            		
+					            };
+					           
+					            function drawClassicChart() {
+					             
+					            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer1'));
+								        chart.draw(tabledData, classicOptions);
+								       
+								        var legendHtml =  "<div class='row'>";
+								    	   legendHtml += "<div class='col-12 text-center'>";
+								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
+								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
+								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
+								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+								    						   legendHtml += "</div></div>";
+								        $('#columnchartcontainer1').append(legendHtml);
+					            }
+
+					            drawClassicChart();
+					        };
+					    	
+					    	//}
+					//  });
+		   	  
+		   	  
+		       
+		       }
 	
 	function event_cardFunction(){
 		$('.event_card').on("click",function(){
@@ -696,284 +789,13 @@
 		}
 	}
 	
-	function initDashbordGraphs() {
+	
 
-	    $('.graph_filter_selector').each(function() {
-	        var report_id = $(this).data("report_id");
-	        var data_table_id = 'chart_datatable_' + report_id;
-	        $(this).unbind().on('change', function() {
-
-	            var params = {};
-	            $.each($(this)[0].dataset, function(index, value) {
-	                console.log( index + ": " + value );
-	                params[index] = value;
-	            });
-
-	            var filter_name = $(this).attr("name");
-	            var filter_value = $(this).val();
-	            params[filter_name] = filter_value;
-
-	            $.ajax({
-	                type: "POST",
-	                url: '../chart_filter',
-	                data: jQuery.param(params),
-	                success: function(data) {
-	                    $('#' + data_table_id).replaceWith(data);
-	                    create_column_graph(data_table_id);
-	                    $('.data_holder.datatable_report').hide();
-	                }
-	            });
-	        });
-	    });
-	    
-	    
-	    //skill graph
-	    
-	    var option={};
-	    skillChart=new Highcharts.Chart('skill-graph',option);
-	    
-	    $('#graph_role').unbind().on('change',function(){
-	    	
-	    	if(skillChart){
-	    		skillChart.showLoading();
-	    	}
-			initSkillGraph($(this).val());
-	    });
-	    
-	    if(skillChart){
-    		skillChart.showLoading();
-    	}
-	    
-	    initSkillGraph($('#graph_role').val());
-	    
-	}
-
-		function createGraphs() {
-			try {
-				$('.datatable_report').each(function(i, obj) {
-					var tableID = $(this).attr('id');
-					var containerID = '#'
-							+ $(this).data('graph_containter');
-					var graph_type = $(this).data('graph_type');
-					var graph_title = $(this).data(
-							'report_title');
-					var y_axis_title = $(this).data(
-							'y_axis_title');
-					if (graph_type.indexOf('table') <= -1) {
-						console.log("App.js::handleGraphs() -> graph found --> "+ tableID);
-						if (graph_type === 'column') {
-							create_column_graph(tableID);
-						}
-					}
-				});
-
-				// Hide Table
-				$('.data_holder.datatable_report').hide();
-
-			} catch (err) {
-				// console.log(err);
-			}
-		}
 		
-		function initSkillGraph(course_id){
-
-			var moduleLevelData = [];  
-			var sessionLevelData ={} ; 
-			var queryString ='';
-			var college_id = <%=orgId%>;
-			queryString ='course_id='+course_id+'&college_id='+college_id;
-			 $.ajax({
-		          url: "<%=baseURL%>/get_admin_skill_graph",
-		          cache: false,
-		          type:  "POST",
-		          data:  "type=MODULE_LEVEL&"+queryString,
-		          success: function(data){
-		        	  var data = JSON.parse(data);
-		        	  moduleLevelData = data;
-		        	  $.ajax({
-		    	          url: "<%=baseURL%>/get_admin_skill_graph",
-							cache : false,
-							type : "POST",
-							data : "type=SESSION_LEVEL&" + queryString,
-							success : function(data2) {
-								var data = JSON.parse(data2);
-								sessionLevelData = data2;
-								loadSkillChart(moduleLevelData,
-										sessionLevelData);
-								
-							}
-						});
-				}
-			});
-		}
 		
-		function loadSkillChart(moduleLevelData, sessionLevelData) {
-			
-			skillChart=new Highcharts.Chart('skill-graph',{
-		        chart: {
-		            type: 'column',
-		            events: {
-		                drilldown: function(e) {
-		                    if (!e.seriesOptions) {
-		                        var chart = this,
-		                            drilldowns = JSON.parse(sessionLevelData),
-		                            series = drilldowns[e.point.name];
-		                        var graphcolors = [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ];
-		                        try {
-			                       
-			                        for(var j=0;j<4;j++){
-			                        	drilldowns[e.point.name][j]['color']=graphcolors[j];
-			                        }
-			                       }catch(err){
-		                        }
-		                        
-		                        for (var i = 0; i < series.length; i++) {
-		                            chart.addSingleSeriesAsDrilldown(e.point, series[i]);
-		                        }
+		
 
-		                        chart.applyDrilldown();
-		                    }
-
-		                }
-		            }
-		        },
-		        credits: {
-		            enabled: false
-		        },
-		        title: {
-		            text: ''
-		        },
-		        xAxis: {
-		            type: 'category'
-		        },
-
-		        legend : {
-					useHTML : true,
-					labelFormatter : function() {
-						var pos = this.index + 1;
-						return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
-								+ this.name + '</span>';
-					},
-					
-					symbolHeight : 0.1,
-					symbolWidth : 0,
-					symbolRadius : 0
-				},
-
-		        plotOptions: {
-		            series: {
-		                stacking: 'percent	',
-		                borderWidth: 0,
-		                dataLabels: {
-		                    enabled: false
-		                }
-		            },
-		            dataLabels: {
-		                enabled: false,
-		                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) ||
-		                    'white'
-		            }
-		        },
-
-		        series: moduleLevelData,
-
-		        drilldown: {
-		            series: [],
-		            legend : {
-						useHTML : true,
-						labelFormatter : function() {
-							var pos = this.index + 1;
-							return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
-									+ this.name + '</span>';
-						},
-						
-						symbolHeight : 0.1,
-						symbolWidth : 0,
-						symbolRadius : 0
-					}
-		        },
-
-		        yAxis: {
-		            min: 0,
-		            title: {
-		                text: 'Percentage'
-		            },
-		            stackLabels: {
-		                enabled: false
-		            }
-		        },
-		        colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a','#fc6d80', '#7295fd', '#30beef','#bae88a' ]
-		    });
-			
-			skillChart.hideLoading();
-
-		}
-
-		function create_column_graph(tableID) {
-
-			var containerID = '#' + $('#' + tableID).data('graph_containter');
-			var graph_type = $('#' + tableID).data('graph_type');
-			var graph_title = $('#' + tableID).data('report_title');
-			var y_axis_title = $('#' + tableID).data('y_axis_title');
-
-			$(containerID).highcharts({
-				data : {
-					table : tableID
-				},
-				chart : {
-					zoomType : 'x',
-					type : graph_type,
-					options3d : {
-						enabled : true,
-						alpha : 45
-					}
-				},
-				credits : {
-					enabled : false
-				},
-				title : {
-					text : ""
-				},
-				legend : {
-					useHTML : true,
-					labelFormatter : function() {
-						var pos = this.index + 1;
-						return '<span class="btn btn-default m-0 graph-border-' + pos + '"><i class="fa fa-circle graph-dot-' + pos + '"></i>'
-								+ this.name + '</span>';
-					},
-					
-					
-					symbolHeight : 0.1,
-					symbolWidth : 0,
-					symbolRadius : 0
-				},
-
-				yAxis : {
-					allowDecimals : false,
-					title : {
-						text : y_axis_title
-					}
-				},
-				tooltip : {
-					crosshairs : [ true, true ],
-					formatter : function() {
-						return this.series.name + ': <b>'
-								+ this.y + '</b>';
-					}
-				},
-				plotOptions : {
-					pie : {
-						allowPointSelect : true,
-						cursor : 'pointer',
-						dataLabels : {
-							enabled : true,
-							format : '<b>{point.name}</b>: {point.percentage:.1f} %',
-						}
-					}
-				},
-				colors : [ '#fc6d80', '#7295fd', '#30beef','#bae88a' ]
-			});
-		}
+		
 	</script>
 </body>
 </html>

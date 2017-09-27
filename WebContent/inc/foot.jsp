@@ -19,6 +19,7 @@ String basePath =  AppProperies.getProperty("cdn_path");
 <script src="<%=basePath %>assets/js/plugins/highchart/highcharts.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/drilldown.js"></script>
 <script src="<%=basePath %>assets/js/plugins/highchart/data.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript" src="<%=basePath%>assets/js/moment.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>assets/js/daterangepicker.js"></script>
