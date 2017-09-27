@@ -637,13 +637,14 @@
 					    type: 'GET',
 					    async: true,
 					    dataType: "json",
-					    success: function (data) {				    					    	
+					    success: function (data) {	
+					    	var responseData = data;
 					    	google.charts.load('current', {'packages':['corechart']});
 					          google.charts.setOnLoadCallback(drawStuff);
 
 					          function drawStuff() {
 					        	 
-					            var tabledData = google.visualization.arrayToDataTable( data.first_level );				      
+					            var tabledData = google.visualization.arrayToDataTable( responseData.first_level );				      
 					            var classicOptions = {
 					            		tooltip: {isHtml: true},
 					            		height: 270,
@@ -653,24 +654,24 @@
 								       	 vAxis: {title: ' Percentage Of Student'},						       
 								         seriesType: 'bars',								      								         
 					            };					           
-					            function drawClassicChart(jsonData) {
+					            function drawClassicChart() {
 					             
 					            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer3'));
 								          chart.draw(tabledData, classicOptions);
-								        if(jsonData != null){
+								       
 								        	google.visualization.events.addListener(chart, 'select', function () {
-							            	selectHandler(chart, tabledData,jsonData);
+							            	selectHandler(chart, tabledData);
 								        	
 						                });	
-								        }
+								       
 					            }
 					            
 					           
-					            function selectHandler(chart, data,jsonData) {
+					            function selectHandler(chart, data) {
 					                var selectedItem = chart.getSelection()[0];
 					                var selectedModule =  selectedItem.row
 					                if (selectedItem) {         					              
-									    	tabledData = google.visualization.arrayToDataTable( jsonData.second_level[selectedModule] );								                
+									    	tabledData = google.visualization.arrayToDataTable( responseData.second_level[selectedModule] );								                
 						                    drawClassicChart();
 						                    GenerateBack();					                	
 					                }
@@ -683,7 +684,7 @@
 					               
 					                    var $back = $('<button/>').text('Back').addClass('reportBack').click(function () {
 					                    	
-					                    	            masterLevelPerSkill();
+					                    	               drawStuff();
 					                                    $(this).parent().remove();
 					                                });
 					                    var $div = $('<div/>').addClass('backButtonContainer').css({ 'width': '90%', 'text-align': 'right', 'padding': '5px' }).append($back);
@@ -692,7 +693,7 @@
 					               
 					            }
 
-					            drawClassicChart(data);
+					            drawClassicChart();
 					         
 					        };
 					    	
