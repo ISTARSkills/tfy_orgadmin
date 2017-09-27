@@ -9,7 +9,26 @@
 
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
+<style>
 
+div.google-visualization-tooltip {
+background-color: #616161;
+ border-radius: 25px;
+ text-align: center;
+ margin:0px !important;
+  padding:0px !important;
+}
+
+div.google-visualization-tooltip > ul > li > span {
+color: #ffffff !important;
+font-size:10px !important;
+ margin:0px !important;
+   padding:0px !important;
+   
+ 
+}
+
+</style>
 <body id='orgadmin_roles_report'>
 
 	<%
@@ -68,7 +87,7 @@
 
 			<div class="card  report_card_role p-0">
 				<div class="card-body p-0">
-					<div class='row report-roles-card report-roles-card-click' data-courseID='<%=adminRole.getId()%>'>
+					<div class='row report-roles-card '>
 						<div class="col-md-2">
 							<img class='report-role-image'
 								src='<%=adminRole.getImageUrl() != null
@@ -76,7 +95,7 @@
 						: ""%>'
 								alt=''></img>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6 report-roles-card-click" data-courseID='<%=adminRole.getId()%>'>
 							<h1 class='report-heading my-0'><%=adminRole.getName()%></h1>
 							<p class="stars">
 
@@ -152,7 +171,10 @@
 								data-wizard='<%=adminRole.getWizard() != null ? adminRole.getWizard() : 0%>'
 								data-rookie='<%=adminRole.getRookie() != null ? adminRole.getRookie() : 0%>'
 								data-apprentice='<%=adminRole.getApprentice() != null ? adminRole.getApprentice() : 0%>'
-								style='width: 100%; height: 151.3px;'></div>
+								style=''>
+								
+								
+								</div>
 						</div>
 					</div>
 					<div class='line'></div>
@@ -368,80 +390,52 @@
 		$(document).ready(function() {
 
 					var chart;
-					$('.skill_graph').each(
-							function(index) {
+					$('.skill_graph').each(function(index) {
+						var containerID = this.id;
+						var wizard = $(this).attr('data-wizard');
+						var master = $(this).attr('data-master');
+						var apprentice = $(this).attr('data-apprentice');
+						var rookie = $(this).attr('data-rookie');
 
-								new Highcharts.Chart({
-									credits:false,
-									legend : {
-										layout : 'vertical',
-										backgroundColor : '#ffffff',
-										align : 'right',
-										symbolHeight : 5,
-										symbolRadius : 0,
-										verticalAlign : 'middle',
-										floating : true,
-									},
-									chart : {
-										renderTo : 'container' + index,
-										type : 'pie'
-									},
-									title : {
-										text : ''
-									},
-									yAxis : {
-										title : {
-											text : ''
-										}
-									},
-									plotOptions : {
-										pie : {
-											shadow : false
-										}
-									},
-									tooltip : {
-										formatter : function() {
-											return '<b>' + this.point.name
-													+ '</b>: ' + this.y + ' %';
-										}
-									},
-									series : [ {
-										name : 'Mastry Level',
-										data : [
-												{
-													y : parseInt($(this).data(
-															'wizard')),
-													name : "Wizrard",
-													color : "#fd6d81"
-												},
-												{
-													y : parseInt($(this).data(
-															'master')),
-													name : "Master",
-													color : "#7295fd"
-												},
-												{
-													y : parseInt($(this).data(
-															'apprentice')),
-													name : "Apprentice",
-													color : "#30beef"
-												},
-												{
-													y : parseInt($(this).data(
-															'rookie')),
-													name : "Rookie",
-													color : "#bae88a"
-												}
+						google.charts.load('current', {'packages':['corechart']});
+				          google.charts.setOnLoadCallback(drawStuff);
 
-										],
-										size : '121.3px',
-										innerSize : '60%',
-										showInLegend : true,
-										dataLabels : {
-											enabled : false
-										}
-									} ]
-								});
+				          function drawStuff() {
+				            var tabledData = google.visualization.arrayToDataTable( 
+				            		[
+				            			  ['Level', 'Percentage'],
+				            	          ['Wizard',     parseInt(wizard)],
+				            	          ['Master',      parseInt(master)],
+				            	          ['Apprentice',  parseInt(apprentice)],
+				            	          ['Rookie', parseInt(rookie)]
+				            	         
+				            	        ]
+				            );				      
+				            var classicOptions = {
+				            		chartArea: {width: 400, height: 150},
+				            		tooltip: {isHtml: true},
+				            		width: 370,
+				            	    height: 170,
+				            	    pieSliceText: 'value',
+				            		 sliceVisibilityThreshold: 0,
+				            		 pieHole: 0.6,
+				            		 legend: 'right',
+						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
+							       	    fontName: 'avenir-light',				       
+							         	            		
+				            };
+				           
+				            function drawClassicChart() {
+				             
+				            	 var chart = new google.visualization.PieChart(document.getElementById(containerID));
+				            	 chart.draw(tabledData, classicOptions);
+							       
+							       
+							       
+				            }
+
+				            drawClassicChart();
+				        };
 
 							});
 
@@ -474,12 +468,14 @@
 						
 					$('.popover-dismiss').popover();
 					
-					//individual_group_report.jsp
+					
 					$('.report-roles-card-click').click(function(){
 						var course_id = $(this).attr('data-courseid');
 						//alert('clicked'+course_id);
-						window.location.href = "<%=baseURL%>/orgadmin/report/group_report/individual_group_report.jsp?course_id="+course_id;
+						window.location.href = "<%=baseURL%>/orgadmin/report/role_report/individual_role_report.jsp?course_id="+course_id;
 					});
+					
+					
 
 				});
 

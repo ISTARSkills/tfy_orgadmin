@@ -16,6 +16,24 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
 
+div.google-visualization-tooltip {
+background-color: #616161;
+ border-radius: 25px;
+ height: 35px;
+ width: 100px;
+ text-align: center;
+ margin:0px !important;
+  padding:0px !important;
+}
+
+div.google-visualization-tooltip > ul > li > span {
+color: #ffffff !important;
+font-size:10px !important;
+ margin:0px !important;
+   padding:0px !important;
+ 
+}
+
 </style>
 <body id='orgadmin_individual_groups_report'>
 
@@ -274,11 +292,12 @@
 
 				          function drawStuff() {
 				            var tabledData = google.visualization.arrayToDataTable( data.data );				      
-				            var classicOptions = {
+				           var classicOptions = {
+				            		 tooltip: {isHtml: true},
 				            		 legend: 'bottom',
 						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
 							       	    fontName: 'avenir-light',	
-							       	 vAxis: {title: 'Attendance'},
+							       	 vAxis: {title: 'Attendance Percentage'},
 							         hAxis: {title: 'Sessions'},
 							         seriesType: 'bars',
 				            		

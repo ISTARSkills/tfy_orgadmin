@@ -13,7 +13,7 @@
 <%@page import="com.viksitpro.user.service.*"%>
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<body>
+<body id="orgadmin_dashbard">
 	<%
 		boolean flag = false;
 		String url = request.getRequestURL().toString();
@@ -481,7 +481,8 @@
 										}
 									%>
 								</select>
-								<div id="skill-graph" class='w-100 m-0 p-0'></div>
+								<div id="columnchartcontainer3" class='w-100 m-0 p-0'>
+								</div>
 							</div>
 							</div>
 						</div>
@@ -604,17 +605,104 @@
 			});
 			
 			initDashboardCards();
-			//initDashbordGraphs();
-			//createGraphs();
 			
-			scectionWisePerformanceOfStudents();
-			programWisePerformanceOfStudents();
-			roleWisePerformanceOfStudents();
-			programWisePerformanceOfStudents();
+			
+			scectionWisePerformanceOfStudents($('#graph_section').val(),$('#graph_section').attr('data-college_id'));
+			programWisePerformanceOfStudents($('#graph_program').val(),$('#graph_program').attr('data-college_id'));
+			masterLevelPerSkill($('#graph_role').val(),$('#graph_role').attr('data-college_id'));
+			//roleWisePerformanceOfStudents();
+			//programWisePerformanceOfStudents();
+			
+			$( "#graph_section" ).change(function() {
+				 alert( $(this).val() );
+				 scectionWisePerformanceOfStudents($(this).val(),$(this).attr('data-college_id'));
+				});
+			$( "#graph_program" ).change(function() {
+				  alert( $(this).val() );
+				  programWisePerformanceOfStudents($(this).val(),$(this).attr('data-college_id'));
+				});
+			$( "#graph_role" ).change(function() {
+				  alert( $(this).val() );
+				  masterLevelPerSkill($(this).val(),$(this).attr('data-college_id'));
+				});
+		
 		});
 	
+	 function masterLevelPerSkill(role_id,college_id) {
+
+		   	  $.ajax({
+					    url: 'http://localhost:8080/a/admin/dashboard/'+college_id+'/skill_performance/'+role_id+'',
+					    type: 'GET',
+					    async: true,
+					    dataType: "json",
+					    success: function (data) {				    					    	
+					    	google.charts.load('current', {'packages':['corechart']});
+					          google.charts.setOnLoadCallback(drawStuff);
+
+					          function drawStuff() {
+					        	 
+					            var tabledData = google.visualization.arrayToDataTable( data.first_level );				      
+					            var classicOptions = {
+					            		tooltip: {isHtml: true},
+					            		height: 270,
+					            		 legend: 'none',
+							                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
+								       	    fontName: 'avenir-light',	
+								       	 vAxis: {title: ' Percentage Of Student'},						       
+								         seriesType: 'bars',								      								         
+					            };					           
+					            function drawClassicChart(jsonData) {
+					             
+					            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer3'));
+								          chart.draw(tabledData, classicOptions);
+								        if(jsonData != null){
+								        	google.visualization.events.addListener(chart, 'select', function () {
+							            	selectHandler(chart, tabledData,jsonData);
+								        	
+						                });	
+								        }
+					            }
+					            
+					           
+					            function selectHandler(chart, data,jsonData) {
+					                var selectedItem = chart.getSelection()[0];
+					                var selectedModule =  selectedItem.row
+					                if (selectedItem) {         					              
+									    	tabledData = google.visualization.arrayToDataTable( jsonData.second_level[selectedModule] );								                
+						                    drawClassicChart();
+						                    GenerateBack();					                	
+					                }
+					     
+					            }
+					            
+					            function GenerateBack() {
+					                $('.backButtonContainer').remove();
+					                //Create new Back Button
+					               
+					                    var $back = $('<button/>').text('Back').addClass('reportBack').click(function () {
+					                    	
+					                    	            masterLevelPerSkill();
+					                                    $(this).parent().remove();
+					                                });
+					                    var $div = $('<div/>').addClass('backButtonContainer').css({ 'width': '90%', 'text-align': 'right', 'padding': '5px' }).append($back);
+					                    $('#columnchartcontainer3').before($div);
+					     
+					               
+					            }
+
+					            drawClassicChart(data);
+					         
+					        };
+					    	
+					    	}
+					  });
+		   	  
+		   	  
+		       
+		       }
 	
-	 function programWisePerformanceOfStudents() {
+	
+	 function programWisePerformanceOfStudents(course_id,college_id) {
 
    	//  $.ajax({
 			//    url: '',
@@ -669,7 +757,7 @@
        
        }
 	 
-	 function scectionWisePerformanceOfStudents() {
+	 function scectionWisePerformanceOfStudents(section_id,college_id) {
 
 		   	//  $.ajax({
 					//    url: '',
