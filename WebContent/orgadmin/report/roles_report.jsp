@@ -472,7 +472,7 @@ font-size:10px !important;
 					$('.report-roles-card-click').click(function(){
 						var course_id = $(this).attr('data-courseid');
 						//alert('clicked'+course_id);
-						window.location.href = "<%=baseURL%>/orgadmin/report/role_report/individual_role_report.jsp?course_id="+course_id;
+						window.location.href = "<%=baseURL%>orgadmin/report/role_report/individual_role_report.jsp?course_id="+course_id;
 					});
 					
 					

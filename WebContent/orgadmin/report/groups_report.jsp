@@ -405,7 +405,7 @@
 			$('.report-group-card-click').click(function(){
 				var batch_group_id = $(this).attr('data-batchGroupId');
 				//alert('clicked'+course_id);
-				window.location.href = "<%=baseURL%>/orgadmin/report/group_report/individual_group_report.jsp?batch_group_id="+batch_group_id;
+				window.location.href = "<%=baseURL%>orgadmin/report/group_report/individual_group_report.jsp?batch_group_id="+batch_group_id;
 			});
 			
 			

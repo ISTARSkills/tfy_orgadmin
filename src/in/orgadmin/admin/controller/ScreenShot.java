@@ -45,9 +45,16 @@ public class ScreenShot extends HttpServlet {
 		    URLServices services = new URLServices();
 			String phantom_path = services.getAnyProp("phantom_path");
 			String live_session_log_url = services.getAnyProp("live_session_log_url");
-			//
-		   System.err.println(phantom_path+"bin/phantomjs "+phantom_path+"examples/rasterize.js \""+live_session_log_url+"?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\" /tmp/"+uuid+".png");
-		    Process process = Runtime.getRuntime().exec(phantom_path+"bin/phantomjs "+phantom_path+"/examples/rasterize.js \"http://elt.talentify.in/tfy_socket/live_session_logs.jsp?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\" /tmp/"+uuid+".png");
+		   
+			//this is for windows....
+		   // Process process = Runtime.getRuntime().exec(phantom_path+"bin/phantomjs "+phantom_path+"/examples/rasterize.js \"http://elt.talentify.in/tfy_socket/live_session_logs.jsp?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\" /tmp/"+uuid+".png");
+
+		   //This is for linux...... 
+		   String command = "phantomjs /usr/local/share/phantomjs-1.9.8-linux-x86_64/examples/rasterize.js "
+		   		+ " \""+live_session_log_url+"?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\"   /tmp/screenshots/"+uuid;
+		   System.err.println(command);
+
+		    Process process = Runtime.getRuntime().exec(command);
 	        try {
 				process.waitFor();
 			} catch (InterruptedException e1) {
@@ -55,7 +62,7 @@ public class ScreenShot extends HttpServlet {
 				e1.printStackTrace();
 			}
 		    
-	         File imageFile = new File("/tmp/"+uuid+".png");
+	         File imageFile = new File("/tmp/screenshots/"+uuid+".png");
 	         System.err.println(imageFile.getAbsolutePath());
 		    try {
 		        BufferedImage bufferedImg = ImageIO.read(imageFile);
