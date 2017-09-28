@@ -2856,7 +2856,7 @@ a.unselected_report {
    line-height: 4.1;
     position:relative;
      font-family: avenir-light; 
-        border: 1px solid #eee;
+      
 }
 .tree ul li:before {
     content:"";
@@ -2869,6 +2869,9 @@ a.unselected_report {
     top:2em;
     left:-11px;
      color:#c3c2c2;
+}
+.custom-branch-css{
+	    border: 1px solid #eee;
 }
 .tree ul li:last-child:before {
     background:#fff;
@@ -2932,7 +2935,7 @@ a.unselected_report {
 	box-shadow: 0 10px 24px 0 rgba(0, 0, 0, 0.05), 0 6px 8px 0 rgba(0, 0, 0, 0.04);
 }
 .custom-legends-masterylevel-css{
-	background-color: #fd6c81; width: 14px; height: 15px;
+	 width: 14px; height: 15px;
 }
 .custom-master_level_perskill-css{
 min-width: 310px; height: 400px; margin: 0 auto; overflow: auto;
@@ -2961,4 +2964,28 @@ border: 1px solid #e9ecef; height: 8vh; font-family: avenir-light; font-weight: 
 
 .Rookie {
 	color: #bae88a;
+}
+.b-Wizard {
+	background-color: #fd6d81;
+}
+
+.b-Master {
+	background-color: #7295fd;
+}
+
+.b-Apprentice {
+	background-color: #30beef;
+}
+
+.b-Rookie {
+	background-color: #bae88a;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #eb384f;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
 }
