@@ -653,17 +653,27 @@
 								       	    fontName: 'avenir-light',	
 								       	 vAxis: {title: ' Percentage Of Student'},						       
 								         seriesType: 'bars',								      								         
-					            };					           
+					            };
+					            var flag = true;
 					            function drawClassicChart() {
 					             
 					            	 var chart = new google.visualization.ColumnChart(document.getElementById('columnchartcontainer3'));
 								          chart.draw(tabledData, classicOptions);
-								       
+								          
+								          var legendHtml =  "<div class='row'>";
+								    	   legendHtml += "<div class='col-12 text-center'>";
+								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
+								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
+								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
+								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+								    						   legendHtml += "</div></div>";
+								        $('#columnchartcontainer3').append(legendHtml);
+								       if(flag){
 								        	google.visualization.events.addListener(chart, 'select', function () {
 							            	selectHandler(chart, tabledData);
 								        	
 						                });	
-								       
+								       }
 					            }
 					            
 					           
@@ -671,7 +681,8 @@
 					                var selectedItem = chart.getSelection()[0];
 					                var selectedModule =  selectedItem.row
 					                if (selectedItem) {         					              
-									    	tabledData = google.visualization.arrayToDataTable( responseData.second_level[selectedModule] );								                
+									    	tabledData = google.visualization.arrayToDataTable( responseData.second_level[selectedModule] );
+									    	flag = false;
 						                    drawClassicChart();
 						                    GenerateBack();					                	
 					                }
