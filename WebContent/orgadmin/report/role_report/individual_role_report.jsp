@@ -77,7 +77,6 @@ font-size:10px !important;
 		 String	adminRestUrlForMasteryLevelRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/role_mastery_level/"+course_id);
 		 //http://localhost:8080/a/admin/report/283/role_mastery_level/111
 		//System.out.println(orgId);
-		SumanthDummyServices dummyService = new SumanthDummyServices();
 		
 		Course course = new Course();
 		CourseDAO courseDAO = new CourseDAO();
@@ -235,6 +234,7 @@ font-size:10px !important;
 											var branch = $(this);
 											branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
 											branch.addClass('branch');
+											branch.addClass('custom-branch-css');
 											branch.on('click',function(e) {
 																if (this == e.target) {
 																	var icon = $(
@@ -286,13 +286,15 @@ font-size:10px !important;
 				});
 		
 		 function drawChart() {
-
+			 $('#columnchart_material').empty();
+				$("#columnchart_material").append('<div class="loader mx-auto my-auto"></div>');
 	    	  $.ajax({
 				    url: '<%=adminRestUrlForAttendanceRecord%>',
 				    type: 'GET',
 				    async: true,
 				    dataType: "json",
-				    success: function (data) {				    					    	
+				    success: function (data) {	
+				    	  $('#columnchart_material').empty();
 				    	  google.charts.load('current', {'packages':['corechart']});
 				          google.charts.setOnLoadCallback(drawStuff);
 
@@ -401,7 +403,7 @@ font-size:10px !important;
 					  htmlAdd += "</div>";
 					  htmlAdd += "</div>";
 					  
-					  htmlAdd += "<ul>";
+					  htmlAdd += "<ul style='width:100%'>";
 					  
 					  
 					  
@@ -410,7 +412,7 @@ font-size:10px !important;
 						  htmlAdd += "<li>";
 						  htmlAdd += "<div style='display: initial;'>";
 						  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
-						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 70%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
+						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 72%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
 						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
 						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
 						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";

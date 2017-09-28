@@ -70,11 +70,10 @@ font-size:10px !important;
 
 		int orgId = (int) request.getSession().getAttribute("orgId");
 		String	adminRestUrlForStudentRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
-		 String	adminRestUrlForMasteryLevelRecord = (AppProperies.getProperty("admin_rest_url"));
+		 String	admin_rest_url = (AppProperies.getProperty("admin_rest_url"));
 		// String	adminRestUrlForAttendanceRecord = (AppProperies.getProperty("admin_rest_url")+"report/"+orgId+"/group_student_record/"+batch_group_id);
 		//System.out.println(orgId);
-		SumanthDummyServices dummyService = new SumanthDummyServices();
-		
+		AdminUIServices uiservices=new AdminUIServices();
 		BatchGroup batchgroup = new BatchGroup();
 		BatchGroupDAO batchgroupDAO = new BatchGroupDAO();
 		batchgroup = batchgroupDAO.findById(batch_group_id);
@@ -102,18 +101,22 @@ font-size:10px !important;
 		<div class="container">
 			<div class="card custom-course-attendance-css">
 				<div class="row m-5">
-					<div class="col-md-12 pl-0">
+					<div class="col-md-10 pl-0">
 						<h3 class="card-header-box text-center">ATTENDANCE RECORDS IN SECTIONS OVERTIME</h3>
 					</div>
 
-					<!-- <div class="col-1 p-0">
-						<div class="dropdown">
-							<button class="btn btn-secondary btn-sm dropdown-toggle" style="background-color: lightgray; border: none; box-shadow: none !important;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Time</button>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item" style="font-size: 15px;" href="#">Action</a> <a class="dropdown-item" style="font-size: 15px;" href="#">Another action</a> <a class="dropdown-item" style="font-size: 15px;" href="#">Something else here</a>
-							</div>
-						</div>
-					</div> -->
+					 <div class="col-2 p-0">
+						<select class="form-control select-dropdown-style graph_filter_selector"  name="course_id" id='filter_group_student_attendance' data-college_id="<%=orgId%>">										
+										<%	
+										ArrayList<Course> courses = uiservices.getCoursesInCollege(orgId);
+										for(Course course : courses)
+										{
+										%>
+										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+										<%
+										} %>
+									</select>
+					</div> 
 					<!-- <div class="col-1">
 						<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
 					</div> -->
@@ -156,8 +159,8 @@ font-size:10px !important;
 						<div class="col-2">
 						<select class="form-control select-dropdown-style graph_filter_selector"  name="course_id" id='filter_master_level_perskill' data-college_id="<%=orgId%>">										
 										<%	
-										AdminUIServices uiservices=new AdminUIServices();
-										ArrayList<Course> courses = uiservices.getCoursesInCollege(orgId);
+										
+										 courses = uiservices.getCoursesInCollege(orgId);
 										for(Course course : courses)
 										{
 										%>
@@ -237,6 +240,7 @@ font-size:10px !important;
 											var branch = $(this);
 											branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
 											branch.addClass('branch');
+											branch.addClass('custom-branch-css');
 											branch.on('click',function(e) {
 																if (this == e.target) {
 																	var icon = $(
@@ -295,7 +299,7 @@ font-size:10px !important;
 			 
 			 var htmlAdd = "";
 				//{organization_id}/group_mastery_level/{group_id}/course/{course_id}
-			  $.getJSON("<%=adminRestUrlForMasteryLevelRecord%>report/"+college_id+"/group_mastery_level/"+<%=batch_group_id%>+"/course/"+course_id+"", function(result){
+			  $.getJSON("<%=admin_rest_url%>report/"+college_id+"/group_mastery_level/"+<%=batch_group_id%>+"/course/"+course_id+"", function(result){
 				 
 				  
 				  htmlAdd += "<ul id='tree1'>";
@@ -312,7 +316,7 @@ font-size:10px !important;
 					  htmlAdd += "</div>";
 					  htmlAdd += "</div>";
 					  
-					  htmlAdd += "<ul>";
+					  htmlAdd += "<ul style='width:100%'>";
 					  
 					  
 					  
@@ -321,7 +325,7 @@ font-size:10px !important;
 						  htmlAdd += "<li>";
 						  htmlAdd += "<div style='display: initial;'>";
 						  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
-						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 70%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
+						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 72%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
 						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
 						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
 						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";
@@ -405,13 +409,21 @@ font-size:10px !important;
 	 
  }
 		 function drawChart() {
-
-	    	 <%--  $.ajax({
-				    url: '<%=adminRestUrlForAttendanceRecord%>',
+			 
+			 $('#columnchart_material').empty();
+				$("#columnchart_material").append('<div class="loader mx-auto my-auto"></div>');
+				
+			 var course_id =  $('#filter_group_student_attendance').val();
+			 var college_id = $('#filter_group_student_attendance').attr('data-college_id');
+			 
+	    	   $.ajax({
+				    url: "<%=admin_rest_url%>report/"+college_id+"/group_attendance_record/<%=batch_group_id%>/course/"+course_id+"",
 				    type: 'GET',
 				    async: true,
 				    dataType: "json",
-				    success: function (data) {				    					    	
+				    success: function (data) {	
+				    	 $('#columnchart_material').empty();
+				    	 
 				    	  google.charts.load('current', {'packages':['corechart']});
 				          google.charts.setOnLoadCallback(drawStuff);
 
@@ -438,7 +450,7 @@ font-size:10px !important;
 				        };
 				    	
 				    	}
-				  }); --%>
+				  });
 	    	  
 	    	  
 	        
@@ -461,6 +473,12 @@ font-size:10px !important;
 						 //alert( $(this).val() );
 						 // masterLevelPerSkill($(this).val(),$(this).attr('data-college_id'));
 						 roleMasteryLevel();
+						});	
+					
+					$( "#filter_group_student_attendance" ).change(function() {
+						 //alert( $(this).val() );
+						 // masterLevelPerSkill($(this).val(),$(this).attr('data-college_id'));
+						 drawChart();
 						});	
 
 				});

@@ -2856,7 +2856,7 @@ a.unselected_report {
    line-height: 4.1;
     position:relative;
      font-family: avenir-light; 
-        border: 1px solid #eee;
+      
 }
 .tree ul li:before {
     content:"";
@@ -2869,6 +2869,9 @@ a.unselected_report {
     top:2em;
     left:-11px;
      color:#c3c2c2;
+}
+.custom-branch-css{
+	    border: 1px solid #eee;
 }
 .tree ul li:last-child:before {
     background:#fff;
@@ -2976,4 +2979,13 @@ border: 1px solid #e9ecef; height: 8vh; font-family: avenir-light; font-weight: 
 
 .b-Rookie {
 	background-color: #bae88a;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #eb384f;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
 }
