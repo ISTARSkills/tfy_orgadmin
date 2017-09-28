@@ -283,13 +283,14 @@ public class FarziDataCreatorServices {
 			String name = faker.name().fullName();
 			String firstName = faker.name().firstName().replace("'", "");
 			String lastName = faker.name().lastName().replace("'", "");
-			String email = faker.name().firstName().toLowerCase()+"@istarindia.com".replace("'", "");
+			//String email = faker.name().firstName().toLowerCase()+"@istarindia.com".replace("'", "");
+			String email = UUID.randomUUID()+"@istarindia.com".replace("'", "");
 			String mobile = faker.number().digits(10);
 			
-			String checkIfEmailExist ="select cast (count(*) as integer) as cnt from istar_user where email ='"+email+"'";
-			List<HashMap<String, Object>> checkData = db.executeQuery(checkIfEmailExist);
-			if(checkData.size()>0 && checkData.get(0).get("cnt")!=null && (int)checkData.get(0).get("cnt")==0)
-			{
+			//String checkIfEmailExist ="select cast (count(*) as integer) as cnt from istar_user where email ='"+email+"'";
+			//List<HashMap<String, Object>> checkData = db.executeQuery(checkIfEmailExist);
+			//if(checkData.size()>0 && checkData.get(0).get("cnt")!=null && (int)checkData.get(0).get("cnt")==0)
+			//{
 				String sql = "INSERT INTO address ( id, addressline1, addressline2, pincode_id, address_geo_longitude, address_geo_latitude ) VALUES ( (SELECT COALESCE (MAX(ID) + 1, 1) FROM address ), 'Phase 2', 'Manyata Tech Park', 154819, '73.8834149', '18.4866277' )RETURNING ID;";
 				int addressId = db.executeUpdateReturn(sql);
 				
@@ -317,7 +318,7 @@ public class FarziDataCreatorServices {
 				
 				users.add(userID);
 					
-			}
+			//}
 
 		}
 		return users;
@@ -364,239 +365,77 @@ public class FarziDataCreatorServices {
 	{		
 		System.out.println("start");
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
-		{
-			int orgID = 283;
-			Organization org = new OrganizationDAO().findById(orgID);
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-		}
-		{
-			int orgID = 284;
-			Organization org = new OrganizationDAO().findById(orgID);
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-		}
-		{
-			int orgID = 285;
-			Organization org = new OrganizationDAO().findById(orgID);
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-		}
-		{
-			int orgID = 286;
-			Organization org = new OrganizationDAO().findById(orgID);
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-		}
-		/*
-		{
-			int orgID= 283;
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
+		
 
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-			
-		}*/
-		System.out.println("two");
-		{/*
-			int orgID = 284;
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-			
-
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-		}*/
+		System.out.println("statetd second org");
+		String orgName = "Mayank Organization";			
+		String[] batches = new String[100]; 
+		for(int i=0;i<100;i++)
+		{
+			batches[i]="Batch "+i;
+		}	
+		//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
+		List<Course> coursesssss =new CourseDAO().findAll();
+		int courses[] = new int[coursesssss.size()];
+		int courseCount =0;
+		for(Course course : new CourseDAO().findAll())
+		{
+			courses[courseCount] = course.getId();
+			courseCount++;
+		}
+		System.out.println(batches.length);
+		//System.out.println(batcheCounts.length);
+		System.out.println(courses.length);
+		int orgID =serv.createOrganization(orgName);
+		//int orgID = 280;
+		for (int k=0; k< batches.length;k++) 
+		{
+			int bgId = serv.createBGsInOrganization(orgID, 100, batches[k]);
+			for(int cid: courses)
+			{					
+				serv.addCourseInGroup(bgId,cid);
+			}							
+		}		
 		
-		System.out.println("three");
 		
-		{/*
-			String orgName = "TLFY Hospitality New22";			
-			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
-			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
-			int courses[] = {114,107,115,18};
-			System.out.println(batches.length);
-			//System.out.println(batcheCounts.length);
-			System.out.println(courses.length);
-			int orgID =serv.createOrganization(orgName);
-			//int orgID = 280;
-			for (int k=0; k< batches.length;k++) {
-				int bgId = serv.createBGsInOrganization(orgID, 10, batches[k]);
-				for(int cid: courses)
-				{					
-					serv.addCourseInGroup(bgId,cid);
-				}							
-			}		
-			
-			
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			//serv.markAutoScheduleAsCompleted(orgID); 
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-			*/
+		serv.createAssesssmentTaskForAllBgs(orgID);
+		Organization org = new OrganizationDAO().findById(orgID);
+		System.out.println("all assessments created");
+		//int bgId = 154;    
+		//int orgID = 279;
+		
+		for(BatchGroup bg : org.getBatchGroups())
+		{
+			serv.autoScheduleAllCourseInBg(bg.getId());
 		}
 		
-		System.out.println("four");
+		System.out.println("all autoshcudke");
 		
-		{/*
-			System.out.println("statetd second org");
-			String orgName = "TLFY Retail";			
-			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
-			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
-			int courses[] = {60,107,115,18};
-			System.out.println(batches.length);
-			//System.out.println(batcheCounts.length);
-			System.out.println(courses.length);
-			int orgID =serv.createOrganization(orgName);
-			//int orgID = 280;
-			for (int k=0; k< batches.length;k++) {
-				int bgId = serv.createBGsInOrganization(orgID, 20, batches[k]);
-				for(int cid: courses)
-				{					
-					serv.addCourseInGroup(bgId,cid);
-				}							
-			}		
-			
-			
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);*/
+		for(BatchGroup bg : org.getBatchGroups())
+		{
+			int aPlusPercentage = 20;
+		    int APercentage = 40;
+		    int BPlusPercentage = 25;
+		    int BPercenatge = 15;		    
+			serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
+			System.out.println(" assess submitted for bg"+bg.getId());
 		}
 		
-		}
+		System.out.println("all assessment submitted");
 		
-		//deleteOrgData(279);
+		
+		
+		serv.markAutoScheduleAsCompleted(orgID); 
+		
+	/*	for(BatchGroup bg : org.getBatchGroups())
+		{
+			serv.createCLassRoomSessionEvents(bg.getId());
+		}
+		System.out.println("events created");
+		serv.updateSessionEventsForOrg(orgID);*/
+		
 		System.out.println("end");
-		System.exit(0);
+
 	}
 
 	
@@ -620,6 +459,10 @@ public class FarziDataCreatorServices {
 							+ " and lesson_id = "+spl.getLesson().getId()+")";
 					////System.err.println("updateStudentPlayList1--->"+updateStudentPlayList1);
 					util.executeUpdate(updateStudentPlayList1);
+					
+					updatePointsAndCoinsOnLessonComplete(spl.getIstarUser(), spl.getLesson());
+					updateUserPointsCoinsStatsTable(spl.getIstarUser().getId());
+					updateLeaderBoard(spl.getIstarUser().getId());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
@@ -635,76 +478,54 @@ public class FarziDataCreatorServices {
 	public void updatePointsAndCoinsOnLessonComplete(IstarUser istarUser , Lesson lesson)
 	{
 		DBUTILS util = new DBUTILS();
-		String findLessonDetails ="select lesson_cmsession.lesson_id, lesson_cmsession.cmsession_id, module_course.module_id, module_course.course_id from lesson_cmsession, cmsession_module, module_course where lesson_cmsession.cmsession_id = cmsession_module.cmsession_id and cmsession_module.module_id = module_course.module_id and lesson_cmsession.lesson_id = "+lesson.getId()+"";		
-		System.out.println(findLessonDetails);
+		int orgId = istarUser.getUserOrgMappings().iterator().next().getOrganization().getId();
+		String findLessonDetails =""
+		+ "SELECT DISTINCT 	"
+		+ "module_course.course_id "
+		+ "FROM 	"
+		+ "lesson_cmsession, 	cmsession_module, 	module_course, batch, batch_students "
+		+ "WHERE 	"
+		+ "lesson_cmsession.cmsession_id = cmsession_module.cmsession_id "
+		+ "AND cmsession_module.module_id = module_course.module_id "
+		+ "AND lesson_cmsession.lesson_id = "+lesson.getId()+" "
+		+ "and module_course.course_id = batch.course_id "
+		+ "and batch.batch_group_id = batch_students.batch_group_id "
+		+ "and batch_students.student_id = "+istarUser.getId();		
 		List<HashMap<String, Object>> lessonData = util.executeQuery(findLessonDetails); 
-		
+		int courseId = 0;
+		int moduleId = 0;
+		int cmsessionId = 0;
 		for(HashMap<String, Object> lessonRow: lessonData)
 		{
-			int courseId = 0;	
-			int moduleId = 0;
-			int cmsessionId = 0;
 			 courseId = (int)lessonRow.get("course_id");
-			 moduleId = (int)lessonRow.get("module_id");
-			 cmsessionId = (int)lessonRow.get("cmsession_id");
 			 
-			 String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-				System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
-				List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
-				
-				for(HashMap<String, Object>primaryG : primaryBG)
+			 String findSkillsInAssesssment = "select skill_id, max_points from assessment_benchmark where item_id = "+lesson.getId()+" and item_type ='LESSON' and course_id="+courseId;
+				//System.out.println("findSkillsInLesson>>>>>>"+findSkillsInAssesssment);
+				List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
+				for(HashMap<String, Object> skills : skillsData)
 				{
-					int groupId = (int)primaryG.get("id");
-					int orgId = (int)primaryG.get("college_id");
-					String findSkillsInAssesssment = "select skill_objective_id, max_points from assessment_benchmark where item_id = "+lesson.getId()+" and item_type ='LESSON' and course_id="+courseId;
-					System.out.println("findSkillsInLesson>>>>>>"+findSkillsInAssesssment);
-					List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
-					for(HashMap<String, Object> skills : skillsData)
+					int skillObjectiveId = (int)skills.get("skill_id");
+					String maxPoints = (String)skills.get("max_points");				
+					//double coins = Double.parseDouble(per_lesson_coins);
+					String coins = "( :per_lesson_coins )";
+					String getPreviousCoins="select * from user_gamification where item_id ='"+lesson.getId()+"' and item_type='LESSON' and "
+							+ "istar_user='"+istarUser.getId()+"' and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
+					//System.out.println("getPreviousCoins"+getPreviousCoins);
+					List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
+					if(coinsData.size()>0)
 					{
-						int skillObjectiveId = (int)skills.get("skill_objective_id");
-						String maxPoints = (String)skills.get("max_points");				
-						//double coins = Double.parseDouble(per_lesson_coins);
-						String coins = "( :per_lesson_coins )";
-						String getPreviousCoins="select * from user_gamification where item_id ='"+lesson.getId()+"' and item_type='LESSON' and "
-								+ "istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-						//System.out.println("getPreviousCoins"+getPreviousCoins);
-						List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
-						if(coinsData.size()>0)
-						{
-							String prevCoins = (String)coinsData.get(0).get("coins");
-							coins= coins+" + "+prevCoins;
-		 				}								
-						
-						String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id,cmsession_id, module_id, batch_group_id, org_id, timestamp, max_points) VALUES "
-								+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', now(), now(), "+lesson.getId()+", 'LESSON', "+courseId+","+cmsessionId+","+moduleId+", "+groupId+", "+orgId+", now(), '"+maxPoints+"');";
-						System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
-						util.executeUpdate(insertIntoGamification);
-					}			
-				}
-			 
+						String prevCoins = (String)coinsData.get(0).get("coins");
+						coins= coins+" + "+prevCoins;
+					}								
+					
+					
+					
+					String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id,cmsession_id, module_id, org_id, timestamp, max_points) VALUES "
+							+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', now(), now(), "+lesson.getId()+", 'LESSON', "+courseId+","+cmsessionId+","+moduleId+", "+orgId+", now(), '"+maxPoints+"');";
+					//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
+					util.executeUpdate(insertIntoGamification);
+				}		
 		}
-		
-		/*String per_assessment_points="",
-				per_lesson_points="",
-				per_question_points ="",per_lesson_coins="";
-		try{
-			Properties properties = new Properties();
-			String propertyFileName = "app.properties";
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-				if (inputStream != null) {
-					properties.load(inputStream);
-					per_assessment_points =  properties.getProperty("per_assessment_points");
-					per_lesson_points =  properties.getProperty("per_lesson_points");
-					per_question_points =  properties.getProperty("per_question_points");
-					per_lesson_coins = properties.getProperty("per_lesson_coins");
-					//System.out.println("per_lesson_coins"+per_lesson_coins);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();			
-		}*/
-		
-		
-		
 		
 	}
 	
@@ -1988,13 +1809,19 @@ public class FarziDataCreatorServices {
 				//System.out.println("Report is null, creating new report");
 				createReport(istarUser, assessment, correctAnswersCount, assessmentDuration,
 						maxPoints.intValue(), task.getCreatedAt());
-				updateUserGamificationAfterAssessment(istarUser,assessment, task.getCreatedAt());
+				updateUserGamificationAfterAssessment(istarUser,assessment,task.getCreatedAt());
+				updateUserPointsCoinsStatsTable(istarUser.getId());
+				updateLeaderBoard(istarUser.getId());
+				updateUserAssessmentPointsCoinsTable(istarUser.getId(), assessmentId);
 			} else {
 				//System.out.println("Report exists, updating report");
 				if(assessment.getRetryAble()!=null && assessment.getRetryAble())
 				{
 					updateReport(report, istarUser, assessment, correctAnswersCount, assessmentDuration,maxPoints.intValue(), task.getCreatedAt());
 					updateUserGamificationAfterAssessment(istarUser,assessment, task.getCreatedAt());
+					updateUserPointsCoinsStatsTable(istarUser.getId());
+					updateLeaderBoard(istarUser.getId());
+					updateUserAssessmentPointsCoinsTable(istarUser.getId(), assessmentId);
 				}	
 			}
 
@@ -2003,60 +1830,65 @@ public class FarziDataCreatorServices {
 	}
 
 	private void updatePointsAndCoinsForAssessment(IstarUser istarUser, Assessment assessment, Timestamp timestamp) {
-		//here we will update points and coins for IstarUser for a particular assessment.
-	/*	String per_assessment_points="",
-				per_lesson_points="",
-				per_question_points ="",per_assessment_coins="";
-		try{
-			Properties properties = new Properties();
-			String propertyFileName = "app.properties";
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-				if (inputStream != null) {
-					properties.load(inputStream);
-					per_assessment_points =  properties.getProperty("per_assessment_points");
-					per_lesson_points =  properties.getProperty("per_lesson_points");
-					per_question_points =  properties.getProperty("per_question_points");
-					per_assessment_coins = properties.getProperty("per_assessment_coins");
-					//System.out.println("per_assessment_points"+per_assessment_points);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();			
-		}*/
-		DBUTILS util = new DBUTILS();
-		String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-		//System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
-		List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
 		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		for(HashMap<String, Object>primaryG : primaryBG)
-		{
-			int groupId = (int)primaryG.get("id");
-			int orgId = (int)primaryG.get("college_id");
-			String findSkillsInAssesssment = "select skill_objective_id, max_points from assessment_benchmark where "
-					+ "item_id = "+assessment.getId()+" and item_type ='ASSESSMENT'";
-			//System.out.println("findSkillsInAssesssment>>>>>>"+findSkillsInAssesssment);
-			List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
-			for(HashMap<String, Object> skills : skillsData)
-			{
-				int skillObjectiveId = (int)skills.get("skill_objective_id");
-				String maxPoints = (String)skills.get("max_points");				
-				String coins = "( :per_assessment_coins )";
-				String getPreviousCoins="select * from user_gamification where item_id ='"+assessment.getId()+"' and item_type='ASSESSMENT' and "
-						+ "istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-				//System.out.println("getPreviousCoins"+getPreviousCoins);
-				List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
-				if(coinsData.size()>0)
-				{
-					String prevCoins = (String)coinsData.get(0).get("coins");
-					coins= coins+" + "+prevCoins;
- 				}
-				
-				String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, batch_group_id, org_id, timestamp,max_points) VALUES "
-						+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', '"+to.format(timestamp)+"', now(), "+assessment.getId()+", 'ASSESSMENT', "+assessment.getCourse()+", "+groupId+", "+orgId+", '"+to.format(timestamp)+"','"+maxPoints+"');";
-				//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
-				util.executeUpdate(insertIntoGamification);
-			}			
-		}
+
+
+		DBUTILS util = new DBUTILS();
 		
+		
+		if(assessment.getLesson()!=null)
+		{
+			String findLessonDetails =""
+					+ "SELECT DISTINCT 	"
+					
+					+ "module_course.course_id "
+					+ "FROM 	"
+					+ "lesson_cmsession, 	cmsession_module, 	module_course, batch, batch_students "
+					+ "WHERE 	"
+					+ "lesson_cmsession.cmsession_id = cmsession_module.cmsession_id "
+					+ "AND cmsession_module.module_id = module_course.module_id "
+					+ "AND lesson_cmsession.lesson_id = "+assessment.getLesson().getId()+" "
+					+ "and module_course.course_id = batch.course_id "
+					+ "and batch.batch_group_id = batch_students.batch_group_id "
+					+ "and batch_students.student_id = "+istarUser.getId();		
+					List<HashMap<String, Object>> lessonData = util.executeQuery(findLessonDetails); 
+
+					for(HashMap<String, Object> lessonRow: lessonData)
+					{
+						int courseId = (int)lessonRow.get("course_id");	
+						
+						if(istarUser.getUserOrgMappings()!=null && istarUser.getUserOrgMappings().size()>0)
+						{
+							int orgId = istarUser.getUserOrgMappings().iterator().next().getOrganization().getId();
+							String findSkillsInAssesssment = "select skill_id, max_points from assessment_benchmark where "+ "item_id = "+assessment.getId()+" and item_type ='ASSESSMENT' and course_id="+courseId+"";
+							List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
+							for(HashMap<String, Object> skills : skillsData)
+							{
+								int skillObjectiveId = (int)skills.get("skill_id");
+								String maxPoints = (String)skills.get("max_points");				
+								String coins = "( :per_assessment_coins )";
+								String getPreviousCoins="select * from user_gamification where item_id ='"+assessment.getId()+"' and item_type='ASSESSMENT' and "
+										+ "istar_user='"+istarUser.getId()+"' and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
+								List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
+								if(coinsData.size()>0)
+								{
+									String prevCoins = (String)coinsData.get(0).get("coins");
+									coins= coins+" + "+prevCoins;
+								}
+								
+								
+														
+									
+		
+										String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, timestamp,max_points, org_id) VALUES "
+												+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', '"+to.format(timestamp)+"','"+to.format(timestamp)+"' , "+assessment.getId()+", 'ASSESSMENT', "+courseId+", now(),'"+maxPoints+"',"+orgId+");";
+										util.executeUpdate(insertIntoGamification);
+							}
+					
+					}
+				}
+			
+					}
 	}
 
 	public void updateUserGamificationAfterAssessment(IstarUser istarUser, Assessment assessment, Timestamp timestamp ) {
@@ -2066,16 +1898,20 @@ public class FarziDataCreatorServices {
 
 	private void updatePointsAndCoinsForQuestion(IstarUser istarUser, Assessment assessment, Timestamp timestamp) {
 		
+
+		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 		
 		DBUTILS util = new DBUTILS();
-		String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-		//System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
-		List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
-		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		for(HashMap<String, Object>primaryG : primaryBG)
+		Integer orgId = null;
+		if(istarUser.getUserOrgMappings()!=null && istarUser.getUserOrgMappings().size()>0)
 		{
-			int groupId = (int)primaryG.get("id");
-			int orgId = (int)primaryG.get("college_id");
+			orgId = istarUser.getUserOrgMappings().iterator().next().getOrganization().getId();
+		}	
+	 
+		
+		if(orgId!=null)
+		{
 			ArrayList<Integer> questionAnsweredCorrectly = new ArrayList<>();
 			String findQueAnsweredCorrectly= "select distinct question_id from student_assessment where assessment_id ="+assessment.getId()+" and student_id="+istarUser.getId()+" and correct='t'";
 			//System.out.println("correct que id "+findQueAnsweredCorrectly );
@@ -2086,67 +1922,97 @@ public class FarziDataCreatorServices {
 				questionAnsweredCorrectly.add((int)qro.get("question_id"));
 			}
 			
+			String findLessonDetails =""
+					+ "SELECT DISTINCT 	"
+					+ "lesson_cmsession.lesson_id, 	"
+					+ "lesson_cmsession.cmsession_id, 	"
+					+ "module_course.module_id, 	"
+					+ "module_course.course_id "
+					+ "FROM 	"
+					+ "lesson_cmsession, 	cmsession_module, 	module_course, batch, batch_students "
+					+ "WHERE 	"
+					+ "lesson_cmsession.cmsession_id = cmsession_module.cmsession_id "
+					+ "AND cmsession_module.module_id = module_course.module_id "
+					+ "AND lesson_cmsession.lesson_id = "+assessment.getLesson().getId()+" "
+					+ "and module_course.course_id = batch.course_id "
+					+ "and batch.batch_group_id = batch_students.batch_group_id "
+					+ "and batch_students.student_id = "+istarUser.getId();		
+					List<HashMap<String, Object>> lessonData = util.executeQuery(findLessonDetails); 
+						
+			
+			
 			String findQuestionForAssessment="select distinct questionid from assessment_question, question, assessment where assessment_question.questionid = question.id and assessment_question.assessmentid = assessment.id and assessment.id = "+assessment.getId();
 			List<HashMap<String, Object>> questionData = util.executeQuery(findQuestionForAssessment);
 			for(HashMap<String, Object> qRow: questionData)
 			{
 				int questionId = (int)qRow.get("questionid");
-				
-				
-				String findSkillsInQuestion = "select skill_objective_id, max_points from assessment_benchmark where item_id = "+questionId+" and item_type ='QUESTION'";
-				//System.out.println("findSkillsInAssesssment>>>>>>"+findSkillsInQuestion);
-				List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInQuestion);
-				for(HashMap<String, Object> skills : skillsData)
+				for(HashMap<String, Object> lessonRow: lessonData)
 				{
-					int skillObjectiveId = (int)skills.get("skill_objective_id");
-					String maxPoints = (String)skills.get("max_points");
-					String pointsScored = maxPoints;
-					String coins = "( :per_question_coins )";
-					
-											
-					String getPreviousCoins="select * from user_gamification where item_id ='"+questionId+"' and item_type='QUESTION' and istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-					//System.out.println("getPreviousCoins"+getPreviousCoins);
-					List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
-					if(coinsData.size()>0)
+					int courseId = (int)lessonRow.get("course_id");
+					String findSkillsInQuestion = "select skill_id, max_points from assessment_benchmark where item_id = "+questionId+" and item_type ='QUESTION' and course_id ="+courseId+"";
+					//System.out.println("findSkillsInAssesssment>>>>>>"+findSkillsInQuestion);
+					List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInQuestion);
+					for(HashMap<String, Object> skills : skillsData)
 					{
-						String prevCoins = (String)coinsData.get(0).get("coins");
-						coins= coins+" + "+prevCoins;
-						pointsScored = (String)coinsData.get(0).get("points");
-						if(assessment.getRetryAble()!= null && assessment.getRetryAble())
-						{
-							if(questionAnsweredCorrectly.contains(questionId))
-							{
-								//System.out.println("questionAnsweredCorrectly contains "+ questionId);
-								pointsScored = maxPoints;
-							}
-							else
-							{
-								//System.out.println("questionAnsweredCorrectl do not  contains "+ questionId);
-								pointsScored = "0";
-							}	
-							
-						}
+						int skillObjectiveId = (int)skills.get("skill_id");
+						String maxPoints = (String)skills.get("max_points");
+						String pointsScored = maxPoints;
+						String coins = "( :per_question_coins )";
 						
-	 				}
-					else
-					{
-						//user has not answerd thos question previously 
-						if(!questionAnsweredCorrectly.contains(questionId))
+												
+						String getPreviousCoins="select * from user_gamification where item_id ='"+questionId+"' and item_type='QUESTION' and istar_user='"+istarUser.getId()+"' and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
+						//System.out.println("getPreviousCoins"+getPreviousCoins);
+						List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
+						if(coinsData.size()>0)
 						{
-							pointsScored="0";
+							String prevCoins = (String)coinsData.get(0).get("coins");
+							coins= coins+" + "+prevCoins;
+							pointsScored = (String)coinsData.get(0).get("points");
+							if(assessment.getRetryAble()!= null && assessment.getRetryAble())
+							{
+								if(questionAnsweredCorrectly.contains(questionId))
+								{
+									//System.out.println("questionAnsweredCorrectly contains "+ questionId);
+									pointsScored = maxPoints;
+								}
+								else
+								{
+									//System.out.println("questionAnsweredCorrectl do not  contains "+ questionId);
+									pointsScored = "0";
+								}	
+								
+							}
 							
-						}
-					}	
-					
-					
-					
-					String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, batch_group_id, org_id, timestamp,max_points) VALUES "
-							+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+pointsScored+"' , '"+coins+"', '"+to.format(timestamp)+"', '"+to.format(timestamp)+"', "+questionId+", 'QUESTION', "+assessment.getCourse()+", "+groupId+", "+orgId+", '"+to.format(timestamp)+"','"+maxPoints+"');";
-					//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
-					util.executeUpdate(insertIntoGamification);
+		 				}
+						else
+						{
+							//user has not answerd thos question previously 
+							if(!questionAnsweredCorrectly.contains(questionId))
+							{
+								pointsScored="0";
+								
+							}
+						}	
+						
+						
+
+						
+							 String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, org_id, timestamp,max_points) VALUES "
+										+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+pointsScored+"' , '"+coins+"', '"+to.format(timestamp)+"', '"+to.format(timestamp)+"', "+questionId+", 'QUESTION', "+courseId+", "+orgId+", now(),'"+maxPoints+"');";
+								//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
+							util.executeUpdate(insertIntoGamification);
+						
+
+						
+						
+					}
 				}
-			}						
-		}		
+				
+				
+			}			
+
+		}	
+		
 	}	
 	
 public Report createReport(IstarUser istarUser, Assessment assessment, Integer score,  Integer timeTaken, Integer totalPoints, Timestamp timestamp){
@@ -2417,8 +2283,8 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 				    	int itemId = assessmentIds.get(assessmentCounter);
 				    	
 				    	Assessment assessment = new AssessmentDAO().findById(itemId);
-				    	Course course = new CourseDAO().findById(assessment.getCourse());
-				    	String notificationTitle = "An assessment with title <b>"+assessment.getAssessmenttitle()+"</b> of course <b>"+course.getCourseName()+"</b> has been added to task list.";
+				    	//Course course = new CourseDAO().findById(assessment.getCourse());
+				    	String notificationTitle = "An assessment with title <b>"+assessment.getAssessmenttitle()+"</b> of course <b> </b> has been added to task list.";
 				    	String notificationDescription =  notificationTitle;
 				    	String taskTitle = assessment.getAssessmenttitle();
 				    	String taskDescription = notificationDescription;				    	
@@ -2440,5 +2306,138 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 			}	
 
 		}
-	}	
+	}
+	
+	public void updateUserPointsCoinsStatsTable(int istarUserId) {
+		DBUTILS util = new DBUTILS();
+		String sql ="delete from user_points_coins where user_id="+istarUserId;
+		util.executeUpdate(sql);
+		
+		String findSkillData ="select distinct "
+				+ "istar_user, "
+				+ "skill_objective, "
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(points,'+'), '0'), ':per_lesson_points', ''||(select property_value from constant_properties where property_name='per_lesson_points')||'' ), ':per_assessment_points', ''||(select property_value from constant_properties where property_name='per_assessment_points')||'' ), ':per_question_points', ''||(select property_value from constant_properties where property_name='per_question_points')||'' ) AS TEXT ) ) as points,"
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(coins,'+'), '0'), ':per_lesson_coins', ''||(select property_value from constant_properties where property_name='per_lesson_coins')||'' ), ':per_assessment_coins', ''||(select property_value from constant_properties where property_name='per_assessment_coins')||'' ), ':per_question_coins', ''||(select property_value from constant_properties where property_name='per_question_coins')||'' ) AS TEXT ) ) as coins,  "
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(max_points,'+'), '0'), ':per_lesson_points', ''||(select property_value from constant_properties where property_name='per_lesson_points')||'' ), ':per_assessment_points', ''||(select property_value from constant_properties where property_name='per_assessment_points')||'' ), ':per_question_points', ''||(select property_value from constant_properties where property_name='per_question_points')||'' ) AS TEXT ) )  as max_points "
+				+ "from ("
+				+ "			WITH summary AS "
+				+ "				( "
+				+ "					SELECT "
+				+ "					P .istar_user, "
+				+ "					P .skill_objective,  "
+				+ "					CAST ( COALESCE (P .points, '0') AS TEXT )  AS points,  "
+				+ "					CAST ( COALESCE (P .coins, '0') AS TEXT )  AS coins,  "
+				+ "					CAST ( COALESCE (P .max_points, '0') AS TEXT )  AS max_points, "
+				+ "					P .item_id, "
+				+ "					ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id ORDER BY P . TIMESTAMP DESC ) AS rk "
+				+ "					FROM user_gamification P "
+				+ "					WHERE item_type IN ('QUESTION', 'LESSON','ASSESSMENT') and istar_user = "+istarUserId+""
+						+ "		) SELECT s.* FROM summary s WHERE s.rk = 1 "
+					+ ")T1 group by istar_user,skill_objective";
+		
+		List<HashMap<String, Object>> skillData = util.executeQuery(findSkillData);
+		for(HashMap<String, Object> row: skillData)
+		{
+			int skillId = (int)row.get("skill_objective");
+			double points = (double)row.get("points");
+			double coins = (double)row.get("coins");
+			double maxPoints = (double)row.get("max_points");
+			String insertIntoPointsCoinsTable ="INSERT INTO user_points_coins (user_id, user_points, total_points, coins, skill_id) "
+					+ "VALUES ("+istarUserId+", "+points+", "+maxPoints+", "+coins+", "+skillId+");";
+			util.executeUpdate(insertIntoPointsCoinsTable);
+		}
+		
+	}
+
+	public void updateLeaderBoard(int istarUser) {
+		DBUTILS util = new DBUTILS();
+		String sql="select  "
+				+ "assessment_benchmark.course_id, "
+				+ "user_points_coins.user_id, "
+				+ "sum (user_points_coins.coins) as coins, "
+				+ "sum (user_points_coins.user_points) as user_points, "
+				+ "sum (user_points_coins.total_points) as total_points, "
+				+ "(sum (user_points_coins.user_points)*100)/(sum (user_points_coins.total_points)) as perc "
+				+ "from user_points_coins, assessment_benchmark "
+				+ "where "
+				+ "user_points_coins.skill_id = assessment_benchmark.skill_id "
+				+ "and  "
+				+ "user_points_coins.user_id in "
+					+ "("
+					+ "		select student_id from batch_students where batch_group_id in "
+					+ "			("
+					+ "				select batch_group_id from batch_students where student_id = "+istarUser
+					+ "			)"
+					+ ") "
+				+ "group by assessment_benchmark.course_id, user_points_coins.user_id "
+				+ "order by assessment_benchmark.course_id, user_points_coins.user_id";
+		
+		List<HashMap<String, Object>> data = util.executeQuery(sql);
+		for(HashMap<String, Object> row: data)
+		{
+			int courseId = (int)row.get("course_id");
+			int userId = (int)row.get("user_id");
+			double coins = (double)row.get("coins");
+			double user_points = (double)row.get("user_points");
+			double total_points = (double)row.get("total_points");
+			double perc = (double)row.get("perc");
+			
+			String upsert=
+					"INSERT INTO leaderboard (user_id, course_id, user_points, total_points, coins, percentage)  "
+					+"VALUES ("+userId+", "+courseId+", "+user_points+", "+total_points+", "+coins+", "+perc+")  "
+					+"ON CONFLICT (user_id,course_id)  "
+					+"DO UPDATE SET user_points =  EXCLUDED.user_points,"
+					+"total_points =  EXCLUDED.total_points,"
+					+"coins =  EXCLUDED.coins,"
+					+"percentage =  EXCLUDED.percentage;";
+			util.executeUpdate(upsert);
+		}
+	}
+
+	public void updateUserAssessmentPointsCoinsTable(int istarUserId, int assessmentId) {
+		DBUTILS util = new DBUTILS();
+		String sql ="delete from user_points_per_assessment where user_id="+istarUserId;
+		util.executeUpdate(sql);
+		
+		String findSkillData ="select distinct "
+				+ "istar_user, "
+				+ "skill_objective, "
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(points,'+'), '0'), ':per_lesson_points', ''||(select property_value from constant_properties where property_name='per_lesson_points')||'' ), ':per_assessment_points', ''||(select property_value from constant_properties where property_name='per_assessment_points')||'' ), ':per_question_points', ''||(select property_value from constant_properties where property_name='per_question_points')||'' ) AS TEXT ) ) as points,"
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(coins,'+'), '0'), ':per_lesson_coins', ''||(select property_value from constant_properties where property_name='per_lesson_coins')||'' ), ':per_assessment_coins', ''||(select property_value from constant_properties where property_name='per_assessment_coins')||'' ), ':per_question_coins', ''||(select property_value from constant_properties where property_name='per_question_coins')||'' ) AS TEXT ) ) as coins,  "
+				+ "custom_eval (CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (string_agg(max_points,'+'), '0'), ':per_lesson_points', ''||(select property_value from constant_properties where property_name='per_lesson_points')||'' ), ':per_assessment_points', ''||(select property_value from constant_properties where property_name='per_assessment_points')||'' ), ':per_question_points', ''||(select property_value from constant_properties where property_name='per_question_points')||'' ) AS TEXT ) )  as max_points "
+				+ "from ("
+				+ "			WITH summary AS "
+				+ "				( "
+				+ "					SELECT "
+				+ "					P .istar_user, "
+				+ "					P .skill_objective,  "
+				+ "					CAST ( COALESCE (P .points, '0') AS TEXT )  AS points,  "
+				+ "					CAST ( COALESCE (P .coins, '0') AS TEXT )  AS coins,  "
+				+ "					CAST ( COALESCE (P .max_points, '0') AS TEXT )  AS max_points, "
+				+ "					 "
+				+ "					ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id, P.item_type ORDER BY P . TIMESTAMP DESC ) AS rk "
+				+ "					FROM user_gamification P "
+				+ "					WHERE istar_user = "+istarUserId+" "
+				+ "					and "
+				+ "					( "
+				+ "					(item_type = 'QUESTION' and item_id in (select questionid from assessment_question where assessmentid ="+assessmentId+")) "
+				+ "					or "
+				+ "					(item_type = 'ASSESSMENT' and item_id = "+assessmentId+") "
+				+ "					)"
+				+ "				) SELECT s.* FROM summary s WHERE s.rk = 1 "
+					+ ")T1 group by istar_user,skill_objective";
+		
+		List<HashMap<String, Object>> skillData = util.executeQuery(findSkillData);
+		for(HashMap<String, Object> row: skillData)
+		{
+			int skillId = (int)row.get("skill_objective");
+			double points = (double)row.get("points");
+			double coins = (double)row.get("coins");
+			double maxPoints = (double)row.get("max_points");
+			String insertIntoPointsCoinsTable ="INSERT INTO user_points_per_assessment	 (user_id, user_points, total_points, coins, skill_id, assessment_id) "
+					+ "VALUES ("+istarUserId+", "+points+", "+maxPoints+", "+coins+", "+skillId+","+assessmentId+");";
+			util.executeUpdate(insertIntoPointsCoinsTable);
+		}
+		
+	}
 }
