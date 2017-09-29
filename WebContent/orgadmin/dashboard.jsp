@@ -401,7 +401,7 @@
 						<div class="card-block">
 						<div class="card-body">
 							<div class="row m-0">
-								<div class="col-md-12 pl-0"><h3 class="card-header-box">Section wise performance of students</h3></div>
+								<div class="col-md-12 pl-0"><h3 class="card-header-box">Section wise performance of employee</h3></div>
 <!-- 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
  -->							</div>
 							
@@ -431,7 +431,7 @@
 						<div class="card-block">
 						<div class="card-body">
 							<div class="row m-0">
-								<div class="col-md-10 pl-0"><h3 class="card-header-box">Program wise performance of students</h3></div>
+								<div class="col-md-10 pl-0"><h3 class="card-header-box">Program wise performance of employee</h3></div>
 								<div class="col-md-2"><img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container"></div>
 							</div>
 							<select class="form-control select-dropdown-style graph_filter_selector"  data-report_id="3040" name="course_id" id='graph_program' data-college_id="<%=orgId%>">										

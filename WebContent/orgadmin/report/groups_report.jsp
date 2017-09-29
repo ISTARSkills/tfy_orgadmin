@@ -58,7 +58,7 @@
 		<div class="container">
 			<ol class="nav breadcrumb mt-lg-5 gray-bg">
 				<li class="breadcrumb-item List"><a
-					href="/orgadmin/report/roles_report.jsp" class="unselected_report">Roles</a></li>
+					href="/orgadmin/report/roles_report.jsp" class="unselected_report">Courses</a></li>
 				<li class="breadcrumb-item List"><a
 					href="/orgadmin/report/groups_report.jsp" class="selected_report">Groups</a></li>
 			</ol>
@@ -109,17 +109,17 @@
 											class="icons8-saving_book">
 										<p class='report-roles-sub-text'>
 											<span class='spannable'><%=adminGroup.getRoles() != null ? adminGroup.getRoles().size() : 0%></span>
-											Roles
+											Course
 										</p>
 									</div>
 
-									<div class='m-0 p-0' style='width: 100px;'>
+									<div class='m-0 p-0' style='width: 110px;'>
 										<img src="/assets/images/report/icons-8-student.png"
 											srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x"
 											class="icons8-student" />
 										<p class='report-roles-sub-text'>
 											<span class='spannable'><%=adminGroup.getTotalStudents() != null ? adminGroup.getTotalStudents() : 0%></span>
-											Students
+											Employee
 										</p>
 									</div>
 

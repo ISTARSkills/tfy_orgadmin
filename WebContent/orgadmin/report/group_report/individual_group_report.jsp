@@ -200,7 +200,7 @@ font-size:10px !important;
 							</div> -->
 						</div>
 						<div class="row m-0 custom-studentenroled-css">
-							<div class="col-md-3 text-center m-auto">STUDENT NAME</div>
+							<div class="col-md-3 text-center m-auto">EMPLOYEE NAME</div>
 							<div class="col-md-3 text-center m-auto">RANK</div>
 							<div class="col-md-3 text-center m-auto">XP</div>
 							<div class="col-md-3 text-center m-auto">LEVEL</div>

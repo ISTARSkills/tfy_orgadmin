@@ -12,7 +12,7 @@
 <head>
 <% 
 	String url = request.getRequestURL().toString();
-	String cdnUrl = "http://cdn.talentify.in/";
+	String cdnUrl = "http://business.talentify.in/";
 	
 	try {
 		Properties properties = new Properties();
@@ -85,19 +85,19 @@ int rand = (new Random()).nextInt(4);
 			<form class="m-t" role="form" action="<%=baseURL%>login" method="post">
 				<div class="form-group">
 					<input type="email" name="email" 
-						value='' class="form-control" placeholder="Username" required>
+						value='vinay_sales@istarindia.com' class="form-control" placeholder="Username" required>
 				</div>
 				<div class="form-group">
 					<input type="password" name="password" 
-						value='' class="form-control" placeholder="Password" required>
+						value='test123' class="form-control" placeholder="Password" required>
 				</div>
 
 				<button type="submit" style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"
 					class="btn btn-danger custom-theme-btn-primary block full-width m-b login-button">Login</button>
 				
                  <div class="row"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;">       
-				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Sign up as Trainer</a></div>
-				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="./student_signup.jsp">Sign up as Student</a></div>
+				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="trainer_signup.jsp">Trainer Sign-up</a></div>
+				<div class="col-md-6"  style="font-weight: 600; font-size: 16px;    margin-bottom: 15px;"><a class="btn btn-sm btn-danger btn-block" href="./student_signup.jsp">Employee Sign-up </a></div>
 				</div>
 				
 			</form>

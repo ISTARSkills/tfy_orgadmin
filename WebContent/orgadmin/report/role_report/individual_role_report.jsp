@@ -186,7 +186,7 @@ font-size:10px !important;
 					<div class="card-body">
 						<div class="row m-3">
 							<div class="col-12">
-								<h3 class='text-center card-header-box'>STUDENTS ENROLLED</h3>
+								<h3 class='text-center card-header-box'>EMPLOYEE ENROLLED</h3>
 							</div>
 							<!-- <div class="col-1">
 								<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">

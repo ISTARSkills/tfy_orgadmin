@@ -27,7 +27,7 @@
 		<div class="container">
 			<div class="row">
 
-				<h1 class='custom-dashboard-header' >My Roles</h1>
+				<h1 class='custom-dashboard-header' >My Courses</h1>
 
 
 			</div>
