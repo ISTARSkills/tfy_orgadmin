@@ -43,20 +43,60 @@ public class ScreenShot extends HttpServlet {
 		 int lesson_id =Integer.parseInt( request.getParameter("lesson_id"));
 		 UUID uuid = UUID.randomUUID();
 		    URLServices services = new URLServices();
-			String phantom_path = services.getAnyProp("phantom_path");
-			String live_session_log_url = services.getAnyProp("live_session_log_url");
-		   
-			//this is for windows....
-		   // Process process = Runtime.getRuntime().exec(phantom_path+"bin/phantomjs "+phantom_path+"/examples/rasterize.js \"http://elt.talentify.in/tfy_socket/live_session_logs.jsp?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\" /tmp/"+uuid+".png");
+			
+			String live_session_log_url = services.getAnyProp("live_session_log_url");		   
+			String server_type = services.getAnyProp("server_type");
+			 Process process = null;
+			    String pathToPhantomJS = ""; 
+				String pathToRasterizeJS = ""; 
+				String url = "";
+				File outputFile = new File("/tmp/screenshots/", uuid+".png");
+				int exitStatus;
 
-		   //This is for linux...... 
-		   String command = "phantomjs /usr/local/share/phantomjs-1.9.8-linux-x86_64/examples/rasterize.js "
-		   		+ " \""+live_session_log_url+"?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id+"\"   /tmp/screenshots/"+uuid;
-		   System.err.println(command);
+			 if(server_type.equalsIgnoreCase("windows")) {
+				 String phantom_path = services.getAnyProp("phantom_path_windows");
+				 
+				   pathToPhantomJS = phantom_path+"bin/phantomjs";
+					 pathToRasterizeJS = phantom_path+"examples/rasterize.js"; 
+					 url = live_session_log_url+"?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id;
+					   
+				
+				 
+				 process = Runtime.getRuntime().exec(pathToPhantomJS + " " + pathToRasterizeJS + " " + url + " " + outputFile.getAbsolutePath() + " " );
+				 System.out.println(pathToPhantomJS + " " + pathToRasterizeJS + " " + url + " " + outputFile.getAbsolutePath() + " " );
+				 
+				   
+				 
+			}else {
+				String phantom_path = services.getAnyProp("phantom_path_linux");
+				  pathToPhantomJS = phantom_path+"bin/phantomjs"; 
+					 pathToRasterizeJS = phantom_path+"examples/rasterize.js"; 
+					 url = live_session_log_url+"?current_slide_id="+current_slide_id+"&lesson_id="+lesson_id;
+					   
+				
+				
+				 process = Runtime.getRuntime().exec(pathToPhantomJS + " " + pathToRasterizeJS + " " + url + " " + outputFile.getAbsolutePath() + " " );
+				 System.out.println(pathToPhantomJS + " " + pathToRasterizeJS + " " + url + " " + outputFile.getAbsolutePath() + " " );
+				  
+			}
+			 try {
+					exitStatus = process.waitFor();
+					if (exitStatus != 0) {
+						   System.out.println("EXIT-STATUS - " + process.toString());
+						   }
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} //do a wait here to prevent it running for ever
+		  // System.err.println(command);
 
-		    Process process = Runtime.getRuntime().exec(command);
+		    //Process process = Runtime.getRuntime().exec(command);
+		    
+		  
 	        try {
 				process.waitFor();
+				System.out.println(process.getErrorStream());
+				
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
