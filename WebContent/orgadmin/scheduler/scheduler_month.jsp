@@ -82,7 +82,7 @@
 							</div>
 			</div>
 			<div class="col-md-3 m-0 ">
-						<div class="row m-0"><label class="calendar-session-type-label mx-auto my-auto">Roles</label>
+						<div class="row m-0"><label class="calendar-session-type-label mx-auto my-auto">Courses</label>
 			<select class="calendar-role-dropdown" id="role-select">
 			                                <option value="0">All</option>
 								<%	
