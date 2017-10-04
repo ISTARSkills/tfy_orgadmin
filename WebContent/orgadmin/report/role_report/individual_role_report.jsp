@@ -207,6 +207,13 @@ font-size:10px !important;
 			</div>
 
 		</div>
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id = 'studentInfo' aria-labelledby="studentInfo" aria-hidden="true">
+  <div class="modal-dialog modal-lg" style="max-width: 73% !important;">
+    <div class="modal-content" id='studentProfile_holder'>
+    
+    </div>
+  </div>
+</div>
 	</div>
 
 
@@ -327,6 +334,22 @@ font-size:10px !important;
 	        
 	        }
 		 
+		 function studentInfoFunction(){
+			 
+			 $( ".student_info-click" ).click(function() {
+				 $("#studentProfile_holder").empty();
+ 				var user_id = $(this).attr('data-userid');
+ 				
+ 					$("#studentProfile_holder").load("<%=baseURL%>/orgadmin/report/skill_profile.jsp?user_id="+user_id);
+ 	 				$('#studentInfo').modal('toggle');
+
+ 					
+ 				
+ 				
+ 				});
+			 
+			 
+		 }
 		 function studentEnrolled(){
 			 
 			 var htmlAdd = "";
@@ -348,17 +371,19 @@ font-size:10px !important;
 		            		}else if(key == 'col-2'){
 		            			rank ="<div class='col-md-3 text-center m-auto'>#"+val+"</div>";	
 		            		}else if(key == 'col-3'){
-		            			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";
-		            			
+		            			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";		            			
 		            		}else if(key == 'col-4'){
 		            			level ="<div class='col-md-3 text-center m-auto "+val+"'>"+val+"</div>";
+		            		}
+		            		else if(key == 'col-5'){
+		            			user_id =val;
 		            		}
 		            		
 		                   
 		            	 });
 		               
 		            	
-		            	htmlAdd +="<div class='row m-0 custom-mastery-levelbody-css'>"
+		            	htmlAdd +="<div data-userID='"+user_id+"' class='row m-0 custom-mastery-levelbody-css student_info-click' >"
 		            	htmlAdd +="<div class='col-md-3 text-center m-auto'>";
 		            	htmlAdd +="<div class='row m-0'>";
 		            	htmlAdd +="<div class='col-md-4 text-center m-auto'>";
@@ -376,6 +401,9 @@ font-size:10px !important;
 		            	
 		            	$(".main-table").empty();
 		            	$(".main-table").append(htmlAdd);
+		            	
+		            	studentInfoFunction();
+		            	
 		            });
 		        });
 			 
@@ -445,10 +473,14 @@ font-size:10px !important;
 		 
 		$(document).ready(function() {
 			
+		
 			
-			  google.charts.load('current', {'packages':['corechart']});
-		      google.charts.setOnLoadCallback(drawChart);
-
+			
+			
+			
+		//  google.charts.load('current', {'packages':['corechart']});
+		  //    google.charts.setOnLoadCallback(drawChart);
+		      drawChart();
 					$('#tree1').treed();
 					$('.progress').show();
 					$('.progress-bar').show();

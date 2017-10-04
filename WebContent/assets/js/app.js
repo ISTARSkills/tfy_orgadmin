@@ -168,6 +168,12 @@ function setupScheduler(){
 		 mondayOfWeek = new Date(mondayOfWeek.getFullYear(), mondayOfWeek.getMonth(), mondayOfWeek.getDate() - mondayOfWeek.getDay()-6);
 		 sundayOfWeek = new Date(sundayOfWeek.getFullYear(), sundayOfWeek.getMonth(), sundayOfWeek.getDate() - sundayOfWeek.getDay()-7);
 			$('.calendar-date-size').html(formatDate(mondayOfWeek)+' - '+formatDate(sundayOfWeek));
+			$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(mondayOfWeek));
+			$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(sundayOfWeek));
+			var course_id =  $('#role-select').val();
+			 var session_type = $('#session-select').val();
+			var college_id = $('#session-select').attr('data-college_id');
+			 getSchedulerData(session_type,course_id,formatJavaDate(mondayOfWeek),formatJavaDate(sundayOfWeek),college_id,'clearall');
 
 	});
 	$('.fa-long-arrow-right.custom-arrow-style').click(function (){
@@ -175,35 +181,354 @@ function setupScheduler(){
 		 mondayOfWeek = new Date(mondayOfWeek.getFullYear(), mondayOfWeek.getMonth(), mondayOfWeek.getDate() - mondayOfWeek.getDay()+8);
 		 sundayOfWeek = new Date(sundayOfWeek.getFullYear(), sundayOfWeek.getMonth(), sundayOfWeek.getDate() - sundayOfWeek.getDay()+7);
 			$('.calendar-date-size').html(formatDate(mondayOfWeek)+' - '+formatDate(sundayOfWeek));
+			$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(mondayOfWeek));
+			$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(sundayOfWeek));
+			var course_id =  $('#role-select').val();
+			 var session_type = $('#session-select').val();
+			var college_id = $('#session-select').attr('data-college_id');
+			 getSchedulerData(session_type,course_id,formatJavaDate(mondayOfWeek),formatJavaDate(sundayOfWeek),college_id,'clearall');
+			
 
 	});
 	
-	$('select#session-select').on('change', function()
-			{
-			    alert( this.value );
+	$('select#session-select').on('change', function(){
+			   // alert( this.value );
+			    
+			    var session_type = $(this).val();
+				var course_id =  $('#role-select').val();
+				
+				var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+				var endDate = $('.calendar-date-size').attr('data-calEndDate');
+				var college_id = $(this).attr('data-college_id');
+				 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
 			});
-	$('select#role-select').on('change', function()
-			{
-			    alert( this.value );
+	$('select#role-select').on('change', function(){
+		
+	//	 alert( this.value );
+		    var session_type = $('#session-select').val();
+			var course_id =  $(this).val();
+			var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+			var endDate = $('.calendar-date-size').attr('data-calEndDate');
+			
+			var college_id = $('#session-select').attr('data-college_id');
+			 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
+			   
 			});
-	$("a.green-border").click(function() {
-		alert( 'clicked green' );
+	$("a.green-border-dashboard").click(function() {
+		
+		//alert( 'clicked green' );
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();
+		var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+		var endDate = $('.calendar-date-size').attr('data-calEndDate');
+		
+		var college_id = $('#session-select').attr('data-college_id');
+		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'ongoing');
+		
 	});
-	$("a.blue-border").click(function() {
-		alert( 'clicked blue' );
+	$("a.blue-border-dashboard").click(function() {
+		
+	//	alert( 'clicked blue' );
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();
+		var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+		var endDate = $('.calendar-date-size').attr('data-calEndDate');
+		
+		var college_id = $('#session-select').attr('data-college_id');
+		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'scheduled');
 	});
-	$("a.red-border").click(function() {
-		alert( 'clicked red' );
+	$("a.red-border-dashboard").click(function() {
+		
+	//	alert( 'clicked red' );
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();
+		var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+		var endDate = $('.calendar-date-size').attr('data-calEndDate');
+		
+		var college_id = $('#session-select').attr('data-college_id');
+		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'completed');
 	});
 	
+	$("a.default-border-dashboard").click(function() {
+		
+		//	alert( 'clicked red' );
+			var session_type = $('#session-select').val();
+			var course_id =  $('#role-select').val();
+			var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+			var endDate = $('.calendar-date-size').attr('data-calEndDate');			
+			var college_id = $('#session-select').attr('data-college_id');
+			 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
+		});
+	
 	 $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
+		 
 	        console.log(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+	        var startDate = picker.startDate.format('yyyy-mm-dd');
+	        var endDate = picker.endDate.format('yyyy-mm-dd');
+	        var session_type = $('#session-select').val();
+	    	var course_id =  $('#role-select').val();
+	    	var college_id = $('#session-select').attr('data-college_id');
+	    	getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'clearall');
+	       
+	        
+	        
 	    });
 	
 	$(".calendar-icon").click(function() {
 		//$('#datetimepicker1').daterangepicker('show');
 		//$('.show-calendar').show();
 	});
+	
+	
+	function getSchedulerData(session_type,course_id,startDate,endDate,college_id,status){
+		
+		var url = 	$('#calendar_holder').attr('data-url');
+		url += 'scheduler/'+college_id+'/scheduler_list/startDate/'+startDate+'/endDate/'+endDate+'/sessionType/'+session_type+'/status/'+status+'/course_id/'+course_id+'';
+		
+		var htmlAdd = "";
+		 $.ajax({
+			  url: url,
+			 type: 'GET',
+			    async: true,
+			   dataType: "json",
+       	  success:function(result) {
+       		  
+       		  console.log(result);
+       		var maxSize = "";  
+       		
+       		if(result.calendarData.monday.length != 0){
+       		 maxSize = result.calendarData.monday.length;
+       		}
+         if(result.calendarData.tuesday.length != 0 && result.calendarData.tuesday.length > maxSize){
+        	 maxSize = result.calendarData.tuesday.length;
+       			
+       		}
+          if(result.calendarData.wednesday.length != 0 && result.calendarData.wednesday.length > maxSize){
+        	  maxSize = result.calendarData.wednesday.length;
+		
+	     }
+          if(result.calendarData.thrusday.length != 0 && result.calendarData.thrusday.length > maxSize){
+    	   maxSize = result.calendarData.thrusday.length;
+		
+	      }
+          if(result.calendarData.friday.length != 0 && result.calendarData.friday.length > maxSize){
+        	 maxSize = result.calendarData.friday.length;
+		
+	    }
+          if(result.calendarData.saturday.length != 0 && result.calendarData.saturday.length > maxSize){
+        	  maxSize = result.calendarData.saturday.length;
+		
+	    }
+          if(result.calendarData.sunday.length != 0 && result.calendarData.sunday.length > maxSize){
+        	 maxSize = result.calendarData.sunday.length;
+	
+        }
+         var onGoing = "#7ed321";
+         var Scheduled = "#35bdf0";
+         var Completed = "#df756a";
+          var status="";
+          var htmlAdd = "";
+          for(var i = 0; i<maxSize; i++ ){
+        	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+        	  if(result.calendarData.monday.length > i){
+        		  
+        		  if(result.calendarData.monday[i].status == 'TEACHING'){
+        			  status = onGoing;
+        		  }else if(result.calendarData.monday[i].status == 'SCHEDULED'){
+        			  status = Scheduled;
+        		  }else{
+        			  status = Completed;
+        		  }
+        		  
+        		  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px;'>";
+    	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+    	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+    	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.monday[i].event_time+"</h2>";      		 
+    	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+    	       		 htmlAdd += "</div>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2 popover-dismiss' data-toggle='popover, data-trigger='hover' data-placement='top' data-content='"+result.calendarData.monday[i].course_name+"'>"+result.calendarData.monday[i].course_name.substr(0,21)+'...'+"</h2>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.monday[i].bg_name+"</h2>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.monday[i].trainer_name+"</h2>";
+    	       		 htmlAdd += "</div>";
+    	       		 htmlAdd += "</div>";
+        		  
+        	  }
+        	  htmlAdd += "</div>";
+        	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+              if(result.calendarData.tuesday.length > i){
+            	  
+            	  if(result.calendarData.tuesday[i].status == 'TEACHING'){
+        			  status = onGoing;
+        		  }else if(result.calendarData.tuesday[i].status == 'SCHEDULED'){
+        			  status = Scheduled;
+        		  }else{
+        			  status = Completed;
+        		  }
+            	  
+            	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+    	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+    	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+    	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.tuesday[i].event_time+"</h2>";      		 
+    	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+    	       		 htmlAdd += "</div>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2 popover-dismiss' data-toggle='popover, data-trigger='hover' data-placement='top' data-content='"+result.calendarData.tuesday[i].course_name+"'>"+result.calendarData.tuesday[i].course_name.substr(0,21)+'...'+"</h2>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.tuesday[i].bg_name+"</h2>";
+    	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.tuesday[i].trainer_name+"</h2>";
+    	       		 htmlAdd += "</div>";
+    	       		 htmlAdd += "</div>";
+        		  
+        	  }
+              htmlAdd += "</div>";
+        	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+             if(result.calendarData.wednesday.length > i){
+            	 
+            	 if(result.calendarData.wednesday[i].status == 'TEACHING'){
+       			  status = onGoing;
+       		  }else if(result.calendarData.wednesday[i].status == 'SCHEDULED'){
+       			  status = Scheduled;
+       		  }else{
+       			  status = Completed;
+       		  }
+            	 
+            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+   	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+   	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+   	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.wednesday[i].event_time+"</h2>";      		 
+   	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+   	       		 htmlAdd += "</div>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2  popover-dismiss' data-toggle='popover, data-trigger='hover' data-placement='top' data-content='"+result.calendarData.wednesday[i].course_name+"'>"+result.calendarData.wednesday[i].course_name.substr(0,21)+'...'+"</h2>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.wednesday[i].bg_name+"</h2>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.wednesday[i].trainer_name+"</h2>";
+   	       		 htmlAdd += "</div>";
+   	       		 htmlAdd += "</div>";
+	  
+              }
+             htmlAdd += "</div>";
+       	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+            if(result.calendarData.thrusday.length > i){
+            	
+            	 if(result.calendarData.thrusday[i].status == 'TEACHING'){
+       			  status = onGoing;
+       		  }else if(result.calendarData.thrusday[i].status == 'SCHEDULED'){
+       			  status = Scheduled;
+       		  }else{
+       			  status = Completed;
+       		  }
+            	
+            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+   	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+   	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+   	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.thrusday[i].event_time+"</h2>";      		 
+   	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+   	       		 htmlAdd += "</div>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2  popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+result.calendarData.thrusday[i].course_name+"'>"+result.calendarData.thrusday[i].course_name.substr(0,21)+'...'+"</h2>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.thrusday[i].bg_name+"</h2>";
+   	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.thrusday[i].trainer_name+"</h2>";
+   	       		 htmlAdd += "</div>";
+   	       		 htmlAdd += "</div>";
+	  
+            }
+            htmlAdd += "</div>";
+      	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+           if(result.calendarData.friday.length > i){
+        	   
+        	   if(result.calendarData.friday[i].status == 'TEACHING'){
+     			  status = onGoing;
+     		  }else if(result.calendarData.friday[i].status == 'SCHEDULED'){
+     			  status = Scheduled;
+     		  }else{
+     			  status = Completed;
+     		  }
+        	   
+        	   htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+ 	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+ 	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+ 	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.friday[i].event_time+"</h2>";      		 
+ 	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+ 	       		 htmlAdd += "</div>";
+ 	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2  popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+result.calendarData.friday[i].course_name+"'>"+result.calendarData.friday[i].course_name.substr(0,21)+'...'+"</h2>";
+ 	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.friday[i].bg_name+"</h2>";
+ 	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.friday[i].trainer_name+"</h2>";
+ 	       		 htmlAdd += "</div>";
+ 	       		 htmlAdd += "</div>";
+	  
+            }
+           htmlAdd += "</div>";
+     	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+          if(result.calendarData.saturday.length > i){
+        	  
+        	  if(result.calendarData.saturday[i].status == 'TEACHING'){
+    			  status = onGoing;
+    		  }else if(result.calendarData.saturday[i].status == 'SCHEDULED'){
+    			  status = Scheduled;
+    		  }else{
+    			  status = Completed;
+    		  }
+        	  
+        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.saturday[i].event_time+"</h2>";      		 
+	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+	       		 htmlAdd += "</div>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2  popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+result.calendarData.saturday[i].course_name+"'>"+result.calendarData.saturday[i].course_name.substr(0,21)+'...'+"</h2>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.saturday[i].bg_name+"</h2>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.saturday[i].trainer_name+"</h2>";
+	       		 htmlAdd += "</div>";
+	       		 htmlAdd += "</div>";
+	  
+           }
+          htmlAdd += "</div>";
+    	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee;width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+          if(result.calendarData.sunday.length > i){
+        	  
+        	  if(result.calendarData.sunday[i].status == 'TEACHING'){
+    			  status = onGoing;
+    		  }else if(result.calendarData.sunday[i].status == 'SCHEDULED'){
+    			  status = Scheduled;
+    		  }else{
+    			  status = Completed;
+    		  }
+        	  
+        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
+	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
+	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.sunday[i].event_time+"</h2>";      		 
+	       		 htmlAdd += "<i class='fa fa-video-camera aligncenter' style='color: #999999;' aria-hidden='true'></i>";
+	       		 htmlAdd += "</div>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-name p-2  popover-dismiss' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='"+result.calendarData.sunday[i].course_name+"'>"+result.calendarData.sunday[i].course_name.substr(0,21)+'...'+"</h2>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-batch p-2'>"+result.calendarData.sunday[i].bg_name+"</h2>";
+	       		 htmlAdd += "<h2 class='w-100 cal-event-trainer p-2'>By "+result.calendarData.sunday[i].trainer_name+"</h2>";
+	       		 htmlAdd += "</div>";
+	       		 htmlAdd += "</div>";
+	  
+          }
+          htmlAdd += "</div>";  
+        	  
+          }
+       		
+       		
+       		  
+       	
+       		
+       		
+       		 
+       	  $("#calendar_holder").empty();
+      	$("#calendar_holder").append(htmlAdd); 
+      	$('.popover-dismiss').popover();
+       		  
+       	  }
+       	});
+	}
+	var session_type = $('#session-select').val();
+	var course_id =  $('#role-select').val();
+	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var college_id = $('#session-select').attr('data-college_id');
+	
+	$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(startDate));
+	$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(endDate));
+	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'clearall');
 	
 }
 
@@ -295,23 +620,101 @@ function setupSchedulerMonthly(){
 		    //alert("Load was performed."+data);
 		});
 	});
-	$('select#session-select').on('change', function()
-			{
-			    alert( this.value );
-			});
-	$('select#role-select').on('change', function()
-			{
-			    alert( this.value );
-			});
-	$("a.green-border").click(function() {
-		alert( 'clicked green' );
-	});
-	$("a.blue-border").click(function() {
-		alert( 'clicked blue' );
-	});
-	$("a.red-border").click(function() {
-		alert( 'clicked red' );
-	});
+	
+	$('select#session-select').on('change', function(){
+		   // alert( this.value );
+		    
+		    var session_type = $(this).val();
+			var course_id =  $(this).val();
+			var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+			var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+			var college_id = $(this).attr('data-college_id');
+			 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+		});
+$('select#role-select').on('change', function(){
+	
+//	 alert( this.value );
+	    var session_type = $('#session-select').val();
+		var course_id =  $(this).val();
+		var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+		var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+		var college_id = $('#session-select').attr('data-college_id');
+		 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+		   
+		});
+$("a.green-border-dashboard").click(function() {
+	
+	//alert( 'clicked green' );
+	var session_type = $('#session-select').val();
+	var course_id =  $('#role-select').val();
+	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var college_id = $('#session-select').attr('data-college_id');
+	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'ongoing');
+	
+});
+$("a.blue-border-dashboard").click(function() {
+	
+//	alert( 'clicked blue' );
+	var session_type = $('#session-select').val();
+	var course_id =  $('#role-select').val();
+	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var college_id = $('#session-select').attr('data-college_id');
+	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'scheduled');
+});
+$("a.red-border-dashboard").click(function() {
+	
+//	alert( 'clicked red' );
+	var session_type = $('#session-select').val();
+	var course_id =  $('#role-select').val();
+	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
+	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var college_id = $('#session-select').attr('data-college_id');
+	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'completed');
+});
+
+$('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
+	 
+     console.log(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+     var startDate = picker.startDate.format('yyyy-mm-dd');
+     var endDate = picker.endDate.format('yyyy-mm-dd');
+     var session_type = $('#session-select').val();
+ 	var course_id =  $('#role-select').val();
+ 	var college_id = $('#session-select').attr('data-college_id');
+ 	getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+    
+     
+     
+ });
+
+function getSchedulerData(session_type,course_id,startDate,endDate,college_id,status){
+	
+	var url = 	$('#main-content').attr('data-url');
+	url += 'scheduler/'+college_id+'/scheduler_month/startDate/'+startDate+'/endDate/'+endDate+'/sessionType/'+session_type+'/status/'+status+'/course_id/'+course_id+'';
+	
+	var htmlAdd = "";
+	 $.ajax({
+		  url: url,
+		 type: 'GET',
+		    async: true,
+		   dataType: "json",
+   	  success:function(result) {
+   		  
+   		  console.log(result);
+   		}
+   	});
+}
+var session_type = $('#session-select').val();
+var course_id =  $('#role-select').val();
+var college_id = $('#session-select').attr('data-college_id');
+
+$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(firstDay));
+$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(lastDay));
+ getSchedulerData(session_type,course_id,formatJavaDate(firstDay),formatJavaDate(lastDay),college_id,'clearall');
+
+
+
 }
 
 function formatDate(date) {
@@ -326,6 +729,27 @@ function formatDate(date) {
 	  var monthIndex = date.getMonth();
 
 	  return day + ' ' + monthNames[monthIndex] ;
+	}
+
+
+
+function formatJavaDate(date) {
+	  var monthNames = [
+	    "01", "02", "03",
+	    "04", "05", "06", "07",
+	    "08", "09", "10",
+	    "11", "12"
+	  ];
+
+	  var day = date.getDate();
+	  
+	  if(parseInt(day)<10){
+		  day='0' +day;
+	  }
+	  var monthIndex = date.getMonth();
+	  var year = date.getFullYear();
+
+	  return  year +'-'+ monthNames[monthIndex-1]+'-'+day;
 	}
 
 function formatDateYear(date) {
