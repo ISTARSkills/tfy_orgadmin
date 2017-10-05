@@ -30,7 +30,7 @@
 		int month_nos =Calendar.getInstance().get(Calendar.MONTH);
 		String monthString = "";
 		String	admin_rest_url = (AppProperies.getProperty("admin_rest_url"));
-        switch (month_nos+1) {
+      /*   switch (month_nos+1) {
             case 1:  monthString = "January";       break;
             case 2:  monthString = "February";      break;
             case 3:  monthString = "March";         break;
@@ -44,7 +44,9 @@
             case 11: monthString = "November";      break;
             case 12: monthString = "December";      break;
             default: monthString = "Invalid month"; break;
-        }
+        } */
+      
+      String[] month = {"January",         "February",    "March",           "April",           "May",             "June",            "July",            "August",          "September",       "October",         "November",        "December"};
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -64,7 +66,7 @@
 			
 			
 			<i class="fa fa-long-arrow-left custom-arrow-style" aria-hidden="true"></i> 
-			<h2 class="calendar-date-size mx-auto mb-0" data-calStartDate='1' data-calEndDate='1' data-currentyear="<%=yearInString %>" data-monthnos="<%=month_nos+1 %>"><%=monthString %> <%=yearInString %></h2>
+			<h2 class="calendar-date-size mx-auto mb-0" data-calStartDate='1' data-calEndDate='1' data-currentyear="<%=yearInString %>" data-monthnos="<%=month_nos%>"><%=month[month_nos] %> <%=yearInString %></h2>
 			<i class="fa fa-long-arrow-right custom-arrow-style" aria-hidden="true"></i>	
 			</div>		
 			</div>
@@ -104,7 +106,7 @@
 
 
 			</div>
-			<div class="row m-0">
+			<!-- <div class="row m-0">
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Monday</div>
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Tuesday</div>
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Wednesday</div>
@@ -112,8 +114,9 @@
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Friday</div>
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Saturday</div>
 			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
-			</div>
-			<div  id="main-content" data-url='<%=admin_rest_url%>'>
+			</div> -->
+			<%-- <div  id="main-content" data-url='<%=admin_rest_url%>'> --%>
+			<div id='calendar' data-url='<%=admin_rest_url%>'></div>
 				
 			</div>
 			
@@ -126,7 +129,10 @@
 	$(document).ready(function() {
 	
 		   
+		
 	
+		
+		
 		
 
 		$('.breadcrumb-item').click(function (){

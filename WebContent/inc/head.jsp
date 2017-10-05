@@ -37,6 +37,6 @@ if (loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
  <link href="<%=basePath%>assets/css/plugins/jsTree/style.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=basePath%>assets/css/daterangepicker.css" />
+ <link href="<%=basePath%>assets/css/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
   <link href="<%=basePath%>assets/css/<%=roleDir%>.css" rel="stylesheet" type="text/css" />
- 
 </head>

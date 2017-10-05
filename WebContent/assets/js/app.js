@@ -547,28 +547,11 @@ function setupSchedulerMonthly(){
 	month[10] = "November";
 	month[11] = "December";
 	
+	
+	
 	var firstDay = new Date(parseInt($('.calendar-date-size').attr('data-currentyear')), parseInt($('.calendar-date-size').attr('data-monthnos')), 1);
 	var lastDay = new Date(parseInt($('.calendar-date-size').attr('data-currentyear')), parseInt($('.calendar-date-size').attr('data-monthnos')) + 1, 0);
-	$.get("/GetSchedulerData", {
-	    startdate: formatDateYear(firstDay),
-	    enddate: formatDateYear(lastDay)
-	}, function(data) {
-		$('#main-content').html(data);
-	    //alert("Load was performed."+data);
-		$('.div-button-more').unbind().on("click",function(){
-			var date = $($(this).parent()).parent().data('date');
-			if(date === $($(this).parent()).parent().children('.show-more-popup').data("showpopup")){
-				$($(this).parent()).css('display','none');
-				$($(this).parent()).parent().children('.show-more-popup').css('display','block');
-				$($(this).parent()).parent().css('cssText','z-index: 9999;padding:5px');
-			}
-		});
-		$('.poper-button').unbind().on("click",function(){
-			$($(this).parent()).parent().css('display','none');
-			$($($(this).parent()).parent()).parent().css('cssText','');
-			$($($(this).parent()).parent()).parent().children('.popup-replace').css('display','block');
-		});
-	});
+
 	$('.fa-long-arrow-left.custom-arrow-style').click(function (){
 		//alert('left wla');
 		var monthnos = parseInt($('.calendar-date-size').attr('data-monthnos'));
@@ -584,15 +567,14 @@ function setupSchedulerMonthly(){
 		$('.calendar-date-size').html(new_month+' '+$('.calendar-date-size').attr('data-currentyear'));
 		var firstDay = new Date(new_year, remove_month, 1);
 		var lastDay = new Date(new_year, remove_month + 1, 0);
-
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();		
+		var college_id = $('#session-select').attr('data-college_id');
 		console.log(formatDateYear(firstDay) +' - '+ formatDateYear(lastDay) );
-		$.get("/GetSchedulerData", {
-		    startdate: formatDateYear(firstDay),
-		    enddate: formatDateYear(lastDay)
-		}, function(data) {
-			$('#main-content').html(data);
-		    //alert("Load was performed."+data);
-		});
+		$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(firstDay));
+		$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(lastDay));
+		 getSchedulerData(session_type,course_id,formatJavaDate(firstDay),formatJavaDate(lastDay),college_id,'clearall');
+		 $('#calendar').fullCalendar('prev');
 	});
 	$('.fa-long-arrow-right.custom-arrow-style').click(function (){
 		var monthnos = parseInt($('.calendar-date-size').attr('data-monthnos'));
@@ -611,35 +593,40 @@ function setupSchedulerMonthly(){
 		var lastDay = new Date(new_year, add_month + 1, 0);
 
 		console.log(formatDateYear(firstDay) +' - '+ formatDateYear(lastDay) );
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();
+		
+		var college_id = $('#session-select').attr('data-college_id');
 
-		$.get("/GetSchedulerData", {
-		    startdate: formatDateYear(firstDay),
-		    enddate: formatDateYear(lastDay)
-		}, function(data) {
-			$('#main-content').html(data);
-		    //alert("Load was performed."+data);
-		});
+		$('.calendar-date-size').attr('data-calStartDate',formatJavaDate(firstDay));
+		$('.calendar-date-size').attr('data-calEndDate',formatJavaDate(lastDay));
+		 getSchedulerData(session_type,course_id,formatJavaDate(firstDay),formatJavaDate(lastDay),college_id,'clearall');
+		  $('#calendar').fullCalendar('next');
+		
 	});
 	
 	$('select#session-select').on('change', function(){
 		   // alert( this.value );
 		    
 		    var session_type = $(this).val();
-			var course_id =  $(this).val();
-			var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
-			var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+			var course_id =  $('#role-select').val();
+			
+			var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+			var endDate = $('.calendar-date-size').attr('data-calEndDate');
 			var college_id = $(this).attr('data-college_id');
-			 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+			 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
 		});
 $('select#role-select').on('change', function(){
 	
 //	 alert( this.value );
 	    var session_type = $('#session-select').val();
 		var course_id =  $(this).val();
-		var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
-		var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+		var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+		var endDate = $('.calendar-date-size').attr('data-calEndDate');
+		
 		var college_id = $('#session-select').attr('data-college_id');
-		 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+		$('#calendar').fullCalendar('destroy');
+		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
 		   
 		});
 $("a.green-border-dashboard").click(function() {
@@ -647,10 +634,11 @@ $("a.green-border-dashboard").click(function() {
 	//alert( 'clicked green' );
 	var session_type = $('#session-select').val();
 	var course_id =  $('#role-select').val();
-	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
-	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+	var endDate = $('.calendar-date-size').attr('data-calEndDate');
+	
 	var college_id = $('#session-select').attr('data-college_id');
-	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'ongoing');
+	 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'ongoing');
 	
 });
 $("a.blue-border-dashboard").click(function() {
@@ -658,21 +646,34 @@ $("a.blue-border-dashboard").click(function() {
 //	alert( 'clicked blue' );
 	var session_type = $('#session-select').val();
 	var course_id =  $('#role-select').val();
-	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
-	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+	var endDate = $('.calendar-date-size').attr('data-calEndDate');
+	
 	var college_id = $('#session-select').attr('data-college_id');
-	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'scheduled');
+	 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'scheduled');
 });
 $("a.red-border-dashboard").click(function() {
 	
 //	alert( 'clicked red' );
 	var session_type = $('#session-select').val();
 	var course_id =  $('#role-select').val();
-	var startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+1);
-	var endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay()+7);
+	var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+	var endDate = $('.calendar-date-size').attr('data-calEndDate');
+	
 	var college_id = $('#session-select').attr('data-college_id');
-	 getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'completed');
+	 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'completed');
 });
+
+$("a.default-border-dashboard").click(function() {
+	
+	//	alert( 'clicked red' );
+		var session_type = $('#session-select').val();
+		var course_id =  $('#role-select').val();
+		var startDate =	$('.calendar-date-size').attr('data-calStartDate');
+		var endDate = $('.calendar-date-size').attr('data-calEndDate');			
+		var college_id = $('#session-select').attr('data-college_id');
+		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
+	});
 
 $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picker) {
 	 
@@ -682,7 +683,7 @@ $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picke
      var session_type = $('#session-select').val();
  	var course_id =  $('#role-select').val();
  	var college_id = $('#session-select').attr('data-college_id');
- 	getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'');
+ 	getSchedulerData(session_type,course_id,formatJavaDate(startDate),formatJavaDate(endDate),college_id,'clearall');
     
      
      
@@ -690,7 +691,7 @@ $('#daterange').daterangepicker().on('apply.daterangepicker', function(ev, picke
 
 function getSchedulerData(session_type,course_id,startDate,endDate,college_id,status){
 	
-	var url = 	$('#main-content').attr('data-url');
+	var url = 	$('#calendar').attr('data-url');
 	url += 'scheduler/'+college_id+'/scheduler_month/startDate/'+startDate+'/endDate/'+endDate+'/sessionType/'+session_type+'/status/'+status+'/course_id/'+course_id+'';
 	
 	var htmlAdd = "";
@@ -702,19 +703,72 @@ function getSchedulerData(session_type,course_id,startDate,endDate,college_id,st
    	  success:function(result) {
    		  
    		  console.log(result);
+   		
+   		$('#calendar').fullCalendar('removeEventSources'); 
+   		$('#calendar').fullCalendar( 'addEventSource', result.calendarData );
+   		$('.fc-h-event').css('height','40px');
+   		$('.fc-h-event').css('width','125px');
+   		$('.fc-content').css('margin','4px');
+   		 $('.fc-day-header').css('height','51px');
+   			$('.fc-day-header').css('background-color','rgba(244, 244, 244, 0.99)');
+   			$('.fc-day-header').css('border-style','none');
+   			$('.fc-day-header').css('vertical-align','middle');
+   			$('.fc-day-header >span').css('color','#999999');
+   			$('.fc-day-header >span').css('font-size','14px');
+   			$('.fc-day-header >span').css('font-weight','100');
+   			$('.fc-body').css('background','#ffffff');
+   			$('.fc-header-toolbar').css('background','#ffffff');
+   		    $('.fc-header-toolbar').css('margin-bottom','0px'); 
+          
+   		  
    		}
    	});
 }
 var session_type = $('#session-select').val();
 var course_id =  $('#role-select').val();
 var college_id = $('#session-select').attr('data-college_id');
-
 $('.calendar-date-size').attr('data-calStartDate',formatJavaDate(firstDay));
 $('.calendar-date-size').attr('data-calEndDate',formatJavaDate(lastDay));
+
+$('#calendar').fullCalendar({
+		header:false,
+		 columnFormat: 'dddd',
+		dayNames:['Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday'],
+		 eventLimit: true, // for all non-agenda views
+		    views: {
+		        agenda: {
+		            eventLimit: 3 // adjust to 6 only for agendaWeek/agendaDay
+		        }
+		    },
+		    
+		   
+		    
+			 eventRender: function(event, element) { 
+		            element.find('.fc-title').append("<br/><p style='font-weight:100;font-size:10px'>" + event.description+"</p>"); 
+		            element.find('.fc-time').hide();
+		            element.find('.fc-title').css('font-size','12px');
+		            element.find('.fc-title').css('font-weight','bold');
+		            element.find('.fc-title').css('font-family','avenir-light');
+		           
+		          
+		        
+		            
+		        }   			
+	});
+
+
+
+
  getSchedulerData(session_type,course_id,formatJavaDate(firstDay),formatJavaDate(lastDay),college_id,'clearall');
 
 
 
+}
+
+function initCalendar(){
+	
+	
+	
 }
 
 function formatDate(date) {
@@ -749,7 +803,7 @@ function formatJavaDate(date) {
 	  var monthIndex = date.getMonth();
 	  var year = date.getFullYear();
 
-	  return  year +'-'+ monthNames[monthIndex-1]+'-'+day;
+	  return  year +'-'+ monthNames[monthIndex]+'-'+day;
 	}
 
 function formatDateYear(date) {

@@ -16,7 +16,7 @@
 	<!--orgadmin specific starts here -->
 	 <parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/orgadmin/dashboard.jsp" url="/orgadmin/dashboard.jsp" valid_role="org_admin" />
 	 <parent_links display_name="Reports" is_visible_in_menu="true" jsp_file="/orgadmin/report/roles_report.jsp" url="/orgadmin/report/roles_report.jsp" valid_role="org_admin" />
-	 <!-- <parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/orgadmin/scheduler.jsp" url="/orgadmin/scheduler.jsp" valid_role="org_admin" /> -->
+	<parent_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/orgadmin/scheduler/scheduler_list.jsp" url="/orgadmin/scheduler/scheduler_list.jsp" valid_role="org_admin" /> 
 	<!-- orgadmin specific ends here -->
 	
 		<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/content_creator/dashboard.jsp" url="/content_creator/dashboard.jsp" valid_role="content_creator" />

@@ -662,10 +662,10 @@
 								          
 								          var legendHtml =  "<div class='row'>";
 								    	   legendHtml += "<div class='col-12 text-center'>";
-								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
-								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
-								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
-								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>Wizard</span>";
+								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>Master</span> ";
+								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>Apprentice</span>";
+								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>Rookie</span>";
 								    						   legendHtml += "</div></div>";
 								        $('#columnchartcontainer3').append(legendHtml);
 								       if(flag){
@@ -745,10 +745,10 @@
 						       
 						       var legendHtml =  "<div class='row'>";
 						    	   legendHtml += "<div class='col-12 text-center'>";
-						    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
-						    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
-						    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
-						    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+						    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>Wizard</span>";
+						    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>Master</span> ";
+						    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>Apprentice</span>";
+						    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>Rookie</span>";
 						    						   legendHtml += "</div></div>";
 						        $('#columnchartcontainer2').append(legendHtml);
 			            }
@@ -794,10 +794,10 @@
 								       
 								        var legendHtml =  "<div class='row'>";
 								    	   legendHtml += "<div class='col-12 text-center'>";
-								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>'Wizard'</span>";
-								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>'Master'</span> ";
-								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>'Apprentice'</span>";
-								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>'Rookie'</span>";
+								    		   legendHtml += "<span class='btn btn-default m-0 graph-border-1 mr-3'><i class='fa fa-circle graph-dot-1'></i>Wizard</span>";
+								    			   legendHtml += "<span class='btn btn-default m-0 graph-border-2 mr-3'><i class='fa fa-circle graph-dot-2'></i>Master</span> ";
+								    				   legendHtml += "<span class='btn btn-default m-0 graph-border-3 mr-3'><i class='fa fa-circle graph-dot-3'></i>Apprentice</span>";
+								    					   legendHtml +=  "<span class='btn btn-default m-0 graph-border-4 mr-3'><i class='fa fa-circle graph-dot-4'></i>Rookie</span>";
 								    						   legendHtml += "</div></div>";
 								        $('#columnchartcontainer1').append(legendHtml);
 					            }

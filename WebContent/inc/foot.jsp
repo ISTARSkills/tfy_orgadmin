@@ -13,12 +13,9 @@ String basePath =  AppProperies.getProperty("cdn_path");
 <script src="<%=basePath %>assets/js/jquery.min.js"></script>
 <script src="<%=basePath %>assets/js/popper.min.js"></script>
 <script src="<%=basePath %>assets/js/bootstrap.min.js"></script>   
-    
+  <script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>  
+  <script src="<%=basePath %>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
-
-<script src="<%=basePath %>assets/js/plugins/highchart/highcharts.js"></script>
-<script src="<%=basePath %>assets/js/plugins/highchart/drilldown.js"></script>
-<script src="<%=basePath %>assets/js/plugins/highchart/data.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript" src="<%=basePath%>assets/js/moment.min.js"></script>
