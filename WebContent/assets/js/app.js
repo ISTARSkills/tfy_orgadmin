@@ -625,7 +625,7 @@ $('select#role-select').on('change', function(){
 		var endDate = $('.calendar-date-size').attr('data-calEndDate');
 		
 		var college_id = $('#session-select').attr('data-college_id');
-		$('#calendar').fullCalendar('destroy');
+		
 		 getSchedulerData(session_type,course_id,startDate,endDate,college_id,'clearall');
 		   
 		});

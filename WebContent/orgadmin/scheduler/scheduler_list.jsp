@@ -55,8 +55,7 @@
 			<select class="calendar-sessiontype-dropdown" id="session-select" data-college_id="<%=orgId%>">
 								<option value="session">Session</option>
 					<option value="assessment">Assessment</option>
-					<option value="webinar">Webinar (TOT)</option>
-					<option value="remote_class">Remote Class</option>
+					
 							
 							</select>
 							
