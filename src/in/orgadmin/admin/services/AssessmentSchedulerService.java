@@ -60,11 +60,15 @@ public class AssessmentSchedulerService {
 		String title_new = "Event: Assessment Scheduled on " + event_date;
 		String details_new = "" + c.getCourseName() + ": at " + time;
 
-		String sql = "SELECT 	actor_id FROM 	istar_assessment_event   WHERE 	assessment_id = " + assessment_id
+		String sql = "SELECT 	actor_id FROM 	istar_assessment_event   WHERE batch_group_id="+batch.getBatchGroup().getId()+" and	assessment_id = " + assessment_id
 				+ " AND cast (eventdate as varchar (50)) LIKE '%" + event_date + "%'";
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		ArrayList<Integer> alreadyAssigned = new ArrayList<>();
+		
+		
+		System.out.println("sql----------------"+sql);
+		
 		if (data.size() != 0) {
 			for (HashMap<String, Object> row : data) {
 				int actor_id = (int) row.get("actor_id");
@@ -73,14 +77,18 @@ public class AssessmentSchedulerService {
 				}
 			}
 		} else {
-
 			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date,time, AdminUserID, classroomID, assessment_id,
 					associateTrainerID,assessment);
 		}
+		
+		
+		
+		
+		
 		ArrayList<String> students = new ArrayList<>();
 		
 		for (BatchStudents bstudent : batch.getBatchGroup().getBatchStudentses()) {
-			if (alreadyAssigned != null && !alreadyAssigned.contains(bstudent.getIstarUser().getId())) {
+			if (alreadyAssigned != null && !alreadyAssigned.contains((int)bstudent.getIstarUser().getId())) {
 				students.add(bstudent.getIstarUser().getId()+"");
 				String assessmentEventsql = "INSERT INTO istar_assessment_event ( 	actor_id, 	created_at, 	creator_id, 	eventdate, 	eventhour, 	eventminute, 	isactive, 	type, 	updated_at, 	id, 	status, 	action, 	assessment_id, 	batch_group_id, course_id ) VALUES 	( 		'"
 						+ bstudent.getIstarUser().getId() + "', 		now(), 		" + AdminUserID + ", 		'"
@@ -328,8 +336,8 @@ public class AssessmentSchedulerService {
 		ArrayList<String> arrayList = new ArrayList<>();
 		DBUTILS util = new DBUTILS();
 		Batch b = new BatchDAO().findById(batchId);
-		String sql = "SELECT DISTINCT assessment_id FROM 	istar_assessment_event WHERE 	batch_group_id = " + b.getId() +"  AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + eventDate + "%' ";
-
+		String sql = "SELECT DISTINCT assessment_id FROM 	istar_assessment_event WHERE 	batch_group_id = " + b.getBatchGroup().getId() +"  AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + eventDate + "%' ";
+System.out.println("sql----"+sql);
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		if (data.size() != 0) {
 			for (HashMap<String, Object> row : data) {
@@ -384,7 +392,7 @@ public class AssessmentSchedulerService {
 				+ orgId + " AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate + "%'";
 
 		DBUTILS db = new DBUTILS();
-		//System.out.println(sql);
+		System.out.println(sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {

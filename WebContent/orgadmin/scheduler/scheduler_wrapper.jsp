@@ -63,7 +63,7 @@ int colegeID = (int)request.getSession().getAttribute("orgId");
 														class="sr-only">Close</span>
 												</button>
 												<h4 class="modal-title text-center">Event Details</h4>
-												<h4 class="text-danger modal-subTitle"></h4>
+												<h4 class="modal-subTitle"></h4>
 											</div>
 											<div class="modal-body">
 												<div class="row" id="modal_data"></div>

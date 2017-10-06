@@ -1,3 +1,6 @@
+<%@page import="com.viksitpro.core.utilities.DBUTILS"%>
+<%@page import="com.viksitpro.core.dao.entities.TaskDAO"%>
+<%@page import="com.viksitpro.core.dao.entities.Task"%>
 <%@page import="in.orgadmin.dashboard.services.OrgAdminDashboardServices"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
@@ -25,10 +28,19 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 					 data = new UIUtils().getALLEventDetails(request.getParameter("eventid"));
 					  slideCount = dashboardServices.getSlideCount(request.getParameter("eventid"));
 					 status = request.getParameter("status");
-				
-					
-					
 				}
+				
+				boolean isDeletable=true;
+				if(status.equalsIgnoreCase("ASSESSMENT")){
+					DBUTILS dbutils = new DBUTILS();
+					String sql = "SELECT 	task. ID FROM 	batch_schedule_event, 	batch_students, 	task WHERE 	batch_schedule_event.batch_group_id = batch_students.batch_group_id AND batch_students.student_id = task.actor AND batch_schedule_event.eventdate = task.start_date AND task. STATE = 'COMPLETED' AND batch_schedule_event. ID = "+ request.getParameter("eventid")+" UNION 	SELECT 		task. ID 	FROM 		batch_schedule_event, 		task 	WHERE 		batch_schedule_event.actor_id = task.actor 	AND batch_schedule_event.eventdate = task.start_date 	AND task. STATE = 'COMPLETED' 	AND batch_schedule_event. ID = "+ request.getParameter("eventid");
+					List<HashMap<String, Object>> list=dbutils.executeQuery(sql);
+					if(list!=null && list.size()!=0){
+						isDeletable=false;
+					}
+				}
+
+				
 			%>
 			
 			<div class="panel panel-primary custom-theme-panel-primary" style="margin-bottom: 0px;">
@@ -72,7 +84,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
                                           <%if(!status.equalsIgnoreCase("ASSESSMENT") && (status.equalsIgnoreCase("SCHEDULED"))){ %>
                                            <button type="button" class="btn btn-primary custom-theme-btn-primary  key" data-status="<%=status%>" id="edit" data-dismiss="modal">Edit Event</button>
                                            <%} 
-                                           if(status.equalsIgnoreCase("SCHEDULED")){
+                                           if(status.equalsIgnoreCase("SCHEDULED") ||(isDeletable && status.equalsIgnoreCase("ASSESSMENT"))){
                                            %>
                                             <button type="button" class="btn btn-primary custom-theme-btn-primary key" data-status="<%=status%>" id="delete" data-dismiss="modal">Delete Event</button>
                                             <%} %>

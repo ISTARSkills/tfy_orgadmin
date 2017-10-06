@@ -25,7 +25,7 @@ int courseId = Integer.parseInt(request.getParameter("course_id"));
 													for (ModuleLevelSkill moduleskill : courseSkill.getModuleLevelSkill()) {
 														%>
 														<li data-title="Module Level Skill"
-															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=moduleskill.getId() %> - <%=moduleskill.getSkillName()%>[MS]
+															data-jstree='{"icon":"glyphicon glyphicon-tree-deciduous"}'><%=moduleskill.getId() %> - <%=moduleskill.getSkillName()%>
 															<ul>
 																<%
 																
@@ -34,18 +34,18 @@ int courseId = Integer.parseInt(request.getParameter("course_id"));
 																		for (SessionLevelSkill sessionskill : moduleskill.getSessionLevelSkill()) {
 																			%>
 																			<li data-title="Session Level Skill" data-jstree='{"icon":"glyphicon glyphicon-leaf"}'><%=sessionskill.getId() %> - <%=sessionskill.getSkillName()%>
-																				[SS]<ul>
+																				<ul>
 																					<%
 																						
 																						for (LearningObjective learningObjective : sessionskill.getLearningObjectives()) {
 																										%>
 																					<li data-title="Learning Objective" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=learningObjective.getId() %> - <%=learningObjective.getLearningObjectiveName()%>
-																					[LO]<ul><%
+																					<ul><%
 																						for(Lesson lesson : learningObjective.getLessons())	
 																						{
 																							%>
 																							<li data-title="Lesson" data-jstree='{"icon":"glyphicon glyphicon-apple"}'><%=lesson.getId() %> - <%=lesson.getTitle()%>
-																							[L]<%
+																							<%
 																						}
 																					
 																					%></ul><%

@@ -56,15 +56,8 @@ public class AssessmentUpdateController extends HttpServlet {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
 		response.setContentType("text/html");
-		if (request.getParameterMap().containsKey("assessment_id") 
-				&& request.getParameterMap().containsKey("assessment_name") 
-				&& request.getParameterMap().containsKey("assessment_type") 
-				&& request.getParameterMap().containsKey("assessment_retriable") 
-				&& request.getParameterMap().containsKey("assessment_duration") 
-				&& request.getParameterMap().containsKey("assessment_category")
-				&& request.getParameterMap().containsKey("question_list") 
-				&& request.getParameterMap().containsKey("assessment_desc") 
-				&& request.getParameterMap().containsKey("course")) {
+		if (request.getParameterMap().containsKey("assessment_id") && request.getParameterMap().containsKey("assessment_name") && request.getParameterMap().containsKey("assessment_type") && request.getParameterMap().containsKey("assessment_retriable") && request.getParameterMap().containsKey("assessment_duration") && request.getParameterMap().containsKey("assessment_category")
+				&& request.getParameterMap().containsKey("question_list") && request.getParameterMap().containsKey("assessment_desc")) {
 			AssessmentDAO assessmentDAO = new AssessmentDAO();
 			Assessment assessment = assessmentDAO.findById(Integer.parseInt(request.getParameter("assessment_id")));
 			AssessmentEngineService service = new AssessmentEngineService();
@@ -80,7 +73,6 @@ public class AssessmentUpdateController extends HttpServlet {
 			assessment.setRetryAble(Boolean.parseBoolean(request.getParameter("assessment_retriable").toString()));
 			assessment.setAssessmentdurationminutes(Integer.parseInt(request.getParameter("assessment_duration").toString()));
 			assessment.setCategory(request.getParameter("assessment_category").toString());
-			assessment.setCourse(Integer.parseInt(request.getParameter("course").toString()));
 			//assessment.setAssessmentQuestions(assessmentQuestions);
 			assessment = service.saveAssessmentDetails(assessment, assessmentDAO);
 

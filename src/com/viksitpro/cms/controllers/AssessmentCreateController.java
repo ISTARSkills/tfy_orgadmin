@@ -38,19 +38,16 @@ public class AssessmentCreateController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		if (request.getParameterMap().containsKey("assessment_name")
-				&& request.getParameterMap().containsKey("assessment_type")
-				&& request.getParameterMap().containsKey("assessment_retriable")
+		if (request.getParameterMap().containsKey("assessment_name") 
+				&& request.getParameterMap().containsKey("assessment_type") 
+				&& request.getParameterMap().containsKey("assessment_retriable") 
 				&& request.getParameterMap().containsKey("assessment_duration")
-				&& request.getParameterMap().containsKey("assessment_category")
+				&& request.getParameterMap().containsKey("assessment_category") 
 				&& request.getParameterMap().containsKey("question_list")
-				&& request.getParameterMap().containsKey("assessment_desc")
-				&& request.getParameterMap().containsKey("course")) {
-			
+				&& request.getParameterMap().containsKey("assessment_desc")) {
 
 			Assessment assessment = new Assessment();
 			Set<AssessmentQuestion> assessmentQuestions = new HashSet<>();
@@ -63,10 +60,8 @@ public class AssessmentCreateController extends HttpServlet {
 			assessment.setDescription(request.getParameter("assessment_desc").toString());
 			assessment.setAssessmentType(request.getParameter("assessment_type").toString());
 			assessment.setRetryAble(Boolean.parseBoolean(request.getParameter("assessment_retriable").toString()));
-			assessment.setAssessmentdurationminutes(
-					Integer.parseInt(request.getParameter("assessment_duration").toString()));
+			assessment.setAssessmentdurationminutes(Integer.parseInt(request.getParameter("assessment_duration").toString()));
 			assessment.setCategory(request.getParameter("assessment_category").toString());
-			assessment.setCourse(Integer.parseInt(request.getParameter("course").toString()));
 			assessment = service.saveAssessmentDetails(assessment, assessmentDAO);
 			assessmentQuestions = service.saveAssessmentQuestions(assessment, question_list, assessmentQuestions);
 
@@ -89,8 +84,7 @@ public class AssessmentCreateController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

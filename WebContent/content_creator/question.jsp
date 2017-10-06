@@ -58,13 +58,12 @@
 	<div id="wrapper" class='customcss_overflowy'>
 		<jsp:include page="../inc/navbar.jsp"></jsp:include>
 		<div id="page-wrapper" class="gray-bg">
-			<%
-				String[] brd = {"Dashboard", "Questions"};
+		<%
+				String[] brd = { "Dashboard", "Questions" };
 			%>
-			<%=UIUtils.getPageHeader(type + " Question", brd)%>
-
-			<div
-				class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
+			<%=UIUtils.getPageHeader(type+" Question", brd)%>
+			
+			<div class="wrapper wrapper-content animated fadeInRight card-box scheduler_margin-box no_padding_box">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="ibox no-margins">
@@ -77,30 +76,30 @@
 								<form class="form-horizontal" action="../question_engine"
 									method="post" id='create-question-form'
 									name='create-question-form'>
+
 									<input type='hidden' name='question_id'
 										value='<%=question_id%>' id="hidden_question_id" /> <input
 										type='hidden' name='operation_mode' value='<%=type%>' />
+
 									<div class="form-group">
-										<label class="col-sm-2">Question Text</label>
-										<div class="col-sm-10">
-											<textarea name="question_text" id="question_text" rows="1"
+                                <div class="col-lg-12">
+										<div class="col-lg-6">
+											<label>Question Text</label>
+											<textarea name="question_text" id="question_text" rows="5"
 												cols="80" placeholder="Question Text.."><%=question_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
+
 										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<div class="form-group">
-										<label class="col-sm-2">Explanation</label>
-										<div class="col-sm-10">
+									
+										<div class="col-lg-6">
+											<label>Explanation</label>
 											<textarea name="question_explain" id="question_explain"
-												rows="2" cols="80" placeholder="Question Explaination.."><%=explanation.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
+												rows="3" cols="80" placeholder="Question Explaination.."><%=explanation.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
 										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<div class="form-group">
-										<label class="col-sm-2">Type</label>
-										<div class="col-sm-10">
-											<select class="form-control m-b" id='question_type'
-												name="question_type" style="width: auto;">
+										</div>
+										<div class="col-lg-6">
+											<label class="control-label">Type</label> <select
+												class="form-control m-b" id='question_type'
+												name="question_type">
 												<option value="1" <%=question_type == 1 ? "selected" : ""%>>Single
 													Choice</option>
 												<option value="2" <%=question_type == 2 ? "selected" : ""%>>Multiple
@@ -111,13 +110,11 @@
 													Choice with Passage</option>
 											</select>
 										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<div class="form-group">
-										<label class="col-sm-2">Difficulty Level</label>
-										<div class="col-sm-10">
-											<select class="form-control m-b" name="question_diffculty"
-												style="width: auto;">
+
+
+										<div class="col-lg-6">
+											<label class="control-label">Difficulty Level</label> <select
+												class="form-control m-b" name="question_diffculty">
 												<option value="1"
 													<%=difficulty_level == 1 ? "selected" : ""%>>1</option>
 												<option value="2"
@@ -130,72 +127,139 @@
 													<%=difficulty_level == 5 ? "selected" : ""%>>5</option>
 											</select>
 										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<%
-										String questionPassageStyle = "";
-										if (question_type == 1 || question_type == 2) {
-											questionPassageStyle = "style='display:none'";
-										}
-									%>
-									<div class="form-group" id='question_passage_holder'
-										<%=questionPassageStyle%>>
-										<label class="col-sm-2">Passage</label>
-										<div class="col-sm-10">
-											<textarea name="question_passage" id="question_passage"
-												rows="3" cols="80" placeholder="Question Passage.."><%=comprehensive_passage_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
-										</div>
-									</div>
-									<div class="hr-line-dashed" id='question_passage_holder_divide' <%=questionPassageStyle%>></div>
-									<div class="form-group">
-										<label class="col-sm-2">Select learning objectives</label>
-										<div class="col-sm-10">
-											<select id="learn_obj_question" multiple="multiple"
-												data-placeholder="Choose Learning Objectives..." class=""
-												tabindex="-1" style="width: auto;">
-												<option value="">Select</option>
-											</select>
-										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<div class="form-group">
-										<label class="col-sm-2">Options</label>
-										<div class="col-sm-10" id="question_options_holder">
+										<br>
+										<%
+											if (question_type == 1 || question_type == 2) {
+										%>
+										<div class="hidden-holder col-lg-12 "
+											id='question_passage_holder'>
 											<%
-												if (type.equalsIgnoreCase("Edit")) {
-													int i = 0;
-													for (HashMap<String, Object> item : optionData) {
+												} else {
 											%>
-											<div class="input-group m-b">
-												<span class="input-group-addon">option <%=i + 1%></span> <input
-													type="text" name="option_<%=i%>" id="option_<%=i%>"
-													placeholder="Option <%=i + 1%>.." class="form-control"
-													value="<%=item.get("text")%>"> <span
-													class="input-group-addon"> <input type="checkbox"
-													data-optnum='<%=i%>' class='option-correct-holder'
-													name='option_correct_<%=i%>'
-													<%=(int) item.get("marking_scheme") == 1 ? "checked" : ""%>>
-												</span>
-												<div class="input-group-btn">
-													<button tabindex="-1" class="btn btn-white deleteQuestions" type="button">Delete</button>
+											<div class="hidden-holder col-lg-12 "
+												id='question_passage_holder'>
+												<%
+													}
+												%>
+												<label>Passage</label>
+												<textarea name="question_passage" id="question_passage"
+													rows="3" cols="80" placeholder="Question Passage.."><%=comprehensive_passage_text.replaceAll("<p>", "").replaceAll("</p>", "")%></textarea>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-12">
+												<div class="ibox">
+													<div class="ibox-title">
+														<h5>Skill Filter</h5>
+														<div class="ibox-tools">
+															<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
+															</a>
+														</div>
+													</div>
+													<div class="ibox-content">
+														<div class="form-group">
+															<label class="font-normal">Select context skill</label> <select
+																id="context_skill_question"
+																data-placeholder="Choose a Context Skill..." class=""
+																tabindex="-1">
+																<option value="">Select</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label class="font-normal">Select module level
+																skill</label> <select id="module_skill_question"
+																data-placeholder="Choose a module level Skill..."
+																class="" tabindex="-1">
+																<option value="">Select</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label class="font-normal">Select session level
+																skill</label> <select id="session_skill_question"
+																data-placeholder="Choose a session level Skill..."
+																class="" tabindex="-1">
+																<option value="">Select</option>
+															</select>
+														</div>
+														<div class="form-group">
+															<label class="font-normal">Select learning
+																objectives</label> <select id="learn_obj_question"
+																multiple="multiple"
+																data-placeholder="Choose Learning Objectives..."
+																class="" tabindex="-1">
+																<option value="">Select</option>
+															</select>
+														</div>
+													</div>
+												</div>
+
+												<div class="col-lg-12 m-t-sm">
+													<button class="btn btn-default pull-left" id="add_options"
+														type="button">
+														<i class="fa fa-plus-circle"></i> Add Options
+													</button>
+												</div>
+
+												<div id="question_options_holder" class="col-lg-12 m-t-sm">
+
+													<%
+														if (type.equalsIgnoreCase("Create")) {
+													%>
+													<div class="col-lg-6">
+														<label>option 1</label>
+														<div class="input-group m-b">
+															<textarea name="option_0" id="option_0" rows="3"
+																cols="80" placeholder="option 1.."></textarea>
+															<span class="input-group-addon"> <input
+																type="checkbox" data-optnum='0'
+																class='option-correct-holder' name='option_correct_0'>
+															</span>
+														</div>
+													</div>
+
+													<div class="col-lg-6">
+														<label>option 2</label>
+														<div class="input-group m-b">
+															<textarea name="option_1" id="option_1" rows="3"
+																cols="80" placeholder="option 2.."></textarea>
+															<span class="input-group-addon"> <input
+																type="checkbox" data-optnum='1'
+																class='option-correct-holder' name='option_correct_1'>
+															</span>
+														</div>
+													</div>
+													<%
+														} else if (type.equalsIgnoreCase("Edit")) {
+															int i = 0;
+															for (HashMap<String, Object> item : optionData) {
+													%>
+
+													<div class="col-lg-6">
+														<label>option <%=i + 1%></label>
+														<div class="input-group m-b">
+															<textarea name="option_<%=i%>" id="option_<%=i%>"
+																rows="3" cols="80" placeholder="option 2.."><%=item.get("text")%>
+												</textarea>
+															<span class="input-group-addon"> <input
+																type="checkbox" data-optnum='<%=i%>'
+																class='option-correct-holder'
+																name='option_correct_<%=i%>'
+																<%=(int) item.get("marking_scheme") == 1 ? "checked" : ""%>>
+															</span>
+														</div>
+													</div>
+
+
+													<%
+														i++;
+															}
+														}
+													%>
 												</div>
 											</div>
-											<%
-												i++;
-													}
-												}
-											%>
 										</div>
-										<div class="col-sm-4 col-sm-offset-2">
-											<button class="btn btn-default pull-left" id="add_options"
-												type="button">
-												<i class="fa fa-plus-circle"></i> Add Options
-											</button>
-										</div>
-									</div>
-									<div class="hr-line-dashed"></div>
-									<div class="form-group">
-										<div class="col-sm-4 col-sm-offset-2">
+										<hr>
+										<div class="form-group">
 											<button type="button" class="btn btn-primary pull-right"
 												id='question-create-submit'>Save changes</button>
 										</div>
@@ -212,5 +276,4 @@
 <!-- Mainly scripts -->
 <jsp:include page="../inc/foot.jsp"></jsp:include>
 <script type="text/javascript">
-	
 </script>

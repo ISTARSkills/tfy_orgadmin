@@ -330,16 +330,26 @@ BatchGroup bg = new BatchGroupDAO().findById(Integer.parseInt(batchGroupId));
 							<h2 class="forum-item-title">Present List</h2>
 							<%
 												if (attendanceData.size() > 0) {
+													try{
 														for (HashMap<String, Object> absent : attendanceData) {
+															
+																
+															
 															if (absent.get("status").toString().equalsIgnoreCase("PRESENT")) {
 											%>
 							<a href="#"><img alt="member" data-toggle="tooltip" data-placement="top" title="<%=absent.get("name")%>" class="img-circle img-sm" src="<%=absent.get("profile_image").toString()%>"></a>
 							<%
 												}
+															
 											%>
 
 							<%
 												}
+													}catch(Exception ex)
+													{
+														//System.out.print(absent.get("name").toString());
+														
+													}
 													} else {
 											%>
 							N/A

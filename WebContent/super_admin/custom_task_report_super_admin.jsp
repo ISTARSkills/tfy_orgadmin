@@ -39,13 +39,15 @@ ReportUtils util = new ReportUtils();
 							
 							conditions.put("limit", "10");
 						    conditions.put("offset", "0");
+						    conditions.put("order_by_column", "1");
+						    conditions.put("order_type", "asc");
 						
 						/* conditions.put("org_id", orgId); */
-						conditions.put("static_table", "true");	
+						
+						//conditions.put("static_table", "true");	
 						
 						%>
 
-							<%= util.getTableFilters(Integer.parseInt(reportId), conditions) %>
 
 
 

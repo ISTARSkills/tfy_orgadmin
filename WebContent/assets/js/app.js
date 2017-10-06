@@ -480,8 +480,9 @@ function moduleHashInit() {
 			});
 }
 function initModuleSearch() {
-	$('#searchModules').keyup(function(event) {
-		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
+	$('#searchModules').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
 				var searchString = $("#searchModules").val();
 				var datapost = {
 					'searchString' : searchString
@@ -500,6 +501,10 @@ function initModuleSearch() {
 				}).always(function() {
 
 				});
+			} else {
+				alert('Type atleast 3 characters to search');
+			}
+
 		}
 });
 
@@ -537,13 +542,12 @@ function updateModuleHash(evt) {
 }
 function saveCourse() {
 	var module_list = getModules();
-	var x = $('#course_category_idd').val();
 	var course_image = '/'
 			+ $.trim($('#course_image').attr('src')).split('/').splice(3).join(
 					'/');
 	if (window.isNewCourse) {
 		var dataPost = 'course_name=' + $("input[name=course_name]").val()
-				+ '&course_category=' + $("#course_category_idd option[value='"+x+"']").text()
+				+ '&course_category=' + $("input[name=course_category").val()
 				+ '&course_desc=' + $("textarea[name=course_desc]").val()
 				+ '&module_list=' + module_list + '&course_image='
 				+ course_image;
@@ -552,7 +556,7 @@ function saveCourse() {
 	} else {
 		var dataPost = 'course_name=' + $("input[name=course_name]").val()
 				+ '&course_id=' + window.courseID + '&course_category='
-				+ $("#course_category_idd option[value='"+x+"']").text() + '&course_desc='
+				+ $("input[name=course_category").val() + '&course_desc='
 				+ $("textarea[name=course_desc]").val() + '&module_list='
 				+ module_list + '&course_image=' + course_image;
 		var url = '/update_course';
@@ -637,8 +641,9 @@ function sessionHashInit() {
 			});
 }
 function initSessionSearch() {
-	$('#searchSessions').keyup(function(event) {
-		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
+	$('#searchSessions').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
 				var searchString = $("#searchSessions").val();
 				var datapost = {
 					'searchString' : searchString
@@ -658,6 +663,9 @@ function initSessionSearch() {
 					}).always(function() {
 
 					});
+			}else{
+				alert('Type atleast 3 characters to search');
+			}
 		}
 	});
 
@@ -778,26 +786,30 @@ function lessonHashInit() {
 			});
 }
 function initLessonSearch() {
-	$('#searchLessons').keyup(function(event) {
-		if (($.trim($(this).val()) != '') && $.trim($(this).val()).length>2) {
-			var searchString = $("#searchLessons").val();
-			var addition = '';
-			var datapost = {
-				'searchString' : searchString
-			};
-			$.get("/SearchLessons", datapost).done(function(data) {
-				if(data.lessons.length === 0){
-					alert("No Modules found like '"+searchString+"'");
-				}
-				$.each(data.lessons,function(k, v) {
-					addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-				});
-				$('#searchLessonsResult').html(addition);
-			}).fail(function() {
-						alert("error");
-				}).always(function() {
-	
-				});
+	$('#searchLessons').keydown(function(event) {
+		if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
+			if($.trim($(this).val()).length>2){
+				var searchString = $("#searchLessons").val();
+				var addition = '';
+				var datapost = {
+					'searchString' : searchString
+				};
+				$.get("/SearchLessons", datapost).done(function(data) {
+					if(data.lessons.length === 0){
+						alert("No Modules found like '"+searchString+"'");
+					}
+					$.each(data.lessons,function(k, v) {
+						addition +="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
+					});
+					$('#searchLessonsResult').html(addition);
+				}).fail(function() {
+							alert("error");
+					}).always(function() {
+
+					});
+			}else{
+				alert('Type atleast 3 characters to search');
+			}
 		}
 	});
 
@@ -4897,7 +4909,7 @@ $(".edit-submit-btn").unbind().click(function(){
 		  
 		 $('#reason_needed').hide();
 		 $('#myModal2').modal('toggle'); 
-		 location.reload();
+		// location.reload();
       }
 	  else
 	  {
@@ -4916,7 +4928,7 @@ $(".modify-modal").click(function(){
 	var orgID = $('#orgID').val();
 	var url;
 	
-	if(orgID === undefined && orgID === null){
+	if(orgID === undefined || orgID === null){
 		
 		url= "../orgadmin/edit_old_event.jsp";
 	}else{
@@ -9487,10 +9499,12 @@ function assessmentEditVariables() {
 	window.assessmentID = $("input[name='cmsID']").val();
 	window.baseProdURL = $("input[name='baseProdURL']").val();
 	window.questionList = new Set();
+	window.isDatatable = Boolean(false);
 }
 
 function assessmentEditWizard() {
-	initAssessmentQuestionList();
+	
+	
 	$("#form").steps({
 		bodyTag : "fieldset",
 		transitionEffect : 'fade',
@@ -9504,7 +9518,13 @@ function assessmentEditWizard() {
 			 }
 			 return flag;
 		},
+		onStepChanged : function(event, currentIndex, priorIndex) {
+			assessmentStepChangerPost(event, currentIndex, priorIndex);
+			return true;
+		},
 		onFinishing : function(event, currentIndex) {
+			
+			
 			 var form = $(this);
 			 var flag =  form.valid();
 			 if(flag){
@@ -9516,90 +9536,244 @@ function assessmentEditWizard() {
         errorPlacement: function (error, element)
         {
             element.before(error);
+        },
+        rules: {
+            confirm: {
+                equalTo: "#password"
+            }
         }
 });
-	$('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-    });
+
 	$('select').select2();
 	//$( 'a[href*="#cancel"]' ).parent().remove();
 }
 function assessmentStepChanger(event, currentIndex, newIndex) {
 	if (newIndex === 1 && currentIndex === 0) {
-		initAssessmentQuestionSearch();
-		initAssessmentQuestionTrashIcon();
+			initAssessmentContext();
+			initAssessmentContextListener();
+			
 		}
+	if (newIndex === 2) {
+		initAssessmentTrashIcon();
+	}
 	return true;
 }
-function initAssessmentQuestionList() {
-	$.each($('#editable').children(), function( index, value ) {
-		  window.questionList.add($(value).data('assessmentquestionid'));
-	});
+function assessmentStepChangerPost(event, currentIndex, priorIndex) {
+	if(currentIndex === 1) {
+		highlightSelectedAssessmentQuestions();
+	}
 }
-function initAssessmentQuestionSearch() {
-		$('#searchQuestions').keydown(function(event) {
-			if ((event.keyCode == 13) && ($.trim($(this).val()) != '')) {
-				if($.trim($(this).val()).length>2){
-					var searchString = $("#searchQuestions").val();
-					var datapost = {
-						'searchString' : searchString
-					};
-					$.get("/SeachQuestions", datapost).done(function(data) {
-						if(data.questions.length === 0){
-							alert("No Questions found like '"+searchString+"'");
-						}
-						var addition = '';
-						$.each(data.questions,function(k, v) {
-							addition += "<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-plus' data-assessmentquestionid='"+v.id+"'> </i></span> | "+v.id+" | "+v.name+"</li>";
-							//addition+="<li class='list-group-item' id='"+v.id+"' ><span class='badge custom-badge'><i class='js-remove fa fa-plus'> </i></span> "+v.id+" | "+v.name+"</li>";
-						});
-						$('#searchQuestionsResult').html(addition);
-					}).fail(function() {
-						alert("error");
-					}).always(function() {
-						$('#searchQuestionsResult').slimScroll({
-					   
-					    })
-					});
-				} else {
-					alert('Type atleast 3 characters to search');
+function initAssessmentContext() {
+	$.get("../get_all_contexts").done(
+			function(data) {
+				var addition = "";
+				addition += "<option value=0>Choose a course to filter questions</option>";
+				for ( var j in data.contexts) {
+					addition += "<option value="+data.contexts[j].id+ "> "
+							+ data.contexts[j].text + " </option>";
 				}
-
-			}
-	});
-
-		$('#searchQuestionsResult').on('click',".fa-plus",function() {
-			var v = {
-				id : $(this).data('assessmentquestionid'),
-				name : this.parentElement.parentElement.innerText
-			}
-			if ((window.questionList.has(v.id))) {
-				alert('Question already there in the list.');
-			} else {
-				$('#editable').append("<li class='question list-group-item' data-assessmentquestionid='"+v.id+"'><span class='badge badge-primary'><i class='fa fa-trash-o' data-assessmentquestionid='"+v.id+"'> </i></span> "+ v.name +"</li>");
-				window.questionList.add(v.id);
-			}
-		});
-
+				$("#context_skill").html(addition);
+				$("#context_skill").select2();
+				filterSkillData(0);
+				
+			});
 }
+
+function initAssessmentHighlighter() {
+	
+	$("#assessment_list_table").on('click','tr',function() {
+				
+		if ($(this).hasClass('row_selected')) {
+					$(this).removeClass('row_selected');
+				} else {
+					$(this).addClass('row_selected');
+				}
+		
+		
+		var questin_id = this.children[1].innerText;
+	
+		if(!questionList.has(questin_id)) {
+			$('#editable')
+					.append(
+							"<li data-question_id='"+this.children[1].innerText
+	+"' class='something'><i class='js-remove fa fa-trash-o'> </i> |"
+									+ this.children[1].innerText
+									+ "| "
+									+ this
+											.getElementsByTagName('td')[2].innerText
+									+ "</li>");
+			questionList.add(this.children[1].innerText);
+		} else {
+			$(".something").each(function(index) {
+						if (($(this)
+								.attr('data-question_id')) === questin_id) {
+							this.remove();
+							if(window.questionList.has(($(this).attr('data-question_id')))){
+								window.questionList.delete(($(this).attr('data-question_id')));
+							}
+						}
+					});
+		}		
+		
+			});
+}
+function highlightSelectedAssessmentQuestions() {
+	updateSelectedAssessmentQuestions();
+	var table = document.getElementById("assessment_list_table");
+	for (var i = 0, row; row = table.rows[i]; i++) {
+	 	if(window.questionList.has(row.cells[1].innerText)) {
+	 		$(row).addClass('row_selected');
+	 	} else {
+	 		if ($(row).hasClass('row_selected')) {
+	 			$(row).removeClass('row_selected');
+			}
+	 	}
+	}
+}
+function updateSelectedAssessmentQuestions() {
+	$(".something")
+	.each(
+			function(index) {
+					window.questionList.add(($(this).attr('data-question_id')));
+			});
+}
+function filterSkillData(context){
+	
+	console.log(context);
+	$.ajax({
+        type: "POST",
+        url: '../get_all_skills',
+        data: {context:context},
+        success: function(data) {      	
+        	var addition = "";
+			addition += "<option value=0>Choose a skill to filter questions</option>";
+			for ( var j in data.skills) {
+				addition += "<option value="+data.skills[j].id+ "> "
+						+ data.skills[j].text + " </option>";
+			}
+			
+			$("#skills_data").html(addition);
+			$("#skills_data").select2();
+        	
+          }
+    });
+	
+}
+function initAssessmentContextListener() {
+	$("#context_skill").on("select2:select", function(e) {
+		
+		filterAssessmentDatatableBySkills($(this).val());
+		filterSkillData($(this).val());
+		
+	});
+}
+
+function initAssessmentTrashIcon() {
+	$("#editable").on('click','.js-remove',function() {
+				$(this.parentElement).remove();
+				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
+					window.questionList.delete($(this.parentElement).data('question_id').toString());
+				}
+	});
+}
+
+function initAssessmentListPageination(total_count){
+	
+	if(total_count === undefined || total_count==null || total_count ==='') {
+		total_count= 0;
+		$('#page-selection').empty();
+	}else {
+	}
+
+	 $('#page-selection').bootpag({
+         total: total_count,
+         maxVisible: 10
+     }).on("page", function(event, /* page number here */ num){
+	     	//alert("num -> "+num)
+	        var context_id =$('#context_skill').val();
+	     	$.ajax({
+		        type: "POST",
+		        url: $('#assessment_list_table').data('url'),
+		        data: {key:'get_all_question',offset:num,context_id:context_id},
+		        success: function(result) {
+		        	
+		        	$('#assessment_data').empty();
+		        	$('#assessment_data').append(result);
+		        	highlightSelectedAssessmentQuestions();
+		        	
+		          }
+		    });
+	     	
+	     });
+	 $('#assessment_data').trigger( "custom" );
+}
+
+function filterAssessmentDatatableBySkills(context) {
+	
+	console.log('>>>> '+context);
+var url = $('#assessment_list_table').data('url');
+	
+	$.ajax({
+	        type: "POST",
+	        url: url,
+	        data: {key:'get_all_question',context_id:context},
+	        success: function(result) {
+	        	
+	        	$('#assessment_data').empty();
+	        	$('#assessment_data').append(result);
+	        	
+	        	$( "#assessment_data" ).on( "custom", function() {
+	        		$('.pagination > li').css("display", "inline", 'important'); 
+	        		});
+	        	initAssessmentHighlighter();
+	        	highlightSelectedAssessmentQuestions();
+	        	initAssessmentListPageination($('#total_rows').html());
+
+	        	$('#table_holder_div').slimScroll({
+	                height: '250px'
+	            });
+	          }
+	    });
+	
+}
+
+
+function initAssessmentTrashIcon() {
+	
+	$('#editable').slimScroll({
+        height: '250px'
+    });
+	
+	
+	$("#editable")
+	.on(
+			'click',
+			'.js-remove',
+			function() {
+				$(this.parentElement).remove();
+				if(window.questionList.has($(this.parentElement).data('question_id').toString())){
+					window.questionList.delete($(this.parentElement).data('question_id').toString());
+				}
+			});
+}
+
 function assessmentFinisher(event, currentIndex) {
 	var question_list = "";
-	for (let item of window.questionList) {
-		question_list += item + ",";
-	}
+	$("#editable .something").each(function(index) {
+		question_list = question_list + $(this).data('question_id') + ",";
+	});
 	console.log(question_list);
 	question_list = question_list.substring(0, question_list.length - 1);
 	if (window.isNewAssessment) {
 		var dataPost = 'assessment_name=' + $("#assessment_name_idd").val()
-				+ '&assessment_desc=' + $.trim($('#assessment_desc_idd').val())
+				+ '&assessment_desc=' + $('#assessment_desc_idd').val()
 				+ '&assessment_type=' + $('#assessment_type_idd').val()
 				+ '&assessment_retriable='
 				+ $('#assessment_retry_idd').is(":checked")
 				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
 				+ '&assessment_category=' + $('#assessment_category_idd').val()
 				+ '&question_list=' + question_list + '&course='
-				+ $('#assessmentCourse').val();
+				+ $('#course').val();
 		var url = '../create_assessment';
 	} else {
 		var dataPost = 'assessment_id=' + $('#assessment_id_idd').val()
@@ -9611,7 +9785,7 @@ function assessmentFinisher(event, currentIndex) {
 				+ '&assessment_duration=' + $('#assessment_duration_idd').val()
 				+ '&assessment_category=' + $('#assessment_category_idd').val()
 				+ '&question_list=' + question_list + '&course='
-				+ $('#assessmentCourse').val();
+				+ $('#course').val();
 		var url = '../update_assessment';
 	}
 	// alert(dataPost);
@@ -9635,18 +9809,7 @@ function assessmentFinisher(event, currentIndex) {
 						}
 					});
 }
-function initAssessmentQuestionTrashIcon() {
-	$("#editable")
-	.on(
-			'click',
-			'.fa-trash-o',
-			function() {
-				this.parentElement.parentElement.remove();
-				if(window.questionList.has($(this.parentElement.parentElement).data('assessmentquestionid'))){
-					window.questionList.delete($(this.parentElement.parentElement).data('assessmentquestionid'));
-				}
-			});
-}
+
 function initCourseChangeListener(){
 	$('#course').change(function(event) {
 		var course = $(this).val();

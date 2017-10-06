@@ -17,8 +17,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -27,7 +25,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -71,10 +68,8 @@ import com.viksitpro.core.dao.entities.Report;
 import com.viksitpro.core.dao.entities.ReportDAO;
 import com.viksitpro.core.dao.entities.StudentAssessment;
 import com.viksitpro.core.dao.entities.StudentAssessmentDAO;
-import com.viksitpro.core.dao.entities.StudentPlaylist;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
-import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.AppProperies;
@@ -363,436 +358,65 @@ public class FarziDataCreatorServices {
 	public static void main(String args [])
 	{		
 		System.out.println("start");
-		
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
-		/*
+		String orgName = "THE FERN HOTELS & RESORTS";
+		
+		String[] batches = {"Meluha The Fern Mumbai","The Fern Ahmedabad","Mansarovar The Fern Hyderabad","The Fern Jaipur","The Fern Hotel Goregaon","Rodas Hotel","The Fern Residency Chembur","The Fern Bhavnagar","The Fern Gir Forest Resort Sasan Gir","The Fern Kadamba","The Fern Residency Somnath","The Wall Street Hotel Jaipur","The Fern Residency Galaxy Mall Asansol","The Fern Residency Jodhpur","The Fern Residency Kolkata","The Fern Residency Rajkot","Howard Plaza The Fern Agra","The Fern Residency Udaipur","The Fern Hillside Resort Bhimtal","Samanvay Udupi","The Fern Residency Mundra","The Fern Residency MIDC Pune","Maia Beacon Residences Bangalore","T2 Beacon Mumbai","Mystique Heights Beacon","The Fern Samali Resort Dapoli","The Fern Residency Vadodra","The Fern Residency an Ecotel Gurgaon","The Royal Melange Beacon Ajmer","The Fern Residency Chandigarh","The Gardenia Resort","Alibaug","The Fern Amanora Pune","Amritsar Surya Beacon","Grand Ashirwad Beacon Bhopal" };
+		int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
+		int courses[] = {9 ,101 ,5 ,6 ,7 ,8 ,12 ,13 ,14 ,10 ,19 ,31 ,51 ,3 ,37 ,18 ,20 ,66 ,34 ,43 ,53 ,65 ,67 ,16 ,59 ,58 ,99 ,52 ,102 ,100 ,63 ,62 ,60 ,64 ,9};
+		System.out.println(batches.length);
+		System.out.println(batcheCounts.length);
+		System.out.println(courses.length);
+		int orgID =serv.createOrganization(orgName);
+		//278
+		for (int k=0; k< batches.length;k++) {
+			int bgId = serv.createBGsInOrganization(orgID, batcheCounts[k], batches[k]);
+			for(int i=0; i< getRandomInteger(5, 1); i++)
+			{
+				int cid =getRandomInteger(34, 0); 				
+				serv.addCourseInGroup(bgId,courses[cid]);
+			}							
+		}		
 		
 		
+		serv.createAssesssmentTaskForAllBgs(orgID);
+		
+		System.out.println("all assessments created");
+		//int bgId = 154;    
+		//int orgID = 279;
+		Organization org = new OrganizationDAO().findById(279);
+		/*for(BatchGroup bg : org.getBatchGroups())
 		{
-			int orgID= 283;
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-			
-		}
-		System.out.println("two");
-		{
-			int orgID = 284;
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-			
-
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-		}
-		
-		System.out.println("three");
-		
-		{
-			String orgName = "TLFY Hospitality";			
-			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
-			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
-			int courses[] = {114,107,115,18};
-			System.out.println(batches.length);
-			//System.out.println(batcheCounts.length);
-			System.out.println(courses.length);
-			int orgID =serv.createOrganization(orgName);
-			//int orgID = 280;
-			for (int k=0; k< batches.length;k++) {
-				int bgId = serv.createBGsInOrganization(orgID, 20, batches[k]);
-				for(int cid: courses)
-				{					
-					serv.addCourseInGroup(bgId,cid);
-				}							
-			}		
-			
-			
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
-			
-		}
-		
-		System.out.println("four");
-		
-		{
-			System.out.println("statetd second org");
-			String orgName = "TLFY Retail";			
-			String[] batches = {"EAST", "WEST","NORTH","SOUTH"};
-			//int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
-			int courses[] = {60,107,115,18};
-			System.out.println(batches.length);
-			//System.out.println(batcheCounts.length);
-			System.out.println(courses.length);
-			int orgID =serv.createOrganization(orgName);
-			//int orgID = 280;
-			for (int k=0; k< batches.length;k++) {
-				int bgId = serv.createBGsInOrganization(orgID, 20, batches[k]);
-				for(int cid: courses)
-				{					
-					serv.addCourseInGroup(bgId,cid);
-				}							
-			}		
-			
-			
-			serv.createAssesssmentTaskForAllBgs(orgID);
-			Organization org = new OrganizationDAO().findById(orgID);
-			System.out.println("all assessments created");
-			//int bgId = 154;    
-			//int orgID = 279;
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.autoScheduleAllCourseInBg(bg.getId());
-			}
-			
-			System.out.println("all autoshcudke");
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				int aPlusPercentage = 20;
-			    int APercentage = 40;
-			    int BPlusPercentage = 25;
-			    int BPercenatge = 15;		    
-				serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-				System.out.println(" assess submitted for bg"+bg.getId());
-			}
-			
-			System.out.println("all assessment submitted");
-			
-			
-			
-			serv.markAutoScheduleAsCompleted(orgID); 
-			
-			for(BatchGroup bg : org.getBatchGroups())
-			{
-				serv.createCLassRoomSessionEvents(bg.getId());
-			}
-			System.out.println("events created");
-			serv.updateSessionEventsForOrg(orgID);
+			int aPlusPercentage = 25;
+		    int APercentage = getRandomInteger(50, 25);
+		    int maxNow = 75-APercentage;
+		    int BPlusPercentage = getRandomInteger(maxNow, 20);
+		    int BPercenatge = maxNow-BPlusPercentage;		    
+			serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
+			System.out.println(" assess submitted for bg"+bg.getId());
 		}
 		*/
+		System.out.println("all assessment submitted");
 		
-		BatchGroup bg = new BatchGroupDAO().findById(192);
-		int aPlusPercentage = 20;
-	    int APercentage = 40;
-	    int BPlusPercentage = 25;
-	    int BPercenatge = 15;		    
-		//serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-		System.out.println(" assess submitted for bg"+bg.getId());
+		/*for(BatchGroup bg : org.getBatchGroups())
+		{
+			serv.autoScheduleAllCourseInBg(bg.getId());
+		}
 		
-		serv.markAutoScheduleAsCompletedForBG(bg);
+		System.out.println("all autoshcudke");
 		
-		//deleteOrgData(279);
+		for(BatchGroup bg : org.getBatchGroups())
+		{
+			serv.createCLassRoomSessionEvents(bg.getId());
+		}*/
+		System.out.println("events created");
+		serv.updateSessionEventsForOrg(orgID);
+		
 		System.out.println("end");
 		System.exit(0);
 	}
 
 	
-
-	private void markAutoScheduleAsCompletedForBG(BatchGroup bg) {
-		for(BatchStudents bs : bg.getBatchStudentses())
-		{
-			IstarUser user = bs.getIstarUser();
-			try {
-				int totalPlayliost = user.getStudentPlaylists().size();
-				int totalToMArk  =(int)(75*totalPlayliost)/100;
-				int i=0;
-				for(StudentPlaylist spl : user.getStudentPlaylists())
-				{
-					if(i<totalToMArk)
-					{
-						//if(spl.getStatus().equalsIgnoreCase("SCHEDULED")) {
-							updatePointsAndCoinsOnLessonComplete(user, spl.getLesson());
-							try {
-								DBUTILS util = new DBUTILS();
-								String updateStudentPlayList = "update student_playlist set status='COMPLETED' where lesson_id = "+spl.getLesson().getId()+" and student_id="+user.getId();
-								util.executeUpdate(updateStudentPlayList);
-								
-								String updateStudentPlayList1 = "update  task set is_active='f' , state ='COMPLETED' where id in(select task_id from student_playlist where student_id = "+user.getId()+" "
-										+ " and lesson_id = "+spl.getLesson().getId()+")";
-								////System.err.println("updateStudentPlayList1--->"+updateStudentPlayList1);
-								util.executeUpdate(updateStudentPlayList1);
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							
-							}
-					}
-					i++;
-					
-				//}
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
-			}	
-		}	
-		
-	}
-
-	private  void markAutoScheduleAsCompleted(int orgId) {
-		
-		Organization org = new OrganizationDAO().findById(orgId);
-		for(UserOrgMapping map :org.getUserOrgMappings())
-		{
-			
-		}
-		
-		
-	}
-
-	public void updatePointsAndCoinsOnLessonComplete(IstarUser istarUser , Lesson lesson)
-	{
-		DBUTILS util = new DBUTILS();
-		String findLessonDetails ="select lesson_cmsession.lesson_id, lesson_cmsession.cmsession_id, module_course.module_id, module_course.course_id from lesson_cmsession, cmsession_module, module_course where lesson_cmsession.cmsession_id = cmsession_module.cmsession_id and cmsession_module.module_id = module_course.module_id and lesson_cmsession.lesson_id = "+lesson.getId()+"";		
-		System.out.println(findLessonDetails);
-		List<HashMap<String, Object>> lessonData = util.executeQuery(findLessonDetails); 
-		
-		for(HashMap<String, Object> lessonRow: lessonData)
-		{
-			int courseId = 0;	
-			int moduleId = 0;
-			int cmsessionId = 0;
-			 courseId = (int)lessonRow.get("course_id");
-			 moduleId = (int)lessonRow.get("module_id");
-			 cmsessionId = (int)lessonRow.get("cmsession_id");
-			 
-			 String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-				System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
-				List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
-				
-				for(HashMap<String, Object>primaryG : primaryBG)
-				{
-					int groupId = (int)primaryG.get("id");
-					int orgId = (int)primaryG.get("college_id");
-					String findSkillsInAssesssment = "select skill_objective_id, max_points from assessment_benchmark where item_id = "+lesson.getId()+" and item_type ='LESSON' and course_id="+courseId;
-					System.out.println("findSkillsInLesson>>>>>>"+findSkillsInAssesssment);
-					List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
-					for(HashMap<String, Object> skills : skillsData)
-					{
-						int skillObjectiveId = (int)skills.get("skill_objective_id");
-						String maxPoints = (String)skills.get("max_points");				
-						//double coins = Double.parseDouble(per_lesson_coins);
-						String coins = "( :per_lesson_coins )";
-						String getPreviousCoins="select * from user_gamification where item_id ='"+lesson.getId()+"' and item_type='LESSON' and "
-								+ "istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-						//System.out.println("getPreviousCoins"+getPreviousCoins);
-						List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
-						if(coinsData.size()>0)
-						{
-							String prevCoins = (String)coinsData.get(0).get("coins");
-							coins= coins+" + "+prevCoins;
-		 				}								
-						
-						String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id,cmsession_id, module_id, batch_group_id, org_id, timestamp, max_points) VALUES "
-								+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', now(), now(), "+lesson.getId()+", 'LESSON', "+courseId+","+cmsessionId+","+moduleId+", "+groupId+", "+orgId+", now(), '"+maxPoints+"');";
-						System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
-						util.executeUpdate(insertIntoGamification);
-					}			
-				}
-			 
-		}
-		
-		/*String per_assessment_points="",
-				per_lesson_points="",
-				per_question_points ="",per_lesson_coins="";
-		try{
-			Properties properties = new Properties();
-			String propertyFileName = "app.properties";
-			InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propertyFileName);
-				if (inputStream != null) {
-					properties.load(inputStream);
-					per_assessment_points =  properties.getProperty("per_assessment_points");
-					per_lesson_points =  properties.getProperty("per_lesson_points");
-					per_question_points =  properties.getProperty("per_question_points");
-					per_lesson_coins = properties.getProperty("per_lesson_coins");
-					//System.out.println("per_lesson_coins"+per_lesson_coins);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();			
-		}*/
-		
-		
-		
-		
-	}
-	
-	private static void deleteOrgData(int orgID) {
-		// TODO Auto-generated method stub
-		DBUTILS util = new DBUTILS();
-		
-		String sql="delete  from trainer_feedback where event_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from attendance where event_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from event_log where event_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from status_change_log where event_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from task_log where task in (select id from task where item_type='CLASSROOM_SESSION' and item_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+")));";
-		util.executeUpdate(sql);
-		sql="delete from task where item_type='CLASSROOM_SESSION' and item_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from bg_progress where college_id = "+orgID+";";
-		util.executeUpdate(sql);
-		sql="delete from task_log where task in (select id from task where actor in (select user_id from user_org_mapping where organization_id = "+orgID+"))";
-		util.executeUpdate(sql);
-		sql="delete from task where actor in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from project where id in (select project_id from task where actor in (select user_id from user_org_mapping where organization_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from event_queue_event_mapping where event_id in (select id from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from student_playlist where student_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from istar_notification where receiver_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from trainer_presentor where trainer_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from trainer_batch where trainer_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from trainer_batch where batch_id in (select id from batch where batch_group_id in (select id from batch_group where college_id = "+orgID+"));";
-		util.executeUpdate(sql);
-		sql="delete from student_assessment where student_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from report where user_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from user_gamification where istar_user in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from classroom_details where organization_id = "+orgID+";";
-		util.executeUpdate(sql);
-		sql="delete from auto_scheduler_data where entity_type ='SECTION' and entity_id in (select id from batch_group where college_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from auto_scheduler_data where entity_type ='USER' and entity_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from batch where batch_group_id in (select id from batch_group where college_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from batch_students where batch_group_id in (select id from batch_group where college_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from user_profile where user_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from professional_profile where user_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from address where id not in (select address_id from user_profile);";
-		util.executeUpdate(sql);
-		sql="delete from user_role where user_id in (select user_id from user_org_mapping where organization_id = "+orgID+");";
-		util.executeUpdate(sql);
-		sql="delete from batch_schedule_event where batch_group_id in (select id from batch_group where college_id = "+orgID+")";
-		util.executeUpdate(sql);
-		sql="delete from batch_group where college_id = "+orgID+";";
-		util.executeUpdate(sql);
-		String find ="select user_id from user_org_mapping where organization_id="+orgID;
-		ArrayList<String> stuId = new ArrayList<>();
-		List<HashMap<String, Object>> stuData = 	util.executeQuery(find);
-		for(HashMap<String, Object> row: stuData)
-		{
-			stuId.add(row.get("user_id").toString());
-		}	
-		if(stuId.size()>0)
-		{
-		
-		sql ="delete from task where project_id in (select id from project where creator in ("+StringUtils.join(stuId,",")+"))";
-		util.executeUpdate(sql);
-		sql ="delete from project where creator in ("+StringUtils.join(stuId,",")+")";
-		util.executeUpdate(sql);
-		sql ="delete from attendance where user_id in ("+StringUtils.join(stuId,",")+")";
-		util.executeUpdate(sql);
-		sql ="delete from attendance where taken_by in ("+StringUtils.join(stuId,",")+")";
-		util.executeUpdate(sql);
-		sql ="delete from task where actor in ("+StringUtils.join(stuId,",")+")";
-		util.executeUpdate(sql);
-		
-		sql="delete from user_org_mapping where organization_id = "+orgID+";";
-		util.executeUpdate(sql);
-		sql ="delete from istar_user where id in ("+StringUtils.join(stuId,",")+")";
-		System.out.println(sql);
-		util.executeUpdate(sql);
-		}
-	}
 
 	private  void updateSessionEventsForOrg(int orgId) {
 		
@@ -1256,10 +880,10 @@ public class FarziDataCreatorServices {
 				{
 					Date d = new Date(System.currentTimeMillis());
 					Calendar start = Calendar.getInstance();
-					start.add(Calendar.DATE, -1);
+					start.add(Calendar.DATE, -15);
 					start.add(Calendar.HOUR, i);
 					Calendar end = Calendar.getInstance();
-					end.add(Calendar.DATE,7);
+					end.add(Calendar.DATE,60);
 					
 					Date statrtDate = new Date(start.getTimeInMillis());
 					Date endDate = new Date(end.getTimeInMillis());
@@ -1783,9 +1407,9 @@ public class FarziDataCreatorServices {
 		ArrayList<QuestionPOJO> questions = new ArrayList<QuestionPOJO>();
 
 		for (AssessmentQuestion assessmentQuestion : assessmentQuestions) {
-			//if (assessmentQuestion.getQuestion().getContext_id() == assessment.getCourse()) {
+			if (assessmentQuestion.getQuestion().getContext_id() == assessment.getCourse()) {
 				questions.add(getQuestionPOJO(assessmentQuestion));
-			//}
+			}
 		}
 		assessmentPOJO.setQuestions(questions);
 
@@ -2079,7 +1703,7 @@ public class FarziDataCreatorServices {
 				questionAnsweredCorrectly.add((int)qro.get("question_id"));
 			}
 			
-			String findQuestionForAssessment="select distinct questionid from assessment_question, question, assessment where assessment_question.questionid = question.id and assessment_question.assessmentid = assessment.id and assessment.id = "+assessment.getId();
+			String findQuestionForAssessment="select distinct questionid from assessment_question, question, assessment where assessment_question.questionid = question.id and assessment_question.assessmentid = assessment.id and assessment.course_id = question.context_id and assessment.id = "+assessment.getId();
 			List<HashMap<String, Object>> questionData = util.executeQuery(findQuestionForAssessment);
 			for(HashMap<String, Object> qRow: questionData)
 			{

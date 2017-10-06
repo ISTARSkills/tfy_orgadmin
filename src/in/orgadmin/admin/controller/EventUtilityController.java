@@ -138,13 +138,19 @@ public class EventUtilityController extends HttpServlet {
 			if (request.getParameterMap().containsKey("status")
 					&& request.getParameter("status").equalsIgnoreCase("ASSESSMENT")) {
 				int assessmentEventID = Integer.parseInt(request.getParameter("deleteEventid"));
-				AssessmentSchedulerService asservice = new AssessmentSchedulerService();
-				asservice.deleteAssessment(null, assessmentEventID);
+				
+				EventSchedulerService eventSchedulerService=new EventSchedulerService();
+				eventSchedulerService.deleteAssessmentEvent(assessmentEventID+"");
+				
+			
 
 			} else {
-
+				String sql = "SELECT actor_id from batch_schedule_event where id = "+deleteEventid;
+				DBUTILS db = new DBUTILS();
+				List<HashMap<String, Object>> data = db.executeQuery(sql);
+				int trainerId = (int)data.get(0).get("actor_id");
 				EventSchedulerService ess = new EventSchedulerService();
-				ess.deleteEvent(deleteEventid);
+				ess.deleteEvent(deleteEventid,trainerId);
 				
 				IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 				String adminId = user.getId()+"";

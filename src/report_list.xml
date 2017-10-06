@@ -2991,7 +2991,8 @@ SELECT
 	tf.item_type,
 	COUNT (
 		DISTINCT user_session_log.slide_id
-	) AS slide_covered
+	) AS slide_covered,
+	count (*) over() as total_rows
 FROM
 	(
 		SELECT DISTINCT
@@ -3053,7 +3054,8 @@ GROUP BY
 	tf.lesson_name,
 	tf.student_status,
 	tf.task_date,
-	tf.item_type
+	tf.item_type 
+order by :order_by_column :order_type limit :limit offset :offset
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
