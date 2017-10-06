@@ -366,6 +366,8 @@ function setupScheduler(){
         			  status = onGoing;
         		  }else if(result.calendarData.monday[i].status == 'SCHEDULED'){
         			  status = Scheduled;
+        		  }else if(result.calendarData.monday[i].status == 'ASSESSMENT'){
+        			  status = Scheduled;
         		  }else{
         			  status = Completed;
         		  }
@@ -399,6 +401,8 @@ function setupScheduler(){
             	  if(result.calendarData.tuesday[i].status == 'TEACHING'){
         			  status = onGoing;
         		  }else if(result.calendarData.tuesday[i].status == 'SCHEDULED'){
+        			  status = Scheduled;
+        		  }else if(result.calendarData.tuesday[i].status == 'ASSESSMENT'){
         			  status = Scheduled;
         		  }else{
         			  status = Completed;
@@ -434,6 +438,8 @@ function setupScheduler(){
        			  status = onGoing;
        		  }else if(result.calendarData.wednesday[i].status == 'SCHEDULED'){
        			  status = Scheduled;
+       		  }else if(result.calendarData.wednesday[i].status == 'ASSESSMENT'){
+       			  status = Scheduled;
        		  }else{
        			  status = Completed;
        		  }
@@ -468,6 +474,8 @@ function setupScheduler(){
        			  status = onGoing;
        		  }else if(result.calendarData.thrusday[i].status == 'SCHEDULED'){
        			  status = Scheduled;
+       		  }else if(result.calendarData.thrusday[i].status == 'ASSESSMENT'){
+       			  status = Scheduled;
        		  }else{
        			  status = Completed;
        		  }
@@ -500,6 +508,8 @@ function setupScheduler(){
         	   if(result.calendarData.friday[i].status == 'TEACHING'){
      			  status = onGoing;
      		  }else if(result.calendarData.friday[i].status == 'SCHEDULED'){
+     			  status = Scheduled;
+     		  }else if(result.calendarData.friday[i].status == 'ASSESSMENT'){
      			  status = Scheduled;
      		  }else{
      			  status = Completed;
@@ -535,6 +545,8 @@ function setupScheduler(){
     			  status = onGoing;
     		  }else if(result.calendarData.saturday[i].status == 'SCHEDULED'){
     			  status = Scheduled;
+    		  }else if(result.calendarData.saturday[i].status == 'ASSESSMENT'){
+    			  status = Scheduled;
     		  }else{
     			  status = Completed;
     		  }
@@ -567,6 +579,8 @@ function setupScheduler(){
         	  if(result.calendarData.sunday[i].status == 'TEACHING'){
     			  status = onGoing;
     		  }else if(result.calendarData.sunday[i].status == 'SCHEDULED'){
+    			  status = Scheduled;
+    		  }else if(result.calendarData.sunday[i].status == 'ASSESSMENT'){
     			  status = Scheduled;
     		  }else{
     			  status = Completed;
