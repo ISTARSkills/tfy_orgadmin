@@ -73,7 +73,7 @@ Param -> question_time_taken_3 : Value ->-11*/
 				}
 				if(request.getParameterMap().containsKey("question_time_taken_"+que.getId()))
 				{
-					if(request.getParameter("question_time_taken_"+que.getId())!=null)
+					if(request.getParameter("question_time_taken_"+que.getId())!=null && !request.getParameter("question_time_taken_"+que.getId()).equalsIgnoreCase(""))
 					{
 						String timeTaken = request.getParameter("question_time_taken_"+que.getId());
 						queResponse.setDuration(Integer.parseInt(timeTaken));

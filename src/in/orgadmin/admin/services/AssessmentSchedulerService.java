@@ -77,13 +77,15 @@ public class AssessmentSchedulerService {
 				}
 			}
 		} else {
-			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date,time, AdminUserID, classroomID, assessment_id,
-					associateTrainerID,assessment);
+			
 		}
 		
-		
-		
-		
+		String checkIfBSEExist ="select * from batch_schedule_event where actor_id = "+trainerID+" and type='ASSESSMENT_EVENT_TRAINER' and cast(eventdate as varchar) like '%"+event_date+"%' and batch_group_id = "+batch.getBatchGroup().getId();
+		List<HashMap<String, Object>> checkData = db.executeQuery(checkIfBSEExist);
+		if(checkData.size()==0)
+		{
+			createAssessmentEntryInBse(trainerID, 0, 0, batch_id, event_date,time, AdminUserID, classroomID, assessment_id,	associateTrainerID,assessment);
+		}
 		
 		ArrayList<String> students = new ArrayList<>();
 		

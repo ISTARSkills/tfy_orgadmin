@@ -150,7 +150,6 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 	</div>
 	<!-- Mainly scripts -->
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-	<script src="../trainer_common_jsps/custom_assessment.js"></script>
 	<script type="text/javascript">
 	var totalQuestionCount = <%=queCount%>;
 	var questionAttempted =[];
