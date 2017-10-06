@@ -293,6 +293,8 @@ function setupScheduler(){
 			   dataType: "json",
        	  success:function(result) {
        		  
+
+       		  
        		  console.log(result);
        		 var maxSize = "";  
        		
@@ -354,6 +356,10 @@ function setupScheduler(){
         		 
         	 
           }
+          
+          if(maxSize!=0){
+        	  
+         
           
           for(var i = 0; i<maxSize; i++ ){
         	  
@@ -595,7 +601,7 @@ function setupScheduler(){
        			  bgColor = ''; 
        		  }
         	  
-        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+        	     htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
 	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
 	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
 	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.sunday[i].event_time+"</h2>";      		 
@@ -612,6 +618,9 @@ function setupScheduler(){
          
           }
        		
+          }else{
+        	  htmlAdd += "<div class='card no-event-card w-100'><div class='card-block m-auto'><h1>No Event Scheduled for This Week</h1></div></div>";
+          }
        		
        		  
        	
@@ -621,6 +630,9 @@ function setupScheduler(){
        	  $("#calendar_holder").empty();
       	$("#calendar_holder").append(htmlAdd); 
       	$('.popover-dismiss').popover();
+       		  
+       	  
+       		  
        		  
        	  }
        	});
