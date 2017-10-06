@@ -54,8 +54,9 @@
 			
 			<select class="calendar-sessiontype-dropdown" id="session-select" data-college_id="<%=orgId%>">
 								<option value="session">Session</option>
-					<option value="assessment">Assessment</option>
-					
+					         <option value="assessment">Assessment</option>
+					<option value="webinar">Webinar (TOT)</option>
+ 				<option value="remote_class">Remote Class</option>
 							
 							</select>
 							
@@ -76,10 +77,7 @@
 							</select></div>
 			</div>
 			<div class="col-md-4 custom-no-padding p-2">
-            <!-- <a class="filterbutton btn btn-default green-border default-border-dashboard" ><i class="fa fa-circle green-dot" aria-hidden="true"></i>Ongoing</a>
-            <a class="filterbutton btn btn-default blue-border default-border-dashboard" ><i class="fa fa-circle blue-dot" aria-hidden="true"></i>Scheduled</a>
-            <a class="filterbutton btn btn-default red-border default-border-dashboard" ><i class="fa fa-circle red-dot" aria-hidden="true"></i>Completed</a>
-            <a class="filterbutton btn btn-default default-border-dashboard" data-type='clearall'><i class="fa fa-circle default-dot" aria-hidden="true"></i>All</a> -->
+           
             <a class="filterbutton btn btn-default green-border-dashboard" data-type='ongoing'><i class="fa fa-circle green-dot"  aria-hidden="true"></i>Ongoing</a> 
             <a class="filterbutton btn btn-default blue-border-dashboard" data-type='scheduled'><i class="fa fa-circle blue-dot"  aria-hidden="true"></i>Scheduled</a> 
             <a class="filterbutton btn btn-default red-border-dashboard" data-type='completed'><i class="fa fa-circle red-dot"  aria-hidden="true"></i>Completed</a>
@@ -89,13 +87,13 @@
 
 			</div>
 			<div class="row m-0">
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Monday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Tuesday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Wednesday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Thursday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Friday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Saturday</div>
-			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center">Sunday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder mondaydate_holder">Monday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder tuesdaydate_holder">Tuesday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder wednesdaydate_holder">Wednesday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder thrusdaydate_holder">Thursday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder fridaydate_holder">Friday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder saturdaydate_holder">Saturday</div>
+			<div class="custom-col-md-7 m-0 pt-4 pb-4 text-center custom-day-holder sundaydate_holder">Sunday</div>
 			</div>
 			<div class="row m-0 p-0 " id="calendar_holder"  data-url='<%=admin_rest_url%>'>
 			

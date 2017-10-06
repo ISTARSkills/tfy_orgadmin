@@ -294,7 +294,7 @@ function setupScheduler(){
        	  success:function(result) {
        		  
        		  console.log(result);
-       		var maxSize = "";  
+       		 var maxSize = "";  
        		
        		if(result.calendarData.monday.length != 0){
        		 maxSize = result.calendarData.monday.length;
@@ -323,13 +323,43 @@ function setupScheduler(){
         	 maxSize = result.calendarData.sunday.length;
 	
         }
+          
          var onGoing = "#7ed321";
          var Scheduled = "#35bdf0";
          var Completed = "#df756a";
           var status="";
-          var htmlAdd = "";
+          
+          var today = formatJavaDate(new Date());
+          var dateFrom = startDate;
+          var dateTo = endDate;
+
+          var d1 = dateFrom.split("-");
+          var d2 = dateTo.split("-");
+          var c = today.split("-");
+          var day = "";
+          var from = new Date(d1[0], parseInt(d1[1])-1, d1[2]);  // -1 because months are from 0 to 11
+          var to   = new Date(d2[0], parseInt(d2[1])-1, d2[2]);
+          var check = new Date(c[0], parseInt(c[1])-1, c[2]);
+       
+          if(check > from && check < to){
+        	  day = formatDay(new Date);
+        	  $('.'+day+'date_holder').addClass('scheduler-calendar-event-bgcolor');
+        	  $('.'+day+'date_holder').empty();
+        	  $('.'+day+'date_holder').append('Today | '+ day.charAt(0).toUpperCase() + day.slice(1));
+        	  
+          }else{
+        	      $('.scheduler-calendar-event-bgcolor').text($('.scheduler-calendar-event-bgcolor').text().split('|')[1])
+        		  $('.scheduler-calendar-event-bgcolor').removeClass('scheduler-calendar-event-bgcolor');
+        		 
+        		 
+        	 
+          }
+          
           for(var i = 0; i<maxSize; i++ ){
+        	  
+        	 
         	  htmlAdd += "<div class='row m-0 p-0 custom-scroll-holder' style='border-right: 1px solid #eee;border-left: 1px solid #eee; width: 163px;display: -webkit-inline-box; align-items: center;'>"; 
+        	 
         	  if(result.calendarData.monday.length > i){
         		  
         		  if(result.calendarData.monday[i].status == 'TEACHING'){
@@ -340,7 +370,16 @@ function setupScheduler(){
         			  status = Completed;
         		  }
         		  
-        		  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px;'>";
+        		  var eveDate = formatJavaDate(new Date(result.calendarData.monday[0].eve_date));
+        		  var bgColor = '';
+        		  if(today == eveDate){
+        			  bgColor = 'scheduler-calendar-event-bgcolor';
+        			  
+        		  }else{
+        			  bgColor = ''; 
+        		  }
+        		  
+        		  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px;'>";
     	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
     	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
     	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.monday[i].event_time+"</h2>";      		 
@@ -365,7 +404,16 @@ function setupScheduler(){
         			  status = Completed;
         		  }
             	  
-            	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+            	  var eveDate = formatJavaDate(new Date(result.calendarData.tuesday[0].eve_date));
+        		  var bgColor = '';
+        		  if(today == eveDate){
+        			  bgColor = 'scheduler-calendar-event-bgcolor';
+        			  
+        		  }else{
+        			  bgColor = ''; 
+        		  }
+            	  
+            	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
     	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
     	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
     	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.tuesday[i].event_time+"</h2>";      		 
@@ -389,8 +437,17 @@ function setupScheduler(){
        		  }else{
        			  status = Completed;
        		  }
+            	 var eveDate = formatJavaDate(new Date(result.calendarData.wednesday[0].eve_date));
+       		  var bgColor = '';
+       		  if(today == eveDate){
+       			  bgColor = 'scheduler-calendar-event-bgcolor';
+       			 
+       			  
+       		  }else{
+       			  bgColor = ''; 
+       		  }
             	 
-            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
    	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
    	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
    	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.wednesday[i].event_time+"</h2>";      		 
@@ -414,8 +471,16 @@ function setupScheduler(){
        		  }else{
        			  status = Completed;
        		  }
-            	
-            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+            	 var eveDate = formatJavaDate(new Date(result.calendarData.thrusday[0].eve_date));
+          		  var bgColor = '';
+          		  if(today == eveDate){
+          			  bgColor = 'scheduler-calendar-event-bgcolor';
+          			
+          		  }else{
+          			  bgColor = ''; 
+          		  }
+          		  
+            	 htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
    	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
    	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
    	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.thrusday[i].event_time+"</h2>";      		 
@@ -440,7 +505,16 @@ function setupScheduler(){
      			  status = Completed;
      		  }
         	   
-        	   htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+        	   var eveDate = formatJavaDate(new Date(result.calendarData.friday[0].eve_date));
+       		  var bgColor = '';
+       		  if(today == eveDate){
+       			  bgColor = 'scheduler-calendar-event-bgcolor';
+       			
+       		  }else{
+       			  bgColor = ''; 
+       		  }
+        	   
+        	   htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
  	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
  	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
  	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.friday[i].event_time+"</h2>";      		 
@@ -465,7 +539,15 @@ function setupScheduler(){
     			  status = Completed;
     		  }
         	  
-        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+        	  var eveDate = formatJavaDate(new Date(result.calendarData.saturday[0].eve_date));
+       		  var bgColor = '';
+       		  if(today == eveDate){
+       			  bgColor = 'scheduler-calendar-event-bgcolor';
+       			
+       		  }else{
+       			  bgColor = ''; 
+       		  }
+        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
 	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
 	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
 	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.saturday[i].event_time+"</h2>";      		 
@@ -490,7 +572,16 @@ function setupScheduler(){
     			  status = Completed;
     		  }
         	  
-        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
+        	  var eveDate = formatJavaDate(new Date(result.calendarData.sunday[0].eve_date));
+       		  var bgColor = '';
+       		  if(today == eveDate){
+       			  bgColor = 'scheduler-calendar-event-bgcolor';
+       			
+       		  }else{
+       			  bgColor = ''; 
+       		  }
+        	  
+        	  htmlAdd += "<div class='custom-calendar-item-colums find_currentDate_child "+bgColor+"' data-currentDate='gbfgbf' style='width: 163px; border-left: 1px solid #eee;'>";
 	       		 htmlAdd += "<div class='' style='border-top: 5px solid "+status+";justify-self: start; width: 147px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>";
 	       		 htmlAdd += " <div class='row scheduler-calendar-event-header m-0 p-2' >";
 	       		 htmlAdd += " <i style='color: #2196f2;' class='fa fa-clock-o aligncenter' aria-hidden='true'></i> <h2 class='calendar-time-size mx-auto mb-0 aligncenter'>"+result.calendarData.sunday[i].event_time+"</h2>";      		 
@@ -504,7 +595,7 @@ function setupScheduler(){
 	  
           }
           htmlAdd += "</div>";  
-        	  
+         
           }
        		
        		
@@ -765,11 +856,6 @@ $('#calendar').fullCalendar({
 
 }
 
-function initCalendar(){
-	
-	
-	
-}
 
 function formatDate(date) {
 	  var monthNames = [
@@ -821,4 +907,14 @@ function formatDateYear(date) {
 		  day='0' +day;
 	  }
 	  return day + '-' + monthNames[monthIndex] + '-' + year;
+	}
+
+
+function formatDay(date) {
+	var dayNames = ["monday", "tuesday", "wednesday",
+	    "thursday", "friday", "saturday", "sunday"];
+
+	  var day = date.getDay();
+	  
+	  return dayNames[day-1];
 	}
