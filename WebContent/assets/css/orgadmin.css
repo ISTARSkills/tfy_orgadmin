@@ -2867,7 +2867,7 @@ a.unselected_report {
     margin-top:-1px;
     position:absolute;
     top:2em;
-    left:-11px;
+    left:-10px;
      color:#c3c2c2;
 }
 .custom-branch-css{
@@ -2998,4 +2998,41 @@ border: 1px solid #e9ecef; height: 8vh; font-family: avenir-light; font-weight: 
 
 .scheduler-calendar-event-bgcolor{
 background-color: rgba(33, 150, 242, 0.04);
+}
+.custom-col-3-css{
+flex: 0 0 20%;
+max-width: 20%;
+}
+.custom-font-size-css{
+    font-size: 3em;
+}
+.custom-up-arrow-persentage-css{
+    position: absolute;
+    top: 38px;
+    right: 4px;
+}
+.custom-col-4-css{
+flex: 0 0 24.333333%;
+    max-width: 24.333333%;
+}
+.custom-margin-css{
+margin-left: 9rem !important;
+    margin-right: 9rem !important;
+}
+.custom-font-weight-css{
+font-weight: bold;
+}
+
+.custom-col-4-master-skill{
+flex: 0 0 23.333333%;
+    max-width: 23.333333%;
+        text-align: center;
+        font-weight: bolder;
+
+}
+
+.graph_filter_selector{
+    height: 42px !important;
+    font-size: 13px;
+    font-weight: bold;
 }

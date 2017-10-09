@@ -836,6 +836,15 @@ function getSchedulerData(session_type,course_id,startDate,endDate,college_id,st
    			$('.fc-body').css('background','#ffffff');
    			$('.fc-header-toolbar').css('background','#ffffff');
    		    $('.fc-header-toolbar').css('margin-bottom','0px'); 
+   		    $($('.fc-more').parent()).css('width', '125px');
+   		 $($('.fc-more').parent()).css('width', '125px');
+   		 $($('.fc-more').parent()).css('height', '36px');
+   		  $($('.fc-more').parent()).css('border-radius', '2px');
+   		   $($('.fc-more').parent()).css('background-color', 'rgba(223, 223, 223, 0.4)');
+   		    $($('.fc-more').parent()).css('margin', '4px');
+   		 $($('.fc-more').parent()).css('text-align', 'center');
+   		    
+   		  
           
    		  
    		}

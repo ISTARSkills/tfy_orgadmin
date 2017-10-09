@@ -19,7 +19,7 @@
 div.google-visualization-tooltip {
 background-color: #616161;
  border-radius: 25px;
- height: 35px;
+height:auto;
  width: 100px;
  text-align: center;
  margin:0px !important;
@@ -105,18 +105,25 @@ font-size:10px !important;
 		<div class="container">
 			<div class="card custom-course-attendance-css">
 				<div class="row m-5">
-					<div class="col-md-12 pl-0">
-						<h3 class="card-header-box text-center">ATTENDANCE RECORDS IN SECTIONS OVERTIME</h3>
+					<div class="col-md-8 pl-0">
+						<h3 class='card-header-box custom-font-weight-css'>ATTENDANCE RECORDS IN SECTIONS OVERTIME</h3>
 					</div>
 
-					<!-- <div class="col-1 p-0">
-						<div class="dropdown">
-							<button class="btn btn-secondary btn-sm dropdown-toggle" style="background-color: lightgray; border: none; box-shadow: none !important;" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All Time</button>
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-								<a class="dropdown-item" style="font-size: 15px;" href="#">Action</a> <a class="dropdown-item" style="font-size: 15px;" href="#">Another action</a> <a class="dropdown-item" style="font-size: 15px;" href="#">Something else here</a>
-							</div>
-						</div>
-					</div> -->
+				 <div class="col-2 p-0">
+						<select class="form-control select-dropdown-style graph_filter_selector" name="time" id='filter_group_student_attendance' data-college_id="<%=orgId%>">
+							<option value="0">All Groups</option>
+							
+							
+						</select>
+					</div> 
+					
+					<div class="col-2 p-0">
+						<select class="form-control select-dropdown-style graph_filter_selector" name="time" id='filter_group_student_attendance' data-college_id="<%=orgId%>">
+							<option value="0">All Time</option>
+							
+							
+						</select>
+					</div> 
 					<!-- <div class="col-1">
 						<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
 					</div> -->
@@ -129,6 +136,11 @@ font-size:10px !important;
 
 					</div>
 				</div>
+				
+				<div class="row m-5 alert alert-secondary text-center student_attendance_persentage">
+					
+				
+				</div>
 			</div>
 		</div>
 
@@ -137,9 +149,9 @@ font-size:10px !important;
 			<div class="card custom-course-masteryskill-css">
 				<div class="row m-5">
 					<div class="col-md-12 pl-0">
-						<h3 class="card-header-box text-center">MASTERY LEVEL PER SKILL</h3>
+						<h3 class='card-header-box custom-font-weight-css'>MASTERY LEVEL PER SKILL</h3>
 						<div class="row m-0">
-							<div class="col-4"></div>
+							
 							<div class="col-7">
 								<div class="row m-0">
 									<h4 class="mr-4">
@@ -186,7 +198,7 @@ font-size:10px !important;
 					<div class="card-body">
 						<div class="row m-3">
 							<div class="col-12">
-								<h3 class='text-center card-header-box'>EMPLOYEE ENROLLED</h3>
+								<h3 class='card-header-box custom-font-weight-css'>EMPLOYEE ENROLLED</h3>
 							</div>
 							<!-- <div class="col-1">
 								<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
@@ -295,19 +307,26 @@ font-size:10px !important;
 		 function drawChart() {
 			 $('#columnchart_material').empty();
 				$("#columnchart_material").append('<div class="loader mx-auto my-auto"></div>');
-	    	  $.ajax({
+	    	<%--   $.ajax({
 				    url: '<%=adminRestUrlForAttendanceRecord%>',
 				    type: 'GET',
 				    async: true,
 				    dataType: "json",
-				    success: function (data) {	
+				    success: function (data) {	 --%>
 				    	  $('#columnchart_material').empty();
 				    	  google.charts.load('current', {'packages':['corechart']});
 				          google.charts.setOnLoadCallback(drawStuff);
 
 				          function drawStuff() {
-				            var tabledData = google.visualization.arrayToDataTable( data.data );				      
+				            var tabledData = google.visualization.arrayToDataTable( [
+		            	         ['Date',{ role: 'tooltip' }, 'East','West','North','South' ],
+		            	         [new Date("03 Oct 2017"), 'Section 1  Section 4', 8.94, 10.49,19.30,21.45],
+		            	         [new Date("05 Oct 2017"), 'Section 1  Section 3 Section 4', 10.49,19.30,21.45,8.94 ],
+		            	         [new Date("07 Oct 2017"), 'Section 1 Section 2 Section 3 Section 4', 19.30,10.49,21.45,8.94  ],
+		            	         [new Date("09 Oct 2017"), 'Section 1 Section 2 Section 3 Section 4 Section 5',  21.45,10.49,19.30,8.94 ]
+		            	      ] );				      
 				            var classicOptions = {
+				            		 chartArea: {width: 1000, height: 250},
 				            		 tooltip: {isHtml: true},
 				            		 legend: 'bottom',
 						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
@@ -315,6 +334,8 @@ font-size:10px !important;
 							       	 vAxis: {title: 'Attendance Percentage'},
 							         hAxis: {title: 'Sessions'},
 							         seriesType: 'bars',
+							         dateFormat: 'dd.MMM.yyyy',
+					                  hAxis: {format: 'dd MMM'}
 				            		
 				            };
 				           
@@ -327,8 +348,8 @@ font-size:10px !important;
 				            drawClassicChart();
 				        };
 				    	
-				    	}
-				  });
+				    	/* }
+				  }); */
 	    	  
 	    	  
 	        
@@ -440,11 +461,11 @@ font-size:10px !important;
 						  htmlAdd += "<li>";
 						  htmlAdd += "<div style='display: initial;'>";
 						  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
-						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 72%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
-						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
-						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
-						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";
-						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.apprentice+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #30beef;' aria-valuenow='"+field.apprentice+"' aria-valuemin='0' aria-valuemax='100'>"+field.apprentice+"%</div>";
+						  htmlAdd += "<div class='row' style='display: inline-flex; width: 72%; position: absolute; top: 0; background-color: #fff; right: 10px;'>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Wizard'>"+field.wizard+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Master'>"+field.master+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Apprentice'>"+field.rookie+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Rookie'>"+field.apprentice+"%</div>";
 						 
 						  htmlAdd += "</div>";
 						  htmlAdd += "</div>";
@@ -470,6 +491,20 @@ font-size:10px !important;
 			  }); 
 		 }
 		 
+		 function studentAttendancePersentage() {
+			 
+			 var htmlAdd = ""; 
+			 /* $.each(result.data, function(i, field){
+				 htmlAdd += "<div class='col text-center'><h1 class='custom-font-size-css'>70%</h1><h3 class='text-muted'>Learning Achievements</h3></div>";
+			 }); */
+			 
+			 for(var i=0;i<=5;i++){
+				 htmlAdd += "<div class='col text-center'><h1 class='custom-font-size-css'>70%</h1><h3 class='text-muted'>Learning Achievements</h3></div>"; 
+			 }
+			 $(".student_attendance_persentage").append(htmlAdd); 
+			$('.student_attendance_persentage').append()
+		}
+		 
 		 
 		$(document).ready(function() {
 			
@@ -490,6 +525,7 @@ font-size:10px !important;
 					
 					studentEnrolled();
 					roleMasteryLevel();
+					studentAttendancePersentage();
 
 				});
 	</script>

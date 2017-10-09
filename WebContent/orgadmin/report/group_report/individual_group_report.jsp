@@ -16,23 +16,21 @@
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <style>
-
 div.google-visualization-tooltip {
-background-color: #616161;
- border-radius: 25px;
- height: 35px;
- width: 100px;
- text-align: center;
- margin:0px !important;
-  padding:0px !important;
+	background-color: #616161;
+	border-radius: 25px;
+	height:auto;
+	width: 100px;
+	text-align: center;
+	margin: 0px !important;
+	padding: 0px !important;
 }
 
-div.google-visualization-tooltip > ul > li > span {
-color: #ffffff !important;
-font-size:10px !important;
- margin:0px !important;
-   padding:0px !important;
- 
+div.google-visualization-tooltip>ul>li>span {
+	color: #ffffff !important;
+	font-size: 10px !important;
+	margin: 0px !important;
+	padding: 0px !important;
 }
 
 </style>
@@ -97,36 +95,167 @@ font-size:10px !important;
 					<h1 class='custom-beginskill-course-heading'><%=bgName%></h1>
 				</div>
 			</div>
+			<h2 class="custom-font-weight-css text-muted">E-learning Performance</h2>
 		</div>
-		<div class="container">
+
+		<div class="container mt-3">
 			<div class="card custom-course-attendance-css">
-				<div class="row m-5">
-					<div class="col-md-10 pl-0">
-						<h3 class="card-header-box text-center">ATTENDANCE RECORDS IN SECTIONS OVERTIME</h3>
+
+
+				<div class="row m-5 ">
+					<div class="col-3 p-0 custom-col-3-css">
+						<div class="card">
+							<div class="card-block text-center m-5">
+								<img src="/assets/images/report/icons-8-groups.png" srcset="/assets/images/report/icons-8-groups@2x.png 2x,/assets/images/report/icons-8-groups@3x.png 3x" class="icons8-groups">
+								<h1 class="custom-font-size-css">5000</h1>
+								<small class="text-muted">Targeted User</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 p-0 custom-col-3-css">
+						<div class="card">
+							<div class="card-block text-center m-5">
+								<img src="/assets/images/report/icons-8-student.png" srcset="/assets/images/report/icons-8-student@2x.png 2x,/assets/images/report/icons-8-student@3x.png 3x" class="icons8-student">
+								<h1 class="custom-font-size-css">2500</h1>
+								<small class="text-muted">Active User</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 p-0 custom-col-3-css">
+						<div class="card">
+							<div class="card-block text-center m-5">
+								<img src="/assets/images/report/icons-8-report-card.png" srcset="/assets/images/report/icons-8-report-card@2x.png 2x,/assets/images/report/icons-8-report-card@3x.png 3x" class="icons8-report_card">
+								<h1 class="custom-font-size-css">2500</h1>
+								<small class="text-muted">Users Completed User</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-3 p-0 custom-col-3-css">
+						<div class="card">
+							<div class="card-block text-center m-5">
+								<img src="/assets/images/report/icons-8-discount.png" srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x" class="icons8-discount">
+								<h1 class="custom-font-size-css">70%</h1>
+								<small class="text-muted">Average Program Completion</small>
+
+							</div>
+						</div>
+					</div>
+					<div class="col-3 p-0 custom-col-3-css">
+						<div class="card">
+							<div class="card-block text-center m-5">
+								<img src="/assets/images/report/icons-8-discount.png" srcset="/assets/images/report/icons-8-discount@2x.png 2x,/assets/images/report/icons-8-discount@3x.png 3x" class="icons8-discount">
+								<h1 class="custom-font-size-css">70%</h1>
+								<small class="text-muted">Learning Achievements</small>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row m-5 custom-margin-css text-center">
+					<div class="col-4 p-0 custom-col-4-css">
+						<div class="row m-0">
+							<div class="col-7 text-center p-0">
+								<h1 class="custom-font-size-css mb-1">400</h1>
+								<small class="Wizard">Wizard</small>
+							</div>
+							<div class="col-5 text-center p-0">
+								<h1 class="mt-5">
+									<i class="fa fa-arrow-up fa-6" aria-hidden="true"></i>
+								</h1>
+								<small class="text-muted custom-up-arrow-persentage-css">10%</small> <small class="text-muted ">Last Week</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 p-0 custom-col-4-css">
+						<div class="row m-0">
+							<div class="col-7 text-center p-0">
+								<h1 class="custom-font-size-css mb-1">400</h1>
+								<small class=" Master">Master</small>
+							</div>
+							<div class="col-5 text-center p-0">
+								<h1 class="mt-5">
+									<i class="fa fa-arrow-down fa-6" aria-hidden="true"></i>
+								</h1>
+								<small class="text-muted custom-up-arrow-persentage-css">10%</small> <small class="text-muted ">Last Week</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 p-0 custom-col-4-css">
+						<div class="row m-0">
+							<div class="col-7 text-center p-0">
+								<h1 class="custom-font-size-css mb-1">400</h1>
+								<small class=" Apprentice">Apprentice</small>
+							</div>
+							<div class="col-5 text-center p-0">
+								<h1 class="mt-5">
+									<i class="fa fa-arrow-up fa-6" aria-hidden="true"></i>
+								</h1>
+								<small class="text-muted custom-up-arrow-persentage-css">10%</small> <small class="text-muted ">Last Week</small>
+							</div>
+						</div>
+					</div>
+					<div class="col-4 p-0 custom-col-4-css p-0">
+						<div class="row m-0">
+							<div class="col-7 text-center ">
+								<h1 class="custom-font-size-css mb-1">400</h1>
+								<small class=" Rookie">Rookie</small>
+							</div>
+							<div class="col-5 text-center p-0">
+								<h1 class="mt-5">
+									<i class="fa fa-arrow-down fa-6" aria-hidden="true"></i>
+								</h1>
+								<small class="text-muted custom-up-arrow-persentage-css">10%</small> <small class="text-muted ">Last Week</small>
+							</div>
+						</div>
 					</div>
 
-					 <div class="col-2 p-0">
-						<select class="form-control select-dropdown-style graph_filter_selector"  name="course_id" id='filter_group_student_attendance' data-college_id="<%=orgId%>">										
-										<%	
+
+				</div>
+			</div>
+		</div>
+		<div class="container mt-5">
+			<div class="card custom-course-attendance-css">
+				<div class="row m-5">
+					<div class="col-md-8 pl-0">
+						<h3 class="card-header-box custom-font-weight-css" >ATTENDANCE RECORDS IN SECTIONS OVERTIME</h3>
+					</div>
+                      
+					<div class="col-2 p-0">
+						<select class="form-control select-dropdown-style graph_filter_selector" name="course_id" id='filter_group_student_attendance' data-college_id="<%=orgId%>">
+							<option value="0">All Programs</option>
+							<%	
 										ArrayList<Course> courses = uiservices.getCoursesInCollege(orgId);
 										for(Course course : courses)
 										{
 										%>
-										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
-										<%
+							<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+							<%
 										} %>
-									</select>
-					</div> 
+						</select>
+					</div>
+					
+					<div class="col-2 p-0">
+						<select class="form-control select-dropdown-style graph_filter_selector" name="time" id='filter_group_student_attendance' data-college_id="<%=orgId%>">
+							<option value="0">All Time</option>
+							
+							
+						</select>
+					</div>
 					<!-- <div class="col-1">
 						<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
 					</div> -->
 
 				</div>
-				<div class="row m-0">
+				<div class="row m-0 ">
 					<div class="col-12">
 						<div id="columnchart_material"></div>
 
 					</div>
+				</div>
+
+				<div class="row m-5 alert alert-secondary text-center student_attendance_persentage">
+					 
 				</div>
 			</div>
 		</div>
@@ -136,7 +265,7 @@ font-size:10px !important;
 			<div class="card custom-course-masteryskill-css">
 				<div class="row m-5">
 					<div class="col-md-12 pl-0">
-						<h3 class="card-header-box text-center">MASTERY LEVEL PER SKILL</h3>
+						<h3 class="card-header-box custom-font-weight-css">MASTERY LEVEL PER SKILL</h3>
 						<div class="row m-0">
 							<div class="col-3"></div>
 							<div class="col-7">
@@ -145,43 +274,41 @@ font-size:10px !important;
 										<span class="badge badge-default mr-4 b-Wizard custom-legends-masterylevel-css"> </span>Wizard
 									</h4>
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4 b-Master custom-legends-masterylevel-css" > </span>Master
+										<span class="badge badge-default mr-4 b-Master custom-legends-masterylevel-css"> </span>Master
 									</h4>
 									<h4 class="mr-4">
-										<span class="badge badge-default mr-4 b-Apprentice custom-legends-masterylevel-css" > </span>Apprentice
+										<span class="badge badge-default mr-4 b-Apprentice custom-legends-masterylevel-css"> </span>Apprentice
 									</h4>
 									<h4 class="mr-4">
 										<span class="badge badge-default mr-4 b-Rookie custom-legends-masterylevel-css"> </span>Rookie
 									</h4>
 								</div>
 							</div>
-						
-						<div class="col-2">
-						<select class="form-control select-dropdown-style graph_filter_selector"  name="course_id" id='filter_master_level_perskill' data-college_id="<%=orgId%>">										
-										<%	
-										
-										 courses = uiservices.getCoursesInCollege(orgId);
+
+							<div class="col-2">
+								<select class="form-control select-dropdown-style graph_filter_selector" name="course_id" id='filter_master_level_perskill' data-college_id="<%=orgId%>">
+									
+									<%	
+									courses = uiservices.getCoursesInCollege(orgId);
 										for(Course course : courses)
 										{
 										%>
-										<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
-										<%
+									<option value="<%=course.getId()%>"><%=course.getCourseName().trim()%></option>
+									<%
 										} %>
-									</select>
+								</select>
+							</div>
 						</div>
-					</div>
 
-					<!-- <div class="col-1">
+						<!-- <div class="col-1">
 						<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
 					</div>
  -->
-				</div>
+					</div>
 				</div>
 				<div class="row m-0">
 					<div class="col-12">
-						<div class='custom-master_level_perskill-css custom-scroll-holder' id="master_level_perskill">
-
-						</div>
+						<div class='custom-master_level_perskill-css custom-scroll-holder' id="master_level_perskill"></div>
 					</div>
 				</div>
 			</div>
@@ -192,7 +319,7 @@ font-size:10px !important;
 					<div class="card-body">
 						<div class="row m-3">
 							<div class="col-12">
-								<h3 class='text-center card-header-box'>STUDENTS ENROLLED</h3>
+								<h3 class='card-header-box custom-font-weight-css'>STUDENTS ENROLLED</h3>
 							</div>
 							<!-- <div class="col-1">
 								<img src="/assets/images/ic_more2.png" srcset="/assets/images/ic_more2.png 2x, /assets/images/ic_more3.png 3x" class="float-right options-img-container">
@@ -205,21 +332,17 @@ font-size:10px !important;
 							<div class="col-md-3 text-center m-auto">XP</div>
 							<div class="col-md-3 text-center m-auto">LEVEL</div>
 						</div>
-						<div class="main-table custom-scroll-holder ">
-							
-						</div>
+						<div class="main-table custom-scroll-holder "></div>
 					</div>
 				</div>
 			</div>
 
 		</div>
-		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id = 'studentInfo' aria-labelledby="studentInfo" aria-hidden="true">
-  <div class="modal-dialog modal-lg" style="max-width: 73% !important;">
-    <div class="modal-content" id='studentProfile_holder'>
-    
-    </div>
-  </div>
-</div>
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id='studentInfo' aria-labelledby="studentInfo" aria-hidden="true">
+			<div class="modal-dialog modal-lg" style="max-width: 73% !important;">
+				<div class="modal-content" id='studentProfile_holder'></div>
+			</div>
+		</div>
 	</div>
 
 
@@ -332,12 +455,12 @@ font-size:10px !important;
 						  htmlAdd += "<li>";
 						  htmlAdd += "<div style='display: initial;'>";
 						  htmlAdd += "<div class='progress' style='display: inline; width: 30%; font-size: 17px; background-color: #fff; margin-right: 20px;'>"+field.title+"</div>";
-						  htmlAdd += "<div class='progress' style='display: inline-flex; width: 72%; position: absolute; top: 16px; background-color: #fff; right: 10px;'>";
-						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.wizard+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #fd6d81;' aria-valuenow='"+field.wizard+"' aria-valuemin='0' aria-valuemax='100'>"+field.wizard+"%</div>";
-						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.master+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #7295fd;' aria-valuenow='"+field.master+"' aria-valuemin='0' aria-valuemax='100'>"+field.master+"%</div>";
-						  htmlAdd += "<div class='progress-bar ' role='progressbar' style='width: "+field.rookie+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #bae88a;' aria-valuenow='"+field.rookie+"' aria-valuemin='0' aria-valuemax='100'>"+field.rookie+"%</div>";
-						  htmlAdd += "<div class='progress-bar   ' role='progressbar' style='width: "+field.apprentice+"%; font-size: 14px; line-height: 3rem; height: 3rem !important; background-color: #30beef;' aria-valuenow='"+field.apprentice+"' aria-valuemin='0' aria-valuemax='100'>"+field.apprentice+"%</div>";
-						 
+						  htmlAdd += "<div class='row' style='display: inline-flex; width: 72%; position: absolute; top: 0; background-color: #fff; right: 10px;'>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Wizard'>"+field.wizard+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Master'>"+field.master+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Apprentice'>"+field.rookie+"%</div>";
+						  htmlAdd += "<div class='col-4 custom-col-4-master-skill Rookie'>"+field.apprentice+"%</div>";
+						  
 						  htmlAdd += "</div>";
 						  htmlAdd += "</div>";
 						  htmlAdd += "</li>";
@@ -442,27 +565,37 @@ font-size:10px !important;
 			 var course_id =  $('#filter_group_student_attendance').val();
 			 var college_id = $('#filter_group_student_attendance').attr('data-college_id');
 			 
-	    	   $.ajax({
+	    	<%--    $.ajax({
 				    url: "<%=admin_rest_url%>report/"+college_id+"/group_attendance_record/<%=batch_group_id%>/course/"+course_id+"",
 				    type: 'GET',
 				    async: true,
 				    dataType: "json",
-				    success: function (data) {	
+				    success: function (data) {	 --%>
 				    	 $('#columnchart_material').empty();
 				    	 
 				    	  google.charts.load('current', {'packages':['corechart']});
 				          google.charts.setOnLoadCallback(drawStuff);
 
 				          function drawStuff() {
-				            var tabledData = google.visualization.arrayToDataTable( data.data );				      
+				            var tabledData = google.visualization.arrayToDataTable([
+				            	         ['Date', 'Attendance',{ role: 'tooltip' } ],
+				            	         [new Date("03 Oct 2017"), 8.94, 'Course 1  Course 4'],
+				            	         [new Date("05 Oct 2017"),  10.49, 'Course 1  Course 3 Course 4' ],
+				            	         [new Date("07 Oct 2017"), 19.30, 'Course 1 Course 2 Course 3 Course 4'  ],
+				            	         [new Date("09 Oct 2017"),  21.45, 'Course 1 Course 2 Course 3 Course 4 Course 5' ]
+				            	      ]);				      
 				           var classicOptions = {
+				        		   
+				        		   chartArea: {width: 1000, height: 250},
 				            		 tooltip: {isHtml: true},
-				            		 legend: 'bottom',
+				            		 legend: 'none',
 						                colors: ['#30beef','#bae88a','#fd6d81','#7295fd'],
 							       	    fontName: 'avenir-light',	
 							       	 vAxis: {title: 'Attendance Percentage'},
 							         hAxis: {title: 'Sessions'},
 							         seriesType: 'bars',
+							         dateFormat: 'dd.MMM.yyyy',
+					                  hAxis: {format: 'dd MMM'}
 				            		
 				            };
 				           
@@ -475,18 +608,34 @@ font-size:10px !important;
 				            drawClassicChart();
 				        };
 				    	
-				    	}
-				  });
+				    	/* }
+				  }); */
 	    	  
 	    	  
 	        
 	        }
+		 
+	    	 function studentAttendancePersentage() {
+				 
+				 var htmlAdd = ""; 
+				 /* $.each(result.data, function(i, field){
+					 htmlAdd += "<div class='col text-center'><h1 class='custom-font-size-css'>70%</h1><h3 class='text-muted'>Learning Achievements</h3></div>";
+				 }); */
+				 
+				 for(var i=0;i<=3;i++){
+					 htmlAdd += "<div class='col text-center'><h1 class='custom-font-size-css'>70%</h1><h3 class='text-muted'>Learning Achievements</h3></div>"; 
+				 }
+				 $(".student_attendance_persentage").append(htmlAdd); 
+				$('.student_attendance_persentage').append()
+			}
+		 
 		$(document).ready(function() {
 			
 			
 			  google.charts.load('current', {'packages':['corechart']});
 		      google.charts.setOnLoadCallback(drawChart);
 		      studentEnrolled();
+		      studentAttendancePersentage();
 		      roleMasteryLevel();
 					$('#tree1').treed();
 					$('.progress').show();
