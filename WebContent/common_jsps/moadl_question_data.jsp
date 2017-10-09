@@ -1,6 +1,14 @@
+<%@page import="com.istarindia.android.pojo.OptionPOJO"%>
+<%@page import="org.apache.commons.collections.CollectionUtils"%>
+<%@page import="com.istarindia.android.pojo.QuestionPOJO"%>
+<%@page import="com.istarindia.android.pojo.AssessmentPOJO"%>
+<%@page import="com.istarindia.android.pojo.QuestionResponsePOJO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.istarindia.android.pojo.AssessmentResponsePOJO"%>
+<%@page import="com.istarindia.android.pojo.AssessmentReportPOJO"%>
+<%@page import="com.istarindia.android.pojo.RestClient"%>
 <%@page import="in.superadmin.services.ReportDetailService"%>
 <%@page import="java.util.HashMap"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -20,22 +28,38 @@
 		user_id = Integer.parseInt(request.getParameter("user_id"));
 	}
 	
+	RestClient client = new RestClient();
+	AssessmentReportPOJO report = client.getAssessmentReportForUserForAssessment(user_id, assessment_id);
+	AssessmentPOJO assessmentPojo = client.getAssessment(assessment_id, user_id);
+	HashMap<Integer, ArrayList<Integer>> userQueResPonse = new HashMap();
+	if(report.getAssessmentResponse()!=null)
+	{
+		AssessmentResponsePOJO responsePojo =  report.getAssessmentResponse();
+		for(QuestionResponsePOJO que : responsePojo.getResponse())
+		{
+			userQueResPonse.put(que.getQuestionId(), (ArrayList<Integer>)que.getOptions());
+		}
+	}
+	
 	ReportDetailService service = new ReportDetailService();
  
  %>
 <div class="ibox-content full-height-scroll modal-height"
 	id="modal_assessment_questions">
 	<%
-							List<HashMap<String, Object>> questionList=service.getAllQuestions(assessment_id);
-							for (HashMap<String, Object> item : questionList) {
-								
-							String questionText="";
 							
-							if(item.get("comprehensive_passage_text")==null || item.get("comprehensive_passage_text").toString().equalsIgnoreCase("") || item.get("comprehensive_passage_text").toString().equalsIgnoreCase("<p>null</p>")){
-								questionText=item.get("question_text").toString();
-							}else{
-								questionText=item.get("comprehensive_passage_text").toString()+"<br/>"+item.get("question_text").toString();
-							}
+							
+	for(QuestionPOJO quePojo : assessmentPojo.getQuestions())
+	{
+		String questionText="";
+		if(quePojo.getComprehensivePassageText()!=null && !quePojo.getComprehensivePassageText().toString().equalsIgnoreCase("") && !quePojo.getComprehensivePassageText().toString().contains("<p>null</p>"))
+		{
+			questionText = quePojo.getComprehensivePassageText()+"<br/>";
+		}
+		if(quePojo.getText()!=null)
+		{
+			questionText+=quePojo.getText();
+		}
 								
 							%>
 	<div class="row">
@@ -44,7 +68,61 @@
 			<div class="m-t-sm m-l-sm">
 				<strong class="m-l-sm"><%=questionText%></strong>
 			</div>
-			<%=service.getAllOptions((int)item.get("id"),user_id, assessment_id)%>
+			<%
+			ArrayList<Integer> correctAnswer = (ArrayList<Integer>)quePojo.getAnswers();
+			if(userQueResPonse.get(quePojo.getId())!=null)
+			{
+				ArrayList<Integer> questionResponse = userQueResPonse.get(quePojo.getId());
+				
+				if(questionResponse.size()>0)
+				{
+					boolean isCorrect = CollectionUtils.isEqualCollection(questionResponse, correctAnswer);
+					if(isCorrect)
+					{
+						%>
+						<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Correct</span>
+						<%
+					}
+					else
+					{
+						%>
+						<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Incorrect</span>
+						<%
+					}	
+				}	
+				else
+				{
+					%>
+					<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Skipped</span>
+					<%
+				}	
+			}
+			else
+			{
+				%>
+				<span style='margin-top: -36px;' class='label  pull-right m-r-sm'>Absent</span>
+				<%
+			}
+			
+			for(OptionPOJO optionPojo : quePojo.getOptions())
+			{
+				String optionText = optionPojo.getText();
+				int optionID = optionPojo.getId();
+				String selected="";
+				if(correctAnswer.contains(optionID))
+				{
+					selected="checked";
+				}
+				
+				%>
+				<div class='radio m-l-lg'><input type='radio' name='radio<%= quePojo.getId()%>' id='radio<%=optionID%>' value='<%=optionID%>' <%=selected %> disabled> <label style='padding-left: 3px;' for='radio" + item.get("id") + "'>
+				<%=optionText %>
+				</label></div>
+				<%
+			}	
+			
+			%>
+			
 		</div>
 	</div>
 	<br />

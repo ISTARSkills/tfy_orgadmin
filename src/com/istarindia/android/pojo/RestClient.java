@@ -28,6 +28,45 @@ public class RestClient {
 	
 	String viksit_user_agent = getTockent();
 	
+	public AssessmentReportPOJO getAssessmentReportForUserForAssessment(int istarUserId, int assessmentId)
+	{
+		AssessmentReportPOJO report = new AssessmentReportPOJO();
+		String urlString ="http://elt.talentify.in/t2c/assessments/user/449/10127/report";
+		try {
+			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+istarUserId+"/"+assessmentId+"/report");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			//System.out.println(conn.getURL().toString());
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			String string ="";
+			//System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				//System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			report = gsonRequest.fromJson(string, AssessmentReportPOJO.class);			
+			conn.disconnect();
+		
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return report;
+	}
+	
 	public CourseContent getCourseContentForStudent(int taskId)
 	{
 		String string = ""; // The String You Need To Be Converted 
