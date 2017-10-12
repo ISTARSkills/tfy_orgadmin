@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -8,7 +9,7 @@
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
 
-<body id="student_dashbard">
+<body id="student_dashbard" ng-app="student_dashbard" ng-controller="student_dashbardCtrl">
 	<%
 		boolean flag = false;
 		
@@ -26,6 +27,7 @@
 		}
 		request.setAttribute("cp", cp);
 		StudentTrainerDashboardService studentsrainerdashboardservice = new StudentTrainerDashboardService();
+		String	t2c_path = (AppProperies.getProperty("t2c_path"))+"/t2c/";
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
@@ -52,7 +54,7 @@
 				</div>
 				<div class='col-md-6 col-md-auto'>
 
-					<h1 class='custom-task-counter' data-toggle="modal" data-target="#gridSystemModal"><%=countofcompletedTask%>
+					<h1 class='custom-task-counter' ng-init='countOfTaskCompeleted()' data-toggle="modal" data-target="#gridSystemModal"><%=countofcompletedTask%>
 						of
 						<%=countoftotalTask%>
 						Tasks Completed
@@ -188,7 +190,39 @@
 	<!--/row-->
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
+	
 	<script>
+		var app = angular.module("student_dashbard", []);
+		app.controller("student_dashbardCtrl",function($scope, $http, $timeout) {
+			
+							$http.get('<%=t2c_path%>user/<%=user.getId()%>/complex').then(function(res) {
+
+												$scope.courses = res.data.studentProfile;
+												$scope.notifications = res.data.notifications;
+												$scope.tasks = res.data.tasks;
+												
+
+											});
+							
+							$scope.countOfTaskCompeleted = function (){
+								
+								 var currentdate = "2017-09-28 21:59:00";
+								 
+								 for (i = 0; i < $scope.tasks.length; i++) {
+									    if (currentdate > $scope.tasks[i].date) {
+									            console.log('today');
+									    }
+									  }
+								
+							};
+						
+
+						});
+	</script>
+	
+	
+	
+	<%-- <script>
 	 var  d = new Date();
 	 var day = d.getDate();
 	
@@ -255,6 +289,6 @@
 				  });
 			
 		}
-	</script>
+	</script> --%>
 </body>
 </html>
