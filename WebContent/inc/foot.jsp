@@ -9,10 +9,13 @@
 String basePath =  AppProperies.getProperty("cdn_path");
 	
 %>
+
 <script src="<%=basePath %>assets/js/jquery.min.js"></script>
 <script src="<%=basePath %>assets/js/popper.min.js"></script>
 <script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-sanitize.js"></script>
+
 <script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -20,8 +23,11 @@ String basePath =  AppProperies.getProperty("cdn_path");
 
 <script type="text/javascript" src="<%=basePath%>assets/js/moment.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>assets/js/daterangepicker.js"></script>
-<script src="<%=basePath %>assets/js/app.js"></script>
 <script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
+<script src="<%=basePath %>assets/js/main.js"></script>
+<script src="<%=basePath %>assets/js/app.js"></script>
+
+
 
 
 

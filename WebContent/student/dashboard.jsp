@@ -9,32 +9,25 @@
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
 
-<body id="student_dashbard" ng-app="student_dashbard" ng-controller="student_dashbardCtrl">
+<body id="student_dashbard" ng-app="student_dashbard"
+	ng-controller="student_dashbardCtrl">
 	<%
 		boolean flag = false;
-		
+
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 				+ request.getContextPath() + "/";
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-		RestClient rc = new RestClient();
-		ComplexObject cp = rc.getComplexObject(user.getId());
-		if (cp == null) {
-			flag = true;
-			request.setAttribute("msg", "User Does Not Have Permission To Access");
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}
-		request.setAttribute("cp", cp);
-		StudentTrainerDashboardService studentsrainerdashboardservice = new StudentTrainerDashboardService();
-		String	t2c_path = (AppProperies.getProperty("t2c_path"))+"/t2c/";
+
+		String t2c_path = (AppProperies.getProperty("t2c_path")) + "/t2c/";
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row justify-content-md-center custom-no-margins">
-				<%
+				<%-- <%
 				int countofcompletedTask = 0;
 				int countoftotalTask = 0;
 				if(cp.getEventsToday().size() != 0){
@@ -47,18 +40,16 @@
 					
 				}
 										  																								
-				%>
+				%> --%>
 
 				<div class='col-md-6 custom-no-padding'>
 					<h1 class='custom-dashboard-header'>Today's Task</h1>
 				</div>
 				<div class='col-md-6 col-md-auto'>
 
-					<h1 class='custom-task-counter' ng-init='countOfTaskCompeleted()' data-toggle="modal" data-target="#gridSystemModal"><%=countofcompletedTask%>
-						of
-						<%=countoftotalTask%>
-						Tasks Completed
-					</h1>
+					<h1 class='custom-task-counter'
+						ng-init='completed="0 of 0 tasks Completed"' data-toggle="modal"
+						data-target="#gridSystemModal">{{completed}}</h1>
 				</div>
 
 
@@ -66,29 +57,124 @@
 		</div>
 		<!--/row-->
 		<div class="container">
-			<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+			<div id="carouselExampleControls" class="carousel slide"
+				data-ride="carousel" data-interval="false">
+				<div class='carousel-inner' role='listbox'>
+					<div class='carousel-item' ng-class='($index == 0 ? "active":"")'
+						dashbord-task-directive
+						ng-repeat='task in incompletedTasks track by $index'>
+						<div class='row custom-no-margins'>
+							<!-- inner start -->
+							<div class='col custom-no-padding custom-colmd-css'
+								ng-repeat='item in task track by $index'>
+								<div class='card custom-cards_css'>
+
+									<h6
+										class='card-subtitle custom-card-subtitle mb-2 text-muted popover-dismiss'
+										data-toggle='popover' data-trigger='hover'
+										data-placement='top' data-content='{{item.header}}'>{{(item.header.length>25?item.header.substring(0,
+										25)+"...":item.header)}}</h6>
+									<h4 class='card-title custom-card-title popover-dismiss'
+										data-toggle='popover' data-trigger='hover'
+										data-placement='top' data-content='{{item.title}}'>{{(item.title.length>25?item.title.substring(0,
+										25)+"...":item.title)}}</h4>
 
 
-				<%=studentsrainerdashboardservice.DashBoardCard(cp)%>
+									<img ng-if="item.itemType == 'LESSON_PRESENTATION' "
+										class='card-img-top custom-primary-img'
+										src='{{item.imageURL}}' alt='{{item.title}}'> <img
+										ng-if="item.itemType == 'ASSESSMENT' "
+										class='card-img-top custom-primary-img'
+										src="{{cdnPath+'course_images/assessment.png'}}"
+										alt='{{item.title}}'> <img
+										ng-if="item.itemType == 'CUSTOM_TASK' "
+										class='card-img-top custom-primary-img'
+										src='{{item.imageURL}}' alt='{{item.title}}'>
 
+
+									<p class='card-text custom-card-text'>{{item.description}}</p>
+
+
+									<div ng-switch='item.itemType'>
+										<a ng-switch-when='ASSESSMENT' href='#'
+											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
+											class='card-img-top custom-secoundary-img'
+											src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
+											class='custom-primary-btn-text'>START ASSESSMENT</span></a> <a
+											ng-switch-when='LESSON_PRESENTATION'
+											href='/student/presentation.jsp?task_id={{item.id}}&lesson_id={{item.itemId}}'
+											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
+											class='card-img-top custom-secoundary-img'
+											src='/assets/images/presentation-icon.png' alt=''><span
+											class='custom-primary-btn-text'>WATCH PRESENTATION</span></a> <a
+											ng-switch-when='CUSTOM_TASK' href='#'
+											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
+											class='card-img-top custom-secoundary-img'
+											src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
+											class='custom-primary-btn-text'>START TASK</span></a>
+									</div>
+								</div>
+							</div>
+
+
+							<!-- inner end -->
+						</div>
+					</div>
+				</div>
+				<a class='carousel-control-next custom-right-prev'
+					href='#carouselExampleControls' role='button' data-slide='next'>
+					<img class='' src='/assets/images/992180-200-copy.png' alt=''>
+				</a> <a class='carousel-control-prev custom-left-prev'
+					href='#carouselExampleControls' role='button' data-slide='prev'>
+					<img class='' src='/assets/images/992180-2001-copy.png' alt=''>
+				</a>
 
 			</div>
+
+
 		</div>
+		<div class="container custom-dashboard-calender custom-scroll-holder"
+			style="padding: 0px">
 
-		<div class="container custom-dashboard-calender custom-scroll-holder" style="padding: 0px">
 
-
-			<div class="row  pt-sm-3" style="background: white; display: flex; align-items: center;">
+			<div class="row  pt-sm-3"
+				style="background: white; display: flex; align-items: center;">
 
 				<div class="col-md-3 m-0">
 					<div class="row m-2">
 
 						<div class="dropdown show calendar-sessiontype-dropdown">
-							<a class="btn btn-secondary dropdown-toggle" style="font-family: avenir-light; font-size: 16px; text-align: left; color: #4a4a4a; font-weight: bolder; border-color: #fff; background-color: #fff;" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">July</a>
+							<a class="btn btn-secondary dropdown-toggle"
+								style="font-family: avenir-light; font-size: 16px; text-align: left; color: #4a4a4a; font-weight: bolder; border-color: #fff; background-color: #fff;"
+								id="dropdownMenuLink" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false">July</a>
 
-							<div class="dropdown-menu" style="width: 130px; font-size: 15px; text-align: left;" aria-labelledby="dropdownMenuLink">
-								<a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='0'>January</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='1'>February </a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='2'>March</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='3'>April</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='4'>March</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='5'>June</a> <a
-									style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='6'>July</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='7'>August</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='8'>September</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='9'>October</a> <a style="border-bottom: 1px solid lightgrey;" class="dropdown-item custom-month_drop" data-monthVal='10'>November</a> <a class="dropdown-item custom-month_drop" data-monthVal='11'>December</a>
+							<div class="dropdown-menu"
+								style="width: 130px; font-size: 15px; text-align: left;"
+								aria-labelledby="dropdownMenuLink">
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='0'>January</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='1'>February
+								</a> <a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='2'>March</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='3'>April</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='4'>March</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='5'>June</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='6'>July</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='7'>August</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='8'>September</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='9'>October</a>
+								<a style="border-bottom: 1px solid lightgrey;"
+									class="dropdown-item custom-month_drop" data-monthVal='10'>November</a>
+								<a class="dropdown-item custom-month_drop" data-monthVal='11'>December</a>
 							</div>
 						</div>
 
@@ -103,7 +189,7 @@
 
 
 
-	<div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
+	<%-- <div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content custom-modal-content">
 				<div class="modal-header custom-modal-header">
@@ -186,12 +272,12 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> --%>
 	<!--/row-->
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
-	
-	<script>
+
+	<%-- <script>
 		var app = angular.module("student_dashbard", []);
 		app.controller("student_dashbardCtrl",function($scope, $http, $timeout) {
 			
@@ -218,10 +304,10 @@
 						
 
 						});
-	</script>
-	
-	
-	
+	</script> --%>
+
+
+
 	<%-- <script>
 	 var  d = new Date();
 	 var day = d.getDate();
