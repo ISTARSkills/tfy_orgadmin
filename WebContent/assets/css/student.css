@@ -897,6 +897,7 @@ width:30px
  height: 6.1px;
   border-radius: 53.3px;
   background-color: #ffb945;
+  display: block !important;
 
 }
 .custom-skillprofile-xp_points{
