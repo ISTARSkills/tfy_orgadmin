@@ -20,8 +20,7 @@ public class UserCalendarService {
 		RestClient rc = new RestClient();
 		ComplexObject cp = rc.getComplexObject(user_id);
 		StudentTrainerDashboardService studentsrainerdashboardservice = new StudentTrainerDashboardService();
-		out.append(
-				"<div class='row m-0 p-0 w-100' style='display: -webkit-inline-box; align-items: center; background: rgba(250, 250, 250, 0.99);'>");
+		out.append("<div class='row m-0 p-0 w-100' style='display: -webkit-inline-box; align-items: center; background: rgba(250, 250, 250, 0.99);'>");
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.MONTH, monthIndex);
 
@@ -57,8 +56,7 @@ public class UserCalendarService {
 
 		for (Date day : currentMonthDates) {
 
-			out.append(
-					"<div class='' style='width: 180px;display: grid; line-height: 3.5;border-right: 1px solid #eee;background: rgba(250, 250, 250, 0.99);'>");
+			out.append("<div class='' style='width: 180px;display: grid; line-height: 3.5;border-right: 1px solid #eee;background: rgba(250, 250, 250, 0.99);'>");
 
 			out.append("<div class='w-100 h-100 text-center m-auto'>");
 			out.append("<p  class='p-0 m-0 find_currentDate_parent' data-currentDate='"+df.format(day)+"'>" + df.format(day) + "</p>");
@@ -68,8 +66,7 @@ public class UserCalendarService {
 		}
 		out.append("</div>");
 
-		out.append(
-				"<div class='row m-0 p-0 custom-scroll-holder' style='display: -webkit-inline-box; align-items: center;'>");
+		out.append("<div class='row m-0 p-0 custom-scroll-holder' style='display: -webkit-inline-box; align-items: center;'>");
 
 		for (Date day : currentMonthDates) {
 

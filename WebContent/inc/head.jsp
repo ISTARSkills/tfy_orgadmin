@@ -39,4 +39,5 @@ if (loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
 <link rel="stylesheet" type="text/css" href="<%=basePath%>assets/css/daterangepicker.css" />
  <link href="<%=basePath%>assets/css/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet">
   <link href="<%=basePath%>assets/css/<%=roleDir%>.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="<%=basePath%>assets/css/jquery.dropdown.css">
 </head>

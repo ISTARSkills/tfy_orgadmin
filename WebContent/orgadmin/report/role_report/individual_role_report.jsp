@@ -35,7 +35,7 @@ font-size:10px !important;
 }
 
 </style>
-<body id='orgadmin_individual_role_report'>
+<body id='orgadmin_individual_role_report' ng-app="orgadmin_individual_role_report" ng-controller="orgadmin_individual_role_reportCtrl">
 
 	<%
 		boolean flag = false;
@@ -212,6 +212,22 @@ font-size:10px !important;
 							<div class="col-md-3 text-center m-auto">LEVEL</div>
 						</div>
 						<div class="main-table custom-scroll-holder ">
+						
+						 <div data-userID='{{value.id}}' class='row m-0 custom-mastery-levelbody-css student_info-click' ng-repeat="value in students" >
+		            	<div class='col-md-3 text-center m-auto'>
+		            	<div class='row m-0'>
+		            	<div class='col-md-4 text-center m-auto'>
+		            	<img  class='custom-mastery-levelimg-css' src='{{value.image}}'>
+		            	</div>
+		            	<div class='col-md-8 text-center m-auto'>
+		            	<h3>{{value.name}}</h3>
+		            	</div>
+		            	</div>
+		            	</div>
+		            	<div class='col-md-3 text-center m-auto'>{{value.rank}}</div>
+		            	<div class='col-md-3 text-center m-auto'>{{value.xp}}</div>
+		            	<div class='col-md-3 text-center m-auto {{value.level}}'>{{value.level}}</div>
+		            	</div>
 							
 						</div>
 					</div>
@@ -232,6 +248,23 @@ font-size:10px !important;
 
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
+	
+	<script>
+		var app = angular.module("orgadmin_individual_role_report", []);
+		app.controller("orgadmin_individual_role_reportCtrl",function($scope, $http, $timeout) {
+							$http.get('<%=adminRestUrlForStudentRecord%>').then(function(res) {
+
+												$scope.students = res.data.studentRecord;
+												
+
+											});
+							
+
+						});
+	</script>
+	
+	
+	
 	<script>
 		$.fn
 				.extend({
@@ -371,65 +404,6 @@ font-size:10px !important;
 			 
 			 
 		 }
-		 function studentEnrolled(){
-			 
-			 var htmlAdd = "";
-				
-			  $.getJSON("<%=adminRestUrlForStudentRecord%>", function(result){
-				 
-		            $.each(result.studentRecord, function(i, field){
-		            	var image ='';
-		            	var name ='';
-		            	var rank='';
-		            	var xp='';
-		            	var level='';
-                         $.each(field, function(key,val){
-		            		
-		            		if(key == 'col-0'){
-		            			image ="<img  class='custom-mastery-levelimg-css' src='"+val+"'>";
-		            		}else if(key == 'col-1'){
-		            			name ="<h3>"+val+"</h3>";
-		            		}else if(key == 'col-2'){
-		            			rank ="<div class='col-md-3 text-center m-auto'>#"+val+"</div>";	
-		            		}else if(key == 'col-3'){
-		            			xp ="<div class='col-md-3 text-center m-auto'>"+val+"</div>";		            			
-		            		}else if(key == 'col-4'){
-		            			level ="<div class='col-md-3 text-center m-auto "+val+"'>"+val+"</div>";
-		            		}
-		            		else if(key == 'col-5'){
-		            			user_id =val;
-		            		}
-		            		
-		                   
-		            	 });
-		               
-		            	
-		            	htmlAdd +="<div data-userID='"+user_id+"' class='row m-0 custom-mastery-levelbody-css student_info-click' >"
-		            	htmlAdd +="<div class='col-md-3 text-center m-auto'>";
-		            	htmlAdd +="<div class='row m-0'>";
-		            	htmlAdd +="<div class='col-md-4 text-center m-auto'>";
-		            	htmlAdd +=image;
-		            	htmlAdd +="</div>";
-		            	htmlAdd +="<div class='col-md-8 text-center m-auto'>";
-		            	htmlAdd += name;
-		            	htmlAdd +="</div>";
-		            	htmlAdd +="</div>";
-		            	htmlAdd +="</div>";
-		            	htmlAdd +=rank;
-		            	htmlAdd +=xp;
-		            	htmlAdd +=level;
-		            	htmlAdd +="</div>";
-		            	
-		            	$(".main-table").empty();
-		            	$(".main-table").append(htmlAdd);
-		            	
-		            	studentInfoFunction();
-		            	
-		            });
-		        });
-			 
-			 
-		 }
 		 function roleMasteryLevel(){
 			 
 			 
@@ -523,7 +497,7 @@ font-size:10px !important;
 					$('.col-md-2.ll').show();
 					
 					
-					studentEnrolled();
+					//studentEnrolled();
 					roleMasteryLevel();
 					studentAttendancePersentage();
 

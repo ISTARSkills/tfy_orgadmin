@@ -6,6 +6,7 @@ package com.talentify.admin.rest.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,6 +14,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import com.google.common.reflect.TypeToken;
@@ -25,6 +28,7 @@ import com.talentify.admin.rest.pojo.AdminRole;
 import com.talentify.admin.rest.pojo.AdminRolesReport;
 import com.talentify.admin.rest.pojo.EventDetail;
 import com.talentify.admin.rest.pojo.EventsCard;
+import com.talentify.admin.rest.pojo.SchedulerCalendarEvents;
 import com.viksitpro.core.utilities.AppProperies;
 
 /**
@@ -187,9 +191,49 @@ public class AdminRestClient {
 	}
 	
 	
+	public ArrayList<SchedulerCalendarEvents> getSchedulerCalendarEvents(int orgID,String startDate,String endDate,String sessionType,String status,int course_id) {
+		String string = ""; // The String You Need To Be Converted 
+		ArrayList<SchedulerCalendarEvents> covertedObject = new ArrayList<SchedulerCalendarEvents>();
+		try {
+			URL url = new URL(AppProperies.getProperty("admin_rest_url")+"scheduler/"+orgID+"/scheduler_list/startDate/"+startDate+"/endDate/"+endDate+"/sessionType/"+sessionType+"/status/"+status+"/course_id/"+course_id+"");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");		
+			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
+			conn.setRequestProperty("Accept", "application/json");
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			}
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			String output;
+			//System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				////System.out.println(output);
+				string = string+ output;
+			}
+			
+			Gson gsonRequest = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+			Type listType = new TypeToken<List<SchedulerCalendarEvents>>() {}.getType();
+			covertedObject = (ArrayList<SchedulerCalendarEvents>) gsonRequest.fromJson(string, listType);
+			
+			
+		//	covertedObject = gsonRequest.fromJson(string, SchedulerCalendarEvents.class);
+			//System.err.println(covertedObject.getId());
+			conn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return covertedObject;
+
+	}
+	
+	
 	
 	
 	public String getTockent() {
+		
+		
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 		Date date = new Date();

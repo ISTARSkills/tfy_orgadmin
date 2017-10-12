@@ -76,14 +76,12 @@ public class UserSkillProfile {
 
 				}
 
-				out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-courseId='"
-						+ cp.getCourses().get(i).getId() + "'>");
+				out.append("<div class='nav-link skill_list " + parentactiveclass + " pt-0 pb-0 pl-0' data-courseId='"+ cp.getCourses().get(i).getId() + "'>");
 				out.append("<div class='card " + childactiveclass + " justify-content-md-center'>");
 				out.append("<div class='card-block'>");
 				out.append("<div class='row custom-no-margins'>");
 				out.append("<div class='col-4'>");
-				out.append("<img class='custom-skill-tree-img' src='" +  cp.getCourses().get(i).getImageURL()
-						+ "' alt='No Image Available'>");
+				out.append("<img class='custom-skill-tree-img' src='" +  cp.getCourses().get(i).getImageURL()+ "' alt='No Image Available'>");
 				out.append("</div>");
 				out.append("<div class='col-8 my-auto'>");
 				out.append("<h3 class='custom-skill-tree-title'>" + cp.getCourses().get(i).getName() + "</h3>");
