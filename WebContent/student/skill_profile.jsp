@@ -11,20 +11,12 @@
 
 <body id="student_skill_profile" ng-app="student_skill_profile" ng-controller="student_skill_profileCtrl">
 	<%
-		boolean flag = false;
-		String url = request.getRequestURL().toString();
-		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
-				+ request.getContextPath() + "/";
+	String url = request.getRequestURL().toString();
+	String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
+			+ request.getContextPath() + "/";
 
-		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-		RestClient rc = new RestClient();
-		ComplexObject cp = rc.getComplexObject(user.getId());
-		if (cp == null) {
-			flag = true;
-			request.setAttribute("msg", "User Does Not Have Permission To Access");
-			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		}
-		request.setAttribute("cp", cp);
+	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
+	
 		UserSkillProfile userskillprofile = new UserSkillProfile();
 		String t2c_path = (AppProperies.getProperty("t2c_path")) + "/t2c/";
 	%>
@@ -95,17 +87,17 @@
 
 			<div class="row ">
 				<div class="col-3 pl-0">
-					<nav class="nav flex-column">
+					<nav class="nav flex-column" ng-init="skills_highlighter = 0">
 
-						<div class='nav-link skill_list  pt-0 pb-0 pl-0 ' ng-click="skillFunction($index)" ng-class="($index==0) ? 'skill_list_active active' : 'skill_list_disable disabled'" data-courseId='{{course.id}}' ng-repeat="course in courses track by $index">
-							<div class='card justify-content-md-center' ng-class="($index==0) ? 'custom-skill-list-active ' : 'custom-skill-list-disabled'">
+						<div class='nav-link skill_list  pt-0 pb-0 pl-0 ' ng-click="skillFunction($index)" ng-class="($index ==skills_highlighter ? 'skill_list_active active' : 'skill_list_disable disabled')" data-courseId='{{course.id}}' ng-repeat="course in courses track by $index">
+							<div class='card justify-content-md-center'  ng-class="($index==skills_highlighter ? 'custom-skill-list-active' : 'custom-skill-list-disabled') ">
 								<div class='card-block'>
 									<div class='row custom-no-margins'>
 										<div class='col-4'>
 											<img class='custom-skill-tree-img' src='{{course.imageURL}}' alt='No Image Available'>
 										</div>
 										<div class='col-8 my-auto'>
-											<h3 class='custom-skill-tree-title'>{{course.name}}</h3>
+											<h3 class='custom-skill-tree-title'>{{course.name}} </h3>
 										</div>
 									</div>
 								</div>
@@ -123,7 +115,7 @@
 									<div class='col-12'>
 										<ul id='tree1'>
 
-											<li ng-repeat="top_skill in skills">{{top_skill.name}} <small class='custom-skillprofile-subskills'>{{top_skill.length}} subskills</small> <small class='custom-skillprofile-xp_points'> {{top_skill.userPoints}} / {{top_skill.totalPoints}} XP</small><i class='point-div'></i>
+											<li my-post-repeat-directive ng-repeat="top_skill in skills">{{top_skill.name}} <small class='custom-skillprofile-subskills'>{{top_skill.length}} subskills</small> <small class='custom-skillprofile-xp_points'> {{top_skill.userPoints}} / {{top_skill.totalPoints}} XP</small><i class='point-div'></i>
 
 
 												<div class='progress ml-5'>
@@ -156,8 +148,6 @@
 				</div>
 
 			</div>
-			<div ng-init="fireEvent()"></div>
-
 		</div>
 
 
@@ -223,35 +213,46 @@
  });
 	 
 	
-	
-		var app = angular.module("student_skill_profile", []);
+				var app = angular.module("student_skill_profile", []);
 		app.controller("student_skill_profileCtrl",function($scope, $http, $timeout,$log) {
+			var courseObject ="";
+			
 		$http.get('<%=t2c_path%>user/<%=user.getId()%>/complex').then(function(res) {
 						
 						$scope.studentProfile = res.data.studentProfile;
-						$scope.courses = res.data.courses;
-						$scope.skills = res.data.courses[0].skillObjectives;
- 
+						courseObject = res.data.courses;
 						
-
+						 $scope.skillFunction(0);
 					});
-		$scope.fireEvent = function() {
-			
+		
+		
+		 $scope.skillFunction = function (index) {
+			 $scope.skills_highlighter = index;
+			 $scope.courses = courseObject;
+			 $scope.skills = courseObject[index].skillObjectives;
+			// $scope.fireEvent();
+			 
+		  };
+		
+		 
+		  
+		/* $scope.fireEvent = function() {			
 			$timeout(function() {
 				 $('#tree1').treed();
 			}, 1000);
-			
-			
-
-		};													
+		};	 */												
+	
+		});
+		app.directive('myPostRepeatDirective', function() {
+		  return function(scope, element, attrs) {
+		    if (scope.$last){
+		    	 $('#tree1').treed();
+		    }
+		  };
 		});
 		
 		
 		
-		 function skillFunction($index)() {
-				
-			 
-			}
 	</script>
 </body>
 </html>
