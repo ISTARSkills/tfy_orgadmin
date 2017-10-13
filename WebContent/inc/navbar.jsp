@@ -1,6 +1,5 @@
-<%@page import="com.istarindia.android.pojo.NotificationPOJO"%>
+<%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="in.talentify.core.xmlbeans.ChildLink"%>
-<%@page import="com.istarindia.android.pojo.ComplexObject"%>
 <%@page import="com.google.cloud.Role"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
@@ -29,11 +28,13 @@
 	}
 	String b_url = request.getRequestURL().toString();
 	String baseURL = b_url.substring(0, b_url.length() - request.getRequestURI().length()) + "/";
-	/* ComplexObject cp = (ComplexObject) request.getAttribute("cp");
-	request.setAttribute("cp", cp); */
+	String t2cPath = AppProperies.getProperty("t2c_path");
+	String cdnPath = AppProperies.getProperty("cdn_path");
 %>
 <nav class="navbar navbar-expand-md fixed-top">
-	<a class="navbar-brand" href="#">Talentify</a>
+	<a class="navbar-brand" id='talentify_logo_holder'
+		data-cdn='<%=cdnPath%>' data-t2c='<%=t2cPath%>'
+		data-user='<%=user.getId()%>' href="#">Talentify</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 		data-target="#navbarsExampleDefault"
 		aria-controls="navbarsExampleDefault" aria-expanded="false"
@@ -124,10 +125,10 @@
 						<h1 class='text-center text-muted'>No Notifications</h1>
 					</div>
 
-					<div ng-if="notifications.length!=0" ng-repeat='notification in notifications'>
+					<div ng-if="notifications.length!=0"
+						ng-repeat='notification in notifications'>
 
-						<a 
-							class="dropdown-item custom-textSize "
+						<a class="dropdown-item custom-textSize "
 							ng-class="(notification.status==READ ? 'text-muted' : '') "
 							href="#">
 							<div class='row p-0'>
@@ -157,7 +158,7 @@
 				class="nav-link dropdown-toggle custom-profil-name" href="#"
 				id="navbarDropdownMenuLink" data-toggle="dropdown"
 				aria-haspopup="true" aria-expanded="true">Welcome
-					{{studentProfile.getFirstName}} </a>
+					{{studentProfile.firstName}} </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 					<a class="dropdown-item" href="#">Profile</a> <a
 						class="dropdown-item" href="/auth/logout">Logout</a>

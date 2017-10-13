@@ -1,65 +1,34 @@
-<%@page import="com.viksitpro.core.utilities.AppProperies"%>
-<%@page import="java.text.DateFormat"%>
-<%@page import="java.sql.Timestamp"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="java.util.*"%>
-<%@page import="com.viksitpro.core.dao.entities.*"%>
-<%@page import="com.istarindia.android.pojo.*"%>
-<%@page import="com.viksitpro.user.service.*"%>
 
 <jsp:include page="/inc/head.jsp"></jsp:include>
 
 <body id="student_dashbard" ng-app="student_dashbard"
 	ng-controller="student_dashbardCtrl">
 	<%
-		boolean flag = false;
-
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
 				+ request.getContextPath() + "/";
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-
-		String t2c_path = (AppProperies.getProperty("t2c_path")) + "/t2c/";
 	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 	<div class="jumbotron gray-bg">
 		<div class="container">
 			<div class="row justify-content-md-center custom-no-margins">
-				<%-- <%
-				int countofcompletedTask = 0;
-				int countoftotalTask = 0;
-				if(cp.getEventsToday().size() != 0){
-					countoftotalTask = cp.getEventsToday().size();
-					for (DailyTaskPOJO dt : cp.getEventsToday()) {
-						if (dt.getStatus().equalsIgnoreCase("COMPLETED")) {
-							countofcompletedTask++;
-						}
-					}
-					
-				}
-										  																								
-				%> --%>
-
 				<div class='col-md-6 custom-no-padding'>
 					<h1 class='custom-dashboard-header'>Today's Task</h1>
 				</div>
 				<div class='col-md-6 col-md-auto'>
-
 					<h1 class='custom-task-counter'
 						ng-init='completed="0 of 0 tasks Completed"' data-toggle="modal"
 						data-target="#gridSystemModal">{{completed}}</h1>
 				</div>
-
-
 			</div>
 		</div>
 		<!--/row-->
 		<div class="container">
 			<div id="carouselExampleControls" class="carousel slide"
 				data-ride="carousel" data-interval="false">
-				<div class='carousel-inner' role='listbox'>
+				<div class='carousel-inner' role='listbox'
+					ng-if='incompletedTasks!=0'>
 					<div class='carousel-item' ng-class='($index == 0 ? "active":"")'
 						dashbord-task-directive
 						ng-repeat='task in incompletedTasks track by $index'>
@@ -121,12 +90,45 @@
 						</div>
 					</div>
 				</div>
+
+				<div class='carousel-inner' role='listbox'
+					ng-if='incompletedTasks==0'>
+
+					<div class='carousel-item active'>
+						<div class='row custom-no-margins'>
+							<div class='col-12 custom-no-padding custom-colmd-css'>
+								<div class='card custom-cards_css mx-auto'>
+									<div class='row mx-auto'>
+										<h1
+											class=' text-muted text-center mx-auto custom-font-family-tag '>
+											You don't have any tasks lined up for today.</h1>
+									</div>
+									<div class='row mx-auto my-auto'>
+										<img class='card-img-top custom-notask-imgtag mx-auto'
+											src='/assets/images/zzz_graphic.png' alt=''>
+									</div>
+									<div class='row mx-auto'>
+										<h1
+											class=' text-muted text-center mx-auto custom-font-family-tag'>
+											Get out and have some fun.</h1>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
 				<a class='carousel-control-next custom-right-prev'
-					href='#carouselExampleControls' role='button' data-slide='next'>
-					<img class='' src='/assets/images/992180-200-copy.png' alt=''>
+					ng-if='incompletedTasks!=0' href='#carouselExampleControls'
+					role='button' data-slide='next'> <img class=''
+					src='/assets/images/992180-200-copy.png' alt=''>
 				</a> <a class='carousel-control-prev custom-left-prev'
-					href='#carouselExampleControls' role='button' data-slide='prev'>
-					<img class='' src='/assets/images/992180-2001-copy.png' alt=''>
+					ng-if='incompletedTasks!=0' href='#carouselExampleControls'
+					role='button' data-slide='prev'> <img class=''
+					src='/assets/images/992180-2001-copy.png' alt=''>
 				</a>
 
 			</div>
@@ -147,34 +149,15 @@
 							<a class="btn btn-secondary dropdown-toggle"
 								style="font-family: avenir-light; font-size: 16px; text-align: left; color: #4a4a4a; font-weight: bolder; border-color: #fff; background-color: #fff;"
 								id="dropdownMenuLink" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">July</a>
+								aria-haspopup="true" aria-expanded="false">{{currentMonth}}</a>
 
 							<div class="dropdown-menu"
 								style="width: 130px; font-size: 15px; text-align: left;"
 								aria-labelledby="dropdownMenuLink">
 								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='0'>January</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='1'>February
-								</a> <a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='2'>March</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='3'>April</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='4'>March</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='5'>June</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='6'>July</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='7'>August</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='8'>September</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='9'>October</a>
-								<a style="border-bottom: 1px solid lightgrey;"
-									class="dropdown-item custom-month_drop" data-monthVal='10'>November</a>
-								<a class="dropdown-item custom-month_drop" data-monthVal='11'>December</a>
+									ng-repeat='month in m_names track by $index'
+									ng-click="monthChange($index)"
+									class="dropdown-item custom-month_drop" data-monthVal='$index'>{{month}}</a>
 							</div>
 						</div>
 
@@ -182,199 +165,116 @@
 					</div>
 				</div>
 			</div>
-			<div id="userCalendarDataHolder"></div>
+			<div id="userCalendarDataHolder">
+
+				<div ng-if='currentMonthDates.length!=0' class='row m-0 p-0 w-100'
+					style='display: -webkit-inline-box; align-items: center; background: rgba(250, 250, 250, 0.99);'>
+
+					<div class='' ng-repeat='day in currentMonthDates'
+						style='width: 180px; display: grid; line-height: 3.5; border-right: 1px solid #eee; background: rgba(250, 250, 250, 0.99);'>
+
+						<div class='w-100 h-100 text-center m-auto'>
+							<p class='p-0 m-0 find_currentDate_parent'
+								ng-style='{{todayDate(day)}}'>{{day | date: 'dd MMM'}}</p>
+						</div>
+					</div>
+
+
+
+				</div>
+
+				<div ng-if='currentMonthDates.length!=0'
+					class='row m-0 p-0 custom-scroll-holder'
+					style='display: -webkit-inline-box; align-items: center;'>
+					<div ng-repeat='day in currentMonthDates'
+						class='custom-calendar-item-colums find_currentDate_child'
+						ng-style='{{todayDate(day)}}'
+						style='width: 180px; border-left: 1px solid #eee;'>
+
+						<!-- inner starts-->
+
+						<div ng-if='map_events[day]' ng-repeat='event in map_events[day]'
+							class=''
+							style='border-top: 5px solid #39b26a; justify-self: start; width: 160px; margin: 8px; min-height: 110px; max-height: 110px; border-radius: 4px; background-color: #ffffff; box-shadow: 0 4px 7px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.12), inset 0 4px 0 0 #39b26a;'>
+
+							<div class='row calendar-event-header m-0 p-2'
+								data-eventID='{{event}}'>
+								<i class='fa fa-clock-o aligncenter' style='color: #2196f2;'
+									aria-hidden='true'></i>
+								<h2 class=' calendar-time-size  mb-0 ml-2 aligncenter'>{{startEndTime(event.startDate)|
+									date: 'HH:mm'}}-{{startEndTime(event.endDate)| date: 'HH:mm'}}</h2>
+							</div>
+
+							<h1 class='w-100 cal-event-name p-2' style='font-weight: bolder;'
+								ng-bind-html='formatMessage(event.name)'></h1>
+							<!-- <h2 class='w-100 cal-event-batch p-2'>{{event.}}</h2> -->
+
+						</div>
+
+						<!-- inner end -->
+
+					</div>
+				</div>
+				<h1 ng-if='currentMonthDates.length==0' class="text-center m-5">No
+					Events Found</h1>
+			</div>
+
+
 		</div>
 	</div>
 
 
 
 
-	<%-- <div id="gridSystemModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel">
+	<div id="gridSystemModal" class="modal fade" tabindex="-1"
+		role="dialog" aria-labelledby="gridModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content custom-modal-content">
 				<div class="modal-header custom-modal-header">
-				
-				<%
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
-				List<TaskSummaryPOJO> filteredList = new ArrayList<>();
-				if (cp.getTasks().size() != 0) {
-					
-					for (TaskSummaryPOJO dt : cp.getTasks()) {
-						if(dt.getCompletedDate() !=null){
-							
-						if ((sdf.parse(sdf.format(dt.getCompletedDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0) && dt.getStatus().equalsIgnoreCase("COMPLETED")) {
-							
-							filteredList.add(dt);
-						}
-					}
-					}
-				}
-				
-				
-				
-				%>
-				
-					<h5 class="modal-title custom-modal-title" id="gridModalLabel"><%=filteredList.size()%>
-						Tasks Completed
-					</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
+					<h5 class="modal-title custom-modal-title" id="gridModalLabel">{{todayCompletedTasks.length}}
+						Tasks Completed</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">Ã—</span>
 					</button>
 				</div>
-				<div class="modal-body custom-scrollbar custom-scroll-holder" style="overflow: auto;">
+				<div class="modal-body custom-scrollbar custom-scroll-holder"
+					style="overflow: auto;">
 					<div class="container">
-
-						<%
-							
-							if (filteredList != null && filteredList.size() != 0) {
-
-								for (TaskSummaryPOJO dt1 : filteredList) {
-
-									String taskIcon = "/assets/images/video-icon.png";
-									if (dt1.getItemType().equalsIgnoreCase("ASSESSMENT")) {
-
-										taskIcon = "/assets/images/challenges-icon-copy.png";
-									}
-						%>
-						<div class='row'>
+						<div class='row' ng-if='todayCompletedTasks.length!=0'
+							ng-repeat='task in todayCompletedTasks'>
 							<div class='col-2'>
-								<img class='card-img-top custom-task-icon' src='<%=taskIcon%>' alt=''>
+								<img class='card-img-top custom-task-icon'
+									src="{{(task.itemType=='ASSESSMENT'?'/assets/images/challenges-icon-copy.png':'/assets/images/video-icon.png')}}"
+									alt='{{task.title}}' />
 							</div>
 							<div class='col-10'>
-								<div class='row' data-idd='<%=dt1.getCompletedDate()%>'>
-									<p class='custom-task-titletext m-0'><%=dt1.getTitle()%></p>
+								<div class='row' data-idd='{{task.completedDate}}'>
+									<p class='custom-task-titletext m-0'>{{task.title}}</p>
 								</div>
 								<div class='row'>
-									<p class='custom-task-subtitletext m-0'>
-										at
-										<%=time.format(dt1.getCompletedDate())%></p>
+									<p class='custom-task-subtitletext m-0 w-100'>at
+										{{task.completedDate}}</p>
 								</div>
 							</div>
 						</div>
 						<hr>
-						<%
-							}
-							} else {
-						%>
-						<img class='card-img-top custom-task-notask' src='/assets/images/note_graphic.png' alt=''>
-						<h1 class='text-center text-muted custom-font-family-tag'>No Task Completed Today</h1>
 
-						<%
-							}
-						%>
-
-
-
-
+						<div ng-if='todayCompletedTasks.length==0'>
+							<img class='card-img-top custom-task-notask'
+								src='/assets/images/note_graphic.png' alt=''>
+							<h1 class='text-center text-muted custom-font-family-tag'>No
+								Task Completed Today</h1>
+						</div>
 					</div>
 
 				</div>
 			</div>
 		</div>
-	</div> --%>
+	</div>
 	<!--/row-->
 
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 
-	<%-- <script>
-		var app = angular.module("student_dashbard", []);
-		app.controller("student_dashbardCtrl",function($scope, $http, $timeout) {
-			
-							$http.get('<%=t2c_path%>user/<%=user.getId()%>/complex').then(function(res) {
-
-												$scope.courses = res.data.studentProfile;
-												$scope.notifications = res.data.notifications;
-												$scope.tasks = res.data.tasks;
-												
-
-											});
-							
-							$scope.countOfTaskCompeleted = function (){
-								
-								 var currentdate = "2017-09-28 21:59:00";
-								 
-								 for (i = 0; i < $scope.tasks.length; i++) {
-									    if (currentdate > $scope.tasks[i].date) {
-									            console.log('today');
-									    }
-									  }
-								
-							};
-						
-
-						});
-	</script> --%>
-
-
-
-	<%-- <script>
-	 var  d = new Date();
-	 var day = d.getDate();
-	
-	 var m_names = ['January', 'February', 'March', 
-         'April', 'May', 'June', 'July', 
-         'August', 'September', 'October', 'November', 'December'];
-	 var n = m_names[d.getMonth()]; 
-		$(document).ready(function() {
-			$('.carousel').carousel('pause');
-			$('.popover-dismiss').popover();
-         
-		    $('#dropdownMenuLink').text(n);
-		    calendarFunction(d.getMonth())
-			$('.custom-month_drop').click(function(){				
-				$('#dropdownMenuLink').text($(this).text());		
-				  calendarFunction($(this).attr('data-monthVal'));
-			});
-			
-			
-		});
-		
-		
-		function calendarFunction(month){
-			var monthIndex = parseInt(month);
-			 $('#userCalendarDataHolder').empty();
-			$("#userCalendarDataHolder").append('<div class="loader mx-auto my-auto"></div>');
-			 $.ajax({
-				    url:"../get_user_service", 
-				    data : {monthIndex:monthIndex,user_id:<%=user.getId()%>},
-				    success:function(data) {
-				     //custom-calendar-item-colums
-				      $('#userCalendarDataHolder').empty();
-				     if($(data).find('.custom-calendar-item-colums').length != 0){
-				    	
-					     $('#userCalendarDataHolder').html(data);
-					     $('.find_currentDate_parent').each(function(i){  
-					    	 if($(this).attr('data-currentDate').substr(0,2) == day && month == d.getMonth()){
-					    		 $(this).css('background','rgba(33, 150, 242, 0.7)');
-					    		 $(this).css('color','#fff');
-					    		 $(this).append('  Today');
-					    		
-					             }  
-					    	 });
-					   
-					     $('.find_currentDate_child').each(function(j){  
-					    	 if($(this).attr('data-currentDate').substr(0,2) == day && month == d.getMonth()){
-					    		 $(this).css('background','rgba(33, 150, 242, 0.04)');
-					    		 } 
-				    		 $('.custom-dashboard-calender').animate({scrollLeft: $(this).position().center}, 500);   
-
-					    
-					     
-					     
-					    
-					     
-					     });
-
-					    
-				     }else{
-				    	 $("#userCalendarDataHolder").append('<h1 class="text-center m-5">No Event Found</h1>');
-				     }
-				     
-				    }
-				  });
-			
-		}
-	</script> --%>
 </body>
 </html>

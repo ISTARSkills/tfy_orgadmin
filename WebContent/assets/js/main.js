@@ -1,9 +1,10 @@
 var body_id = document.getElementsByTagName("body")[0].id;
 
 var app = angular.module(body_id, [ 'ngSanitize' ]);
-var t2cPath = "http://192.168.1.9:8080/t2c/";
-var cdnPath = "http://192.168.1.9:8080/";
-var userId = 10490;
+
+var t2cPath = $('#talentify_logo_holder').data('t2c') + '/t2c/';
+var cdnPath = $('#talentify_logo_holder').data('cdn');
+var userId = $('#talentify_logo_holder').data('user');
 var complexObject;
 
 function getTime() {
@@ -42,6 +43,10 @@ function initControlSwitcher($scope, $timeout, $location) {
 	case 'student_dashbard':
 		initstudent_dashbard($scope, $timeout);
 		break;
+
+	case '':
+		initstudent_skill_profile($scope, $timeout);
+		break
 	default:
 		break;
 	}
@@ -90,6 +95,7 @@ function initstudent_dashbard($scope, $timeout) {
 					&& (task.itemType == 'ASSESSMENT'
 							|| task.itemType == 'LESSON_PRESENTATION' || task.itemType == 'CUSTOM_TASK')) {
 				todayIncompletedTasks.push(task);
+				todayTaskCount++;
 			}
 		}
 	}
@@ -107,14 +113,23 @@ function initstudent_dashbard($scope, $timeout) {
 	$scope.completed = todayTaskCompletedCount + " of " + todayTaskCount
 			+ " Tasks Completed";
 
+	$scope.m_names = [ "January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December" ];
+	$scope.currentMonth = $scope.m_names[new Date().getMonth()];
+	setupUserCalendar($scope, new Date().getMonth());
+
 	app.directive('dashbordTaskDirective', function() {
 		return function(scope, element, attrs) {
 			if (scope.$last) {
 				$('.carousel').carousel();
 			}
-
 		};
 	});
+
+	$scope.monthChange = function($index) {
+		$scope.currentMonth = $scope.m_names[$index];
+		setupUserCalendar($scope, $index);
+	};
 
 	$scope.fireEvent = function() {
 		$timeout(function() {
@@ -125,10 +140,139 @@ function initstudent_dashbard($scope, $timeout) {
 	$scope.fireEvent();
 }
 
+function setupUserCalendar($scope, monthIndex) {
+	if (complexObject.events != undefined) {
+		var date = new Date(2017, monthIndex, 1);
+		var days = [];
+		while (date.getMonth() === monthIndex) {
+			days.push(new Date(date));
+			date.setDate(date.getDate() + 1);
+		}
+		$scope.map_events = {};
+		$scope.currentMonthDates = [];
+		$scope.formatMessage = function(name) {
+			var data = name.replace(
+					'A class has been scheduled for the course', '');
+			return data;
+		};
+
+		$scope.startEndTime = function(time) {
+			return new Date(time);
+		};
+
+		for (var i = 1; i < days.length; i++) {
+			var currentDate = new Date(days[i]).setHours(0, 0, 0, 0);
+			for (var j = 0; j < complexObject.events.length; j++) {
+				var event = complexObject.events[j];
+				var eventDate = new Date(event.startDate).setHours(0, 0, 0, 0);
+				if (currentDate == eventDate) {
+					if ($scope.map_events.hasOwnProperty(currentDate)) {
+						$scope.map_events[currentDate].push(event);
+					} else {
+						var eventList = [];
+						eventList.push(event);
+						$scope.map_events[currentDate] = eventList;
+						$scope.currentMonthDates.push(currentDate);
+					}
+				}
+			}
+		}
+	}
+
+	$scope.todayDate = function(day) {
+		var style = "";
+		if (new Date(day).setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0,
+				0)) {
+			style = "{'background':'rgba(33, 150, 242, 0.04)'}"
+		}
+		return style;
+	};
+}
+
 function initStudentRole($scope, $location) {
 	$scope.gotoBeginSkill = function(courseID) {
 		window.location = $location.$$protocol + "://" + $location.$$host + ":"
 				+ $location.$$port + "/student/"
 				+ './partials/begin_skill.jsp?course_id=' + courseID;
 	};
+}
+
+function initstudent_skill_profile($scope, $timeout) {
+	var courseObject = $scope.courses;
+	$.fn.extend({
+		treed : function(o) {
+
+			var openedClass = 'glyphicon-minus-sign';
+			var closedClass = 'glyphicon-plus-sign';
+
+			if (typeof o != 'undefined') {
+				if (typeof o.openedClass != 'undefined') {
+					openedClass = o.openedClass;
+				}
+				if (typeof o.closedClass != 'undefined') {
+					closedClass = o.closedClass;
+				}
+			}
+			;
+
+			// initialize each of the top levels
+			var tree = $(this);
+			tree.addClass("tree");
+			tree.find('li').has("ul").each(
+					function() {
+						var branch = $(this); // li with children ul
+						branch.prepend("<i class='indicator glyphicon "
+								+ closedClass + "'></i>");
+						branch.addClass('branch');
+						branch.on('click', function(e) {
+							if (this == e.target) {
+								var icon = $(this).children('i:first');
+								icon.toggleClass(openedClass + " "
+										+ closedClass);
+								$(this).children().children().toggle();
+							}
+						})
+						branch.children().children().toggle();
+					});
+			// fire event from the dynamically added icon
+			tree.find('.branch .indicator').each(function() {
+				$(this).on('click', function() {
+					$(this).closest('li').click();
+				});
+			});
+			// fire event to open branch if the li contains an anchor instead of
+			// text
+			tree.find('.branch>a').each(function() {
+				$(this).on('click', function(e) {
+					$(this).closest('li').click();
+					e.preventDefault();
+				});
+			});
+			// fire event to open branch if the li contains a button instead of
+			// text
+			tree.find('.branch>button').each(function() {
+				$(this).on('click', function(e) {
+					$(this).closest('li').click();
+					e.preventDefault();
+				});
+			});
+		}
+	});
+
+	$scope.skillFunction = function(index) {
+		$scope.skills_highlighter = index;
+		$scope.courses = courseObject;
+		$scope.skills = courseObject[index].skillObjectives;
+	};
+
+	app.directive('myPostRepeatDirective', function() {
+		return function(scope, element, attrs) {
+			if (scope.$last) {
+				$('#tree1').treed();
+			}
+		};
+	});
+
+	$scope.skillFunction(0);
+
 }
