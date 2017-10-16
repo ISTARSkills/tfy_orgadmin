@@ -56,19 +56,27 @@ function initControlSwitcher($scope, $timeout, $location) {
 	switch (body_id) {
 	case 'student_role':
 		initStudentRole($scope, $location);
+		initMenuLabel('courses');
 		break;
 	case 'student_dashbard':
 		initstudent_dashbard($scope, $timeout);
+		initMenuLabel('dashboard');
 		break;
 	case 'student_begin_skill':
 		initstudent_begin_skill($scope, $timeout, $location);
+		initMenuLabel('courses');
 		break;
 	case 'student_skill_profile':
 		initstudent_skill_profile($scope, $timeout);
+		initMenuLabel('skillprofile');
 		break
 	default:
 		break;
 	}
+}
+
+function initMenuLabel(labelId){
+	$('#'+labelId).parent().addClass('active');
 }
 
 function initstudent_dashbard($scope, $timeout) {
