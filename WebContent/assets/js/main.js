@@ -35,6 +35,7 @@ app.controller(body_id + "Ctrl", function($scope, $http, $timeout, $location) {
 	$scope.cdnPath = cdnPath;
 	restClient($scope, $http, $timeout, $location);
 });
+setupAllDirectives();
 
 function restClient($scope, $http, $timeout, $location) {
 	$http.get(t2cPath + 'user/' + userId + '/complex').then(function(res) {
@@ -132,14 +133,6 @@ function initstudent_dashbard($scope, $timeout) {
 			"July", "August", "September", "October", "November", "December" ];
 	$scope.currentMonth = $scope.m_names[new Date().getMonth()];
 	setupUserCalendar($scope, new Date().getMonth());
-
-	app.directive('dashbordTaskDirective', function() {
-		return function(scope, element, attrs) {
-			if (scope.$last) {
-				$('.carousel').carousel();
-			}
-		};
-	});
 
 	$scope.monthChange = function($index) {
 		$scope.currentMonth = $scope.m_names[$index];
@@ -279,8 +272,13 @@ function initstudent_skill_profile($scope, $timeout) {
 		$scope.courses = courseObject;
 		$scope.skills = courseObject[index].skillObjectives;
 	};
+	$scope.skillFunction(0);
 
-	app.directive('myPostRepeatDirective', function() {
+}
+
+function setupAllDirectives() {
+
+	app.directive('studentSkillSetup', function() {
 		return function(scope, element, attrs) {
 			if (scope.$last) {
 				$('#tree1').treed();
@@ -288,7 +286,28 @@ function initstudent_skill_profile($scope, $timeout) {
 		};
 	});
 
-	$scope.skillFunction(0);
+	app.directive('dashbordTaskDirective', function() {
+		return function(scope, element, attrs) {
+			if (scope.$last) {
+				$('.carousel').carousel();
+			}
+		};
+	});
+
+	app.directive('studentBeginSkillSetup', function() {
+		return function(scope, element, attrs) {
+			if (scope.$last) {
+				$('.collapse').collapse();
+				$('.custom-beginskill-collapsed-img').click(function() {
+					if ($(this).attr("src") == '/assets/images/expanded.png') {
+						$(this).attr("src", "/assets/images/collapsed.png");
+					} else {
+						$(this).attr("src", "/assets/images/expanded.png");
+					}
+				});
+			}
+		};
+	});
 
 }
 
@@ -306,21 +325,4 @@ function initstudent_begin_skill($scope, $timeout, $location) {
 			}
 		}
 	}
-	
-	
-	$scope.fireEvent = function() {
-		$timeout(function() {
-			$('.collapse').collapse();
-			$('.custom-beginskill-collapsed-img').click(function() {
-				if ($(this).attr("src") == '/assets/images/expanded.png') {
-					$(this).attr("src", "/assets/images/collapsed.png");
-				} else {
-					$(this).attr("src", "/assets/images/expanded.png");
-				}
-			});
-		}, 1000);
-
-	};
-	$scope.fireEvent();
-	
 }

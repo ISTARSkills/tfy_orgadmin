@@ -104,7 +104,7 @@
 									<div class='col-12'>
 										<ul id='tree1'>
 
-											<li my-post-repeat-directive ng-repeat="top_skill in skills">{{top_skill.name}} <small class='custom-skillprofile-subskills'>{{top_skill.length}} subskills</small> <small class='custom-skillprofile-xp_points'> {{top_skill.userPoints}} / {{top_skill.totalPoints}} XP</small><i class='point-div'></i>
+											<li student-skill-setup ng-repeat="top_skill in skills">{{top_skill.name}} <small class='custom-skillprofile-subskills'>{{top_skill.length}} subskills</small> <small class='custom-skillprofile-xp_points'> {{top_skill.userPoints}} / {{top_skill.totalPoints}} XP</small><i class='point-div'></i>
 
 
 												<div class='progress ml-5'>

@@ -1,6 +1,18 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
-<body id="student_begin_skill" ng-app="student_begin_skill"
+<body ng-cloak id="student_begin_skill" ng-app="student_begin_skill"
 	ng-controller="student_begin_skillCtrl">
+
+	<!-- 	<page-loader flag="isLoading" bg-color='whitesmoke'>
+	<div class="pacman"></div>
+	<div class="dot"></div>
+	<div class="sk-folding-cube text-center" ng-if='isLoading'>
+		<div class="sk-cube1 sk-cube"></div>
+		<div class="sk-cube2 sk-cube"></div>
+		<div class="sk-cube4 sk-cube"></div>
+		<div class="sk-cube3 sk-cube"></div>
+	</div>
+	</page-loader>
+ -->
 	<%
 		boolean flag = false;
 		String url = request.getRequestURL().toString();
@@ -48,9 +60,9 @@
 		</div>
 		<!--/row-->
 		<div class="container">
-			<div id='accordion{{$index}}' ng-repeat='module in course.modules'
-				ng-init="outerIndex=$index" role='tablist'
-				aria-multiselectable='true'>
+			<div id='accordion{{$index}}' student-begin-skill-setup
+				ng-repeat='module in course.modules' ng-init="outerIndex=$index"
+				role='tablist' aria-multiselectable='true'>
 				<div class='card custom-card-height-expand'>
 					<div class='card-header custom-module_card-header' role='tab'
 						id='heading{{outerIndex}}'>
@@ -264,7 +276,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 	<!--/row-->
 
