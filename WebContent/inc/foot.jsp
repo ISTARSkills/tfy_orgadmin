@@ -15,6 +15,9 @@ String basePath =  AppProperies.getProperty("cdn_path");
 <script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/angular-1.5.6/anguangular.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/angular-1.5.6/angular-sanitize.js"></script>
+<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/angular-route.js"></script>
+<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/elif.js"></script>
+
 
 <script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>
 <script src="<%=basePath %>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>

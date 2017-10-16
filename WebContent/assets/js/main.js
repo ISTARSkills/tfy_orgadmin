@@ -1,6 +1,6 @@
 var body_id = document.getElementsByTagName("body")[0].id;
 
-var app = angular.module(body_id, [ 'ngSanitize' ]);
+var app = angular.module(body_id, [ 'ngSanitize', 'elif' ]);
 
 var t2cPath = $('#talentify_logo_holder').data('t2c') + '/t2c/';
 var cdnPath = $('#talentify_logo_holder').data('cdn');
@@ -9,11 +9,25 @@ var complexObject;
 
 function getTime() {
 	var today = new Date();
-	// var date =
-	// today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 	var time = today.getHours() + ":" + today.getMinutes() + ":"
 			+ today.getSeconds();
 	return time;
+}
+
+function getUrlParameter(param, dummyPath) {
+	var sPageURL = dummyPath || window.location.search.substring(1), sURLVariables = sPageURL
+			.split(/[&||?]/), res;
+
+	for (var i = 0; i < sURLVariables.length; i += 1) {
+		var paramName = sURLVariables[i], sParameterName = (paramName || '')
+				.split('=');
+
+		if (sParameterName[0] === param) {
+			res = sParameterName[1];
+		}
+	}
+
+	return res;
 }
 
 app.controller(body_id + "Ctrl", function($scope, $http, $timeout, $location) {
@@ -39,12 +53,13 @@ function initControlSwitcher($scope, $timeout, $location) {
 	case 'student_role':
 		initStudentRole($scope, $location);
 		break;
-
 	case 'student_dashbard':
 		initstudent_dashbard($scope, $timeout);
 		break;
-
-	case '':
+	case 'student_begin_skill':
+		initstudent_begin_skill($scope, $timeout, $location);
+		break;
+	case 'student_skill_profile':
 		initstudent_skill_profile($scope, $timeout);
 		break
 	default:
@@ -275,4 +290,37 @@ function initstudent_skill_profile($scope, $timeout) {
 
 	$scope.skillFunction(0);
 
+}
+
+function initstudent_begin_skill($scope, $timeout, $location) {
+	$scope.roundNumber = function(i) {
+		return Math.round(i);
+	}
+	$scope.course_id = getUrlParameter('course_id');
+	if (complexObject.courses != undefined) {
+		$scope.course = {};
+		$scope.iteration = [ 0, 1, 2 ];
+		for (var i = 0; i < complexObject.courses.length; i++) {
+			if (complexObject.courses[i].id == parseInt($scope.course_id)) {
+				$scope.course = complexObject.courses[i];
+			}
+		}
+	}
+	
+	
+	$scope.fireEvent = function() {
+		$timeout(function() {
+			$('.collapse').collapse();
+			$('.custom-beginskill-collapsed-img').click(function() {
+				if ($(this).attr("src") == '/assets/images/expanded.png') {
+					$(this).attr("src", "/assets/images/collapsed.png");
+				} else {
+					$(this).attr("src", "/assets/images/expanded.png");
+				}
+			});
+		}, 1000);
+
+	};
+	$scope.fireEvent();
+	
 }
