@@ -1,11 +1,12 @@
 var body_id = document.getElementsByTagName("body")[0].id;
-
-var app = angular.module(body_id, [ 'ngSanitize', 'elif' ]);
-
+var bodySpinner = "<div ng-if='rendered' id='page-loader' class='fade in'><span class='spinner'></span></div>";
+$('body').prepend(bodySpinner);
 var t2cPath = $('#talentify_logo_holder').data('t2c') + '/t2c/';
 var cdnPath = $('#talentify_logo_holder').data('cdn');
 var userId = $('#talentify_logo_holder').data('user');
 var complexObject;
+
+var app = angular.module(body_id, [ 'ngSanitize', 'elif' ]);
 
 function getTime() {
 	var today = new Date();
@@ -33,6 +34,7 @@ function getUrlParameter(param, dummyPath) {
 app.controller(body_id + "Ctrl", function($scope, $http, $timeout, $location) {
 	console.log('started---' + getTime());
 	$scope.cdnPath = cdnPath;
+	$scope.rendered = true;
 	restClient($scope, $http, $timeout, $location);
 });
 setupAllDirectives();
@@ -46,6 +48,7 @@ function restClient($scope, $http, $timeout, $location) {
 		complexObject = res.data;
 		initControlSwitcher($scope, $timeout, $location);
 		console.log('ended---' + getTime());
+		$scope.rendered = false;
 	});
 }
 
@@ -272,7 +275,46 @@ function initstudent_skill_profile($scope, $timeout) {
 		$scope.courses = courseObject;
 		$scope.skills = courseObject[index].skillObjectives;
 	};
-	$scope.skillFunction(0);
+
+	if (courseObject.length != 0) {
+		$scope.skillFunction(0);
+	}
+	
+	$('#uploadfile').change(function() {
+		var form = $('#fileUploadForm')[0];
+		var data = new FormData(form);
+		var upload_file = $('#uploadfile').val();
+		var file_ext = $('#uploadfile').val().split('.')[1];
+		var servlet = "/UserMediaUploadController";
+
+		if (upload_file != '') {
+			$.ajax({
+				type : "POST",
+				enctype : 'multipart/form-data',
+				url : servlet,
+				data : data,
+				processData : false,
+				contentType : false,
+				cache : false,
+				timeout : 600000,
+				success : function(data) {
+
+					var ddd = data;
+					$('.custom-skill-profile-img').attr("src", ddd);
+
+				},
+				error : function(e) {
+					alert('Please Retry Again');
+				}
+			});
+		}
+
+	});
+
+	$("#btnfile").click(function() {
+		$("#uploadfile").click();
+		return false;
+	});
 
 }
 

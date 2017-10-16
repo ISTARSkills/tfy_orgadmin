@@ -1,13 +1,7 @@
-
 <jsp:include page="/inc/head.jsp"></jsp:include>
 
 <body id="student_dashbard" ng-app="student_dashbard"
 	ng-controller="student_dashbardCtrl">
-	<%
-		String url = request.getRequestURL().toString();
-		String baseURL = url.substring(0, url.length() - request.getRequestURI().length())
-				+ request.getContextPath() + "/";
-	%>
 	<jsp:include page="/inc/navbar.jsp"></jsp:include>
 
 	<div class="jumbotron gray-bg">
@@ -235,7 +229,7 @@
 						Tasks Completed</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
-						<span aria-hidden="true">×</span>
+						<span aria-hidden="true">x</span>
 					</button>
 				</div>
 				<div class="modal-body custom-scrollbar custom-scroll-holder"

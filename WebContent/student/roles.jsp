@@ -27,7 +27,7 @@
 			</div>
 		</div>
 
-		<div class="container">
+		<div ng-if='(courses!=undefined || courses.length!=0)' class="container">
 			<div class='row custom-margin-rolescard'>
 				<div class='card-deck m-3' ng-repeat="course in courses">
 
@@ -52,6 +52,17 @@
 				</div>
 			</div>
 		</div>
+		
+		<div ng-if='(courses==undefined || courses.length==0)'
+			class="container">
+			<div class="row w-100">
+				<div
+					class='card custom-skill-profile-card justify-content-md-center'>
+					<h1 class='custom-dashboard-header w-100 text-center'>No Courses Are Associated.</h1>
+				</div>
+			</div>
+		</div>
+		
 	</div>
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 </body>
