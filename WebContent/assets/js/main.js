@@ -34,6 +34,7 @@ function getUrlParameter(param, dummyPath) {
 app.controller(body_id + "Ctrl", function($scope, $http, $timeout, $location) {
 	console.log('started---' + getTime());
 	$scope.cdnPath = cdnPath;
+	$scope.userId=userId;
 	$scope.rendered = true;
 	restClient($scope, $http, $timeout, $location);
 });
@@ -343,6 +344,15 @@ function setupAllDirectives() {
 		return function(scope, element, attrs) {
 			if (scope.$last) {
 				$('.carousel').carousel();
+				setTimeout(function(){
+					$('.start-assessment-button').unbind().on('click',function(){
+						var base=window.location.origin;
+						var url=base+$(this).data('url');
+						window.open(url,'', 'fullscreen=yes, scrollbars=auto');
+						
+					});					
+				},1000);
+				
 			}
 		};
 	});
@@ -378,4 +388,17 @@ function initstudent_begin_skill($scope, $timeout, $location) {
 			}
 		}
 	}
+
+	$scope.checkIsCompleted = function(session) {
+		var isCompleted = true;
+		if (session && session.lessons!=undefined && session.lessons.length!=0) {
+			for(var i=0;i<session.lessons.length;i++){
+				var lesson=session.lessons[i];
+				if(lesson.status!='COMPLETED'){
+					isCompleted=false;
+				}
+			}
+		}
+		return isCompleted;
+	};
 }

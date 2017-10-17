@@ -59,11 +59,11 @@
 
 
 									<div ng-switch='item.itemType'>
-										<a ng-switch-when='ASSESSMENT' href='#'
-											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
+										<button ng-switch-when='ASSESSMENT' data-url='/student/user_assessment.jsp?task_id={{item.id}}&assessment_id={{item.itemId}}&user_id={{userId}}'
+											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg start-assessment-button'><img
 											class='card-img-top custom-secoundary-img'
 											src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
-											class='custom-primary-btn-text'>START ASSESSMENT</span></a> <a
+											class='custom-primary-btn-text'>START ASSESSMENT</span></button> <a
 											ng-switch-when='LESSON_PRESENTATION'
 											href='/student/presentation.jsp?task_id={{item.id}}&lesson_id={{item.itemId}}'
 											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img

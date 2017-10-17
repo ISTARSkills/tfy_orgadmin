@@ -119,6 +119,9 @@
 															aria-valuenow='{{module.sessions[0].progress}}'
 															aria-valuemin='0' aria-valuemax='100'></div>
 													</div>
+													<img ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner'
+														src="./assets/images/checked_banner.png" />
 													<div class='card-block text-center my-auto'>
 
 														<h1
@@ -156,6 +159,9 @@
 												<!-- cards starts -->
 												<div ng-if='(innerIndex==0) && j==0'
 													class='card custom-beginskill-lesson-cards-background-left'>
+													<img ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner-disabled'
+														src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														{{pos=(module.sessions.length)-1;""}}
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
@@ -173,7 +179,10 @@
 												<div
 													ng-else-if='j==2 && innerIndex== (module.sessions.length-1)'
 													class='card custom-beginskill-lesson-cards-background-right'>
-													{{pos=0;""}}
+													{{pos=0;""}} <img
+														ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner-disabled'
+														src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class=' custom-progress-color'>{{module.sessions[pos].progress}}%</h1>
@@ -189,7 +198,10 @@
 
 												<div ng-else-if='j==0'
 													class='card custom-beginskill-lesson-cards-background-left'>
-													{{pos=(innerIndex-1);""}}
+													{{pos=(innerIndex-1);""}} <img
+														ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner-disabled'
+														src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class='  custom-progress-color'>{{module.sessions[pos].progress}}%</h1>
@@ -213,8 +225,11 @@
 															aria-valuenow='{{module.sessions[pos].progress}}'
 															aria-valuemin='0' aria-valuemax='100'></div>
 													</div>
-													<div class='card-block text-center my-auto'>
+													<img ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner'
+														src="./assets/images/checked_banner.png" />
 
+													<div class='card-block text-center my-auto'>
 														<h1
 															class='card-title custom-task-title mx-auto text-center'>{{module.sessions[pos].name}}</h1>
 														<p class='card-text custom-task-desc ml-4 mr-4'>{{module.sessions[pos].description}}</p>
@@ -231,7 +246,10 @@
 
 												<div ng-else-if='j==2'
 													class='card custom-beginskill-lesson-cards-background-right'>
-													{{pos=((innerIndex + j) -1);""}}
+													{{pos=((innerIndex + j) -1);""}} <img
+														ng-if='checkIsCompleted(module.sessions[pos])'
+														class='student-beginskill-banner-disabled'
+														src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class=' custom-progress-color'>{{module.sessions[pos].progress}}%</h1>

@@ -1175,3 +1175,17 @@ a:focus {
     border-radius: 100%;
 }
 /* page loader ends */
+.student-beginskill-banner {
+	width: 38px;
+	height: 38px;
+	position: absolute;
+	right: 0px;
+	top: 10px;
+}
+.student-beginskill-banner-disabled{
+	width: 38px;
+	height: 38px;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
