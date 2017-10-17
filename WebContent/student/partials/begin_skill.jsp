@@ -124,7 +124,7 @@
 														<h1
 															class='card-title custom-task-title mx-auto text-center'>{{module.sessions[0].name}}</h1>
 														<p class='card-text custom-task-desc ml-4 mr-4'>{{module.sessions[0].description}}</p>
-														<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>
+														<h2 class='take-a-shortcut'></h2>
 													</div>
 													<div class='custom-beginskill-forgroundbutton'>
 														<a
@@ -218,7 +218,7 @@
 														<h1
 															class='card-title custom-task-title mx-auto text-center'>{{module.sessions[pos].name}}</h1>
 														<p class='card-text custom-task-desc ml-4 mr-4'>{{module.sessions[pos].description}}</p>
-														<h2 class='take-a-shortcut'>TAKE A SHORTCUT</h2>
+														<h2 class='take-a-shortcut'></h2>
 													</div>
 													<div class='custom-beginskill-forgroundbutton'>
 														<a

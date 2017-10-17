@@ -96,15 +96,15 @@
 			class="container">
 			<div class="row ">
 				<div class="col-3 pl-0">
-					<nav class="nav flex-column" ng-init="skills_highlighter = 0">
-
+					<nav class="nav flex-column">
 						<div class='nav-link skill_list  pt-0 pb-0 pl-0 '
 							ng-click="skillFunction($index)"
-							ng-class="($index ==skills_highlighter ? 'skill_list_active active' : 'skill_list_disable disabled')"
+							ng-class="($index == skillIndex ? 'skill_list_active active' : 'skill_list_disable disabled')"
 							data-courseId='{{course.id}}'
 							ng-repeat="course in courses track by $index">
+
 							<div class='card justify-content-md-center'
-								ng-class="($index==skills_highlighter ? 'custom-skill-list-active' : 'custom-skill-list-disabled') ">
+								ng-class="($index == skillIndex ? 'custom-skill-list-active' : 'custom-skill-list-disabled') ">
 								<div class='card-block'>
 									<div class='row custom-no-margins'>
 										<div class='col-4'>
@@ -131,12 +131,11 @@
 										<ul id='tree1'>
 
 											<li student-skill-setup ng-repeat="top_skill in skills">{{top_skill.name}}
-												<small class='custom-skillprofile-subskills'>{{top_skill.length}}
-													subskills</small> <small class='custom-skillprofile-xp_points'>
-													{{top_skill.userPoints}} / {{top_skill.totalPoints}} XP</small><i
-												class='point-div'></i>
-
-
+												<small class='custom-skillprofile-xp_points'>
+													{{top_skill.userPoints}} / {{top_skill.totalPoints}} XP &#9679;
+													{{(top_skill.skills!=undefined &&
+													top_skill.skills.length!=0?top_skill.skills.length:0)}}
+													subskills </small><i class='point-div'></i>
 												<div class='progress ml-5'>
 													<div
 														class='progress-bar custom-skillprofile-skill-progress'

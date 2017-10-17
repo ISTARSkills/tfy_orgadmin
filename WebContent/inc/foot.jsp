@@ -3,42 +3,47 @@
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.InputStream"%>
 <%@page import="java.util.Properties"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
-String basePath =  AppProperies.getProperty("cdn_path");
-	
+	String basePath = AppProperies.getProperty("cdn_path");
 %>
 
-<script src="<%=basePath %>assets/js/jquery.min.js"></script>
-<script src="<%=basePath %>assets/js/popper.min.js"></script>
-<script src="<%=basePath %>assets/js/bootstrap.min.js"></script>
-<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/anguangular.min.js"></script>
-<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/angular-sanitize.js"></script>
-<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/angular-route.js"></script>
-<script src="<%=basePath %>assets/js/plugins/angular-1.5.6/elif.js"></script>
+<script src="<%=basePath%>assets/js/jquery.min.js"></script>
+<script src="<%=basePath%>assets/js/popper.min.js"></script>
+<script src="<%=basePath%>assets/js/bootstrap.min.js"></script>
+<script
+	src="<%=basePath%>assets/js/plugins/angular-1.5.6/anguangular.min.js"></script>
+<script
+	src="<%=basePath%>assets/js/plugins/angular-1.5.6/angular-sanitize.js"></script>
+<script
+	src="<%=basePath%>assets/js/plugins/angular-1.5.6/angular-route.js"></script>
+<script src="<%=basePath%>assets/js/plugins/angular-1.5.6/elif.js"></script>
 
 
-<script src="<%=basePath %>assets/js/plugins/fullcalendar/moment.min.js"></script>
-<script src="<%=basePath %>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="<%=basePath%>assets/js/plugins/fullcalendar/moment.min.js"></script>
+<script
+	src="<%=basePath%>assets/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="<%=basePath%>assets/js/jquery.dropdown.js"></script>
 
-<script type="text/javascript" src="<%=basePath%>assets/js/moment.min.js"></script>
-<script type="text/javascript" src="<%=basePath%>assets/js/daterangepicker.js"></script>
-<script src="<%=basePath %>assets/js/plugins/jsTree/jstree.min.js"></script>
-<script src="<%=basePath %>assets/js/main.js"></script>
-<script src="<%=basePath %>assets/js/app.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>assets/js/moment.min.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>assets/js/daterangepicker.js"></script>
+<script src="<%=basePath%>assets/js/plugins/jsTree/jstree.min.js"></script>
+<script src="<%=basePath%>assets/js/main.js"></script>
+<script src="<%=basePath%>assets/js/app.js"></script>
 
+<%
+	String userID = "NOT_LOGGED_IN_USER";
 
-
-
-
-<% String userID = "NOT_LOGGED_IN_USER";
-
-if(request.getSession().getAttribute("user") != null) {
-	userID =  ((IstarUser)request.getSession().getAttribute("user")).getUserRoles().iterator().next().getRole().getId()+"_"+ ((IstarUser)request.getSession().getAttribute("user")).getId();
-}
+	if (request.getSession().getAttribute("user") != null) {
+		userID = ((IstarUser) request.getSession().getAttribute("user")).getUserRoles().iterator().next()
+				.getRole().getId() + "_" + ((IstarUser) request.getSession().getAttribute("user")).getId();
+	}
 %>
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -50,8 +55,7 @@ ga('create', 'UA-101152637-1', 'auto', {
 	  userId: '<%=userID%>'
 	});
 	
-ga('set', 'userId', '<%=userID%>');
-ga('send', 'pageview');
-
-
+ga('set', 'userId', '<%=userID%>
+	');
+	ga('send', 'pageview');
 </script>

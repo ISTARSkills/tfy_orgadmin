@@ -277,9 +277,9 @@ function initstudent_skill_profile($scope, $timeout) {
 			});
 		}
 	});
-
+	$scope.skillIndex=0;
 	$scope.skillFunction = function(index) {
-		$scope.skills_highlighter = index;
+		$scope.skillIndex = index;
 		$scope.courses = courseObject;
 		$scope.skills = courseObject[index].skillObjectives;
 	};
@@ -331,7 +331,10 @@ function setupAllDirectives() {
 	app.directive('studentSkillSetup', function() {
 		return function(scope, element, attrs) {
 			if (scope.$last) {
-				$('#tree1').treed();
+				setTimeout(function(){
+					$('#tree1').treed();					
+				},1000);
+
 			}
 		};
 	});
