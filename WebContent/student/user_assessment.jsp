@@ -188,9 +188,13 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 							id="next_<%=i%>">Next Question</button>
 							</div>
 						&nbsp; &nbsp;&nbsp;
-						<button type="submit" class="btn btn-w-m btn-danger mt-2 float-right"
-							style='background-color: #eb384f; border: none; line-height: 1.55; font-size: 16px; outline: none;'
-							style="float: right">Submit Assessment</button>
+						<button type="button" class="btn btn-w-m btn-danger mt-2 float-right skip_assessment"
+							style='background-color: #eb384f; border: none; line-height: 1.55; font-size: 16px; outline: none;float: right'
+							>Skip Questions & Submit</button>
+							
+							<button type="button" class="btn btn-w-m btn-danger mt-2 float-right submit_assessment"
+							style='background-color: #eb384f; border: none; line-height: 1.55; font-size: 16px; outline: none;float: right'
+							>Submit Assessment</button>
 					</div>
 				</div>
 				<% 
@@ -216,6 +220,13 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		d.setSeconds(d.getSeconds() + (parseInt(timeInSec)));
 		var countDownDate = d.getTime();
 		// Update the count down every 1 second
+		
+		if(parseInt(queNo)==1 && totalQuestionCount==1){
+			  $('.submit_assessment').show();
+				 $('.skip_assessment').hide();
+				 $('.next').hide();	
+				 $('.prev').hide();
+		}
 		
 		if(parseInt(queNo)<=totalQuestionCount)
 		{
@@ -259,6 +270,7 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		var questionNumToShow = parseInt(queNo)+1;
 		clearInterval(x);
 		
+				
 		if(questionNumToShow<=totalQuestionCount){
 			startQuestionTimer(questionNumToShow);
 		}
@@ -271,6 +283,9 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 				 $('.submit_assessment').hide();
 				 $('.skip_assessment').show();
 		 }
+		 
+		 
+		 
 		 if(questionNumToShow===totalQuestionCount)
 		 {
 			 $('.submit_assessment').show();
@@ -539,19 +554,23 @@ int assessmentMinutes = assessment.getDurationInMinutes();
 		 var questionNumToShow = parseInt(currentQueNo);
 		 clearInterval(x);
 		 startQuestionTimer(questionNumToShow);	
-		 if(questionNumToShow===1)
+		 if(questionNumToShow==1 && totalQuestionCount==1){
+		     $('.submit_assessment').show();
+			 $('.skip_assessment').hide();
+			 $('.next').hide();	
+			 $('.prev').hide();
+		} else if(questionNumToShow===1)
 		 {
 				$('.prev').hide();
 				$('.next').show();
 				$('.submit_assessment').hide();
 				$('.skip_assessment').show();
-		 }
-		 else if(questionNumToShow===totalQuestionCount)
+		 }else if(questionNumToShow===totalQuestionCount)
 		 {
 				$('.next').hide();	
 				$('.prev').show();	
 				$('.submit_assessment').show();
-				 $('.skip_assessment').hide();
+				$('.skip_assessment').hide();
 		 }
 		 else
 		 {

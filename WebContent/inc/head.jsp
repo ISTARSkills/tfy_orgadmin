@@ -44,4 +44,7 @@
 	type="text/css" />
 <link rel="stylesheet"
 	href="<%=basePath%>assets/css/jquery.dropdown.css">
+<link href="<%=basePath%>assets/css/plugins/sweetalert/sweetalert.css"
+	rel="stylesheet">
+
 </head>

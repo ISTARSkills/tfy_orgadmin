@@ -42,6 +42,8 @@
 <script type="text/javascript"
 	src="<%=basePath%>assets/js/daterangepicker.js"></script>
 <script src="<%=basePath%>assets/js/plugins/jsTree/jstree.min.js"></script>
+<script src="<%=basePath %>assets/js/plugins/sweetalert/sweetalert.min.js"></script>
+
 
 <%
 	if (roleDir.equalsIgnoreCase("student")) {

@@ -216,15 +216,15 @@ if(data.size()!=0){
 					else{
 						x[i].style.top = '5%';
 					}
-					if(slide_id == <%=slide_id%>) {
+					if(slide_id == <%=slide_id%> && (x.length-1)!=i) {
 						console.log('found my slide ->>>>'+ i);
 						slidetojump = i;
 					}
 					
 
 			}
-			var indices = Reveal.getIndices( document.getElementById( '<%=slide_id%>' ) );
-			Reveal.slide( indices.h, indices.v );
+			<%--var indices = Reveal.getIndices( document.getElementById( '<%=slide_id%>' ) ); --%>
+			Reveal.slide( slidetojump);
 			
 			
     	
