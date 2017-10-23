@@ -1,7 +1,4 @@
-
 <jsp:include page="/inc/head.jsp"></jsp:include>
-
-
 
 <body id="student_skill_profile" ng-app="student_skill_profile"
 	ng-controller="student_skill_profileCtrl">
@@ -29,7 +26,7 @@
 							<div class="col-3 col-md-auto text-center m-5">
 								<div class='row mx-auto text-center'>
 									<img class='img-circle custom-skill-profile-img mx-auto'
-										src='{{studentProfile.profileImage}}'
+										ng-src='{{studentProfile.profileImage}}'
 										alt='{{studentProfile.firstName}}'>
 									<div id='skill_profile_uploadicon'
 										class="img-circle custom-skillprofile-uploadicon">
@@ -41,7 +38,7 @@
 											<button id="btnfile" class='p-0 m-0 border-0'
 												style='background: transparent;'>
 												<img class='img-circle mt-3 custom-skillprofile-icontag'
-													src='/assets/images/group-5.png'
+													ng-src='/assets/images/group-5.png'
 													alt='{{studentProfile.firstName}}'>
 											</button>
 											<div class="wrapper" style='display: none !important;'>
@@ -108,7 +105,7 @@
 								<div class='card-block'>
 									<div class='row custom-no-margins'>
 										<div class='col-4'>
-											<img class='custom-skill-tree-img' src='{{course.imageURL}}'
+											<img class='custom-skill-tree-img' ng-src='{{course.imageURL}}'
 												alt='No Image Available'>
 										</div>
 										<div class='col-8 my-auto'>

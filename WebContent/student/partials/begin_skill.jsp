@@ -29,7 +29,7 @@
 						<a class='col-2 my-auto custom-no-padding'
 							href="<%=baseURL%>student/roles.jsp"> <img
 							class="custom-beginskill-backarrow"
-							src="/assets/images/1165040-200.png" alt="">
+							ng-src="/assets/images/1165040-200.png" alt="">
 						</a>
 						<div class='col-10 custom-no-padding'>
 							<h1 class='custom-beginskill-course-heading'>{{course.name}}</h1>
@@ -69,7 +69,7 @@
 						<div class='row justify-content-md-center mt-3'>
 							<div class='col-2 my-auto custom-no-padding text-center'>
 								<img class=' custom-beginskill-module-img'
-									src='{{module.imageURL}}' alt='No Image Available'>
+									ng-src='{{module.imageURL}}' alt='No Image Available'>
 							</div>
 							<div class='col-8 my-auto custom-no-padding text-center'>
 								<div class='row'>
@@ -90,7 +90,7 @@
 									href='#collapse{{outerIndex}}' aria-expanded='true'
 									aria-controls='collapse{{outerIndex}}'><img
 									class='img-circle custom-beginskill-collapsed-img'
-									src='/assets/images/collapsed.png' alt='No Image Available'></a>
+									ng-src='/assets/images/collapsed.png' alt='No Image Available'></a>
 							</div>
 						</div>
 					</div>
@@ -121,7 +121,7 @@
 													</div>
 													<img ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 													<div class='card-block text-center my-auto'>
 
 														<h1
@@ -161,7 +161,7 @@
 													class='card custom-beginskill-lesson-cards-background-left'>
 													<img ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner-disabled'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														{{pos=(module.sessions.length)-1;""}}
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
@@ -182,7 +182,7 @@
 													{{pos=0;""}} <img
 														ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner-disabled'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class=' custom-progress-color'>{{module.sessions[pos].progress}}%</h1>
@@ -201,7 +201,7 @@
 													{{pos=(innerIndex-1);""}} <img
 														ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner-disabled'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class='  custom-progress-color'>{{module.sessions[pos].progress}}%</h1>
@@ -227,7 +227,7 @@
 													</div>
 													<img ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 
 													<div class='card-block text-center my-auto'>
 														<h1
@@ -249,7 +249,7 @@
 													{{pos=((innerIndex + j) -1);""}} <img
 														ng-if='checkIsCompleted(module.sessions[pos])'
 														class='student-beginskill-banner-disabled'
-														src="./assets/images/checked_banner.png" />
+														ng-src="./assets/images/checked_banner.png" />
 													<div class='card-block my-auto text-center'>
 														<h1 class='card-title custom-task-title mt-5'>{{module.sessions[pos].name}}</h1>
 														<h1 class=' custom-progress-color'>{{module.sessions[pos].progress}}%</h1>
@@ -279,12 +279,12 @@
 								class='carousel-control-next custom-right-prev'
 								href='#carouselExampleControls{{outerIndex}}' role='button'
 								data-slide='next'> <img class=''
-								src='/assets/images/992180-200-copy.png' alt=''></a> <a
+								ng-src='/assets/images/992180-200-copy.png' alt=''></a> <a
 								ng-if='module.sessions.length>1'
 								class='carousel-control-prev custom-left-prev'
 								href='#carouselExampleControls{{outerIndex}}' role='button'
 								data-slide='prev'> <img class=''
-								src='/assets/images/992180-2001-copy.png' alt=''>
+								ng-src='/assets/images/992180-2001-copy.png' alt=''>
 							</a>
 
 
@@ -305,13 +305,13 @@
 				$('.collapse').collapse();
 				$('.custom-beginskill-collapsed-img').click(function() {
 
-					if ($(this).attr("src") == '/assets/images/expanded.png') {
+					if ($(this).attr("ng-src") == '/assets/images/expanded.png') {
 
-						$(this).attr("src", "/assets/images/collapsed.png
+						$(this).attr("ng-src", "/assets/images/collapsed.png
 						
 
 					} else {
-						$(this).attr("src", "/assets/images/expanded.png
+						$(this).attr("ng-src", "/assets/images/expanded.png
 						
 					}
 

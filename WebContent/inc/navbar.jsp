@@ -104,7 +104,7 @@
 			</a></li>
 			<li class="nav-item custom-leftmargin-type1"><a id=""
 				class="nav-link custom-coins"><img class='custom-coin-icontag'
-					src="/assets/images/coin-icon.png" class="rounded" alt=""><small
+					ng-src="/assets/images/coin-icon.png" class="rounded" alt=""><small
 					class='custom-xp'> {{studentProfile.coins}}</small></a></li>
 
 			<li
@@ -121,7 +121,7 @@
 					<div ng-if="notifications.length==0">
 						<img class='card-img-top mt-5'
 							style="width: 100px; height: 100px;"
-							src='/assets/images/note_graphic.png' alt=''>
+							ng-src='/assets/images/note_graphic.png' alt=''>
 						<h1 class='text-center text-muted'>No Notifications</h1>
 					</div>
 
@@ -134,7 +134,7 @@
 							<div class='row p-0'>
 								<div class='col-2 p-0'>
 									<img class='custom-notification-imgtag'
-										src="{{notification.imageURL}}" alt="">
+										ng-src="{{notification.imageURL}}" alt="no-image">
 								</div>
 								<p class='col-10 text-left' ng-bind-html="notification.message"></p>
 							</div>
@@ -152,7 +152,7 @@
 
 
 		<ul class="navbar-nav custom-nav-left-border">
-			<li class="nav-link"><img src="{{studentProfile.profileImage}}"
+			<li class="nav-link"><img ng-src="{{studentProfile.profileImage}}"
 				class="img-circle custom-profile-imgtag" alt=""></li>
 			<li class="nav-item dropdown m-0"><a
 				class="nav-link dropdown-toggle custom-profil-name" href="#"

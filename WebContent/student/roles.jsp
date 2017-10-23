@@ -34,7 +34,7 @@
 					<div class='card custom-roles-cards m-0'
 						ng-click="gotoBeginSkill(course.id)"
 						data-course_id='{{course.id}}'>
-						<img class='custom-roles-img' src='{{course.imageURL}}'
+						<img class='custom-roles-img' ng-src='{{course.imageURL}}'
 							alt='No Image Available'>
 						<div class='card-block'>
 							<h4 class=' custom-roles-subtitle'>{{course.category}}</h4>

@@ -1164,8 +1164,8 @@ a:focus {
 }
 .spinner,
 .spinner-small {
-    height: 40px;
-    width: 40px;
+    height: 70px;
+    width: 70px;
     position: absolute;
     top: 50%;
     left: 50%;

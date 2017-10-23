@@ -1,12 +1,19 @@
 var body_id = document.getElementsByTagName("body")[0].id;
+
+/*add loader to each page*/
 var bodySpinner = "<div ng-if='rendered' id='page-loader' class='fade in'><span class='spinner'></span></div>";
 $('body').prepend(bodySpinner);
+
+/*get path of t2c and cdn and userid*/
 var t2cPath = $('#talentify_logo_holder').data('t2c') + '/t2c/';
 var cdnPath = $('#talentify_logo_holder').data('cdn');
 var userId = $('#talentify_logo_holder').data('user');
 var complexObject;
 
+
+/*initialize app for angular js*/
 var app = angular.module(body_id, [ 'ngSanitize', 'elif' ]);
+
 
 function getTime() {
 	var today = new Date();
@@ -15,6 +22,7 @@ function getTime() {
 	return time;
 }
 
+/*get specific parameters from URL*/
 function getUrlParameter(param, dummyPath) {
 	var sPageURL = dummyPath || window.location.search.substring(1), sURLVariables = sPageURL
 			.split(/[&||?]/), res;
@@ -31,15 +39,21 @@ function getUrlParameter(param, dummyPath) {
 	return res;
 }
 
+/*initialize controller based on the body id*/
 app.controller(body_id + "Ctrl", function($scope, $http, $timeout, $location) {
 	console.log('started---' + getTime());
 	$scope.cdnPath = cdnPath;
 	$scope.userId=userId;
 	$scope.rendered = true;
+	
+	/*call rest call to get complex object*/
 	restClient($scope, $http, $timeout, $location);
 });
+
+/*setting up all directives*/
 setupAllDirectives();
 
+/*rest call definition*/
 function restClient($scope, $http, $timeout, $location) {
 	$http.get(t2cPath + 'user/' + userId + '/complex').then(function(res) {
 		$scope.studentProfile = res.data.studentProfile;
@@ -47,12 +61,15 @@ function restClient($scope, $http, $timeout, $location) {
 		$scope.courses = res.data.courses;
 		$scope.notifications = res.data.notifications;
 		complexObject = res.data;
+		
+		/*initialize page specific controller handling*/
 		initControlSwitcher($scope, $timeout, $location);
 		console.log('ended---' + getTime());
 		$scope.rendered = false;
 	});
 }
 
+/*page specific controller handling definition*/
 function initControlSwitcher($scope, $timeout, $location) {
 	switch (body_id) {
 	case 'student_role':
@@ -76,10 +93,12 @@ function initControlSwitcher($scope, $timeout, $location) {
 	}
 }
 
+/*menu bar item highlight*/
 function initMenuLabel(labelId){
 	$('#'+labelId).parent().addClass('active');
 }
 
+/*student-dashboard page initialization*/
 function initstudent_dashbard($scope, $timeout) {
 	var todayTaskCount = 0;
 	var todayTaskCompletedCount = 0;
@@ -160,6 +179,7 @@ function initstudent_dashbard($scope, $timeout) {
 	$scope.fireEvent();
 }
 
+/*student-dashboard-calendar setting-up*/
 function setupUserCalendar($scope, monthIndex) {
 	if (complexObject.events != undefined) {
 		var date = new Date(2017, monthIndex, 1);
@@ -209,6 +229,7 @@ function setupUserCalendar($scope, monthIndex) {
 	};
 }
 
+/*initialize student courses/roles page*/
 function initStudentRole($scope, $location) {
 	$scope.gotoBeginSkill = function(courseID) {
 		window.location = $location.$$protocol + "://" + $location.$$host + ":"
@@ -217,6 +238,7 @@ function initStudentRole($scope, $location) {
 	};
 }
 
+/*initialize student skill-profle page*/
 function initstudent_skill_profile($scope, $timeout) {
 	var courseObject = $scope.courses;
 	$.fn.extend({
@@ -327,6 +349,8 @@ function initstudent_skill_profile($scope, $timeout) {
 
 }
 
+
+/*app specific directive definition*/
 function setupAllDirectives() {
 
 	app.directive('studentSkillSetup', function() {
@@ -374,6 +398,7 @@ function setupAllDirectives() {
 
 }
 
+/*initialize student courses-begin-skill page*/
 function initstudent_begin_skill($scope, $timeout, $location) {
 	$scope.roundNumber = function(i) {
 		return Math.round(i);

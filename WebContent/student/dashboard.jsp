@@ -45,14 +45,14 @@
 
 									<img ng-if="item.itemType == 'LESSON_PRESENTATION' "
 										class='card-img-top custom-primary-img'
-										src='{{item.imageURL}}' alt='{{item.title}}'> <img
+										ng-src='{{item.imageURL}}' alt='{{item.title}}'> <img
 										ng-if="item.itemType == 'ASSESSMENT' "
 										class='card-img-top custom-primary-img'
-										src="{{cdnPath+'course_images/assessment.png'}}"
+										ng-src="{{cdnPath+'course_images/assessment.png'}}"
 										alt='{{item.title}}'> <img
 										ng-if="item.itemType == 'CUSTOM_TASK' "
 										class='card-img-top custom-primary-img'
-										src='{{item.imageURL}}' alt='{{item.title}}'>
+										ng-src='{{item.imageURL}}' alt='{{item.title}}'>
 
 
 									<p class='card-text custom-card-text'>{{item.description}}</p>
@@ -62,18 +62,18 @@
 										<button ng-switch-when='ASSESSMENT' data-url='/student/user_assessment.jsp?task_id={{item.id}}&assessment_id={{item.itemId}}&user_id={{userId}}'
 											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg start-assessment-button'><img
 											class='card-img-top custom-secoundary-img'
-											src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
+											ng-src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
 											class='custom-primary-btn-text'>START ASSESSMENT</span></button> <a
 											ng-switch-when='LESSON_PRESENTATION'
 											href='/student/presentation.jsp?task_id={{item.id}}&lesson_id={{item.itemId}}'
 											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
 											class='card-img-top custom-secoundary-img'
-											src='/assets/images/presentation-icon.png' alt=''><span
+											ng-src='/assets/images/presentation-icon.png' alt=''><span
 											class='custom-primary-btn-text'>WATCH PRESENTATION</span></a> <a
 											ng-switch-when='CUSTOM_TASK' href='#'
 											class='btn btn-danger custom-primary-btn btn-round-lg btn-lg'><img
 											class='card-img-top custom-secoundary-img'
-											src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
+											ng-src='/assets/images/ic_assignment_white_48dp.png' alt=''><span
 											class='custom-primary-btn-text'>START TASK</span></a>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
 									</div>
 									<div class='row mx-auto my-auto'>
 										<img class='card-img-top custom-notask-imgtag mx-auto'
-											src='/assets/images/zzz_graphic.png' alt=''>
+											ng-src='/assets/images/zzz_graphic.png' alt=''>
 									</div>
 									<div class='row mx-auto'>
 										<h1
@@ -118,11 +118,11 @@
 				<a class='carousel-control-next custom-right-prev'
 					ng-if='incompletedTasks!=0' href='#carouselExampleControls'
 					role='button' data-slide='next'> <img class=''
-					src='/assets/images/992180-200-copy.png' alt=''>
+					ng-src='/assets/images/992180-200-copy.png' alt=''>
 				</a> <a class='carousel-control-prev custom-left-prev'
 					ng-if='incompletedTasks!=0' href='#carouselExampleControls'
 					role='button' data-slide='prev'> <img class=''
-					src='/assets/images/992180-2001-copy.png' alt=''>
+					ng-src='/assets/images/992180-2001-copy.png' alt=''>
 				</a>
 
 			</div>
@@ -239,7 +239,7 @@
 							ng-repeat='task in todayCompletedTasks'>
 							<div class='col-2'>
 								<img class='card-img-top custom-task-icon'
-									src="{{(task.itemType=='ASSESSMENT'?'/assets/images/challenges-icon-copy.png':'/assets/images/video-icon.png')}}"
+									ng-src="{{(task.itemType=='ASSESSMENT'?'/assets/images/challenges-icon-copy.png':'/assets/images/video-icon.png')}}"
 									alt='{{task.title}}' />
 							</div>
 							<div class='col-10'>
@@ -256,7 +256,7 @@
 
 						<div ng-if='todayCompletedTasks.length==0'>
 							<img class='card-img-top custom-task-notask'
-								src='/assets/images/note_graphic.png' alt=''>
+								ng-src='/assets/images/note_graphic.png' alt=''>
 							<h1 class='text-center text-muted custom-font-family-tag'>No
 								Task Completed Today</h1>
 						</div>

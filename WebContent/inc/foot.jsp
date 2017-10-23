@@ -1,13 +1,21 @@
+<%@page import="com.viksitpro.core.dao.entities.Role"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.utilities.AppProperies"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
-<%@page import="java.io.IOException"%>
-<%@page import="java.io.InputStream"%>
-<%@page import="java.util.Properties"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = AppProperies.getProperty("cdn_path");
+
+	String loggedInRole = (String) request.getSession().getAttribute("logged_in_role");
+	String roleDir = loggedInRole.toLowerCase();
+	if (loggedInRole.toLowerCase().equalsIgnoreCase("trainer")) {
+		roleDir = "student";
+	}
+	if (loggedInRole.toLowerCase().equalsIgnoreCase("org_admin")) {
+		roleDir = "orgadmin";
+	}
 %>
 
 <script src="<%=basePath%>assets/js/jquery.min.js"></script>
@@ -34,7 +42,21 @@
 <script type="text/javascript"
 	src="<%=basePath%>assets/js/daterangepicker.js"></script>
 <script src="<%=basePath%>assets/js/plugins/jsTree/jstree.min.js"></script>
-<script src="<%=basePath%>assets/js/main.js"></script>
+
+<%
+	if (roleDir.equalsIgnoreCase("student")) {
+%>
+<script src="<%=basePath%>assets/js/student-main.js"></script>
+
+<%
+	} else {
+%>
+<script src="<%=basePath%>assets/js/orgadmin-main.js"></script>
+<%
+	}
+%>
+
+
 <script src="<%=basePath%>assets/js/app.js"></script>
 
 <%
@@ -55,7 +77,6 @@ ga('create', 'UA-101152637-1', 'auto', {
 	  userId: '<%=userID%>'
 	});
 	
-ga('set', 'userId', '<%=userID%>
-	');
+ga('set', 'userId', '<%=userID%>');
 	ga('send', 'pageview');
 </script>
