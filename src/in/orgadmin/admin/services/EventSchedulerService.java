@@ -1130,7 +1130,7 @@ public void deleteAssessmentEvent(String eventID) {
 		}
 		
 		String dateTime =dateForDB+"T"+startTime+":00Z";		
-		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute, trainerID);
+		String interviewData = createZoomSchedule(dateTime, "webinar", hours*60+minute, trainerID);
 		Integer meetingId = null;
 		String startUrl = "";
 		String joinUrl = "";
@@ -1321,8 +1321,8 @@ public void deleteAssessmentEvent(String eventID) {
 		} 
 		
 		
-		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		//System.out.println("c,s,s,,s ");
+		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&option_jbh=true&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
+		System.out.println("ggg "+url);
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -1372,7 +1372,7 @@ public void deleteAssessmentEvent(String eventID) {
 		}
 		
 		String dateTime =dateForDB+"T"+startTime+":00Z";		
-		String interviewData = createZoomSchedule(dateTime, "", hours*60+minute,trainerID);
+		String interviewData = createZoomSchedule(dateTime, "remote", hours*60+minute,trainerID);
 		Integer meetingId = null;
 		String startUrl = "";
 		String joinUrl = "";

@@ -95,7 +95,7 @@
       	
       	
       	$('.feedback_modal_button').unbind().on("click",function(){
-      		var url="<%=basePath%>/common_jsps/modal_feedback.jsp?uer_id=<%=user_id%>&task_id=<%=task_id%>";
+      		var url="<%=basePath%>/common_jsps/modal_feedback.jsp?user_id=<%=user_id%>&task_id=<%=task_id%>";
       		$.get(url, function( data ) {
       			$('#feedback_modal_content').empty();
   	    		$('#feedback_modal_content').append(data);    	    
