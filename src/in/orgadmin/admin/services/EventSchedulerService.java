@@ -749,7 +749,7 @@ public void deleteAssessmentEvent(String eventID) {
 		ArrayList<String> list = new ArrayList<>();
 		ArrayList<String> qdatelist = new ArrayList<>();
 		for (String eventDate : getDaysBetweenDates(startEventDate, endEventDate, days)) {
-			System.out.println("eventDate "+eventDate);
+			//System.out.println("eventDate "+eventDate);
 			boolean isCreated = false;
 			hashMap.put("eventDate", eventDate);
 			try {
@@ -1012,7 +1012,7 @@ public void deleteAssessmentEvent(String eventID) {
 	   
 	   
 		List<String> days = new ArrayList<>();
-		System.out.println("selected days "+selectedDays);
+	//	System.out.println("selected days "+selectedDays);
 		String[] selectedDayssplit = selectedDays.split(",");
 		HashSet<Integer> daysSet = new HashSet<>();
 		if(selectedDayssplit.length>0)
@@ -1045,7 +1045,15 @@ public void deleteAssessmentEvent(String eventID) {
 		} else {
 			sql="SELECT 	cmsession.title FROM 	module_course, 	cmsession_module, 	cmsession, 	 	batch WHERE 	module_course.course_id = batch.course_id and module_course.module_id = cmsession_module.module_id and cmsession_module.cmsession_id = cmsession.id and batch.id = "+batchID+" order by module_course.oid, cmsession_module.oid limit 1";
 			data = db.executeQuery(sql);
-			SessionName = ((String) data.get(0).get("title")).replaceAll("'", "");
+			if(data.size()> 0 && data.get(0)!=null && data.get(0).get("title")!=null)
+			{
+				SessionName = ((String) data.get(0).get("title")).replaceAll("'", "");
+			}
+			else
+			{
+				SessionName="";
+			}	
+			
 		}
 		return SessionName;
 
@@ -1282,7 +1290,7 @@ public void deleteAssessmentEvent(String eventID) {
 		String hostId = tempHostIds[Result];
 		
 		String getListOfUsers ="https://api.zoom.us/v1/user/list?api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3";
-		System.out.println("get list of users--"+ getListOfUsers);
+		//System.out.println("get list of users--"+ getListOfUsers);
 		try {
 			URL obj1 = new URL(getListOfUsers);
 			HttpURLConnection con1 = (HttpURLConnection) obj1.openConnection();
@@ -1298,7 +1306,7 @@ public void deleteAssessmentEvent(String eventID) {
 				in1.close();					
 					
 				try {
-					System.out.println("users list "+response1);
+				//	System.out.println("users list "+response1);
 					org.json.JSONObject	jsonObj = new org.json.JSONObject(response1.toString());
 					org.json.JSONArray arr = jsonObj.getJSONArray("users");
 					for(int i =0 ; i < arr.length(); i++)
@@ -1331,7 +1339,7 @@ public void deleteAssessmentEvent(String eventID) {
 		
 		
 		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&option_jbh=true&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		System.out.println("ggg "+url);
+		//System.out.println("ggg "+url);
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();

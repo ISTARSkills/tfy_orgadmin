@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.viksitpro.core.dao.entities.IstarUser"%>
 <%@page import="in.talentify.core.services.NotificationAndTicketServices"%>
 <%@page import="com.viksitpro.core.utilities.NotificationType"%>
@@ -22,7 +23,7 @@ if(request.getParameter("offset")!=null)
 	offset = request.getParameter("offset");
 }
 NotificationAndTicketServices serv = new NotificationAndTicketServices();
-List<HashMap<String, Object>> data = serv.getUnreadNotificationForAdmins(user.getId()+"", limit, offset);
+List<HashMap<String, Object>> data = new ArrayList();
 PrettyTime p = new PrettyTime();
 int total_notice_unread = 0;
 if(data.size()>0)
