@@ -4616,7 +4616,13 @@ if(flag == true){
 
 // validations
 function scheduler_formValidation(formID,flag){
-	
+	if($('#tab-3').hasClass('active'))
+	{
+		if($('#weekly_days_selector').val()==null || $('#weekly_days_selector').val()=="" || $('#weekly_days_selector').val()==undefined)
+			{
+			 return flag;
+			}
+	}
 	// console.log('-formID-'+formID);
 	if($('#'+formID+' select.eventType').val() === 'session'){
 		

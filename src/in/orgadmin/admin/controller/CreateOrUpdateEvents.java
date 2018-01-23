@@ -399,11 +399,13 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 				IstarUser user = new IstarUser();
 				user = dao.findById(AdminUserID);
 				String days = "";
-
+				
 				if (request.getParameterMap().containsKey("day")) {
-					days = request.getParameter("day") != "" ? request.getParameter("day") : "";
+					String daysArray[] = request.getParameterValues("day");					
+					days = convertStringArrayToString(daysArray, ",");
 				}
-
+				
+				
 				EventSchedulerService ess = new EventSchedulerService();
 
 				if (request.getParameterMap().containsKey("eventType")
@@ -499,7 +501,12 @@ public class CreateOrUpdateEvents extends IStarBaseServelet {
 		
 
 	}
-
+	private static String convertStringArrayToString(String[] strArr, String delimiter) {
+		StringBuilder sb = new StringBuilder();
+		for (String str : strArr)
+			sb.append(str).append(delimiter);
+		return sb.substring(0, sb.length() - 1);
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);

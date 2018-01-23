@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -708,7 +709,7 @@ public void deleteAssessmentEvent(String eventID) {
 	public StringBuffer weeklyEvent(int trainerID, int hours, int minute, int batchID, String eventType,
 			String startEventDate, String endEventDate, String startTime, int classroomID, int AdminUserID, String days,
 			int orgID, String associateTrainerID) {
-
+		
 		Batch batch = new BatchDAO().findById(batchID);
 		Course c = batch.getCourse();
 
@@ -748,6 +749,7 @@ public void deleteAssessmentEvent(String eventID) {
 		ArrayList<String> list = new ArrayList<>();
 		ArrayList<String> qdatelist = new ArrayList<>();
 		for (String eventDate : getDaysBetweenDates(startEventDate, endEventDate, days)) {
+			System.out.println("eventDate "+eventDate);
 			boolean isCreated = false;
 			hashMap.put("eventDate", eventDate);
 			try {
@@ -917,9 +919,9 @@ public void deleteAssessmentEvent(String eventID) {
 				+ formatter1.format(formatDate) + "' AND eventdate <= '" + formatter1.format(upper_limit)
 				+ "'And type !='BATCH_SCHEDULE_EVENT_PRESENTOR' and batch_group_id =(select batch_group_id from batch where id = "+hidden_batch_id+") GROUP BY eventid";
 
-		System.out.println("class_and_time_available "+class_and_time_available);
-		System.out.println("trainer_available "+trainer_available);
-		System.out.println("batch_available "+batch_available);
+		//System.out.println("class_and_time_available "+class_and_time_available);
+		//System.out.println("trainer_available "+trainer_available);
+		//System.out.println("batch_available "+batch_available);
 		
 		List<HashMap<String, Object>> classtime = db.executeQuery(class_and_time_available);
 		try {
@@ -1010,20 +1012,27 @@ public void deleteAssessmentEvent(String eventID) {
 	   
 	   
 		List<String> days = new ArrayList<>();
-
+		System.out.println("selected days "+selectedDays);
 		String[] selectedDayssplit = selectedDays.split(",");
-
-		for (String value : selectedDayssplit) {
-
+		HashSet<Integer> daysSet = new HashSet<>();
+		if(selectedDayssplit.length>0)
+		{
+			for(int i=0;i< selectedDayssplit.length;i++)
+			{
+				daysSet.add(Integer.parseInt(selectedDayssplit[i]));
+			}
+		}
+		//for (String value : selectedDayssplit) {
+			 //startCal.setTime(startDate.toDate());   
 			for (Date sd = startCal.getTime(); sd.before(endCal.getTime());) {
-				if (sd.getDay() == Integer.parseInt(value)) {
-
+				if (daysSet.contains(sd.getDay())) 
+				{
 					days.add(dateformatfrom.format(sd).toString());
 				}
 				startCal.add(Calendar.DATE, 1);
 		    	sd = startCal.getTime();
 			}
-		}
+		//}
 		return days;
 	}
 	public String getCurrentSession(int batchID) {
