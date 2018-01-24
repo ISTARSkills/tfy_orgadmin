@@ -30,6 +30,7 @@ if(data.size()>0)
 {
 	total_notice_unread = (int)data.get(0).get("total_rows");		
 }
+
 for(HashMap<String, Object> row: data)
 {
 										String title =row.get("title").toString();

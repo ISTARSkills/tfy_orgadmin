@@ -3523,4 +3523,119 @@ WHERE
 		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3086" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="event_date" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="group_name" />
+		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="trainer" />
+		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
+		<column columnHandler="NONE" display_name="Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
+		<column columnHandler="NONE" display_name="Noise" isVisible="true" name="noise" />
+		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
+		<column columnHandler="NONE" display_name="Sick" isVisible="true" name="sick" />
+		<column columnHandler="NONE" display_name="Content" isVisible="true" name="content_quality" />
+		<column columnHandler="NONE" display_name="Assignment" isVisible="true" name="assignment_quality" />
+		<column columnHandler="NONE" display_name="Internals" isVisible="true" name="internals_quality" />
+		<column columnHandler="NONE" display_name="Electricity" isVisible="true" name="electricity" />
+		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector_quality" />
+		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet_quality" />
+		
+	<sql>
+select 
+to_char(
+				batch_schedule_event.eventdate,
+				'DD-Mon-yyyy HH24:MI'
+			) as event_date,
+organization.name as college_name,
+batch_group.name as group_name,
+course.course_name as course_name,
+COALESCE(user_profile.first_name,istar_user.email) as trainer,
+trainer_feedback.rating as rating, 
+trainer_feedback.time as time,
+trainer_feedback.noise as noise,
+trainer_feedback.attendance as attendance,
+trainer_feedback.sick as sick,
+trainer_feedback.content as content_quality,
+trainer_feedback.assignment as assignment_quality,
+trainer_feedback.internals as internals_quality,
+trainer_feedback.internet as internet_quality,
+trainer_feedback.electricity as electricity,
+trainer_feedback.projector as projector_quality,
+coalesce(trainer_feedback.comments,'NA') as comments
+from trainer_feedback 
+join batch_schedule_event on (trainer_feedback.event_id = batch_schedule_event.id) 
+join batch_group on (batch_schedule_event.batch_group_id = batch_group.id ) 
+join course on(batch_schedule_event.course_id = course.id) 
+join  organization on( batch_group.college_id = organization.id) 
+join  istar_user on (batch_schedule_event.actor_id = istar_user.id)
+left join user_profile on (istar_user.id = user_profile.user_id)
+where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_TRAINER'
+order by event_date desc,college_name,group_name, course_name, trainer
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Trainer Feedback</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3087" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="event_date" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="group_name" />
+		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="trainer" />
+		<column columnHandler="NONE" display_name="Student" isVisible="true" name="student" />
+		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
+		<column columnHandler="NONE" display_name="Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />
+		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />
+		<column columnHandler="NONE" display_name="Trainer Knowledge" isVisible="true" name="trainer_knowledge" />
+		<column columnHandler="NONE" display_name="Trainer Too Fast" isVisible="true" name="trainer_too_fast" />
+		<column columnHandler="NONE" display_name="Class Control By Trainer" isVisible="true" name="class_control_by_trainer" />
+		<column columnHandler="NONE" display_name="Too Tough Content" isVisible="true" name="too_tough_content" />
+		<column columnHandler="NONE" display_name="Too Much Theoritic" isVisible="true" name="too_much_theoritic" />
+		<column columnHandler="NONE" display_name="No Fun In Class" isVisible="true" name="no_fun_in_class" />
+		<column columnHandler="NONE" display_name="Enough Examples" isVisible="true" name="enough_examples" />
+		<column columnHandler="NONE" display_name="Outside Disturbance" isVisible="true" name="outside_disturbance" />
+		
+	<sql>
+select to_char(
+				batch_schedule_event.eventdate,
+				'DD-Mon-yyyy HH24:MI'
+			) as event_date,
+organization.name as college_name,
+batch_group.name as group_name,
+course.course_name as course_name,
+COALESCE(tu.first_name,t.email) as trainer,
+COALESCE(su.first_name,s.email) as student,
+student_feedback.projector
+,student_feedback.internet
+,student_feedback.trainer_knowledge
+,student_feedback.trainer_too_fast
+,student_feedback.class_control_by_trainer
+,student_feedback.too_tough_content
+,student_feedback.too_much_theoritic
+,student_feedback.no_fun_in_class
+,student_feedback.enough_examples
+,student_feedback.outside_disturbance
+,student_feedback.rating,
+COALESCE(student_feedback.comment,'NA') as comments
+from student_feedback 
+join batch_schedule_event on (student_feedback.event_id = batch_schedule_event.id) 
+join batch_group on (batch_schedule_event.batch_group_id = batch_group.id ) 
+join course on(batch_schedule_event.course_id = course.id) 
+join  organization on( batch_group.college_id = organization.id) 
+join  istar_user t on (batch_schedule_event.actor_id = t.id)
+left join user_profile tu on (t.id = tu.user_id)
+join  istar_user s on (student_feedback.student_id = s.id)
+left join user_profile su on (s.id = su.user_id)
+where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_STUDENT'
+order by event_date desc,college_name,group_name, course_name, trainer, student
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 </istar_reports>
