@@ -3723,7 +3723,7 @@ ROUND(cast (avg (COALESCE(trainer_feedback.projector,5)) as NUMERIC)  ,2) as pro
 ,ROUND(cast (avg (COALESCE(trainer_feedback.internet,5))as NUMERIC),2) as internet
 ,ROUND(cast (avg (COALESCE(trainer_feedback.rating,5))as NUMERIC),2) as rating
 ,ROUND(cast (avg (COALESCE(trainer_feedback.TIME,5))as NUMERIC),2) as time
-,ROUND(cast (avg (COALESCE(trainer_feedback.noise,5))as NUMERIC),2) as noise
+,ROUND(cast (avg (COALESCE(trainer_feedback.noise,0))as NUMERIC),2) as noise
 ,ROUND(cast (avg (COALESCE(trainer_feedback.attendance,5))as NUMERIC),2) as attendance
 ,ROUND(cast (avg (COALESCE(trainer_feedback.CONTENT,5))as NUMERIC),2) as content
 ,ROUND(cast (avg (COALESCE(trainer_feedback.electricity,5))as NUMERIC),2) as electricity
@@ -3742,6 +3742,93 @@ order by college_name,group_name, course_name, trainer
 	<filter_sql>		
 	</filter_sql>	
 		<title>Trainer Feedback Summary</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3090" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Event Date" isVisible="true" data_type="date" name="event_date" />
+	    <column columnHandler="NONE" is_selectable="true" display_name="Org" isVisible="true" data_type="string" name="org_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
+		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer_name" />
+		<column columnHandler="NONE" display_name="Session" isVisible="true" name="session_title" />
+		<column columnHandler="NONE" display_name="Max Time" isVisible="true" name="max_time" />
+		<column columnHandler="NONE" display_name="Min Time" isVisible="true" name="min_time" />
+		<column columnHandler="NONE" display_name="Avg Time" isVisible="true" name="avg_time" />
+		<column columnHandler="NONE" display_name="Deviation" isVisible="true" name="deviation" />
+	<sql>
+select 
+ to_char(
+eventdate,
+'DD-Mon-yyyy HH24:MI'
+) as event_date,
+eventdate,
+org_name,
+course_name,
+group_name,
+trainer_name, 
+COALESCE(session_title,'Slide not moved') as session_title, 
+COALESCE (cast (max(seconds) as integer) * interval '1 min' ||'','') as max_time, 
+COALESCE (cast (min(seconds) as integer) * interval '1 min'||'','') as min_time,
+COALESCE (cast (avg(seconds) as integer) * interval '1 min'||'','') as avg_time, 
+COALESCE (cast ((max(seconds)-avg(seconds)) as integer) * interval '1 min' ||'','') as deviation 
+from (select eventdate,org_name,course_name,group_name,trainer_name, session_title,slide_id, next_cat, created_at,
+(DATE_PART('day', next_cat - created_at) * 24 + 
+                DATE_PART('hour', next_cat - created_at) * 60 +
+                DATE_PART('minute', next_cat - created_at) * 60 +
+                DATE_PART('second', next_cat - created_at)
+)
+ as seconds
+
+from (
+select 
+bse.eventdate,
+organization.name org_name,
+course.course_name,
+bg.name as group_name,
+COALESCE(tu.first_name, trainer.email) as trainer_name,
+cmsession.title session_title,
+slide_change_log.slide_id,
+slide_change_log.created_at
+,lag(slide_change_log.created_at) OVER w as previous_cat
+,lead(slide_change_log.created_at) OVER w as next_cat
+from
+batch_schedule_event bse 
+join batch_group bg on (bse.batch_group_id = bg.id and bse.type ='BATCH_SCHEDULE_EVENT_TRAINER' and eventdate &lt;= now())
+join course on (bse.course_id = course.id)
+join organization on (organization.id = bg.college_id)
+join istar_user trainer on (bse.actor_id = trainer.id)
+left join user_profile tu on (tu.user_id = trainer.id)
+left join slide_change_log on (slide_change_log.event_id = bse.id)
+left join cmsession on (cmsession.id = slide_change_log.cmsession_id)
+WINDOW w AS (PARTITION BY bse.eventdate,
+organization.name ,
+course.course_name,
+bg.name,
+cmsession.title ,COALESCE(tu.first_name, trainer.email)  
+order by bse.eventdate,
+organization.name ,
+course.course_name,
+bg.name,
+cmsession.title ,COALESCE(tu.first_name, trainer.email),
+slide_change_log.created_at)
+)tokcat
+)T2
+group by eventdate,
+org_name,
+course_name,
+group_name,
+trainer_name, 
+session_title
+order by eventdate desc,
+org_name,
+course_name,
+group_name,
+trainer_name, 
+session_title
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Slide Analytics</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>
