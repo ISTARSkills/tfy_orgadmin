@@ -44,17 +44,19 @@ public class StudentFeedbackController extends IStarBaseServelet {
 		String comments = request.getParameter("comments");
 		String ratingSkill = request.getParameter("rating_skill");
 
-		float projector = 0;
-		float internet = 0;
-		float trainer_knowledge = 0;
-		float trainer_too_fast = 0;
-		float class_control_by_trainer = 0;
-		float too_tough_content = 0;
-		float too_much_theoritic = 0;
-		float no_fun_in_class = 0;
-		float enough_examples = 0;
-		float outside_disturbance = 0;
-		float rating = 0;
+		float projector = 5;
+		float internet = 5;
+		float trainer_knowledge = 5;
+		float trainer_too_fast = 5;
+		float class_control_by_trainer = 5;
+		float too_tough_content = 5;
+		float too_much_theoritic = 5;
+		float no_fun_in_class = 5;
+		float enough_examples = 5;
+		float outside_disturbance = 5;
+		float rating = 5;
+		float food = 5;
+		float hostel = 5;
 
 		if (ratingSkill != null && !ratingSkill.equalsIgnoreCase("")) {
 			for (String skillData : ratingSkill.split(",")) {
@@ -92,12 +94,18 @@ public class StudentFeedbackController extends IStarBaseServelet {
 				case "outside_disturbance":
 					outside_disturbance = skill_value;
 					break;
+				case "food":
+					food = skill_value;
+					break;
+				case "hostel":
+					hostel = skill_value;
+					break;
 				}
 			}
 		}
 
 		rating =( (projector + internet + trainer_knowledge + trainer_too_fast + class_control_by_trainer
-				+ too_tough_content + too_much_theoritic + no_fun_in_class + enough_examples + outside_disturbance)/ 10);
+				+ too_tough_content + too_much_theoritic + no_fun_in_class + enough_examples + outside_disturbance + food + hostel)/ 12);
 		
 		
 		//check if exist ---> delete existed data
@@ -110,11 +118,11 @@ public class StudentFeedbackController extends IStarBaseServelet {
 
 		
 		//insert 
-		String sql = "INSERT INTO student_feedback (id, batch_id, student_id, projector, internet, trainer_knowledge, trainer_too_fast, class_control_by_trainer, too_tough_content, too_much_theoritic, no_fun_in_class, enough_examples, outside_disturbance, rating, event_id, trainer_id, comment) VALUES ((select COALESCE(max(id),0)+1 from student_feedback),"
+		String sql = "INSERT INTO student_feedback (id, batch_id, student_id, projector, internet, trainer_knowledge, trainer_too_fast, class_control_by_trainer, too_tough_content, too_much_theoritic, no_fun_in_class, enough_examples, outside_disturbance, rating, event_id, trainer_id, comment,food,hostel) VALUES ((select COALESCE(max(id),0)+1 from student_feedback),"
 				+ " " + batch_id + ", " + student_id + ", " + projector + ", " + internet + ", " + trainer_knowledge
 				+ ", " + trainer_too_fast + ", " + class_control_by_trainer + ", " + too_tough_content + ", "
 				+ too_much_theoritic + ", " + no_fun_in_class + ", " + enough_examples + ", " + outside_disturbance
-				+ ", " + rating + ", " + event_id + ", " + trainer_id + ", '" + comments + "');";
+				+ ", " + rating + ", " + event_id + ", " + trainer_id + ", '" + comments + "', '" + food + "', '" + hostel + "');";
 
 		//System.err.println(sql);
 		dbutils.executeUpdate(sql);

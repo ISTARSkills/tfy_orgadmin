@@ -29,7 +29,7 @@
       CourseContent courseContent = rc.getCourseContentForStudent(task_id);
       int lessonId=0;
       long currentSlideId = 0;
-      if(courseContent!=null)
+      if(courseContent!=null && courseContent.getItems() != null && courseContent.getItems().size() !=0)
       {
       	lessonId = courseContent.getItems().get(courseContent.getCurrentItemOrderId()).getItemId();
       	if(courseContent.getCurrentItemSlideId()!=null)
@@ -64,6 +64,7 @@
       </script>
    </head>
    <body>
+   		
       <div class="reveal">
          <div class="slides"><%=lessonServices.lessonHTMLfromLessonXMLAddendum(lessonId) %>
             <%=lessonServices.lessonHTMLfromLessonXML(lessonId) %>

@@ -441,7 +441,7 @@ public class ReportUtils {
 	private StringBuffer getDateFiler(Report report, String sql1, IStarColumn iterable_element, int colCount) {	
 		StringBuffer sb = new StringBuffer();
 		DBUTILS util = new DBUTILS();
-		String filterSql = "select min ("+iterable_element.name+") as min_date , max ("+iterable_element.name+") as max_date from ("+sql1+")FILTER_TABLE";
+		String filterSql = "select to_char(MIN (to_timestamp("+iterable_element.name+", 'DD-Mon-yyyy HH24:MI') ),'DD-Mon-yyyy HH24:MI') AS min_date, 	to_char(MAX (to_timestamp("+iterable_element.name+", 'DD-Mon-yyyy HH24:MI') ),'DD-Mon-yyyy HH24:MI') AS max_date from ("+sql1+")FILTER_TABLE";
 		System.err.println("0filterSql- >"+filterSql);
 		List<HashMap<String, Object>> minMaxDates = util.executeQuery(filterSql);
 		String minDate = "01/01/2015";
@@ -474,7 +474,7 @@ public class ReportUtils {
 			}
 		}
 		sb.append("<div class='col-sm-3 m-b-xs'><h4>Select Date </h4>");
-				sb.append("<div id='reportrange_"+iterable_element.name+"' class='form-control date_range_filter ' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"' data-min_date='"+maxDate+"' data-max_date='"+minDate+"'>");
+				sb.append("<div id='reportrange_"+iterable_element.name+"' class='form-control date_range_filter ' data-filter_name='"+iterable_element.name+"' data-column_number='"+colCount+"' data-min_date='"+minDate+"' data-max_date='"+maxDate+"'>");
 						sb.append("   <i class='fa fa-calendar'></i>");
 								sb.append(" <span></span> <b class='caret'></b>");
 										sb.append(" </div>");

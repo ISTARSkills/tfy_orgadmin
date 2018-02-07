@@ -200,18 +200,22 @@ public class LessonServices {
 
 	public String lessonHTMLfromLessonXMLAddendum(int lessonID) throws IOException {
 		String addendum = "";
-		Set<String> addendum_links = new HashSet<>();
-		Boolean is_addendum = checkLessonFolderforAddendum(lessonID, addendum_links, addendum);
-		if(is_addendum) {
-			addendum += "<section  fragment_count="+addendum_links.size()+" class='SIMPLE_LIST___ONLY_TITLE_LIST' id='9999' data-background-transition='convex' data-background-color='#ffffff' data-background-image='http://cdn.talentify.in/lessonXMLs/3477/3477/MS_Word_Session01_Common_desktop.png' data-background-size='100% 100%' >";
-			addendum += "<h1 data-slide_id='9999' data-element_type='TITLE' class='edit'>Addendum</h1>";
-			addendum += "<ul>";
-			for(String addendum_link : addendum_links) {
-				String link = getAnyPath("cdn_path")+"lessonXMLs/"+lessonID+"/"+lessonID+"/"+addendum_link;
-				addendum += "<li data-slide_id='9999' data-element_type='LIST' class=' fade-up' data-fragment-index='0'><a href='"+link+"'>"+addendum_link+"</li> ";
+		if(lessonID!=0)
+		{
+			Set<String> addendum_links = new HashSet<>();
+			Boolean is_addendum = checkLessonFolderforAddendum(lessonID, addendum_links, addendum);
+			if(is_addendum) {
+				addendum += "<section  fragment_count="+addendum_links.size()+" class='SIMPLE_LIST___ONLY_TITLE_LIST' id='9999' data-background-transition='convex' data-background-color='#ffffff' data-background-image='http://cdn.talentify.in/lessonXMLs/3477/3477/MS_Word_Session01_Common_desktop.png' data-background-size='100% 100%' >";
+				addendum += "<h1 data-slide_id='9999' data-element_type='TITLE' class='edit'>Addendum</h1>";
+				addendum += "<ul>";
+				for(String addendum_link : addendum_links) {
+					String link = getAnyPath("cdn_path")+"lessonXMLs/"+lessonID+"/"+lessonID+"/"+addendum_link;
+					addendum += "<li data-slide_id='9999' data-element_type='LIST' class=' fade-up' data-fragment-index='0'><a href='"+link+"'>"+addendum_link+"</li> ";
+				}
+				addendum += "</ul><aside class='notes'> Ask the class to download these resources, as they will form the basis of the case studies etc during the lesson </aside> </section> <div class='hidden_element' id='slide_4529' data-template='only_title_list' data-slide_id='4529' data-length='120' ></div>";
 			}
-			addendum += "</ul><aside class='notes'> Ask the class to download these resources, as they will form the basis of the case studies etc during the lesson </aside> </section> <div class='hidden_element' id='slide_4529' data-template='only_title_list' data-slide_id='4529' data-length='120' ></div>";
-		}
+		}	
+		
 		return addendum;
 	}
 

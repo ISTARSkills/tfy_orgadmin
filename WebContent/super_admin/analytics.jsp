@@ -44,8 +44,8 @@
 						<li class=" col-lg-2 text-center no-padding bg-muted"><a
 							data-toggle="tab" id="tab_6" href="#tab6">Super-Admin</a></li>
 
-						<li class=" col-lg-2 text-center no-padding bg-muted"><a
-							data-toggle="tab" id="tab_4" href="#tab4">Student Feedback</a></li>
+						<!-- <li class=" col-lg-2 text-center no-padding bg-muted"><a
+							data-toggle="tab" id="tab_4" href="#tab4">Student Feedback</a></li> -->
 					</ul>
 					<div class="tab-content">
 						<div id="tab1" class="active tab-pane div-min-height">
@@ -76,11 +76,11 @@
 							</div>
 						</div>
 
-						<div id="tab4" class=" tab-pane div-min-height">
+						<%-- <div id="tab4" class=" tab-pane div-min-height">
 							<div class="panel-body">
 								<jsp:include page="feedback_partials/student_feedback.jsp" />
 							</div>
-						</div>
+						</div> --%>
 					</div>
 				</div>
 			</div>
