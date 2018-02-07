@@ -104,8 +104,8 @@ public class StudentFeedbackController extends IStarBaseServelet {
 			}
 		}
 
-		rating =( (projector + internet + trainer_knowledge + trainer_too_fast + class_control_by_trainer
-				+ too_tough_content + too_much_theoritic + no_fun_in_class + enough_examples + outside_disturbance + food + hostel)/ 12);
+		rating =( (projector + internet + trainer_knowledge  + class_control_by_trainer
+				+ too_tough_content   + no_fun_in_class  + food + hostel)/ 8);
 		
 		
 		//check if exist ---> delete existed data

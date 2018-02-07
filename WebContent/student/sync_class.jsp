@@ -87,6 +87,7 @@
       
       <script>
       $(document).ready(function() {
+    	  	  
       	$.ajax({
                type: "POST",
                url: '<%=basePath%>/t2c/update_attendance',
@@ -102,7 +103,7 @@
   	    		$('#feedback_modal_content').append(data);    	    
   	    		$('#feedback_modal').modal('show');
   	    		$(".rateYo").rateYo({
-  	    		    rating: 0.0, 
+  	    		    rating: 5, 
   	    		    starWidth: "20px"
   	    		  });
   	    		

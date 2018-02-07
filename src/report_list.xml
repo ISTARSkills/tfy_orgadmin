@@ -3528,51 +3528,64 @@ WHERE
 	    <column columnHandler="NONE" is_selectable="true" display_name="Organization Name" isVisible="true" data_type="string" name="college_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="group_name" />
-		<column columnHandler="NONE" display_name="Master Trainer" isVisible="true" name="trainer" />
+		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
 		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
-		<column columnHandler="NONE" display_name="Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />
 		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
 		<column columnHandler="NONE" display_name="Noise" isVisible="true" name="noise" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
-		<column columnHandler="NONE" display_name="Sick" isVisible="true" name="sick" />
 		<column columnHandler="NONE" display_name="Content" isVisible="true" name="content_quality" />
-		<column columnHandler="NONE" display_name="Assignment" isVisible="true" name="assignment_quality" />
-		<column columnHandler="NONE" display_name="Internals" isVisible="true" name="internals_quality" />
 		<column columnHandler="NONE" display_name="Electricity" isVisible="true" name="electricity" />
 		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector_quality" />
 		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet_quality" />
+		<column columnHandler="NONE" display_name="Talentify" isVisible="true" name="talentify_rating" />
 		
 	<sql>
-select 
-to_char(
-				batch_schedule_event.eventdate,
-				'DD-Mon-yyyy HH24:MI'
-			) as event_date,
-organization.name as college_name,
-batch_group.name as group_name,
-course.course_name as course_name,
-COALESCE(user_profile.first_name,istar_user.email) as trainer,
-trainer_feedback.rating as rating, 
-trainer_feedback.time as time,
-trainer_feedback.noise as noise,
-trainer_feedback.attendance as attendance,
-trainer_feedback.sick as sick,
-trainer_feedback.content as content_quality,
-trainer_feedback.assignment as assignment_quality,
-trainer_feedback.internals as internals_quality,
-trainer_feedback.internet as internet_quality,
-trainer_feedback.electricity as electricity,
-trainer_feedback.projector as projector_quality,
-coalesce(trainer_feedback.comments,'NA') as comments
-from trainer_feedback 
-join batch_schedule_event on (trainer_feedback.event_id = batch_schedule_event.id) 
-join batch_group on (batch_schedule_event.batch_group_id = batch_group.id ) 
-join course on(batch_schedule_event.course_id = course.id) 
-join  organization on( batch_group.college_id = organization.id) 
-join  istar_user on (batch_schedule_event.actor_id = istar_user.id)
-left join user_profile on (istar_user.id = user_profile.user_id)
-where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_TRAINER'
-order by event_date desc,college_name,group_name, course_name, trainer
+SELECT
+	to_char(
+		batch_schedule_event.eventdate,
+		'DD-Mon-yyyy HH24:MI'
+	) AS event_date,
+	organization. NAME AS college_name,
+	batch_group. NAME AS group_name,
+	course.course_name AS course_name,
+	COALESCE (su.first_name, s.email) as trainer,
+	COALESCE (trainer_feedback.comments,'N/A') as comments,
+	COALESCE (trainer_feedback.rating,0) as rating,
+	COALESCE (trainer_feedback. TIME,0) as time,
+	COALESCE (trainer_feedback.noise,0) as noise,
+	COALESCE (trainer_feedback.attendance,0) as attendance,
+	COALESCE (trainer_feedback. CONTENT,0) as content_quality,
+	COALESCE (trainer_feedback.electricity,0) as electricity,
+	COALESCE (trainer_feedback.internet,0) as internet_quality,
+	COALESCE (trainer_feedback.projector,0) as projector_quality,
+	COALESCE (trainer_feedback.talentify_rating,0) as  talentify_rating
+FROM
+	trainer_feedback
+JOIN batch_schedule_event ON (
+	trainer_feedback.event_id = batch_schedule_event. ID
+)
+JOIN batch_group ON (
+	batch_schedule_event.batch_group_id = batch_group. ID
+)
+JOIN course ON (
+	batch_schedule_event.course_id = course. ID
+)
+JOIN organization ON (
+	batch_group.college_id = organization. ID
+)
+JOIN istar_user s ON (
+	trainer_feedback.user_id = s. ID
+)
+LEFT JOIN user_profile su ON (s. ID = su.user_id)
+WHERE
+	batch_schedule_event. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'
+ORDER BY
+	batch_schedule_event.eventdate DESC,
+	college_name,
+	group_name,
+	course_name,
+	trainer
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -3632,7 +3645,7 @@ join organization on( batch_group.college_id = organization.id)
 join istar_user s on (student_feedback.student_id = s.id)
 left join user_profile su on (s.id = su.user_id)
 where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_STUDENT'
-order by batch_schedule_event.eventdate desc,college_name,group_name, course_name, trainer, student
+order by batch_schedule_event.eventdate asc,college_name,group_name, course_name, trainer, student
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
@@ -3685,6 +3698,50 @@ order by college_name,group_name, course_name, trainer
 	<filter_sql>		
 	</filter_sql>	
 		<title>Student Feedback Summary</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
+<reports id="3089" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Org" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
+		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
+		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />
+		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />
+		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
+		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="noise" />
+		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
+		<column columnHandler="NONE" display_name="Electricity" isVisible="true" name="electricity" />
+		<column columnHandler="NONE" display_name="Talentify" isVisible="true" name="talentify_rating" />		
+	<sql>
+select 
+organization.name as college_name,
+batch_group.name as group_name,
+course.course_name as course_name,
+COALESCE(tu.first_name,t.email) as trainer,
+ROUND(cast (avg (COALESCE(trainer_feedback.projector,5)) as NUMERIC)  ,2) as projector
+,ROUND(cast (avg (COALESCE(trainer_feedback.internet,5))as NUMERIC),2) as internet
+,ROUND(cast (avg (COALESCE(trainer_feedback.rating,5))as NUMERIC),2) as rating
+,ROUND(cast (avg (COALESCE(trainer_feedback.TIME,5))as NUMERIC),2) as time
+,ROUND(cast (avg (COALESCE(trainer_feedback.noise,5))as NUMERIC),2) as noise
+,ROUND(cast (avg (COALESCE(trainer_feedback.attendance,5))as NUMERIC),2) as attendance
+,ROUND(cast (avg (COALESCE(trainer_feedback.CONTENT,5))as NUMERIC),2) as content
+,ROUND(cast (avg (COALESCE(trainer_feedback.electricity,5))as NUMERIC),2) as electricity
+,ROUND(cast (avg (COALESCE(trainer_feedback.talentify_rating,5))as NUMERIC),2) as talentify_rating
+from trainer_feedback 
+join batch_schedule_event on (trainer_feedback.event_id = batch_schedule_event.id)
+join istar_user t on (trainer_feedback.user_id = t.id)
+left join user_profile tu on (t.id = tu.user_id)
+join batch_group on (batch_schedule_event.batch_group_id = batch_group.id ) 
+join course on(batch_schedule_event.course_id = course.id) 
+join organization on( batch_group.college_id = organization.id) 
+where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_TRAINER'
+group by college_name,group_name, course_name, trainer
+order by college_name,group_name, course_name, trainer
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Trainer Feedback Summary</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
 </istar_reports>
