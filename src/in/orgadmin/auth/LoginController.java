@@ -41,12 +41,14 @@ public class LoginController extends HttpServlet {
 
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 
-			//System.out.println("Email -> " + request.getParameter("email"));
-			//System.out.println("Password -> " + request.getParameter("password"));
+			System.out.println("Email -> " + request.getParameter("email"));
+			System.out.println("Password -> " + request.getParameter("password"));
 			IstarUserDAO dao = new IstarUserDAO();
 			dao.getSession().clear();
 
 			List<IstarUser> users = dao.findByEmail(request.getParameter("email").toLowerCase());
+			
+			//System.out.println(users.size());
 
 			if (users != null && users.size() != 0) {
 
@@ -55,7 +57,9 @@ public class LoginController extends HttpServlet {
 				String url = "";
 				String findUserRole = "SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "
 						+ user.getId() + " order by ROLE . ID  limit 1";
+				System.out.println(findUserRole);
 				List<HashMap<String, Object>> roles = util.executeQuery(findUserRole);
+				
 				String userRole = "";
 				if (roles.size() > 0 && roles.get(0).get("role_name") != null) {
 					userRole = roles.get(0).get("role_name").toString();
