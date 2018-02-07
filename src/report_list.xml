@@ -3638,4 +3638,52 @@ order by batch_schedule_event.eventdate desc,college_name,group_name, course_nam
 		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
+<reports id="3088" type_of_report="table">		
+	    <column columnHandler="NONE" is_selectable="true" display_name="Org" isVisible="true" data_type="string" name="college_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Course" isVisible="true" data_type="string" name="course_name" />
+		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
+		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
+		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />
+		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />
+		<column columnHandler="NONE" display_name="Trainer Quality" isVisible="true" name="trainer_knowledge" />
+		<column columnHandler="NONE" display_name="Trainer Class Control" isVisible="true" name="class_control_by_trainer" />
+		<column columnHandler="NONE" display_name="Easy to Follow" isVisible="true" name="too_tough_content" />
+		<column columnHandler="NONE" display_name="Fun Class" isVisible="true" name="no_fun_in_class" />
+		<column columnHandler="NONE" display_name="Food" isVisible="true" name="food" />
+		<column columnHandler="NONE" display_name="Hostel" isVisible="true" name="hostel" />		
+	<sql>
+select 
+organization.name as college_name,
+batch_group.name as group_name,
+course.course_name as course_name,
+COALESCE(tu.first_name,t.email) as trainer,
+ROUND(cast (avg (COALESCE(student_feedback.projector,5)) as NUMERIC)  ,2) projector
+,ROUND(cast (avg (COALESCE(student_feedback.internet,5))as NUMERIC),2) internet
+,ROUND(cast (avg (COALESCE(student_feedback.trainer_knowledge,5))as NUMERIC),2) trainer_knowledge
+,ROUND(cast (avg (COALESCE(student_feedback.trainer_too_fast,5))as NUMERIC),2) trainer_too_fast
+,ROUND(cast (avg (COALESCE(student_feedback.class_control_by_trainer,5))as NUMERIC),2) class_control_by_trainer
+,ROUND(cast (avg (COALESCE(student_feedback.too_tough_content,5))as NUMERIC),2) too_tough_content
+,ROUND(cast (avg (COALESCE(student_feedback.too_much_theoritic,5))as NUMERIC),2) too_much_theoritic
+,ROUND(cast (avg (COALESCE(student_feedback.no_fun_in_class,5))as NUMERIC),2) no_fun_in_class
+,ROUND(cast (avg (COALESCE(student_feedback.enough_examples,5))as NUMERIC),2) enough_examples
+,ROUND(cast (avg (COALESCE(student_feedback.outside_disturbance,5))as NUMERIC),2) outside_disturbance
+,ROUND(cast (avg (COALESCE(student_feedback.rating,5))as NUMERIC),2) rating
+,ROUND(cast (avg (COALESCE(student_feedback.food,5))as NUMERIC),2) food
+,ROUND(cast (avg (COALESCE(student_feedback.hostel ,5))as NUMERIC),2) hostel
+from student_feedback 
+join batch_schedule_event on (student_feedback.event_id = batch_schedule_event.id)
+join istar_user t on (student_feedback.trainer_id = t.id)
+left join user_profile tu on (t.id = tu.user_id)
+join batch_group on (batch_schedule_event.batch_group_id = batch_group.id ) 
+join course on(batch_schedule_event.course_id = course.id) 
+join organization on( batch_group.college_id = organization.id) 
+where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_STUDENT'
+group by college_name,group_name, course_name, trainer
+order by college_name,group_name, course_name, trainer
+	</sql>
+	<filter_sql>		
+	</filter_sql>	
+		<title>Student Feedback Summary</title>
+		<y_axis_title>Average</y_axis_title>
+</reports>
 </istar_reports>
