@@ -3587,7 +3587,6 @@ order by event_date desc,college_name,group_name, course_name, trainer
 		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
 		<column columnHandler="NONE" display_name="Student" isVisible="true" name="student" />
 		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
-		<column columnHandler="NONE" display_name="Overall" isVisible="true" name="rating" />
 		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />
 		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />
 		<column columnHandler="NONE" display_name="Trainer Quality" isVisible="true" name="trainer_knowledge" />
@@ -3596,6 +3595,8 @@ order by event_date desc,college_name,group_name, course_name, trainer
 		<column columnHandler="NONE" display_name="Easy to Follow" isVisible="true" name="too_tough_content" />
 		<column columnHandler="NONE" display_name="Food" isVisible="true" name="food" />		
 		<column columnHandler="NONE" display_name="Hostel" isVisible="true" name="hostel" />
+		<column columnHandler="NONE" display_name="Overall" isVisible="true" name="rating" />
+		
 		
 	<sql>
 select to_char(

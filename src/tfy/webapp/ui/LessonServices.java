@@ -46,7 +46,10 @@ public class LessonServices {
 	public String lessonHTMLfromLessonXML(int lessonID) throws IOException {
 		StringBuffer stringBuffer = new StringBuffer();
 		
-	
+	if(lessonID == 0 ) {
+		
+		return "";
+	}
 
 		URL url = new URL("http://cdn.talentify.in:9999/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();

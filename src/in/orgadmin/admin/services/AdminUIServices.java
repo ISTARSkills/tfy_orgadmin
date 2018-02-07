@@ -95,12 +95,7 @@ public class AdminUIServices {
 	
 	public List<HashMap<String, Object>> studentFeedbackTrainerInfo(int taskId){
 		
-		String sql="SELECT 	bse.eventdate,bse.id, c.course_name,	iu.email, 	up.first_name, 	iu. ID AS trainer_id, bse.batch_group_id, 	up.profile_image FROM "
-				+ "	batch_schedule_event bse, 	istar_user iu, 	user_profile up,course c WHERE 	"
-				+ "bse.batch_group_id IN ( 		SELECT 			batch_group_id 		FROM 			batch_schedule_event 		WHERE 			"
-				+ "ID IN ( 				SELECT 					item_id 				FROM 					task 				WHERE 					ID = "+taskId+" 			) 	) "
-						+ "AND bse.eventdate IN ( 	SELECT 		eventdate 	FROM 		batch_schedule_event 	WHERE 	"
-						+ "	ID IN ( 			SELECT 				item_id 			FROM 				task 			WHERE 				ID = "+taskId+" 		) ) AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' AND bse.actor_id = iu. ID AND iu. ID = up.user_id AND bse.course_id=c.id";
+		String sql="select bse.eventdate, 	bse. ID, 	C .course_name, 	trainer.email, 	COALESCE(user_profile.first_name,'NA'), 	trainer. ID AS trainer_id, 	bse.batch_group_id, 	user_profile.profile_image, 	tse.id trainer_event_id from task join batch_schedule_event bse on (bse.id = task.item_id) join event_queue_event_mapping on (bse.id = event_queue_event_mapping.event_id) join event_queue on (event_queue.id = event_queue_event_mapping.event_queue_id) join event_queue_event_mapping map2 on(map2.event_queue_id = event_queue.id) join batch_schedule_event tse on(map2.event_id = tse.id ) join course c on (tse.course_id = c.id ) join istar_user trainer on(trainer.id = tse.actor_id) left join user_profile on (trainer.id = user_profile.user_id) where task.id = "+taskId+" and bse.type ='BATCH_SCHEDULE_EVENT_STUDENT' and tse.type = 'BATCH_SCHEDULE_EVENT_TRAINER'";
 
 		DBUTILS db = new DBUTILS();
 		return db.executeQuery(sql);

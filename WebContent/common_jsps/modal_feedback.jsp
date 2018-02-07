@@ -14,22 +14,24 @@
 	int task_id = Integer.parseInt(request.getParameter("task_id"));
 
 	HashMap<String, String> ratingList = new HashMap();
-	ratingList.put("projector", "Projector issue.");
-	ratingList.put("internet", "Internet was not working properly.");
-	ratingList.put("trainer_knowledge", "Trainer knowledge was not upto mark.");
-	ratingList.put("trainer_too_fast", "Trainer went too fast.");
-	ratingList.put("class_control_by_trainer", "Poor trainer class control.");
-	ratingList.put("too_tough_content", "Content taught in class was too tough.");
-	ratingList.put("too_much_theoritic", "Content was too much theory.");
-	ratingList.put("no_fun_in_class", "Class was not fun.");
-	ratingList.put("enough_examples", "Did not have enough examples.");
-	ratingList.put("outside_disturbance", "Disturbance to class from outside.");
+	ratingList.put("projector", "Projector issue");
+	ratingList.put("internet", "Internet");
+	ratingList.put("trainer_knowledge", "Trainer quality");
+	//ratingList.put("trainer_too_fast", "Trainer went too fast.");
+	ratingList.put("class_control_by_trainer", "Trainer Class Control");
+	ratingList.put("too_tough_content", "Easy To Follow");
+	//ratingList.put("too_much_theoritic", "Content was too much theory.");
+	ratingList.put("no_fun_in_class", "Fun Class");
+	//ratingList.put("enough_examples", "Did not have enough examples.");
+	ratingList.put("food", "Food");
+	ratingList.put("hostel", "Hostel");
+	//ratingList.put("outside_disturbance", "Disturbance to class from outside.");
 	
 	
 	AdminUIServices uiServices=new AdminUIServices();
 	SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy HH:mma");
 	
-	List<HashMap<String, Object>> data=uiServices.studentFeedbackTrainerInfo(task_id);
+	List<HashMap<String, Object>> data = uiServices.studentFeedbackTrainerInfo(task_id);
 	
 	String trainer_email="";
 	String trainer_firstName="";
