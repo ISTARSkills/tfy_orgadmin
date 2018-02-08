@@ -3529,8 +3529,7 @@ WHERE
 		<column columnHandler="NONE" is_selectable="true" display_name="Course Name" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Section Name" isVisible="true" data_type="string" name="group_name" />
 		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
-		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />
-		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Comments" isVisible="true" name="comments" />	
 		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
 		<column columnHandler="NONE" display_name="Noise" isVisible="true" name="noise" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
@@ -3539,7 +3538,7 @@ WHERE
 		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector_quality" />
 		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet_quality" />
 		<column columnHandler="NONE" display_name="Talentify" isVisible="true" name="talentify_rating" />
-		
+		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />
 	<sql>
 SELECT
 	to_char(
@@ -3706,13 +3705,13 @@ order by college_name,group_name, course_name, trainer
 		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
 		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer" />
 		<column columnHandler="NONE" display_name="Projector" isVisible="true" name="projector" />
-		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />
-		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />
+		<column columnHandler="NONE" display_name="Internet" isVisible="true" name="internet" />	
 		<column columnHandler="NONE" display_name="Time" isVisible="true" name="time" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="noise" />
 		<column columnHandler="NONE" display_name="Attendance" isVisible="true" name="attendance" />
 		<column columnHandler="NONE" display_name="Electricity" isVisible="true" name="electricity" />
-		<column columnHandler="NONE" display_name="Talentify" isVisible="true" name="talentify_rating" />		
+		<column columnHandler="NONE" display_name="Talentify" isVisible="true" name="talentify_rating" />	
+		<column columnHandler="NONE" display_name="Overall Rating" isVisible="true" name="rating" />	
 	<sql>
 select 
 organization.name as college_name,
