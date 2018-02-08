@@ -197,6 +197,17 @@ public class GetNotificationData extends IStarBaseServelet {
 					sb.append("<option value="+row.get("id")+">"+row.get("name")+"</option>");						
 				}
 			}
+			if(entityType.equalsIgnoreCase("ANALYTICS_ORG"))
+			{
+				//return all sections/ roles
+				String sql = "SELECT id,name, type FROM batch_group WHERE college_id = "+entityId;
+				List<HashMap<String, Object>> groups = util.executeQuery(sql);
+				sb.append("<option value='null'>Select Section / Roles</option>");
+				for(HashMap<String, Object> row: groups)
+				{
+					sb.append("<option value="+row.get("id")+">"+row.get("name")+" ("+row.get("type")+")</option>");
+				}			
+			}
 		}		
 		response.getWriter().write(sb.toString());
 		

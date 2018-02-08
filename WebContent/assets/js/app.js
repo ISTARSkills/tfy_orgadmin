@@ -1723,7 +1723,19 @@ $(containerID).highcharts({
 			text : graph_title
 		},
 		yAxis : {
-			allowDecimals : false,
+			type: 'logarithmic',
+			labels: {
+	            formatter: function() {
+	                if(this.value <= 0.00001){
+	                    return 0.001;
+	                } else {
+	                    return this.value;
+	                }
+	            }
+	        },
+	        min: 0.001,
+	        allowDecimals : true,
+			
 			title : {
 				text : y_axis_title
 			}

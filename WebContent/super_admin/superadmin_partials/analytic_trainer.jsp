@@ -82,7 +82,7 @@ UIUtils ui_Util = new UIUtils();
 				<li class="active"><a data-toggle="tab" href="#trainer_tab">Trainer</a></li>
 				<li class=""><a data-toggle="tab" href="#master_trainer_tab">Master
 						Trainer</a></li>
-						<li class=""><a data-toggle="tab" href="#slide_analytics_tab">Trainer Slide Analytics - Summary</a></li>
+						
 			</ul>
 			<div class="tab-content">
 				<div id="trainer_tab" class="tab-pane active">
@@ -157,12 +157,7 @@ UIUtils ui_Util = new UIUtils();
 						</div>
 					</div>
 				</div>
-				<div id="slide_analytics_tab" class="tab-pane active">
-				<div class="panel-body">
-							
-							
-						</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>

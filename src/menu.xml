@@ -13,6 +13,7 @@
 		<child_links display_name="Tickets" is_visible_in_menu="true" jsp_file="/super_admin/super_admin_tickets.jsp" url="/super_admin/super_admin_tickets.jsp" valid_role="super_admin" />
 
 		<child_links display_name="Scheduler" is_visible_in_menu="true" jsp_file="/super_admin/scheduler.jsp" url="/super_admin/scheduler.jsp" valid_role="super_admin" />
+		<child_links display_name="Trainer Slide Analytics Summary" is_visible_in_menu="true" jsp_file="/super_admin/slide_analytics_summary.jsp" url="/super_admin/slide_analytics_summary.jsp" valid_role="super_admin" />
 	</parent_links>
 
 	<parent_links display_name="Dashboard" is_visible_in_menu="true" jsp_file="/orgadmin/dashboard.jsp" url="/orgadmin/dashboard.jsp" valid_role="org_admin" />
