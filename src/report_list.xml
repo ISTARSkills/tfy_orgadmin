@@ -3751,10 +3751,11 @@ order by college_name,group_name, course_name, trainer
 		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
 		<column columnHandler="NONE" display_name="Trainer" isVisible="true" name="trainer_name" />
 		<column columnHandler="NONE" display_name="Session" isVisible="true" name="session_title" />
-		<column columnHandler="NONE" display_name="Max Time" isVisible="true" name="max_time" />
-		<column columnHandler="NONE" display_name="Min Time" isVisible="true" name="min_time" />
-		<column columnHandler="NONE" display_name="Avg Time" isVisible="true" name="avg_time" />
-		<column columnHandler="NONE" display_name="Deviation" isVisible="true" name="deviation" />
+		<column columnHandler="NONE" display_name="Max Time(Min:Sec)" isVisible="true" name="max_time" />
+		<column columnHandler="NONE" display_name="Min Time(Min:Sec)" isVisible="true" name="min_time" />
+		<column columnHandler="NONE" display_name="Avg Time(Min:Sec)" isVisible="true" name="avg_time" />
+		<column columnHandler="NONE" display_name="Deviation(Min:Sec)" isVisible="true" name="deviation" />
+		<column columnHandler="EVENT_SESSION_DETAILS" display_name="Details" isVisible="true" name="event_id" />
 	<sql>
 select 
  to_char(
@@ -3770,8 +3771,8 @@ COALESCE(session_title,'Slide not moved') as session_title,
 COALESCE (cast (max(seconds) as integer) * interval '1 min' ||'','') as max_time, 
 COALESCE (cast (min(seconds) as integer) * interval '1 min'||'','') as min_time,
 COALESCE (cast (avg(seconds) as integer) * interval '1 min'||'','') as avg_time, 
-COALESCE (cast ((max(seconds)-avg(seconds)) as integer) * interval '1 min' ||'','') as deviation 
-from (select eventdate,org_name,course_name,group_name,trainer_name, session_title,slide_id, next_cat, created_at,
+COALESCE (cast ((max(seconds)-avg(seconds)) as integer) * interval '1 min' ||'','') as deviation , event_id
+from (select id as event_id, eventdate,org_name,course_name,group_name,trainer_name, session_title,slide_id, next_cat, created_at,
 (DATE_PART('day', next_cat - created_at) * 24 + 
                 DATE_PART('hour', next_cat - created_at) * 60 +
                 DATE_PART('minute', next_cat - created_at) * 60 +
@@ -3781,6 +3782,7 @@ from (select eventdate,org_name,course_name,group_name,trainer_name, session_tit
 
 from (
 select 
+bse.id ,
 bse.eventdate,
 organization.name org_name,
 course.course_name,
@@ -3813,7 +3815,7 @@ cmsession.title ,COALESCE(tu.first_name, trainer.email),
 slide_change_log.created_at)
 )tokcat
 )T2
-group by eventdate,
+group by event_id, eventdate,
 org_name,
 course_name,
 group_name,

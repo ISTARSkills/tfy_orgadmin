@@ -1250,6 +1250,7 @@ function  callColumnHandlerFunctions(){
 	initDeleteGroupCall();
 	initStudentProfileHandler();
 	initPresentorHandler();
+	bind_report_session_clicks();
 }
 
 function initPresentorHandler(){
@@ -3707,6 +3708,7 @@ function initiateStudentReportHolder()
 
 function bind_report_session_clicks() {
     $('.batch-session-button').unbind().on("click", function() {
+    	console.log("clicked again");
         var event_id = $(this).data('event-id');
 
         var urls = 'modal_session.jsp?event_id=' + event_id;
@@ -7865,9 +7867,10 @@ function init_custom_report(){
 	         console.log(start.toISOString(), end.toISOString(), label);
 	         startDateVar = start.format('YYYYMMDD');
 	         endDateVar =end.format('YYYYMMDD');
-	          var id = '#chart_datatable_'+report_id;
-        	  var table = $(id).DataTable();
-        	  table.draw(); 
+	         var id = '#chart_datatable_'+report_id;
+        	 var table = $(id).DataTable();
+        	 table.draw(); 
+        	  
         	 
 	     });
 		
@@ -7911,6 +7914,7 @@ function init_custom_report(){
     	        			viewAttendanceFunction();
     	        		}
     	        	 table.draw();
+    	        	// bind_report_session_clicks();
     	        	 $.fn.dataTable.ext.search.push(
  	        			    function( settings, data, dataIndex ) {
  	        			        var min = parseInt($this.attr("value").split(';')[0]);
@@ -7947,10 +7951,12 @@ function init_custom_report(){
   	     var filter_value =$("#"+id+" option:selected").text();
   	     var column_number = $('#'+id).data('column_number');
   	     table.columns(column_number).search(filter_value).draw();
+  	  // bind_report_session_clicks();
   	   }
   	   else
   		{ var column_number = $('#'+id).data('column_number');
   		 table.columns(column_number).search('').draw();
+  		 //bind_report_session_clicks();
   		}	   
   	   
   	   $('#'+id).select2();
@@ -7978,7 +7984,7 @@ function init_custom_report(){
 
 	
   
-   
+	bind_report_session_clicks();
 	
 	
 }

@@ -51,7 +51,9 @@ public class ReportColumnHandlerFactory {
 		case "BOOLEAN_HANDLER":
 			return(new BooleanColumnHandler());	
 		case "VIEW_ATTENDANCE":
-			return(new ViewAttendaceDetails());	
+			return(new ViewAttendaceDetails());
+		case "EVENT_SESSION_DETAILS":
+			return (new EventSessionDetailsHandler());
 		/*case "BATCH_ATTENDANCE_HANDLER":
 			return (new BatchAttedanceHandler());
 		case "VIEW_ASSESSMENT_DETAILS_HANDLER":

@@ -184,6 +184,19 @@ public class GetNotificationData extends IStarBaseServelet {
 					//}	
 				}
 			}
+			else if (entityType.equalsIgnoreCase("TRAINER"))
+			{
+				int batchGroupId = Integer.parseInt(request.getParameter("batch_group_id"));
+				String sql="select distinct istar_user.id, COALESCE(user_profile.first_name, istar_user.email) as name from batch_schedule_event join  istar_user on (batch_schedule_event.actor_id = istar_user.id) left join user_profile on (user_profile.user_id = istar_user.id) where type='BATCH_SCHEDULE_EVENT_TRAINER' and batch_group_id = "+batchGroupId+" and course_id = "+entityId;
+				//System.out.println("GetNotification 98"+sql);
+				List<HashMap<String, Object>> groups = util.executeQuery(sql);
+				sb.append("<option value='null'>Select Trainer</option>");
+				StudentSkillMapService serv= new StudentSkillMapService();
+				for(HashMap<String, Object> row: groups)
+				{					
+					sb.append("<option value="+row.get("id")+">"+row.get("name")+"</option>");						
+				}
+			}
 		}		
 		response.getWriter().write(sb.toString());
 		

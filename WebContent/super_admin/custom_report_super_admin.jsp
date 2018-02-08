@@ -66,7 +66,15 @@ ReportUtils util = new ReportUtils();
                                     </div>
                                 </div>
                             </div>
-		
+		<div class="modal inmodal" id="myModal2" tabindex="-1"
+							role="dialog" aria-hidden="true">
+							<%-- <input id="orgID" type="hidden" value="<%=colegeID %>" /> --%>
+							<div class="modal-dialog">
+								<div class="modal-content animated flipInY event-edit-modal">
+
+								</div>
+							</div>
+						</div>
 		
 	</div>
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
