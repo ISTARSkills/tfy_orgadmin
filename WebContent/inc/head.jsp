@@ -66,7 +66,6 @@ try {
 <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/plugins/iCheck/custom.css" rel="stylesheet">
 <link href="<%=basePath%>assets/css/switchery.min.css" rel="stylesheet">
-<link rel="stylesheet"
-		href="//static.jstree.com/3.3.4/assets/dist/themes/default/style.min.css" />
+
     <link href="<%=basePath%>assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
 </head>
