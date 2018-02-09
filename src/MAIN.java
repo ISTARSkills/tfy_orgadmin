@@ -274,7 +274,7 @@ public class MAIN {
 	private static void ImportDatafromPostgres() {
 		// TODO Auto-generated method stub
 		mAYANKtEST mm= new mAYANKtEST();
-		mm.ImportDatafromPostgres();
+		//mm.ImportDatafromPostgres();
 	}
 
 
