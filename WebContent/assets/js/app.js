@@ -1153,6 +1153,7 @@ function createDataTables()
 			         pageLength: limit, 
 			         responsive: true,
 			         dom: '<"html5buttons"B>lTfgitp',
+			         order: [[0, 'desc']],
 			         buttons: [
 			            /*
 						 * { text: 'Download CSV File', data:'CSV', action:

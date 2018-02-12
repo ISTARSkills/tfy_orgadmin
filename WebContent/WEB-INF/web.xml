@@ -1,57 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>OrgAdmin</display-name>
-  <welcome-file-list>
-    <welcome-file>/index.jsp</welcome-file>
-  </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>CreateOrUpdateCompanyController</display-name>
-    <servlet-name>CreateOrUpdateCompanyController</servlet-name>
-    <servlet-class>in.orgadmin.recruiter.controllers.CreateOrUpdateCompanyController</servlet-class>
-    <init-param>
-      <description>Define storage path for company image uploads</description>
-      <param-name>upload_path</param-name>
-      <param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CreateOrUpdateCompanyController</servlet-name>
-    <url-pattern>/update_company</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>SendOfferLetter</display-name>
-    <servlet-name>SendOfferLetter</servlet-name>
-    <servlet-class>in.orgadmin.recruiter.controllers.SendOfferLetter</servlet-class>
-    <init-param>
-      <description>Send Offer Letter to Placed Student</description>
-      <param-name>upload_path</param-name>
-      <param-value>C:/Users/mayank/Pictures/Camera Roll/offer_letters/</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>SendOfferLetter</servlet-name>
-    <url-pattern>/sendOfferLetterToStudent</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>UpdateOrganizationDetails</display-name>
-    <servlet-name>UpdateOrganizationDetails</servlet-name>
-    <servlet-class>in.orgadmin.orgadmin.controller.UpdateOrganizationDetails</servlet-class>
-    <init-param>
-      <description>Send Offer Letter to Placed Student</description>
-      <param-name>upload_path</param-name>
-      <param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UpdateOrganizationDetails</servlet-name>
-    <url-pattern>/update_organization_details</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>ChatServerStarter</servlet-name>
-    <servlet-class>com.viksitpro.chat.services.ChatServerStarter</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+	<display-name>OrgAdmin</display-name>
+	<welcome-file-list>
+		<welcome-file>/index.jsp</welcome-file>
+	</welcome-file-list>
+	<session-config>
+		<session-timeout>-1</session-timeout>
+	</session-config>
+	<servlet>
+		<description></description>
+		<display-name>CreateOrUpdateCompanyController</display-name>
+		<servlet-name>CreateOrUpdateCompanyController</servlet-name>
+		<servlet-class>in.orgadmin.recruiter.controllers.CreateOrUpdateCompanyController</servlet-class>
+		<init-param>
+			<description>Define storage path for company image uploads</description>
+			<param-name>upload_path</param-name>
+			<param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CreateOrUpdateCompanyController</servlet-name>
+		<url-pattern>/update_company</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>SendOfferLetter</display-name>
+		<servlet-name>SendOfferLetter</servlet-name>
+		<servlet-class>in.orgadmin.recruiter.controllers.SendOfferLetter</servlet-class>
+		<init-param>
+			<description>Send Offer Letter to Placed Student</description>
+			<param-name>upload_path</param-name>
+			<param-value>C:/Users/mayank/Pictures/Camera Roll/offer_letters/</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SendOfferLetter</servlet-name>
+		<url-pattern>/sendOfferLetterToStudent</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>UpdateOrganizationDetails</display-name>
+		<servlet-name>UpdateOrganizationDetails</servlet-name>
+		<servlet-class>in.orgadmin.orgadmin.controller.UpdateOrganizationDetails</servlet-class>
+		<init-param>
+			<description>Send Offer Letter to Placed Student</description>
+			<param-name>upload_path</param-name>
+			<param-value>C:/Users/mayank/Pictures/Camera Roll/company_image/</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UpdateOrganizationDetails</servlet-name>
+		<url-pattern>/update_organization_details</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ChatServerStarter</servlet-name>
+		<servlet-class>com.viksitpro.chat.services.ChatServerStarter</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 </web-app>

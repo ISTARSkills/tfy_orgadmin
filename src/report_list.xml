@@ -3651,7 +3651,8 @@ order by batch_schedule_event.eventdate asc,college_name,group_name, course_name
 		<title>Student Feedback</title>
 		<y_axis_title>Average</y_axis_title>
 </reports>
-<reports id="3088" type_of_report="table">		
+<reports id="3088" type_of_report="table">
+		<column columnHandler="NONE" is_selectable="true" display_name="Date" isVisible="true" data_type="date" name="event_date" />		
 	    <column columnHandler="NONE" is_selectable="true" display_name="Org" isVisible="true" data_type="string" name="college_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Course" isVisible="true" data_type="string" name="course_name" />
 		<column columnHandler="NONE" is_selectable="true" display_name="Batch" isVisible="true" data_type="string" name="group_name" />
@@ -3666,6 +3667,10 @@ order by batch_schedule_event.eventdate asc,college_name,group_name, course_name
 		<column columnHandler="NONE" display_name="Hostel" isVisible="true" name="hostel" />		
 	<sql>
 select 
+ to_char(
+batch_schedule_event.eventdate,
+'DD-Mon-yyyy HH24:MI'
+) as event_date,
 organization.name as college_name,
 batch_group.name as group_name,
 course.course_name as course_name,
@@ -3691,8 +3696,8 @@ join batch_group on (batch_schedule_event.batch_group_id = batch_group.id )
 join course on(batch_schedule_event.course_id = course.id) 
 join organization on( batch_group.college_id = organization.id) 
 where batch_schedule_event.type='BATCH_SCHEDULE_EVENT_STUDENT'
-group by college_name,group_name, course_name, trainer
-order by college_name,group_name, course_name, trainer
+group by eventdate, college_name,group_name, course_name, trainer
+order by eventdate, college_name,group_name, course_name, trainer
 	</sql>
 	<filter_sql>		
 	</filter_sql>	
