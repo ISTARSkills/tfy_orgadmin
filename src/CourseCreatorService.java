@@ -304,8 +304,12 @@ public class CourseCreatorService {
     						String arr[] = excludedDaysString.split(",");
     						for(int q = 0; q<arr.length;q++)
     						{
-    							excludedDays.add(arr[q]);
+    							excludedDays.add(arr[q].trim());
     						}	
+    					}
+    					else
+    					{
+    						excludedDays.add(excludedDaysString.trim().replace(",", ""));
     					}	
     				}
     			}
