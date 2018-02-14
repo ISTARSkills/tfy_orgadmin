@@ -75,7 +75,7 @@ public class mAYANKtEST {
 			Class.forName("org.postgresql.Driver");
 			Connection connection = null;
 			connection = DriverManager.getConnection(
-			   "jdbc:postgresql://localhost:5432/google_api","postgres", "4a626021-e55a");
+			   "jdbc:postgresql://35.200.218.45:5432/api","postgres", "cx6ac54nmgGtLD1y");
 			return connection;
 		}
 		catch(Exception ex)

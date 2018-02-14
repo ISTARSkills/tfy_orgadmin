@@ -52,7 +52,7 @@ String baseURL = url.substring(0, url.length() - request.getRequestURI().length(
 								HashMap<String, Object> item = items.get(i);
 								//i++;
 								String eventId = (String) item.get("event_id");
-								System.out.println("eventID "+eventId);
+							//	System.out.println("eventID "+eventId);
 								int batch_group_id = (int) item.get("batch_group_id");
 								int course_id = (int) item.get("course_id");
 								int trainerId = (int) item.get("actor_id");

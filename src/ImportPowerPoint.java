@@ -1,7 +1,5 @@
 
 
-import java.io.IOException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,14 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import com.viksitpro.core.services.powerpoint.PowerPointServices;
 
 /**
- * Servlet implementation class CourseCreatorServlet
+ * Servlet implementation class ImportPowerPoint
  */
-@WebServlet("/course_creator_servlet")
-public class CourseCreatorServlet extends HttpServlet {
+@WebServlet("/import_power_point")
+public class ImportPowerPoint extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
     // location to store file uploaded
@@ -33,14 +31,20 @@ public class CourseCreatorServlet extends HttpServlet {
     private static final int MEMORY_THRESHOLD   = 1024 * 1024 * 3;  // 3MB
     private static final int MAX_FILE_SIZE      = 1024 * 1024 * 40; // 40MB
     private static final int MAX_REQUEST_SIZE   = 1024 * 1024 * 50; // 50MB
- 
     /**
-     * Upon receiving file upload submission, parses the request to read
-     * upload data and saves the file on disk.
+     * @see HttpServlet#HttpServlet()
      */
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        // checks if the request actually contains upload file
+    public ImportPowerPoint() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Integer lessonId = Integer.parseInt(request.getParameter("lesson_id"));
+		 // checks if the request actually contains upload file
         if (!ServletFileUpload.isMultipartContent(request)) {
             // if not, we stop here
             PrintWriter writer = response.getWriter();
@@ -74,7 +78,7 @@ public class CourseCreatorServlet extends HttpServlet {
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
- JSONObject obj = new JSONObject();
+ 
         try {
             // parses the request's content to extract file data
             @SuppressWarnings("unchecked")
@@ -91,24 +95,32 @@ public class CourseCreatorServlet extends HttpServlet {
  
                         // saves the file on disk
                         item.write(storeFile);
-                        CourseCreatorService serv = new CourseCreatorService();
-                        serv.createCourseStructureSQLs(storeFile.getAbsolutePath());
-                        obj.put("status", "OK");
-                        obj.put("message", "Course Uploaded Successfullly");
+                        if(fileName.contains(".ppt") || fileName.contains(".pptx"))
+                        {	
+                        	PowerPointServices service = new PowerPointServices();
+                        	service.importPowerpointToLesson(lessonId, storeFile.getAbsolutePath());
+                        	service.markLessonAsPresentation(lessonId);
+                        }
+                        request.setAttribute("message",
+                            "Upload has been done successfully!");
                     }
                 }
             }
         } catch (Exception ex) {
-        	try {
-				
-				obj.put("status", "ERROR");
-                obj.put("message", ex.getMessage().toString());
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
+            request.setAttribute("message",
+                    "There was an error: " + ex.getMessage());
         }
-        response.getWriter().write(obj.toString());
-    }
+        // redirects client to message page
+        getServletContext().getRequestDispatcher("/message.jsp").forward(
+                request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
 }

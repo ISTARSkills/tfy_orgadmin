@@ -413,7 +413,7 @@ public class CourseCreatorService {
     					long diffHours = diff / (60 * 60 * 1000) % 24;
     					String eventDate = dateformatfrom.format(eDate);
     					System.out.println("event date "+eventDate);
-    					serv.insertUpdateData(trainerId, (int)diffHours, (int)diffMinutes, batchId, null, eventDate, startTimeOfEvent, classroomId, 300, -1, null, null);    					
+    					serv.insertUpdateData(trainerId, (int)diffHours, (int)diffMinutes, batchId, null, eventDate, startTimeOfEvent, classroomId, 300, -1, null, "0");    					
     					eventCounterInDay++;
     					courseIndex+=3;
     					trainerIdIndex+=3;

@@ -185,7 +185,7 @@
 									for (Organization org : orgs.get(state))
 
 									{
-										System.out.println("org-" + org.getName() + "6666");
+										//System.out.println("org-" + org.getName() + "6666");
 
 									}
 								}
