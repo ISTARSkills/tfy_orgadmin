@@ -12,7 +12,7 @@
 <%@page import="java.util.*"%>
 <%
 	IstarUser user = (IstarUser) request.getSession().getAttribute("user");
-	//System.err.println("--------------"+user.getEmail());
+	//ViksitLogger.logMSG(this.getClass().getName(),("--------------"+user.getEmail());
 	String roleName = user.getUserRoles().iterator().next().getRole().getRoleName();
 	if (roleName.equalsIgnoreCase("ORG_ADMIN")) {
 %>
@@ -69,7 +69,7 @@
 				if (request.getParameter("course_id") != null
 						&& !request.getParameter("course_id").toString().equalsIgnoreCase("null")) {
 					flag = true;
-					//System.out.println("course_id -------"+request.getParameter("course_id").toString());
+					//ViksitLogger.logMSG(this.getClass().getName(),"course_id -------"+request.getParameter("course_id").toString());
 					Course course = new CourseDAO()
 							.findById(Integer.parseInt(request.getParameter("course_id").toString()));
 					courseName = course.getCourseName();
@@ -87,7 +87,7 @@
 					Batch batch = new BatchDAO().findById(Integer.parseInt(request.getParameter("batch_id").toString()));
 					course_id = batch.getCourse().getId() + "";
 					courseName = batch.getCourse().getCourseName();
-					//System.out.println("batch_id--------"+request.getParameter("batch_id").toString());
+					//ViksitLogger.logMSG(this.getClass().getName(),"batch_id--------"+request.getParameter("batch_id").toString());
 					batch_id = request.getParameter("batch_id");
 					studentcount = jsonUIUtils.getStudentCountfromCourse(
 							Integer.parseInt(request.getParameter("batch_id").toString()), college_id, "Batch");

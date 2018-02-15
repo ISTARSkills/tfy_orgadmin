@@ -69,7 +69,7 @@
 							<h3 class="m-b-n-md">Mode</h3>
 							<hr class="m-b-xs">
 							<div class="col-lg-12">
-							<% //System.out.println("----------------->"+bg.getType()); %>
+							<% //ViksitLogger.logMSG(this.getClass().getName(),"----------------->"+bg.getType()); %>
 								<select
 									class="form-control" name="group_type">
 									<option value="ROLE" <%if(bg.getType().equalsIgnoreCase("ROLE")) {	%>selected	<% } %>>ROLE</option>

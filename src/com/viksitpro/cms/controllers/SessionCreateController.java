@@ -9,12 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.cms.services.ModuleServices;
 import com.viksitpro.cms.services.SessionServices;
 import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
-import com.viksitpro.core.dao.entities.Module;
-import com.viksitpro.core.dao.entities.ModuleDAO;
 
 /**
  * Servlet implementation class SessionCreateController

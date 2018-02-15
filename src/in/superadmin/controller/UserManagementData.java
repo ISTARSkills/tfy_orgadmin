@@ -12,11 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.api.client.json.Json;
 import com.google.gson.Gson;
 import com.viksitpro.core.utilities.DBUTILS;
 
@@ -46,8 +41,8 @@ public class UserManagementData extends HttpServlet {
 		Enumeration params = request.getParameterNames(); 
 		while(params.hasMoreElements()){
 		 String paramName = (String)params.nextElement();
-		 //System.out.println(paramName);
-		 //System.out.println(request.getParameter(paramName));
+		 //ViksitLogger.logMSG(this.getClass().getName(),paramName);
+		 //ViksitLogger.logMSG(this.getClass().getName(),request.getParameter(paramName));
 
 		}
 		DBUTILS db = new DBUTILS();
@@ -55,7 +50,7 @@ public class UserManagementData extends HttpServlet {
 		String count = "select count(*) from org_admin";
 		List<HashMap<String, Object>> countdata = db.executeQuery(count);
 		 int counts=  Integer.parseInt(countdata.get(0).get("count").toString());
-		 //System.out.println("ssc "+sql);
+		 //ViksitLogger.logMSG(this.getClass().getName(),"ssc "+sql);
 		List<HashMap<String, Object>> datas = db.executeQuery(sql);
 		DataTableBean result = new DataTableBean();
         try {

@@ -72,7 +72,7 @@ public class ChatUserService {
 				}
 			}
 		}
-		//System.out.println();
+		//ViksitLogger.logMSG(this.getClass().getName(),);
 		return usersInGroup;
 	}
 	

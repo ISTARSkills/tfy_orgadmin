@@ -16,11 +16,11 @@ public class SuperAdminDashboardServices {
 	{
 		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");
 		String aajKiDate =dateformatto.format(new Date(System.currentTimeMillis())).toString();
-		//System.out.println(aajKiDate);
+		//ViksitLogger.logMSG(this.getClass().getName(),aajKiDate);
 		DBUTILS dbutils = new DBUTILS();
 		String sql="SELECT 	COUNT (*) AS totevent, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'COMPLETED' 	) AS completed, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'SCHEDULED' 	) AS scheduled, 	COUNT (*) FILTER (WHERE bse.status = 'TEACHING') AS teaching, 	COUNT (*) FILTER (  		WHERE 			bse.status = 'CANCELLED' 	) AS cancelled FROM 	batch_schedule_event bse, 	classroom_details cd WHERE 	cast (bse.eventdate as varchar) like '%"+aajKiDate+"%' AND bse. TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER' AND bse.classroom_id = cd. ID";
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		return items;
 	}
 	public List<HashMap<String, Object>> getTodaysEventData(String collegeId,int offset)
@@ -33,7 +33,7 @@ public class SuperAdminDashboardServices {
 		
 		DateFormat dateformatto = new SimpleDateFormat("yyyy-MM-dd");
 		String aajKiDate =dateformatto.format(new Date(System.currentTimeMillis())).toString();
-		//System.out.println(aajKiDate);
+		//ViksitLogger.logMSG(this.getClass().getName(),aajKiDate);
 		DBUTILS dbutils = new DBUTILS();
 		String sql1 = "SELECT DISTINCT 	batch_schedule_event.batch_id, course.course_name as title, batch_schedule_event.actor_id, CAST( batch_schedule_event.id as VARCHAR) AS event_id ,"
 				+ " batch_schedule_event.eventdate, 	batch_schedule_event.eventhour, 	batch_schedule_event.status, 	batch. NAME AS batchname,"
@@ -46,7 +46,7 @@ public class SuperAdminDashboardServices {
 				+ "IN ( 		SELECT DISTINCT 			ID 		FROM 			PUBLIC .batch 		WHERE 			batch_group_id "
 				+ "IN ( 				SELECT DISTINCT 					ID 				FROM 					batch_group "+collegQuery+"	) 	) limit 10 offset "+offset;//AND CAST ( 	batch_schedule_event.eventdate AS VARCHAR ) LIKE '%"+aajKiDate+"%' ";
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql1);
-		//System.out.println(sql1);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql1);
 		return items;
 	}
 	

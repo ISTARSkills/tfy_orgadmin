@@ -1,21 +1,14 @@
 package com.viksitpro.chat.services;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.viksitpro.core.dao.entities.ChatMessages;
 import com.viksitpro.core.dao.entities.ChatMessagesDAO;
 import com.viksitpro.core.dao.entities.IstarUser;
-import com.viksitpro.core.dao.entities.IstarUserDAO;
-import com.viksitpro.core.dao.entities.Organization;
-import com.viksitpro.core.dao.entities.OrganizationDAO;
-import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.utils.HibernateSessionFactory;
 import com.viksitpro.core.utilities.ChatType;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -118,7 +111,7 @@ public class MessageService {
 	public int addBGroupMessage(int senderId, String message, int receiverId) {
 		String insertIntoBGMEssages="INSERT INTO batch_group_messages (id, batch_group_id, message, created_at, sender_id, sent, read_by) VALUES "
 				+ "((select COALESCE(max(id),0)+1 from batch_group_messages), "+receiverId+", '"+message+"', now(), "+senderId+", 'f', '!#"+senderId+"#!') returning id;";
-		//System.out.println(insertIntoBGMEssages);
+		//ViksitLogger.logMSG(this.getClass().getName(),insertIntoBGMEssages);
 		DBUTILS util = new  DBUTILS();
 		return util.executeUpdateReturn(insertIntoBGMEssages);
 		

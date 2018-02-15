@@ -1,12 +1,14 @@
 package in.talentify.core.controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -82,7 +84,7 @@ public class DeleteGroup extends IStarBaseServelet {
 		 * +=deleteBatch; String deleteGroup =
 		 * "delete from batch_group where id ="+groupId+";"; finalSql +=deleteGroup;
 		 */
-		System.out.println(finalSql);
+		ViksitLogger.logMSG(this.getClass().getName(),finalSql);
 		util.executeUpdate(finalSql);
 
 	}

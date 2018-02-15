@@ -1,9 +1,7 @@
 package com.viksitpro.question.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +16,6 @@ import org.json.JSONObject;
 import com.viksitpro.core.dao.entities.Question;
 import com.viksitpro.core.dao.entities.QuestionDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
-import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
-import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.question.services.QuestionServices;
 
 /**

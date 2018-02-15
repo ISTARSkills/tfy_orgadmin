@@ -1,6 +1,7 @@
 package com.viksitpro.chat.services;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +19,9 @@ public class ChatServerStarter extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		try {
-			//System.out.println("starting chat server");		
+			//ViksitLogger.logMSG(this.getClass().getName(),"starting chat server");		
 			Chat.main(null);
-			//System.out.println("chat server started");
+			//ViksitLogger.logMSG(this.getClass().getName(),"chat server started");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

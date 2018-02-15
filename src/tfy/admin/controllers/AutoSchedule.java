@@ -18,9 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
-import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.utilities.DBUTILS;
-import com.viksitpro.core.utilities.NotificationType;
 
 import in.talentify.core.controllers.IStarBaseServelet;
 import tfy.admin.services.StudentPlayListServicesAdmin;
@@ -71,7 +69,7 @@ Parameter Name - type, Value - checking*/
 		}
 		else
 		{
-			//System.out.println(days.length);
+			//ViksitLogger.logMSG(this.getClass().getName(),days.length);
 			for(String day: days)
 			{
 				if(day.equalsIgnoreCase("SUN"))
@@ -115,7 +113,7 @@ Parameter Name - type, Value - checking*/
 		{
 									
 			int workingDays = getWorkingDaysBetweenTwoDates(startDate, endDate, daysList);
-			//System.out.println("woking days"+workingDays);
+			//ViksitLogger.logMSG(this.getClass().getName(),"woking days"+workingDays);
 			if(workingDays!=0){
 				if(scheduler_total_lessons<=workingDays)
 				{
@@ -177,10 +175,10 @@ Parameter Name - type, Value - checking*/
 				freq = (int)Math.ceil((double)scheduler_total_lessons/workingDays);
 				
 				total_scheduled_days = (int)Math.ceil((double)scheduler_total_lessons/freq);
-				//System.out.println("freq>>"+freq);
+				//ViksitLogger.logMSG(this.getClass().getName(),"freq>>"+freq);
 				String autoData ="INSERT INTO auto_scheduler_data (id, entity_type, entity_id, course_id, student_count, start_date, end_date, scheduled_days, scheduled_days_count,tasks_per_day) VALUES "
 						+ "((select COALESCE(max(id),0)+1 from auto_scheduler_data), '"+scheduler_entity_type+"', "+scheduler_entity_id+", "+scheduler_course_id+", "+stuCount+", '"+new Timestamp(startDate.getTime())+"', '"+new Timestamp(endDate.getTime())+"', '"+ String.join(",", days)+"', "+total_scheduled_days+","+freq+");";
-				//System.out.println(autoData);
+				//ViksitLogger.logMSG(this.getClass().getName(),autoData);
 				util.executeUpdate(autoData);				
 				createTaskBetweenTwoDates(startDate, endDate, daysList,workingDays,users, modules, cmsessions, lessons, scheduler_course_id, freq);
 			}		
@@ -197,8 +195,8 @@ Parameter Name - type, Value - checking*/
 	    startCal.setTime(startDate);        
 	    Calendar endCal = Calendar.getInstance();
 	    endCal.setTime(endDate);
-	    //System.out.println(">>"+startDate);
-	    //System.out.println(">>"+endDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+startDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+endDate);
 	    int workDays = 0;
 	    int currentOrderId=0;
 	    //Return 0 if start and end are the same
@@ -224,12 +222,12 @@ Parameter Name - type, Value - checking*/
 		 
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
-	    	//System.out.println("chedking for "+sd);
+	    	//ViksitLogger.logMSG(this.getClass().getName(),"chedking for "+sd);
 	    	if(daysCount<=totalDays)
 	    	{
 	    		if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
 		    		Date taskDate = startCal.getTime();
-		        	//System.out.println("creatting task for date+"+taskDate);		        	
+		        	//ViksitLogger.logMSG(this.getClass().getName(),"creatting task for date+"+taskDate);		        	
 		        	for(int stid : users)
 		        	{
 		        		int cid=Integer.parseInt(scheduler_course_id);
@@ -262,7 +260,7 @@ Parameter Name - type, Value - checking*/
 	    	
 	    	 if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK)) && currentOrderId< lessons.size()) {
 		        	Date taskDate = startCal.getTime();
-		        	//System.out.println("creatting task for date+"+taskDate);		        	
+		        	//ViksitLogger.logMSG(this.getClass().getName(),"creatting task for date+"+taskDate);		        	
 		        	for(int stid : users)
 		        	{
 		        		int cid=Integer.parseInt(scheduler_course_id);
@@ -281,7 +279,7 @@ Parameter Name - type, Value - checking*/
 		            daysCount++;
 		        }
 	    	 startCal.add(Calendar.DATE, 1);
-	    	 //System.out.println("checkig for "+startCal.getTime());
+	    	 //ViksitLogger.logMSG(this.getClass().getName(),"checkig for "+startCal.getTime());
 	    }*/
 	    
 	   
@@ -327,7 +325,7 @@ Parameter Name - type, Value - checking*/
 			{
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle.replaceAll("'", "")+"', '"+taskDescription.replaceAll("'", "")+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
-				//System.out.println(">>>"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),">>>"+sql);
 				taskId = util.executeUpdateReturn(sql); 
 				
 				//TaskServices taskService = new TaskServices();
@@ -346,8 +344,8 @@ Parameter Name - type, Value - checking*/
 
 	    Calendar endCal = Calendar.getInstance();
 	    endCal.setTime(endDate);
-	    //System.out.println(">>"+startDate);
-	    //System.out.println(">>"+endDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+startDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+endDate);
 	    int workDays = 0;
 
 	    //Return 0 if start and end are the same
@@ -364,7 +362,7 @@ Parameter Name - type, Value - checking*/
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
 	    	if (days.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
-	        	////System.out.println("checming for "+startCal.get(Calendar.DAY_OF_WEEK));
+	        	////ViksitLogger.logMSG(this.getClass().getName(),"checming for "+startCal.get(Calendar.DAY_OF_WEEK));
 	            ++workDays;
 	        }
 	    	startCal.add(Calendar.DATE, 1);

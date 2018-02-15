@@ -1,6 +1,5 @@
 package com.viksitpro.cms.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,9 +23,6 @@ import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
-import com.viksitpro.core.dao.entities.TrainerBatch;
-import com.viksitpro.core.dao.entities.UserProfile;
-import com.viksitpro.core.dao.entities.UserProfileDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class CourseTreeServices {
@@ -77,7 +73,7 @@ public class CourseTreeServices {
 			cobj.put("children", marray);
 			carray.put(cobj);
 		}
-		// System.err.println(carray.toString());
+		// ViksitLogger.logMSG(this.getClass().getName(),(carray.toString());
 		return carray;
 	}
 

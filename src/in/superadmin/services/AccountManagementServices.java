@@ -2,6 +2,7 @@ package in.superadmin.services;
 
 import java.util.HashMap;
 import java.util.List;
+
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class AccountManagementServices {
@@ -9,14 +10,14 @@ public class AccountManagementServices {
 
 	public List<HashMap<String, Object>> getAllCollegeList(String firstLetter) {
 		String sql = "";
-		//System.out.println("first letter>>"+firstLetter);
+		//ViksitLogger.logMSG(this.getClass().getName(),"first letter>>"+firstLetter);
 		if (firstLetter.equalsIgnoreCase("0")) {
 			sql = "SELECT 	org. ID, 	org. NAME, 	cast (count(*) filter(where ur.role_id = (select id from role where role_name ='STUDENT')) as integer ) as count	 FROM 	organization org LEFT JOIN user_org_mapping uo ON (uo.organization_id = org. ID) LEFT JOIN istar_user s ON (s. ID = uo.user_id) left join user_role ur on (uo.user_id= ur.user_id)  GROUP BY 	org. ID, 	org. NAME ORDER BY 	org. NAME ";
 		} else {
 			sql = "SELECT 	org. ID, 	org. NAME, 	cast (count(*) filter(where ur.role_id = (select id from role where role_name ='STUDENT')) as integer ) as count	 FROM 	organization org LEFT JOIN user_org_mapping uo ON (uo.organization_id = org. ID) LEFT JOIN istar_user s ON (s. ID = uo.user_id) left join user_role ur on (uo.user_id= ur.user_id) WHERE 	LOWER (org. NAME) LIKE '"+firstLetter+"%' GROUP BY 	org. ID, 	org. NAME ORDER BY 	org. NAME";
 		}
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		// //System.out.println(sql);
+		// //ViksitLogger.logMSG(this.getClass().getName(),sql);
 		return items;
 	}
 
@@ -29,7 +30,7 @@ public class AccountManagementServices {
 			url = "/login?email=" + items.get(0).get("email") + "&password=" + items.get(0).get("password");
 		} catch (Exception e) {
 
-			//System.err.println("something went wrong in getiing ORGadmin URL for" + orgId);
+			//ViksitLogger.logMSG(this.getClass().getName(),("something went wrong in getiing ORGadmin URL for" + orgId);
 			// e.printStackTrace();
 		}
 		return url;
@@ -39,7 +40,7 @@ public class AccountManagementServices {
 		String sql = "SELECT 	CAST ( 		COUNT (DISTINCT b.course_id) AS INTEGER 	) FROM 	batch_group bg, 	batch b WHERE 	bg. ID = b.batch_group_id AND bg.college_id ="
 				+ orgId;
 
-		// //System.out.println(sql);
+		// //ViksitLogger.logMSG(this.getClass().getName(),sql);
 		int count = 0;
 		try {
 
@@ -58,7 +59,7 @@ public class AccountManagementServices {
 				+ orgId + " GROUP BY b.course_id,c.course_name";
 
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		// //System.out.println(sql);
+		// //ViksitLogger.logMSG(this.getClass().getName(),sql);
 		return items;
 	}
 
@@ -67,7 +68,7 @@ public class AccountManagementServices {
 				+ courseId + " AND bg.college_id = " + coleegeId
 				+ " GROUP BY 	bg. ID, 	bg. NAME ORDER BY 	bg. NAME";
 		List<HashMap<String, Object>> items = dbutils.executeQuery(sql);
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		return items;
 	}
 

@@ -17,7 +17,6 @@ import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
-import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.entities.UserRoleDAO;
@@ -30,7 +29,7 @@ public class OrgAdminBatchGroupService {
 
 		String sql = "select student_id from batch_students where batch_group_id=" + groupId;
 
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -47,7 +46,7 @@ public class OrgAdminBatchGroupService {
 
 		String sql = "select batch_group_id from batch_students where student_id=" + student_id;
 
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
@@ -214,7 +213,7 @@ public class OrgAdminBatchGroupService {
 			for (int course_id : coursesInBG) {
 				String deletePlayList = "delete from student_playlist where student_id =" + stu + " and course_id = "
 						+ course_id + "";
-				//System.err.println(deletePlayList);
+				//ViksitLogger.logMSG(this.getClass().getName(),(deletePlayList);
 				util.executeUpdate(deletePlayList);
 			}
 		}
@@ -236,7 +235,7 @@ public class OrgAdminBatchGroupService {
 						String sqlInsertStudentPl = "INSERT INTO student_playlist (id, student_id, course_id, lesson_id, status) VALUES ((select COALESCE(max(id),0)+1 from student_playlist), '"
 								+ stu + "', '" + course_id + "', '" + lesson_id + "', 'INCOMPLETE')";
 
-						//System.err.println(sqlInsertStudentPl);
+						//ViksitLogger.logMSG(this.getClass().getName(),(sqlInsertStudentPl);
 						util.executeUpdate(sqlInsertStudentPl);
 						
 						String tasksql="INSERT INTO task ( 	ID, 	NAME, 	task_type, 	priority, 	OWNER, 	actor, 	STATE, 	start_date, 	end_date, 	is_repeatative, 	is_active, 	created_at, 	updated_at, 	item_id, 	item_type )VALUES 	( 		( 			SELECT 				COALESCE (MAX(ID), 0) + 1 			FROM 				task 		), 		'LESSON', 		3, 		1, 	300, 		'"+stu+"', 		'SCHEDULED', now(), now(), 		'f', 		't', 		now(), 		now(), 		"+lesson_id+", 		'LESSON' 	);";				

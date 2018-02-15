@@ -83,7 +83,7 @@ DBUTILS db = new DBUTILS();
 			<div class="ibox-title">
 				<h2 class="text-center">Employer Statistics Details</h2>
 				<% String sql ="SELECT DISTINCT 	CD.\"EmployerNameOrSelfEmployed\" AS employer_name, 	TE.COMMENT AS COMMENT, 	COUNT (\"Enrollmentnumber\") FROM 	candidate_details CD, 	temp_employee TE WHERE 	CD.\"EmployerNameOrSelfEmployed\" = TE.employee_name GROUP BY 	employer_name, 	COMMENT order by count  desc "; 						
-					//System.out.println(sql);	
+					//ViksitLogger.logMSG(this.getClass().getName(),sql);	
 				
 				List<HashMap<String, Object>> itemss = db.executeQuery(sql);
 					%>

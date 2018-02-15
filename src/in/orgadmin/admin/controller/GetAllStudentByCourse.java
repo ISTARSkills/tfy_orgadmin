@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.utilities.DBUTILS;
 
-import in.talentify.core.utils.DummyStudent;
-
 /**
  * Servlet implementation class GetAllStudentByCourse
  */
@@ -37,7 +35,7 @@ public class GetAllStudentByCourse extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		StringBuffer sb = new StringBuffer();
-		//System.out.println("hh h hhh " + request.getParameter("type").toString());
+		//ViksitLogger.logMSG(this.getClass().getName(),"hh h hhh " + request.getParameter("type").toString());
 
 		int count = 6 * (Integer.parseInt(request.getParameter("page")));
 		String sql = "";
@@ -50,7 +48,7 @@ public class GetAllStudentByCourse extends HttpServlet {
 					+ "OFFSET  " + count;			
 		}
 
-		//System.out.println("paginated  sql " + sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"paginated  sql " + sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 

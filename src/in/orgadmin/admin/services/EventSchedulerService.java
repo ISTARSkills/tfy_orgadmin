@@ -21,9 +21,15 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.viksitpro.core.dao.entities.Batch;
 import com.viksitpro.core.dao.entities.BatchDAO;
-import com.viksitpro.core.dao.entities.BatchStudents;
 import com.viksitpro.core.dao.entities.ClassroomDetails;
 import com.viksitpro.core.dao.entities.ClassroomDetailsDAO;
 import com.viksitpro.core.dao.entities.Course;
@@ -31,20 +37,13 @@ import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 import in.talentify.core.utils.AndroidNoticeDelegator;
-
-import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.json.JSONException;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 public class EventSchedulerService {
 
@@ -88,7 +87,7 @@ public class EventSchedulerService {
 					+ batchID + ", " + trainerID + ");";
 
 			db.executeUpdate(trainerBatchSql);
-			//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+			//ViksitLogger.logMSG(this.getClass().getName(),"trainerBatchSql-----> "+trainerBatchSql);
 
 		}
 		
@@ -115,7 +114,7 @@ public class EventSchedulerService {
 		
 		String insertTrainerEvent ="INSERT INTO batch_schedule_event ( actor_id, created_at, creator_id, eventdate, eventhour, eventminute, isactive, TYPE, updated_at, ID, status, ACTION, cmsession_id, batch_group_id, course_id, event_name, classroom_id, associate_trainee, batch_group_code ) "
 				+ "VALUES ( "+trainerID+", now(), "+AdminUserID+", '"+eventDate+"', "+hours+", "+minute+", 't', 'BATCH_SCHEDULE_EVENT_TRAINER', now(), ( SELECT COALESCE (MAX(ID) + 1, 1) FROM batch_schedule_event ), 'SCHEDULED', 'cmsession_id__-1', - 1, "+b.getBatchGroup().getId()+", "+c.getId()+", '"+evnetName+"', "+classroomID+", '"+associateTrainerID+"','"+groupNotificationCode+"' ) RETURNING ID";
-		System.err.println("insertTrainerEvent ------> "+insertTrainerEvent);
+		
 		int trainerEventId = db.executeUpdateReturn(insertTrainerEvent) ;
 		userToEventMap.put(trainerID, trainerEventId);
 		String createTaskForTrainer ="INSERT INTO task ( ID, NAME, OWNER, actor, STATE, start_date, end_date, is_active, created_at, updated_at, item_id, item_type, project_id ) values (( SELECT COALESCE (MAX(ID), 0) + 1 FROM task ), '"+notificationTitle+"', "+AdminUserID+", "+trainerID+", 'SCHEDULED', CAST ( '"+eventDate+"' AS TIMESTAMP ), CAST ( '("+eventDate+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ("+hours+" * 60 + "+minute+"), 't', now(), now(), "+trainerEventId+", '"+TaskItemCategory.CLASSROOM_SESSION+"', "+projectId+") returning id ;";
@@ -425,7 +424,7 @@ public void deleteAssessmentEvent(String eventID) {
 	}
 
 	public StringBuffer createDiv(HashMap<String, String> data, boolean isCreated) {
-		//System.out.println("creatediv");
+		//ViksitLogger.logMSG(this.getClass().getName(),"creatediv");
 		StringBuffer out = new StringBuffer();
 		String trainerData = "";
 
@@ -749,7 +748,7 @@ public void deleteAssessmentEvent(String eventID) {
 		ArrayList<String> list = new ArrayList<>();
 		ArrayList<String> qdatelist = new ArrayList<>();
 		for (String eventDate : getDaysBetweenDates(startEventDate, endEventDate, days)) {
-			//System.out.println("eventDate "+eventDate);
+			//ViksitLogger.logMSG(this.getClass().getName(),"eventDate "+eventDate);
 			boolean isCreated = false;
 			hashMap.put("eventDate", eventDate);
 			try {
@@ -791,7 +790,7 @@ public void deleteAssessmentEvent(String eventID) {
 				+ " 	batch_schedule_event.batch_group_id IN ( SELECT 	ID 	FROM batch_group WHERE 	college_id ="+ orgID + " ) 	 " + "AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate
 				+ "%' and batch_schedule_event.type = 'BATCH_SCHEDULE_EVENT_TRAINER' AND user_profile.user_id = batch_schedule_event.actor_id AND user_role.user_id = user_profile.user_id "
 				+ "AND user_role.role_id in (select id from role where role_name = 'TRAINER')";
-		//System.out.println("erronous sql>>>>>    "+sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"erronous sql>>>>>    "+sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		
@@ -840,7 +839,7 @@ public void deleteAssessmentEvent(String eventID) {
 
 	public ArrayList<String> eventValidation(int duration_hour, int duration_min, String id__event_time,
 			String id__event_date_holder, int classroom_id, String hidden_batch_id, int trainer_id) {
-		//System.err.println("id__event_date_holder "+id__event_date_holder+"id__event_time"+id__event_time);
+		//ViksitLogger.logMSG(this.getClass().getName(),("id__event_date_holder "+id__event_date_holder+"id__event_time"+id__event_time);
 		String result = "";
 		ArrayList<String> arrayList = new ArrayList<>();
 		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -858,10 +857,10 @@ public void deleteAssessmentEvent(String eventID) {
 			newdate = dateformatto.format(dateformatfrom.parse(id__event_date_holder));
 			startDateRange = newdate + " " + id__event_time; 
 			formatDate = formatter.parse(startDateRange);
-			//System.err.println("Formatted date =======> "+formatDate);
+			//ViksitLogger.logMSG(this.getClass().getName(),("Formatted date =======> "+formatDate);
 			date = formatter
 					.parse(dateformatto.format(dateformatfrom.parse(id__event_date_holder)) + " " + id__event_time);
-			//System.err.println("Previously code date =======> "+date);
+			//ViksitLogger.logMSG(this.getClass().getName(),("Previously code date =======> "+date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -869,11 +868,11 @@ public void deleteAssessmentEvent(String eventID) {
 
 		Date upper_limit = DateUtils.addMinutes(formatDate, duration_hour * 60 + duration_min);
 		endDateRange = formatter.format(upper_limit);
-		//System.err.println("startDateRange date =======> "+startDateRange + "  endDateRange  "+endDateRange);
+		//ViksitLogger.logMSG(this.getClass().getName(),("startDateRange date =======> "+startDateRange + "  endDateRange  "+endDateRange);
 		String Validatesql = "SELECT CAST ( batch_schedule_event. ID AS VARCHAR (50) ) AS eventid, actor_id, eventdate, eventhour, eventminute, classroom_id, batch.batch_group_id, batch. ID AS batch_id FROM batch_schedule_event, batch WHERE batch.batch_group_id = batch_schedule_event.batch_group_id AND "
 				+ "batch_schedule_event.course_id = batch.course_id AND (batch_schedule_event.eventdate + (batch_schedule_event.eventminute)* INTERVAL '1 minute' >= cast('"+startDateRange+"' as TIMESTAMP) and "
 				+ "batch_schedule_event.eventdate + (batch_schedule_event.eventminute)* INTERVAL '1 minute' <= cast('"+endDateRange+"'  as TIMESTAMP) ) AND TYPE = 'BATCH_SCHEDULE_EVENT_TRAINER'";
-		//System.out.println("validsql -> "+Validatesql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"validsql -> "+Validatesql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(Validatesql);
 
@@ -919,9 +918,9 @@ public void deleteAssessmentEvent(String eventID) {
 				+ formatter1.format(formatDate) + "' AND eventdate <= '" + formatter1.format(upper_limit)
 				+ "'And type !='BATCH_SCHEDULE_EVENT_PRESENTOR' and batch_group_id =(select batch_group_id from batch where id = "+hidden_batch_id+") GROUP BY eventid";
 
-		//System.out.println("class_and_time_available "+class_and_time_available);
-		//System.out.println("trainer_available "+trainer_available);
-		//System.out.println("batch_available "+batch_available);
+		//ViksitLogger.logMSG(this.getClass().getName(),"class_and_time_available "+class_and_time_available);
+		//ViksitLogger.logMSG(this.getClass().getName(),"trainer_available "+trainer_available);
+		//ViksitLogger.logMSG(this.getClass().getName(),"batch_available "+batch_available);
 		
 		List<HashMap<String, Object>> classtime = db.executeQuery(class_and_time_available);
 		try {
@@ -1012,7 +1011,7 @@ public void deleteAssessmentEvent(String eventID) {
 	   
 	   
 		List<String> days = new ArrayList<>();
-	//	System.out.println("selected days "+selectedDays);
+	//	ViksitLogger.logMSG(this.getClass().getName(),"selected days "+selectedDays);
 		String[] selectedDayssplit = selectedDays.split(",");
 		HashSet<Integer> daysSet = new HashSet<>();
 		if(selectedDayssplit.length>0)
@@ -1194,7 +1193,7 @@ public void deleteAssessmentEvent(String eventID) {
 						+ batchID + ", " + trainerID + ");";
 
 				db.executeUpdate(trainerBatchSql);
-				//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+				//ViksitLogger.logMSG(this.getClass().getName(),"trainerBatchSql-----> "+trainerBatchSql);
 
 			}
 			
@@ -1290,7 +1289,7 @@ public void deleteAssessmentEvent(String eventID) {
 		String hostId = tempHostIds[Result];
 		
 		String getListOfUsers ="https://api.zoom.us/v1/user/list?api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3";
-		//System.out.println("get list of users--"+ getListOfUsers);
+		//ViksitLogger.logMSG(this.getClass().getName(),"get list of users--"+ getListOfUsers);
 		try {
 			URL obj1 = new URL(getListOfUsers);
 			HttpURLConnection con1 = (HttpURLConnection) obj1.openConnection();
@@ -1306,7 +1305,7 @@ public void deleteAssessmentEvent(String eventID) {
 				in1.close();					
 					
 				try {
-				//	System.out.println("users list "+response1);
+				//	ViksitLogger.logMSG(this.getClass().getName(),"users list "+response1);
 					org.json.JSONObject	jsonObj = new org.json.JSONObject(response1.toString());
 					org.json.JSONArray arr = jsonObj.getJSONArray("users");
 					for(int i =0 ; i < arr.length(); i++)
@@ -1339,7 +1338,7 @@ public void deleteAssessmentEvent(String eventID) {
 		
 		
 		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&option_jbh=true&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		//System.out.println("ggg "+url);
+		//ViksitLogger.logMSG(this.getClass().getName(),"ggg "+url);
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -1353,7 +1352,7 @@ public void deleteAssessmentEvent(String eventID) {
 					response.append(inputLine);
 				}
 				in.close();					
-				//System.out.println(response.toString());				
+				//ViksitLogger.logMSG(this.getClass().getName(),response.toString());				
     			return response.toString();
     			
 		} catch (MalformedURLException e) {
@@ -1432,7 +1431,7 @@ public void deleteAssessmentEvent(String eventID) {
 						+ batchID + ", " + trainerID + ");";
 
 				db.executeUpdate(trainerBatchSql);
-				//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+				//ViksitLogger.logMSG(this.getClass().getName(),"trainerBatchSql-----> "+trainerBatchSql);
 
 			}
 			

@@ -33,7 +33,7 @@
 						//int batch_id = (int) item.get("batch_id");
 						int trainerId = (int) item.get("actor_id");
 						//Batch bb = new BatchDAO().fin	dById(batch_id);
-						//System.out.println (">>>>.>"+item.get("status"));
+						//ViksitLogger.LOGGER.info (">>>>.>"+item.get("status"));
 						%>
 						
 				<jsp:include page="/session_cards/session_event_detail_card.jsp">

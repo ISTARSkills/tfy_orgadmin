@@ -1,7 +1,6 @@
 package com.viksitpro.cms.controllers;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,8 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.viksitpro.core.dao.entities.Context;
-import com.viksitpro.core.dao.entities.ContextDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
 

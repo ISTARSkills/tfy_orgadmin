@@ -55,9 +55,9 @@ Organization organization = new OrganizationDAO().findById(collegeID);
 								
 								for(BatchGroup bg : organization.getBatchGroups())
 								{
-									//System.err.println(organization.getId()+"---"+bg.getName());
+									//ViksitLogger.logMSG(this.getClass().getName(),(organization.getId()+"---"+bg.getName());
 									if(bg.getBatchStudentses().size()>0){
-										//System.out.println(bg.getName());
+										//ViksitLogger.logMSG(this.getClass().getName(),bg.getName());
 									%>
 									<option value="<%=bg.getId()%>"><%=bg.getName() %> (<%=bg.getType() %>)</option>
 									<% 

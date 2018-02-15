@@ -2,8 +2,6 @@ package com.viksitpro.cms.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -12,24 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.viksitpro.cms.services.AssessmentEngineService;
 import com.viksitpro.cms.services.LessonServices;
 import com.viksitpro.cms.utilities.LessonTypeNames;
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.AssessmentQuestion;
-import com.viksitpro.core.dao.entities.AssessmentQuestionDAO;
-import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
-import com.viksitpro.core.dao.entities.Question;
-import com.viksitpro.core.dao.entities.QuestionDAO;
-import com.viksitpro.core.dao.entities.Task;
-import com.viksitpro.core.dao.entities.TaskLog;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.factory.task.TaskEntityServices;
 

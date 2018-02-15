@@ -1,12 +1,10 @@
 package tfy.webapp.ui;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,13 +30,11 @@ import org.jsoup.nodes.Document;
 import com.viksitpro.core.cms.oldcontent.CMSLesson;
 import com.viksitpro.core.cms.oldcontent.CMSSlide;
 import com.viksitpro.core.dao.entities.Assessment;
-import com.viksitpro.core.dao.entities.Context;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
 import com.viksitpro.core.dao.utils.HibernateSessionFactory;
-import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class LessonServices {
@@ -57,7 +53,7 @@ public class LessonServices {
 		
 
 		URL file = new URL("http://cdn.talentify.in:9999/lessonXMLs/" + lessonID + "/" + lessonID + "/" + lessonID + ".xml");
-		//System.out.println();
+		//ViksitLogger.logMSG(this.getClass().getName(),);
 		try {
 			JAXBContext jaxbcontext = JAXBContext.newInstance(CMSLesson.class);
 			Unmarshaller unmarshaller = jaxbcontext.createUnmarshaller();
@@ -181,7 +177,7 @@ public class LessonServices {
 				int length = doc.text().length();
 
 				if (cmsSlide.getId() == 981868) {
-					// //System.err.println("doc.text().length()------->"+doc.text().length());
+					// //ViksitLogger.logMSG(this.getClass().getName(),("doc.text().length()------->"+doc.text().length());
 				}
 				if (length < 500) {
 					length = 120;
@@ -195,7 +191,7 @@ public class LessonServices {
 
 			}
 		} catch (JAXBException e) {
-			//System.out.println("file name ->" + file);
+			//ViksitLogger.logMSG(this.getClass().getName(),"file name ->" + file);
 			e.printStackTrace();
 		}
 		return stringBuffer.toString();

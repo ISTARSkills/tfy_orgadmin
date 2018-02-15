@@ -9,6 +9,7 @@ import com.viksitpro.core.dao.entities.ContextDAO;
 import com.viksitpro.core.dao.entities.Question;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class QuestionServices {
@@ -52,9 +53,9 @@ public class QuestionServices {
 			contextz.add((new ContextDAO()).findById(Integer.parseInt(context.get("context").toString())));
 		}
 		if(contextz.size()>1){
-			System.err.println("More than one context exists for question "+question.getId());
+			ViksitLogger.logMSG(this.getClass().getName(),"More than one context exists for question "+question.getId());
 		} else if(contextz.size()==0){
-			System.err.println("No context exists for question "+question.getId());
+			ViksitLogger.logMSG(this.getClass().getName(),"No context exists for question "+question.getId());
 		}
 		return contextz;
 	}

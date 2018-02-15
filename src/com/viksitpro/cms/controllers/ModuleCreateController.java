@@ -2,9 +2,6 @@ package com.viksitpro.cms.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,17 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.viksitpro.cms.services.ModuleServices;
-import com.viksitpro.core.dao.entities.Cmsession;
-import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
-import com.viksitpro.core.dao.entities.SkillObjective;
-import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
 
 /**
  * Servlet implementation class ModuleCreateController

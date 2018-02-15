@@ -17,7 +17,6 @@ import com.google.gson.GsonBuilder;
 import in.talentify.core.controllers.IStarBaseServelet;
 import tfy.admin.services.StudentSkillMapService;
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
-import tfy.admin.studentmap.pojos.AdminCMSessionSkillGraph;
 import tfy.admin.studentmap.pojos.AdminSkillGraph;
 
 /**

@@ -28,7 +28,7 @@ Chat chat = new Chat();
 if(type.equalsIgnoreCase("ORG"))
 {
 	String getMessages="SELECT 	chat_messages. ID, cast ('"+userName+"' as varchar) as name, chat_messages.created_at, 	chat_messages.message, 	user_id, 	receiver_id FROM 	chat_messages WHERE 	( 		user_id = "+currentUserId+" 		AND receiver_id = "+userId+" 	) OR ( 	user_id = "+userId+"	AND receiver_id = "+currentUserId+" ) ORDER BY 	chat_messages.created_at desc  LIMIT 10;";
-	//System.out.println(getMessages);
+	//ViksitLogger.logMSG(this.getClass().getName(),getMessages);
 	data =  util.executeQuery(getMessages);
 	
 	String markOldMessageAsSent ="update chat_messages set sent ='t'  WHERE 	(( 		user_id = "+currentUserId+" 		AND receiver_id = "+userId+" 	) OR ( 	user_id = "+userId+"	AND receiver_id = "+currentUserId+" ))";
@@ -38,7 +38,7 @@ if(type.equalsIgnoreCase("ORG"))
 else if(type.equalsIgnoreCase("BG_GROUP"))
 {
 	String getMessages="SELECT 	batch_group_messages. ID, batch_group_messages.created_at ,	message, 	user_profile.first_name as name, 	batch_group_messages.sender_id  as user_id FROM 	batch_group_messages, 	user_profile WHERE 	user_profile.user_id = batch_group_messages.sender_id AND batch_group_id = "+userId+"  ORDER BY 	batch_group_messages.created_at desc  LIMIT 10;";
-	//System.out.println(getMessages);
+	//ViksitLogger.logMSG(this.getClass().getName(),getMessages);
 	data =  util.executeQuery(getMessages);
 	
 	String markOldBGMessageAsSent ="update batch_group_messages set sent='t' where batch_group_id="+userId;
@@ -47,7 +47,7 @@ else if(type.equalsIgnoreCase("BG_GROUP"))
 }
 else if (type.equalsIgnoreCase("USER")){
 	String getMessages="SELECT 	chat_messages. ID, cast ('"+userName+"' as varchar) as name,  chat_messages.created_at ,	chat_messages.user_id, 	chat_messages.receiver_id, 	chat_messages.message FROM 	chat_messages WHERE 	( 		user_id = "+currentUserId+" 		AND receiver_id = "+userId+" 	) OR ( 	user_id = "+userId+" 	AND receiver_id ="+currentUserId+" ) ORDER BY 	created_at desc LIMIT 10;";
-	//System.out.println(getMessages);
+	//ViksitLogger.logMSG(this.getClass().getName(),getMessages);
 	data =  util.executeQuery(getMessages);
 	
 	String markOldMessageAsSent ="update chat_messages set sent ='t' where (( 		user_id = "+currentUserId+" 		AND receiver_id = "+userId+" 	) OR ( 	user_id = "+userId+" 	AND receiver_id ="+currentUserId+" ))";

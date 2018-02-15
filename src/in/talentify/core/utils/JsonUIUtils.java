@@ -7,10 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class JsonUIUtils {
@@ -128,7 +126,7 @@ public class JsonUIUtils {
 		}
 		DBUTILS db = new DBUTILS();
 		ArrayList<PieChartJson> pie = new ArrayList<>();
-		//System.out.println("22 - > " + sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"22 - > " + sql);
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		for (HashMap<String, Object> item : data) {
@@ -199,9 +197,9 @@ public class JsonUIUtils {
 			sql = "SELECT DISTINCT 	s. ID AS student_id, 	sp.first_name, 	s.mobile, 	s.email, 	COALESCE ( 		NULLIF (sp.last_name, ''), 		'Not Available' 	) AS lastname, 	COALESCE ( 		NULLIF (CAST(sp.dob AS VARCHAR), ''), 		'Not Available' 	) AS dob, 	CASE WHEN ( 	sp.gender IS NULL 	OR sp.gender LIKE '%null%' ) THEN 	CASE WHEN (sp.gender IS NULL) THEN 	'NA' ELSE 	sp.gender END ELSE 	sp.gender END AS gender,  CASE WHEN sp.profile_image LIKE 'null' OR sp.profile_image IS NULL THEN 	(select property_value from constant_properties where property_name ='media_url_path' )||'/users/' || UPPER ( 		SUBSTRING (sp.first_name FROM 1 FOR 1) 	) || '.png' WHEN sp.profile_image LIKE '%graph.facebook.com%' 		ThEN 			sp.profile_image ELSE 	(select property_value from constant_properties where property_name ='media_url_path' ) || sp.profile_image  END AS profile_image,  col. NAME AS college_name FROM 	batch b, 	batch_students bs, 	batch_group bg, 	istar_user s, 	user_profile sp, 	professional_profile pf, 	organization col WHERE 	bs.student_id = s. ID AND bg. ID = b.batch_group_id AND bg. ID = bs.batch_group_id AND bg.college_id = "+college_id+" AND b. ID = "+id+" AND sp.user_id = s. ID AND col. ID = bg.college_id ORDER BY 	sp.first_name LIMIT 6";
 		}
 
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
-		//System.out.println("Hashmap size is " + data.size());
+		//ViksitLogger.logMSG(this.getClass().getName(),"Hashmap size is " + data.size());
 		return data;
 	}
 
@@ -221,7 +219,7 @@ public class JsonUIUtils {
 					+ course_id
 					+ " AND batch.batch_group_id = attendance_stats.batch_group_id AND attendance_stats.percentage_attendance != 0  GROUP BY 	attendance_stats.created_at,attendance_stats.percentage_attendance,batch. NAME order by attendance_stats.created_at";
 		}
-		//System.out.println("111- > " + sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"111- > " + sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		ArrayList<BarChartJson> attendence_list = new ArrayList<>();
 		for (HashMap<String, Object> item : data) {

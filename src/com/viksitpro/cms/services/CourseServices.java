@@ -1,9 +1,7 @@
 package com.viksitpro.cms.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import org.hibernate.Session;
@@ -16,7 +14,6 @@ import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
 
 public class CourseServices {
 
@@ -56,7 +53,7 @@ public class CourseServices {
 		for (String moduleid : moduleids) {
 			try {
 				Module module = (new ModuleDAO()).findById(Integer.parseInt(moduleid));
-				/// System.out.println("<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>"+module.getId()+">>>>"+module.getModuleName());
+				/// ViksitLogger.logMSG(this.getClass().getName(),"<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>"+module.getId()+">>>>"+module.getModuleName());
 				modules.add(module);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

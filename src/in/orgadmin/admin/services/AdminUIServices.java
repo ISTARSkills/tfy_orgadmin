@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 
@@ -18,7 +19,7 @@ import com.viksitpro.core.utilities.DBUTILS;
 public class AdminUIServices {
 
 	public StringBuffer getCourses(int orgId) {
-		// //System.err.println(orgId);
+		// //ViksitLogger.logMSG(this.getClass().getName(),(orgId);
 		String sql = "SELECT DISTINCT 	course. ID, 	course.course_name FROM 	batch_group, 	batch, 	course WHERE 	batch_group.college_id = "
 				+ orgId
 				+ " AND batch_group. ID = batch.batch_group_id AND batch.course_id = course. ID  ORDER BY course_name";
@@ -89,7 +90,7 @@ public class AdminUIServices {
 			select= "";
 		}
 		out.append("");
-		System.err.println(out.toString());
+		ViksitLogger.logMSG(this.getClass().getName(),out.toString());
 		return out;
 	}
 	
@@ -120,7 +121,7 @@ public class AdminUIServices {
 				+ " FROM attendance WHERE user_id IN ( SELECT ID FROM 	student WHERE organization_id = " + orgId
 				+ " ) GROUP BY user_id ) T2 ON (T1. ID = T2.user_id)";
 
-		// //System.err.println(sql);
+		// //ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		DBUTILS db = new DBUTILS();
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		StringBuffer out = new StringBuffer();

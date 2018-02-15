@@ -64,7 +64,7 @@ public class CreateNewTicketController extends IStarBaseServelet {
 			String otherMembers =request.getParameter("other_members");
 			IstarNotificationServices noticeServices = new IstarNotificationServices();
 			NotificationAndTicketServices serv = new NotificationAndTicketServices();
-			//System.out.println(receivers.length);
+			//ViksitLogger.logMSG(this.getClass().getName(),receivers.length);
 			
 			ArrayList<String> receiverEmails = new ArrayList<>();
 			ArrayList<String> receiverMobiles = new ArrayList<>();

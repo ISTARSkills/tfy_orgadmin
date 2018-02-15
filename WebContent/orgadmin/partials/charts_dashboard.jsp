@@ -120,7 +120,7 @@
 								</div>
 							</div>
 							<%
-							//System.out.println(">>>>>"+batchGroups.size());
+							//ViksitLogger.logMSG(this.getClass().getName(),">>>>>"+batchGroups.size());
 							if(batchGroups.size()>0){
 								HashMap <String, String> conditions4 = new HashMap();
 								conditions4.put("college_id", colegeID+"");
@@ -156,7 +156,7 @@
 								</div>
 							</div>
 							<%
-							//System.out.println(">>>>>"+roles.size());
+							//ViksitLogger.logMSG(this.getClass().getName(),">>>>>"+roles.size());
 							if(roles.size()>0){
 								HashMap <String, String> conditions4 = new HashMap();
 								conditions4.put("college_id", colegeID+"");

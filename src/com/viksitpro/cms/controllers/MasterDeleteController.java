@@ -1,6 +1,7 @@
 package com.viksitpro.cms.controllers;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 
 /**
  * Servlet implementation class MasterDeleteController
@@ -40,14 +42,14 @@ public class MasterDeleteController extends HttpServlet {
 		if(request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("module")){
 			Module module = (new ModuleDAO().findById(Integer.parseInt(request.getParameter("id").toString())));
 			module.setIsDeleted(true);
-			System.err.println("The module's isz-deleted field is now >>" + module.getIsDeleted());
+			ViksitLogger.logMSG(this.getClass().getName(),"The module's isz-deleted field is now >>" + module.getIsDeleted());
 			ModuleDAO dao = new ModuleDAO();
 			ModuleServices moduleServices = new ModuleServices();
 			moduleServices.saveModuleDetails(module, dao);
 		}else if (request.getParameter("type") != null && request.getParameter("type").equalsIgnoreCase("session")) {
 			Cmsession cmsession = (new CmsessionDAO().findById(Integer.parseInt(request.getParameter("id").toString())));
 			cmsession.setIsDeleted(true);
-			System.err.println("The cmsession's is_deleted field is now >>" + cmsession.getIsDeleted());
+			ViksitLogger.logMSG(this.getClass().getName(),"The cmsession's is_deleted field is now >>" + cmsession.getIsDeleted());
 			CmsessionDAO dao = new CmsessionDAO();
 			SessionServices services = new SessionServices();
 			services.saveCmsessionDetails(cmsession, dao);

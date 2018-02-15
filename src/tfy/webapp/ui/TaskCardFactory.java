@@ -2,21 +2,15 @@ package tfy.webapp.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import com.istarindia.android.pojo.ComplexObject;
-import com.istarindia.android.pojo.ConcreteItemPOJO;
-import com.istarindia.android.pojo.CoursePOJO;
 import com.istarindia.android.pojo.DailyTaskPOJO;
-import com.istarindia.android.pojo.ModulePOJO;
 import com.istarindia.android.pojo.TaskSummaryPOJO;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.AppProperies;
-import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
 import tfy.admin.trainer.TaskCardFactoryRecruitment;
@@ -332,7 +326,7 @@ public class TaskCardFactory {
 
 	private StringBuffer showTrainerWebinarCard(TaskSummaryPOJO task) {
 		StringBuffer sb = new StringBuffer();
-		System.err.println("enter");
+		ViksitLogger.logMSG(this.getClass().getName(),"enter");
 		
 		if (task.getHeader() == null) {
 			task.setHeader("");
@@ -603,9 +597,6 @@ public class TaskCardFactory {
 
 		String url="#";
 		try {
-			System.err.println("task.getId()-->"+ task.getId());
-			System.err.println("task.getItemId()-->"+ task.getItemId());
-			System.err.println("taskObject.getIstarUserByActor().getId()-->"+ taskObject.getIstarUserByActor().getId());
 			url = "/student/user_assessment.jsp?task_id="+task.getId()+"&assessment_id="+task.getItemId()+"&user_id="+taskObject.getIstarUserByActor().getId();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

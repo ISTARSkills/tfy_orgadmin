@@ -30,7 +30,7 @@
 	ComplexObject cp = rc.getComplexObject(user.getId());
 	request.setAttribute("cp", cp);
 	String course_id = request.getParameter("course_id");
-	//System.out.println("course id =========> " + course_id);
+	//ViksitLogger.logMSG(this.getClass().getName(),"course id =========> " + course_id);
 %>
 
  

@@ -1,15 +1,11 @@
 package in.orgadmin.admin.services;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import com.viksitpro.core.dao.entities.Address;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
-import com.viksitpro.core.dao.entities.Organization;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class OrgAdminUserService {
@@ -23,7 +19,7 @@ public class OrgAdminUserService {
 		int trainerUserID = 0;
 		int presenterUserID = 0;
 		if (istarUserList.size() > 0) {
-			// System.out.println("A user with this email address already exists
+			// ViksitLogger.logMSG(this.getClass().getName(),"A user with this email address already exists
 			// of type "
 			// + istarUserList.get(0).getUserRoles() + "!");
 			return 0;
@@ -34,7 +30,7 @@ public class OrgAdminUserService {
 		String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"
 				+ email + "', 		'" + password + "', 		now(), 		'" + mobileNumber
 				+ "', 		NULL,    'f' 	)RETURNING ID;";
-		System.out.println(istarStudentSql);
+		ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 
 		userID = db.executeUpdateReturn(istarStudentSql);
 
@@ -46,7 +42,7 @@ public class OrgAdminUserService {
 				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("
 						+ userID + ", (select id from role where role_name = '" + uType
 						+ "'), (SELECT MAX(id)+1 FROM user_role), '1');";
-				System.out.println(userRoleMappingSql);
+				ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 				db.executeUpdate(userRoleMappingSql);
 			}
 
@@ -63,18 +59,18 @@ public class OrgAdminUserService {
 					+ "', 		NULL,    'f' 	)RETURNING ID;";
 
 			presenterUserID = db.executeUpdateReturn(istarPresenterSql);
-			System.out.println(istarPresenterSql);
+			ViksitLogger.logMSG(this.getClass().getName(),istarPresenterSql);
 			// Trainer Presenter User Role Mapping
 			String presentorRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("
 					+ presenterUserID
 					+ ", (select id from role where role_name = 'PRESENTOR'), (SELECT MAX(id)+1 FROM user_role), '1');";
 			db.executeUpdate(presentorRoleMappingSql);
-			System.out.println(presentorRoleMappingSql);
+			ViksitLogger.logMSG(this.getClass().getName(),presentorRoleMappingSql);
 			// Trainer Presenter Mapping
 			String trainerPresenterSql = "INSERT INTO trainer_presentor ( 	id, 	trainer_id, 	presentor_id ) VALUES 	((SELECT MAX(id)+1 FROM trainer_presentor), "
 					+ userID + ", " + presenterUserID + ");";
 			db.executeUpdate(trainerPresenterSql);
-			System.out.println(trainerPresenterSql);
+			ViksitLogger.logMSG(this.getClass().getName(),trainerPresenterSql);
 		}
 
 		// Trainer Student User Profile
@@ -82,14 +78,14 @@ public class OrgAdminUserService {
 				+ firstname + "', 		'" + lastname + "', 	NULL,	'" + gender + "',   " + userID
 				+ ", 		NULL 	); ";
 
-		System.out.println(UserProfileSql);
+		ViksitLogger.logMSG(this.getClass().getName(),UserProfileSql);
 		db.executeUpdate(UserProfileSql);
 
 		// Trainer Student User Org Mapping
 		String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES ("
 				+ userID + ", " + college_id + ", (SELECT MAX(id)+1 FROM user_org_mapping));";
 		db.executeUpdate(userOrgMappingSql);
-		System.out.println(userOrgMappingSql);
+		ViksitLogger.logMSG(this.getClass().getName(),userOrgMappingSql);
 		// new EmailService().sendInviteMail(email, firstname,"test123");
 
 		return userID;
@@ -103,7 +99,7 @@ public class OrgAdminUserService {
 
 		String updateIstarStudentSql = "UPDATE istar_user SET  email = '" + email + "',  password = '" + password
 				+ "',  mobile = '" + mobileNumber + "' WHERE 	id = " + userID + ";";
-		// System.out.println("updateIstarStudentSql>>>"+updateIstarStudentSql);
+		// ViksitLogger.logMSG(this.getClass().getName(),"updateIstarStudentSql>>>"+updateIstarStudentSql);
 		db.executeUpdate(updateIstarStudentSql);
 
 		String updateUserProfileSql = "UPDATE user_profile SET  first_name = '" + firstname + "',  last_name = '"
@@ -136,7 +132,7 @@ public class OrgAdminUserService {
 				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("
 						+ userID + ", (select id from role where role_name = '" + uType
 						+ "'), (SELECT MAX(id)+1 FROM user_role), '1');";
-				System.out.println(userRoleMappingSql);
+				ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 				db.executeUpdate(userRoleMappingSql);
 			}
 
@@ -181,18 +177,18 @@ public class OrgAdminUserService {
 				+ "', 		NULL,    'f' 	)RETURNING ID;";
 
 		int presenterUserID = db.executeUpdateReturn(istarPresenterSql);
-		System.out.println(istarPresenterSql);
+		ViksitLogger.logMSG(this.getClass().getName(),istarPresenterSql);
 		// Trainer Presenter User Role Mapping
 		String presentorRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("
 				+ presenterUserID
 				+ ", (select id from role where role_name = 'PRESENTOR'), (SELECT MAX(id)+1 FROM user_role), '1');";
 		db.executeUpdate(presentorRoleMappingSql);
-		System.out.println(presentorRoleMappingSql);
+		ViksitLogger.logMSG(this.getClass().getName(),presentorRoleMappingSql);
 		// Trainer Presenter Mapping
 		String trainerPresenterSql = "INSERT INTO trainer_presentor ( 	id, 	trainer_id, 	presentor_id ) VALUES 	((SELECT MAX(id)+1 FROM trainer_presentor), "
 				+ userID + ", " + presenterUserID + ");";
 		db.executeUpdate(trainerPresenterSql);
-		System.out.println(trainerPresenterSql);
+		ViksitLogger.logMSG(this.getClass().getName(),trainerPresenterSql);
 
 	}
 
@@ -266,7 +262,7 @@ public class OrgAdminUserService {
 				+" delete from report where user_id ="+ userId + ";" 
 				+ "delete from istar_user where id = " + userId + ";"
 				+ presentor_sql;
-		     System.err.println("delete>>>>>> "+sql);
+		     ViksitLogger.logMSG(this.getClass().getName(),"delete>>>>>> "+sql);
 		     db.executeUpdate(sql);
 		 
 		

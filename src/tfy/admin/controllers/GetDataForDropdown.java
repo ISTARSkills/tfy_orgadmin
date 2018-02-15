@@ -14,11 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.viksitpro.core.customtask.DropDownItem;
-import com.viksitpro.core.customtask.DropDownList;
 import com.viksitpro.core.utilities.DBUTILS;
-
-import in.talentify.core.utils.CMSRegistry;
 
 /**
  * Servlet implementation class GetDataForDropdown
@@ -55,7 +51,7 @@ public class GetDataForDropdown extends HttpServlet {
 		sql =sql.replaceAll(":search_term", searchTerm.toLowerCase());
 		sql =sql.replaceAll(":dependency_term", dependencyTerm);
 		
-		//System.out.println("sql >>"+sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"sql >>"+sql);
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();

@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -94,7 +95,7 @@ public class DeleteFireBaseContent extends HttpServlet {
 														old_cal.setTime(sdf_FIREBASE.parse(firebaseDateString));
 														if (old_cal.getTime().before(todayDate)) {
 															
-															//System.out.println("firebase date-----"
+															//ViksitLogger.logMSG(this.getClass().getName(),"firebase date-----"
 																	//+ old_cal.getTime() + "----selcted_date-----"
 																	//+ todayDate + "key is--->" + key);
 
@@ -106,7 +107,7 @@ public class DeleteFireBaseContent extends HttpServlet {
 															old_cal.setTime(sdf.parse(firebaseDateString));
 															if (old_cal.getTime().before(todayDate)) {
 																
-																//System.out.println("----firebase date-----"
+																//ViksitLogger.logMSG(this.getClass().getName(),"----firebase date-----"
 																		//+ old_cal.getTime() + "----selcted_date-----"
 																		//+ todayDate + "key is--->" + key);
 																

@@ -1,20 +1,14 @@
 package in.orgadmin.admin.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Properties;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -146,7 +140,7 @@ Param -> course_ids : Value ->1*/
 				}				
 				
 				DBUTILS dbutils=new DBUTILS();
-				//System.out.println(">>getStudents"+getStudents);
+				//ViksitLogger.logMSG(this.getClass().getName(),">>getStudents"+getStudents);
 				List<HashMap<String, Object>> data=dbutils.executeQuery(getStudents);
 				for (HashMap<String, Object> item : data) {
 					list.add((int)item.get("id"));

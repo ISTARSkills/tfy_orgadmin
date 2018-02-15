@@ -1,7 +1,6 @@
 package com.viksitpro.cms.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,14 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.viksitpro.cms.services.SkillChildrenServices;
-import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.Module;
-import com.viksitpro.core.dao.entities.ModuleDAO;
 import com.viksitpro.core.dao.entities.Question;
-import com.viksitpro.core.dao.entities.QuestionDAO;
-import com.viksitpro.core.dao.entities.SkillObjective;
-import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**

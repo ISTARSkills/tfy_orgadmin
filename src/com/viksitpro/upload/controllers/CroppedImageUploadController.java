@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.viksitpro.core.logger.ViksitLogger;
 
 
 /**
@@ -55,26 +55,26 @@ public class CroppedImageUploadController extends HttpServlet {
 		MediaUploadServices mediaUploadServices = new MediaUploadServices();
 		Set<PosixFilePermission> perms = mediaUploadServices.getPermissions();
 		//doGet(request, response);
-		System.err.println("CROPPED IMAGE UPPLAODER CALLED");
+		ViksitLogger.logMSG(this.getClass().getName(),"CROPPED IMAGE UPPLAODER CALLED");
 		if(request.getParameterMap().containsKey("image_base_64")){
-			//System.err.println(request.getParameter("image_base_64"));	
+			//ViksitLogger.logMSG(this.getClass().getName(),(request.getParameter("image_base_64"));	
 			String base64Image = request.getParameter("image_base_64").split(",")[1];
 			byte[] imageInByte = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image);
 			//checking if folder exists
 			File file1 = new File(mediaUploadServices.getAnyPath("imagePath"));
 			if (file1.exists()) {
-				System.out.println(mediaUploadServices.getAnyPath("imagePath") + " Folder exists");
+				ViksitLogger.logMSG(this.getClass().getName(),mediaUploadServices.getAnyPath("imagePath") + " Folder exists");
 			} else {
 				boolean success = (new File(mediaUploadServices.getAnyPath("imagePath"))).mkdirs();
 				if (!success) {
-					System.err.println("Folder creation failed");
+					ViksitLogger.logMSG(this.getClass().getName(),"Folder creation failed");
 				} else {
-					System.err.println("Folder creation succeeded");
+					ViksitLogger.logMSG(this.getClass().getName(),"Folder creation succeeded");
 				}
 			}			
 			// write the image to a file
 			UUID uui = UUID.randomUUID();
-			System.err.println(mediaUploadServices.getAnyPath("imagePath") + uui.toString() + ".png");
+			ViksitLogger.logMSG(this.getClass().getName(),mediaUploadServices.getAnyPath("imagePath") + uui.toString() + ".png");
 			File file = new File(mediaUploadServices.getAnyPath("imagePath"), uui.toString() + ".png");
 			file.createNewFile();
 			if(mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")){
@@ -86,9 +86,9 @@ public class CroppedImageUploadController extends HttpServlet {
 			if(mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")){
 				Files.setPosixFilePermissions(Paths.get(file.getAbsolutePath()), perms);
 			}
-			System.err.println(file.getAbsolutePath());
+			ViksitLogger.logMSG(this.getClass().getName(),file.getAbsolutePath());
 			out.println(mediaUploadServices.getAnyPath("media_url_path")+ "course_images/" + file.getName());
-			System.err.println("UPLOADED image url -->" + mediaUploadServices.getAnyPath("imagePath") + file.getName());
+			ViksitLogger.logMSG(this.getClass().getName(),"UPLOADED image url -->" + mediaUploadServices.getAnyPath("imagePath") + file.getName());
 		}
 	}
 

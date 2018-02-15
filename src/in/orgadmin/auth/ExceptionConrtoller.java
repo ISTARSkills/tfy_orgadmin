@@ -7,15 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
-import org.apache.commons.lang.exception.ExceptionUtils;
-
-import in.talentify.core.utils.EmailSendingUtility;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import in.talentify.core.utils.EmailSendingUtility;
 
 
 
@@ -54,7 +55,7 @@ public class ExceptionConrtoller extends HttpServlet {
 			String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");
 
 			
-			//System.err.println("JSP Exception Page "+(new ExceptionUtils()).getFullStackTrace(throwable));
+			//ViksitLogger.logMSG(this.getClass().getName(),("JSP Exception Page "+(new ExceptionUtils()).getFullStackTrace(throwable));
 			if (servletName == null) {
 				servletName = "Unknown";
 			}
@@ -102,7 +103,7 @@ public class ExceptionConrtoller extends HttpServlet {
 				ex.printStackTrace();
 			}
 		} catch (Exception e) {
-			//System.err.println("line " + Thread.currentThread().getStackTrace()[1].getLineNumber());
+			//ViksitLogger.logMSG(this.getClass().getName(),("line " + Thread.currentThread().getStackTrace()[1].getLineNumber());
 		}
 
 		request.getRequestDispatcher("/500.jsp").forward(request, response);

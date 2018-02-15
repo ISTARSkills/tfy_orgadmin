@@ -1,6 +1,5 @@
 package tfy.admin.trainer;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,19 +7,13 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.jgroups.util.UUID;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 
 import com.viksitpro.core.dao.entities.Assessment;
@@ -28,7 +21,6 @@ import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarNotification;
-import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.utils.task.TaskServices;
 import com.viksitpro.core.notification.IstarNotificationServices;
@@ -197,12 +189,12 @@ String batchCode ="";
 						+ addressLine1 + "', 		'" + addressLine2 + "', 		 (select id from pincode where pin="
 						+ pincode + " limit 1), 		 NULL, 		 NULL 	)RETURNING ID;";
 
-				//System.err.println(sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 				int address_id = db.executeUpdateReturn(sql);
 
 				String insertIntoIstarUser = "INSERT INTO istar_user (id, email, password, created_at, mobile, auth_token, login_type, is_verified) VALUES ((select COALESCE(max(id),0)+1 from istar_user), '"
 						+ email + "', '" + password + "', now(), " + mobile + ", NULL, NULL, 't') returning id;";
-				//System.err.println(insertIntoIstarUser);
+				//ViksitLogger.logMSG(this.getClass().getName(),(insertIntoIstarUser);
 				int urseId = db.executeUpdateReturn(insertIntoIstarUser);
 				if(batchCode!=null && !batchCode.equalsIgnoreCase(""))
 				 {
@@ -247,13 +239,13 @@ String batchCode ="";
 				String createUserProfile = "INSERT INTO user_profile (id,  first_name, last_name,  gender, user_id,address_id ,dob,aadhar_no,place_of_birth,father_name,caste_category,religion) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"
 						+ firstName + "', '" + lastName + "', '" + gender + "'," + urseId + "," + address_id + " , '"
 						+ dob + "', "+aadharno+",'"+place_of_birth+"','"+father_name+"','"+caste_category+"','"+religion+"');";
-				//System.err.println(createUserProfile);
+				//ViksitLogger.logMSG(this.getClass().getName(),(createUserProfile);
 				db.executeUpdate(createUserProfile);
 
 				String insertIntoUserRole = "INSERT INTO user_role (user_id, role_id, id, priority) VALUES (" + urseId
 						+ ", (select id from role where role_name='" + userType
 						+ "'), ((select COALESCE(max(id),0)+1 from user_role)), 1);";
-				//System.err.println(insertIntoUserRole);
+				//ViksitLogger.logMSG(this.getClass().getName(),(insertIntoUserRole);
 				db.executeUpdate(insertIntoUserRole);
 
 				String insertIntoProfessionalProfile = "INSERT INTO professional_profile (id, user_id, has_under_graduation,has_post_graduation, under_graduate_degree_name, pg_degree_name, experience_in_years, experince_in_months, pan_no, yop_10, marks_10, yop_12, marks_12, under_graduation_specialization_name, under_gradution_marks, post_graduation_specialization_name, post_gradution_marks, is_studying_further_after_degree, job_sector, preferred_location, company_name, position, duration, description, interested_in_type_of_course, area_of_interest,below_poverty_line) VALUES ((select COALESCE(max(id),0)+1 from professional_profile), "
@@ -263,7 +255,7 @@ String batchCode ="";
 						+ " '"+underGraduationSpecializationName+"' , "+underGradutionMarks+", '"+postGraduationSpecializationName+"',"
 						+ " "+postGradutionMarks+", '"+Boolean.toString(isStudyingFurtherAfterDegree).charAt(0)+"', '"+jobSector+"', '"+preferredLocation+"',"
 						+ " '"+companyName+"', '"+position+"', '"+duration+"', '"+description+"', '"+interestedInTypeOfCourse+"', '"+areaOfInterest+"', '"+Boolean.toString(below_poverty_line).charAt(0)+"'); ";
-				//System.err.println(insertIntoProfessionalProfile);
+				//ViksitLogger.logMSG(this.getClass().getName(),(insertIntoProfessionalProfile);
 				db.executeUpdate(insertIntoProfessionalProfile);
 
 				if (userType.equalsIgnoreCase("TRAINER")) {
@@ -393,7 +385,7 @@ String batchCode ="";
 							obj = (JSONObject) parser.parse(avaiableTime);
 
 							for (Object obja : obj.keySet()) {
-								//System.out.println(obja + "--->" + obj.get(obja).toString());
+								//ViksitLogger.logMSG(this.getClass().getName(),obja + "--->" + obj.get(obja).toString());
 								boolean t8am_9am = false;
 								boolean t9am_10am = false;
 								boolean t10am_11am = false;
@@ -411,7 +403,7 @@ String batchCode ="";
 
 								for (String time : times) {
 
-									//System.err.println("day>>>> " + day + " time>>>>> " + time);
+									//ViksitLogger.logMSG(this.getClass().getName(),("day>>>> " + day + " time>>>>> " + time);
 
 									if (time.equalsIgnoreCase("8:00 AM-9:00 AM")) {
 										t8am_9am = true;
@@ -452,7 +444,7 @@ String batchCode ="";
 										+ t2pm_3pm + "', 		'" + t3pm_4pm + "', 		'" + t4pm_5pm
 										+ "', 		'" + t5pm_6pm + "' 	);";
 
-								//System.err.println(ssql);
+								//ViksitLogger.logMSG(this.getClass().getName(),(ssql);
 								db.executeUpdate(ssql);
 							}
 

@@ -3,8 +3,6 @@
  */
 package in.orgadmin.utils.report;
 
-import com.viksitpro.core.dao.entities.IstarUser;
-
 /**
  * @author mayank
  *

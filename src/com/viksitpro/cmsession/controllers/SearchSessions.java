@@ -17,8 +17,6 @@ import org.json.JSONObject;
 
 import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
-import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.LessonDAO;
 
 /**
  * Servlet implementation class SearchSessions

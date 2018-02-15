@@ -5,7 +5,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.utils.report.ColumnHandler;
@@ -56,7 +56,7 @@ public class DataTableController extends IStarBaseServelet {
 		}
 		
 		String searchTerm = request.getParameter("search[value]");
-		//System.out.println("search term>>>"+searchTerm);
+		//ViksitLogger.logMSG(this.getClass().getName(),"search term>>>"+searchTerm);
 		if (searchTerm != null && searchTerm.equalsIgnoreCase("")) {
 		
 			conditions.put("limit", request.getParameter("length"));
@@ -76,12 +76,11 @@ public class DataTableController extends IStarBaseServelet {
 		for (String key : conditions.keySet()) {			
 			String paramName=":"+key;				
 			if (sql1.contains(paramName)) {
-				//System.out.println("key->" + key + "   value-> " + conditions.get(key));					
+				//ViksitLogger.logMSG(this.getClass().getName(),"key->" + key + "   value-> " + conditions.get(key));					
 				sql1 =sql1.replaceAll(paramName, conditions.get(key));
 			}			
 		}
 		
-		System.out.println("-------------------------->"+sql1);
 		
 		JSONArray array = new JSONArray();
 		List<HashMap<String, Object>> data = db.executeQuery(sql1);		

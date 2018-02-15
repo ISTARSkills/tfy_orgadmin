@@ -15,8 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -89,7 +87,7 @@ public class PinCodeController extends HttpServlet {
 		Enumeration params = request.getParameterNames(); 
 		while(params.hasMoreElements()){
 		 String paramName = (String)params.nextElement();
-		 //System.out.println("Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
+		 //ViksitLogger.logMSG(this.getClass().getName(),"Parameter Name - "+paramName+", Value - "+request.getParameter(paramName));
 		}
 	}
 

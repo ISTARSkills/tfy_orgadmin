@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 @WebServlet("/task_delete")
@@ -39,11 +40,11 @@ public class TaskDeleteController extends HttpServlet {
 			student_playlist_id = request.getParameter("student_playlist_id");
 
 			String sql = "DELETE FROM task WHERE id ='" + task_id + "'";
-			System.err.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 			db.executeUpdate(sql);
 
 			sql = "DELETE FROM student_playlist WHERE id ='" + student_playlist_id + "'";
-			System.err.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 			db.executeUpdate(sql);
 
 		} else if (request.getParameter("key") != null
@@ -59,16 +60,16 @@ public class TaskDeleteController extends HttpServlet {
 
 				String sql = "DELETE FROM student_playlist WHERE task_id in (  SELECT 	id FROM 	task WHERE 	task.item_type IN ( 			'LESSON', 			'ASSESSMENT', 			'CUSTOM_TASK' 		) AND actor = '"
 						+ entity_id + "' AND start_date = '" + start_date + "' AND end_date = '" + end_date + "' )";
-				System.err.println(sql);
+				ViksitLogger.logMSG(this.getClass().getName(),sql);
 				db.executeUpdate(sql);
 				sql = "DELETE FROM 	task WHERE 	task.item_type IN ( 			'LESSON', 			'ASSESSMENT', 			'CUSTOM_TASK' 		) AND actor = '"
 						+ entity_id + "' AND start_date = '" + start_date + "' AND end_date = '" + end_date + "'";
-				System.err.println(sql);
+				ViksitLogger.logMSG(this.getClass().getName(),sql);
 				db.executeUpdate(sql);
 				sql = "DELETE FROM auto_scheduler_data WHERE entity_id ='" + entity_id + "' AND entity_type = '"
 						+ entity_type + "' AND course_id ='" + course + "' AND start_date = '" + start_date
 						+ "' AND end_date = '" + end_date + "'";
-				System.err.println(sql);
+				ViksitLogger.logMSG(this.getClass().getName(),sql);
 				db.executeUpdate(sql);
 
 			} else if (entity_type.equalsIgnoreCase("SECTION")) {
@@ -83,26 +84,26 @@ public class TaskDeleteController extends HttpServlet {
 						String sql = "DELETE FROM student_playlist WHERE task_id in (  SELECT 	id FROM 	task WHERE 	task.item_type IN ( 			'LESSON', 			'ASSESSMENT', 			'CUSTOM_TASK' 		) AND actor = '"
 								+ row.get("student_id") + "' AND start_date = '" + start_date + "' AND end_date = '"
 								+ end_date + "' )";
-						System.err.println(sql);
+						ViksitLogger.logMSG(this.getClass().getName(),sql);
 						db.executeUpdate(sql);
 
 						sql = "DELETE FROM task_log WHERE task in (SELECT id FROM 	task WHERE 	task.item_type IN ( 			'LESSON', 			'ASSESSMENT', 			'CUSTOM_TASK' 		) AND actor = '"
 								+ row.get("student_id") + "' AND start_date = '" + start_date + "' AND end_date = '"
 								+ end_date + "') ";
-						System.err.println(sql);
+						ViksitLogger.logMSG(this.getClass().getName(),sql);
 						db.executeUpdate(sql);
 
 						sql = "DELETE FROM 	task WHERE 	task.item_type IN ( 			'LESSON', 			'ASSESSMENT', 			'CUSTOM_TASK' 		) AND actor = '"
 								+ row.get("student_id") + "' AND start_date = '" + start_date + "' AND end_date = '"
 								+ end_date + "'";
-						System.err.println(sql);
+						ViksitLogger.logMSG(this.getClass().getName(),sql);
 						db.executeUpdate(sql);
 
 					}
 					String sql = "DELETE FROM auto_scheduler_data WHERE entity_id ='" + entity_id
 							+ "' AND entity_type = '" + entity_type + "' AND course_id ='" + course
 							+ "' AND start_date = '" + start_date + "' AND end_date = '" + end_date + "'";
-					System.err.println(sql);
+					ViksitLogger.logMSG(this.getClass().getName(),sql);
 					db.executeUpdate(sql);
 
 				}
@@ -169,7 +170,7 @@ public class TaskDeleteController extends HttpServlet {
 			
 			stringBuffer.append(" </tbody></table> </div>");
 
-			System.err.println(stringBuffer);
+			ViksitLogger.logMSG(this.getClass().getName(),stringBuffer);
 			response.getWriter().println(stringBuffer);
 
 		}

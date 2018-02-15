@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.logger.ViksitLogger"%>
 <%@page import="com.viksitpro.core.dao.entities.OrganizationDAO"%>
 <%@page import="com.viksitpro.core.dao.entities.UserRole"%>
 <%@page import="com.viksitpro.core.dao.entities.UserProfile"%>
@@ -61,7 +62,7 @@
 		userMobile = user.getMobile()!=null?(Long.toString(user.getMobile())):"";
 		userGender = stuProfileData.getGender()!=null?stuProfileData.getGender():"";
 		
-		System.out.println(userGender);
+		//ViksitLogger.logMSG(this.getClass().getName(),userGender);
 	}
 	AdminUIServices ui = new AdminUIServices();
 	

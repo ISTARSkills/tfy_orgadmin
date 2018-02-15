@@ -1,10 +1,8 @@
 package tfy.admin.controllers;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -15,10 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
-
-import in.orgadmin.utils.report.Report;
-import in.orgadmin.utils.report.ReportUtils;
 
 /**
  * Servlet implementation class CustomChartDataController
@@ -88,7 +84,7 @@ public class CustomChartDataController extends HttpServlet {
 				+ "from "
 				+ "( select bse.id , bse.eventdate, organization.name org_name, course.course_name, bg.name as group_name, COALESCE(tu.first_name, trainer.email) as trainer_name, cmsession.title session_title, slide_change_log.slide_id, slide_change_log.created_at ,lag(slide_change_log.created_at) OVER w as previous_cat ,lead(slide_change_log.created_at) OVER w as next_cat from batch_schedule_event bse join batch_group bg on (bse.batch_group_id = bg.id and bse.type ='BATCH_SCHEDULE_EVENT_TRAINER' and bse.course_id="+courseId+" and bse.batch_group_id ="+batchGroupId+" and bse.actor_id ="+trainerId+" "+timeSql+") join course on (bse.course_id = course.id) join organization on (organization.id = bg.college_id) join istar_user trainer on (bse.actor_id = trainer.id) left join user_profile tu on (tu.user_id = trainer.id) left join slide_change_log on (slide_change_log.event_id = bse.id) left join cmsession on (cmsession.id = slide_change_log.cmsession_id) WINDOW w AS (PARTITION BY bse.eventdate, organization.name , course.course_name, bg.name, cmsession.title ,COALESCE(tu.first_name, trainer.email)  order by bse.eventdate, organization.name , course.course_name, bg.name, cmsession.title ,COALESCE(tu.first_name, trainer.email), slide_change_log.created_at) )tokcat )T2 group by  eventdate order by eventdate";
 		
-		System.out.println("slide summary sql >>>"+sql);
+		ViksitLogger.logMSG(this.getClass().getName(),"slide summary sql >>>"+sql);
 		
 		StringBuffer out = new StringBuffer();
 		String id = UUID.randomUUID().toString();

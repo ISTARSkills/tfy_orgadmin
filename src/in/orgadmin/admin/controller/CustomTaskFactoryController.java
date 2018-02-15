@@ -6,11 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,13 +16,12 @@ import com.viksitpro.core.customtask.ElementParam;
 import com.viksitpro.core.customtask.TaskFormElement;
 import com.viksitpro.core.customtask.TaskLibrary;
 import com.viksitpro.core.customtask.TaskStep;
-import com.viksitpro.core.customtask.TaskTemplate;
 import com.viksitpro.core.dao.entities.Task;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.CustomFormElementDataTypes;
 import com.viksitpro.core.utilities.CustomFormElementTypes;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
-import com.viksitpro.core.utilities.CustomFormElementTypes;
 
 @WebServlet("/custom_task_factory")
 public class CustomTaskFactoryController extends IStarBaseServelet {
@@ -68,13 +65,13 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				HashMap<String, Object> returnedData =service.evaluateVoiceText(speechText,keywords, benchMarkString);
 				for(String str: returnedData.keySet())
 				{
-					System.out.println("key - "+ " "+ returnedData.get(str));
+					ViksitLogger.logMSG(this.getClass().getName(),"key - "+ " "+ returnedData.get(str));
 				}
 				//just for the sake of testing
 				for(String key: keywords.split("!#"))
 				{
 					if(returnedData.get(key)!=null){
-						System.out.println("density of "+key+" is "+returnedData.get(key).toString());
+						ViksitLogger.logMSG(this.getClass().getName(),"density of "+key+" is "+returnedData.get(key).toString());
 					}
 				}	
 				break;
@@ -137,7 +134,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				updateQuery = updateQuery.replaceAll(":"+formelement.getElemntName().trim(), Boolean.toString(val).charAt(0)+"");
 				break;
 			case CustomFormElementTypes.STAR_RATING:
-				System.out.println(formelement.getElemntName().trim()+"00000000");
+				ViksitLogger.logMSG(this.getClass().getName(),formelement.getElemntName().trim()+"00000000");
 				Float rating = Float.parseFloat(request.getParameter(formelement.getElemntName().trim()));
 				String ratingVal= rating+"";
 				if (formelement.getDataType().equalsIgnoreCase(CustomFormElementDataTypes.NUMBER))
@@ -153,7 +150,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 		updateQuery = updateQuery.replaceAll(":USER_ID", user_id+"");
 		updateQuery = updateQuery.replaceAll(":TASK_ID", task_id+"");
-		System.out.println("updateQuery ->>>"+updateQuery);
+		ViksitLogger.logMSG(this.getClass().getName(),"updateQuery ->>>"+updateQuery);
 		util.executeUpdate(updateQuery);
 	}
 	
@@ -174,7 +171,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		
 			updateSql = "DELETE FROM user_task_feedback WHERE user_id = "+user_id+" AND task_id ="+task_id;
 			util.executeUpdate(updateSql);
-			//System.err.println(updateSql);
+			//ViksitLogger.logMSG(this.getClass().getName(),(updateSql);
 		}
 		
 	}
@@ -203,7 +200,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 				 String sql = "INSERT INTO user_task_feedback ( 	ID, 	task_id, 	user_id, 	task_element_id, 	feedback ) VALUES 	((SELECT COALESCE(MAX(id)+1,1) FROM user_task_feedback), "+task_id+", "+user_id+", "+task_element_id+", '"+paramvalues+"');";
 					
 					util.executeUpdate(sql);
-					//System.err.println(sql);
+					//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 			}
 			
 			
@@ -214,7 +211,7 @@ public class CustomTaskFactoryController extends IStarBaseServelet {
 		//querypart = querypart.substring(0, querypart.length() - 1);
 		// updateSql = "UPDATE xyz SET user_id="+ user_id +","+querypart+", task_name="+taskName+" WHERE task_id="+id;
 		
-		////System.err.println(updateSql);
+		////ViksitLogger.logMSG(this.getClass().getName(),(updateSql);
 		
 		
 		

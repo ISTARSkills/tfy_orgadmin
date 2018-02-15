@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.logger.ViksitLogger"%>
 <%@page import="com.viksitpro.cms.taskStage.pojo.LessonTaskStageServices"%>
 <%@page import="java.util.Set"%>
 <%@page import="com.viksitpro.cms.taskStage.pojo.Stage"%>
@@ -29,9 +30,9 @@
 	if (istarUser != null) {
 		tasks = taskServices.getAllTaskOfActor(istarUser);
 	} else {
-		System.out.println("IstarUser is null");
+		//ViksitLogger.logMSG(this.getClass().getName(),"IstarUser is null");
 	}
-	System.out.println("getting tasks for user");
+	//ViksitLogger.logMSG(this.getClass().getName(),"getting tasks for user");
 	LessonServices lessonServices = new LessonServices();
 	String cdnPath = lessonServices.getAnyPath("media_url_path");
 	cdnPath = cdnPath.substring(0, cdnPath.length() - 1);
@@ -55,7 +56,7 @@
 					<%
 						for (Task task : tasks) {
 
-							//System.out.println(task.getId() + " -----  " + task.getItemId());
+							//ViksitLogger.logMSG(this.getClass().getName(),task.getId() + " -----  " + task.getItemId());
 
 							if (task.getItemType().equals(TaskItemCategory.LESSON)
 									&& task.getName().equalsIgnoreCase(LessonTaskNames.CREATE_LESSON) && task.getIsActive()) {

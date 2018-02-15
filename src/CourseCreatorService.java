@@ -1,20 +1,17 @@
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.viksitpro.core.dao.entities.BatchGroup;
 import com.viksitpro.core.dao.entities.BatchGroupDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.admin.services.EventSchedulerService;
@@ -195,7 +193,7 @@ public class CourseCreatorService {
     				for(String lessonName : lessonsInCMSession.keySet())
     				{
     					Integer lessonId = null;
-    					System.out.println((j++)+" >"+courseName+" > "+moduleName+" >"+cmsessionName+" >"+lessonName);
+    					ViksitLogger.logMSG(this.getClass().getName(),(j++)+" >"+courseName+" > "+moduleName+" >"+cmsessionName+" >"+lessonName);
     					if(lessonsInCMSession.get(lessonName)!=null)
     					{
     						lessonId = lessonsInCMSession.get(lessonName);
@@ -213,7 +211,7 @@ public class CourseCreatorService {
     					}
     					else
     					{
-    						System.out.println("session id or lesson id is null for "+lessonName);
+    						ViksitLogger.logMSG(this.getClass().getName(),"session id or lesson id is null for "+lessonName);
     					}	
     				}
     				
@@ -224,7 +222,7 @@ public class CourseCreatorService {
     				}
     				else
     				{
-    					System.out.println("session id or module id is null for "+ cmsessionName);
+    					ViksitLogger.logMSG(this.getClass().getName(),"session id or module id is null for "+ cmsessionName);
     				}	
     			}
     			if(courseId!=null)
@@ -238,7 +236,7 @@ public class CourseCreatorService {
     			}
     			else
     			{
-    				System.out.println("course id or module id is null for "+ moduleName);
+    				ViksitLogger.logMSG(this.getClass().getName(),"course id or module id is null for "+ moduleName);
     			}	
     		}
     	}
@@ -286,7 +284,7 @@ public class CourseCreatorService {
     				sdf.setLenient(false);
     				try {
     					startDate = sdf.parse(startDateString);
-    					System.out.println(startDate);
+    					ViksitLogger.logMSG(this.getClass().getName(),startDate);
     					cal.setTime(startDate);
     				}
     				catch(Exception e)
@@ -400,7 +398,7 @@ public class CourseCreatorService {
     					{
     						throw new Exception("course name in row = "+(index+1)+" and column = "+(courseIndex+1)+" is not mapped to batch group.");
     					}
-    					System.out.println("course index "+courseIndex);
+    					ViksitLogger.logMSG(this.getClass().getName(),"course index "+courseIndex);
     					Integer trainerId = (int)trainerCell.getNumericCellValue();
     					Integer classroomId = (int)classroomCell.getNumericCellValue();
     					String startTimeOfEvent = startTimeArray.get(eventCounterInDay);
@@ -412,7 +410,7 @@ public class CourseCreatorService {
     					long diffMinutes = diff / (60 * 1000) % 60;
     					long diffHours = diff / (60 * 60 * 1000) % 24;
     					String eventDate = dateformatfrom.format(eDate);
-    					System.out.println("event date "+eventDate);
+    					ViksitLogger.logMSG(this.getClass().getName(),"event date "+eventDate);
     					serv.insertUpdateData(trainerId, (int)diffHours, (int)diffMinutes, batchId, null, eventDate, startTimeOfEvent, classroomId, 300, -1, null, "0");    					
     					eventCounterInDay++;
     					courseIndex+=3;
@@ -422,7 +420,7 @@ public class CourseCreatorService {
     				cal.add(Calendar.DATE, 1);
     			}
     			index++;
-    			System.out.println("index ="+index);
+    			ViksitLogger.logMSG(this.getClass().getName(),"index ="+index);
     		}	
         	
         }
@@ -456,7 +454,7 @@ public class CourseCreatorService {
 				sdf.setLenient(false);
 				try {
 					Date date = sdf.parse(startDate);
-					System.out.println(date);
+					ViksitLogger.logMSG(this.getClass().getName(),date);
 				}
 				catch(Exception e)
 				{

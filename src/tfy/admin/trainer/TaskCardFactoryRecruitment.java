@@ -166,7 +166,7 @@ public class TaskCardFactoryRecruitment {
 					+ row.get("id") + " and trainer_id =" + trainerID
 					+ " order by id desc limit 1 )T1 left join interview_rating on (interview_rating.trainer_id =T1.trainer_id and T1.course_id =interview_rating.course_id) left join user_profile TP on (interview_rating.trainer_id = TP.user_id) left join user_profile IP on (interview_rating.interviewer_id = IP.user_id) limit 1";
 			List<HashMap<String, Object>> statusData = util.executeQuery(getstatus);
-			//System.err.println(statusData.size() + "---> getstatus -->" + getstatus);
+			//ViksitLogger.logMSG(this.getClass().getName(),(statusData.size() + "---> getstatus -->" + getstatus);
 			if (statusData.size() != 0) {
 				String taskIcon = "fa fa-desktop";
 				String bgStyle = " style='    background-color: #eb384f;color: white Important' ";
@@ -313,7 +313,7 @@ public class TaskCardFactoryRecruitment {
 
 		String sql1 = "select empanelment_status , stage from trainer_empanelment_status where course_id = " + courseID
 				+ " and trainer_id=" + trainerID + " order by id desc limit 1";
-		//System.err.println(sql1);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql1);
 		String stage = "";
 
 		List<HashMap<String, Object>> lists = util.executeQuery(sql1);
@@ -631,7 +631,7 @@ public class TaskCardFactoryRecruitment {
 				+ " AND item_type = 'ASSESSMENT' AND  item_id IN ( 	SELECT 		assessment_id 	FROM 		course_assessment_mapping 	WHERE 		course_id = "
 				+ course.getId()
 				+ " union SELECT     CAST(regexp_split_to_table(constant_properties.property_value, E',') AS INTEGER) FROM constant_properties where constant_properties.property_name='default_assessment_for_trainer' ) and task.item_id=assessment.id and task.state='COMPLETED'";
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		List<HashMap<String, Object>> list = util.executeQuery(sql);
 		for (HashMap<String, Object> item : list) {
 			out.append(

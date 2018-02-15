@@ -14,6 +14,7 @@ import org.apache.commons.fileupload.FileItem;
 
 import com.viksitpro.cms.services.LessonServices;
 import com.viksitpro.core.dao.entities.Lesson;
+import com.viksitpro.core.logger.ViksitLogger;
 
 public class MediaUploadServices {
 
@@ -50,7 +51,7 @@ public class MediaUploadServices {
 		MediaUploadServices mediaUploadServices = new MediaUploadServices();
 		UUID uui = UUID.randomUUID();
 		File file = new File(mediaUploadServices.getAnyPath("imagePath"), uui.toString() + extension);
-		System.err.println(file.getAbsolutePath());
+		ViksitLogger.logMSG(this.getClass().getName(),file.getAbsolutePath());
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
 		// perms);
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
@@ -64,9 +65,9 @@ public class MediaUploadServices {
 		if (mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")) {
 			Files.setPosixFilePermissions(file.toPath(), perms);
 		}
-		System.err.println(mediaUploadServices.getAnyPath("imagePath") + uui.toString() + extension);
-		System.out.println("UPLOADED" + item.getContentType());
-		System.err.println(file.getAbsolutePath());
+		ViksitLogger.logMSG(this.getClass().getName(),mediaUploadServices.getAnyPath("imagePath") + uui.toString() + extension);
+		ViksitLogger.logMSG(this.getClass().getName(),"UPLOADED" + item.getContentType());
+		ViksitLogger.logMSG(this.getClass().getName(),file.getAbsolutePath());
 		out.print(mediaUploadServices.getAnyPath("media_url_path") + "course_images/" + file.getName());
 		return out;
 	}
@@ -77,7 +78,7 @@ public class MediaUploadServices {
 
 		File file = new File(mediaUploadServices.getAnyPath("mediaLessonPath") + lesson.getId() + "/" + lesson.getId(),
 				uuID + extension);
-		System.err.println(file.getAbsolutePath());
+		ViksitLogger.logMSG(this.getClass().getName(),file.getAbsolutePath());
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
 		// perms);
 		// Files.setPosixFilePermissions(Paths.get(prop.getProperty("imagePath")),
@@ -91,12 +92,12 @@ public class MediaUploadServices {
 		if (mediaUploadServices.getAnyPath("server_type").equalsIgnoreCase("linux")) {
 			Files.setPosixFilePermissions(file.toPath(), perms);
 		}
-		System.err.println(mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/"
+		ViksitLogger.logMSG(this.getClass().getName(),mediaUploadServices.getAnyPath("media_url_path") + "lessonXMLs/" + lesson.getId() + "/"
 				+ lesson.getId() + uuID + extension);
-		System.out.println("UPLOADED" + item.getContentType());
-		System.err.println(file.getAbsolutePath());
+		ViksitLogger.logMSG(this.getClass().getName(),"UPLOADED" + item.getContentType());
+		ViksitLogger.logMSG(this.getClass().getName(),file.getAbsolutePath());
 		out.append("/lessonXMLs/" + lesson.getId() + "/" + lesson.getId() + "/" + file.getName());
-		System.out.println("inside>>>>>>>>> " + out.toString());
+		ViksitLogger.logMSG(this.getClass().getName(),"inside>>>>>>>>> " + out.toString());
 		return out;
 	}
 }

@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.core.dao.entities.BatchGroup;
-import com.viksitpro.core.dao.entities.Organization;
-import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import in.orgadmin.utils.report.CustomReport;

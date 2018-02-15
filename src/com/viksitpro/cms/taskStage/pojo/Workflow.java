@@ -1,7 +1,6 @@
 package com.viksitpro.cms.taskStage.pojo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

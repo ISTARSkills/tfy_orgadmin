@@ -36,7 +36,7 @@ public class ProgramGraphs extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		////System.out.println("-----program_graphs------>");
+		////ViksitLogger.logMSG(this.getClass().getName(),"-----program_graphs------>");
 		String sql = "";
 		int courseID = 0, orgID = 0;
 		StringBuffer out = new StringBuffer();
@@ -105,7 +105,7 @@ public class ProgramGraphs extends HttpServlet {
 
 			out.append("</tbody> </table>");
 
-		//System.out.println("------------->"+out);
+		//ViksitLogger.logMSG(this.getClass().getName(),"------------->"+out);
 			response.getWriter().print(out);
 
 		} else if (request.getParameterMap().containsKey("trainerLevel")) {
@@ -168,7 +168,7 @@ public class ProgramGraphs extends HttpServlet {
 						+ "  </tr>");
 			}
 			out.append("</tbody></table>");
-			//System.out.println("--------------->>>>"+out);
+			//ViksitLogger.logMSG(this.getClass().getName(),"--------------->>>>"+out);
 			response.getWriter().print(out);
 
 		}

@@ -72,12 +72,12 @@ public class GetNotificationData extends IStarBaseServelet {
 				{
 					entityId = entityId.replace("ALL_GROUP_OF_ORG_", "");
 					sql = "select distinct istar_user. ID, 	istar_user.email from istar_user, user_org_mapping, user_role where istar_user.id = user_org_mapping.user_id and user_org_mapping.user_id = user_role.user_id and  user_role.role_id in (SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR')) and user_org_mapping.organization_id = "+entityId+" order by email";
-					//System.out.println("Get NotificationData 54>>sql"+sql);
+					//ViksitLogger.logMSG(this.getClass().getName(),"Get NotificationData 54>>sql"+sql);
 				}
 				else
 				{
 					 sql = "SELECT DISTINCT	istar_user. ID, 	istar_user.email FROM 	batch_students, 	istar_user, 	user_role WHERE 	batch_students.batch_group_id = "+entityId+" AND batch_students.student_id = istar_user. ID AND istar_user. ID = user_role.user_id AND user_role.role_id IN ( 	SELECT 		ID 	FROM 		ROLE 	WHERE 		role_name not IN ('PRESENTOR') );";
-					//System.out.println("Get NotificationData 54>>sql"+sql);
+					//ViksitLogger.logMSG(this.getClass().getName(),"Get NotificationData 54>>sql"+sql);
 				}	
 				
 				
@@ -170,7 +170,7 @@ public class GetNotificationData extends IStarBaseServelet {
 			{
 				//return lessons
 				String sql="select distinct lesson.id , lesson.title from lesson_cmsession, lesson where lesson.is_published='t' and lesson.id = lesson_cmsession.lesson_id and lesson_cmsession.cmsession_id = "+entityId;
-				//System.out.println("GetNotification 98"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),"GetNotification 98"+sql);
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Lesson</option>");
 				StudentSkillMapService serv= new StudentSkillMapService();
@@ -188,7 +188,7 @@ public class GetNotificationData extends IStarBaseServelet {
 			{
 				int batchGroupId = Integer.parseInt(request.getParameter("batch_group_id"));
 				String sql="select distinct istar_user.id, COALESCE(user_profile.first_name, istar_user.email) as name from batch_schedule_event join  istar_user on (batch_schedule_event.actor_id = istar_user.id) left join user_profile on (user_profile.user_id = istar_user.id) where type='BATCH_SCHEDULE_EVENT_TRAINER' and batch_group_id = "+batchGroupId+" and course_id = "+entityId;
-				//System.out.println("GetNotification 98"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),"GetNotification 98"+sql);
 				List<HashMap<String, Object>> groups = util.executeQuery(sql);
 				sb.append("<option value='null'>Select Trainer</option>");
 				StudentSkillMapService serv= new StudentSkillMapService();

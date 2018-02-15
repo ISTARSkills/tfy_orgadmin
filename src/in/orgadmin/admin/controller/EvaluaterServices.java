@@ -12,6 +12,7 @@ import org.brunocvcunha.dense4j.DenseCalculator;
 
 import com.google.cloud.language.v1.LanguageServiceClient;
 import com.google.cloud.language.v1.Sentiment;
+import com.viksitpro.core.logger.ViksitLogger;
 
 /**
  * @author ISTAR-SKILL
@@ -35,14 +36,14 @@ public class EvaluaterServices {
 	{
 		HashMap<String, Object> data = new HashMap<>();
 		try {
-			System.out.println("starting");
+			ViksitLogger.logMSG(this.getClass().getName(),"starting");
 			NPLServices app = new NPLServices(LanguageServiceClient.create());
 			Sentiment sentiment = app.analyzeSentimentText(text);
 			if(sentiment!=null)
 			{
 				data.put("magnitude", sentiment.getMagnitude());
 				data.put("score", sentiment.getScore());
-				System.out.println(sentiment.getMagnitude());
+				ViksitLogger.logMSG(this.getClass().getName(),sentiment.getMagnitude()+"");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -61,7 +62,7 @@ public class EvaluaterServices {
 		
 		for(String keyWord: keywords)
 		{
-			System.out.println("keyWord "+keyWord);
+			ViksitLogger.logMSG(this.getClass().getName(),"keyWord "+keyWord);
 			if(systemDensity.get(keyWord)!=null && expectedDensity.get(keyWord)!=null && expectedDensity.get(keyWord)!=0)
 			{
 				data.put(keyWord, (expectedDensity.get(keyWord)*100)/systemDensity.get(keyWord));

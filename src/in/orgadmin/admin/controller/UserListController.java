@@ -63,7 +63,7 @@ public class UserListController extends HttpServlet {
 					+ request.getParameter("order[0][dir]") + limtQuery;
 		}
 
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 

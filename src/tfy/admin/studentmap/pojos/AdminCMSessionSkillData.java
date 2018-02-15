@@ -4,7 +4,6 @@
 package tfy.admin.studentmap.pojos;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author ISTAR-SERVER-PU-1

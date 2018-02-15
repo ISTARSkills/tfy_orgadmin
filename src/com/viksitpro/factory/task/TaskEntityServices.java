@@ -7,23 +7,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.viksitpro.cms.utilities.LessonTaskNames;
-import com.viksitpro.core.dao.entities.Cmsession;
-import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.IstarUser;
-import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.dao.entities.TaskLog;
-import com.viksitpro.core.dao.entities.TaskLogDAO;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
-import com.viksitpro.core.dao.utils.task.TaskLogServices;
-import com.viksitpro.core.dao.utils.task.TaskServices;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class TaskEntityServices {
@@ -44,7 +34,7 @@ public class TaskEntityServices {
 		createTaskLogEntry(log, istarUser, session, task, title, entityType, state);
 		boolean newTask = true;
 		int taskID = saveTask(task, newTask);
-		System.err.println("CREATING LOG ENTRY");
+		ViksitLogger.logMSG(this.getClass().getName(),"CREATING LOG ENTRY");
 		saveTaskLog(log, taskID);
 	}
 
@@ -54,14 +44,14 @@ public class TaskEntityServices {
 		Task task = null;
 		boolean newTask = true;
 		if (taskID == 0) {
-			System.err.println("No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
+			ViksitLogger.logMSG(this.getClass().getName(),"No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
 			task = new Task();
 			newTask = true;
 		} else {
 			task = (new TaskDAO()).findById(taskID);
 			newTask = false;
 		}
-		// System.err.println(task.getId());
+		// ViksitLogger.logMSG(this.getClass().getName(),(task.getId());
 		TaskLog log = new TaskLog();
 		String title = "Lesson is drafted";
 		String entityType = "LESSON";
@@ -75,7 +65,7 @@ public class TaskEntityServices {
 		createUpdateTask(task, istarUser, taskName, itemType, itemID, state, description);
 		createTaskLogEntry(log, istarUser, session, task, title, entityType, state);
 		taskID = saveTask(task, newTask);
-		System.err.println("CREATING LOG ENTRY");
+		ViksitLogger.logMSG(this.getClass().getName(),"CREATING LOG ENTRY");
 		saveTaskLog(log, taskID);
 	}
 	
@@ -85,13 +75,13 @@ public class TaskEntityServices {
 		Task task = null;
 		boolean newTask = true;
 		if (taskID == 0) {
-			System.err.println("No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
+			ViksitLogger.logMSG(this.getClass().getName(),"No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
 			task = new Task();
 		} else {
 			task = (new TaskDAO()).findById(taskID);
 			newTask = false;
 		}
-		// System.err.println(task.getId());
+		// ViksitLogger.logMSG(this.getClass().getName(),(task.getId());
 		TaskLog log = new TaskLog();
 		String title = "Lesson is published";
 		String entityType = "LESSON";
@@ -105,7 +95,7 @@ public class TaskEntityServices {
 		createUpdateTask(task, istarUser, taskName, itemType, itemID, state, description);
 		createTaskLogEntry(log, istarUser, session, task, title, entityType, state);
 		saveTask(task, newTask);
-		System.err.println("CREATING LOG ENTRY");
+		ViksitLogger.logMSG(this.getClass().getName(),"CREATING LOG ENTRY");
 		saveTaskLog(log, taskID);
 	}
 	
@@ -115,13 +105,13 @@ public class TaskEntityServices {
 		Task task = null;
 		boolean newTask = true;
 		if (taskID == 0) {
-			System.err.println("No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
+			ViksitLogger.logMSG(this.getClass().getName(),"No tasks existed for lesson " + lesson.getId() + " so a new task will now be created");
 			task = new Task();
 		} else {
 			task = (new TaskDAO()).findById(taskID);
 			newTask = false;
 		}
-		// System.err.println(task.getId());
+		// ViksitLogger.logMSG(this.getClass().getName(),(task.getId());
 		TaskLog log = new TaskLog();
 		String title = "Lesson is deleted";
 		String entityType = "LESSON";
@@ -136,7 +126,7 @@ public class TaskEntityServices {
 		createTaskLogEntry(log, istarUser, session, task, title, entityType, state);
 		task.setIsActive(false);
 		saveTask(task, newTask);
-		System.err.println("CREATING LOG ENTRY");
+		ViksitLogger.logMSG(this.getClass().getName(),"CREATING LOG ENTRY");
 		saveTaskLog(log, taskID);
 	}
 
@@ -147,12 +137,12 @@ public class TaskEntityServices {
 					+ task.getName() + "', '" + task.getDescription().replaceAll("'", "") + "', NULL, NULL, NULL, '" + task.getIstarUserByActor().getId() + "', '" + task.getState() + "', NULL, '" + task.getStartDate() + "', '" + task.getEndDate() + "', NULL, NULL, NULL, NULL, NULL, '" + task.getIsActive() + "', NULL, '" + task.getCreatedAt() + "', '" + task.getUpdatedAt() + "', '" + task.getItemId() + "', '"
 					+ task.getItemType() + "', NULL, NULL, NULL) returning id;";
 			// retuirning ID
-			System.out.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 		} else {
 			sql = "UPDATE public.task SET name='" + task.getName() + "', description='" + task.getDescription().replaceAll("'", "") + "', task_type=NULL, priority=NULL, owner=NULL, actor='" + task.getIstarUserByActor().getId() + "', state='" + task.getState() + "', parent_task=NULL, start_date='" + task.getStartDate() + "', end_date='" + task.getEndDate()
 					+ "', duration_in_hours=NULL, assignee_team=NULL, assignee_member=NULL, is_repeatative=NULL, followup_date=NULL, is_active='" + task.getIsActive() + "', tags=NULL, created_at='" + task.getCreatedAt() + "', updated_at='" + task.getUpdatedAt() + "', item_id='" + task.getItemId() + "', item_type='" + task.getItemType()
 					+ "', project_id=NULL, is_timed_task=NULL, follow_up_duration_in_days=NULL WHERE (id='" + task.getId() + "') returning id;";
-			System.out.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 		}
 		int taskID = (int) (new DBUTILS()).executeUpdateReturn(sql);
 		return taskID;
@@ -161,7 +151,7 @@ public class TaskEntityServices {
 	public void saveTaskLog(TaskLog tasklog, int taskID) {
 		String sql = "INSERT INTO public.task_log (id, pm_member, status, entity_type, title, jsession_id, created_at, updated_at, task, body) VALUES (((select COALESCE(max(id),0)+1 from task_log)), '" + tasklog.getIstarUser().getId() + "', '" + tasklog.getStatus() + "', '" + tasklog.getEntityType() + "', '" + tasklog.getTitle() + "', '" + tasklog.getJsessionId() + "', '" + tasklog.getCreatedAt()
 				+ "', NULL, '" + taskID + "', NULL);";
-		System.out.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		(new DBUTILS()).executeUpdate(sql);
 	}
 
@@ -204,7 +194,7 @@ public class TaskEntityServices {
 		String sql = "select * from task where actor = " + istarUser.getId() + " and item_id = " + cmsItemID + " and  name = 'CREATE_LESSON'";
 		List<HashMap<String, Object>> executeQuery = (new DBUTILS()).executeQuery(sql);
 		if (executeQuery.size() > 1) {
-			System.err.println("Something is wrong with cms item " + executeQuery.size() + ". More than one content entries exist.");
+			ViksitLogger.logMSG(this.getClass().getName(),"Something is wrong with cms item " + executeQuery.size() + ". More than one content entries exist.");
 		}
 		for (HashMap<String, Object> hashMap : executeQuery) {
 			taskID = Integer.parseInt(hashMap.get("id").toString());

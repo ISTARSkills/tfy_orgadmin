@@ -9,24 +9,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+
 import com.viksitpro.core.dao.entities.BaseHibernateDAO;
 import com.viksitpro.core.dao.entities.Batch;
 import com.viksitpro.core.dao.entities.BatchDAO;
-import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarUser;
-import com.viksitpro.core.dao.entities.Module;
-import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.utils.user.IstarUserServices;
 import com.viksitpro.core.utilities.DBUTILS;
 
 import tfy.admin.studentmap.pojos.AdminCMSessionSkillData;
-import tfy.admin.studentmap.pojos.AdminCMSessionSkillGraph;
 import tfy.admin.studentmap.pojos.AdminModuleSkill;
 import tfy.admin.studentmap.pojos.AdminSkillGraph;
 import tfy.admin.studentmap.pojos.SkillReportPOJO;
@@ -54,7 +50,7 @@ public Double getMaxPointsOfLesson(Integer lessonId) {
 					per_lesson_points =  properties.getProperty("per_lesson_points");
 					per_question_points =  properties.getProperty("per_question_points");
 					per_assessment_coins = properties.getProperty("per_assessment_coins");
-					//System.out.println("per_assessment_points"+per_assessment_points);
+					//ViksitLogger.logMSG(this.getClass().getName(),"per_assessment_points"+per_assessment_points);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();			
@@ -87,7 +83,7 @@ public Double getMaxPointsOfLesson(Integer lessonId) {
 					per_lesson_points =  properties.getProperty("per_lesson_points");
 					per_question_points =  properties.getProperty("per_question_points");
 					per_assessment_coins = properties.getProperty("per_assessment_coins");
-					//System.out.println("per_assessment_points"+per_assessment_points);
+					//ViksitLogger.logMSG(this.getClass().getName(),"per_assessment_points"+per_assessment_points);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();			
@@ -108,7 +104,7 @@ public Double getMaxPointsOfLesson(Integer lessonId) {
 		DBUTILS util = new DBUTILS();
 		List<HashMap<String, Object>> courses = new ArrayList<>();
 		String sql="select id, trim(course_name) as course_name , (case when image_url is null or image_url ='' then (select property_value from constant_properties where property_name='media_url_path')||substr(course_name, 1,1)||'.png' else (select property_value from constant_properties where property_name='media_url_path')||image_url end ) as course_image from course where id in (select distinct course_id from student_playlist where student_id =  "+userId+")";
-		//System.out.println(">>>>>>>>>>>>>>>>>>>>>."+sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),">>>>>>>>>>>>>>>>>>>>>."+sql);
 		courses = util.executeQuery(sql);
 		return courses;
 	}
@@ -233,7 +229,7 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 				+ "(select batch_group_id from batch_students where batch_students.student_id= :istarUserId)) "
 				+ "group by user_gamification.istar_user order by total_points desc) as batch_ranks) as user_rank where istar_user=:istarUserId";
 		
-		//System.out.println("Student Rank pojo "+sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),"Student Rank pojo "+sql);
 		
 		BaseHibernateDAO baseHibernateDAO = new BaseHibernateDAO();
 		Session session = baseHibernateDAO.getSession();
@@ -295,7 +291,7 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 					per_assessment_coins = Integer.parseInt(properties.getProperty("per_assessment_coins"));
 					per_lesson_coins = Integer.parseInt(properties.getProperty("per_lesson_coins"));
 					per_question_coins = Integer.parseInt(properties.getProperty("per_question_coins"));
-					//System.out.println("media_url_path"+mediaUrlPath);
+					//ViksitLogger.logMSG(this.getClass().getName(),"media_url_path"+mediaUrlPath);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -303,7 +299,7 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 		}
 		DBUTILS util = new DBUTILS();
 		String getRankPointsForUser="SELECT * FROM ( SELECT istar_user, user_points, total_points, CAST (coins AS INTEGER) AS coins, perc, CAST ( RANK () OVER (ORDER BY user_points DESC) AS INTEGER ) AS user_rank FROM ( SELECT istar_user, user_points, total_points, coins, (case when total_points!= 0 then CAST ( (user_points * 100) / total_points AS INTEGER ) else 0 end )AS perc FROM ( SELECT T1.istar_user, SUM (T1.points) AS user_points, SUM (T1.max_points) AS total_points, SUM (T1.coins) AS coins FROM ( WITH summary AS ( SELECT P .istar_user, P .skill_objective, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .points, '0'), ':per_lesson_points', '"+per_lesson_points+"' ), ':per_assessment_points', '"+per_assessment_points+"' ), ':per_question_points', '"+per_question_points+"' ) AS TEXT ) ) AS points, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .coins, '0'), ':per_lesson_coins', '"+per_lesson_coins+"' ), ':per_assessment_coins', '"+per_assessment_coins+"' ), ':per_question_coins', '"+per_assessment_coins+"' ) AS TEXT ) ) AS coins, custom_eval ( CAST ( REPLACE ( REPLACE ( REPLACE ( COALESCE (P .max_points, '0'), ':per_lesson_points', '"+per_lesson_points+"' ), ':per_assessment_points', '"+per_assessment_points+"' ), ':per_question_points', '"+per_question_points+"' ) AS TEXT ) ) AS max_points, P .item_id, ROW_NUMBER () OVER ( PARTITION BY P .istar_user, P .skill_objective, P .item_id ORDER BY P . TIMESTAMP DESC ) AS rk FROM user_gamification P WHERE item_type IN ('QUESTION', 'LESSON') AND batch_group_id = ( SELECT batch_group. ID FROM batch_students, batch_group WHERE batch_students.batch_group_id = batch_group. ID AND batch_students.student_id = "+student_id+" AND batch_group.is_primary = 't' LIMIT 1 ) ) SELECT s.* FROM summary s WHERE s.rk = 1 ) T1 GROUP BY istar_user  ) T2 ORDER BY user_points DESC, perc DESC, total_points DESC ) T3 ) T4 WHERE istar_user = "+student_id;
-		//System.out.println("get getRankPointsForUser"+getRankPointsForUser);
+		//ViksitLogger.logMSG(this.getClass().getName(),"get getRankPointsForUser"+getRankPointsForUser);
 		List<HashMap<String, Object>> rankPointsData = util.executeQuery(getRankPointsForUser);
 		int rank = 0;
 		int coins = 0;
@@ -331,7 +327,7 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 				if (inputStream != null) {
 					properties.load(inputStream);
 					mediaUrlPath =  properties.getProperty("media_url_path");
-					//System.out.println("media_url_path"+mediaUrlPath);
+					//ViksitLogger.logMSG(this.getClass().getName(),"media_url_path"+mediaUrlPath);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -349,12 +345,12 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 			List<SkillReportPOJO> shellTree = getShellSkillTreeForCourse(courseId);
 			for(SkillReportPOJO dd : shellTree)
 			{
-				//System.err.println("in mod shell tree "+dd.getName()+" - "+dd.getId());
-				//System.err.println("in mod shell tree "+" "+dd.getUserPoints()+" "+dd.getTotalPoints()+" "+dd.getPercentage());
+				//ViksitLogger.logMSG(this.getClass().getName(),("in mod shell tree "+dd.getName()+" - "+dd.getId());
+				//ViksitLogger.logMSG(this.getClass().getName(),("in mod shell tree "+" "+dd.getUserPoints()+" "+dd.getTotalPoints()+" "+dd.getPercentage());
 				for(SkillReportPOJO ll: dd.getSkills())
 				{
-					////System.err.println("in cmsession shell tree "+ll.getName()+" - "+ll.getId());
-					////System.err.println("in cmsession shell tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
+					////ViksitLogger.logMSG(this.getClass().getName(),("in cmsession shell tree "+ll.getName()+" - "+ll.getId());
+					////ViksitLogger.logMSG(this.getClass().getName(),("in cmsession shell tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
 				}
 			}
 			DBUTILS utils = new DBUTILS();
@@ -364,12 +360,12 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 			
 			for(SkillReportPOJO dd : moduleLevelSkillReport)
 			{
-				//System.err.println("in filled mod tree "+dd.getName()+" - "+dd.getId());
-				//System.err.println("in filled mod tree "+" "+dd.getUserPoints()+" "+dd.getTotalPoints()+" "+dd.getPercentage());
+				//ViksitLogger.logMSG(this.getClass().getName(),("in filled mod tree "+dd.getName()+" - "+dd.getId());
+				//ViksitLogger.logMSG(this.getClass().getName(),("in filled mod tree "+" "+dd.getUserPoints()+" "+dd.getTotalPoints()+" "+dd.getPercentage());
 				for(SkillReportPOJO ll: dd.getSkills())
 				{
-					//System.err.println("in filled sms tree "+ll.getName()+" - "+ll.getId());
-					//System.err.println("in filled sms tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
+					//ViksitLogger.logMSG(this.getClass().getName(),("in filled sms tree "+ll.getName()+" - "+ll.getId());
+					//ViksitLogger.logMSG(this.getClass().getName(),("in filled sms tree "+" "+ll.getUserPoints()+" "+ll.getTotalPoints()+" "+ll.getPercentage());
 				}
 			}
 			
@@ -377,8 +373,8 @@ public StudentRankPOJO getStudentRankPOJOOfAUser(Integer istarUserId){
 			courseSkillPOJO.calculateUserPoints();
 			courseSkillPOJO.calculateTotalPoints();
 			courseSkillPOJO.calculatePercentage();
-			//System.err.println("courseSkillPOJO.gettotal points"+courseSkillPOJO.getTotalPoints());
-			//System.err.println("courseSkillPOJO.getUserPoints points"+courseSkillPOJO.getUserPoints());
+			//ViksitLogger.logMSG(this.getClass().getName(),("courseSkillPOJO.gettotal points"+courseSkillPOJO.getTotalPoints());
+			//ViksitLogger.logMSG(this.getClass().getName(),("courseSkillPOJO.getUserPoints points"+courseSkillPOJO.getUserPoints());
 			
 			return courseSkillPOJO;
 		}
@@ -418,7 +414,7 @@ private List<SkillReportPOJO> fillShellTreeWithData(List<SkillReportPOJO> shellT
 	}
 	
 	String getDataForTree="SELECT 	T1. ID, 	T1.skill_objective, 	T1.points, 	T1.max_points, 	module_skill. ID AS module_id FROM 	( 		WITH summary AS ( 			SELECT 				P . ID, 				P .skill_objective, 				custom_eval ( 					CAST ( 						TRIM ( 							REPLACE ( 								REPLACE ( 									REPLACE ( 										COALESCE (P .points, '0'), 										':per_lesson_points', 										'"+per_lesson_points+"' 									), 									':per_assessment_points', 									'"+per_assessment_points+"' 								), 								':per_question_points', 								'"+per_question_points+"' 							) 						) AS TEXT 					) 				) AS points, 				custom_eval ( 					CAST ( 						TRIM ( 							REPLACE ( 								REPLACE ( 									REPLACE ( 										COALESCE (P .max_points, '0'), 										':per_lesson_points', 										'"+per_lesson_points+"' 									), 									':per_assessment_points', 									'"+per_assessment_points+"' 								), 								':per_question_points', 								'"+per_question_points+"' 							) 						) AS TEXT 					) 				) AS max_points, 				ROW_NUMBER () OVER ( 					PARTITION BY P .skill_objective, 					P .item_id 				ORDER BY 					P . TIMESTAMP DESC 				) AS rk 			FROM 				user_gamification P, 				assessment_question, 				question 			WHERE 				P .course_id = "+courseId+" 			AND P .istar_user = "+istarUserId+" 			AND P .item_id = assessment_question.questionid 			AND assessment_question.assessmentid in (select distinct item_id from user_gamification where course_id = "+courseId+" and istar_user = "+istarUserId+" and item_type='ASSESSMENT') 			AND assessment_question.questionid = question. ID 			AND question.context_id = "+courseId+" 			AND P .item_type = 'QUESTION' 		) SELECT 			s.* 		FROM 			summary s 		WHERE 			s.rk = 1 	) T1 JOIN skill_objective cmsession_skill ON ( 	T1.skill_objective = cmsession_skill. ID ) JOIN skill_objective module_skill ON ( 	module_skill. ID = cmsession_skill.parent_skill )";
-	//System.out.println("getDataForTree in course"+getDataForTree);
+	//ViksitLogger.logMSG(this.getClass().getName(),"getDataForTree in course"+getDataForTree);
 	DBUTILS util = new DBUTILS();
 	List<HashMap<String, Object>> data = util.executeQuery(getDataForTree);
 	for(HashMap<String, Object> row: data)
@@ -447,7 +443,7 @@ private List<SkillReportPOJO> fillShellTreeWithData(List<SkillReportPOJO> shellT
 						}
 						else
 						{
-							//System.err.println(cmsSkill.getId()+" is accessed for the second time"+cmsSkill.getAccessedFirstTime());
+							//ViksitLogger.logMSG(this.getClass().getName(),(cmsSkill.getId()+" is accessed for the second time"+cmsSkill.getAccessedFirstTime());
 							double oldUserPoint = cmsSkill.getUserPoints()!=null?cmsSkill.getUserPoints() : 0d;
 							double userPoints1 = userPoints+oldUserPoint;
 							double oldTotalPoint = cmsSkill.getTotalPoints()!=null?cmsSkill.getTotalPoints() : 0d;
@@ -496,7 +492,7 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 				per_assessment_coins = Integer.parseInt(properties.getProperty("per_assessment_coins"));
 				per_lesson_coins = Integer.parseInt(properties.getProperty("per_lesson_coins"));
 				per_question_coins = Integer.parseInt(properties.getProperty("per_question_coins"));
-				//System.out.println("media_url_path"+mediaUrlPath);
+				//ViksitLogger.logMSG(this.getClass().getName(),"media_url_path"+mediaUrlPath);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -506,7 +502,7 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 	List<SkillReportPOJO> skillsReport = new ArrayList<SkillReportPOJO>();
 	DBUTILS utils = new DBUTILS();
 	String getEmptyTreeStructure ="select * from  (SELECT distinct module_skill.id as module_id, module_skill.name as module_name, cmsession_skill.id as cmsession_skill_id, cmsession_skill.name as cmsession_skill_name FROM skill_objective module_skill, skill_objective cmsession_skill WHERE module_skill.context = "+courseId+" AND module_skill.context = "+courseId+" AND module_skill.id = cmsession_skill.parent_skill AND cmsession_skill.skill_level_type ='CMSESSION' and module_skill.skill_level_type ='MODULE' order by module_id ) T1 JOIN ( SELECT skill_objective_id, SUM ( custom_eval ( CAST ( TRIM ( REPLACE ( REPLACE ( REPLACE ( COALESCE (max_points, '0'), ':per_lesson_points', '"+per_lesson_points+"' ), ':per_assessment_points', '"+per_assessment_points+"' ), ':per_question_points', '"+per_question_points+"' ) ) AS TEXT ) ) ) AS max_points FROM assessment_benchmark WHERE context_id = "+courseId+" GROUP BY skill_objective_id ) AB ON ( AB.skill_objective_id = T1.cmsession_skill_id )"; 		
-			//System.out.println("getEmptyTreeStructure>>>"+getEmptyTreeStructure);
+			//ViksitLogger.logMSG(this.getClass().getName(),"getEmptyTreeStructure>>>"+getEmptyTreeStructure);
 	List<HashMap<String, Object>> treeStructure = utils.executeQuery(getEmptyTreeStructure);
 	for(HashMap<String, Object> treeRow: treeStructure)
 	{
@@ -631,7 +627,7 @@ private List<SkillReportPOJO> getShellSkillTreeForCourse(int courseId) {
 				+ "question_skill_objective.questionid=question.id and question_skill_objective.learning_objectiveid=skill_objective.id and "
 				+ "skill_objective.parent_skill= :cmsessionSkillObjectiveId";
 		
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		BaseHibernateDAO baseHibernateDAO = new BaseHibernateDAO();
 		Session session = baseHibernateDAO.getSession();
 		

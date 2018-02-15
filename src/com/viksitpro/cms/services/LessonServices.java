@@ -32,7 +32,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Result;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
@@ -56,14 +55,12 @@ import com.viksitpro.core.cms.oldcontent.CMSTitle;
 import com.viksitpro.core.cms.oldcontent.CMSTitle2;
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
-import com.viksitpro.core.dao.entities.Context;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
-import com.viksitpro.upload.controllers.CroppedImageUploadController;
 import com.viksitpro.upload.controllers.MediaUploadServices;
 
 public class LessonServices {
@@ -235,7 +232,7 @@ public class LessonServices {
 					int length = doc.text().length();
 
 					if (cmsSlide.getId() == 981868) {
-						// System.err.println("doc.text().length()------->"+doc.text().length());
+						// ViksitLogger.logMSG(this.getClass().getName(),("doc.text().length()------->"+doc.text().length());
 					}
 					if (length < 500) {
 						length = 120;
@@ -321,11 +318,11 @@ public class LessonServices {
 	public Boolean checkLessonXMLFolderSanity(Lesson lesson) throws IOException {
 		Boolean success = false;
 		if (checkLessonFolderExists(lesson)) {
-			System.err.println("Folder exists");
+			ViksitLogger.logMSG(this.getClass().getName(),"Folder exists");
 			if (checkLessonXMLExists(lesson)) {
-				System.err.println("XML exists");
+				ViksitLogger.logMSG(this.getClass().getName(),"XML exists");
 				if (checkAssetsExist(lesson)) {
-					System.err.println("Assets exists");
+					ViksitLogger.logMSG(this.getClass().getName(),"Assets exists");
 					success = true;
 				}
 			}
@@ -356,26 +353,26 @@ public class LessonServices {
 				fr.close();
 			String linkhref = lesson.getId() + "/" + lesson.getId();
 			String lessonXML = sb.toString();
-			// System.err.println(lessonXML);
+			// ViksitLogger.logMSG(this.getClass().getName(),(lessonXML);
 			// String lessonAssetPath = getAnyPath("mediaLessonPath") +
 			// lesson.getId() + "/" + lesson.getId() + "/";
 			int beginIndex = lessonXML.indexOf(linkhref);
 			while (beginIndex > 0 && boo) {
 				int endIndex = lessonXML.substring(beginIndex).indexOf("\"");
 				String url = lessonXML.substring(beginIndex, endIndex + beginIndex);
-				// System.err.println(url);
-				// System.err.println(lessonXMLFolderPath + url);
+				// ViksitLogger.logMSG(this.getClass().getName(),(url);
+				// ViksitLogger.logMSG(this.getClass().getName(),(lessonXMLFolderPath + url);
 				File asset = new File(lessonXMLFolderPath + url);
 				if (asset.exists() && !asset.isDirectory()) {
 					boo = true;
-					// System.err.println(boo+url);
+					// ViksitLogger.logMSG(this.getClass().getName(),(boo+url);
 				} else {
 					boo = false;
 				}
 				beginIndex = lessonXML.indexOf(linkhref, beginIndex + 1);
 			}
 		} else {
-			System.err.println("The lesson Folder or the xml doesn't exist.");
+			ViksitLogger.logMSG(this.getClass().getName(),"The lesson Folder or the xml doesn't exist.");
 		}
 		if (boo) {
 			success = true;
@@ -408,8 +405,8 @@ public class LessonServices {
 		} catch (IOException e) {
 			// e.printStackTrace();
 		}
-		// System.err.println(lessonXMLPath);
-		// System.err.println(lesson.getId());
+		// ViksitLogger.logMSG(this.getClass().getName(),(lessonXMLPath);
+		// ViksitLogger.logMSG(this.getClass().getName(),(lesson.getId());
 		Path path = Paths.get(lessonXMLPath + lesson.getId() + "/" + lesson.getId());
 
 		if (Files.exists(path)) {
@@ -469,11 +466,11 @@ public class LessonServices {
 			FileOutputStream fos = new FileOutputStream(zipFile);
 			ZipOutputStream zos = new ZipOutputStream(fos);
 
-			System.out.println("Output to Zip : " + zipFile);
+			ViksitLogger.logMSG(this.getClass().getName(),"Output to Zip : " + zipFile);
 
 			for (String file : fileList) {
 
-				System.out.println("File Added : " + file);
+				ViksitLogger.logMSG(this.getClass().getName(),"File Added : " + file);
 				ZipEntry ze = new ZipEntry(file);
 				zos.putNextEntry(ze);
 
@@ -491,7 +488,7 @@ public class LessonServices {
 			// remember close it
 			zos.close();
 
-			System.out.println("Done");
+			ViksitLogger.logMSG(this.getClass().getName(),"Done");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -532,10 +529,10 @@ public class LessonServices {
 		while (beginIndex > 0) {
 			int endIndex = lessonXML.substring(beginIndex).indexOf("<");
 			String url = lessonXML.substring(beginIndex, endIndex + beginIndex);
-			// System.err.println(url);
-			// System.err.println(sourcePath + url.substring(url.indexOf("/") +
+			// ViksitLogger.logMSG(this.getClass().getName(),(url);
+			// ViksitLogger.logMSG(this.getClass().getName(),(sourcePath + url.substring(url.indexOf("/") +
 			// 1));
-			// System.err.println(destPath + url.substring(url.indexOf("/") +
+			// ViksitLogger.logMSG(this.getClass().getName(),(destPath + url.substring(url.indexOf("/") +
 			// 1));
 			File source = new File(sourcePath + url.substring(url.indexOf("/") + 1));
 			File dest = new File(destPath + url.substring(url.indexOf("/") + 1));
@@ -575,7 +572,7 @@ public class LessonServices {
 				out.close();
 			}
 		} else {
-			System.err.println("Lesson folder could not be created or lesson XML is empty!");
+			ViksitLogger.logMSG(this.getClass().getName(),"Lesson folder could not be created or lesson XML is empty!");
 		}
 		return success;
 	}
@@ -652,7 +649,7 @@ public class LessonServices {
 			String url = lessonImageUrl.substring(beginIndex + 14);
 			String rep = "lessonXMLs/" + lesson.getId() + "/" + lesson.getId();
 			String lessonImageUrl1 = lessonImageUrl.replaceAll("course_images", rep);
-			// System.err.println(lessonImageUrl1+">>>>>>>>>");
+			// ViksitLogger.logMSG(this.getClass().getName(),(lessonImageUrl1+">>>>>>>>>");
 			lesson.setImage_url(lessonImageUrl1);
 			String sourcePath = getAnyPath("imagePath");
 			String destPath = getAnyPath("mediaLessonPath") + "" + lesson.getId() + "/" + lesson.getId() + "/";
@@ -667,7 +664,7 @@ public class LessonServices {
 	public String addslideHTMLtoLessonXML(String template_type, int slide_id, int lesson_id) throws JAXBException {
 		StringBuffer stringBuffer = new StringBuffer();
 
-		// System.err.println(">>>>>>>>>><<<<<<<<<<<<" + template_type + ">>> "
+		// ViksitLogger.logMSG(this.getClass().getName(),(">>>>>>>>>><<<<<<<<<<<<" + template_type + ">>> "
 		// +
 		// slide_id + " >>>>>> " + lesson_id);
 
@@ -719,7 +716,7 @@ public class LessonServices {
 			for (int i = 1; i < 6; i++) {
 				CMSTextItem cmsTextItem = new CMSTextItem();
 				cmsTextItem.setText("Click to edit list " + i + "...");
-				// System.err.println(template_type);
+				// ViksitLogger.logMSG(this.getClass().getName(),(template_type);
 				items.add(cmsTextItem);
 			}
 		}
@@ -793,7 +790,7 @@ public class LessonServices {
 							CMSTextItem cmsTextItem = new CMSTextItem();
 
 							int totalSize = cmsSlide1.getList().getItems().size();
-							System.err.println("totalSize>>>" + totalSize);
+							ViksitLogger.logMSG(this.getClass().getName(),"totalSize>>>" + totalSize);
 							if (i < totalSize && !cmsSlide1.getList().getItems().get(i).getText().trim().equalsIgnoreCase("")) {
 								cmsTextItem.setText(cmsSlide1.getList().getItems().get(i).getText());
 							} else {
@@ -806,9 +803,9 @@ public class LessonServices {
 								CMSTextItem cmsSubTextItem = new CMSTextItem();
 								int totalSubSize = cmsSlide1.getList().getItems().get(i).getList().getItems().size();
 
-								System.err.println("totalSubSize>>>" + totalSubSize);
+								ViksitLogger.logMSG(this.getClass().getName(),"totalSubSize>>>" + totalSubSize);
 								if (i < totalSize && j < totalSubSize && !cmsSlide1.getList().getItems().get(i).getList().getItems().get(j).getText().trim().equalsIgnoreCase("")) {
-									System.err.println(cmsSlide1.getList().getItems().get(i).getList().getItems().get(j).getText());
+									ViksitLogger.logMSG(this.getClass().getName(),cmsSlide1.getList().getItems().get(i).getList().getItems().get(j).getText());
 									cmsSubTextItem.setText(cmsSlide1.getList().getItems().get(i).getList().getItems().get(j).getText());
 								} else {
 									cmsSubTextItem.setText("Click to edit sub list " + subCount + "...");
@@ -1100,7 +1097,7 @@ public class LessonServices {
 				for (CMSSlide cmsSlide : cmsLesson.getSlides()) {
 
 					if (cmsSlide.getTemplateName().equalsIgnoreCase("NO_CONTENT")) {
-						System.err.println("<<<cmsSlide.getImage_BG()>>>>>" + cmsSlide.getImage_BG());
+						ViksitLogger.logMSG(this.getClass().getName(),"<<<cmsSlide.getImage_BG()>>>>>" + cmsSlide.getImage_BG());
 						stringBuffer.append("<div class='row'><div style='background-image: url(" + cmsSlide.getImage_BG().replaceAll(".png", "_desktop.png").replaceAll("none", "../../img/no_content.png") + ");background-size: 100% 100%; background-repeat: no-repeat;' class='col-md-8 custom_div' data-template='" + cmsSlide.getTemplateName() + "' data-slideID='" + cmsSlide.getId()
 								+ "'><h2></h2> <span class='label label-info' style='font-size: 8px; position: absolute;     bottom: 1px;          left: 0;'>BACKGROUND IMAGE</span></div></div>");
 					} else if (cmsSlide.getTemplateName().equalsIgnoreCase("ONLY_TITLE")) {

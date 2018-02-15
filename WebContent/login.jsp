@@ -67,7 +67,7 @@ int rand = (new Random()).nextInt(4);
 
 	}%>
 	
-	<% //System.out.println("---------------->"+errormsg); %>
+	<% //ViksitLogger.logMSG(this.getClass().getName(),"---------------->"+errormsg); %>
 	<div class="text-center loginscreen animated fadeInDown">
 
 		<div class="login-screen-box">

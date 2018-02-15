@@ -1,7 +1,5 @@
 package in.talentify.core.utils;
 
-import java.util.ArrayList;
-
 public class PieChartJson {
 	String name;
 	float y;

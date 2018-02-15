@@ -15,6 +15,7 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Role;
 import com.viksitpro.core.dao.entities.UserRole;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -41,14 +42,14 @@ public class LoginController extends HttpServlet {
 
 		if (request.getParameterMap().containsKey("email") && request.getParameterMap().containsKey("password")) {
 
-			System.out.println("Email -> " + request.getParameter("email"));
-			System.out.println("Password -> " + request.getParameter("password"));
+			ViksitLogger.logMSG(this.getClass().getName(),"Email -> " + request.getParameter("email"));
+			ViksitLogger.logMSG(this.getClass().getName(),"Password -> " + request.getParameter("password"));
 			IstarUserDAO dao = new IstarUserDAO();
 			dao.getSession().clear();
 
 			List<IstarUser> users = dao.findByEmail(request.getParameter("email").toLowerCase());
 			
-			//System.out.println(users.size());
+			//ViksitLogger.logMSG(this.getClass().getName(),users.size());
 
 			if (users != null && users.size() != 0) {
 
@@ -57,7 +58,7 @@ public class LoginController extends HttpServlet {
 				String url = "";
 				String findUserRole = "SELECT 	ROLE .role_name FROM 	user_role, 	ROLE WHERE 	user_role.role_id = ROLE . ID AND user_role.user_id = "
 						+ user.getId() + " order by ROLE . ID  limit 1";
-				System.out.println(findUserRole);
+				
 				List<HashMap<String, Object>> roles = util.executeQuery(findUserRole);
 				
 				String userRole = "";
@@ -72,7 +73,7 @@ public class LoginController extends HttpServlet {
 							ArrayList<Role> userRoles = new ArrayList<>();
 							for(UserRole ur : user.getUserRoles())
 							{
-								System.out.println("ur.getRole -- "+ur.getRole().getRoleName());
+								ViksitLogger.logMSG(this.getClass().getName(),"ur.getRole -- "+ur.getRole().getRoleName());
 								userRoles.add(ur.getRole());
 							}
 							
@@ -134,7 +135,7 @@ public class LoginController extends HttpServlet {
 			}
 		} else {
 
-			//System.err.println("9111");
+			//ViksitLogger.logMSG(this.getClass().getName(),("9111");
 			request.setAttribute("msg", "Missing Username or Password");
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		}

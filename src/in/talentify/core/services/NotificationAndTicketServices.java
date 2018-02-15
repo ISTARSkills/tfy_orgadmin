@@ -55,22 +55,22 @@ public class NotificationAndTicketServices {
 	}
 	
 	public void markGroupNotificationAsRead(String groupCode){
-		//System.out.println(groupCode);
+		//ViksitLogger.logMSG(this.getClass().getName(),groupCode);
 		DBUTILS util = new DBUTILS();
 		String sql = "UPDATE istar_notification SET read_by_admin = 't'  WHERE 	( 		cast(group_code as varchar) = '"+groupCode+"' 	)"; 
 		util.executeUpdate(sql);
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		
 		
 	}
 	
 	public List<HashMap<String, Object>> getUnreadNotificationForAdmins(String userId, String limit, String offset)
 	{
-		//System.out.println("limit>>"+limit+" offset>>>"+offset+" userid>>>"+userId);
+		//ViksitLogger.logMSG(this.getClass().getName(),"limit>>"+limit+" offset>>>"+offset+" userid>>>"+userId);
 		CustomReportUtils repUtils = new CustomReportUtils();
 		CustomReport report = repUtils.getReport(26);
 		String sql=report.getSql();
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		sql = sql.replaceAll(":user_id", userId);
 				sql= sql.replaceAll(":limit",limit);
 				sql=sql.replaceAll(":offset", offset);
@@ -88,11 +88,11 @@ public class NotificationAndTicketServices {
 	}
 	
 	public void markNotificationAsRead(String notificationID){
-		//System.out.println(notificationID);
+		//ViksitLogger.logMSG(this.getClass().getName(),notificationID);
 		DBUTILS util = new DBUTILS();
 		String sql = "UPDATE istar_notification SET status = 'READ'  WHERE 	( 		cast(id as varchar) = '"+notificationID+"' 	)"; 
 		util.executeUpdate(sql);
-		//System.out.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),sql);
 		
 		
 	}

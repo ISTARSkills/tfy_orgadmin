@@ -4,18 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.core.dao.entities.Address;
-import com.viksitpro.core.dao.entities.AddressDAO;
-import com.viksitpro.core.dao.entities.IstarUser;
-import com.viksitpro.core.dao.entities.Organization;
-import com.viksitpro.core.dao.entities.OrganizationDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.IStarBaseServelet;
 
 import in.orgadmin.admin.services.OrgAdminBatchGroupService;
@@ -110,12 +105,12 @@ public class CreateOrUpdateUserController extends IStarBaseServelet {
 		} else if(request.getParameterMap().containsKey("key")){
 			
 			int user_id = Integer.parseInt(request.getParameter("user_id"));
-			System.err.println(">>>>>>>>>>>>>>>>>>>>>>>> "+user_id);
+			ViksitLogger.logMSG(this.getClass().getName(),">>>>>>>>>>>>>>>>>>>>>>>> "+user_id);
 			new OrgAdminUserService().deleteIstarUser(user_id);
 		}
 		
 		else {
-			System.out.println("Not Created");
+			ViksitLogger.logMSG(this.getClass().getName(),"Not Created");
 		}
 
 		if (request.getParameterMap().containsKey("creation_type")

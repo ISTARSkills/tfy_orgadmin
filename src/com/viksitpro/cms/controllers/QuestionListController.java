@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.core.dao.entities.Question;
-import com.viksitpro.core.dao.entities.QuestionDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 @WebServlet("/question_list")
@@ -42,7 +41,7 @@ public class QuestionListController extends HttpServlet {
 			String sql = "SELECT 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level, 	COALESCE ( 		string_agg (skill_objective. NAME, ', '), 		'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 	) AS skills, CAST (COUNT(*) OVER() AS INTEGER) AS total_rows FROM 	question LEFT JOIN question_skill_objective ON ( 	question. ID = question_skill_objective.questionid ) LEFT JOIN skill_objective ON ( 	skill_objective. ID = question_skill_objective.learning_objectiveid ) GROUP BY 	question. ID, 	question.question_text, 	question.question_type, 	question.difficulty_level  ORDER BY 	ID DESC LIMIT 11 OFFSET '"+offsetnew+"';";
 			
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
-			System.err.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 			if (question_lists.size() != 0) {
 				for (HashMap<String, Object> question_list : question_lists) {
 					int pageination = (int) question_list.get("total_rows") / 11;
@@ -92,7 +91,7 @@ public class QuestionListController extends HttpServlet {
 			}
 			
 			String sql = "SELECT 	CAST (COUNT(*) OVER() AS INTEGER) AS total_rows, TF.* FROM 	( 		SELECT DISTINCT 	question. ID, 			question.question_text, 			question.question_type, 			question.difficulty_level, 			COALESCE ( 				string_agg (skill_objective. NAME, ', '), 				'&lt;a href=''#''&gt;Link &lt;i class=''fa fa-link''&gt;&lt;/i&gt;&lt;/a&gt;' 			) AS skills 		FROM 			question 		LEFT JOIN question_skill_objective ON ( 			question. ID = question_skill_objective.questionid 		) 		LEFT JOIN skill_objective ON ( 			skill_objective. ID = question_skill_objective.learning_objectiveid 		) "+filterTearm+" 		 GROUP BY 			question. ID, 			question.question_text, 			question.question_type, 			question.difficulty_level  	) TF WHERE   CAST(TF.id as VARCHAR) LIKE '%"+finalSearchTearm+"%' OR	TF.question_text LIKE '%"+finalSearchTearm+"%' OR TF.question_type LIKE '%"+finalSearchTearm+"%' OR TF.skills LIKE '%"+finalSearchTearm+"%' ORDER BY 			TF.ID DESC 		LIMIT 11 OFFSET '"+offsetnew+"';";
-			System.err.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
 			
 			if (question_lists.size() != 0) {
@@ -118,7 +117,7 @@ public class QuestionListController extends HttpServlet {
 		}
 
 		out.append("");
-		// System.err.println(">>> "+out.toString());
+		// ViksitLogger.logMSG(this.getClass().getName(),(">>> "+out.toString());
 		response.getWriter().print(out.toString());
 	}
 

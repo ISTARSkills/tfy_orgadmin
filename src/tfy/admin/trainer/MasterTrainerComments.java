@@ -1,6 +1,7 @@
 package tfy.admin.trainer;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,7 +61,7 @@ public class MasterTrainerComments extends IStarBaseServelet {
 			db.executeUpdate(check_isexists);
 
 			String feedback_sql = "INSERT INTO master_trainer_feedback ( 	ID, 	master_trainer_id, 	COMMENT, 	is_selected, 	trainer_id, 	interview_status ) VALUES 	( 		(select COALESCE(max(id),0)+1 from master_trainer_feedback), 		"+mastertrainer_id+", 		'"+comment+"', 		"+is_tariner_selected+", 		"+trainer_id+",  "+interview_status+" 	);";
-			//System.err.println(feedback_sql);
+			//ViksitLogger.logMSG(this.getClass().getName(),(feedback_sql);
 			db.executeUpdate(feedback_sql);
 			
 			if(interview_status.equalsIgnoreCase("true"))
@@ -70,9 +71,9 @@ public class MasterTrainerComments extends IStarBaseServelet {
 			}
 			
 			if (!courseids.equalsIgnoreCase("")) {
-				//System.err.println(courseids);
+				//ViksitLogger.logMSG(this.getClass().getName(),(courseids);
 				String[] words = courseids.split(",");
-				//System.err.println(words);
+				//ViksitLogger.logMSG(this.getClass().getName(),(words);
 				for (String courseid : words) {
 
 					String trainerskill_sql = "INSERT INTO trainer_skill_distrubution_stats (id, trainer_id, course_id) VALUES ((select COALESCE(max(id),0)+1 from trainer_skill_distrubution_stats), "

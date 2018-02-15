@@ -1,11 +1,14 @@
 package in.orgadmin.auth;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.viksitpro.core.logger.ViksitLogger;
 
 import in.talentify.core.controllers.IStarBaseServelet;
 
@@ -46,7 +49,7 @@ public class RoleSwitchController extends IStarBaseServelet {
 			
 			String newRole = request.getParameter("new_role");
 			String refrer = request.getHeader("Referer");
-			System.out.println("refre - "+refrer);
+			ViksitLogger.logMSG(this.getClass().getName(),"refre - "+refrer);
 			request.getSession().removeAttribute("logged_in_role");
 			request.getSession().setAttribute("logged_in_role", newRole);
 			String	url="";

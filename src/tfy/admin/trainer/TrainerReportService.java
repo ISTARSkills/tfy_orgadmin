@@ -4,7 +4,6 @@
 package tfy.admin.trainer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -23,7 +22,7 @@ import com.viksitpro.core.dao.entities.StudentAssessment;
 public class TrainerReportService {
 
 	public List<StudentAssessment> getStudentAssessmentForUser(int istarUserId, int assessmentId) {
-//System.out.println("dddddddd"+assessmentId+" yyy"+istarUserId);
+//ViksitLogger.logMSG(this.getClass().getName(),"dddddddd"+assessmentId+" yyy"+istarUserId);
 		List<StudentAssessment> allStudentAssessment = new ArrayList<StudentAssessment>();
 
 		String hql = "from StudentAssessment studentAssessment where assessment.id= :assessment and istarUser.id= :istarUser";
@@ -47,7 +46,7 @@ public class TrainerReportService {
 		List<StudentAssessment> allStudentAssessments = getStudentAssessmentForUser(istarUserId, assessmentId);
 		List<QuestionResponsePOJO> allQuestionsResponse = new ArrayList<QuestionResponsePOJO>();
 
-		//System.out.println("allStudentAssessments>>>>>>."+allStudentAssessments);
+		//ViksitLogger.logMSG(this.getClass().getName(),"allStudentAssessments>>>>>>."+allStudentAssessments);
 		if (allStudentAssessments.size() > 0) {
 			assessmentResponsePOJO = new AssessmentResponsePOJO();
 			for (StudentAssessment studentAssessment : allStudentAssessments) {

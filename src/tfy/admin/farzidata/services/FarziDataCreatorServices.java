@@ -3,7 +3,6 @@
  */
 package tfy.admin.farzidata.services;
 
-import java.util.Date;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -17,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -71,6 +71,7 @@ import com.viksitpro.core.dao.entities.StudentAssessmentDAO;
 import com.viksitpro.core.dao.entities.Task;
 import com.viksitpro.core.dao.entities.TaskDAO;
 import com.viksitpro.core.dao.utils.task.TaskServices;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.DBUTILS;
@@ -122,7 +123,7 @@ public class FarziDataCreatorServices {
 		String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) "
 				+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+email+"', 'test123', 		now(), 		'"+mobile+"', 		NULL,    'f' 	)RETURNING ID;";
 		
-		//System.out.println(istarStudentSql);
+		//ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 		int userID  = db.executeUpdateReturn(istarStudentSql);
 			
 		String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"+firstName+"', '"+lastName+"', 'MALE', "+userID+");";
@@ -130,7 +131,7 @@ public class FarziDataCreatorServices {
 
 		//Student User Role Mapping
 			String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
-			//System.out.println(userRoleMappingSql);
+			//ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 			db.executeUpdate(userRoleMappingSql);
 			String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 
 			db.executeUpdate(insertIntoOrgMapping);					
@@ -156,7 +157,7 @@ public class FarziDataCreatorServices {
 		DBUTILS util = new DBUTILS();
 		String insert_into_bg = "insert into batch_students (id, batch_group_id, student_id, user_type) values(((select COALESCE(max(id),0)+1 from batch_students)),"
 				+ bgId + "," + userId + ",'STUDENT')";
-		System.out.println(insert_into_bg);
+		ViksitLogger.logMSG(this.getClass().getName(),insert_into_bg);
 		util.executeUpdate(insert_into_bg);		
 	}
 	
@@ -188,7 +189,7 @@ public class FarziDataCreatorServices {
 					+ batchID + ", " + trainerID + ");";
 
 			db.executeUpdate(trainerBatchSql);
-			//System.out.println("trainerBatchSql-----> "+trainerBatchSql);
+			//ViksitLogger.logMSG(this.getClass().getName(),"trainerBatchSql-----> "+trainerBatchSql);
 
 		}
 		
@@ -289,25 +290,25 @@ public class FarziDataCreatorServices {
 				int addressId = db.executeUpdateReturn(sql);
 				
 				String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email.replace("'", "")+"', 		'test123', 		now(), 		'"+mobile+"', 		NULL,    'f' 	)RETURNING ID;";
-				System.out.println(istarStudentSql);
+				ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 							
 				 int userID  = db.executeUpdateReturn(istarStudentSql);
 								
 
 							//Student User Role Mapping
 				String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name = 'STUDENT'), (SELECT MAX(id)+1 FROM user_role), '1');";
-				System.out.println(userRoleMappingSql);
+				ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 				db.executeUpdate(userRoleMappingSql);
 								
 								//Trainer Student  User Profile
 				String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		"+addressId+", 		'"+firstName+"', 		'"+lastName+"', 	NULL,	'MALE',   "+userID+", 		NULL 	); ";
-				System.out.println(UserProfileSql);
+				ViksitLogger.logMSG(this.getClass().getName(),UserProfileSql);
 				db.executeUpdate(UserProfileSql);
 								
 
 				//Trainer Student User Org Mapping
 				String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES 	("+userID+", "+orgId+", (SELECT MAX(id)+1 FROM user_org_mapping));";
-				System.out.println(userOrgMappingSql);
+				ViksitLogger.logMSG(this.getClass().getName(),userOrgMappingSql);
 				db.executeUpdate(userOrgMappingSql);
 				
 				users.add(userID);
@@ -331,17 +332,17 @@ public class FarziDataCreatorServices {
 		String batchName=batchGroupName+"_"+courseName;
 		
 		String sql="select * from batch where batch_group_id="+bgId+" and course_id="+courseId;
-		System.err.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 		
 		if(data.size()==0){
 		sql = "INSERT INTO batch ( 	ID, 	createdat, 	NAME, 	updatedat, 	batch_group_id, 	course_id ) VALUES 	((select COALESCE(max(id),0)+1 from batch) 		, 		'now()', 		'"+batchName+"', 		'now()', 		'"+bgId+"', 		'"+courseId+"')returning id";
-		System.err.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		int batchId = (int) db.executeUpdateReturn(sql);
 		
 		sql="UPDATE batch SET order_id='"+batchId+"' WHERE (id='"+batchId+"')";
-		System.err.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		db.executeUpdate(sql);				
 		}
 	}
@@ -357,16 +358,14 @@ public class FarziDataCreatorServices {
 	}
 	public static void main(String args [])
 	{		
-		System.out.println("start");
+		
 		FarziDataCreatorServices serv = new FarziDataCreatorServices();
 		String orgName = "THE FERN HOTELS & RESORTS";
 		
 		String[] batches = {"Meluha The Fern Mumbai","The Fern Ahmedabad","Mansarovar The Fern Hyderabad","The Fern Jaipur","The Fern Hotel Goregaon","Rodas Hotel","The Fern Residency Chembur","The Fern Bhavnagar","The Fern Gir Forest Resort Sasan Gir","The Fern Kadamba","The Fern Residency Somnath","The Wall Street Hotel Jaipur","The Fern Residency Galaxy Mall Asansol","The Fern Residency Jodhpur","The Fern Residency Kolkata","The Fern Residency Rajkot","Howard Plaza The Fern Agra","The Fern Residency Udaipur","The Fern Hillside Resort Bhimtal","Samanvay Udupi","The Fern Residency Mundra","The Fern Residency MIDC Pune","Maia Beacon Residences Bangalore","T2 Beacon Mumbai","Mystique Heights Beacon","The Fern Samali Resort Dapoli","The Fern Residency Vadodra","The Fern Residency an Ecotel Gurgaon","The Royal Melange Beacon Ajmer","The Fern Residency Chandigarh","The Gardenia Resort","Alibaug","The Fern Amanora Pune","Amritsar Surya Beacon","Grand Ashirwad Beacon Bhopal" };
 		int[] batcheCounts = {68 ,32 ,36 ,32 ,40 ,20 ,24 ,32 ,20 ,29 ,24 ,15 ,26 ,24 ,22 ,32 ,26 ,29 ,17 ,16 ,38 ,20 ,3 ,5 ,5 ,14 ,20 ,20 ,20 ,13 ,3 ,18 ,31 ,13 ,13};
 		int courses[] = {9 ,101 ,5 ,6 ,7 ,8 ,12 ,13 ,14 ,10 ,19 ,31 ,51 ,3 ,37 ,18 ,20 ,66 ,34 ,43 ,53 ,65 ,67 ,16 ,59 ,58 ,99 ,52 ,102 ,100 ,63 ,62 ,60 ,64 ,9};
-		System.out.println(batches.length);
-		System.out.println(batcheCounts.length);
-		System.out.println(courses.length);
+		
 		int orgID =serv.createOrganization(orgName);
 		//278
 		for (int k=0; k< batches.length;k++) {
@@ -381,7 +380,7 @@ public class FarziDataCreatorServices {
 		
 		serv.createAssesssmentTaskForAllBgs(orgID);
 		
-		System.out.println("all assessments created");
+		
 		//int bgId = 154;    
 		//int orgID = 279;
 		Organization org = new OrganizationDAO().findById(279);
@@ -393,26 +392,26 @@ public class FarziDataCreatorServices {
 		    int BPlusPercentage = getRandomInteger(maxNow, 20);
 		    int BPercenatge = maxNow-BPlusPercentage;		    
 			serv.submitAssessment(bg.getId(), aPlusPercentage,APercentage, BPlusPercentage, BPercenatge);				
-			System.out.println(" assess submitted for bg"+bg.getId());
+			ViksitLogger.logMSG(this.getClass().getName()," assess submitted for bg"+bg.getId());
 		}
 		*/
-		System.out.println("all assessment submitted");
+		
 		
 		/*for(BatchGroup bg : org.getBatchGroups())
 		{
 			serv.autoScheduleAllCourseInBg(bg.getId());
 		}
 		
-		System.out.println("all autoshcudke");
+		ViksitLogger.logMSG(this.getClass().getName(),"all autoshcudke");
 		
 		for(BatchGroup bg : org.getBatchGroups())
 		{
 			serv.createCLassRoomSessionEvents(bg.getId());
 		}*/
-		System.out.println("events created");
+		
 		serv.updateSessionEventsForOrg(orgID);
 		
-		System.out.println("end");
+		
 		System.exit(0);
 	}
 
@@ -422,37 +421,37 @@ public class FarziDataCreatorServices {
 		
 		DBUTILS util = new DBUTILS();
 		String sql ="select * from task where item_id in (select id from batch_schedule_event where status='SCHEDULED' AND type = 'BATCH_SCHEDULE_EVENT_TRAINER' and classroom_id in (select id from classroom_details where organization_id = "+orgId+") ) and item_type ='CLASSROOM_SESSION' ";
-		System.out.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		List<HashMap<String, Object>> taskData = util.executeQuery(sql);
 		int i=0;
 		for(HashMap<String, Object> taskRow: taskData)
 		{
 			int taskId = (int)taskRow.get("id");
 			String status ="SCHEDULED"; 
-			System.out.println(" finding"+ taskId);
+			ViksitLogger.logMSG(this.getClass().getName()," finding"+ taskId);
 			if(i==0)
 			{				
 				status="TEACHING";
-				System.out.println("teaching "+ taskId);
+				ViksitLogger.logMSG(this.getClass().getName(),"teaching "+ taskId);
 				markTaskAsTeaching(taskId);
 				i=1;
 			}else if(i==1)
 			{
 				status="FEEDBACK";
-				System.out.println("FEEDBACK "+ taskId);
+				ViksitLogger.logMSG(this.getClass().getName(),"FEEDBACK "+ taskId);
 				markTaskAsFeedback(taskId);
 				updateFeedbackStats(taskId);
 				i=2;
 			}else if(i==2)
 			{
-				System.out.println("ATTENDANCE "+ taskId);
+				ViksitLogger.logMSG(this.getClass().getName(),"ATTENDANCE "+ taskId);
 				status="ATTENDANCE";
 				markTaskAsAttendance(taskId);
 				updateAttendanceStats(taskId);
 				i=3;
 			}else if(i==3)
 			{
-				System.out.println("COMPLETED "+ taskId);
+				ViksitLogger.logMSG(this.getClass().getName(),"COMPLETED "+ taskId);
 				markTaskAsCompleted(taskId);
 				status = "COMPLETED";
 				i=0;
@@ -591,7 +590,7 @@ public class FarziDataCreatorServices {
 				+ "LEFT JOIN attendance ON ( 	attendance.event_id = batch_schedule_event. ID 	AND istar_user. ID = attendance.user_id )"
 				+ " WHERE 	task. ID = "+taskID+" AND istar_user. ID NOTNULL";
 		
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		List<HashMap<String, Object>> studentData = utils.executeQuery(sql);
 		for(HashMap<String, Object> row : studentData)
 		{
@@ -629,7 +628,7 @@ public class FarziDataCreatorServices {
 		int actor = task.getIstarUserByActor().getId();
 		com.istarindia.android.pojo.GroupPojo group = new com.istarindia.android.pojo.GroupPojo();
 		String getGroupId ="select batch_group_id, batch_group.name, batch_schedule_event.eventdate from task,batch_schedule_event, batch_group where batch_group.id = batch_schedule_event.batch_group_id and batch_schedule_event.id = task.item_id and task.id ="+id+" and item_type in ('"+TaskItemCategory.CLASSROOM_SESSION+"') ";
-		//System.out.println("getGroupId>>>"+getGroupId);
+		//ViksitLogger.logMSG(this.getClass().getName(),"getGroupId>>>"+getGroupId);
 		List<HashMap<String, Object>> groupData = util.executeQuery(getGroupId);
 		
 		if(groupData.size()>0)
@@ -843,7 +842,7 @@ public class FarziDataCreatorServices {
 							int totalSlides = rs.getInt("cnt");
 							String insertIntoLog = "INSERT INTO event_log (id, trainer_id, course_id, cmsession_id, lesson_id, slide_id, created_at, updated_at, module_id, assessment_id, event_type, event_status, event_id, url, batch_group_id, total_slide_count) "
 									+ "VALUES ((select COALESCE(max(id),0)+1 from slide_change_log), '"+trainerId+"', '"+courseId+"', '"+cmsessionId+"', '"+lessonId+"', '"+slideId+"', '"+eventdate+"', '"+eventdate+"', '"+moduleId+"', '0', 'SLIDE_CHANGED', 'TEACHING', '"+id+"', '"+slideTitle+"', '"+batchGroupId+"',"+totalSlides+");";							
-							System.out.println(insertIntoLog);
+							ViksitLogger.logMSG(this.getClass().getName(),insertIntoLog);
 							util.executeUpdate(insertIntoLog);
 							
 							
@@ -888,7 +887,7 @@ public class FarziDataCreatorServices {
 					Date statrtDate = new Date(start.getTimeInMillis());
 					Date endDate = new Date(end.getTimeInMillis());
 					for (Date date = statrtDate; date.before(endDate); start.add(Calendar.DATE, 1), date = start.getTime()) {				    
-					    System.out.println(date);
+					    ViksitLogger.logMSG(this.getClass().getName(),date);
 					    createEvent(trainerId, 1, 0, batch.getId(), sdf.format(date), "", 300, classRoomId, -1, trainerId+"");
 					}				
 				}
@@ -924,25 +923,25 @@ public class FarziDataCreatorServices {
 			int addressId = db.executeUpdateReturn(sql);
 			
 			String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) VALUES 	( 		(SELECT MAX(id)+1 FROM istar_user), 		'"+email.replace("'", "")+"', 		'test123', 		now(), 		'"+mobile+"', 		NULL,    'f' 	)RETURNING ID;";
-			System.out.println(istarStudentSql);
+			ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 						
 			 int userID  = db.executeUpdateReturn(istarStudentSql);
 							
 
 						//Student User Role Mapping
 			String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name = 'TRAINER'), (SELECT MAX(id)+1 FROM user_role), '1');";
-			System.out.println(userRoleMappingSql);
+			ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 			db.executeUpdate(userRoleMappingSql);
 							
 							//Trainer Student  User Profile
 			String UserProfileSql = "INSERT INTO user_profile ( 	id, 	address_id, 	first_name, 	last_name, 	dob, 	gender, 	user_id, 	aadhar_no ) VALUES 	( 		(SELECT MAX(id)+1 FROM user_profile), 		"+addressId+", 		'"+firstName+"', 		'"+lastName+"', 	NULL,	'MALE',   "+userID+", 		NULL 	); ";
-			System.out.println(UserProfileSql);
+			ViksitLogger.logMSG(this.getClass().getName(),UserProfileSql);
 			db.executeUpdate(UserProfileSql);
 							
 
 			//Trainer Student User Org Mapping
 			String userOrgMappingSql = "INSERT INTO user_org_mapping ( 	user_id, 	organization_id, 	id ) VALUES 	("+userID+", 2, (SELECT MAX(id)+1 FROM user_org_mapping));";
-			System.out.println(userOrgMappingSql);
+			ViksitLogger.logMSG(this.getClass().getName(),userOrgMappingSql);
 			db.executeUpdate(userOrgMappingSql);
 			
 			String[] presenterEmailaddress = email.split("@");
@@ -954,18 +953,18 @@ public class FarziDataCreatorServices {
 					+ "', 		NULL,    'f' 	)RETURNING ID;";
 
 			int presenterUserID = db.executeUpdateReturn(istarPresenterSql);
-			System.out.println(istarPresenterSql);
+			ViksitLogger.logMSG(this.getClass().getName(),istarPresenterSql);
 			// Trainer Presenter User Role Mapping
 			String presentorRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("
 					+ presenterUserID
 					+ ", (select id from role where role_name = 'PRESENTOR'), (SELECT MAX(id)+1 FROM user_role), '1');";
 			db.executeUpdate(presentorRoleMappingSql);
-			System.out.println(presentorRoleMappingSql);
+			ViksitLogger.logMSG(this.getClass().getName(),presentorRoleMappingSql);
 			// Trainer Presenter Mapping
 			String trainerPresenterSql = "INSERT INTO trainer_presentor ( 	id, 	trainer_id, 	presentor_id ) VALUES 	((SELECT MAX(id)+1 FROM trainer_presentor), "
 					+ userID + ", " + presenterUserID + ");";
 			db.executeUpdate(trainerPresenterSql);
-			System.out.println(trainerPresenterSql);
+			ViksitLogger.logMSG(this.getClass().getName(),trainerPresenterSql);
 			
 			
 			
@@ -1036,10 +1035,10 @@ public class FarziDataCreatorServices {
 				freq = (int)Math.ceil((double)lessons.size()/workingDays);
 				
 				total_scheduled_days = (int)Math.ceil((double)lessons.size()/freq);
-				//System.out.println("freq>>"+freq);
+				//ViksitLogger.logMSG(this.getClass().getName(),"freq>>"+freq);
 				String autoData ="INSERT INTO auto_scheduler_data (id, entity_type, entity_id, course_id, student_count, start_date, end_date, scheduled_days, scheduled_days_count,tasks_per_day) VALUES "
 						+ "((select COALESCE(max(id),0)+1 from auto_scheduler_data), '"+bg.getType()+"', "+bgID+", "+batch.getCourse().getId()+", "+stuCount+", '"+new Timestamp(statrtDate.getTime())+"', '"+new Timestamp(endDate.getTime())+"', '"+ String.join(",", days)+"', "+total_scheduled_days+","+freq+");";
-				System.out.println(autoData);
+				ViksitLogger.logMSG(this.getClass().getName(),autoData);
 				util.executeUpdate(autoData);				
 				createTaskBetweenTwoDates(statrtDate, endDate, daysList,workingDays,users, modules, cmsessions, lessons, batch.getCourse().getId()+"", freq);
 			}
@@ -1053,8 +1052,8 @@ public class FarziDataCreatorServices {
 	    startCal.setTime(startDate);        
 	    Calendar endCal = Calendar.getInstance();
 	    endCal.setTime(endDate);
-	    //System.out.println(">>"+startDate);
-	    //System.out.println(">>"+endDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+startDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+endDate);
 	    int workDays = 0;
 	    int currentOrderId=0;
 	    //Return 0 if start and end are the same
@@ -1080,12 +1079,12 @@ public class FarziDataCreatorServices {
 		 
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
-	    	//System.out.println("chedking for "+sd);
+	    	//ViksitLogger.logMSG(this.getClass().getName(),"chedking for "+sd);
 	    	if(daysCount<=totalDays)
 	    	{
 	    		if (daysList.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
 		    		Date taskDate = startCal.getTime();
-		        	//System.out.println("creatting task for date+"+taskDate);		        	
+		        	//ViksitLogger.logMSG(this.getClass().getName(),"creatting task for date+"+taskDate);		        	
 		        	for(int stid : users)
 		        	{
 		        		int cid=Integer.parseInt(scheduler_course_id);
@@ -1159,7 +1158,7 @@ public class FarziDataCreatorServices {
 			{
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type, project_id) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitle.replaceAll("'", "")+"', '"+taskDescription.replaceAll("'", "")+"', 300, "+stid+", 'SCHEDULED', '"+new Timestamp(taskDate.getTime())+"','"+new Timestamp(endate.getTime()) +"', 't', now(), now(), "+itemId+", '"+lessonType+"', "+projectId+") returning id;";
-				//System.out.println(">>>"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),">>>"+sql);
 				taskId = util.executeUpdateReturn(sql); 
 				
 				//TaskServices taskService = new TaskServices();
@@ -1175,8 +1174,8 @@ public class FarziDataCreatorServices {
 
 	    Calendar endCal = Calendar.getInstance();
 	    endCal.setTime(endDate);
-	    //System.out.println(">>"+startDate);
-	    //System.out.println(">>"+endDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+startDate);
+	    //ViksitLogger.logMSG(this.getClass().getName(),">>"+endDate);
 	    int workDays = 0;
 
 	    //Return 0 if start and end are the same
@@ -1193,7 +1192,7 @@ public class FarziDataCreatorServices {
 	    for(Date sd = startCal.getTime(); sd.before(endCal.getTime()); )
 	    {
 	    	if (days.contains(startCal.get(Calendar.DAY_OF_WEEK))) {
-	        	////System.out.println("checming for "+startCal.get(Calendar.DAY_OF_WEEK));
+	        	////ViksitLogger.logMSG(this.getClass().getName(),"checming for "+startCal.get(Calendar.DAY_OF_WEEK));
 	            ++workDays;
 	        }
 	    	startCal.add(Calendar.DATE, 1);
@@ -1322,12 +1321,12 @@ public class FarziDataCreatorServices {
 
 	private void giveFarziDataWithGrade(ArrayList<Integer> students, int assessmentId,
 			Integer percentageRequiredfORgRADE) {
-		System.out.println("FARZI DATA STARAT HERE");
+		ViksitLogger.logMSG(this.getClass().getName(),"FARZI DATA STARAT HERE");
 		DBUTILS util = new DBUTILS();
 		for(Integer userId : students){
 		Integer percentageRequired  = percentageRequiredfORgRADE;		
 		String findAssessmentTasks = "select id from task where item_type='ASSESSMENT' and actor="+userId+" and item_id="+assessmentId+"";
-		System.out.println(findAssessmentTasks);
+		ViksitLogger.logMSG(this.getClass().getName(),findAssessmentTasks);
 		List<HashMap<String, Object>> tasks = util.executeQuery(findAssessmentTasks);
 			
 			if(tasks.size()>0)
@@ -1341,7 +1340,7 @@ public class FarziDataCreatorServices {
 				}
 				
 				int questionsToAttend = (percentageRequired * assessment.getQuestions().size())/100;
-				System.out.println("percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
+				ViksitLogger.logMSG(this.getClass().getName(),"percebtage ="+percentageRequired+" queswtion atten ="+questionsToAttend+ " total questions ="+assessment.getQuestions().size());
 				ArrayList<QuestionResponsePOJO> asses_response = new ArrayList<>();
 				int quePointer =0;
 				for(QuestionPOJO que : assessment.getQuestions())
@@ -1381,7 +1380,7 @@ public class FarziDataCreatorServices {
 		
 		
 	}
-		System.out.println("giveFarziData ENDS HERE ");
+		ViksitLogger.logMSG(this.getClass().getName(),"giveFarziData ENDS HERE ");
 		
 	}
 
@@ -1479,40 +1478,40 @@ public class FarziDataCreatorServices {
 		HashMap<String, Boolean> optionsMap = new HashMap<String, Boolean>();
 		List<Boolean> incorrectAnswers = new ArrayList<Boolean>();
 		if (options!=null && options.size() > 0) {
-			//System.out.println("Checking Options with MaRKED Answers");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Checking Options with MaRKED Answers");
 			ArrayList<AssessmentOption> allOptions = new ArrayList<AssessmentOption>(question.getAssessmentOptions());
 
 			for (int i = 0; i < 5; i++) {
-				////System.out.println("Option ID--->"+allOptions.get(i).getId());
+				////ViksitLogger.logMSG(this.getClass().getName(),"Option ID--->"+allOptions.get(i).getId());
 				if (i < allOptions.size() && allOptions.get(i).getMarkingScheme() == 1) {
 					if (options.contains(allOptions.get(i).getId())) {
 						optionsMap.put("option" + i, true);
-					  //System.out.println(i + " Answer is Correct and user marked it correct too!");
+					  //ViksitLogger.logMSG(this.getClass().getName(),i + " Answer is Correct and user marked it correct too!");
 						isCorrect = true;
 					} else {
 						optionsMap.put("option" + i, false);
-						//System.out.println(i +" Answer is Correct and user did not marked it correct!");
+						//ViksitLogger.logMSG(this.getClass().getName(),i +" Answer is Correct and user did not marked it correct!");
 						isCorrect = false;
 					}
 				} else if (i < allOptions.size()) {
 					if (options.contains(allOptions.get(i).getId())) {
 						optionsMap.put("option" + i, true);
-					 //System.out.println(i+" Answer is Not Correct and but user marked it correct!");
+					 //ViksitLogger.logMSG(this.getClass().getName(),i+" Answer is Not Correct and but user marked it correct!");
 						isCorrect = false;
 						incorrectAnswers.add(isCorrect);
 					} else {
 						optionsMap.put("option" + i, false);
-					 //System.out.println(i+" Answer is Not Correct and and user did not marked it also!");
+					 //ViksitLogger.logMSG(this.getClass().getName(),i+" Answer is Not Correct and and user did not marked it also!");
 					}
 				} else {
-					//System.out.println(i+" Less Than 5 Options, so setting it to false");
+					//ViksitLogger.logMSG(this.getClass().getName(),i+" Less Than 5 Options, so setting it to false");
 					optionsMap.put("option" + i, false);
 				}
 			}
 		} else {
-			 //System.out.println("User did not attempt the question");
+			 //ViksitLogger.logMSG(this.getClass().getName(),"User did not attempt the question");
 			for (int i = 0; i < 5; i++) {
-				 //System.out.println(i+" Setting All Options to false");
+				 //ViksitLogger.logMSG(this.getClass().getName(),i+" Setting All Options to false");
 				optionsMap.put("option" + i, false);
 			}
 		}
@@ -1541,7 +1540,7 @@ public class FarziDataCreatorServices {
 					per_question_points =  properties.getProperty("per_question_points");
 					per_assessment_coins = properties.getProperty("per_assessment_coins");
 					if(AppProperies.getProperty("serverConfig").equalsIgnoreCase("dev")) {
-					//System.out.println("per_assessment_points"+per_assessment_points);
+					//ViksitLogger.logMSG(this.getClass().getName(),"per_assessment_points"+per_assessment_points);
 					}
 				}
 			} catch (IOException e) {
@@ -1602,12 +1601,12 @@ public class FarziDataCreatorServices {
 			Report report = getAssessmentReportForUser(userId, assessmentId);			
 			
 			if (report == null) {
-				//System.out.println("Report is null, creating new report");
+				//ViksitLogger.logMSG(this.getClass().getName(),"Report is null, creating new report");
 				createReport(istarUser, assessment, correctAnswersCount, assessmentDuration,
 						maxPoints.intValue(), task.getCreatedAt());
 				updateUserGamificationAfterAssessment(istarUser,assessment, task.getCreatedAt());
 			} else {
-				//System.out.println("Report exists, updating report");
+				//ViksitLogger.logMSG(this.getClass().getName(),"Report exists, updating report");
 				if(assessment.getRetryAble()!=null && assessment.getRetryAble())
 				{
 					updateReport(report, istarUser, assessment, correctAnswersCount, assessmentDuration,maxPoints.intValue(), task.getCreatedAt());
@@ -1634,14 +1633,14 @@ public class FarziDataCreatorServices {
 					per_lesson_points =  properties.getProperty("per_lesson_points");
 					per_question_points =  properties.getProperty("per_question_points");
 					per_assessment_coins = properties.getProperty("per_assessment_coins");
-					//System.out.println("per_assessment_points"+per_assessment_points);
+					//ViksitLogger.logMSG(this.getClass().getName(),"per_assessment_points"+per_assessment_points);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();			
 		}*/
 		DBUTILS util = new DBUTILS();
 		String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-		//System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
+		//ViksitLogger.logMSG(this.getClass().getName(),"findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
 		List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
 		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		for(HashMap<String, Object>primaryG : primaryBG)
@@ -1650,7 +1649,7 @@ public class FarziDataCreatorServices {
 			int orgId = (int)primaryG.get("college_id");
 			String findSkillsInAssesssment = "select skill_objective_id, max_points from assessment_benchmark where "
 					+ "item_id = "+assessment.getId()+" and item_type ='ASSESSMENT'";
-			//System.out.println("findSkillsInAssesssment>>>>>>"+findSkillsInAssesssment);
+			//ViksitLogger.logMSG(this.getClass().getName(),"findSkillsInAssesssment>>>>>>"+findSkillsInAssesssment);
 			List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInAssesssment);
 			for(HashMap<String, Object> skills : skillsData)
 			{
@@ -1659,7 +1658,7 @@ public class FarziDataCreatorServices {
 				String coins = "( :per_assessment_coins )";
 				String getPreviousCoins="select * from user_gamification where item_id ='"+assessment.getId()+"' and item_type='ASSESSMENT' and "
 						+ "istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-				//System.out.println("getPreviousCoins"+getPreviousCoins);
+				//ViksitLogger.logMSG(this.getClass().getName(),"getPreviousCoins"+getPreviousCoins);
 				List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
 				if(coinsData.size()>0)
 				{
@@ -1669,7 +1668,7 @@ public class FarziDataCreatorServices {
 				
 				String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, batch_group_id, org_id, timestamp,max_points) VALUES "
 						+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+maxPoints+"' , '"+coins+"', '"+to.format(timestamp)+"', now(), "+assessment.getId()+", 'ASSESSMENT', "+assessment.getCourse()+", "+groupId+", "+orgId+", '"+to.format(timestamp)+"','"+maxPoints+"');";
-				//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
+				//ViksitLogger.logMSG(this.getClass().getName(),"insertIntoGamification>>>>"+insertIntoGamification);
 				util.executeUpdate(insertIntoGamification);
 			}			
 		}
@@ -1686,7 +1685,7 @@ public class FarziDataCreatorServices {
 		
 		DBUTILS util = new DBUTILS();
 		String findPrimaryGroupsOfUser = "SELECT distinct	batch_group.id, batch_group.college_id FROM 	batch_students, 	batch_group WHERE 	batch_group. ID = batch_students.batch_group_id AND batch_students.student_id = "+istarUser.getId()+" and batch_group.is_primary='t'";
-		//System.out.println("findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
+		//ViksitLogger.logMSG(this.getClass().getName(),"findPrimaryGroupsOfUser>>"+findPrimaryGroupsOfUser);
 		List<HashMap<String, Object>> primaryBG = util.executeQuery(findPrimaryGroupsOfUser);
 		SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		for(HashMap<String, Object>primaryG : primaryBG)
@@ -1695,11 +1694,11 @@ public class FarziDataCreatorServices {
 			int orgId = (int)primaryG.get("college_id");
 			ArrayList<Integer> questionAnsweredCorrectly = new ArrayList<>();
 			String findQueAnsweredCorrectly= "select distinct question_id from student_assessment where assessment_id ="+assessment.getId()+" and student_id="+istarUser.getId()+" and correct='t'";
-			//System.out.println("correct que id "+findQueAnsweredCorrectly );
+			//ViksitLogger.logMSG(this.getClass().getName(),"correct que id "+findQueAnsweredCorrectly );
 			List<HashMap<String, Object>> correctQueAnsweredData = util.executeQuery(findQueAnsweredCorrectly);
 			for(HashMap<String, Object> qro : correctQueAnsweredData)
 			{
-				//System.out.println("correct que id"+(int)qro.get("question_id"));
+				//ViksitLogger.logMSG(this.getClass().getName(),"correct que id"+(int)qro.get("question_id"));
 				questionAnsweredCorrectly.add((int)qro.get("question_id"));
 			}
 			
@@ -1711,7 +1710,7 @@ public class FarziDataCreatorServices {
 				
 				
 				String findSkillsInQuestion = "select skill_objective_id, max_points from assessment_benchmark where item_id = "+questionId+" and item_type ='QUESTION'";
-				//System.out.println("findSkillsInAssesssment>>>>>>"+findSkillsInQuestion);
+				//ViksitLogger.logMSG(this.getClass().getName(),"findSkillsInAssesssment>>>>>>"+findSkillsInQuestion);
 				List<HashMap<String, Object>> skillsData = util.executeQuery(findSkillsInQuestion);
 				for(HashMap<String, Object> skills : skillsData)
 				{
@@ -1722,7 +1721,7 @@ public class FarziDataCreatorServices {
 					
 											
 					String getPreviousCoins="select * from user_gamification where item_id ='"+questionId+"' and item_type='QUESTION' and istar_user='"+istarUser.getId()+"' and batch_group_id="+groupId+" and skill_objective="+skillObjectiveId+"  order by timestamp desc limit 1";
-					//System.out.println("getPreviousCoins"+getPreviousCoins);
+					//ViksitLogger.logMSG(this.getClass().getName(),"getPreviousCoins"+getPreviousCoins);
 					List<HashMap<String, Object>> coinsData = util.executeQuery(getPreviousCoins);
 					if(coinsData.size()>0)
 					{
@@ -1733,12 +1732,12 @@ public class FarziDataCreatorServices {
 						{
 							if(questionAnsweredCorrectly.contains(questionId))
 							{
-								//System.out.println("questionAnsweredCorrectly contains "+ questionId);
+								//ViksitLogger.logMSG(this.getClass().getName(),"questionAnsweredCorrectly contains "+ questionId);
 								pointsScored = maxPoints;
 							}
 							else
 							{
-								//System.out.println("questionAnsweredCorrectl do not  contains "+ questionId);
+								//ViksitLogger.logMSG(this.getClass().getName(),"questionAnsweredCorrectl do not  contains "+ questionId);
 								pointsScored = "0";
 							}	
 							
@@ -1759,7 +1758,7 @@ public class FarziDataCreatorServices {
 					
 					String insertIntoGamification="INSERT INTO user_gamification (id,istar_user, skill_objective, points, coins, created_at, updated_at, item_id, item_type,  course_id, batch_group_id, org_id, timestamp,max_points) VALUES "
 							+ "((SELECT COALESCE(MAX(ID),0)+1 FROM user_gamification),"+istarUser.getId()+", "+skillObjectiveId+",'"+pointsScored+"' , '"+coins+"', '"+to.format(timestamp)+"', '"+to.format(timestamp)+"', "+questionId+", 'QUESTION', "+assessment.getCourse()+", "+groupId+", "+orgId+", '"+to.format(timestamp)+"','"+maxPoints+"');";
-					//System.out.println("insertIntoGamification>>>>"+insertIntoGamification);
+					//ViksitLogger.logMSG(this.getClass().getName(),"insertIntoGamification>>>>"+insertIntoGamification);
 					util.executeUpdate(insertIntoGamification);
 				}
 			}						
@@ -1917,7 +1916,7 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 			Boolean option1, Boolean option2, Boolean option3, Boolean option4, Boolean option5, Integer countryId, 
 			Integer organizationId, Integer batchGroupId, Integer timeTaken){
 		
-		//System.out.println("Updating to DAO");
+		//ViksitLogger.logMSG(this.getClass().getName(),"Updating to DAO");
 		
 		studentAssessment.setCorrect(correct);
 		studentAssessment.setOption1(option1);
@@ -2007,7 +2006,7 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 				}
 			}
 			
-			System.out.println("assessments size ="+assessmentIds.size());
+			ViksitLogger.logMSG(this.getClass().getName(),"assessments size ="+assessmentIds.size());
 			SimpleDateFormat to = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			if(assessmentIds.size()>0)
 			{
@@ -2021,14 +2020,14 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 				Date statrtDate = new Date(start.getTimeInMillis());
 				Date endDate = new Date(end.getTimeInMillis());
 				
-				System.out.println(statrtDate);
-				System.out.println(endDate);
+				ViksitLogger.logMSG(this.getClass().getName(),statrtDate);
+				ViksitLogger.logMSG(this.getClass().getName(),endDate);
 				
 				int assessmentCounter = 0;
 				
 				
 				for (Date date = statrtDate; date.before(endDate); start.add(Calendar.DATE, 1), date = start.getTime()) {				    
-				    System.out.println(date);
+				    ViksitLogger.logMSG(this.getClass().getName(),date);
 				    if(assessmentCounter<totalAssesments)
 				    {
 				    	int itemId = assessmentIds.get(assessmentCounter);
@@ -2053,7 +2052,7 @@ public Report createReport(IstarUser istarUser, Assessment assessment, Integer s
 			}
 			else
 			{
-				System.out.println("no assessment is thr ");
+				ViksitLogger.logMSG(this.getClass().getName(),"no assessment is thr ");
 			}	
 
 		}

@@ -121,40 +121,40 @@ public class AuthenticationFilter implements Filter {
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("initializeInterview")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("panelist.jsp")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("sendInterviewFeedback")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("student_signup_ui")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("email_mobile_validator")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("custom_task_factory")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("fetch_custom_task")) {
-			//System.out.println(((HttpServletRequest) request).getRequestURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {
 			if ((session == null || session.getAttribute("user") == null)) {
-				//System.out.println("The user is not logged in! Message from -> "
+				//ViksitLogger.logMSG(this.getClass().getName(),"The user is not logged in! Message from -> "
 						//+ ((HttpServletRequest) request).getRequestURL().toString());
 				((HttpServletResponse) response).sendRedirect("/index.jsp");
 			} else {

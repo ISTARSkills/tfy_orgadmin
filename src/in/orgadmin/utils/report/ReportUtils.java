@@ -16,19 +16,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.json.JSONArray;
-
-import com.viksitpro.core.dao.entities.BaseHibernateDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
-import in.orgadmin.utils.report.IStarColumn;
-import in.orgadmin.utils.report.Report;
-import in.orgadmin.utils.report.ReportCollection;
 import in.talentify.core.utils.CMSRegistry;
 
 /**
@@ -39,17 +29,17 @@ public class ReportUtils {
 
 	public StringBuffer getHTML(int reportID, HashMap<String, String> conditions) {
 		Report report = getReport(reportID);
-		//System.err.println(report.getSql());
+		//ViksitLogger.logMSG(this.getClass().getName(),(report.getSql());
 		String sql1 = report.getSql();
 		for (String key : conditions.keySet()) {
-			//System.out.println("key->" + key + "   value-> " + conditions.get(key));
+			//ViksitLogger.logMSG(this.getClass().getName(),"key->" + key + "   value-> " + conditions.get(key));
 			String paramName = ":" + key;
 			if (sql1.contains(paramName)) {
 
 				sql1 = sql1.replaceAll(paramName, conditions.get(key));
 			}
 		}
-		//System.out.println("report type>>" + report.getType_of_report());
+		//ViksitLogger.logMSG(this.getClass().getName(),"report type>>" + report.getType_of_report());
 		return getGraphHTML(sql1, report);
 
 		// return out;
@@ -92,12 +82,12 @@ public class ReportUtils {
 			for (String key : conditions.keySet()) {
 				String paramName = ":" + key;
 				if (sql1.contains(paramName)) {
-					//System.out.println("key->" + key + "   value-> " + conditions.get(key));
+					//ViksitLogger.logMSG(this.getClass().getName(),"key->" + key + "   value-> " + conditions.get(key));
 					sql1 = sql1.replaceAll(paramName, conditions.get(key));
 				}
 			}
 			
-			System.out.println("sql1sql1->" + sql1);
+			ViksitLogger.logMSG(this.getClass().getName(),"sql1sql1->" + sql1);
 			List<HashMap<String, Object>> data = db.executeQuery(sql1);
 			out.append("<tbody>");
 			for (HashMap<String, Object> hashMap : data) {
@@ -347,7 +337,7 @@ public class ReportUtils {
 		
 		String sql1 = report.getSql();
 		for (String key : conditions.keySet()) {
-			//System.out.println("key->" + key + "   value-> " + conditions.get(key));
+			//ViksitLogger.logMSG(this.getClass().getName(),"key->" + key + "   value-> " + conditions.get(key));
 			String paramName = ":" + key;
 			if (sql1.contains(paramName)) {
 
@@ -442,7 +432,7 @@ public class ReportUtils {
 		StringBuffer sb = new StringBuffer();
 		DBUTILS util = new DBUTILS();
 		String filterSql = "select to_char(MIN (to_timestamp("+iterable_element.name+", 'DD-Mon-yyyy HH24:MI') ),'DD-Mon-yyyy HH24:MI') AS min_date, 	to_char(MAX (to_timestamp("+iterable_element.name+", 'DD-Mon-yyyy HH24:MI') ),'DD-Mon-yyyy HH24:MI') AS max_date from ("+sql1+")FILTER_TABLE";
-		System.err.println("0filterSql- >"+filterSql);
+	
 		List<HashMap<String, Object>> minMaxDates = util.executeQuery(filterSql);
 		String minDate = "01/01/2015";
 		String maxDate = "12/31/2030";

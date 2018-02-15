@@ -35,7 +35,7 @@ try{
 		if (inputStream != null) {
 			properties.load(inputStream);
 			basePath =  properties.getProperty("cdn_path");
-			//System.out.println("basePath"+basePath);
+			//ViksitLogger.logMSG(this.getClass().getName(),"basePath"+basePath);
 		}
 	} catch (IOException e) {
 		e.printStackTrace();
@@ -83,16 +83,21 @@ String courseId = request.getParameter("course_id");
                                             <div class="row">
                                                 <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Import PowerPoint/Excel</h3>
 
-                                                    
+                                                    <div class="alert alert-danger" id="xmlExistLabel">
+                                This lesson is not empty. Uploading a powerpoint or excel will overwrite the lesson.
+                            </div>
                                                     <form role="form"  id="SubmissionForm" enctype="multipart/form-data">
                                                     <input type="hidden" id="hidden_lesson_id">
-                                                    <div class="form-group"><label>Lesson Name</label> <input type="text" disabled class="form-control" id="lesson_name"></div>
+                                                    <div class="form-group"><label>Lesson Name</label> 
+                                                    <input type="text" disabled class="form-control" id="lesson_name"></div>
                                                         <div class="form-group"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                 <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
                                 <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span><input type="file" name="..."></span>
                                 <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                             </div></div>
                                                         <div>
+                                                            <button class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button" id="preview"><strong>Preview</strong></button>
+                                                            <button class="btn btn-sm btn-primary pull-left m-t-n-xs" type="button" id="edit" style="margin-left:10px"><strong>Edit</strong></button>
                                                             <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit" id="upload_file"><strong>Upload</strong></button>
                                                             </div>
                                                     </form>
@@ -135,12 +140,20 @@ String courseId = request.getParameter("course_id");
 		if(itemId.indexOf("lesson")!=-1)
 		{
 			//lert('select is fired for node with id=' + node.attr('id'));
-			$
+			$('#preview').show();
+			$('#edit').show();
+			$('#xmlExistLabel').show();
 			$('#hidden_lesson_id').val(node.attr('id'));
 			$('#lesson_name').val(node.data('title'));
+			if(node.data('xmlexist')==false)
+			{
+				$('#preview').hide();
+				$('#edit').hide();
+				$('#xmlExistLabel').hide();
+			}	
 			$('#modal-form').modal();
 		} 
-		('#course_'+courseId).css('background-color','#f3f3f4');
+		$('#course_'+courseId).css('background-color','#f3f3f4');
 		$('#course_'+courseId).css('color','#333');
      });
 	 tree.on('unselect', function (e, node, id) {
@@ -160,6 +173,17 @@ String courseId = request.getParameter("course_id");
         
      });
 	 
+	 $('#preview').on('click', function(){
+		 $('#modal-form').modal('toggle'); 
+		var lessonId = $('#hidden_lesson_id').val().replace("lesson_","");
+		var win = window.open('presentation.jsp?lesson_id='+lessonId, '_blank');
+		win.focus();
+	 });
+	 $('#edit').on('click', function(){
+		 			var lessonId = $('#hidden_lesson_id').val().replace("lesson_","");
+					var url = 'template/create_slide.jsp?lesson_id='+ lessonId;
+					window.open(url, "_blank");
+				});
 	 $('#SubmissionForm').submit(function(event){
 		  // Disable the default form submission
 		  $('#modal-form').modal('toggle');

@@ -52,7 +52,7 @@ int colegeID = (int) request.getSession().getAttribute("orgId");
 
 		istrue = true;
 		evntid = request.getParameter("eventid");
-		//System.out.println("------------------------------------------->" + evntid);
+		//ViksitLogger.logMSG(this.getClass().getName(),"------------------------------------------->" + evntid);
 		
 		SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");

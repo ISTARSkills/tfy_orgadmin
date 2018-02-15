@@ -23,7 +23,6 @@ import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
-import com.viksitpro.core.dao.entities.IstarNotification;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.utils.task.TaskServices;
@@ -239,7 +238,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 				String updateAddress = "update address set addressline1 = '" + addressLine1 + "', addressline2='"
 						+ addressLine2 + "', pincode_id =(select id from pincode where pin=" + pincode
 						+ "  limit 1 ) where id = " + add.getId();
-				// System.err.println("140 updateAddress -> "+ updateAddress);
+				// ViksitLogger.logMSG(this.getClass().getName(),("140 updateAddress -> "+ updateAddress);
 				util.executeUpdate(updateAddress);
 				address_id = add.getId();
 			} else {
@@ -247,7 +246,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 				String sql = "INSERT INTO address ( 	ID, 	addressline1, 	addressline2, 	pincode_id, 	address_geo_longitude, 	address_geo_latitude ) VALUES 	( 		(SELECT max(id)+1 FROM address), 		'"
 						+ addressLine1 + "', 		'" + addressLine2 + "', 		 (select id from pincode where pin="
 						+ pincode + "), 		 NULL, 		 NULL 	)RETURNING ID;";
-				// System.err.println(sql);
+				// ViksitLogger.logMSG(this.getClass().getName(),(sql);
 				address_id = db.executeUpdateReturn(sql);
 			}
 
@@ -379,7 +378,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 					obj = (JSONObject) parser.parse(avaiableTime);
 
 					for (Object obja : obj.keySet()) {
-						// System.out.println(obja+"--->"+obj.get(obja).toString());
+						// ViksitLogger.logMSG(this.getClass().getName(),obja+"--->"+obj.get(obja).toString());
 						boolean t8am_9am = false;
 						boolean t9am_10am = false;
 						boolean t10am_11am = false;
@@ -397,7 +396,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 
 						for (String time : times) {
 
-							// System.err.println("day>>>> "+day+" time>>>>> "+time);
+							// ViksitLogger.logMSG(this.getClass().getName(),("day>>>> "+day+" time>>>>> "+time);
 
 							if (time.equalsIgnoreCase("8:00 AM-9:00 AM")) {
 								t8am_9am = true;
@@ -438,7 +437,7 @@ public class ProfileUpdate extends IStarBaseServelet {
 								+ "', 		'" + t1pm_2pm + "', 		'" + t2pm_3pm + "', 		'" + t3pm_4pm
 								+ "', 		'" + t4pm_5pm + "', 		'" + t5pm_6pm + "' 	);";
 
-						// System.err.println(ssql);
+						// ViksitLogger.logMSG(this.getClass().getName(),(ssql);
 						db.executeUpdate(ssql);
 					}
 

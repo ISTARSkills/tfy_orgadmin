@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.viksitpro.core.dao.entities.Course;
-import com.viksitpro.core.dao.entities.CourseDAO;
-import com.viksitpro.core.dao.entities.IstarUser;
-import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class CoordinatorSchedularUtil {

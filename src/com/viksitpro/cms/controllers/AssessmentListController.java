@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.viksitpro.core.dao.entities.Question;
-import com.viksitpro.core.dao.entities.QuestionDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
 @WebServlet("/assessment_list")
@@ -44,7 +43,7 @@ public class AssessmentListController extends HttpServlet {
 			String sql = "SELECT 	CAST (COUNT(*) OVER() AS INTEGER) AS total_rows, id, question_text, 	question_type, 	difficulty_level FROM 	question WHERE 	context_id = "+context_id+" ORDER BY 	ID DESC LIMIT 10 OFFSET '"+offsetnew+"';";
 			
 			List<HashMap<String, Object>> question_lists = db.executeQuery(sql);
-			System.err.println(sql);
+			ViksitLogger.logMSG(this.getClass().getName(),sql);
 			if (question_lists.size() != 0) {
 				for (HashMap<String, Object> question_list : question_lists) {
 					int pageination = (int) question_list.get("total_rows") / 10;
@@ -65,7 +64,7 @@ public class AssessmentListController extends HttpServlet {
 		}
 
 		out.append("");
-		// System.err.println(">>> "+out.toString());
+		// ViksitLogger.logMSG(this.getClass().getName(),(">>> "+out.toString());
 		response.getWriter().print(out.toString());
 	}
 

@@ -47,7 +47,7 @@ String sql = "select slide_id from user_session_log where user_id="+user.getId()
 List<HashMap<String, Object>> data = util.executeQuery(sql);
 if(data.size()!=0){
 	slide_id = (int)data.get(0).get("slide_id");
-	//System.out.println(">>>>>>>redirecting"+slide_id);
+	//ViksitLogger.logMSG(this.getClass().getName(),">>>>>>>redirecting"+slide_id);
 }
 	
 

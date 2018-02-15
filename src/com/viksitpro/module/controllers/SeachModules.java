@@ -1,7 +1,6 @@
 package com.viksitpro.module.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +17,6 @@ import org.json.JSONObject;
 
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
-import com.viksitpro.core.utilities.DBUTILS;
 
 /**
  * Servlet implementation class SeachModules

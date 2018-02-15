@@ -1,17 +1,10 @@
 package com.viksitpro.upload.controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,9 +18,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
 
-import com.viksitpro.cms.services.LessonServices;
 import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.LessonDAO;
 
 /**
  * Servlet implementation class MediaUploadController

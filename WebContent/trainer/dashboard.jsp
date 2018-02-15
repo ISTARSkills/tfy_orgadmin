@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.logger.ViksitLogger"%>
 <%@page import="com.viksitpro.core.utilities.TaskItemCategory"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.util.Collections"%>
@@ -139,12 +140,12 @@
 						}
 
 						for (TaskSummaryPOJO task : taskSummaryPOJOList) {
-							System.out.println(">>>>>>>>>"+task.getItemType());
-							System.out.println("task.getStatus() "+task.getStatus());
+							//ViksitLogger.logMSG(this.getClass().getName(),">>>>>>>>>"+task.getItemType());
+							//ViksitLogger.logMSG(this.getClass().getName(),"task.getStatus() "+task.getStatus());
 							if ((sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
 									&& !task.getStatus().equalsIgnoreCase("COMPLETED")) {
-								System.out.println("today date" + task.getDate());
-								System.out.println("today itemType " + task.getItemType());
+							//	ViksitLogger.logMSG(this.getClass().getName(),"today date" + task.getDate());
+							//	ViksitLogger.logMSG(this.getClass().getName(),"today itemType " + task.getItemType());
 								if ((task.getItemType().equalsIgnoreCase(TaskItemCategory.CLASSROOM_SESSION_STUDENT)
 										|| task.getItemType().equalsIgnoreCase(TaskItemCategory.REMOTE_CLASS_STUDENT)
 										|| task.getItemType().equalsIgnoreCase(TaskItemCategory.WEBINAR_STUDENT)
@@ -169,8 +170,8 @@
 							if (!(sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) > 0)
 									&& !task.getStatus().equalsIgnoreCase("COMPLETED")) {
 
-								//System.out.println("previous date " + task.getDate());
-								//System.out.println("previous itemType " + task.getItemType());
+								//ViksitLogger.logMSG(this.getClass().getName(),"previous date " + task.getDate());
+								//ViksitLogger.logMSG(this.getClass().getName(),"previous itemType " + task.getItemType());
 
 								if (task.getItemType().equalsIgnoreCase(TaskItemCategory.LESSON_PRESENTATION)
 										|| task.getItemType().equalsIgnoreCase(TaskItemCategory.ASSESSMENT)

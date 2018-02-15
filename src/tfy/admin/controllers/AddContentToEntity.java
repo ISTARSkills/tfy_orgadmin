@@ -71,7 +71,7 @@ public class AddContentToEntity extends IStarBaseServelet {
 		CustomReport rep = repUtils.getReport(15); 				
 		String sql = rep.getSql();
 		sql = sql.replaceAll(":skill_objective_id", skillId+"");
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		*/
 		//List<HashMap<String, Object>> contentRelatedToSkill = db.executeQuery(sql);
 		/*if(entityType.equalsIgnoreCase("User"))
@@ -84,7 +84,7 @@ public class AddContentToEntity extends IStarBaseServelet {
 			CustomReport report = repUtils.getReport(16); 				
 			sql = report.getSql();
 			sql = sql.replaceAll(":batch_group_id", entityId+"");				
-			//System.err.println(sql);
+			//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 			List<HashMap<String, Object>> result = db.executeQuery(sql);
 			for (HashMap<String, Object> studnetRow : result) {
 				int studentId = (int)studnetRow.get("student_id");
@@ -98,7 +98,7 @@ public class AddContentToEntity extends IStarBaseServelet {
 			CustomReport report = repUtils.getReport(16); 				
 			sql = report.getSql();
 			sql = sql.replaceAll(":batch_group_id", entityId+"");				
-			//System.err.println(sql);
+			//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 			List<HashMap<String, Object>> result = db.executeQuery(sql);
 			for (HashMap<String, Object> studnetRow : result) {
 				int studentId = (int)studnetRow.get("student_id");

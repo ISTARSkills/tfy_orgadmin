@@ -10,10 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
@@ -120,7 +116,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 				String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token, is_verified ) "
 						+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+org_admin_email+"', 'test123', 		now(), 		'"+org_admin_mobile+"', 		NULL,    'f' 	)RETURNING ID;";
 				
-				//System.out.println(istarStudentSql);
+				//ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 				int userID  = db.executeUpdateReturn(istarStudentSql);
 					
 				String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"+org_admin_first_name+"', '"+org_admin_last_name+"', '"+org_admin_gender+"', "+userID+");";
@@ -128,7 +124,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 
 				//Student User Role Mapping
 					String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
-					//System.out.println(userRoleMappingSql);
+					//ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 					db.executeUpdate(userRoleMappingSql);
 					String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 
 					db.executeUpdate(insertIntoOrgMapping);
@@ -176,7 +172,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 					String istarStudentSql = "INSERT INTO istar_user ( 	id, 	email, 	password, 	created_at, 	mobile, 	auth_token ) "
 							+ "VALUES ((SELECT MAX(id)+1 FROM istar_user), 		'"+org_admin_email+"', 'test123', 		now(), 		'"+org_admin_mobile+"', 		NULL 	)RETURNING ID;";
 					
-					//System.out.println(istarStudentSql);
+					//ViksitLogger.logMSG(this.getClass().getName(),istarStudentSql);
 					int userID  = db.executeUpdateReturn(istarStudentSql);
 						
 					String insertIntoUserProfile ="INSERT INTO user_profile (id, first_name, last_name,  gender,  user_id) VALUES ((select COALESCE(max(id),0)+1 from user_profile), '"+org_admin_first_name+"', '"+org_admin_last_name+"', '"+org_admin_gender+"', "+userID+");";
@@ -184,7 +180,7 @@ public class CreateOrUpdateOrganizationController extends IStarBaseServelet {
 					
 					//Student User Role Mapping
 					String userRoleMappingSql = "INSERT INTO user_role ( 	user_id, 	role_id, 	id, 	priority ) VALUES 	("+userID+", (select id from role where role_name='ORG_ADMIN'), (SELECT MAX(id)+1 FROM user_role), '1');";
-						//System.out.println(userRoleMappingSql);
+						//ViksitLogger.logMSG(this.getClass().getName(),userRoleMappingSql);
 						db.executeUpdate(userRoleMappingSql);
 						
 					String insertIntoOrgMapping="INSERT INTO user_org_mapping (user_id, organization_id, id) VALUES ("+userID+", "+college_id+", (select COALESCE(max(id),0)+1 from user_org_mapping));"; 

@@ -23,7 +23,6 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.notification.IstarNotificationServices;
-import com.viksitpro.core.notification.PublishDelegator;
 import com.viksitpro.core.utilities.ChatType;
 import com.viksitpro.core.utilities.NotificationType;
 
@@ -38,10 +37,10 @@ public class ChatWebSocketHandler   {
 
     @OnWebSocketConnect
     public void onConnect(Session user) throws Exception {
-    	//System.out.println(user.getUpgradeRequest().getRequestURI());
+    	//ViksitLogger.logMSG(this.getClass().getName(),user.getUpgradeRequest().getRequestURI());
     	String url = user.getUpgradeRequest().getRequestURI().toString();
     	String email = url.split("/")[4];
-    	//System.out.println("---"+email);
+    	//ViksitLogger.logMSG(this.getClass().getName(),"---"+email);
     	List<IstarUser> users = new IstarUserDAO().findByEmail(email);
     	if(users.size()>0)
     	{
@@ -106,7 +105,7 @@ public class ChatWebSocketHandler   {
         	//JSONObject obj = getJoiningMsgJSONObject(user, IstarUser);
         	//msgService.addJoiningMessage(IstarUser,username+" joined the chat");
         	//Chat.broadcastJoiningMessage(IstarUser, obj.toString());
-        	//System.out.println("connected");
+        	//ViksitLogger.logMSG(this.getClass().getName(),"connected");
     	}
     	
     	
@@ -159,13 +158,13 @@ public class ChatWebSocketHandler   {
         Chat.userIdBGGroupIdMap.remove(IstarUserId);
         Chat.userIdCustomGroupIdMap.remove(IstarUserId);
         Chat.sessionUserIdMap.remove(user);
-        //System.out.println("closed");
+        //ViksitLogger.logMSG(this.getClass().getName(),"closed");
 	}
 
     @OnWebSocketMessage
     public void onMessage(Session user, String message) {
     	MessageService msgService = new MessageService();
-    	//System.out.println("json string in onMessage >>>>>>>"+ message);
+    	//ViksitLogger.logMSG(this.getClass().getName(),"json string in onMessage >>>>>>>"+ message);
     	IstarNotificationServices serv = new IstarNotificationServices();
     	AndroidNoticeDelegator delegator = new AndroidNoticeDelegator();
     	Integer senderId = Chat.sessionUserIdMap.get(user);

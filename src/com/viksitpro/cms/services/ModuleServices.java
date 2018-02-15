@@ -1,10 +1,8 @@
 package com.viksitpro.cms.services;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,13 +11,10 @@ import com.viksitpro.core.dao.entities.Cmsession;
 import com.viksitpro.core.dao.entities.CmsessionDAO;
 import com.viksitpro.core.dao.entities.Context;
 import com.viksitpro.core.dao.entities.ContextDAO;
-import com.viksitpro.core.dao.entities.Course;
-import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.Module;
 import com.viksitpro.core.dao.entities.ModuleDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.core.dao.entities.SkillObjectiveDAO;
-import com.viksitpro.core.dao.utils.HibernateSessionFactory;
 import com.viksitpro.core.utilities.DBUTILS;
 
 public class ModuleServices {

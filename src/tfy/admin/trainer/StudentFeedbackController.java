@@ -124,7 +124,7 @@ public class StudentFeedbackController extends IStarBaseServelet {
 				+ too_much_theoritic + ", " + no_fun_in_class + ", " + enough_examples + ", " + outside_disturbance
 				+ ", " + rating + ", " + event_id + ", " + trainer_id + ", '" + comments + "', '" + food + "', '" + hostel + "');";
 
-		//System.err.println(sql);
+		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
 		dbutils.executeUpdate(sql);
 	}
 

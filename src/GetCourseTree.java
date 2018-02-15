@@ -1,5 +1,6 @@
 
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
-import com.viksitpro.core.dao.entities.Module;
+import com.viksitpro.core.utilities.AppProperies;
 import com.viksitpro.core.utilities.DBUTILS;
 
 /**
@@ -58,6 +58,7 @@ public class GetCourseTree extends HttpServlet {
 			course.put("flagUrl", courseImageUrl);
 			course.put("checked", "null");
 			course.put("hasChildren", "null");
+			course.put("xmlExist", false);
 			nodeCounter++;
 			JSONArray modulesArray = new JSONArray();
 			DBUTILS util = new DBUTILS();
@@ -81,6 +82,7 @@ public class GetCourseTree extends HttpServlet {
 					modObject.put("flagUrl", moduleImageUrl);
 					modObject.put("checked", "null");
 					modObject.put("hasChildren", "null");
+					modObject.put("xmlExist", false);
 					nodeCounter++;
 					JSONArray sessionArray = new JSONArray();
 					String getCMSessions ="select * from cmsession_module, cmsession where cmsession_module.module_id="+moduleId+" and cmsession_module.cmsession_id = cmsession.id order by cmsession_module.oid";
@@ -104,6 +106,7 @@ public class GetCourseTree extends HttpServlet {
 							sessionObject.put("flagUrl", sessionImageUrl);
 							sessionObject.put("checked", "null");
 							sessionObject.put("hasChildren", "null");
+							sessionObject.put("xmlExist", false);
 							nodeCounter++;
 							String getLesson ="select * from lesson_cmsession, lesson where lesson_cmsession.cmsession_id="+sessionId+" and lesson_cmsession.lesson_id = lesson.id order by lesson_cmsession.oid";
 							List<HashMap<String, Object>> lessons = util.executeQuery(getLesson);
@@ -111,8 +114,15 @@ public class GetCourseTree extends HttpServlet {
 							{
 								for(HashMap<String, Object> lessonRow : lessons)
 								{
+									boolean xmlExist = false;
 									JSONObject lessonObject = new JSONObject();
 									int lessonId = (int)lessonRow.get("id");
+									String xmlUrl = AppProperies.getProperty("apache_path")+"/lessonXMLs/"+lessonId+"/"+lessonId+"/"+lessonId+".xml";
+									File lessonXML = new File(xmlUrl);
+									if(lessonXML.exists())
+									{
+										xmlExist = true;
+									}	
 									String lessonImageUrl = null;
 									if(lessonRow.get("image_url")!=null)
 									{
@@ -125,6 +135,7 @@ public class GetCourseTree extends HttpServlet {
 									lessonObject.put("flagUrl", lessonImageUrl);
 									lessonObject.put("checked", "null");
 									lessonObject.put("hasChildren", "null");
+									lessonObject.put("xmlExist", xmlExist);
 									nodeCounter++;	
 									lessonArray.put(lessonObject);
 								}

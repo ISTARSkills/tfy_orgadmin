@@ -1,6 +1,7 @@
 package in.superadmin.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,12 +38,12 @@ public class OrgadminLoginController extends IStarBaseServelet {
 		if(request.getParameter("org_id")!=null){
 			request.getSession().setAttribute("orgId", Integer.parseInt(request.getParameter("org_id")));
 			request.getSession().setAttribute("not_auth", "true");
-			//System.out.println("Hello----------------------------------------------->Hello");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Hello----------------------------------------------->Hello");
 			request.getRequestDispatcher("/orgadmin/dashboard.jsp").forward(request, response);
 		}
 		
 		if(request.getParameter("delete_session")!=null &&request.getParameter("delete_session").equalsIgnoreCase("true") ){
-			//System.out.println("delete_session");
+			//ViksitLogger.logMSG(this.getClass().getName(),"delete_session");
 		//	request.getSession().removeAttribute("orgAdmin_session");
 			 request.getSession().removeAttribute("not_auth");
 		}

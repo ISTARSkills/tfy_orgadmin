@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import com.viksitpro.core.dao.entities.Context;
 import com.viksitpro.core.dao.entities.Question;
 import com.viksitpro.core.dao.entities.QuestionDAO;
-import com.viksitpro.core.dao.entities.SkillObjective;
 import com.viksitpro.question.services.QuestionServices;
 
 /**

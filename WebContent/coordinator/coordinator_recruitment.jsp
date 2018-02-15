@@ -104,7 +104,7 @@ th {
 						<%
 							CustomReportUtils reportUtil = new CustomReportUtils();
 							String sql2 = reportUtil.getReport(43).getSql();
-							//System.err.println("sql2--------------------" + sql2);
+							//ViksitLogger.logMSG(this.getClass().getName(),("sql2--------------------" + sql2);
 							List<HashMap<String, Object>> data = util.executeQuery(sql2);
 
 							for (int i = 0; i < data.size(); i++) {

@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.viksitpro.core.utilities.DBUTILS;
-import com.viksitpro.core.utilities.IStarBaseServelet;
 
 /**
  * Servlet implementation class QuestionEngineController
@@ -75,13 +74,13 @@ public class QuestionEngineController extends HttpServlet {
 					sql = "INSERT INTO question ( 	ID, 	question_text, 	question_type, 	created_at, 	difficulty_level, 	specifier, 	duration_in_sec, 	explanation, 	comprehensive_passage_text, 	points , context_id) VALUES" + " 	( 		(select COALESCE(max(id),0)+1 from question), 		'" + question_text + "', 		'" + question_type + "', 		'now()', 		'"
 							+ question_diffculty + "', 		'1',		'60', 		'" + question_explain + "', 		'" + question_passage + "', 		'1' 	, " + context_id + ") returning id";
 
-					// System.err.println(sql);
+					// ViksitLogger.logMSG(this.getClass().getName(),(sql);
 					questionId = (int) db.executeUpdateReturn(sql);
 				} else {
 					questionId = Integer.parseInt(request.getParameter("question_id"));
 
 					sql = "UPDATE question SET question_text='" + question_text + "', question_type='" + question_type + "', created_at='now()', difficulty_level='" + question_diffculty + "',explanation='" + question_explain + "', comprehensive_passage_text='" + question_passage + "' WHERE (id='" + questionId + "')";
-					// System.err.println(sql);
+					// ViksitLogger.logMSG(this.getClass().getName(),(sql);
 					db.executeUpdate(sql);
 				}
 
@@ -97,7 +96,7 @@ public class QuestionEngineController extends HttpServlet {
 
 				for (int lobj_id : lobList) {
 					sql = "INSERT INTO question_skill_objective (learning_objectiveid, questionid) VALUES (" + lobj_id + "," + questionId + ")";
-					// System.err.println("sKILL QUESTION QUERY
+					// ViksitLogger.logMSG(this.getClass().getName(),("sKILL QUESTION QUERY
 					// >>>>>>>>>>>>>"+sql);
 					db.executeUpdate(sql);
 				}
@@ -105,7 +104,7 @@ public class QuestionEngineController extends HttpServlet {
 				if (request.getParameter("optionCount") != null && !request.getParameter("optionCount").equalsIgnoreCase("")) {
 					int optinCount = Integer.parseInt(request.getParameter("optionCount"));
 
-					// System.out.println("optinCount--------"+optinCount);
+					// ViksitLogger.logMSG(this.getClass().getName(),"optinCount--------"+optinCount);
 
 					for (int i = 0; i <= optinCount; i++) {
 						if (request.getParameter("option_" + i) != null && !request.getParameter("option_" + i).equalsIgnoreCase("")) {
@@ -121,7 +120,7 @@ public class QuestionEngineController extends HttpServlet {
 							}
 
 							sql = "INSERT INTO assessment_option (id, text, question_id, marking_scheme) VALUES ((select COALESCE(max(id),0)+1 from assessment_option), '" + optionText + "', " + questionId + ", '" + markingScheme + "')";
-							// System.err.println(sql);
+							// ViksitLogger.logMSG(this.getClass().getName(),(sql);
 							db.executeUpdate(sql);
 						}
 					}

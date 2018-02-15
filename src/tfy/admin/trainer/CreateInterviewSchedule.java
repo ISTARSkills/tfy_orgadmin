@@ -10,11 +10,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.Random;
 
 import org.json.JSONException;
@@ -24,6 +21,7 @@ import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
 import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.TaskItemCategory;
 
@@ -83,7 +81,7 @@ public class CreateInterviewSchedule {
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviewer+"', '"+taskTitleForInterviewer+"', "
 								+ ""+coordinatorId+", "+interviewerId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWER+"') returning id;";
-				//System.out.println(">>>"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),">>>"+sql);
 				int taskId =util.executeUpdateReturn(sql);
 				
 				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id, start_url, join_url,meeting_id,stage) "
@@ -97,7 +95,7 @@ public class CreateInterviewSchedule {
 				String sql ="INSERT INTO task (id, name, description, owner, actor, state,  start_date, end_date, is_active,  created_at, updated_at, item_id, item_type) "
 						+ "VALUES ((select COALESCE(max(id),0) +1 from task), '"+taskTitleForInterviee+"', '"+taskTitleForInterviee+"', "
 								+ ""+coordinatorId+", "+intervieweeId+", 'SCHEDULED',CAST ( '"+dateForDB+"' AS TIMESTAMP ) ,(CAST ( '("+dateForDB+")' AS TIMESTAMP ) + INTERVAL '1' MINUTE * ( 60 + "+durationInMinutes+")), 't', now(), now(), "+meetingId+", '"+TaskItemCategory.ZOOM_INTERVIEW_INTERVIEWEE+"') returning id;";
-				//System.out.println(">>>"+sql);
+				//ViksitLogger.logMSG(this.getClass().getName(),">>>"+sql);
 				int taskId =util.executeUpdateReturn(sql);
 				
 				String insertTaskDetails ="INSERT INTO interview_task_details (id, task_id, course_id, interviewer_id,interviewee_id, start_url, join_url,meeting_id,stage) "
@@ -120,7 +118,7 @@ public class CreateInterviewSchedule {
 		String hostId = tempHostIds[Result];
 		
 		String getListOfUsers ="https://api.zoom.us/v1/user/list?api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3";
-		System.out.println("get list of users--"+ getListOfUsers);
+		ViksitLogger.logMSG(this.getClass().getName(),"get list of users--"+ getListOfUsers);
 		try {
 			URL obj1 = new URL(getListOfUsers);
 			HttpURLConnection con1 = (HttpURLConnection) obj1.openConnection();
@@ -169,7 +167,7 @@ public class CreateInterviewSchedule {
 		
 		
 		String url = "https://api.zoom.us/v1/meeting/create?host_id="+hostId+"&topic="+topic+"&type=2&api_key=-eTYTcttSBy5NOzlRQNOcg&api_secret=Qb72BtJiGLuOEIN7fAO1mWxUXbSlurNHYNX3&start_time="+dateTime+"&duration="+durationInminutes+"&timezone=Asia/Kolkata";
-		//System.out.println("c,s,s,,s "+url);
+		//ViksitLogger.logMSG(this.getClass().getName(),"c,s,s,,s "+url);
 		try {
 			URL obj = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -183,7 +181,7 @@ public class CreateInterviewSchedule {
 					response.append(inputLine);
 				}
 				in.close();					
-				//System.out.println(response.toString());
+				//ViksitLogger.logMSG(this.getClass().getName(),response.toString());
 				
     			return response.toString();
     			

@@ -13,9 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.viksitpro.cms.services.LessonServices;
-import com.viksitpro.core.dao.entities.Lesson;
-import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.dao.entities.Question;
 import com.viksitpro.core.dao.entities.QuestionDAO;
 import com.viksitpro.core.dao.entities.SkillObjective;

@@ -18,6 +18,7 @@ import java.util.Random;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.AppProperies;
 
 /**
@@ -35,7 +36,7 @@ public class RestClient {
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+istarUserId+"/"+assessmentId+"/report");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			//System.out.println(conn.getURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 
@@ -46,9 +47,9 @@ public class RestClient {
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
 			String string ="";
-			//System.out.println("Output from Server .... \n");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				//System.out.println(output);
+				//ViksitLogger.logMSG(this.getClass().getName(),output);
 				string = string+ output;
 			}
 			
@@ -73,9 +74,9 @@ public class RestClient {
 		CourseContent courseContent = new CourseContent();
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/trainerworkflow/"+taskId+"/get_course_contents_student");
-		   //System.out.println("url in getCourseContentForStudent"+url.toString());
+		   //ViksitLogger.logMSG(this.getClass().getName(),"url in getCourseContentForStudent"+url.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			//System.out.println(conn.getURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 
@@ -85,9 +86,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			//System.out.println("Output from Server .... \n");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				//System.out.println(output);
+				//ViksitLogger.logMSG(this.getClass().getName(),output);
 				string = string+ output;
 			}
 			
@@ -113,7 +114,7 @@ public class RestClient {
 
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/user/"+userID+"/complex");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			//System.out.println(conn.getURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),conn.getURL().toString());
 			conn.setRequestMethod("GET");		
 			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 			conn.setRequestProperty("Accept", "application/json");
@@ -122,9 +123,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			//System.out.println("Output from Server .... \n");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				////System.out.println(output);
+				////ViksitLogger.logMSG(this.getClass().getName(),output);
 				string = string+ output;
 			}
 			
@@ -132,7 +133,7 @@ public class RestClient {
 			
 			
 			covertedObject = gsonRequest.fromJson(string, ComplexObject.class);
-			//System.err.println(covertedObject.getId());
+			//ViksitLogger.logMSG(this.getClass().getName(),(covertedObject.getId());
 			conn.disconnect();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -151,7 +152,7 @@ public class RestClient {
 		try {
 			URL url = new URL(AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			//System.out.println(conn.getURL().toString());
+			//ViksitLogger.logMSG(this.getClass().getName(),conn.getURL().toString());
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty ("viksit-user-agent", viksit_user_agent);
 			conn.setRequestProperty("Accept", "application/json");
@@ -160,9 +161,9 @@ public class RestClient {
 			}
 			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
 			String output;
-			//System.out.println("Output from Server .... \n");
+			//ViksitLogger.logMSG(this.getClass().getName(),"Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				//System.out.println(output);
+				//ViksitLogger.logMSG(this.getClass().getName(),output);
 				string = string+ output;
 			}
 			
@@ -187,7 +188,7 @@ public class RestClient {
 		
 		
 		String url = AppProperies.getProperty("t2c_path")+"/t2c/assessments/user/"+userId+"/"+assessmentId+"/"+taskId+"";
-		System.out.println(url);
+		ViksitLogger.logMSG(this.getClass().getName(),url);
 		URL obj = new URL(url);
 		HttpURLConnection con =  (HttpURLConnection) obj.openConnection();
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -206,9 +207,9 @@ public class RestClient {
 		wr.close();
 
 		int responseCode = con.getResponseCode();
-		//System.out.println("\nSending 'POST' request to URL : " + url);
-		//System.out.println("Post parameters : " + urlParameters);
-		//System.out.println("Response Code : " + responseCode);
+		//ViksitLogger.logMSG(this.getClass().getName(),"\nSending 'POST' request to URL : " + url);
+		//ViksitLogger.logMSG(this.getClass().getName(),"Post parameters : " + urlParameters);
+		//ViksitLogger.logMSG(this.getClass().getName(),"Response Code : " + responseCode);
 
 		BufferedReader in = new BufferedReader(
 		        new InputStreamReader(con.getInputStream()));
@@ -221,14 +222,14 @@ public class RestClient {
 		in.close();
 
 		//print result
-		//System.out.println(response.toString());
+		//ViksitLogger.logMSG(this.getClass().getName(),response.toString());
 		
 	}
 	
 	public static void main(String[] args) {
 		RestClient rc = new RestClient();
 		//rc.getComplexObject(16);
-		//System.out.println(rc.getAssessment(10039, 449).getQuestions().size());
+		//ViksitLogger.logMSG(this.getClass().getName(),rc.getAssessment(10039, 449).getQuestions().size());
 	}
 	
 	public String getTockent() {
@@ -237,7 +238,7 @@ public class RestClient {
 		Date date = new Date();
 		String timeNow = dateFormat.format(date).toString();
 		timeNow = timeNow.replaceAll("/", "").replaceAll(":", "").replaceAll(" ", "");
-		System.err.println(timeNow);
+		ViksitLogger.logMSG(this.getClass().getName(),timeNow);
 
 		Random r = new Random();
 		int Low = 1;

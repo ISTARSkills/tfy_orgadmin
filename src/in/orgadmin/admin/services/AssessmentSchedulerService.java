@@ -4,20 +4,16 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import com.viksitpro.core.dao.entities.Assessment;
 import com.viksitpro.core.dao.entities.AssessmentDAO;
 import com.viksitpro.core.dao.entities.Batch;
 import com.viksitpro.core.dao.entities.BatchDAO;
-import com.viksitpro.core.dao.entities.BatchGroup;
-import com.viksitpro.core.dao.entities.BatchGroupDAO;
 import com.viksitpro.core.dao.entities.BatchStudents;
 import com.viksitpro.core.dao.entities.Course;
 import com.viksitpro.core.dao.entities.CourseDAO;
@@ -25,7 +21,7 @@ import com.viksitpro.core.dao.entities.IstarUser;
 import com.viksitpro.core.dao.entities.IstarUserDAO;
 import com.viksitpro.core.dao.entities.Organization;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
-import com.viksitpro.core.dao.entities.UserOrgMappingDAO;
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
 import com.viksitpro.core.utilities.TaskItemCategory;
@@ -46,7 +42,7 @@ public class AssessmentSchedulerService {
 	public void createAssessment(int trainerID, int batch_id, int assessment_id, String event_date, String time,
 			int AdminUserID, int classroomID, String associateTrainerID) {
 
-		//System.out.println("inside Assessment");
+		//ViksitLogger.logMSG(this.getClass().getName(),"inside Assessment");
 
 		DBUTILS db = new DBUTILS();
 		StringBuffer out = new StringBuffer();
@@ -67,7 +63,7 @@ public class AssessmentSchedulerService {
 		ArrayList<Integer> alreadyAssigned = new ArrayList<>();
 		
 		
-		System.out.println("sql----------------"+sql);
+		ViksitLogger.logMSG(this.getClass().getName(),"sql----------------"+sql);
 		
 		if (data.size() != 0) {
 			for (HashMap<String, Object> row : data) {
@@ -339,7 +335,7 @@ public class AssessmentSchedulerService {
 		DBUTILS util = new DBUTILS();
 		Batch b = new BatchDAO().findById(batchId);
 		String sql = "SELECT DISTINCT assessment_id FROM 	istar_assessment_event WHERE 	batch_group_id = " + b.getBatchGroup().getId() +"  AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + eventDate + "%' ";
-System.out.println("sql----"+sql);
+ViksitLogger.logMSG(this.getClass().getName(),"sql----"+sql);
 		List<HashMap<String, Object>> data = util.executeQuery(sql);
 		if (data.size() != 0) {
 			for (HashMap<String, Object> row : data) {
@@ -354,7 +350,7 @@ System.out.println("sql----"+sql);
 	}
 
 	public StringBuffer createDiv(HashMap<String, String> data, boolean isCreated) {
-		//System.out.println("creatediv");
+		//ViksitLogger.logMSG(this.getClass().getName(),"creatediv");
 		StringBuffer out = new StringBuffer();
 		String assessmentData = "";
 
@@ -388,13 +384,13 @@ System.out.println("sql----"+sql);
 
 	public StringBuffer getEventDetails(int orgId, String qdate, ArrayList<String> datacheck) {
 
-		//System.out.println("eventdetails");
+		//ViksitLogger.logMSG(this.getClass().getName(),"eventdetails");
 		StringBuffer out = new StringBuffer();
 		String sql = "SELECT DISTINCT 	istar_assessment_event.eventdate as evdate, 	istar_assessment_event.assessment_id AS assessment_id , 	batch.id as bid FROM 	istar_assessment_event, 	batch, 	batch_group WHERE 	batch.batch_group_id = batch_group. ID and batch_group. ID =istar_assessment_event.batch_group_id  AND batch_group.college_id = "
 				+ orgId + " AND CAST (eventdate AS VARCHAR(50)) LIKE '%" + qdate + "%'";
 
 		DBUTILS db = new DBUTILS();
-		System.out.println(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),sql);
 		List<HashMap<String, Object>> data = db.executeQuery(sql);
 
 		for (HashMap<String, Object> item : data) {

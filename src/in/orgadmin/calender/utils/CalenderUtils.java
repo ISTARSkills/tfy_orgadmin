@@ -18,7 +18,7 @@ public class CalenderUtils {
 		String data_attr_str ="data-url='/get_events_controller?";
 		for(String key : input_params.keySet())
 		{
-			//System.out.println("params ->"+key+" : value->"+ input_params.get(key));
+			//ViksitLogger.logMSG(this.getClass().getName(),"params ->"+key+" : value->"+ input_params.get(key));
 			data_attr_str+=""+key+"="+input_params.get(key)+"&"; 
 		}
 		data_attr_str = data_attr_str.replaceAll("&$", "")+"'";

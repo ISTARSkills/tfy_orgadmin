@@ -1,3 +1,4 @@
+<%@page import="com.viksitpro.core.logger.ViksitLogger"%>
 <%@page import="com.istarindia.android.pojo.TaskSummaryPOJO"%>
 <%@page import="tfy.webapp.ui.NotificationLinkFactory"%>
 <%@page import="java.sql.Timestamp"%>
@@ -180,16 +181,7 @@
 					<ul class="dropdown-menu mega-menu"
 						style="background-color: white; left: -100px;">
 						<%
-							for (String state : orgs.keySet()) {
-									System.out.println("statte-" + state + "----- ");
-									for (Organization org : orgs.get(state))
-
-									{
-										//System.out.println("org-" + org.getName() + "6666");
-
-									}
-								}
-
+						
 								for (String state : orgs.keySet()) {
 						%>
 						<li class="mega-menu-column">
