@@ -40,7 +40,13 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 				<%=UIUtils.getPageHeader("Courses", brd) %>
 			
 			<div class="row customcss_istarnotification" >
+			<div class="row" style="    margin-bottom: 10px;">
+			<div class="col-lg-2 pull-right">
+			<input type="text" placeholder="Search" class="form-control" id="course_search_box">
+			</div>
+			</div>
 			<div class=''>
+			
 			<div class="row">
 			<div class="col-lg-2" style="    height: 306px;">
                 <div class="contact-box">
@@ -91,7 +97,7 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 					courseImage="http://elt.talentify.in:9999/"+c.getImage_url();
 				}
 				%>
-				 <div class="col-lg-2" style="    height: 306px;">
+				 <div class="col-lg-2 course_cards" style="    height: 306px;">
                 <div class="contact-box">
                     <a href="edit_course.jsp?course_id=<%=c.getId()%>">
                     <div class="col-sm-12">
@@ -150,54 +156,90 @@ IstarUser user = (IstarUser)request.getSession().getAttribute("user");
 	<jsp:include page="/inc/foot.jsp"></jsp:include>
 	<script type="text/javascript">
 	console.log("asdasd");
-	$('#upload_file').click(function(event){
-		  // Disable the default form submission
-		   event.preventDefault();		
-		  $('#modal-form').modal('toggle');
+	$(document).ready(function(){
 		
-		  
-		  var formData = new FormData($('#SubmissionForm')[0]);
-		  $('input').each( function() {
-		    formData.append($(this).attr('id'),$(this).val());
-		  });
-		  
-		  swal({
-              title: "File upload started.",
-              text: "It will take a few minutes to import course."
-          });
-		  
-		  setTimeout(() => {
-		  $.ajax({
-		    url: '/course_creator_servlet',
-		    type: 'POST',
-		    data: formData,
-		    async: false,
-		    cache: false,
-		    contentType: false,   // Important!
-		    processData: false,   // Important!
-		    success: function (returndata) {
-		    	
-		    	var xx = JSON.parse(returndata)
-		    	if(xx.status==='OK')
-		    	{
-		    		swal({
-		                title: "Your file has been uploaded. Successfully.",
-		                text: "Course created successfully"
-		            });
-			    	
-		    	}
-		    	else
-		    	{
-		    		swal({
-		                title: "Error in importing course.",
-		                text: xx.message
-		            });			    	
-		    	}			    					
+		$('#course_search_box').keyup(function(){
+			
+		    var val = $(this).val().toLowerCase();
+		    if(val==='')
+		    {
+		    	$('.course_cards').show();
 		    }
-		  });
-		  }, 2000);
-		  return false;
+		    else
+		    {
+		    	
+		    	$('.course_cards').hide();
+		    	 $('.course_cards').each(function() {
+			    	 var course_name = $(this).text().trim().toLowerCase();
+			    		    	
+			    	 if(course_name.indexOf(val)>=0)
+			    	 {
+			    		// 
+			    		 
+			    		 $(this).show();
+			    	 }
+			    	 else
+			    	 {
+			    		 $(this).hide();
+			    	 }
+			    	});
+		    }	
+		   
 		});
+		
+		
+		$('#upload_file').click(function(event){
+			  // Disable the default form submission
+			   event.preventDefault();		
+			  $('#modal-form').modal('toggle');
+			
+			  
+			  var formData = new FormData($('#SubmissionForm')[0]);
+			  $('input').each( function() {
+			    formData.append($(this).attr('id'),$(this).val());
+			  });
+			  
+			  swal({
+	              title: "File upload started.",
+	              text: "It will take a few minutes to import course."
+	          });
+			  
+			  setTimeout(() => {
+				  $.ajax({
+				    url: '/course_creator_servlet',
+				    type: 'POST',
+				    data: formData,
+				    async: false,
+				    cache: false,
+				    contentType: false,   // Important!
+				    processData: false,   // Important!
+				    success: function (returndata) {
+				    	
+				    	var xx = JSON.parse(returndata)
+				    	if(xx.status==='OK')
+				    	{
+				    		swal({
+				                title: "Your file has been uploaded. Successfully.",
+				                text: "Course created successfully"
+				            });
+					    	
+				    	}
+				    	else
+				    	{
+				    		swal({
+				                title: "Error in importing course.",
+				                text: xx.message
+				            });			    	
+				    	}			    					
+				    }
+				  });
+				  }, 2000);
+				  return false;
+				});
+	});
+	
+	
+	
 
-	</script>
-</body>
+		</script>
+	</body>
