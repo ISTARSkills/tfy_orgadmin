@@ -1,7 +1,17 @@
 package in.orgadmin.auth;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.sql.Timestamp;
+import java.util.concurrent.TimeUnit;
 
+import javax.management.AttributeNotFoundException;
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -12,6 +22,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.logger.ViksitLogger;
+import com.viksitpro.core.utilities.DBUTILS;
 
 /**
  * Servlet Filter implementation class AuthenticationFilter
@@ -65,19 +79,19 @@ public class AuthenticationFilter implements Filter {
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("index.jsp")) {
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("signup.jsp")) {
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("user_signup")) {
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("PinCodeController")) {
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("login.jsp")) {
 			isStarticrequest = true;
 		}
@@ -121,44 +135,96 @@ public class AuthenticationFilter implements Filter {
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("initializeInterview")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().endsWith("panelist.jsp")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("sendInterviewFeedback")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("student_signup_ui")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
-		
+
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("email_mobile_validator")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("custom_task_factory")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 		if (((HttpServletRequest) request).getRequestURL().toString().contains("fetch_custom_task")) {
-			//ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest) request).getRequestURL().toString());
+			// ViksitLogger.logMSG(this.getClass().getName(),((HttpServletRequest)
+			// request).getRequestURL().toString());
 			isStarticrequest = true;
 		}
 
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
 		if (!isStarticrequest) {
 			if ((session == null || session.getAttribute("user") == null)) {
-				//ViksitLogger.logMSG(this.getClass().getName(),"The user is not logged in! Message from -> "
-						//+ ((HttpServletRequest) request).getRequestURL().toString());
+				// ViksitLogger.logMSG(this.getClass().getName(),"The user is not logged in!
+				// Message from -> "
+				// + ((HttpServletRequest) request).getRequestURL().toString());
 				((HttpServletResponse) response).sendRedirect("/index.jsp");
 			} else {
+				long start = System.currentTimeMillis();
 				chain.doFilter(request, response);
+				long end = System.currentTimeMillis();
+				IstarUser istarUser = (IstarUser) ((HttpServletRequest) request).getSession().getAttribute("user");
+				MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+				ObjectName objectName = null;
+				try {
+					objectName = new ObjectName("Catalina:type=Manager,context=/,host=localhost");
+				} catch (MalformedObjectNameException e) {
+					e.printStackTrace();
+				}
+				Integer activeSessions = null;
+				try {
+					activeSessions = (Integer) mBeanServer.getAttribute(objectName, "activeSessions");
+				} catch (InstanceNotFoundException e) {
+					e.printStackTrace();
+				} catch (AttributeNotFoundException e) {
+					e.printStackTrace();
+				} catch (ReflectionException e) {
+					e.printStackTrace();
+				} catch (MBeanException e) {
+					e.printStackTrace();
+				}
+				String sql = "INSERT INTO public.user_journey_logs ( email, url, sessionid, created_at, userid, page_render_time, active_sessions ) VALUES ( '"
+						+ istarUser.getEmail() + "', '" + ((HttpServletRequest) request).getRequestURL().toString()
+						+ "', '" + ((HttpServletRequest) request).getSession().getId() + "', '"
+						+ new Timestamp(System.currentTimeMillis()).toString() + "', " + istarUser.getId() + ", "
+						+ (end - start) + ", " + activeSessions + " );";
+				Runnable insertUserJourney = () -> {
+					try {
+						String name = Thread.currentThread().getName();
+						ViksitLogger.logMSG(this.getClass().getName(),
+								"Inititating insertion of User Journey Log on thread: " + name + " with sql query: \n"
+										+ sql);
+						TimeUnit.SECONDS.sleep(1);
+						new DBUTILS().executeUpdate(sql);
+						ViksitLogger.logMSG(this.getClass().getName(),
+								"Insertion of User Journey Log done. The thread named " + name + " is freed!");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				};
+
+				Thread thread = new Thread(insertUserJourney);
+				thread.start();
 			}
 		} else {
 			chain.doFilter(request, response);
