@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.viksitpro.core.dao.entities.IstarUser;
+import com.viksitpro.core.logger.UserJourney;
 import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 
@@ -183,48 +184,7 @@ public class AuthenticationFilter implements Filter {
 				long start = System.currentTimeMillis();
 				chain.doFilter(request, response);
 				long end = System.currentTimeMillis();
-				IstarUser istarUser = (IstarUser) ((HttpServletRequest) request).getSession().getAttribute("user");
-				MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
-				ObjectName objectName = null;
-				try {
-					objectName = new ObjectName("Catalina:type=Manager,context=/,host=localhost");
-				} catch (MalformedObjectNameException e) {
-					e.printStackTrace();
-				}
-				Integer activeSessions = null;
-				try {
-					activeSessions = (Integer) mBeanServer.getAttribute(objectName, "activeSessions");
-				} catch (InstanceNotFoundException e) {
-					e.printStackTrace();
-				} catch (AttributeNotFoundException e) {
-					e.printStackTrace();
-				} catch (ReflectionException e) {
-					e.printStackTrace();
-				} catch (MBeanException e) {
-					e.printStackTrace();
-				}
-				String sql = "INSERT INTO public.user_journey_logs ( email, url, sessionid, created_at, userid, page_render_time, active_sessions ) VALUES ( '"
-						+ istarUser.getEmail() + "', '" + ((HttpServletRequest) request).getRequestURL().toString()
-						+ "', '" + ((HttpServletRequest) request).getSession().getId() + "', '"
-						+ new Timestamp(System.currentTimeMillis()).toString() + "', " + istarUser.getId() + ", "
-						+ (end - start) + ", " + activeSessions + " );";
-				Runnable insertUserJourney = () -> {
-					try {
-						String name = Thread.currentThread().getName();
-						ViksitLogger.logMSG(this.getClass().getName(),
-								"Inititating insertion of User Journey Log on thread: " + name + " with sql query: \n"
-										+ sql);
-						TimeUnit.SECONDS.sleep(1);
-						new DBUTILS().executeUpdate(sql);
-						ViksitLogger.logMSG(this.getClass().getName(),
-								"Insertion of User Journey Log done. The thread named " + name + " is freed!");
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				};
-
-				Thread thread = new Thread(insertUserJourney);
-				thread.start();
+				new UserJourney().createUserJourneyEntry(request, end - start, session);
 			}
 		} else {
 			chain.doFilter(request, response);
