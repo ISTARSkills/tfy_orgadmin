@@ -45,6 +45,8 @@ import com.viksitpro.core.utilities.NotificationType;
 import com.viksitpro.core.utilities.TaskItemCategory;
 import com.viksitpro.core.utilities.TrainerWorkflowStages;
 
+import tfy.webapp.ui.LessonServices;
+
 /**
  * 
  */
@@ -60,8 +62,19 @@ public class MayankFarziDataCreator {
 	 */
 	
 	public static void main(String[] args) {
-		MayankFarziDataCreator mm = new MayankFarziDataCreator();
-		mm.main();
+		//MayankFarziDataCreator mm = new MayankFarziDataCreator();
+		//mm.main();
+		System.out.println("start");
+		LessonServices lessonServices = new LessonServices();
+		try {
+			System.out.println(lessonServices.lessonHTMLfromLessonXMLAddendum(968));
+			System.out.println(lessonServices.lessonHTMLfromLessonXML(968));;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("end");
 	}
 	
 	public  void main() {

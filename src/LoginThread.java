@@ -7,9 +7,6 @@ import java.net.URL;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.istarindia.android.pojo.AssessmentReportPOJO;
-import com.istarindia.android.pojo.RestClient;
-import com.viksitpro.core.utilities.AppProperies;
 
 /**
  * 

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.IStarBaseServelet;
 
@@ -123,8 +124,7 @@ public class StudentFeedbackController extends IStarBaseServelet {
 				+ ", " + trainer_too_fast + ", " + class_control_by_trainer + ", " + too_tough_content + ", "
 				+ too_much_theoritic + ", " + no_fun_in_class + ", " + enough_examples + ", " + outside_disturbance
 				+ ", " + rating + ", " + event_id + ", " + trainer_id + ", '" + comments + "', '" + food + "', '" + hostel + "');";
-
-		//ViksitLogger.logMSG(this.getClass().getName(),(sql);
+		ViksitLogger.logMSG(this.getClass().getName(),(sql));
 		dbutils.executeUpdate(sql);
 	}
 

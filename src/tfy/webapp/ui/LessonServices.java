@@ -65,6 +65,9 @@ public class LessonServices {
 					templateVMFileName = cmsSlide.getList().getList_type() + "___" + cmsSlide.getTemplateName() + ext;
 				}
 				VelocityEngine ve = new VelocityEngine();
+				ve.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, "org.apache.velocity.runtime.log.NullLogChute" );
+				//ve.setProperty("runtime.log.logsystem.log4j.logger","velocity");
+				
 				ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 				ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 				ve.init();

@@ -1,4 +1,8 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -55,7 +60,6 @@ import com.viksitpro.core.dao.entities.OrganizationDAO;
 import com.viksitpro.core.dao.entities.UserOrgMapping;
 import com.viksitpro.core.dao.entities.UserRole;
 import com.viksitpro.core.dao.utils.task.TaskServices;
-import com.viksitpro.core.logger.ViksitLogger;
 import com.viksitpro.core.notification.IstarNotificationServices;
 import com.viksitpro.core.utilities.DBUTILS;
 import com.viksitpro.core.utilities.NotificationType;
@@ -116,12 +120,112 @@ public class MAIN {
 		//xmlTesting();
 		//appPropertiesTesting();
 		
-		loadLogin();
-		
+		//loadLogin();
+		DesktopImageValidator();
 		System.out.println("done");
 	}
 	
 	
+
+
+
+
+
+	private static void DesktopImageValidator() {
+		
+		//this log file is out put of tree -f -p -P *.png >tree.log
+		String filePath ="C:\\Users\\vaibhav\\Documents\\tree.log";
+		BufferedReader br = null;
+		FileReader fr = null;
+
+		try {
+
+			//br = new BufferedReader(new FileReader(FILENAME));
+			fr = new FileReader(filePath);
+			br = new BufferedReader(fr);
+
+			String sCurrentLine;
+			HashSet<String>filestotal = new HashSet<>();
+			while ((sCurrentLine = br.readLine()) != null) {
+				
+				if(!sCurrentLine.contains("Trash_content") && !sCurrentLine.contains("tobecopied") && !sCurrentLine.contains("oldAudio") && sCurrentLine.contains(".png"))
+				{
+					
+					if(sCurrentLine.indexOf("./")>0) {
+						//System.out.println(sCurrentLine.substring(sCurrentLine.indexOf("./"), sCurrentLine.length()-1));
+						filestotal.add(sCurrentLine.substring(sCurrentLine.indexOf("./"), sCurrentLine.length()));
+					}
+				}	
+			}
+			System.out.println("total size = "+filestotal.size());
+			BufferedWriter bw = null;
+			FileWriter fw = null;
+			String FILENAME ="C:\\Users\\vaibhav\\Documents\\defaulter.log";;
+			
+
+			fw = new FileWriter(FILENAME );
+			bw = new BufferedWriter(fw);
+			
+
+			int i =0;
+			for(String str : filestotal)
+			{
+				//String desktopFileName = str.substring(beginIndex
+				//System.out.println(str);
+				if(!str.contains("desktop.png"))
+				{
+					String desktopName = str.substring(0, str.indexOf(".png"))+"_desktop.png";
+					//System.out.println(">>>>"+desktopName);
+					if(!filestotal.contains(desktopName))
+					{
+						i++;
+						
+						bw.write(str+System.lineSeparator());
+					}	
+				}	
+				
+			}	
+			System.out.println(i);
+			try {
+
+				if (bw != null)
+					bw.close();
+
+				if (fw != null)
+					fw.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (br != null)
+					br.close();
+
+				if (fr != null)
+					fr.close();
+
+			} catch (IOException ex) {
+
+				ex.printStackTrace();
+
+			}
+			
+			
+
+		}
+		
+	}
+
+
 
 
 

@@ -43,7 +43,7 @@ public class CourseCreatorService {
 	{
 		CourseCreatorService serv = new CourseCreatorService();
 		try {
-			serv.createCourseStructureSQLs("C:\\Users\\Mayank\\Documents\\course_structure.xlsx");
+			serv.createCourseStructureSQLs("C:\\Users\\vaibhav\\Pictures\\it help desk.xlsx");
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -52,7 +52,20 @@ public class CourseCreatorService {
 		}
 	}
 	
-	
+	boolean isSheetEmpty(Sheet sheet){
+	       Iterator rows = sheet.rowIterator();
+	       while (rows.hasNext()) {
+	    	   Row row = (Row) rows.next();
+	           Iterator cells = row.cellIterator();
+	           while (cells.hasNext()) {
+	        	   Cell cell = (Cell) cells.next();
+	                if(!cell.getStringCellValue().isEmpty() && cell.getCellType() != Cell.CELL_TYPE_BLANK){
+	                    return true;
+	                }
+	           }
+	       }
+	       return false;
+	}
 	public void createCourseStructureSQLs(String excelPath) throws Exception 
 	{
 		HashMap<String , Integer> courseNameIdMap = new HashMap<>();
@@ -66,16 +79,19 @@ public class CourseCreatorService {
 		{
 			pptLessinIdMap.put((int)row.get("reference_ppt_id"), (int)row.get("id"));
 		}
-		
+		System.out.println("pptLessinIdMap size "+pptLessinIdMap.size());
 		
 		FileInputStream excelFile = new FileInputStream(new File(excelPath));
         Workbook workbook = new XSSFWorkbook(excelFile);
         Sheet courseStructureSheet = workbook.getSheetAt(0);
-        Sheet timeTableSheet = workbook.getSheetAt(1);      
-        //validating sheet 0 
-        validateCourseStructure(courseStructureSheet);
-		validateTalentifyEvents(timeTableSheet);
-        
+       //validating sheet 0 
+        validateCourseStructure(courseStructureSheet);  
+        Sheet timeTableSheet  = null;
+        if(workbook.getNumberOfSheets()>1) {
+         timeTableSheet = workbook.getSheetAt(1);  
+         validateTalentifyEvents(timeTableSheet);
+        }
+       
         
           
         Iterator<Row> courseIterator = courseStructureSheet.iterator();
@@ -101,7 +117,8 @@ public class CourseCreatorService {
         		if(row.getCell(4).getStringCellValue()!=null)
         		{
         			String lessonUrl = row.getCell(4).getStringCellValue();
-        			if(lessonUrl.toLowerCase().contains("api.talentify.in"))
+        			//System.out.println(lessonUrl);
+        			if(lessonUrl.toLowerCase().contains("preview_desktop"))
         			{
         				Matcher matcher = lastIntPattern.matcher(lessonUrl);        				
         				if (matcher.find()) {
@@ -113,7 +130,7 @@ public class CourseCreatorService {
         				    }	
         				}
         			}
-        			else if (lessonUrl.toLowerCase().contains("elt.talentify.in"))
+        			else if (lessonUrl.toLowerCase().contains("presentation.jsp"))
         			{
         				Matcher matcher = lastIntPattern.matcher(lessonUrl);        				
         				if (matcher.find()) {
@@ -431,7 +448,7 @@ public class CourseCreatorService {
 	private void validateTalentifyEvents(Sheet timeTableSheet) throws Exception {
 		Iterator<Row> timeTableIterator = timeTableSheet.iterator();
 		int index = 0;
-		while(timeTableIterator.hasNext())
+		if(timeTableIterator.hasNext()){while(timeTableIterator.hasNext())
 		{
 			String startDate = null;
 			String excludedDays = null;
@@ -526,6 +543,7 @@ public class CourseCreatorService {
 			}
 			index++;	
 		}
+	}
 	}
 
 

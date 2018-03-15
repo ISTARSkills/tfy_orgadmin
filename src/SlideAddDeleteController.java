@@ -8,7 +8,6 @@ import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
@@ -18,7 +17,6 @@ import javax.xml.bind.Unmarshaller;
 
 import com.viksitpro.core.cms.oldcontent.CMSLesson;
 import com.viksitpro.core.cms.oldcontent.CMSSlide;
-import com.viksitpro.core.cms.oldcontent.CMSTitle;
 import com.viksitpro.core.dao.entities.Lesson;
 import com.viksitpro.core.dao.entities.LessonDAO;
 import com.viksitpro.core.utilities.IStarBaseServelet;
