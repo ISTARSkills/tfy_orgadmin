@@ -97,7 +97,7 @@ boolean flag = false;
 
 					for (TaskSummaryPOJO task : taskSummaryPOJOList) {
 
-						if (!(sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) > 0)
+						if ((sdf.parse(sdf.format(task.getDate())).compareTo(sdf.parse(sdf.format(new Date()))) == 0)
 								&& !task.getStatus().equalsIgnoreCase("COMPLETED")) {
 
 							//ViksitLogger.logMSG(this.getClass().getName(),"previous date " + task.getDate());
