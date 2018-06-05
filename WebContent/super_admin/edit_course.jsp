@@ -44,6 +44,19 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <link href="<%=basePath%>assets/css/gijgo.min.css" rel="stylesheet"
 	type="text/css" />
+<style>
+.area {
+	border: 5px dotted #ccc;
+	padding: 50px;
+	text-align: center;
+}
+
+article {
+	width: 80%;
+	margin: auto;
+	margin-top: 10px;
+}
+</style>
 
 <%
 	String url = request.getRequestURL().toString();
@@ -83,42 +96,65 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-body">
-							<div class="row">
-								<div class="col-sm-12 b-r">
-									<h3 class="m-t-none m-b">Import PowerPoint/Excel</h3>
 
-									<div class="alert alert-danger" id="xmlExistLabel">This
-										lesson is not empty. Uploading a powerpoint or excel will
-										overwrite the lesson.</div>
 
-									<form role="form" id="SubmissionForm"
-										enctype="multipart/form-data">
-										<input type="hidden" id="hidden_lesson_id">
-										<div class="form-group">
-											<label>Lesson Name</label> <input type="text" disabled
-												class="form-control" id="lesson_name">
+							<div role="tabpanel">
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs" role="tablist">
+									<li role="presentation" class="active"><a
+										href="#uploadTab" aria-controls="uploadTab" role="tab"
+										data-toggle="tab">Import PowerPoint/Excel</a></li>
+									<li role="presentation"><a href="#browseTab"
+										aria-controls="browseTab" role="tab" data-toggle="tab">Import
+											Images</a></li>
+								</ul>
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="uploadTab">
+										<div class="row">
+											<div class="col-sm-12 b-r">
+												<div class="alert alert-danger" id="xmlExistLabel">This
+													lesson is not empty. Uploading a powerpoint or excel will
+													overwrite the lesson.</div>
+
+												<form role="form" id="SubmissionForm"
+													enctype="multipart/form-data">
+													<input type="hidden" id="hidden_lesson_id">
+													<div class="form-group">
+														<label>Lesson Name</label> <input type="text" disabled
+															class="form-control" id="lesson_name">
+													</div>
+													<div class="form-group" id="file_input_item"></div>
+													<div>
+														<button class="btn btn-sm btn-primary pull-left m-t-n-xs"
+															type="button" id="preview">
+															<strong>Preview</strong>
+														</button>
+														<button class="btn btn-sm btn-primary pull-left m-t-n-xs"
+															type="button" id="edit" style="margin-left: 10px">
+															<strong>Edit</strong>
+														</button>
+														<button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+															type="submit" id="upload_file">
+															<strong>Upload</strong>
+														</button>
+													</div>
+												</form>
+											</div>
 										</div>
-										<div class="form-group" id="file_input_item"></div>
-										<div>
-											<button class="btn btn-sm btn-primary pull-left m-t-n-xs"
-												type="button" id="preview">
-												<strong>Preview</strong>
-											</button>
-											<button class="btn btn-sm btn-primary pull-left m-t-n-xs"
-												type="button" id="edit" style="margin-left: 10px">
-												<strong>Edit</strong>
-											</button>
-											<button class="btn btn-sm btn-primary pull-right m-t-n-xs"
-												type="submit" id="upload_file">
-												<strong>Upload</strong>
-											</button>
-										</div>
-
-
-									</form>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="browseTab">
+										<input type="file" id="input" multiple
+											onchange="filesDroped(this.files)">
+										<output id="result" style="max-height: 218px; overflow: auto;"></output>
+									</div>
 								</div>
-
 							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" id="imageUpload">Upload</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Cancel</button>
 						</div>
 					</div>
 				</div>
@@ -158,6 +194,49 @@
 	<script src="<%=basePath%>assets/js/gijgo.min.js"
 		type="text/javascript"></script>
 	<script type="text/javascript">
+		$('#modal-form').on('hidden.bs.modal', function(e) {
+			$('#result').val('');
+			document.getElementById('input').value = "";
+		});
+		var files;
+		function filesDroped(filess) {
+
+			files = filess; //It returns a FileList object
+			var filesInfo = "";
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				filesInfo += "<li>Name: " + file.name + "</li>";
+			}
+			var output = document.getElementById("result");
+			output.innerHTML = "<ol>" + filesInfo + "</ol>";
+		}
+		// modal load
+
+		$("#imageUpload").click(
+				function() {
+					var data = new FormData();
+					$.each(files, function(i, file) {
+						data.append('file-' + i, file);
+					});
+
+					data.append('lesson', $('#hidden_lesson_id').val().replace(
+							"lesson_", ""));
+					var Response = $.ajax({
+						type : 'POST',
+						url : '/ImportPowerPointNew',
+						data : data,
+						contentType : false,
+						processData : false,
+						success : function(resultData) {
+							alert("Successfully uploaded!")
+							$('#modal-form').modal('toggle');
+						}
+					});
+					Response.error(function() {
+						alert("Something went wrong!");
+					});
+
+				});
 		var courseId = $('#course_id').val();
 		var tree = $('#tree').tree({
 			primaryKey : 'node_id',
