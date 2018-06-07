@@ -44,19 +44,6 @@
 <jsp:include page="/inc/head.jsp"></jsp:include>
 <link href="<%=basePath%>assets/css/gijgo.min.css" rel="stylesheet"
 	type="text/css" />
-<style>
-.area {
-	border: 5px dotted #ccc;
-	padding: 50px;
-	text-align: center;
-}
-
-article {
-	width: 80%;
-	margin: auto;
-	margin-top: 10px;
-}
-</style>
 
 <%
 	String url = request.getRequestURL().toString();

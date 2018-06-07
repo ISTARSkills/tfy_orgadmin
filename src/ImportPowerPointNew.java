@@ -84,7 +84,7 @@ public class ImportPowerPointNew extends HttpServlet {
 						lessonId = fileItem.getString();
 					}
 				} else {
-					if (fileItem.getName().endsWith(".png")) {
+					if (fileItem.getName().endsWith(".png")||fileItem.getName().endsWith(".PNG")) {
 						String fileName = UUID.randomUUID().toString() + ".png";
 						String filePath = uploadPath + File.separator + fileName;
 						File storeFile = new File(filePath);
@@ -221,7 +221,7 @@ public class ImportPowerPointNew extends HttpServlet {
 		ArrayList<String> images = new ArrayList<>();
 		String lessonPath = apachePath + "/lessonXMLs/" + lessonId + "/" + lessonId + "/";
 		for (File file : imageFiles) {
-			if (file.getName().endsWith(".png")) {
+			if (file.getName().endsWith(".png")||file.getName().endsWith(".PNG")) {
 				try {
 					File dest = new File(lessonPath + file.getName());
 					copyFileUsingStream(file, dest);
